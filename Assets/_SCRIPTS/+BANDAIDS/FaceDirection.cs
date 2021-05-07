@@ -31,14 +31,14 @@ namespace _SCRIPTS
 		private void FlipToRight()
 		{
 			var currentScale = animScaleObject.localScale;
-			currentScale.x = 1;
+			currentScale.x = Mathf.Abs(animScaleObject.localScale.x);
 			animScaleObject.localScale = currentScale;
 		}
 
 		private void FlipToLeft()
 		{
 			var currentScale = animScaleObject.localScale;
-			currentScale.x = -1;
+			currentScale.x = -Mathf.Abs(animScaleObject.localScale.x);
 			animScaleObject.localScale = currentScale;
 		}
 	}

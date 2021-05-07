@@ -18,7 +18,6 @@ namespace _SCRIPTS
 		private SpriteRenderer sprite;
 		private float rotationVelocity;
 
-		[SerializeField] private Transform HitPoint;
 		[SerializeField] private float DamageAmount;
 		private bool hasReachedTarget;
 		private GameObject hitObject;
@@ -26,29 +25,33 @@ namespace _SCRIPTS
 		[SerializeField] private float FloorHeight;
 		[SerializeField] public GameObject HeightObject;
 		[SerializeField] private float maxYDistance = 8;
-		private Vector2 origin;
+		private Vector3 origin;
+		[SerializeField]private float bounceYFactor = 5;
 
 		public event Action<DefenceHandler, Vector3> OnHitTarget;
 		public event Action<Vector3> OnHitNothing;
+		private Vector3 HitPoint;
+		private float ThrowTime;
+		private Vector2 shadowVelocity;
+		private int bounces;
+		private int maxBounces = 2;
 
 
-
-
-
-		public void Throw(Vector3 initialVelocity, bool _isPlayer, float _FloorHeight, float _ThrowHeight)
+		public void Throw(Vector3 initialVelocity, bool _isPlayer, float _FloorHeight, float _ThrowHeight, Vector3 hitPoint,
+		                  float throwTime)
 		{
-			origin = transform.position;
-			var newHeightObjectPosition = HeightObject.transform.position;
-			newHeightObjectPosition.y = _ThrowHeight;
-			HeightObject.transform.position = newHeightObjectPosition;
-
+			ThrowTime = throwTime;
+			HitPoint = hitPoint;
+			origin = HeightObject.transform.position;
+			origin.y = _ThrowHeight;
+			HeightObject.transform.position = origin;
+			shadowVelocity = (hitPoint - origin) / (throwTime);
 			rotationVelocity = initialVelocity.magnitude*10;
 			SetRotation(initialVelocity);
-
+			hasReachedTarget = false;
 			FloorHeight = _FloorHeight;
-			Debug.Log(FloorHeight + "floorheight");
-			Debug.Log(_ThrowHeight + "throwHeight");
 			isPlayer = _isPlayer;
+			bounces = 0;
 			velocity = initialVelocity;
 			if (velocity.x <= 0)
 			{
@@ -95,13 +98,13 @@ namespace _SCRIPTS
 				{
 					Bounce(false);
 				}
-				else
+				else if(!defense.IsPlayer())
 				{
 					HitTarget(defense, raycastHit.Value.point);
 				}
 			}
 
-			if (HeightObject.transform.position.y < transform.position.y)
+			if ((HeightObject.transform.position.y < FloorHeight) && (velocity.y < 0))
 			{
 				LandOrBounceY();
 			}
@@ -118,7 +121,7 @@ namespace _SCRIPTS
 
 		private void ApplyVelocity()
 		{
-			transform.position += new Vector3(velocity.x, 0, 0);
+			transform.position += new Vector3(shadowVelocity.x, shadowVelocity.y, 0);
 			HeightObject.transform.position += new Vector3(0, velocity.y, 0);
 		}
 
@@ -126,24 +129,22 @@ namespace _SCRIPTS
 
 		private RaycastHit2D? CheckRaycastHit(Vector3 targetDirection)
 		{
-			var raycastHits = Physics2D.RaycastAll(HitPoint.position, targetDirection.normalized,
-				velocity.magnitude * Time.fixedDeltaTime,
-				isPlayer ? ASSETS.layers.EnemyLayer : ASSETS.layers.PlayerLayer);
-			foreach (var raycastHit in raycastHits)
-			{
-				if (raycastHit.collider != null)
-				{
-					var enemy = raycastHit.collider.gameObject.GetComponent<DefenceHandler>();
-					if (enemy is null)
-					{
-						continue;
-					}
+			RaycastHit2D[] results = new RaycastHit2D[] { };
+			Physics2D.RaycastAll(HeightObject.transform.position, targetDirection.normalized, velocity.magnitude * Time.fixedDeltaTime, ASSETS.layers.EnemyLayer);
 
-					var yDiff = Mathf.Abs(enemy.GetPosition().y - transform.position.y);
-					if (yDiff < maxYDistance)
-					{
-						return raycastHit;
-					}
+			foreach (var raycastHit in results)
+			{
+				if (raycastHit.collider == null) continue;
+				var enemy = raycastHit.collider.gameObject.GetComponent<DefenceHandler>();
+				if (enemy is null)
+				{
+					continue;
+				}
+
+				var yDiff = Mathf.Abs(enemy.GetPosition().y - transform.position.y);
+				if (yDiff < maxYDistance)
+				{
+					return raycastHit;
 				}
 			}
 
@@ -153,14 +154,18 @@ namespace _SCRIPTS
 
 		private void LandOrBounceY()
 		{
-			HeightObject.transform.position =
-				new Vector3(HeightObject.transform.position.x, transform.position.y, 0);
-			if (velocity.magnitude <= (gravity.y * Time.deltaTime * 15))
+
+			if (bounces > maxBounces)
 			{
+				Debug.Log("enough bounces");
 				Land();
 			}
 			else
 			{
+				bounces++;
+				Debug.Log(bounces);
+				HeightObject.transform.position =
+					new Vector3(HeightObject.transform.position.x, transform.position.y, 0);
 				Bounce(true);
 			}
 		}
@@ -169,7 +174,11 @@ namespace _SCRIPTS
 		{
 			if (flipYVelocity)
 			{
-				velocity = new Vector3(velocity.x, -velocity.y*.7f, 0);
+				velocity = new Vector3(velocity.x, Mathf.Abs(velocity.y)*.7f, 0);
+				var temp = HeightObject.transform.localPosition;
+				temp.y = 0;
+				HeightObject.transform.localPosition = temp;
+				FloorHeight -= shadowVelocity.y*.7f;
 			}
 			else
 			{
@@ -197,6 +206,7 @@ namespace _SCRIPTS
 			hasReachedTarget = true;
 			HeightObject.transform.position = new Vector3(HeightObject.transform.position.x, FloorHeight);
 			OnHitNothing?.Invoke(HeightObject.transform.position);
+			MAKER.Unmake(gameObject);
 		}
 	}
 }

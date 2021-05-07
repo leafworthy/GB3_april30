@@ -13,7 +13,6 @@ namespace _SCRIPTS
 		private void Update()
 		{
 			if (!isRunning) return;
-			HandlePlayerInputs();
 		}
 
 		public static void StartMainMenu()
@@ -21,40 +20,21 @@ namespace _SCRIPTS
 			isRunning = true;
 			Players = GAME.GetPlayers();
 			I.gameObject.SetActive(true);
-		}
-		private void HandlePlayerInputs()
-		{
 			foreach (var player in GAME.GetPlayers())
 			{
-
-				if (GamePad.GetButton(CButton.A, player.playerIndex))
-				{
-					if (!player.A_Pressed)
-					{
-						player.A_Pressed = true;
-						PlayerPressA(player);
-					}
-				}
-				else
-				{
-					player.A_Pressed = false;
-				}
-
-
+				player.OnJoin += Player_OnJoin;
 			}
 		}
-		private void PlayerPressA(Player player)
-		{
 
-			JoinPlayer(player);
-
-		}
-
-		private void JoinPlayer(Player player)
+		private static void Player_OnJoin(Player player)
 		{
 			Debug.Log("Player has joined" + player.playerIndex);
 			CHARS.I.StartCharacterSelectionScreen(player);
-			gameObject.SetActive(false);
+			foreach (var p in GAME.GetPlayers())
+			{
+				p.OnJoin -= Player_OnJoin;
+			}
+			I.gameObject.SetActive(false);
 			isRunning = false;
 		}
 	}

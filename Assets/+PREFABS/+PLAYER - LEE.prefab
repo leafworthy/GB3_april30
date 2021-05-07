@@ -129,10 +129,12 @@ Transform:
   m_LocalPosition: {x: 0, y: 10.25, z: 0}
   m_LocalScale: {x: 12.882675, y: 12.882675, z: 12.882675}
   m_Children:
+  - {fileID: 388858762662307499}
+  - {fileID: 3928640372396048483}
   - {fileID: 4672836961531408676}
   - {fileID: 3833892833550701190}
   m_Father: {fileID: 4019847873618732113}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3833892833550701191
 GameObject:
@@ -162,7 +164,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3833892833502990260}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3833892833884059285
 GameObject:
@@ -209,7 +211,6 @@ Transform:
   - {fileID: 4019847873618732113}
   - {fileID: 3833892833947842662}
   - {fileID: 1684135444}
-  - {fileID: 388858762662307499}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -356,7 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f48a3a9e8f2c4b27b4827ce74093bd29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animScaleObject: {fileID: 3833892833884059309}
+  animScaleObject: {fileID: 3833892833502990260}
   isFacingRight: 1
 --- !u!114 &6151439270627913444
 MonoBehaviour:
@@ -722,7 +723,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3833892833502990260}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1354921911715023449
 SpriteRenderer:
@@ -830,11 +831,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5124274777751668438}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.89, y: 7.11, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.30195588, y: -0.24373814, z: 0}
+  m_LocalScale: {x: 0.07762363, y: 0.07762363, z: 0.07762363}
   m_Children: []
-  m_Father: {fileID: 4019847873618732113}
-  m_RootOrder: 0
+  m_Father: {fileID: 3833892833502990260}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5142884542389763581
 GameObject:
@@ -859,12 +860,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5142884542389763581}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.92, y: 7.1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.30428448, y: -0.2445144, z: 0}
+  m_LocalScale: {x: 0.07762363, y: 0.07762363, z: 0.07762363}
   m_Children: []
-  m_Father: {fileID: 3833892833884059309}
-  m_RootOrder: 6
+  m_Father: {fileID: 3833892833502990260}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &2897981956771197425
 SortingGroup:
@@ -967,7 +968,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 3928640372396048483}
   - {fileID: 3833892833502990260}
   - {fileID: 5995947452647200278}
   m_Father: {fileID: 3833892833884059309}
@@ -1035,7 +1035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1123,15 +1123,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Color.g
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Color.r
-      value: 0.7075472
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6159643717623899174, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_IsActive

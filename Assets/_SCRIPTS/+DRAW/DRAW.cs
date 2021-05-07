@@ -20,8 +20,6 @@ public class DRAW: Singleton<DRAW>
 
 	#region public variables
 
-	public static GameObject arrowHead;
-	public GameObject arrowHeadPrefab;
 	public float LineThickness = 3f;
 	public  static Color LineColorA = Color.white;
 	public  static Color LineColorB = Color.white;
@@ -33,9 +31,6 @@ public class DRAW: Singleton<DRAW>
 	public float radius = 1;
 	public Texture2D setTexture;
 	public  static Texture2D texture2D;
-	public GameObject circleSprite;
-	public float filledCircleRadius = 1f;
-	private static List<GameObject> Circles = new List<GameObject>();
 
 	#endregion
 
@@ -136,56 +131,7 @@ public class DRAW: Singleton<DRAW>
 
 	}
 
-	public static Vector2 trajectory (Vector2 vel, Vector2 start, int foresight, float _gravity = 1)
-	{
-		if (Circles.Count > 0)
-		{
-			foreach (var circle in Circles)
-			{
-				MAKER.Unmake(circle);
-			}
-		}
-		Debug.Log("DRAWINGDRAJECTORY");
-		Vector2 lastP = start;
-		Vector2 p = start;
-		int chunk = 1;
-		var circle1 = MAKER.Make(I.circleSprite, p);
-		Circles.Add(circle1);
-		Vector2 lookPos = Vector2.zero;
-		if (vel != Vector2.zero) {
 
-			for (int i = 0; i < foresight + 1; i++) {
-
-				p = lastP;
-				var circle = MAKER.Make(I.circleSprite, p);
-				Circles.Add(circle);
-				vel = new Vector2 (vel.x, vel.y - _gravity * Time.fixedDeltaTime) * chunk;
-				p += vel * chunk;
-
-				if (i == foresight - 1) {
-					lookPos = lastP - p;
-				}
-				lastP = p;
-
-			}
-
-			arrowHead.SetActive (true);
-			arrowHead.transform.position = lastP;
-
-
-
-			//float angle = Mathf.Atan2 (lookPos.y, lookPos.x) * Mathf.Rad2Deg + 90f;
-
-
-			//arrowHead.transform.localRotation = Quaternion.AngleAxis (angle, Vector3.forward);
-
-		}
-		else
-		{
-			Debug.Log("NO vel");
-		}
-		return Vector2.zero;
-	}
 
 	public static void clearAll ()
 	{
@@ -199,7 +145,6 @@ public class DRAW: Singleton<DRAW>
 		texture2D = setTexture;
 
 		gravity = -Physics2D.gravity.y * Time.fixedDeltaTime;
-		arrowHead = (GameObject)Instantiate (arrowHeadPrefab, Vector2.zero, Quaternion.identity);
 		clearAll ();
 
 	}

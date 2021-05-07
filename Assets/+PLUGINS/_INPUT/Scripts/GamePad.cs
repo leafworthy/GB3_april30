@@ -112,7 +112,7 @@ public static class GamePad {
         gamepadCount = 0;
         List<ControllerInstance> matches = new List<ControllerInstance>();
         foreach(string name in Input.GetJoystickNames()) {
-	        Debug.Log(name);
+	        Debug.Log(name + nameIndex);
 	        CarbonController toRemove = null;
             foreach(CarbonController cc in mappings) {
                 if(!string.IsNullOrEmpty(cc.RegEx) && Regex.IsMatch(name, cc.RegEx, RegexOptions.IgnoreCase)) {

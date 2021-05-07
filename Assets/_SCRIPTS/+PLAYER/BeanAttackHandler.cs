@@ -124,6 +124,7 @@ namespace _SCRIPTS
 
 		private void PlayerNadeRelease(Vector3 aimDirection)
 		{
+			if (!isNading) return;
 			Debug.Log("NADEPRESS");
 			isNading = false;
 			if (CantAttack()) return;
@@ -139,6 +140,11 @@ namespace _SCRIPTS
 
 		private void PlayerNadePress(Vector3 dir)
 		{
+			if (NoNades())
+			{
+				Debug.Log("NONADES");
+				return;
+			}
 			isNading = true;
 
 		 nadeAimDir = dir;

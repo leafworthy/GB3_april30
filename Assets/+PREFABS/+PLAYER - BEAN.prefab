@@ -131,7 +131,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.008, y: -0.837, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 9123423200546381496}
   m_Father: {fileID: 3833892833502990260}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -326,7 +327,6 @@ Transform:
   - {fileID: 3833892833502990260}
   - {fileID: 5995947452647200278}
   - {fileID: 1684135444}
-  - {fileID: 9123423200546381496}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -551,6 +551,8 @@ MonoBehaviour:
   ThrowPoint: {fileID: 7693368971492032853}
   animationEvents: {fileID: 6580782596379435853}
   throwVector: {x: 1, y: 1, z: 0}
+  circleSprite: {fileID: 2089077613810556204, guid: 7af64994a17b5478786f35ab9eca701e, type: 3}
+  arrowHeadPrefab: {fileID: 4854975885357852757, guid: e6f44b456b7964fd8ad02059f6df5ed9, type: 3}
 --- !u!1 &3833892834326608145
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,12 +908,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7693368971492032853}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.13, y: 10.3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.5167361, y: 0.8408811, z: 0}
+  m_LocalScale: {x: 0.07762363, y: 0.07762363, z: 0.07762363}
   m_Children: []
-  m_Father: {fileID: 3833892833884059309}
-  m_RootOrder: 6
+  m_Father: {fileID: 3833892833308743023}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8499882483680107049
 GameObject:
