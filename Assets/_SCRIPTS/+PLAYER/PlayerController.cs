@@ -30,8 +30,8 @@ namespace _SCRIPTS
 		private bool startButtonPressed;
 		private Player owner;
 		private bool leftTriggerPressed;
-		public event Action<PlayerIndex> OnPauseButtonPress;
-		public event Action<PlayerIndex> OnPauseButtonRelease;
+		public event Action<Player> OnPauseButtonPress;
+		public event Action<Player> OnPauseButtonRelease;
 
 		public event Action<Vector3> OnRightTriggerPress;
 		public event Action OnRightTriggerRelease;
@@ -82,12 +82,12 @@ namespace _SCRIPTS
 				if (!startButtonPressed)
 				{
 					startButtonPressed = true;
-					OnPauseButtonPress?.Invoke(playerIndex);
+					OnPauseButtonPress?.Invoke(owner);
 				}
 			}
 			else
 			{
-				OnPauseButtonRelease?.Invoke(playerIndex);
+				OnPauseButtonRelease?.Invoke(owner);
 				startButtonPressed = false;
 			}
 		}

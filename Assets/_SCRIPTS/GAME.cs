@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
@@ -12,35 +13,76 @@ namespace _SCRIPTS
 	{
 
 		public static Action OnGameEnd;
+		public static Action OnGameStart;
 		public GameObject StartingLevelPrefab;
-		private LEVEL StartingLevel;
+		public LEVEL CurrentLevel;
 		private CinemachineVirtualCamera cam;
 		public static Vector3 Gravity = new Vector3(0, 4.5f, 0);
+		private List<Player> currentPlayers;
+		private bool isPlaying;
 
 		private void Start()
 		{
 			CHARS.OnCharacterSelectionComplete += CHARS_OnCharacterSelectionComplete;
-			StartGame();
+			StartMainMenu();
 		}
 
 		private void CHARS_OnCharacterSelectionComplete(List<Player> joiningPlayers)
 		{
+			if (isPlaying) return;
 			Debug.Log("GAME:Selection complete, starting level...");
-			var startingLevelGO = Instantiate(StartingLevelPrefab);
-			StartingLevel = startingLevelGO.GetComponent<LEVEL>();
-			StartingLevel.PlayLevel(joiningPlayers);
+			StartCoroutine(WaitAndStartLevel(joiningPlayers));
+
 		}
 
-		public void StartGame()
+		private IEnumerator WaitAndStartLevel(List<Player> joiningPlayers)
 		{
-			Debug.Log("Start of GAME");
+			while (!isPlaying)
+			{
+				yield return new WaitForSeconds(.05f);
+				isPlaying = true;
+				Debug.Log("waited");
+				PlayLevel(joiningPlayers);
+			}
+		}
+
+		private void PlayLevel(List<Player> joiningPlayers)
+		{
+			Debug.Log("instancing level");
+			var startingLevelGO = Instantiate(StartingLevelPrefab);
+			CurrentLevel = startingLevelGO.GetComponent<LEVEL>();
+			currentPlayers = joiningPlayers;
+			CurrentLevel.PlayLevel(joiningPlayers);
+			OnGameStart?.Invoke();
+		}
+
+		private void RestartLevel()
+		{
+			isPlaying = false;
+			StartCoroutine(WaitAndStartLevel(currentPlayers));
+		}
+
+		public void StartMainMenu()
+		{
 			MENU.StartMainMenu();
 		}
 
-		public void EndGame()
+		public void EndGameMainMenu()
 		{
+			isPlaying = false;
 			OnGameEnd?.Invoke();
-			StartGame();
+			CurrentLevel.EndLevel();
+			StartMainMenu();
+		}
+
+		public void EndGameRestart()
+		{
+			isPlaying = false;
+			Debug.Log("end game restart");
+			OnGameEnd?.Invoke();
+			CurrentLevel.EndLevel();
+			Debug.Log("level gone");
+			RestartLevel();
 		}
 
 		public static List<Player> GetPlayers()

@@ -16,7 +16,7 @@ namespace _SCRIPTS
 
 		private void Start()
 		{
-			GAME.I.StartGame();
+			GAME.I.StartMainMenu();
 		}
 
 		private void DisplayMainMenuBox()
@@ -30,7 +30,6 @@ namespace _SCRIPTS
 				currentUser = new User("New Default Player", new List<Player>());
 			}
 
-			mainMenuButtons.Add(new ButtonAction("New", StartNewGame));
 			mainMenuButtons.Add(new ButtonAction("Quit", QuitApplication));
 
 			DISPLAY.ShowMenuBox("The Pirate Witch", "Main Menu", mainMenuButtons);
@@ -48,18 +47,11 @@ namespace _SCRIPTS
 			{
 				Debug.Log("user loaded" + loadedUser.userName);
 				currentUser = loadedUser;
-				StartNewGame();
 			}
 			else
 				Debug.Log("saved user invalid");
 		}
 
-
-		private void StartNewGame()
-		{
-			GAME.OnGameEnd += OnGameEnd;
-			GAME.I.StartGame();
-		}
 
 		private void OnGameEnd()
 		{

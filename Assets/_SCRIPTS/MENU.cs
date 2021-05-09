@@ -22,7 +22,7 @@ namespace _SCRIPTS
 			I.gameObject.SetActive(true);
 			foreach (var player in GAME.GetPlayers())
 			{
-				player.OnJoin += Player_OnJoin;
+				player.PressA += Player_OnJoin;
 			}
 		}
 
@@ -32,7 +32,7 @@ namespace _SCRIPTS
 			CHARS.I.StartCharacterSelectionScreen(player);
 			foreach (var p in GAME.GetPlayers())
 			{
-				p.OnJoin -= Player_OnJoin;
+				p.PressA -= Player_OnJoin;
 			}
 			I.gameObject.SetActive(false);
 			isRunning = false;

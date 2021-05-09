@@ -5,7 +5,7 @@ using UnityEngine;
 // ReSharper disable CheckNamespace
 
 /// <summary>
-/// Specifies the game controller associated with a player.
+/// Specifies the game controller associated with a
 /// </summary>
 public enum PlayerIndex {
     Any, One, Two, Three, Four, Five, Six, Seven, Eight
@@ -88,4 +88,3 @@ public enum AnyBehaviour {
     /// </summary>
     CheckAll
 }
-

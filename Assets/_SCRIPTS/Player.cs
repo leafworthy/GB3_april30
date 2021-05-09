@@ -27,7 +27,14 @@ namespace _SCRIPTS
 		public bool Right_Pressed;
 		public int buttonIndex;
 		public Color playerColor;
-		public event Action<Player> OnJoin;
+		private bool Up_Pressed;
+		private bool Down_Pressed;
+		public event Action<Player> MoveRight;
+		public event Action<Player> MoveLeft;
+		public event Action<Player> MoveUp;
+		public event Action<Player> MoveDown;
+		public event Action<Player> PressA;
+		public event Action<Player> PressB;
 
 		public Player(PlayerIndex playerIndex)
 		{
@@ -42,21 +49,85 @@ namespace _SCRIPTS
 
 		private void Update()
 		{
-				if (GamePad.GetButton(CButton.A, playerIndex))
-				{
-					if (!A_Pressed)
-					{
-						A_Pressed = true;
-						Debug.Log("A_Pressed");
-						OnJoin?.Invoke(this);
 
-					}
-				}
-				else
+			if (GamePad.GetButton(CButton.B, playerIndex))
+			{
+				if (!B_Pressed)
 				{
-					A_Pressed = false;
+					B_Pressed = true;
+					PressB?.Invoke(this);
 				}
+			}
+			else
+				B_Pressed = false;
 
+			if (GamePad.GetButton(CButton.A, playerIndex))
+			{
+				if (!A_Pressed)
+				{
+					A_Pressed = true;
+					PressA?.Invoke(this);
+				}
+			}
+			else
+				A_Pressed = false;
+
+			HandleLeftRightMoves();
+			HandleUpDownMoves();
+		}
+
+		private void HandleLeftRightMoves()
+		{
+			var dpadX = GamePad.GetAxis(CAxis.LX, playerIndex);
+			if (dpadX > .5)
+			{
+				if (!Right_Pressed)
+				{
+					MoveRight?.Invoke(this);
+					Right_Pressed = true;
+				}
+			}
+			else
+				Right_Pressed = false;
+
+			if (dpadX < -.5)
+			{
+				if (!Left_Pressed)
+				{
+					MoveLeft?.Invoke(this);
+					Left_Pressed = true;
+				}
+			}
+			else
+				Left_Pressed = false;
+		}
+
+		private void HandleUpDownMoves()
+		{
+			var dpadY = GamePad.GetAxis(CAxis.LY, playerIndex);
+			if (dpadY > .5)
+			{
+				Debug.Log("move up");
+				if (!Up_Pressed)
+				{
+					MoveUp?.Invoke(this);
+					Up_Pressed = true;
+				}
+			}
+			else
+				Up_Pressed = false;
+
+			if (dpadY < -.5)
+			{
+				Debug.Log("move down");
+				if (!Down_Pressed)
+				{
+					MoveDown?.Invoke(this);
+					Down_Pressed = true;
+				}
+			}
+			else
+				Down_Pressed = false;
 		}
 
 

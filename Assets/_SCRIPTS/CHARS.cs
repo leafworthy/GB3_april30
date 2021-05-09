@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _SCRIPTS;
 using UnityEngine;
+
 
 namespace _SCRIPTS
 {
@@ -15,39 +17,84 @@ namespace _SCRIPTS
 		public static event Action<List<Player>> OnCharacterSelectionComplete;
 		public bool isRunning;
 
-		private void CleanUp()
+		private void ResetPlayersAndButtons()
 		{
 			isRunning = false;
 			playersAllSelected = false;
-			foreach (var player in Players)
-			{
-				player.CleanUp();
-			}
+			foreach (var player in Players) player.CleanUp();
 
-			foreach (var button in Buttons)
-			{
-				button.CleanUp();
-			}
+			foreach (var button in Buttons) button.CleanUp();
 		}
 
 		private void SetPlayerColors()
 		{
-			foreach (var button in Buttons)
-			{
-				button.SetPlayerColors(Players);
-			}
+			foreach (var button in Buttons) button.SetPlayerColors(Players);
 		}
+
 		public void StartCharacterSelectionScreen(Player firstPlayer)
 		{
 			GraphicObject.SetActive(true);
 			Players.Clear();
 			Players = GAME.GetPlayers();
+			ListenToPlayers();
+
 			SetPlayerColors();
-			CleanUp();
+			ResetPlayersAndButtons();
 			HideGoGoGo();
 			isRunning = true;
 			JoinPlayer(firstPlayer);
 			firstPlayer.A_Pressed = true;
+		}
+
+		private void StopCharacterSelectionScreen()
+		{
+			if(!isRunning) return;
+
+			var joinedPlayers = Players.Where(t => t.hasJoined).ToList();
+			foreach (var player in joinedPlayers)
+				Debug.Log("Player " + player.playerIndex + " has joined the game as " +
+				          player.currentCharacter.ToString());
+
+			StopListeningToPlayers();
+			OnCharacterSelectionComplete?.Invoke(joinedPlayers);
+			isRunning = false;
+			GraphicObject.SetActive(false);
+		}
+
+		private void ListenToPlayers()
+		{
+			foreach (var player in Players)
+			{
+				player.PressA += PlayerPressA;
+				player.PressB += PlayerPressB;
+				player.MoveRight += PlayerMoveRight;
+				player.MoveLeft += PlayerMoveLeft;
+				player.MoveUp += PlayerMoveUp;
+				player.MoveDown += PlayerMoveDown;
+			}
+		}
+
+		private void StopListeningToPlayers()
+		{
+			foreach (var player in Players)
+			{
+				player.PressA -= PlayerPressA;
+				player.PressB -= PlayerPressB;
+				player.MoveRight -= PlayerMoveRight;
+				player.MoveLeft -= PlayerMoveLeft;
+				player.MoveUp -= PlayerMoveUp;
+				player.MoveDown -= PlayerMoveDown;
+			}
+		}
+
+		private void PlayerMoveDown(Player obj)
+		{
+			//
+		}
+
+		private void PlayerMoveUp(Player obj)
+		{
+			//
 		}
 
 		private void Update()
@@ -58,58 +105,56 @@ namespace _SCRIPTS
 
 		private void HandlePlayerInputs()
 		{
-			foreach (var player in Players)
+			foreach (var player in Players) GetButtonsPressed(player);
+		}
+
+		private void GetButtonsPressed(Player player)
+		{
+			if (GamePad.GetButton(CButton.B, player.playerIndex))
 			{
-				if (GamePad.GetButton(CButton.B, player.playerIndex))
+				if (!player.B_Pressed)
 				{
-					if (!player.B_Pressed)
-					{
-						player.B_Pressed = true;
-						PlayerPressB(player);
-					}
+					player.B_Pressed = true;
+					PlayerPressB(player);
 				}
-				else
-				{
-					player.B_Pressed = false;
-				}
-
-				if (GamePad.GetButton(CButton.A, player.playerIndex))
-				{
-					if (!player.A_Pressed)
-					{
-						player.A_Pressed = true;
-						PlayerPressA(player);
-					}
-				}
-				else
-				{
-					player.A_Pressed = false;
-				}
-
-				if (player.hasSelectedCharacter) continue;
-				var dpad = GamePad.GetAxis(CAxis.LX, player.playerIndex);
-				if (dpad > .5)
-				{
-					if (!player.Right_Pressed)
-					{
-						PlayerMoveRight(player);
-						player.Right_Pressed = true;
-					}
-				}
-				else
-					player.Right_Pressed = false;
-
-				if (dpad < -.5)
-				{
-					if (!player.Left_Pressed)
-					{
-						PlayerMoveLeft(player);
-						player.Left_Pressed = true;
-					}
-				}
-				else
-					player.Left_Pressed = false;
 			}
+			else
+				player.B_Pressed = false;
+
+			if (GamePad.GetButton(CButton.A, player.playerIndex))
+			{
+				if (!player.A_Pressed)
+				{
+					player.A_Pressed = true;
+					PlayerPressA(player);
+				}
+			}
+			else
+				player.A_Pressed = false;
+
+			if (player.hasSelectedCharacter) return;
+			var dpad = GamePad.GetAxis(CAxis.LX, player.playerIndex);
+			if (dpad > .5)
+			{
+				if (!player.Right_Pressed)
+				{
+					PlayerMoveRight(player);
+					player.Right_Pressed = true;
+				}
+			}
+			else
+				player.Right_Pressed = false;
+
+			if (dpad < -.5)
+			{
+				if (!player.Left_Pressed)
+				{
+					PlayerMoveLeft(player);
+					player.Left_Pressed = true;
+				}
+			}
+			else
+				player.Left_Pressed = false;
 		}
 
 		private void PlayerMoveLeft(Player player)
@@ -148,25 +193,15 @@ namespace _SCRIPTS
 
 		private void PlayerPressA(Player player)
 		{
-
-
 			if (player.hasJoined)
 			{
 				if (!player.hasSelectedCharacter)
-				{
 					SelectCharacter(player);
-				}
-				else if(playersAllSelected)
-				{
-					CharacterSelectionComplete();
-				}
+				else if (playersAllSelected) StopCharacterSelectionScreen();
 			}
 			else
-			{
 				JoinPlayer(player);
-			}
 		}
-
 
 
 		private void PlayerPressB(Player player)
@@ -220,18 +255,6 @@ namespace _SCRIPTS
 		{
 			playersAllSelected = false;
 			doneIndicator.SetActive(false);
-		}
-
-		private void CharacterSelectionComplete()
-		{
-			var joinedPlayers = Players.Where(t => t.hasJoined).ToList();
-			foreach (var player in joinedPlayers)
-			{
-				Debug.Log("Player "+player.playerIndex + " has joined the game as " +player.currentCharacter.ToString());
-			}
-			OnCharacterSelectionComplete?.Invoke(joinedPlayers);
-			isRunning = false;
-			GraphicObject.SetActive(false);
 		}
 	}
 }

@@ -125,15 +125,9 @@ namespace _SCRIPTS
 		private void PlayerNadeRelease(Vector3 aimDirection)
 		{
 			if (!isNading) return;
-			Debug.Log("NADEPRESS");
 			isNading = false;
 			if (CantAttack()) return;
-			if (NoNades())
-			{
-				Debug.Log("NONADES");
-				return;
-			}
-
+			if (NoNades()) return;
 
 			NadeWithCooldown(aimDirection);
 		}
@@ -176,14 +170,12 @@ namespace _SCRIPTS
 		private bool NoAmmo()
 		{
 			bool istrue = bulletsInClip <= 0;
-			Debug.Log(istrue +"NOAMMO");
 			return istrue;
 		}
 
 		private bool NoNades()
 		{
 			bool istrue = nades <= 0;
-			Debug.Log(istrue + "NOAMMO");
 			return istrue;
 		}
 

@@ -5,28 +5,24 @@ using UnityEngine;
 
 namespace _SCRIPTS
 {
-	public class LEVEL : Singleton<LEVEL>
+	public class LEVEL : MonoBehaviour
 	{
 		[SerializeField] private List<GameObject> spawnPoints;
 		[SerializeField] private CinemachineTargetGroup cameraFollowTargetGroup;
 		[SerializeField] public List<PlayerController> playerControllersInLevel;
+		private bool isPlaying;
 
 		public void PlayLevel(List<Player> joiningPlayers)
 		{
-			Debug.Log("Level starting");
+			if (isPlaying) return;
+			isPlaying = true;
+			Debug.Log("Level starting" + gameObject.name);
 			foreach (var player in joiningPlayers)
 			{
 				SpawnPlayer(player);
 			}
 
-			GAME.OnGameEnd += GAME_OnGameEnd;
 			ENEMIES.CollectAllEnemies();
-		}
-
-		private void GAME_OnGameEnd()
-		{
-			GAME.OnGameEnd -= GAME_OnGameEnd;
-			Destroy(gameObject);
 		}
 
 		private void SpawnPlayer(Player player)
@@ -62,8 +58,11 @@ namespace _SCRIPTS
 			return null;
 		}
 
-		public void CleanUp()
+
+		public void EndLevel()
 		{
+			Debug.Log("level destroy");
+			isPlaying = false;
 			Destroy(gameObject);
 		}
 	}

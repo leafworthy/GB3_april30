@@ -110,6 +110,7 @@ namespace _SCRIPTS
 
         public float GetAimHeight()
         {
+            if (stats is null) return 0;
             return stats.height;
         }
 
