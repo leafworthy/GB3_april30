@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace _SCRIPTS
 {
-	public class ToastAnimation : MonoBehaviour
+	public class ToastAnimationHandler : MonoBehaviour
 	{
 		private Animator animator;
 		private MovementHandler movementHandler;

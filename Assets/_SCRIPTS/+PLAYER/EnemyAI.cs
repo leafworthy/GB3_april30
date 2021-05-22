@@ -1,3 +1,4 @@
+using System;using System.Configuration;
 using UnityEngine;
 
 namespace _SCRIPTS
@@ -6,7 +7,7 @@ namespace _SCRIPTS
 	{
 
 		private DefenceHandler defenceHandler;
-		private ToastAttackHandler toastAttackHandler;
+		private IAttackHandler attackHandler;
 		private AstarAI astarAI;
 		private DefenceHandler currentTarget;
 		private EnemyController controller;
@@ -21,6 +22,8 @@ namespace _SCRIPTS
 		[Range(0, 200)] [SerializeField] private float aggroDistance;
 
 		[SerializeField] private State state;
+		public event Action OnIdle;
+		public event Action OnAggro;
 
 		private void Start()
 		{
@@ -32,7 +35,7 @@ namespace _SCRIPTS
 			defenceHandler = GetComponent<DefenceHandler>();
 			defenceHandler.OnDead += Defence_OnDead;
 
-			toastAttackHandler = GetComponent<ToastAttackHandler>();
+			attackHandler = GetComponent<IAttackHandler>();
 
 			SetState(State.Idle);
 		}
@@ -45,7 +48,7 @@ namespace _SCRIPTS
 		private void Defence_OnDead()
 		{
 			controller.Die();
-			toastAttackHandler.Disable();
+			attackHandler.Disable();
 			isOn = false;
 		}
 
@@ -102,11 +105,20 @@ namespace _SCRIPTS
 		private void SetState(State newState)
 		{
 			state = newState;
+			switch (newState)
+			{
+				case State.Idle:
+					OnIdle?.Invoke();
+					break;
+				case State.Aggro:
+					OnAggro?.Invoke();
+					break;
+			}
 		}
 
 		private bool CanAttackTarget()
 		{
-			return toastAttackHandler.CanAttack(currentTarget.GetPosition());
+			return attackHandler.CanAttack(currentTarget.GetPosition());
 		}
 
 		private bool IsInAggroRange()

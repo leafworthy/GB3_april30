@@ -23,7 +23,18 @@ namespace _SCRIPTS
         public event Action OnAirThrowStart;
         public event Action OnAirThrow;
         public event Action OnAirThrowStop;
+        public event Action OnMoveStart;
+        public event Action OnMoveStop;
 
+        public void MoveStart()
+        {
+            OnMoveStart?.Invoke();
+        }
+
+        public void MoveStop()
+        {
+            OnMoveStop?.Invoke();
+        }
         public void DashStart()
         {
             OnDashStart?.Invoke();

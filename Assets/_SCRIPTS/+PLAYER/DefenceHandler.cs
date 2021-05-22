@@ -82,7 +82,7 @@ namespace _SCRIPTS
             MAKER.Unmake(gameObject, 4);
         }
 
-        private void StartDying() {
+        public void StartDying() {
                 OnDying?.Invoke();
                 isDying = true;
                 gameObject.layer = LayerMask.NameToLayer("Dead");

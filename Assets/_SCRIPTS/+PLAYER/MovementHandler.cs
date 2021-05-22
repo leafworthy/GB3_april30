@@ -26,7 +26,7 @@ namespace _SCRIPTS
 		private Vector3 targetPosition;
 		private Vector3 currentPushVector;
 
-		private float pushDecayFactor = .9f;
+		private float pushDecayFactor = .8f;
 		private float pushTime;
 
 		private bool isOn;
@@ -55,6 +55,8 @@ namespace _SCRIPTS
 			animEvents.OnHitStop += EnableMovement;
 			animEvents.OnThrowStart += DisableMovement;
 			animEvents.OnThrowStop += EnableMovement;
+			animEvents.OnMoveStart += EnableMovement;
+			animEvents.OnMoveStop += DisableMovement;
 
 			health = GetComponent<DefenceHandler>();
 			health.OnDamaged += Health_OnDamaged;
@@ -74,16 +76,10 @@ namespace _SCRIPTS
 		private void DisableAllColliders()
 		{
 			var colliders = GetComponents<Collider2D>();
-			foreach (Collider2D col in colliders)
-			{
-				col.enabled = false;
-			}
+			foreach (var col in colliders) col.enabled = false;
 
 			var moreColliders = GetComponentsInChildren<Collider2D>();
-			foreach (Collider2D col in moreColliders)
-			{
-				col.enabled = false;
-			}
+			foreach (var col in moreColliders) col.enabled = false;
 		}
 
 		private void FixedUpdate()
@@ -94,51 +90,56 @@ namespace _SCRIPTS
 				if (isMoving)
 				{
 					moveDir = (targetPosition - transform.position).normalized;
-					rb.velocity = moveDir * stats.moveSpeed;
+					var newVel =  (Vector3)moveDir * stats.moveSpeed;
+					rb.velocity = newVel;
+					if (isPushed) GetPushed();
 				}
+				else if (isPushed)
+					GetPushed();
 				else
 					rb.velocity = Vector2.zero;
 			}
 			else if (isDashing)
-			{
 				rb.velocity = moveDir * stats.dashSpeed;
-			}else if (isPushed)
-			{
-				currentPushVector *= pushDecayFactor;
-				rb.velocity = currentPushVector;
-				if (pushTime < 0)
-				{
-
-					pushTime = 0;
-					isPushed = false;
-				}
-				else
-				{
-					pushTime -= Time.fixedDeltaTime;
-				}
-			}
+			else if (isPushed)
+				GetPushed();
 			else
 				rb.velocity = Vector2.zero;
+		}
+
+		private void GetPushed()
+		{
+			currentPushVector *= pushDecayFactor;
+			var newVel = (Vector3) rb.velocity + (Vector3) currentPushVector;
+			rb.velocity = newVel;
+			if (pushTime < 0)
+			{
+				pushTime = 0;
+				isPushed = false;
+			}
+			else
+				pushTime -= Time.fixedDeltaTime;
 		}
 
 
 		private void Health_OnDamaged(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition)
 		{
-			DamageDirection = DamageDirection.normalized;
-			Vector3 tempVel = Vector3.zero;
-			tempVel += new Vector3(DamageDirection.x * DamageAmount * hitPushMultiplier, DamageDirection.y * DamageAmount * hitPushMultiplier,0);
+			Push(DamageDirection.normalized, DamageAmount, DamagePosition);
+			if (rb.velocity.x > 0)
+				OnMoveDirectionChange?.Invoke(false);
+			else
+				OnMoveDirectionChange?.Invoke(true);
+		}
+
+		public void Push(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition)
+		{
+			var tempVel = Vector3.zero;
+			tempVel += new Vector3(DamageDirection.x * DamageAmount * hitPushMultiplier,
+				DamageDirection.y * DamageAmount * hitPushMultiplier, 0);
+			isPushed = true;
 			rb.velocity = tempVel;
 			currentPushVector = tempVel;
-			if (tempVel.x > 0)
-			{
-				OnMoveDirectionChange?.Invoke(false);
-			}
-			else
-			{
-				OnMoveDirectionChange?.Invoke(true);
-			}
-			isPushed = true;
-			pushTime = 1;
+			pushTime = .5f;
 		}
 
 		private void DashStart()
@@ -187,10 +188,7 @@ namespace _SCRIPTS
 
 		private void EnableMovement(int attackType = 0)
 		{
-			if (!health.IsDeadOrDying())
-			{
-				canMove = true;
-			}
+			if (!health.IsDeadOrDying()) canMove = true;
 		}
 
 		private void MoveTo(Vector3 target)
@@ -205,13 +203,9 @@ namespace _SCRIPTS
 			if (canMove)
 			{
 				if (direction.x >= 0)
-				{
 					OnMoveDirectionChange?.Invoke(true);
-				}
 				else
-				{
 					OnMoveDirectionChange?.Invoke(false);
-				}
 
 				MoveTo(transform.position + direction * (stats.moveSpeed * 2));
 			}

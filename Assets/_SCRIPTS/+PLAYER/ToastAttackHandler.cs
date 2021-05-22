@@ -6,7 +6,7 @@ namespace _SCRIPTS
 {
 
 	[Serializable]
-	public class ToastAttackHandler : MonoBehaviour
+	public class ToastAttackHandler : MonoBehaviour, IAttackHandler
 	{
 		public event Action OnAttackStop;
 		public event Action OnAttackStart;
