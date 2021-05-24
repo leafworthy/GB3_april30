@@ -34,7 +34,7 @@ namespace _SCRIPTS
 		public int clipSize;
 		public int bulletsInClip;
 		public int nades = 5;
-		public int reloadTime = 2;
+		public float reloadTime = .5f;
 		private Vector3 nadeAimDir;
 		public event Action<Vector3> OnNadeAim;
 

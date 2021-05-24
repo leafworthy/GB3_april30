@@ -16,7 +16,7 @@ namespace _SCRIPTS
 		private UnitStats stats;
 
 		private bool canMove = true;
-		private readonly float hitPushMultiplier = 1f;
+		private readonly float hitPushMultiplier = .25f;
 
 		private bool isDashing;
 		private bool isMoving;
@@ -139,7 +139,7 @@ namespace _SCRIPTS
 			isPushed = true;
 			rb.velocity = tempVel;
 			currentPushVector = tempVel;
-			pushTime = .5f;
+			pushTime = .52f;
 		}
 
 		private void DashStart()
