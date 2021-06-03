@@ -423,6 +423,7 @@ MonoBehaviour:
   isPlayer: 1
   dashMultiplier: 0
   dashSpeed: 90
+  hitPushMultiplier: 0.25
 --- !u!114 &7871805811709726006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,6 +472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aimTargetGraphic: {fileID: 0}
   aimLightTransform: {fileID: 3833892835096459395}
+  hasMuzzleFlash: 0
 --- !u!114 &4124175620475615131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,6 +570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMovable: 1
   renderBelowAll: 0
+  light: {fileID: 0}
   movingDependencies: []
   sortType: 0
   SorterPositionOffset: {x: 0, y: 0, z: 0}

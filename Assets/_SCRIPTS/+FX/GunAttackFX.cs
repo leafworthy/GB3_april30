@@ -9,6 +9,9 @@ namespace _SCRIPTS
 		[SerializeField] private GameObject aimTargetGraphic;
 		[SerializeField] private Transform aimLightTransform;
 		private BeanAttackHandler aimer;
+		[SerializeField] private bool hasMuzzleFlash;
+		private UnitStats stats;
+
 
 		private void Awake()
 		{
@@ -17,6 +20,7 @@ namespace _SCRIPTS
 
 			gunAttackHandler = GetComponent<BeanAttackHandler>();
 			gunAttackHandler.OnAttackStart += GunAttackHandlerOnAttack;
+			stats = GetComponent<UnitStats>();
 		}
 
 		private void AimerOnAim(Vector3 aimDir)
@@ -45,12 +49,15 @@ namespace _SCRIPTS
 			var newBulletHitAnimation = MAKER.Make(ASSETS.FX.bulletHitAnimPrefab, e.AttackEndPosition);
 			MAKER.Unmake(newBulletHitAnimation, 5);
 
-			var newMuzzleFlash = MAKER.Make(ASSETS.FX.muzzleFlashPrefab, e.AttackStartPosition);
-			MAKER.Unmake(newMuzzleFlash, .05f);
+			if (hasMuzzleFlash)
+			{
+				var newMuzzleFlash = MAKER.Make(ASSETS.FX.muzzleFlashPrefab, e.AttackStartPosition);
+				MAKER.Unmake(newMuzzleFlash, .05f);
+			}
 
 			var newBulletShell = MAKER.Make(ASSETS.FX.bulletShellPrefab, e.AttackStartPosition);
 			newBulletShell.GetComponent<FallToFloor>().Fire((e.AttackStartPosition - e.AttackEndPosition).normalized);
-			SHAKER.ShakeCamera(e.AttackStartPosition, 3);
+			SHAKER.ShakeCamera(e.AttackStartPosition, stats.attackDamage/30);
 			AUDIO.I.PlaySound(ASSETS.sounds.shoot_sounds.GetRandom());
 		}
 

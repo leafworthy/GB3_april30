@@ -143,7 +143,11 @@ namespace _SCRIPTS
 		{
 			if (IsAttackButtonDown())
 			{
-				OnAttackPress?.Invoke(GetRightStickDir());
+				if (!attackPressed)
+				{
+					OnAttackPress?.Invoke(GetRightStickDir());
+				}
+
 				attackPressed = true;
 			}
 			else if (attackPressed)

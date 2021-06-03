@@ -170,6 +170,7 @@ namespace _SCRIPTS
 
 		private RaycastHit2D IsAboveLandable()
 		{
+		if(ASSETS.layers is null) return new RaycastHit2D();
 			RaycastHit2D raycastHit = Physics2D.Raycast(transform.position,
 				(Vector3.down), .01f,
 				ASSETS.layers.LandableLayer);

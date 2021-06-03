@@ -99,7 +99,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 89d91152eb4854eeaa6ae0ddc3c1cb19, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -321,7 +321,6 @@ GameObject:
   - component: {fileID: 7203226093983254059}
   - component: {fileID: 7431454428826219941}
   - component: {fileID: 2451757643079752978}
-  - component: {fileID: 7431454428826219951}
   - component: {fileID: 1858765045}
   - component: {fileID: 1858765047}
   - component: {fileID: 3260832119847280041}
@@ -331,6 +330,7 @@ GameObject:
   - component: {fileID: 8734020408948818940}
   - component: {fileID: 6331622855130972574}
   - component: {fileID: 536371090444542826}
+  - component: {fileID: -5220611770622036096}
   m_Layer: 7
   m_Name: +TOAST
   m_TagString: Untagged
@@ -437,6 +437,7 @@ MonoBehaviour:
   isPlayer: 0
   dashMultiplier: 1
   dashSpeed: 15
+  hitPushMultiplier: 0.3
 --- !u!114 &7431454428826219941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,18 +466,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInvincible: 0
---- !u!114 &7431454428826219951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7431454428826219940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb6c1d80b2cb548319c9010df482c9b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1858765045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,12 +598,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMovable: 1
   renderBelowAll: 0
+  light: {fileID: 0}
   movingDependencies: []
   sortType: 0
   SorterPositionOffset: {x: 0, y: 0, z: 0}
   SorterPositionOffset2: {x: 0, y: 0, z: 0}
   renderersToSort:
   - {fileID: 4330567752162112095}
+--- !u!114 &-5220611770622036096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7431454428826219940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6893fa1527270f948afbfeaee5536ed9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderer: {fileID: 4330567752162112095}
+  tintColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &7431454429020420949
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,11 +8,12 @@ namespace _SCRIPTS
 	{
 		private CinemachineImpulseSource shaker;
 		private Vector3 shakeVector = new Vector3(1, 1, 0);
-		private static bool isOn;
+		private static bool isOn = true;
 
 		private void Start()
 		{
 			GAME.OnGameEnd += CleanUp;
+			CinemachineImpulseManager.Instance.IgnoreTimeScale = true;
 		}
 
 		private void CleanUp()
@@ -28,7 +29,7 @@ namespace _SCRIPTS
 				I.shaker = I.GetComponent<CinemachineImpulseSource>();
 			}
 
-
+			Debug.Log("trying to make shake");
 			I.shaker.GenerateImpulseAt(shakePosition, I.shakeVector*shakeMagnitude);
 		}
 	}

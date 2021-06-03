@@ -27,9 +27,9 @@ namespace _SCRIPTS
 		private Vector3 currentPushVector;
 
 		private float pushDecayFactor = .8f;
-		private float pushTime;
 
 		private bool isOn;
+		private float minimumPushVectorMagnitude = .5f;
 
 		public event Action<bool> OnMoveDirectionChange;
 
@@ -112,13 +112,10 @@ namespace _SCRIPTS
 			currentPushVector *= pushDecayFactor;
 			var newVel = (Vector3) rb.velocity + (Vector3) currentPushVector;
 			rb.velocity = newVel;
-			if (pushTime < 0)
+			if (currentPushVector.magnitude < minimumPushVectorMagnitude)
 			{
-				pushTime = 0;
 				isPushed = false;
 			}
-			else
-				pushTime -= Time.fixedDeltaTime;
 		}
 
 
@@ -134,12 +131,11 @@ namespace _SCRIPTS
 		public void Push(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition)
 		{
 			var tempVel = Vector3.zero;
-			tempVel += new Vector3(DamageDirection.x * DamageAmount * hitPushMultiplier,
+			tempVel += new Vector3(DamageDirection.x * DamageAmount * stats.hitPushMultiplier,
 				DamageDirection.y * DamageAmount * hitPushMultiplier, 0);
 			isPushed = true;
 			rb.velocity = tempVel;
 			currentPushVector = tempVel;
-			pushTime = .52f;
 		}
 
 		private void DashStart()

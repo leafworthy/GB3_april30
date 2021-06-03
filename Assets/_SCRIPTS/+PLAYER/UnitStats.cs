@@ -13,5 +13,6 @@ namespace _SCRIPTS
         public bool isPlayer;
         public float dashMultiplier = 1;
         public float dashSpeed = 15;
+        public float hitPushMultiplier = 1;
     }
 }

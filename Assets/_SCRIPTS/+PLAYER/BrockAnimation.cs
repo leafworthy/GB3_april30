@@ -40,6 +40,7 @@ namespace _SCRIPTS
 		private static readonly int LandingStartTrigger = Animator.StringToHash("LandingStartTrigger");
 		private static readonly int KunaiThrowTrigger = Animator.StringToHash("KunaiThrowTrigger");
 		private static readonly int IsLanding = Animator.StringToHash("isLanding");
+		private static readonly int Attacking = Animator.StringToHash("IsAttacking");
 
 		private void Start()
 		{
@@ -69,6 +70,18 @@ namespace _SCRIPTS
 			jumpHandler.OnFall += Fall;
 			animEvents = GetComponentInChildren<AnimationEvents>();
 			animEvents.OnLandingStop += LandStop;
+			animEvents.OnAttackStop += AttackStop;
+			animEvents.OnAttackStart += AttackStart;
+		}
+
+		private void AttackStart(int obj)
+		{
+			isAttacking = true;
+		}
+
+		private void AttackStop(int obj)
+		{
+			isAttacking = false;
 		}
 
 		private void LandStop()
@@ -102,16 +115,19 @@ namespace _SCRIPTS
 			{
 				animator.SetTrigger(ChargeAttackTrigger);
 				isCharging = false;
+				isAttacking = false;
 			}
 			else
 			{
 				isCharging = false;
+				isAttacking = false;
 			}
 		}
 
 		private void ChargeStart()
 		{
 			animator.SetTrigger(ChargeStartTrigger);
+
 			isCharging = true;
 		}
 

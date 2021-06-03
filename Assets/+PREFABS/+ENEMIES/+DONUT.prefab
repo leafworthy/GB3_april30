@@ -84,7 +84,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 89d91152eb4854eeaa6ae0ddc3c1cb19, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -253,6 +253,7 @@ GameObject:
   - component: {fileID: 4760691623764410213}
   - component: {fileID: 2505822213530538088}
   - component: {fileID: 2540430931499043486}
+  - component: {fileID: 634896186003514457}
   m_Layer: 7
   m_Name: +DONUT
   m_TagString: Untagged
@@ -369,6 +370,7 @@ MonoBehaviour:
   isPlayer: 0
   dashMultiplier: 1
   dashSpeed: 15
+  hitPushMultiplier: 2
 --- !u!114 &8277624868828922794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -523,6 +525,20 @@ MonoBehaviour:
   SorterPositionOffset2: {x: 0, y: 0, z: 0}
   renderersToSort:
   - {fileID: 5753234950461873550}
+--- !u!114 &634896186003514457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019382462400588572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6893fa1527270f948afbfeaee5536ed9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderer: {fileID: 5753234950461873550}
+  tintColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &4019382462604234510
 GameObject:
   m_ObjectHideFlags: 0

@@ -42,6 +42,7 @@ namespace _SCRIPTS
 
         public void TakeDamage(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition)
         {
+
             if (!IsDeadOrDying())
             {
                 health -= DamageAmount;
@@ -65,6 +66,7 @@ namespace _SCRIPTS
         {
             for (int j = 0; j < quantity; j++)
             {
+                if (ASSETS.FX is null) return;
                 var newBulletShell = MAKER.Make(ASSETS.FX.blood_debree.GetRandom(), getPosition);
                 newBulletShell.GetComponent<FallToFloor>().Fire((bloodDir.normalized),2);
                 var newBulletShell2 = MAKER.Make(ASSETS.FX.blood_debree.GetRandom(), getPosition);

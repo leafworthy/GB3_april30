@@ -33,6 +33,7 @@ namespace _SCRIPTS
 
 		private PlayerController player;
 		private UnitStats stats;
+		private float hitStunDuration = 1;
 
 		private void Awake()
 		{
@@ -48,6 +49,7 @@ namespace _SCRIPTS
 			player.OnRightTriggerRelease += PlayerRightTriggerRelease;
 
 			animEvents = GetComponentInChildren<AnimationEvents>();
+			animEvents.OnAttackStart += Anim_AttackStart;
 			animEvents.OnAttackHit += Anim_AttackHit;
 			animEvents.OnAttackStop += Anim_AttackStop;
 			animEvents.OnLandingStart += Anim_LandingStart;
@@ -55,6 +57,12 @@ namespace _SCRIPTS
 
 			animEvents.OnThrowStart += ThrowStart;
 			animEvents.OnThrowStop += ThrowStop;
+
+		}
+
+		private void Anim_AttackStart(int obj)
+		{
+			isAttacking = true;
 		}
 
 		private void PlayerRightTriggerRelease()
@@ -144,6 +152,7 @@ namespace _SCRIPTS
 		{
 			float hitRange = 15;
 			var circleCast = Physics2D.OverlapCircleAll(transform.position, hitRange);
+
 			foreach (var hit2D in circleCast)
 			{
 				var enemy = hit2D.transform.gameObject.GetComponent<DefenceHandler>();
@@ -152,11 +161,13 @@ namespace _SCRIPTS
 					if (!enemy.IsPlayer())
 					{
 						var attackDirection = hit2D.transform.position - transform.position;
+
 						enemy.TakeDamage(attackDirection, GetAttackDamage(attackType),
 							enemy.transform.position);
 					}
 				}
 			}
+
 		}
 
 		private float GetAttackDamage(int attackType)
@@ -203,14 +214,15 @@ namespace _SCRIPTS
 			if (!CantAttack())
 			{
 				Debug.Log("ATTACK");
-				isAttacking = true;
 				if (jumpHandler.isJumping)
 					StartJumpAttack();
 				else
 					StartRandomAttack();
 			}
 			else
-				Debug.Log("isbusy");
+				Debug.Log("isAttacking: " +isAttacking +"\n"+
+				          "isCharging: " + isCharging + "\n"+
+				         "isLanding: " + isLanding );
 		}
 
 		private void StartRandomAttack()
