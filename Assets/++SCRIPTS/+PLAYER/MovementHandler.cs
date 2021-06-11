@@ -19,17 +19,22 @@ namespace _SCRIPTS
 		private readonly float hitPushMultiplier = .25f;
 
 		private bool isDashing;
-		private bool isMoving;
+		private bool isTryingToMove;
 		private bool isPushed;
+		private bool isStopped;
+
+		public Vector2 moveVelocity;
+		public Vector2 pushVelocity;
 
 		private Vector3 moveDir;
 		private Vector3 targetPosition;
 		private Vector3 currentPushVector;
 
-		private float pushDecayFactor = .8f;
+		private float velocityDecayFactor = .9f;
 
 		private bool isOn;
 		private float minimumPushVectorMagnitude = .5f;
+		public float overallVelocityMultiplier=4;
 
 		public event Action<bool> OnMoveDirectionChange;
 
@@ -49,7 +54,7 @@ namespace _SCRIPTS
 			animEvents.OnLandingStart += DisableMovement;
 			animEvents.OnLandingStop += EnableMovement;
 			animEvents.OnDashStart += DashStart;
-			animEvents.OnDash += Dash;
+			animEvents.OnDash += Teleport;
 			animEvents.OnDashStop += DashStop;
 			animEvents.OnHitStart += DisableMovement;
 			animEvents.OnHitStop += EnableMovement;
@@ -82,42 +87,80 @@ namespace _SCRIPTS
 			foreach (var col in moreColliders) col.enabled = false;
 		}
 
+
+		private Vector2 CalculateVelocityWithDeltaTime()
+		{
+			if (isStopped) return Vector2.zero;
+			if (CanMove())
+			{
+				if (IsDashing())
+				{
+					moveVelocity = GetDashVelocity();
+
+				}else if (IsTryingToMove())
+				{
+					moveVelocity = GetMoveVelocity();
+				}
+				else
+				{
+					moveVelocity = Vector3.zero;
+				}
+			}
+			return moveVelocity * Time.fixedDeltaTime;
+		}
+
+
+
+		private bool IsDashing()
+		{
+			return isDashing;
+		}
+
+		private bool IsTryingToMove()
+		{
+			return isTryingToMove;
+		}
+
+		private bool IsPushed()
+		{
+			return currentPushVector.magnitude < minimumPushVectorMagnitude;
+		}
+
+		private Vector2 GetPushVelocity()
+		{
+
+			return IsPushed() ? currentPushVector : Vector3.zero;
+		}
+
+		private void UpdatePushVector()
+		{
+			currentPushVector *= velocityDecayFactor;
+		}
+
+		private Vector3 GetMoveVelocity()
+		{
+			var dir = (targetPosition - transform.position).normalized;
+			return dir * stats.moveSpeed;
+		}
+
+		private Vector2 GetDashVelocity()
+		{
+			var dir = (targetPosition - transform.position).normalized;
+			return dir * stats.dashSpeed;
+		}
+
 		private void FixedUpdate()
 		{
 			if (!isOn) return;
-			if (canMove)
-			{
-				if (isMoving)
-				{
-					moveDir = (targetPosition - transform.position).normalized;
-					var newVel =  (Vector3)moveDir * stats.moveSpeed;
-					rb.velocity = newVel;
-					if (isPushed) GetPushed();
-				}
-				else if (isPushed)
-					GetPushed();
-				else
-					rb.velocity = Vector2.zero;
-			}
-			else if (isDashing)
-				rb.velocity = moveDir * stats.dashSpeed;
-			else if (isPushed)
-				GetPushed();
-			else
-				rb.velocity = Vector2.zero;
+			AddVelocity(CalculateVelocityWithDeltaTime() * overallVelocityMultiplier);
+			DecayVelocity();
 		}
 
-		private void GetPushed()
+		private void DecayVelocity()
 		{
-			currentPushVector *= pushDecayFactor;
-			var newVel = (Vector3) rb.velocity + (Vector3) currentPushVector;
-			rb.velocity = newVel;
-			if (currentPushVector.magnitude < minimumPushVectorMagnitude)
-			{
-				isPushed = false;
-			}
+			var tempVel = rb.velocity * velocityDecayFactor;
+			rb.velocity = tempVel;
 		}
-
 
 		private void Health_OnDamaged(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition)
 		{
@@ -134,8 +177,13 @@ namespace _SCRIPTS
 			tempVel += new Vector3(DamageDirection.x * DamageAmount * stats.hitPushMultiplier,
 				DamageDirection.y * DamageAmount * hitPushMultiplier, 0);
 			isPushed = true;
+			AddVelocity(tempVel * overallVelocityMultiplier);
+		}
+
+		private void AddVelocity(Vector3 tempVel)
+		{
+			tempVel += (Vector3) rb.velocity;
 			rb.velocity = tempVel;
-			currentPushVector = tempVel;
 		}
 
 		private void DashStart()
@@ -143,7 +191,7 @@ namespace _SCRIPTS
 			health.isInvincible = true;
 		}
 
-		private void Dash()
+		private void Teleport()
 		{
 			rb.MovePosition(transform.position + moveDir * stats.moveSpeed * stats.dashMultiplier);
 		}
@@ -189,7 +237,7 @@ namespace _SCRIPTS
 
 		private void MoveTo(Vector3 target)
 		{
-			isMoving = true;
+			isTryingToMove = true;
 			targetPosition = target;
 			OnMoveStart?.Invoke(target);
 		}
@@ -211,7 +259,7 @@ namespace _SCRIPTS
 		{
 			moveDir = Vector3.zero;
 			rb.velocity = moveDir;
-			isMoving = false;
+			isTryingToMove = false;
 			OnMoveStop?.Invoke();
 		}
 

@@ -67,12 +67,12 @@ namespace _SCRIPTS
 			MENU.StartMainMenu();
 		}
 
-		public void EndGameMainMenu()
+		public static void EndGameMainMenu()
 		{
-			isPlaying = false;
+			I.isPlaying = false;
 			OnGameEnd?.Invoke();
-			CurrentLevel.EndLevel();
-			StartMainMenu();
+			I.CurrentLevel.EndLevel();
+			I.StartMainMenu();
 		}
 
 		public void EndGameRestart()

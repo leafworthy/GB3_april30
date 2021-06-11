@@ -110,7 +110,7 @@ namespace _SCRIPTS
 					break;
 				case MenuButton.ButtonType.MainMenu:
 					Debug.Log("main menu");
-					GAME.I.EndGameMainMenu();
+					GAME.EndGameMainMenu();
 					break;
 			}
 		}

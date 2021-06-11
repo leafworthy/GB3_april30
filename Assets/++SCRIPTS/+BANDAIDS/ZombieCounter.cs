@@ -20,7 +20,7 @@ namespace _SCRIPTS
 			if (zombieCount <= 0)
 			{
 				text.text = "You Win!";
-				GAME.I.EndGameMainMenu();
+				GAME.EndGameMainMenu();
 			}
 			else
 			{
@@ -33,7 +33,7 @@ namespace _SCRIPTS
 			if (livingPlayerCount <= 0)
 			{
 				text.text = "You Lose!";
-				GAME.I.EndGameMainMenu();
+				GAME.EndGameMainMenu();
 			}
 
 		}

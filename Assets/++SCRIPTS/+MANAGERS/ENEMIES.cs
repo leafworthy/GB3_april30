@@ -8,7 +8,7 @@ namespace _SCRIPTS
 	{
 		private static List<DefenceHandler> enemyList = new List<DefenceHandler>();
 
-		public static void AddEnemy(DefenceHandler enemyDefence)
+		private static void AddEnemy(DefenceHandler enemyDefence)
 		{
 			if (!enemyList.Contains(enemyDefence))
 			{
@@ -42,13 +42,13 @@ namespace _SCRIPTS
 			return closest;
 		}
 
-		public static int GetNumberOfEnemies()
-		{
-			return enemyList.Count;
-		}
-
 		public static int GetNumberOfLivingEnemies()
 		{
+			if (enemyList.Count <= 0)
+			{
+				CollectAllEnemies();
+			}
+
 			return enemyList.Where(t=>!t.IsDead()).ToList().Count;
 		}
 

@@ -18,6 +18,11 @@ namespace _SCRIPTS
 
 		private void Start () {
 			seeker = GetComponent<Seeker>();
+			var aStar = FindObjectOfType<AstarPath>();
+			if (aStar is null)
+			{
+				this.enabled = false;
+			}
 		}
 
 		public void SetTargetPosition(Transform newTargetPosition)

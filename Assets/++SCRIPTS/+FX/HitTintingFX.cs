@@ -1,7 +1,7 @@
 ﻿using _SCRIPTS;
 using UnityEngine;
 
-public class HitFX : MonoBehaviour {
+public class HitTintingFX : MonoBehaviour {
 
     private Material material;
     private Color materialTintColor;

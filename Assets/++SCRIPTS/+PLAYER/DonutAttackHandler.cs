@@ -12,11 +12,11 @@ namespace _SCRIPTS
 		private bool isOn;
 		private DefenceHandler defence;
 		private AnimationEvents animEvents;
-		private bool isAttacking;
+		private bool isAttackRolling;
 		private MovementHandler movement;
 		private float timer;
 		private float currentCooldown;
-		private float coolDown = 1;
+		private float coolDown = .2f;
 		private float isCoolingDown;
 		private bool isCooledDown;
 
@@ -25,7 +25,6 @@ namespace _SCRIPTS
 			movement = GetComponent<MovementHandler>();
 			animEvents = GetComponentInChildren<AnimationEvents>();
 			animEvents.OnMoveStart += AttackStart;
-			animEvents.OnMoveStop += AttackStop;
 			stats = GetComponent<UnitStats>();
 			defence = GetComponent<DefenceHandler>();
 			defence.OnDying += AttackStop;
@@ -49,18 +48,30 @@ namespace _SCRIPTS
 
 		private void AttackStop()
 		{
-			isAttacking = false;
+			isAttackRolling = false;
 		}
 
 		private void AttackStart()
 		{
-			isAttacking = true;
+			isAttackRolling = true;
 		}
 
 		private void OnTriggerEnter2D(Collider2D other)
 		{
-			if (!isAttacking) return;
+			if (!isAttackRolling) return;
 			if(!isCooledDown) return;
+			CheckForHit(other);
+		}
+
+		private void OnTriggerStay2D(Collider2D other)
+		{
+			if (!isAttackRolling) return;
+			if (!isCooledDown) return;
+			CheckForHit(other);
+		}
+
+		private void CheckForHit(Collider2D other)
+		{
 			if (other.transform == transform) return;
 			var otherDefence = other.GetComponent<DefenceHandler>();
 			if (otherDefence is null) return;
@@ -71,6 +82,8 @@ namespace _SCRIPTS
 				currentCooldown = coolDown;
 			}
 		}
+
+
 
 		private void AttackHit(DefenceHandler other)
 		{
