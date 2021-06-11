@@ -85,7 +85,7 @@ public class IsoSpriteSortingManager : Singleton<IsoSpriteSortingManager>
 		UpdateSorting();
 	}
 
-	private static List<IsoSpriteSorting> sortedSprites = new List<IsoSpriteSorting>(64);
+	private static List<IsoSpriteSorting> sortedSprites = new List<IsoSpriteSorting>(200);
 
 	public static void UpdateSorting()
 	{

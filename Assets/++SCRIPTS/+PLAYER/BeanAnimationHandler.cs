@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Reflection.Emit;
+using UnityEngine;
 
 namespace _SCRIPTS
 {
@@ -15,10 +16,13 @@ namespace _SCRIPTS
 		private BeanAttackHandler attackHandler;
 		Vector3 aimingDir;
 		private Vector3 moveDir;
+		private DefenceHandler defenceHandler;
 
 
 		private void Start()
 		{
+			defenceHandler = GetComponent<DefenceHandler>();
+			defenceHandler.OnDying += Dying;
 			animationEvents = GetComponentInChildren<AnimationEvents>();
 			animationEvents.OnDashStop += DashStop;
 
@@ -34,6 +38,12 @@ namespace _SCRIPTS
 			movementHandler.OnMoveStart += MoveStart;
 			movementHandler.OnMoveStop += MoveStop;
 			movementHandler.OnDash += Dash;
+		}
+
+		private void Dying()
+		{
+			topAnimator.gameObject.SetActive(false);
+			bottomAnimator.SetBool("isDead",true);
 		}
 
 		private void NadeThrow()

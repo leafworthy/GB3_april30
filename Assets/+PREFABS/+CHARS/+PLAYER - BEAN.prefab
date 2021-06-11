@@ -175,7 +175,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -3232186448459339446, guid: 3bc1e2c9ed3c74d0584fb619f2af827b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -227,7 +227,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3833892833502990260}
-  - component: {fileID: 2332262819722074805}
   m_Layer: 0
   m_Name: JumpObject
   m_TagString: Untagged
@@ -252,17 +251,6 @@ Transform:
   m_Father: {fileID: 3833892833884059309}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!210 &2332262819722074805
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833502990261}
-  m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
 --- !u!1 &3833892833550701191
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,7 +292,6 @@ GameObject:
   - component: {fileID: 3833892833884059309}
   - component: {fileID: 3833892833884059297}
   - component: {fileID: 3833892833884059310}
-  - component: {fileID: 171092310897932207}
   - component: {fileID: 8075809293606952483}
   - component: {fileID: 2357842995359239569}
   - component: {fileID: 7871805811709726006}
@@ -317,6 +304,8 @@ GameObject:
   - component: {fileID: 5357527371571562537}
   - component: {fileID: 5572898776388989025}
   - component: {fileID: 4514797257730865875}
+  - component: {fileID: 701774933}
+  - component: {fileID: 3742806817796781868}
   m_Layer: 6
   m_Name: +PLAYER - BEAN
   m_TagString: Player
@@ -391,17 +380,6 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!210 &171092310897932207
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
 --- !u!114 &8075809293606952483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,7 +565,8 @@ MonoBehaviour:
   isMovable: 1
   renderBelowAll: 0
   light: {fileID: 0}
-  movingDependencies: []
+  movingDependencies:
+  - {fileID: 0}
   sortType: 0
   SorterPositionOffset: {x: 0, y: 0, z: 0}
   SorterPositionOffset2: {x: 0, y: 0, z: 0}
@@ -606,8 +585,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6893fa1527270f948afbfeaee5536ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 0}
-  tintColor: {r: 1, g: 0, b: 0, a: 1}
+  renderer: {fileID: 3833892833308743009}
+  hurtTintColor: {r: 1, g: 0, b: 0, a: 1}
+  poisonTintColor: {r: 0, g: 1, b: 0, a: 1}
+--- !u!114 &701774933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6893fa1527270f948afbfeaee5536ed9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderer: {fileID: 3833892834760878399}
+  hurtTintColor: {r: 1, g: 0, b: 0, a: 1}
+  poisonTintColor: {r: 0, g: 1, b: 0, a: 1}
+--- !u!210 &3742806817796781868
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &3833892834326608145
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,7 +768,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 6030953102041393858, guid: 3bc1e2c9ed3c74d0584fb619f2af827b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

@@ -9,8 +9,10 @@ public class HitTintingFX : MonoBehaviour {
     public Renderer renderer;
 
    private float tintFadeSpeed = 6f;
-    [SerializeField]private Color tintColor = Color.red;
-    private float duration = .1f;
+    [SerializeField]private Color hurtTintColor = Color.red;
+    [SerializeField] private Color poisonTintColor = Color.green;
+    private float duration = .075f;
+    private float shakeDamageMultiplier = .5f;
 
     private void Start()
     {
@@ -20,11 +22,18 @@ public class HitTintingFX : MonoBehaviour {
         SetMaterial(renderer.material);
     }
 
-    private void Damaged(Vector3 arg1, float damage, Vector3 arg3)
+    private void Damaged(Vector3 arg1, float damage, Vector3 arg3, bool isPoison = false)
     {
+        if (isPoison)
+        {
+            SetTintColor(poisonTintColor);
+        }
+        else
+        {
+            SetTintColor(hurtTintColor);
+        }
 
-        SetTintColor(tintColor);
-        SHAKER.ShakeCamera(transform.position, damage);
+        SHAKER.ShakeCamera(transform.position, damage*shakeDamageMultiplier);
         HITSTUN.StartStun(duration);
     }
 

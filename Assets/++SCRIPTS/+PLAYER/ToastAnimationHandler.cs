@@ -33,7 +33,7 @@ namespace _SCRIPTS
 		}
 
 
-		private void Defence_OnDamaged(Vector3 vector3, float f, Vector3 arg3)
+		private void Defence_OnDamaged(Vector3 vector3, float f, Vector3 arg3, bool isPoison)
 		{
 			animator.SetTrigger(HitTrigger);
 		}

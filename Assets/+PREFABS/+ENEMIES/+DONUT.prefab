@@ -104,7 +104,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: -4824133633647570842, guid: a3efce83c860d439aa1508e457a35946, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -286,7 +286,7 @@ SortingGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4019382462400588572}
-  m_Enabled: 1
+  m_Enabled: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -522,7 +522,10 @@ MonoBehaviour:
   isMovable: 1
   renderBelowAll: 0
   light: {fileID: 0}
-  movingDependencies: []
+  movingDependencies:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   sortType: 0
   SorterPositionOffset: {x: 0, y: 0, z: 0}
   SorterPositionOffset2: {x: 0, y: 0, z: 0}
@@ -541,7 +544,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderer: {fileID: 5753234950461873550}
-  tintColor: {r: 1, g: 0, b: 0, a: 1}
+  hurtTintColor: {r: 1, g: 0, b: 0, a: 1}
+  poisonTintColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &4019382462604234510
 GameObject:
   m_ObjectHideFlags: 0

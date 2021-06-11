@@ -166,7 +166,7 @@ namespace _SCRIPTS
 			isJumping = true;
 		}
 
-		private void OnHit(Vector3 damageSource, float damageAmount, Vector3 hitPosition)
+		private void OnHit(Vector3 damageSource, float damageAmount, Vector3 hitPosition, bool arg4)
 		{
 			animator.SetTrigger(HitTrigger);
 		}

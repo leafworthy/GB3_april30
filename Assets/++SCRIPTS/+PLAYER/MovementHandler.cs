@@ -162,7 +162,7 @@ namespace _SCRIPTS
 			rb.velocity = tempVel;
 		}
 
-		private void Health_OnDamaged(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition)
+		private void Health_OnDamaged(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition, bool isPoison)
 		{
 			Push(DamageDirection.normalized, DamageAmount, DamagePosition);
 			if (rb.velocity.x > 0)

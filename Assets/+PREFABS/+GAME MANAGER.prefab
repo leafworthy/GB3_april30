@@ -88,7 +88,6 @@ GameObject:
   - component: {fileID: 6110766342226134773}
   - component: {fileID: 6110766342226134538}
   - component: {fileID: 8238487111484618520}
-  - component: {fileID: 2309425278057947117}
   m_Layer: 0
   m_Name: +GAME MANAGER
   m_TagString: Untagged
@@ -124,6 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartingLevelPrefab: {fileID: 7099486576316630768, guid: 392d86d8237664bd9917eab5d85442e0, type: 3}
+  CurrentLevel: {fileID: 0}
 --- !u!114 &6110766342226134772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,12 +172,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33b8429f24bf34514a10ef442e53f5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrowHeadPrefab: {fileID: 1000012865381214, guid: 1df8a4c0a2fa849179524ed8690dc665, type: 3}
   LineThickness: 3
   radius: 1
   setTexture: {fileID: 2800000, guid: 1c09acb1e14164cb5b3f0c14c6593fbf, type: 3}
-  circleSprite: {fileID: 0}
-  filledCircleRadius: 1
 --- !u!114 &6110766342226134538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,11 +204,3 @@ MonoBehaviour:
   _audio: {fileID: 11400000, guid: eb65b9037e96a4f8aa9c71b3dc8623cc, type: 2}
   _layers: {fileID: 11400000, guid: b0b82a38d582e4a6c883581ed97e5fa0, type: 2}
   _players: {fileID: 11400000, guid: 7b544f4dc3ffc431fbecff536e622d81, type: 2}
---- !u!81 &2309425278057947117
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6110766342226134768}
-  m_Enabled: 1

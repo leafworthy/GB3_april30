@@ -559,6 +559,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 795acce257f145eda2b39cff17ab12be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveVelocity: {x: 0, y: 0}
+  pushVelocity: {x: 0, y: 0}
+  overallVelocityMultiplier: 4
 --- !u!210 &8734020408948818940
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -618,7 +621,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderer: {fileID: 4330567752162112095}
-  tintColor: {r: 1, g: 0, b: 0, a: 1}
+  hurtTintColor: {r: 1, g: 0, b: 0, a: 1}
+  poisonTintColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &7431454429020420949
 GameObject:
   m_ObjectHideFlags: 0

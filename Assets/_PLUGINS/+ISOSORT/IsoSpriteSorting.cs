@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
-
+[ExecuteInEditMode]
 public class IsoSpriteSorting : MonoBehaviour
 {
     public bool isMovable;
@@ -120,14 +120,14 @@ public class IsoSpriteSorting : MonoBehaviour
         }
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
     }
-//
-    // private void Update()
-    // {
-    //     if (!Application.isPlaying)
-    //     {
-    //         SortScene();
-    //     }
-    // }
+
+    private void Update()
+    {
+        if (!Application.isPlaying)
+        {
+            SortScene();
+        }
+    }
 #endif
 
 

@@ -512,8 +512,11 @@ namespace Pathfinding {
 #endif
 
 			if (System.Object.ReferenceEquals(AstarPath.active, null))
-				throw new System.NullReferenceException("No AstarPath object found in the scene. " +
-					"Make sure there is one or do not create paths in Awake");
+			{
+				Debug.Log("No AstarPath object found in the scene. " +
+				          "Make sure there is one or do not create paths in Awake");
+				return;
+			}
 
 			hasBeenReset = true;
 			PipelineState = (int)PathState.Created;

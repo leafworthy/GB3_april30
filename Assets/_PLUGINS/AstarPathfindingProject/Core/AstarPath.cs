@@ -1929,7 +1929,7 @@ public class AstarPath : VersionedMonoBehaviour {
 		var astar = active;
 
 		if (System.Object.ReferenceEquals(astar, null)) {
-			Debug.LogError("There is no AstarPath object in the scene or it has not been initialized yet");
+			Debug.Log("There is no AstarPath object in the scene or it has not been initialized yet");
 			return;
 		}
 
@@ -1944,9 +1944,9 @@ public class AstarPath : VersionedMonoBehaviour {
 		}
 
 		if (astar.graphs == null || astar.graphs.Length == 0) {
-			Debug.LogError("There are no graphs in the scene");
+			Debug.Log("There are no graphs in the scene");
 			path.FailWithError("There are no graphs in the scene");
-			Debug.LogError(path.errorLog);
+			Debug.Log(path.errorLog);
 			return;
 		}
 

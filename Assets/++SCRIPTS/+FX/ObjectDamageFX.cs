@@ -42,7 +42,7 @@ namespace _SCRIPTS
 			}
 		}
 
-		private void Object_OnDamaged(Vector3 damageSource, float damage, Vector3 position)
+		private void Object_OnDamaged(Vector3 damageSource, float damage, Vector3 position, bool isPoison)
 		{
 			if (!broken || DontDestroyColliderOnBroken)
 			{
