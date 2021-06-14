@@ -8,20 +8,20 @@ namespace _SCRIPTS
 
         public event Action<Collider2D> OnCapturedTriggerEnter2D;
         public event Action<Collider2D> OnCapturedTriggerExit2D;
-        public event Action<PlayerController> OnPlayerTriggerEnter2D;
-        public event Action<PlayerController> OnPlayerTriggerExit2D;
+        public event Action<IPlayerController> OnPlayerTriggerEnter2D;
+        public event Action<IPlayerController> OnPlayerTriggerExit2D;
 
-        public List<PlayerController> playersInside = new List<PlayerController>();
+        public List<IPlayerController> playersInside = new List<IPlayerController>();
 
         private void OnTriggerEnter2D(Collider2D collider) {
             OnCapturedTriggerEnter2D?.Invoke(collider);
 
-            PlayerController playerMain = collider.GetComponent<PlayerController>();
-            if (playerMain != null) {
-                OnPlayerTriggerEnter2D?.Invoke(playerMain);
-                if (!playersInside.Contains(playerMain))
+            IPlayerController playerRemoteMain = collider.GetComponent<IPlayerController>();
+            if (playerRemoteMain != null) {
+                OnPlayerTriggerEnter2D?.Invoke(playerRemoteMain);
+                if (!playersInside.Contains(playerRemoteMain))
                 {
-                    playersInside.Add(playerMain);
+                    playersInside.Add(playerRemoteMain);
                 }
             }
         }
@@ -29,14 +29,14 @@ namespace _SCRIPTS
         private void OnTriggerExit2D(Collider2D collider)
         {
             OnCapturedTriggerExit2D?.Invoke(collider);
-            PlayerController playerMain = collider.GetComponent<PlayerController>();
-            if (playerMain != null)
+            IPlayerController playerRemoteMain = collider.GetComponent<IPlayerController>();
+            if (playerRemoteMain != null)
             {
-                if (playersInside.Contains(playerMain))
+                if (playersInside.Contains(playerRemoteMain))
                 {
-                    playersInside.Remove(playerMain);
+                    playersInside.Remove(playerRemoteMain);
                 }
-                OnPlayerTriggerExit2D?.Invoke(playerMain);
+                OnPlayerTriggerExit2D?.Invoke(playerRemoteMain);
             }
         }
 

@@ -16,23 +16,27 @@ namespace _SCRIPTS
 
 		private Vector3 originalJumpObjectPosition;
 		private Vector3 originalShadowObjectPosition;
-		private bool isGrounded = true;
 		private bool isFalling;
 		private bool isOnLandable;
 		public bool isJumping;
+		private bool isGrounded = true;
 		public bool isStanding = true;
+		private bool jumpPressed;
+		private Vector3 velocity;
+		private float landingTime = .5f;
+
 		public event Action OnJump;
 		public event Action OnFall;
 		public event Action OnLand;
+		public event Action OnLandingStop;
 
-		private PlayerController controller;
+		private IPlayerController remoteController;
 		private Landable currentLandable;
 		private MovementHandler movementHandler;
-		private bool jumpPressed;
 		private SortingGroup sortingGroup;
-		private Vector3 velocity;
 		private AnimationEvents animEvents;
-		private float landingTime = .5f;
+
+
 
 		void Awake()
 		{
@@ -42,9 +46,9 @@ namespace _SCRIPTS
 			movementHandler = GetComponent<MovementHandler>();
 			sortingGroup = GetComponent<SortingGroup>();
 
-			controller = GetComponent<PlayerController>();
-			controller.OnJumpPress += JumpPress;
-			controller.OnJumpRelease += JumpRelease;
+			remoteController = GetComponent<IPlayerController>();
+			remoteController.OnJumpPress += JumpPress;
+			remoteController.OnJumpRelease += JumpRelease;
 			originalJumpObjectPosition = jumpObject.transform.localPosition;
 			originalShadowObjectPosition = shadowObject.transform.localPosition;
 
@@ -53,6 +57,7 @@ namespace _SCRIPTS
 		private void LandingStop()
 		{
 			Debug.Log("landing stop");
+			OnLandingStop?.Invoke();
 			isStanding = true;
 		}
 

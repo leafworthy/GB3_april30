@@ -7,14 +7,14 @@ using UnityEngine;
 public class ColorSpritesPlayerColor : MonoBehaviour
 {
  private ColorSprites sprites;
- private PlayerController player;
+ private IPlayerController playerRemote;
 
  private void Start()
  {
   sprites = GetComponent<ColorSprites>();
-  player = GetComponent<PlayerController>();
+  playerRemote = GetComponent<IPlayerController>();
 
-  if (player != null)
+  if (playerRemote != null)
   {
    SetColor();
   }
@@ -22,6 +22,6 @@ public class ColorSpritesPlayerColor : MonoBehaviour
 
  private void SetColor()
  {
-  sprites.SetColor(player.GetPlayerColor());
+  sprites.SetColor(playerRemote.GetPlayerColor());
  }
 }

@@ -6,13 +6,13 @@ namespace _SCRIPTS
 	public class DefenceHandler : MonoBehaviour
 	{
 		public event Action<Vector3, float, Vector3, bool> OnDamaged;
-		public event Action<float> OnHealthChanged;
+		public event Action<float> OnFractionChanged;
 		public event Action OnDying;
 		public event Action OnDead;
 		private event Action OnWounded;
 
-		private float healthMax;
-		private float health;
+		public float healthMax;
+		public float health;
 		private float woundHealth = .8f;
 		private UnitStats stats;
 		public bool isInvincible;
@@ -26,6 +26,19 @@ namespace _SCRIPTS
 			return health / healthMax <= woundHealth;
 		}
 
+		public float GetFraction()
+		{
+			if (stats is null)
+			{
+				stats = GetComponent<UnitStats>();
+			}
+
+			if (stats != null)
+				healthMax = stats.healthMax;
+			else
+				healthMax = 100;
+			return health / healthMax;
+		}
 		private void Start()
 		{
 			animationEvents = GetComponentInChildren<AnimationEvents>();
@@ -36,17 +49,17 @@ namespace _SCRIPTS
 			else
 				healthMax = 100;
 
-			OnHealthChanged?.Invoke(1);
 			health = healthMax;
+			OnFractionChanged?.Invoke(1);
 		}
 
-		public void TakeDamage(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition,
+		public bool TakeDamage(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition,
 		                       bool isPoison = false)
 		{
 			if (!IsDeadOrDying())
 			{
 				health -= DamageAmount;
-				OnHealthChanged?.Invoke(health / healthMax);
+				OnFractionChanged?.Invoke(health / healthMax);
 				OnDamaged?.Invoke(DamageDirection, DamageAmount, DamagePosition, isPoison);
 
 				SprayBlood(15, DamagePosition, DamageDirection);
@@ -55,9 +68,14 @@ namespace _SCRIPTS
 				{
 					StartDying();
 					health = 0;
+					return true;
 				}
 				else if (IsWounded()) OnWounded?.Invoke();
+
+				return false;
 			}
+
+			return false;
 		}
 
 		private void SprayBlood(int quantity, Vector3 getPosition, Vector3 bloodDir)
@@ -121,6 +139,7 @@ namespace _SCRIPTS
 			if (stats is null) stats = GetComponent<UnitStats>();
 			return stats.isPlayer;
 		}
+
 
 		public bool IsDying()
 		{

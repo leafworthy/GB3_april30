@@ -18,7 +18,7 @@ namespace _SCRIPTS
 		private bool canMove = true;
 		private readonly float hitPushMultiplier = .25f;
 
-		private bool isDashing;
+		private bool isPressingDash;
 		private bool isTryingToMove;
 		private bool isPushed;
 		private bool isStopped;
@@ -34,7 +34,7 @@ namespace _SCRIPTS
 
 		private bool isOn;
 		private float minimumPushVectorMagnitude = .5f;
-		public float overallVelocityMultiplier=4;
+		public float overallVelocityMultiplier = 4;
 
 		public event Action<bool> OnMoveDirectionChange;
 
@@ -91,29 +91,26 @@ namespace _SCRIPTS
 		private Vector2 CalculateVelocityWithDeltaTime()
 		{
 			if (isStopped) return Vector2.zero;
-			if (CanMove())
+			if (canMove)
 			{
 				if (IsDashing())
 				{
-					moveVelocity = GetDashVelocity();
-
-				}else if (IsTryingToMove())
-				{
+					//moveVelocity = GetDashVelocity();
+				}
+				else if (IsTryingToMove())
 					moveVelocity = GetMoveVelocity();
-				}
 				else
-				{
 					moveVelocity = Vector3.zero;
-				}
+				return moveVelocity * Time.fixedDeltaTime;
 			}
-			return moveVelocity * Time.fixedDeltaTime;
-		}
 
+			return Vector3.zero;
+		}
 
 
 		private bool IsDashing()
 		{
-			return isDashing;
+			return isPressingDash;
 		}
 
 		private bool IsTryingToMove()
@@ -128,7 +125,6 @@ namespace _SCRIPTS
 
 		private Vector2 GetPushVelocity()
 		{
-
 			return IsPushed() ? currentPushVector : Vector3.zero;
 		}
 
@@ -145,7 +141,7 @@ namespace _SCRIPTS
 
 		private Vector2 GetDashVelocity()
 		{
-			var dir = (targetPosition - transform.position).normalized;
+			var dir = moveDir;
 			return dir * stats.dashSpeed;
 		}
 
@@ -162,7 +158,8 @@ namespace _SCRIPTS
 			rb.velocity = tempVel;
 		}
 
-		private void Health_OnDamaged(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition, bool isPoison)
+		private void Health_OnDamaged(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition,
+		                              bool isPoison)
 		{
 			Push(DamageDirection.normalized, DamageAmount, DamagePosition);
 			if (rb.velocity.x > 0)
@@ -198,7 +195,7 @@ namespace _SCRIPTS
 
 		private void DashStop()
 		{
-			isDashing = false;
+			isPressingDash = false;
 			health.isInvincible = false;
 			EnableMovement();
 		}
@@ -216,13 +213,12 @@ namespace _SCRIPTS
 
 		private void ControllerDashPress()
 		{
-			if (!isDashing)
-			{
-				Debug.Log("first start");
-				isDashing = true;
-				DisableMovement();
-				OnDash?.Invoke();
-			}
+			if (isPressingDash) return;
+			Debug.Log("first start");
+			isPressingDash = true;
+			Push(moveDir, stats.dashSpeed, transform.position);
+			DisableMovement();
+			OnDash?.Invoke();
 		}
 
 		private void DisableMovement(int attackType = 0)
@@ -237,6 +233,7 @@ namespace _SCRIPTS
 
 		private void MoveTo(Vector3 target)
 		{
+			moveDir = target -transform.position;
 			isTryingToMove = true;
 			targetPosition = target;
 			OnMoveStart?.Invoke(target);

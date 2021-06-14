@@ -6,219 +6,196 @@ using UnityEngine.Rendering;
 namespace _SCRIPTS
 {
 	[Serializable]
-	public class BeanAttackHandler : MonoBehaviour
+	public class BeanAttackHandler : MonoBehaviour, IAttackHandler
 	{
 		[SerializeField] private GameObject aimCenter;
 		[SerializeField] private GameObject gunEndPoint;
 		[SerializeField] private GameObject footPoint;
 
 		public event Action OnNadeThrowStart;
-
-		private Vector3 aimDir;
-		private AnimationEvents animEvents;
-
-		private float currentCooldownTime;
-
-		private bool isAttacking;
-		private bool isCharging;
-		private bool isDashing;
-		private bool isLanding;
-		private bool isReloading;
-		private bool isNading;
-		private JumpHandler jumpHandler;
-		private PlayerController player;
-		private UnitStats stats;
-		private Vector3 targetHitPosition;
-
-		public int totalAmmo;
-		public int clipSize;
-		public int bulletsInClip;
-		public int nades = 5;
-		public float reloadTime = .5f;
-		private Vector3 nadeAimDir;
-		public event Action<Vector3> OnNadeAim;
-
-
-		private void Awake()
-		{
-			stats = GetComponent<UnitStats>();
-
-			player = GetComponent<PlayerController>();
-			player.OnLeftTriggerPress += PlayerNadePress;
-			player.OnLeftTriggerRelease += PlayerNadeRelease;
-			player.OnRightTriggerPress += PlayerAttackPress;
-			player.OnRightTriggerRelease += PlayerAttackRelease;
-			player.OnAimStickActive += Player_OnAim;
-
-			jumpHandler = GetComponent<JumpHandler>();
-
-			animEvents = GetComponentInChildren<AnimationEvents>();
-			animEvents.OnAttackHit += Anim_AttackHit;
-			animEvents.OnAttackStop += Anim_AttackStop;
-			animEvents.OnLandingStart += Anim_LandingStart;
-			animEvents.OnLandingStop += Anim_LandingStop;
-			animEvents.OnDashStart += Anim_DashStart;
-			animEvents.OnDashStop += Anim_DashStop;
-			nades = 15;
-		}
-
-		private void Reload()
-		{
-			if (totalAmmo <= 0)
-			{
-				Debug.Log("Out of ammo");
-				return;
-			}
-			if (!isReloading)
-			{
-				OnAttackStop?.Invoke();
-				isReloading = true;
-				Debug.Log("reload start");
-				Invoke(nameof(ReloadComplete), reloadTime);
-			}
-		}
-
-		private void FixedUpdate()
-		{
-			if (isNading)
-			{
-				AimNade(nadeAimDir);
-			}
-		}
-
-		private void ReloadComplete()
-		{
-			Debug.Log("reload complete");
-			isReloading = false;
-			if (totalAmmo > clipSize - bulletsInClip)
-			{
-				totalAmmo -= clipSize - bulletsInClip;
-				bulletsInClip = clipSize;
-			}
-			else
-			{
-				bulletsInClip = totalAmmo;
-				totalAmmo = 0;
-			}
-		}
-
 		public event Action OnAttackStop;
 		public event Action<Vector3> OnAim;
 		public event Action OnAimStop;
 		public event Action<OnAttackEventArgs> OnAttackStart;
+		public event Action<AmmoHandler.AmmoType, int> OnUseAmmo;
+		public event Action OnKnifeStart;
+		public event Action<Vector3> OnNadeAim;
 
-		private void Anim_DashStart()
+		private Vector3 aimDir;
+		private Vector3 targetHitPosition;
+		private float currentCooldownTime;
+		private Vector3 nadeAimDir;
+
+		private bool isNading;
+		private bool isAttacking;
+
+		public AnimationEvents animEventsTop;
+		public AnimationEvents animEvents;
+		private JumpHandler jumpHandler;
+		private AmmoHandler ammoHandler;
+		private UnitStats stats;
+		private IPlayerController playerRemote;
+		private int knifeCoolDown = 4;
+
+		private void EnableAttacking()
 		{
-			isDashing = true;
+			Debug.Log("attacking enabled");
+			isAttacking = false;
 		}
 
-		private void Anim_DashStop()
+		private void DisableAttacking()
 		{
-			isDashing = false;
+			Debug.Log("attacking disabled");
+			isAttacking = true;
 		}
 
-		private void Player_OnAim(Vector3 aimDirection)
+		private void EnableAttacking(int obj)
+		{
+			EnableAttacking();
+		}
+
+		private void Awake()
+		{
+			stats = GetComponent<UnitStats>();
+			ammoHandler = GetComponent<AmmoHandler>();
+
+			playerRemote = GetComponent<IPlayerController>();
+			playerRemote.OnLeftTriggerPress += PlayerRemoteNadePress;
+			playerRemote.OnLeftTriggerRelease += PlayerRemoteNadeRelease;
+
+			playerRemote.OnRightTriggerPress += PlayerRemoteShootPress;
+			playerRemote.OnRightTriggerRelease += PlayerRemoteShootRelease;
+			playerRemote.OnAim += PlayerRemoteOnAim;
+
+			playerRemote.OnAttackPress += PlayerKnifePress;
+			playerRemote.OnAttackRelease += PlayerKnifeRelease;
+
+			jumpHandler = GetComponent<JumpHandler>();
+			jumpHandler.OnJump += DisableAttacking;
+			jumpHandler.OnLandingStop += EnableAttacking;
+
+			animEvents.OnAttackHit += Anim_AttackHit;
+			animEventsTop.OnAttackHit += Anim_AttackHit;
+
+			animEvents.OnAttackStop += AttackStop;
+			animEventsTop.OnAttackStop += AttackStop;
+
+			animEvents.OnLandingStart += DisableAttacking;
+			animEvents.OnDashStart += DisableAttacking;
+			animEvents.OnDashStop += EnableAttacking;
+		}
+
+		private void AttackStop(int obj)
+		{
+			Debug.Log("attack stop");
+			EnableAttacking();
+		}
+
+
+		private void PlayerKnifeRelease()
+		{
+			OnAttackStop?.Invoke();
+
+		}
+
+		private void PlayerKnifePress(Vector3 obj)
+		{
+			if (CantAttack()) return;
+			if (!ammoHandler.HasFullAmmo(AmmoHandler.AmmoType.meleeCooldown)) return;
+			OnUseAmmo?.Invoke(AmmoHandler.AmmoType.meleeCooldown, 999);
+			OnKnifeStart?.Invoke();
+		}
+
+
+
+		private void PlayerRemoteOnAim(Vector3 aimDirection)
 		{
 			AimInDirection(aimDirection);
 		}
 
-		private void PlayerNadeRelease(Vector3 aimDirection)
+		private void PlayerRemoteNadeRelease(Vector3 aimDirection)
 		{
 			if (!isNading) return;
 			isNading = false;
 			if (CantAttack()) return;
-			if (NoNades()) return;
+			if (!ammoHandler.HasAmmo(AmmoHandler.AmmoType.nades)) return;
 
 			NadeWithCooldown(aimDirection);
 		}
 
-		private void PlayerNadePress(Vector3 dir)
+		private void PlayerRemoteNadePress(Vector3 dir)
 		{
-			if (NoNades())
+			if (CantAttack()) return;
+			if (!ammoHandler.HasAmmo(AmmoHandler.AmmoType.nades))
 			{
 				Debug.Log("NONADES");
 				return;
 			}
+
 			isNading = true;
-
-		 nadeAimDir = dir;
-
+			nadeAimDir = dir;
 		}
-		private void PlayerAttackRelease()
+
+		private void PlayerRemoteShootRelease()
 		{
 			isAttacking = false;
 			OnAttackStop?.Invoke();
 		}
 
-		private void PlayerAttackPress(Vector3 aimDirection)
+		private void PlayerRemoteShootPress(Vector3 aimDirection)
 		{
-			if (CantAttack()) return;
-			if (NoAmmo())
+			if (jumpHandler.isJumping || ammoHandler.isReloading) return;
+			if (!ammoHandler.HasAmmoInClip(AmmoHandler.AmmoType.ak47))
 			{
-				Reload();
+				ammoHandler.Reload(AmmoHandler.AmmoType.ak47);
+				PlayerRemoteShootRelease();
 				return;
 			}
-			AttackWithCooldown(aimDir);
+
+			ShootWithCooldown(aimDir);
 			isAttacking = true;
 		}
 
 		public bool CantAttack()
 		{
-			return isLanding || jumpHandler.isJumping || isDashing || isReloading || isNading;
+			return  jumpHandler.isJumping || ammoHandler.isReloading || isAttacking;
 		}
 
-		private bool NoAmmo()
-		{
-			bool istrue = bulletsInClip <= 0;
-			return istrue;
-		}
-
-		private bool NoNades()
-		{
-			bool istrue = nades <= 0;
-			return istrue;
-		}
-
-		private void Anim_LandingStop()
-		{
-			isLanding = false;
-		}
-
-		private void Anim_LandingStart()
-		{
-			isLanding = true;
-		}
-
-		private void Anim_AttackStop(int obj)
-		{
-			isAttacking = false;
-		}
 
 		private void Anim_AttackHit(int attackType)
 		{
-			//
+			if (attackType != 3) return;
+			float hitRange = 25;
+			float knifeDamageMultiplier = 3;
+			var circleCast = Physics2D.OverlapCircleAll(transform.position, hitRange);
+
+			foreach (var hit2D in circleCast)
+			{
+				Debug.Log("hit");
+				var enemy = hit2D.transform.gameObject.GetComponent<DefenceHandler>();
+				if (enemy == null) continue;
+				if (enemy.IsPlayer()) continue;
+				var attackDirection = hit2D.transform.position - transform.position;
+
+				var didItKill = enemy.TakeDamage(attackDirection,
+					stats.attackDamage * knifeDamageMultiplier,
+					enemy.transform.position);
+
+
+				if (!didItKill) continue;
+				ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.meleeCooldown, 999);
+				OnKillEnemy?.Invoke();
+			}
 		}
 
-		public Vector3 GetAimDir()
-		{
-			return aimDir;
-		}
-
-		public bool IsPlayer()
-		{
-			return stats.isPlayer;
-		}
-
-		public float GetAttackRange()
-		{
-			return stats.attackRange;
-		}
 
 		public Vector3 GetAimCenter()
 		{
 			return aimCenter.transform.position;
 		}
 
+
+		//MAJOR
 		private void ShootTarget(Vector3 shootDirection)
 		{
 			AimInDirection(shootDirection);
@@ -227,46 +204,36 @@ namespace _SCRIPTS
 			{
 				var target = hitObject.GetComponent<DefenceHandler>();
 				if (target != null)
-				{
 					ShotHitTarget(shootDirection, target);
-				}
 				else
-				{
 					ShotHitObject();
-				}
 			}
 			else
-			{
 				ShotMissed();
-			}
 		}
-
 		private void ShotMissed()
 		{
-			var e = new OnAttackEventArgs(gunEndPoint.transform.position, GetMissPosition());
+			var e = new OnAttackEventArgs(gunEndPoint.transform.position, GetShotMissPosition());
 			OnAttackStart?.Invoke(e);
 		}
-
 		private void ShotHitObject()
 		{
 			var e = new OnAttackEventArgs(gunEndPoint.transform.position,
 				targetHitPosition);
 			OnAttackStart?.Invoke(e);
 		}
-
 		private void ShotHitTarget(Vector3 shootDirection, DefenceHandler target)
 		{
 			var heightVector = new Vector3(0, target.GetAimHeight(), 0);
 			var e = new OnAttackEventArgs(gunEndPoint.transform.position, targetHitPosition + heightVector, target);
 			OnAttackStart?.Invoke(e);
-			target.TakeDamage(shootDirection, stats.attackDamage, e.AttackEndPosition);
+			var itKilled = target.TakeDamage(shootDirection, stats.attackDamage, e.AttackEndPosition);
+			if (itKilled) OnKillEnemy?.Invoke();
 		}
-
-		private Vector3 GetMissPosition()
+		private Vector3 GetShotMissPosition()
 		{
 			return GetAimCenter() + aimDir * stats.attackRange;
 		}
-
 		private GameObject CheckRaycastHit(Vector3 targetDirection)
 		{
 			var raycastHit = Physics2D.Raycast(footPoint.transform.position,
@@ -282,32 +249,33 @@ namespace _SCRIPTS
 
 			return null;
 		}
-
-		public void AimInDirection(Vector3 newDirection)
+		private void AimInDirection(Vector3 newDirection)
 		{
 			aimDir = newDirection.normalized;
 			OnAim?.Invoke(aimDir);
 		}
-
-		public void AttackWithCooldown(Vector3 target)
+		private void ShootWithCooldown(Vector3 target)
 		{
 			if (!(Time.time >= currentCooldownTime)) return;
-			bulletsInClip--;
-			AmmoDisplay.UpdateDisplay(this);
+			OnUseAmmo?.Invoke(AmmoHandler.AmmoType.ak47, 1);
 			currentCooldownTime = Time.time + stats.attackRate;
 			ShootTarget(target);
 		}
 
-		public void AimNade(Vector3 dir)
+
+		private void AimNade(Vector3 dir)
 		{
 			OnNadeAim?.Invoke(dir);
 		}
-
-		public void NadeWithCooldown(Vector3 target)
+		private void FixedUpdate()
+		{
+			ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.meleeCooldown, knifeCoolDown);
+			if (isNading) AimNade(nadeAimDir);
+		}
+		private void NadeWithCooldown(Vector3 target)
 		{
 			if (!(Time.time >= currentCooldownTime)) return;
-			nades--;
-			AmmoDisplay.UpdateDisplay(this);
+			OnUseAmmo?.Invoke(AmmoHandler.AmmoType.nades, 1);
 			OnNadeThrowStart?.Invoke();
 			currentCooldownTime = Time.time + stats.attackRate;
 		}
@@ -319,6 +287,8 @@ namespace _SCRIPTS
 
 			return false;
 		}
+
+		public event Action OnKillEnemy;
 
 		public void StopAiming()
 		{

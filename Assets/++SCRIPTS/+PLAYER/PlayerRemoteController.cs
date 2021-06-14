@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _SCRIPTS
 {
-	public class PlayerController : MonoBehaviour, IMovementController
+	public class PlayerRemoteController : MonoBehaviour, IMovementController, IPlayerController
 	{
 		[SerializeField] private PlayerIndex playerIndex;
 
@@ -51,7 +51,7 @@ namespace _SCRIPTS
 		public event Action<Vector3> OnMovePress;
 
 		public event Action OnAimStickInactive;
-		public event Action<Vector3> OnAimStickActive;
+		public event Action<Vector3> OnAim;
 
 		public event Action OnChargePress;
 		public event Action OnChargeRelease;
@@ -229,7 +229,7 @@ namespace _SCRIPTS
 		{
 			if (IsAimStickActive())
 			{
-				OnAimStickActive?.Invoke(GetRightStickDir());
+				OnAim?.Invoke(GetRightStickDir());
 				aimPressed = true;
 			}
 			else if (aimPressed)

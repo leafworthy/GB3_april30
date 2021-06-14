@@ -32,6 +32,7 @@ namespace _SCRIPTS
 			attackHandler.OnAttackStart += AttackStart;
 			attackHandler.OnAttackStop += AttackStop;
 			attackHandler.OnNadeThrowStart += NadeThrow;
+			attackHandler.OnKnifeStart += KnifeStart;
 
 
 			movementHandler = GetComponent<MovementHandler>();
@@ -50,6 +51,11 @@ namespace _SCRIPTS
 		{
 			Debug.Log("ANIMATIONTHROW");
 			topAnimator.SetTrigger("ThrowTrigger");
+		}
+
+		private void KnifeStart()
+		{
+			topAnimator.SetTrigger("KnifeTrigger");
 		}
 
 		private void DashStop()
@@ -111,6 +117,8 @@ namespace _SCRIPTS
 			{
 				bottomAnimator.SetBool("isRunning", false);
 			}
+
+			topAnimator.SetBool("isFacingLeft", aimingDir.x<0);
 			topAnimator.SetFloat("Vertical", aimingDir.y);
 			topAnimator.SetFloat("Horizontal", aimingDir.x);
 			bottomAnimator.SetFloat("Vertical", aimingDir.y);

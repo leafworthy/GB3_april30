@@ -123,123 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &69483840 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6110766342226134768, guid: 86cd4dae2813b4b3b81ae8190ef8c5f9, type: 3}
-  m_PrefabInstance: {fileID: 858003323}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &69483850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 69483840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4423d2502995413c940e8200548c9d64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Kills: 0
-  Cash: 0
-  currentCharacter: 0
-  playerIndex: 4
-  hasJoined: 0
-  currentButton: {fileID: 0}
-  hasSelectedCharacter: 0
-  A_Pressed: 0
-  B_Pressed: 0
-  Left_Pressed: 0
-  Right_Pressed: 0
-  buttonIndex: 0
-  playerColor: {r: 1, g: 0, b: 0, a: 1}
---- !u!114 &69483851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 69483840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4423d2502995413c940e8200548c9d64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Kills: 0
-  Cash: 0
-  currentCharacter: 0
-  playerIndex: 3
-  hasJoined: 0
-  currentButton: {fileID: 0}
-  hasSelectedCharacter: 0
-  A_Pressed: 0
-  B_Pressed: 0
-  Left_Pressed: 0
-  Right_Pressed: 0
-  buttonIndex: 0
-  playerColor: {r: 0, g: 1, b: 0.025922537, a: 1}
---- !u!114 &69483852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 69483840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4423d2502995413c940e8200548c9d64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Kills: 0
-  Cash: 0
-  currentCharacter: 0
-  playerIndex: 2
-  hasJoined: 0
-  currentButton: {fileID: 0}
-  hasSelectedCharacter: 0
-  A_Pressed: 0
-  B_Pressed: 0
-  Left_Pressed: 0
-  Right_Pressed: 0
-  buttonIndex: 0
-  playerColor: {r: 0, g: 0.065570354, b: 1, a: 1}
---- !u!114 &69483853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 69483840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4423d2502995413c940e8200548c9d64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Kills: 0
-  Cash: 0
-  currentCharacter: 0
-  playerIndex: 1
-  hasJoined: 0
-  currentButton: {fileID: 0}
-  hasSelectedCharacter: 0
-  A_Pressed: 0
-  B_Pressed: 0
-  Left_Pressed: 0
-  Right_Pressed: 0
-  buttonIndex: 0
-  playerColor: {r: 1, g: 0, b: 0.7932253, a: 1}
---- !u!114 &69483854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 69483840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c39ae7c48264cb5882e46eae7247e27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &599465153 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8355226999474502231, guid: 5b554c2d0652d4e6682c10843ec741b1, type: 3}
@@ -252,21 +135,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4905115359606552637, guid: 86cd4dae2813b4b3b81ae8190ef8c5f9, type: 3}
-      propertyPath: StartingLevelPrefab
-      value: 
-      objectReference: {fileID: 7099486576316630768, guid: 295ac9d72938848598337b91366bbeeb, type: 3}
     - target: {fileID: 6110766342226134768, guid: 86cd4dae2813b4b3b81ae8190ef8c5f9, type: 3}
       propertyPath: m_Name
       value: +GAME MANAGER
       objectReference: {fileID: 0}
-    - target: {fileID: 6110766342226134768, guid: 86cd4dae2813b4b3b81ae8190ef8c5f9, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6110766342226134774, guid: 86cd4dae2813b4b3b81ae8190ef8c5f9, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6110766342226134774, guid: 86cd4dae2813b4b3b81ae8190ef8c5f9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -431,7 +306,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7265756822954985104, guid: 879b308ee9ba54531a1aa87c35680e09, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7265756822954985104, guid: 879b308ee9ba54531a1aa87c35680e09, type: 3}
       propertyPath: m_LocalPosition.x

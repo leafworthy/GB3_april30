@@ -7,9 +7,9 @@ namespace _SCRIPTS
 {
 	public class LEVEL : MonoBehaviour
 	{
-		[SerializeField] private List<GameObject> spawnPoints;
+		[SerializeField] private List<GameObject> spawnPoints = new List<GameObject>();
 		[SerializeField] private CinemachineTargetGroup cameraFollowTargetGroup;
-		[SerializeField] public List<PlayerController> playerControllersInLevel;
+		[SerializeField] public List<IPlayerController> playerControllersInLevel = new List<IPlayerController>();
 		private bool isPlaying;
 
 		public void PlayLevel(List<Player> joiningPlayers)
@@ -21,6 +21,7 @@ namespace _SCRIPTS
 			{
 				SpawnPlayer(player);
 			}
+			HUD.SetPlayers(joiningPlayers);
 
 			ENEMIES.CollectAllEnemies();
 		}
@@ -28,14 +29,18 @@ namespace _SCRIPTS
 		private void SpawnPlayer(Player player)
 		{
 			GameObject prefab = GetPrefabFromCharacter(player);
+			PLAYERS.AddPlayer(player);
+			var spawnedPlayerGO = MAKER.Make(prefab, spawnPoints[playerControllersInLevel.Count].transform.position);
+			player.SetSpawnedPlayerGO(spawnedPlayerGO);
+			cameraFollowTargetGroup.AddMember(spawnedPlayerGO.transform,1,0);
 
-			var newPlayer = MAKER.Make(prefab, spawnPoints[playerControllersInLevel.Count].transform.position);
-			var newPlayerController = newPlayer.GetComponent<PlayerController>();
+			var newPlayerController = spawnedPlayerGO.GetComponent<IPlayerController>();
 			newPlayerController.SetPlayer(player);
 			playerControllersInLevel.Add(newPlayerController);
-			PLAYERS.AddPlayer(newPlayer.GetComponent<DefenceHandler>());
-			cameraFollowTargetGroup.AddMember(newPlayer.transform,1,0);
+
 			Debug.Log("Player " + player.playerIndex + "has been spawned as " + player.currentCharacter.ToString());
+
+
 		}
 
 		private static GameObject GetPrefabFromCharacter(Player player)

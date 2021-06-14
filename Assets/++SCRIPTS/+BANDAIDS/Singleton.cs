@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace _SCRIPTS
 {
@@ -53,7 +53,9 @@ namespace _SCRIPTS
 			}
 			else
 			{
-				GameObject.Destroy(gameObject);
+				Debug.Log("singleton duplicated", this);
+				Debug.Break();
+				//GameObject.Destroy(gameObject);
 			}
 		}
 

@@ -14,13 +14,12 @@ namespace _SCRIPTS
 
 	public class Player : MonoBehaviour
 	{
-		public int Kills;
-		public int Cash;
 		public Character currentCharacter;
 		public PlayerIndex playerIndex;
 		public bool hasJoined;
 		public CharacterButton currentButton;
 		public bool hasSelectedCharacter;
+
 		public bool A_Pressed;
 		public bool B_Pressed;
 		public bool Left_Pressed;
@@ -29,6 +28,7 @@ namespace _SCRIPTS
 		public Color playerColor;
 		private bool Up_Pressed;
 		private bool Down_Pressed;
+
 		public event Action<Player> MoveRight;
 		public event Action<Player> MoveLeft;
 		public event Action<Player> MoveUp;
@@ -36,15 +36,35 @@ namespace _SCRIPTS
 		public event Action<Player> PressA;
 		public event Action<Player> PressB;
 
-		public Player(PlayerIndex playerIndex)
-		{
-			this.playerIndex = playerIndex;
-		}
+		public GameObject SpawnedPlayerGO;
+		private DefenceHandler spawnedPlayerDefence;
+		private IAttackHandler attackHandler;
+		public event Action<Player> OnDead;
+		public event Action<Player> OnKillEnemy;
 
 		public void Join(CharacterButton firstButton)
 		{
 			hasJoined = true;
 			firstButton.HighlightButton(this);
+		}
+
+		public void SetSpawnedPlayerGO(GameObject newGO)
+		{
+			SpawnedPlayerGO = newGO;
+			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<DefenceHandler>();
+			spawnedPlayerDefence.OnDead += Die;
+			attackHandler = SpawnedPlayerGO.GetComponent<IAttackHandler>();
+			attackHandler.OnKillEnemy += KillEnemy;
+		}
+
+		private void KillEnemy()
+		{
+			OnKillEnemy?.Invoke(this);
+		}
+
+		private void Die()
+		{
+			OnDead?.Invoke(this);
 		}
 
 		private void Update()
@@ -107,7 +127,6 @@ namespace _SCRIPTS
 			var dpadY = GamePad.GetAxis(CAxis.LY, playerIndex);
 			if (dpadY > .5)
 			{
-				Debug.Log("move up");
 				if (!Up_Pressed)
 				{
 					MoveUp?.Invoke(this);
@@ -119,7 +138,6 @@ namespace _SCRIPTS
 
 			if (dpadY < -.5)
 			{
-				Debug.Log("move down");
 				if (!Down_Pressed)
 				{
 					MoveDown?.Invoke(this);
@@ -133,8 +151,6 @@ namespace _SCRIPTS
 
 		public void CleanUp()
 		{
-			Kills = 0;
-			Cash = 0;
 			currentCharacter = Character.None;
 			hasJoined = false;
 			currentButton = null;
@@ -144,6 +160,12 @@ namespace _SCRIPTS
 			Left_Pressed = false;
 			Right_Pressed = false;
 			buttonIndex = 0;
+			SpawnedPlayerGO = null;
+		}
+
+		public bool IsDead()
+		{
+			return spawnedPlayerDefence.IsDead();
 		}
 	}
 }

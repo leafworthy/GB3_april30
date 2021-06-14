@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,12 +8,23 @@ namespace _SCRIPTS
 	public class ENEMIES : Singleton<ENEMIES>
 	{
 		private static List<DefenceHandler> enemyList = new List<DefenceHandler>();
+		public static event Action<Player> OnEnemyDead;
+		public static event Action OnAllEnemiesDead;
 
 		private static void AddEnemy(DefenceHandler enemyDefence)
 		{
 			if (!enemyList.Contains(enemyDefence))
 			{
+				enemyDefence.OnDead += EnemyDies;
 				enemyList.Add(enemyDefence);
+			}
+		}
+
+		private static void EnemyDies()
+		{
+			if (GetNumberOfLivingEnemies() <= 0)
+			{
+				OnAllEnemiesDead?.Invoke();
 			}
 		}
 

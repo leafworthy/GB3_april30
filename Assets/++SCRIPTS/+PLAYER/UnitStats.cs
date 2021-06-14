@@ -14,5 +14,6 @@ namespace _SCRIPTS
         public float dashMultiplier = 1;
         public float dashSpeed = 15;
         public float hitPushMultiplier = 1;
+        public float reloadTime = .3f;
     }
 }

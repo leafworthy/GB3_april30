@@ -48,7 +48,6 @@ namespace _SCRIPTS
 		private void Defence_OnDead()
 		{
 			controller.Die();
-			attackHandler.Disable();
 			isOn = false;
 		}
 
@@ -83,7 +82,7 @@ namespace _SCRIPTS
 
 		private void UpdateIdle()
 		{
-			currentTarget = PLAYERS.GetClosestPlayer(transform.position);
+			currentTarget = PLAYERS.GetClosestPlayer(transform.position).SpawnedPlayerGO.GetComponent<DefenceHandler>();
 
 			if (currentTarget is null)
 			{

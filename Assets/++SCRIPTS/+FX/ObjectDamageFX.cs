@@ -81,7 +81,7 @@ namespace _SCRIPTS
 				else
 				{
 					if (damageStates != null)
-						damageStates.SetRevealedObject(currentDamageState);
+						damageStates.SetActiveObject(currentDamageState);
 				}
 			}
 

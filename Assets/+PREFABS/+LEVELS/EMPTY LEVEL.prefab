@@ -448,7 +448,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 42
+  orthographic size: 40.6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -592,7 +592,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   cameraFollowTargetGroup: {fileID: 6669606987849619193}
-  playerControllersInLevel: []
 --- !u!114 &6621811647006484300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -667,6 +666,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6934014579276450953}
     m_Modifications:
+    - target: {fileID: 3734726045447069582, guid: 13b442448c34a41b29f15dcbab37ac61, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 4662438247758738844}
     - target: {fileID: 6503354026904403136, guid: 13b442448c34a41b29f15dcbab37ac61, type: 3}
       propertyPath: m_Pivot.x
       value: 0

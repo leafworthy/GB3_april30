@@ -117,5 +117,8 @@ namespace _SCRIPTS
 		{
 			isOn = false;
 		}
+
+		public event Action OnKillEnemy;
+		public event Action<AmmoHandler.AmmoType, int> OnUseAmmo;
 	}
 }

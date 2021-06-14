@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 namespace _SCRIPTS
 {
-	public class BrockAttackHandler : MonoBehaviour
+	public class BrockAttackHandler : MonoBehaviour, IAttackHandler
 	{
 		public event Action OnThrow;
 		public event Action OnAirThrow;
@@ -31,22 +31,28 @@ namespace _SCRIPTS
 		private bool isCoolingDown;
 		private bool isLanding;
 
-		private PlayerController player;
-		private UnitStats stats;
+		private IPlayerController playerRemote;
 		private float hitStunDuration = 1;
+		private AmmoHandler ammoHandler;
+		private int batNormalCooldown = 6;
+		private int attackHitSpecialAmount = 10;
+		private int attackKillSpecialAmount = 30;
+		private UnitStats stats;
+
 
 		private void Awake()
 		{
 			stats = GetComponent<UnitStats>();
 			jumpHandler = GetComponent<JumpHandler>();
+			ammoHandler = GetComponent<AmmoHandler>();
 
-			player = GetComponent<PlayerController>();
-			player.OnAttackPress += PlayerAttackPress;
-			player.OnAttackRelease += PlayerAttackRelease;
-			player.OnChargePress += PlayerChargePress;
-			player.OnChargeRelease += PlayerChargeRelease;
-			player.OnRightTriggerPress += PlayerRightTriggerPress;
-			player.OnRightTriggerRelease += PlayerRightTriggerRelease;
+			playerRemote = GetComponent<IPlayerController>();
+			playerRemote.OnAttackPress += PlayerRemoteAttackPress;
+			playerRemote.OnAttackRelease += PlayerRemoteAttackRelease;
+			playerRemote.OnChargePress += PlayerRemoteChargePress;
+			playerRemote.OnChargeRelease += PlayerRemoteChargeRelease;
+			playerRemote.OnRightTriggerPress += PlayerRemoteRightTriggerPress;
+			playerRemote.OnRightTriggerRelease += PlayerRemoteRightTriggerRelease;
 
 			animEvents = GetComponentInChildren<AnimationEvents>();
 			animEvents.OnAttackStart += Anim_AttackStart;
@@ -57,7 +63,18 @@ namespace _SCRIPTS
 
 			animEvents.OnThrowStart += ThrowStart;
 			animEvents.OnThrowStop += ThrowStop;
+			animEvents.OnThrow += Throw;
+			animEvents.OnAirThrow += Airthrow;
+		}
 
+		private void Throw()
+		{
+			OnUseAmmo?.Invoke(AmmoHandler.AmmoType.kunai, 1);
+		}
+
+		private void Airthrow()
+		{
+			OnUseAmmo?.Invoke(AmmoHandler.AmmoType.kunai, 3);
 		}
 
 		private void Anim_AttackStart(int obj)
@@ -65,7 +82,7 @@ namespace _SCRIPTS
 			isAttacking = true;
 		}
 
-		private void PlayerRightTriggerRelease()
+		private void PlayerRemoteRightTriggerRelease()
 		{
 			isAttacking = false;
 		}
@@ -84,19 +101,16 @@ namespace _SCRIPTS
 			coolDown = attack1Cooldown;
 		}
 
-		private void PlayerRightTriggerPress(Vector3 aimDirection)
+		private void PlayerRemoteRightTriggerPress(Vector3 aimDirection)
 		{
-			if (!CantAttack())
-			{
-				Debug.Log("AIM ATTACK");
-				isAttacking = true;
-				if (jumpHandler.isJumping)
-					StartAirKunaiAttack();
-				else
-					StartStandingKunaiAttack();
-			}
+			if (!ammoHandler.HasAmmo(AmmoHandler.AmmoType.kunai)) return;
+			if (!CanAttack()) return;
+
+			isAttacking = true;
+			if (jumpHandler.isJumping)
+				StartAirKunaiAttack();
 			else
-				Debug.Log("isbusy");
+				StartStandingKunaiAttack();
 		}
 
 		private void Update()
@@ -104,6 +118,11 @@ namespace _SCRIPTS
 			HandleCooldown();
 		}
 
+		private void FixedUpdate()
+		{
+			if (!ammoHandler.HasFullAmmo(AmmoHandler.AmmoType.meleeCooldown))
+				ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.meleeCooldown, batNormalCooldown);
+		}
 
 
 		private void AirThrow()
@@ -150,8 +169,7 @@ namespace _SCRIPTS
 
 		private void Anim_AttackHit(int attackType)
 		{
-			float hitRange = 15;
-			var circleCast = Physics2D.OverlapCircleAll(transform.position, hitRange);
+			var circleCast = Physics2D.OverlapCircleAll(transform.position, GetHitRange(attackType));
 
 			foreach (var hit2D in circleCast)
 			{
@@ -162,12 +180,30 @@ namespace _SCRIPTS
 					{
 						var attackDirection = hit2D.transform.position - transform.position;
 
-						enemy.TakeDamage(attackDirection, GetAttackDamage(attackType),
+						var didItKill = enemy.TakeDamage(attackDirection, GetAttackDamage(attackType),
 							enemy.transform.position);
+
+						ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.specialCooldown, attackHitSpecialAmount);
+						if (didItKill)
+						{
+							ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.specialCooldown, attackKillSpecialAmount);
+							OnKillEnemy?.Invoke();
+						}
 					}
 				}
 			}
+		}
 
+		private float GetHitRange(int attackType)
+		{
+			if (attackType == 5)
+			{
+				return stats.attackRange*2;
+			}
+			else
+			{
+				return stats.attackRange;
+			}
 		}
 
 		private float GetAttackDamage(int attackType)
@@ -183,7 +219,7 @@ namespace _SCRIPTS
 				case 4:
 					return 50;
 				case 5:
-					return 100;
+					return 200;
 				default:
 					Debug.Log("damage type 0");
 					return 0;
@@ -204,15 +240,16 @@ namespace _SCRIPTS
 			}
 		}
 
-		private void PlayerAttackRelease()
+		private void PlayerRemoteAttackRelease()
 		{
 			isAttacking = false;
 		}
 
-		private void PlayerAttackPress(Vector3 obj)
+		private void PlayerRemoteAttackPress(Vector3 obj)
 		{
-			if (!CantAttack())
+			if (CanAttack())
 			{
+				if (!ammoHandler.HasFullAmmo(AmmoHandler.AmmoType.meleeCooldown)) return;
 				Debug.Log("ATTACK");
 				if (jumpHandler.isJumping)
 					StartJumpAttack();
@@ -220,13 +257,16 @@ namespace _SCRIPTS
 					StartRandomAttack();
 			}
 			else
-				Debug.Log("isAttacking: " +isAttacking +"\n"+
-				          "isCharging: " + isCharging + "\n"+
-				         "isLanding: " + isLanding );
+			{
+				Debug.Log("isAttacking: " + isAttacking + "\n" +
+				          "isCharging: " + isCharging + "\n" +
+				          "isLanding: " + isLanding);
+			}
 		}
 
 		private void StartRandomAttack()
 		{
+			OnUseAmmo?.Invoke(AmmoHandler.AmmoType.meleeCooldown, 1000);
 			var randomAttack = Random.Range(1, 3);
 			Debug.Log("random attack");
 			switch (randomAttack)
@@ -240,9 +280,9 @@ namespace _SCRIPTS
 			}
 		}
 
-		public bool CantAttack()
+		private bool CanAttack()
 		{
-			return isAttacking || isCharging  || isLanding;
+			return !isAttacking && !isCharging && !isLanding;
 		}
 
 		private void StartJumpAttack()
@@ -272,20 +312,24 @@ namespace _SCRIPTS
 			coolDown = attack3Cooldown;
 		}
 
-		private void PlayerChargePress()
+		private void PlayerRemoteChargePress()
 		{
-			if (!CantAttack() && jumpHandler.isStanding)
+			if (!ammoHandler.HasFullAmmo(AmmoHandler.AmmoType.specialCooldown))
 			{
-				if (jumpHandler.isStanding)
-				{
-					isCharging = true;
-					coolDown = chargingCooldown;
-					OnChargeStart?.Invoke();
-				}
+				Debug.Log("not fully charged");
+				return;
 			}
+
+			if (!CanAttack() || !jumpHandler.isStanding) return;
+			if (!jumpHandler.isStanding) return;
+
+			isCharging = true;
+			coolDown = chargingCooldown;
+			OnUseAmmo?.Invoke(AmmoHandler.AmmoType.specialCooldown, 100);
+			OnChargeStart?.Invoke();
 		}
 
-		private void PlayerChargeRelease()
+		private void PlayerRemoteChargeRelease()
 		{
 			if (isCharging)
 			{
@@ -294,5 +338,18 @@ namespace _SCRIPTS
 				if (isCoolingDown) animEvents.AttackStop();
 			}
 		}
+
+		public bool CanAttack(Vector3 getPosition)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Disable()
+		{
+			enabled = false;
+		}
+
+		public event Action OnKillEnemy;
+		public event Action<AmmoHandler.AmmoType, int> OnUseAmmo;
 	}
 }

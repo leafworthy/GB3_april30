@@ -39,6 +39,6 @@ public class PoisonDamageEffect:MonoBehaviour
 
 	private void ApplyPoisonDamage()
 	{
-		Target.TakeDamage(Vector3.zero, PoisonDamage, Target.transform.position, true);
+		Target.TakeDamage((int)Random.Range(0,2) == 1? Vector3.left: Vector3.right, PoisonDamage, Target.transform.position, true);
 	}
 }

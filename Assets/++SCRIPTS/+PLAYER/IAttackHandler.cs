@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace _SCRIPTS
@@ -5,6 +6,7 @@ namespace _SCRIPTS
 	public interface IAttackHandler
 	{
 		bool CanAttack(Vector3 getPosition);
-		void Disable();
+		event Action OnKillEnemy;
+		event Action<AmmoHandler.AmmoType, int> OnUseAmmo;
 	}
 }

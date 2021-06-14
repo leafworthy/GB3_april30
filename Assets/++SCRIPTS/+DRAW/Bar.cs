@@ -16,7 +16,7 @@ namespace _SCRIPTS
 			Gradient
 		}
 		public ColorMode colorMode;
-		public Color barColor = Color.white;
+		public Color slowBarColor = Color.white;
 		public Gradient barGradient = new Gradient();
 		[Space]
 		[Header("Fraction")]
@@ -29,16 +29,16 @@ namespace _SCRIPTS
 		private DefenceHandler defenceHandler;
 		private Color PlayerColor;
 
-		private void Start()
+		protected virtual void Start()
 		{
-			var color = GetComponentInParent<PlayerController>();
+			var color = GetComponentInParent<IPlayerController>();
 			if (color != null)
 			{
 				PlayerColor = color.GetPlayerColor();
 				fastBarImage.color = PlayerColor;
 			}
 			defenceHandler = GetComponentInParent<DefenceHandler>();
-			defenceHandler.OnHealthChanged += DefenceOnDefenceChanged;
+			defenceHandler.OnFractionChanged += DefenceOnDefenceChanged;
 			defenceHandler.OnDead += DefenceOnDead;
 		}
 
@@ -100,7 +100,7 @@ namespace _SCRIPTS
 
 		private void Update()
 		{
-			UpdateColor(barColor);
+			UpdateColor(slowBarColor);
 			UpdateColor(barGradient);
 			UpdateBarFill();
 		}
@@ -109,8 +109,8 @@ namespace _SCRIPTS
 		{
 			if (colorMode != ColorMode.Single || slowBarImage == null)
 				return;
-			barColor = targetColor;
-			slowBarImage.color = barColor;
+			slowBarColor = targetColor;
+			slowBarImage.color = slowBarColor;
 		}
 
 		public void UpdateColor(Gradient targetGradient)

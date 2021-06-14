@@ -8,8 +8,15 @@ namespace _SCRIPTS
 	{
 		private CinemachineImpulseSource shaker;
 		private Vector3 shakeVector = new Vector3(1, 1, 0);
+		private static float MaxShakeMagnitude = 10;
 		private static bool isOn = true;
 
+		public enum ShakeIntensityType
+		{
+			low,
+			medium,
+			high
+		}
 		private void Start()
 		{
 			GAME.OnGameEnd += CleanUp;
@@ -21,15 +28,34 @@ namespace _SCRIPTS
 			isOn = false;
 		}
 
-		public static void ShakeCamera( Vector3 shakePosition,float shakeMagnitude)
+		public static void ShakeCamera(Vector3 shakePosition,ShakeIntensityType type)
 		{
+			switch (type)
+			{
+				case ShakeIntensityType.low:
+					ShakeCamera(shakePosition, 1);
+					break;
+				case ShakeIntensityType.medium:
+					ShakeCamera(shakePosition, 2);
+					break;
+				case ShakeIntensityType.high:
+					ShakeCamera(shakePosition, 3);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(type), type, null);
+			}
+		}
+
+		private static void ShakeCamera( Vector3 shakePosition,float shakeMagnitude)
+		{
+			shakeMagnitude = Mathf.Min(shakeMagnitude, MaxShakeMagnitude);
+
 			if (!isOn) return;
 			if (I.shaker is null)
 			{
 				I.shaker = I.GetComponent<CinemachineImpulseSource>();
 			}
 
-			Debug.Log("trying to make shake");
 			I.shaker.GenerateImpulseAt(shakePosition, I.shakeVector*shakeMagnitude);
 		}
 	}

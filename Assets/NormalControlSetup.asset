@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd60d1d46e4c47ac8c541d3e4069c14e, type: 3}
+  m_Name: NormalControlSetup
+  m_EditorClassIdentifier: 
+  MoveUpKey:
+    key: 119
+    isAutomatic: 0
+  MoveRightKey:
+    key: 100
+    isAutomatic: 0
+  MoveDownKey:
+    key: 115
+    isAutomatic: 0
+  MoveLeftKey:
+    key: 97
+    isAutomatic: 0
+  Attack1Key:
+    key: 323
+    isAutomatic: 1
+  Attack2Key:
+    key: 324
+    isAutomatic: 1
+  Attack3Key:
+    key: 113
+    isAutomatic: 0
+  Attack4Key:
+    key: 101
+    isAutomatic: 0
+  JumpKey:
+    key: 32
+    isAutomatic: 0
+  PauseKey:
+    key: 27
+    isAutomatic: 0
+  DashKey:
+    key: 304
+    isAutomatic: 0
+  Special4Key:
+    key: 122
+    isAutomatic: 0

@@ -40,7 +40,7 @@ public class Shortcuts
 		if (Selection.activeTransform != null)
 		{
 			Selection.activeTransform.gameObject.name = "DamageObject";
-			Selection.activeTransform.gameObject.AddComponent<HideRevealObjects>().GatherAllTransforms();
+			Selection.activeTransform.gameObject.AddComponent<HideRevealObjects>().GatherTransforms();
 		}
 	}
 
@@ -136,7 +136,7 @@ public class Shortcuts
 
 
 		damageObject.name = "Damage Object";
-		damageObject.gameObject.AddComponent<HideRevealObjects>().GatherAllTransforms();
+		damageObject.gameObject.AddComponent<HideRevealObjects>().GatherTransforms();
 		Transform mainObject = new GameObject().transform;
 
 		mainObject.name = "New Object";

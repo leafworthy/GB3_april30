@@ -16,58 +16,45 @@ namespace _SCRIPTS
 		{
 			if (SetActiveObjectOnUpdate)
 			{
-				GatherAllTransforms();
+				GatherTransforms();
 				SetActiveObject(revealedObjectIndex);
 			}
 		}
 
-		public void SetRevealedObject(int i)
+		[Button()]
+		private void Refresh()
 		{
-			revealedObjectIndex = i;
+			GatherTransforms();
+			SetActiveObject(revealedObjectIndex);
 		}
 
-		[Button()]
-		public void GatherAllTransforms()
+
+		public void GatherTransforms()
 		{
 			if (objectsToReveal.Count > 0)
 			{
 				if (!LockTransforms)
 				{
 					objectsToReveal.Clear();
-					foreach (UnityEngine.Transform child in transform)
-					{
+					foreach (Transform child in transform)
 						if (child != transform)
-						{
 							objectsToReveal.Add(child.gameObject);
-						}
-					}
 				}
-
 			}
 			else
 			{
-				foreach (UnityEngine.Transform child in transform)
-				{
+				foreach (Transform child in transform)
 					if (child != transform)
-					{
 						objectsToReveal.Add(child.gameObject);
-					}
-				}
-
 			}
 
 			SetActiveObject(revealedObjectIndex);
-
 		}
 
-		[Button()]
 		public void SetActiveObject(int objectIndex)
 		{
 			revealedObjectIndex = objectIndex;
-			foreach (GameObject obj in objectsToReveal)
-			{
-				obj.SetActive(false);
-			}
+			foreach (var obj in objectsToReveal) obj.SetActive(false);
 
 			objectsToReveal[revealedObjectIndex].SetActive(true);
 		}

@@ -57,7 +57,7 @@ namespace _SCRIPTS
 
 			var newBulletShell = MAKER.Make(ASSETS.FX.bulletShellPrefab, e.AttackStartPosition);
 			newBulletShell.GetComponent<FallToFloor>().Fire((e.AttackStartPosition - e.AttackEndPosition).normalized);
-			SHAKER.ShakeCamera(e.AttackStartPosition, stats.attackDamage/30);
+			SHAKER.ShakeCamera(e.AttackStartPosition, SHAKER.ShakeIntensityType.low);
 			AUDIO.I.PlaySound(ASSETS.sounds.shoot_sounds.GetRandom());
 		}
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,14 +7,16 @@ namespace _SCRIPTS
 {
 	public class PLAYERS : Singleton<PLAYERS>
 	{
-		private static List<DefenceHandler> players = new List<DefenceHandler>();
+		private static List<Player> players = new List<Player>();
+		public static event Action OnAllPlayersDead;
+		public static event Action<Player> OnPlayerDead;
 
-		public static DefenceHandler GetClosestPlayer(Vector3 position)
+		public static Player GetClosestPlayer(Vector3 position)
 		{
-			if (!PlayersHaveBeenFound()) return null;
+			//if (!PlayersHaveBeenFound()) return null;
 
-			DefenceHandler closest = null;
-			foreach (DefenceHandler player in players)
+			Player closest = null;
+			foreach (Player player in players)
 			{
 				if (closest is null)
 				{
@@ -52,7 +55,7 @@ namespace _SCRIPTS
 		{
 			foreach (GameObject playerGO in GameObject.FindGameObjectsWithTag("Player"))
 			{
-				var player = playerGO.GetComponent<DefenceHandler>();
+				var player = playerGO.GetComponent<Player>();
 				if (player is null)
 				{
 					continue;
@@ -62,10 +65,21 @@ namespace _SCRIPTS
 			}
 		}
 
-		public static void AddPlayer(DefenceHandler newPlayer)
+		public static void AddPlayer(Player newPlayer)
 		{
 			Debug.Log("player added");
 			players.Add(newPlayer);
+			newPlayer.OnDead += PlayerDies;
+		}
+
+		private static void PlayerDies(Player deadPlayer)
+		{
+			OnPlayerDead?.Invoke(deadPlayer);
+			if (GetNumberOfLivingPlayers() <= 0)
+			{
+				OnAllPlayersDead?.Invoke();
+
+			}
 		}
 
 		public static int GetNumberOfLivingPlayers()
@@ -73,5 +87,6 @@ namespace _SCRIPTS
 			if (!PlayersHaveBeenFound()) return 0;
 			return players.Count(t => !t.IsDead());
 		}
+
 	}
 }

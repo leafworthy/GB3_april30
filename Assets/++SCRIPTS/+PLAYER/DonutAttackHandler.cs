@@ -92,6 +92,7 @@ namespace _SCRIPTS
 			var otherPosition = other.transform.position;
 			other.TakeDamage(otherPosition - position, stats.attackDamage, position);
 			defence.TakeDamage(position - otherPosition, stats.attackDamage, position);
+			defence.GetComponent<MovementHandler>().Push(position - otherPosition, stats.attackDamage*2, position);
 		}
 
 
@@ -112,5 +113,8 @@ namespace _SCRIPTS
 		{
 			isOn = false;
 		}
+
+		public event Action OnKillEnemy;
+		public event Action<AmmoHandler.AmmoType, int> OnUseAmmo;
 	}
 }

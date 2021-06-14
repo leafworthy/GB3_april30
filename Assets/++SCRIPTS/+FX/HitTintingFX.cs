@@ -33,7 +33,18 @@ public class HitTintingFX : MonoBehaviour {
             SetTintColor(hurtTintColor);
         }
 
-        SHAKER.ShakeCamera(transform.position, damage*shakeDamageMultiplier);
+        var intensity = SHAKER.ShakeIntensityType.low;
+        if (damage > 10)
+        {
+            intensity = SHAKER.ShakeIntensityType.medium;
+        }
+
+        if (damage > 30)
+        {
+            intensity = SHAKER.ShakeIntensityType.high;
+        }
+
+        SHAKER.ShakeCamera(transform.position, intensity);
         HITSTUN.StartStun(duration);
     }
 

@@ -14,7 +14,7 @@ namespace _SCRIPTS
 
 		private void Anim_OnAttackHit(int attackType)
 		{
-			SHAKER.ShakeCamera(transform.position, 1);
+			//SHAKER.ShakeCamera(transform.position, 1);
 
 			AUDIO.I.PlaySound(ASSETS.sounds.PlayRandom(AudioAssets.SoundType.knifehit));
 		}

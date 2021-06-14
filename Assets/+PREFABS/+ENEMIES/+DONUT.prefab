@@ -361,16 +361,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7ded222ed74784ba6068785257fd28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 10
+  attackDamage: 20
   attackRange: 0
-  healthMax: 80
+  healthMax: 120
   attackRate: 1
-  moveSpeed: 40
+  moveSpeed: 50
   height: 3
   isPlayer: 0
   dashMultiplier: 1
   dashSpeed: 15
-  hitPushMultiplier: 5
+  hitPushMultiplier: 1
+  reloadTime: 0.3
 --- !u!114 &8277624868828922794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,6 +384,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthMax: 0
+  health: 0
   isInvincible: 0
 --- !u!114 &5829456033049239117
 MonoBehaviour:
@@ -467,7 +470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveVelocity: {x: 0, y: 0}
   pushVelocity: {x: 0, y: 0}
-  overallVelocityMultiplier: 4
+  overallVelocityMultiplier: 1
 --- !u!114 &520185619149840166
 MonoBehaviour:
   m_ObjectHideFlags: 0
