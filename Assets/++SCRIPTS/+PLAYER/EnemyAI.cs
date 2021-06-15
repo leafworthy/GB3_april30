@@ -1,5 +1,6 @@
 using System;using System.Configuration;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace _SCRIPTS
 {
@@ -9,9 +10,10 @@ namespace _SCRIPTS
 		private DefenceHandler defenceHandler;
 		private IAttackHandler attackHandler;
 		private AstarAI astarAI;
-		private DefenceHandler currentTarget;
+		private GameObject currentTarget;
 		private EnemyController controller;
 		private bool isOn = true;
+		private bool hasRealTarget;
 
 		private enum State
 		{
@@ -19,14 +21,18 @@ namespace _SCRIPTS
 			Aggro
 		}
 
-		[Range(0, 200)] [SerializeField] private float aggroDistance;
 
 		[SerializeField] private State state;
+		private GameObject wanderTarget;
+		private float currentWanderCooldown;
+		private float wanderRate = 5;
 		public event Action OnIdle;
 		public event Action OnAggro;
 
+		private UnitStats stats;
 		private void Start()
 		{
+			stats = GetComponent<UnitStats>();
 			astarAI = GetComponent<AstarAI>();
 			astarAI.OnNewDirection += AI_OnNewDirection;
 
@@ -71,34 +77,108 @@ namespace _SCRIPTS
 			if (CanAttackTarget())
 			{
 				controller.StopMoving();
-				controller.AttackTarget(currentTarget.GetPosition());
+				controller.AttackTarget(currentTarget.transform.position);
 			}
 			else
 			{
 				controller.StopAttacking();
-				astarAI.SetTargetPosition(currentTarget.transform);
+				if (currentTargetOutOfRange())
+				{
+					controller.StopMoving();
+					SetState(State.Idle);
+				}
+				else
+				{
+					astarAI.SetTargetPosition(currentTarget.transform);
+				}
 			}
+		}
+
+		private bool currentTargetOutOfRange()
+		{
+			return Vector3.Distance(transform.position, currentTarget.transform.position) > stats.aggroRange;
 		}
 
 		private void UpdateIdle()
 		{
-			currentTarget = PLAYERS.GetClosestPlayer(transform.position).SpawnedPlayerGO.GetComponent<DefenceHandler>();
-
-			if (currentTarget is null)
+			var potentialTargets = Physics2D.OverlapCircleAll(transform.position, stats.aggroRange, ASSETS.layers.PlayerLayer);
+			if (potentialTargets.Length > 0)
 			{
-				Debug.Log("closest player is null");
+				var closest = potentialTargets[0];
+				foreach (var target in potentialTargets)
+				{
+					if (target.GetComponent<IPlayerController>() is null) continue;
+					var distance = Vector3.Distance(target.transform.position, transform.position);
+					var currentClosestDistance = Vector3.Distance(closest.transform.position, transform.position);
+					if (distance < currentClosestDistance)
+					{
+						closest = target;
+					}
+				}
+
+				hasRealTarget = true;
+				currentTarget = closest.gameObject;
+				SetState(State.Aggro);
 				return;
 			}
-
-			if (IsInAggroRange())
+			else
 			{
-				SetState(State.Aggro);
+				var potentialTargets2 =
+					Physics2D.OverlapCircleAll(transform.position, stats.activeRange, ASSETS.layers.PlayerLayer);
+				if (potentialTargets2.Length > 0)
+				{
+					var closest = potentialTargets2[0];
+					foreach (var target in potentialTargets)
+					{
+						if (target.GetComponent<IPlayerController>() is null) continue;
+						var distance = Vector3.Distance(target.transform.position, transform.position);
+						var currentClosestDistance = Vector3.Distance(closest.transform.position, transform.position);
+						if (distance < currentClosestDistance)
+						{
+							closest = target;
+						}
+					}
+
+					hasRealTarget = false;
+					Wander();
+				}
+
 			}
+
 		}
 
-		private Vector3 GetDirectionToTarget()
+		private void Wander()
 		{
-			return currentTarget.GetPosition() - transform.position;
+
+			if (currentWanderCooldown <= 0)
+			{
+				TargetNewWanderPosition();
+			}
+			else
+			{
+				if (Vector3.Distance(wanderTarget.transform.position, transform.position) < stats.attackRange)
+				{
+					TargetNewWanderPosition();
+				}
+				currentWanderCooldown -= Time.deltaTime;
+			}
+
+
+
+		}
+
+		private void TargetNewWanderPosition()
+		{
+			currentWanderCooldown = wanderRate;
+			if (wanderTarget == null)
+			{
+				wanderTarget = new GameObject();
+			}
+
+			wanderTarget.transform.position =
+				(Vector3) Random.insideUnitCircle * stats.aggroRange + transform.position;
+			currentTarget = wanderTarget;
+			astarAI.SetTargetPosition(currentTarget.transform);
 		}
 
 		private void SetState(State newState)
@@ -117,18 +197,14 @@ namespace _SCRIPTS
 
 		private bool CanAttackTarget()
 		{
-			return attackHandler.CanAttack(currentTarget.GetPosition());
+			return attackHandler.CanAttack(currentTarget.transform.position);
 		}
 
-		private bool IsInAggroRange()
-		{
-			return Vector3.Distance(transform.position, currentTarget.GetPosition()) <= aggroDistance;
-		}
 
 		private void OnDrawGizmosSelected()
 		{
 			Gizmos.color = Color.yellow;
-			Gizmos.DrawWireSphere(transform.position, aggroDistance);
+			Gizmos.DrawWireSphere(transform.position, GetComponent<UnitStats>().aggroRange);
 		}
 	}
 }

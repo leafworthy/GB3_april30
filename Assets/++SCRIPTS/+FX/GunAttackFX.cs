@@ -49,11 +49,7 @@ namespace _SCRIPTS
 			var newBulletHitAnimation = MAKER.Make(ASSETS.FX.bulletHitAnimPrefab, e.AttackEndPosition);
 			MAKER.Unmake(newBulletHitAnimation, 5);
 
-			if (hasMuzzleFlash)
-			{
-				var newMuzzleFlash = MAKER.Make(ASSETS.FX.muzzleFlashPrefab, e.AttackStartPosition);
-				MAKER.Unmake(newMuzzleFlash, .05f);
-			}
+			SpawnMuzzleFlash(e);
 
 			var newBulletShell = MAKER.Make(ASSETS.FX.bulletShellPrefab, e.AttackStartPosition);
 			newBulletShell.GetComponent<FallToFloor>().Fire((e.AttackStartPosition - e.AttackEndPosition).normalized);
@@ -61,5 +57,11 @@ namespace _SCRIPTS
 			AUDIO.I.PlaySound(ASSETS.sounds.shoot_sounds.GetRandom());
 		}
 
+		private void SpawnMuzzleFlash(OnAttackEventArgs e)
+		{
+			if (!hasMuzzleFlash) return;
+			var newMuzzleFlash = MAKER.Make(ASSETS.FX.muzzleFlashPrefab, e.AttackStartPosition);
+			MAKER.Unmake(newMuzzleFlash, .05f);
+		}
 	}
 }

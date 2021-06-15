@@ -363,9 +363,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDamage: 20
   attackRange: 0
+  aggroRange: 200
   healthMax: 120
   attackRate: 1
-  moveSpeed: 50
+  moveSpeed: 100
   height: 3
   isPlayer: 0
   dashMultiplier: 1
@@ -483,7 +484,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41351132bc614e109d40a33d31ca2405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aggroDistance: 71
   state: 0
 --- !u!114 &4760691623764410213
 MonoBehaviour:

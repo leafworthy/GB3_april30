@@ -34,7 +34,7 @@ namespace _SCRIPTS
 
 		private bool isOn;
 		private float minimumPushVectorMagnitude = .5f;
-		public float overallVelocityMultiplier = 4;
+		private float overallVelocityMultiplier = 4;
 
 		public event Action<bool> OnMoveDirectionChange;
 

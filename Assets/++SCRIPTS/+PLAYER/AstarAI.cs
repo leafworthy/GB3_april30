@@ -15,6 +15,7 @@ namespace _SCRIPTS
 
 		private float nextWaypointDistance = 3;
 		private int currentWaypoint = 0;
+		[SerializeField]private bool hasNullPath;
 
 		private void Start () {
 			seeker = GetComponent<Seeker>();
@@ -28,6 +29,7 @@ namespace _SCRIPTS
 		public void SetTargetPosition(Transform newTargetPosition)
 		{
 			targetPosition = newTargetPosition;
+			seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
 		}
 
 		private void OnPathComplete (Path p)
@@ -73,13 +75,19 @@ namespace _SCRIPTS
 		private bool PathIsInvalid()
 		{
 			if (targetPosition is null)
-				return true;
-			seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
-			if (path is null)
 			{
+				hasNullPath = true;
 				return true;
 			}
 
+			seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
+			if (path is null)
+			{
+				hasNullPath = true;
+				return true;
+			}
+
+			hasNullPath = false;
 			return false;
 		}
 	}

@@ -17,6 +17,8 @@ namespace _SCRIPTS
 		Vector3 aimingDir;
 		private Vector3 moveDir;
 		private DefenceHandler defenceHandler;
+		private JumpHandler jumpHandler;
+		private bool isLanding;
 
 
 		private void Start()
@@ -25,6 +27,7 @@ namespace _SCRIPTS
 			defenceHandler.OnDying += Dying;
 			animationEvents = GetComponentInChildren<AnimationEvents>();
 			animationEvents.OnDashStop += DashStop;
+			animationEvents.OnLandingStop += LandingStop;
 
 			attackHandler = GetComponent<BeanAttackHandler>();
 			attackHandler.OnAim += Aim;
@@ -39,6 +42,29 @@ namespace _SCRIPTS
 			movementHandler.OnMoveStart += MoveStart;
 			movementHandler.OnMoveStop += MoveStop;
 			movementHandler.OnDash += Dash;
+
+			jumpHandler = GetComponent<JumpHandler>();
+			jumpHandler.OnJump += Jump;
+			jumpHandler.OnLand += Land;
+		}
+
+		private void LandingStop()
+		{
+			isLanding = false;
+			topAnimator.gameObject.SetActive(true);
+		}
+
+		private void Land()
+		{
+			bottomAnimator.SetTrigger("LandTrigger");
+			topAnimator.gameObject.SetActive(false);
+			isLanding = true;
+		}
+
+		private void Jump()
+		{
+			topAnimator.gameObject.SetActive(false);
+			bottomAnimator.SetTrigger("JumpTrigger");
 		}
 
 		private void Dying()

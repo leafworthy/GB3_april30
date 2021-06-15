@@ -28,7 +28,7 @@ namespace _SCRIPTS
 			}
 		}
 
-		public static DefenceHandler GetClosestEnemy(Vector3 position, float maxRange)
+		public static DefenceHandler IPlayerControllerEnemy(Vector3 position, float maxRange)
 		{
 			DefenceHandler closest = null;
 			foreach (DefenceHandler enemy in enemyList)

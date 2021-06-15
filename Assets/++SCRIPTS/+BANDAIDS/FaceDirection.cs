@@ -17,13 +17,16 @@ namespace _SCRIPTS
 
 		private void FaceCorrectDirection(bool faceRight)
 		{
+			if (isFacingRight == faceRight) return;
 			isFacingRight = faceRight;
 			if (faceRight)
 			{
 				FlipToRight();
+				Debug.Log("flip to right");
 			}
 			else
 			{
+				Debug.Log("flip to left");
 				FlipToLeft();
 			}
 		}

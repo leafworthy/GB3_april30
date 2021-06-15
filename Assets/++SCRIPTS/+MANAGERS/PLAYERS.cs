@@ -11,29 +11,7 @@ namespace _SCRIPTS
 		public static event Action OnAllPlayersDead;
 		public static event Action<Player> OnPlayerDead;
 
-		public static Player GetClosestPlayer(Vector3 position)
-		{
-			//if (!PlayersHaveBeenFound()) return null;
 
-			Player closest = null;
-			foreach (Player player in players)
-			{
-				if (closest is null)
-				{
-					closest = player;
-				}
-				else
-				{
-					var distance = Vector3.Distance(position, player.transform.position);
-					var closestDistance = Vector3.Distance(position, closest.transform.position);
-					if(distance < closestDistance){
-						closest = player;
-					}
-				}
-			}
-
-			return closest;
-		}
 
 		private static bool PlayersHaveBeenFound()
 		{

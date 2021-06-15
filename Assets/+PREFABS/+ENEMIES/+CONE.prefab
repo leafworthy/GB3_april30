@@ -368,6 +368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDamage: 10
   attackRange: 10
+  aggroRange: 200
   healthMax: 200
   attackRate: 2
   moveSpeed: 30
@@ -488,7 +489,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41351132bc614e109d40a33d31ca2405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aggroDistance: 71
   state: 0
 --- !u!114 &7659033533810467042
 MonoBehaviour:

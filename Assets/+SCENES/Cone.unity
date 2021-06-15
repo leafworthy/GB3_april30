@@ -182,6 +182,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: +CONE (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 9136819711188386144, guid: f6af586f359ab4790b5c693ec2970f09, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6af586f359ab4790b5c693ec2970f09, type: 3}
 --- !u!1001 &868396901
@@ -407,6 +411,10 @@ PrefabInstance:
     - target: {fileID: 9136819711188386144, guid: f6af586f359ab4790b5c693ec2970f09, type: 3}
       propertyPath: m_Name
       value: +CONE
+      objectReference: {fileID: 0}
+    - target: {fileID: 9136819711188386144, guid: f6af586f359ab4790b5c693ec2970f09, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6af586f359ab4790b5c693ec2970f09, type: 3}
@@ -723,7 +731,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4662438247758738844, guid: bb89a17390d2a4163bcea0a47cc46426, type: 3}
       propertyPath: orthographic size
-      value: 40.6
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 5061877080130798085, guid: bb89a17390d2a4163bcea0a47cc46426, type: 3}
       propertyPath: m_AnchorMax.y
