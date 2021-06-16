@@ -16,10 +16,11 @@ namespace _SCRIPTS
 		public event Action OnAttackStop;
 		public event Action<Vector3> OnAim;
 		public event Action OnAimStop;
-		public event Action<OnAttackEventArgs> OnAttackStart;
+		public event Action<Attack> OnAttackStart;
 		public event Action<AmmoHandler.AmmoType, int> OnUseAmmo;
 		public event Action OnKnifeStart;
 		public event Action<Vector3> OnNadeAim;
+		public event Action OnReloadStart;
 
 		private Vector3 aimDir;
 		private Vector3 targetHitPosition;
@@ -69,6 +70,7 @@ namespace _SCRIPTS
 
 			playerRemote.OnAttackPress += PlayerKnifePress;
 			playerRemote.OnAttackRelease += PlayerKnifeRelease;
+			playerRemote.OnReloadPress += PlayerReload;
 
 			jumpHandler = GetComponent<JumpHandler>();
 			jumpHandler.OnJump += DisableAttacking;
@@ -81,8 +83,20 @@ namespace _SCRIPTS
 			animEventsTop.OnAttackStop += AttackStop;
 
 			animEvents.OnLandingStart += DisableAttacking;
+			animEventsTop.OnReload += AnimationEvent_OnReload;
 			animEvents.OnDashStart += DisableAttacking;
 			animEvents.OnDashStop += EnableAttacking;
+			animEventsTop.OnReloadStop += Anim_ReloadStop;
+		}
+
+		private void PlayerReload()
+		{
+			StartReloading();
+		}
+
+		private void AnimationEvent_OnReload()
+		{
+			ammoHandler.Reload(AmmoHandler.AmmoType.ak47);
 		}
 
 		private void AttackStop(int obj)
@@ -142,13 +156,23 @@ namespace _SCRIPTS
 			OnAttackStop?.Invoke();
 		}
 
+		private void Anim_ReloadStop()
+		{
+			ammoHandler.ReloadStop();
+		}
+
 		private void PlayerRemoteShootPress(Vector3 aimDirection)
 		{
-			if (jumpHandler.isJumping || ammoHandler.isReloading) return;
+			if (CantAttack())
+			{
+				if (!isAttacking) return;
+				PlayerRemoteShootRelease();
+				return;
+			}
 			if (!ammoHandler.HasAmmoInClip(AmmoHandler.AmmoType.ak47))
 			{
-				ammoHandler.Reload(AmmoHandler.AmmoType.ak47);
-				PlayerRemoteShootRelease();
+				StartReloading();
+
 				return;
 			}
 
@@ -156,9 +180,23 @@ namespace _SCRIPTS
 			isAttacking = true;
 		}
 
+		private void StartReloading()
+		{
+			if (!ammoHandler.HasAmmo(AmmoHandler.AmmoType.ak47) || ammoHandler.clipIsFull(AmmoHandler.AmmoType.ak47))
+			{
+				PlayerRemoteShootRelease();
+			}
+			else
+			{
+				OnReloadStart?.Invoke();
+				ammoHandler.ReloadStart();
+				PlayerRemoteShootRelease();
+			}
+		}
+
 		public bool CantAttack()
 		{
-			return  jumpHandler.isJumping || ammoHandler.isReloading || isAttacking;
+			return !jumpHandler.isDoneLanding || ammoHandler.isReloading || isAttacking;
 		}
 
 
@@ -166,7 +204,7 @@ namespace _SCRIPTS
 		{
 			if (attackType != 3) return;
 			float hitRange = 25;
-			float knifeDamageMultiplier = 3;
+			float knifeDamageMultiplier = 1.5f;
 			var circleCast = Physics2D.OverlapCircleAll(transform.position, hitRange);
 
 			foreach (var hit2D in circleCast)
@@ -175,11 +213,8 @@ namespace _SCRIPTS
 				var enemy = hit2D.transform.gameObject.GetComponent<DefenceHandler>();
 				if (enemy == null) continue;
 				if (enemy.IsPlayer()) continue;
-				var attackDirection = hit2D.transform.position - transform.position;
-
-				var didItKill = enemy.TakeDamage(attackDirection,
-					stats.attackDamage * knifeDamageMultiplier,
-					enemy.transform.position);
+				var newAttack = new Attack(transform.position, enemy.transform.position, stats.attackDamage * knifeDamageMultiplier);
+				var didItKill = enemy.TakeDamage(newAttack);
 
 
 				if (!didItKill) continue;
@@ -196,15 +231,15 @@ namespace _SCRIPTS
 
 
 		//MAJOR
-		private void ShootTarget(Vector3 shootDirection)
+		private void ShootTarget(Vector3 targetPosition)
 		{
-			AimInDirection(shootDirection);
-			var hitObject = CheckRaycastHit(shootDirection);
+			AimInDirection(targetPosition);
+			var hitObject = CheckRaycastHit(targetPosition);
 			if (hitObject != null)
 			{
 				var target = hitObject.GetComponent<DefenceHandler>();
 				if (target != null)
-					ShotHitTarget(shootDirection, target);
+					ShotHitTarget(GetAimCenter(), target);
 				else
 					ShotHitObject();
 			}
@@ -213,21 +248,23 @@ namespace _SCRIPTS
 		}
 		private void ShotMissed()
 		{
-			var e = new OnAttackEventArgs(gunEndPoint.transform.position, GetShotMissPosition());
-			OnAttackStart?.Invoke(e);
+			var shotPosition = GetShotMissPosition();
+			var newAttack = new Attack((Vector3)gunEndPoint.transform.position - shotPosition, GetShotMissPosition(),0);
+			newAttack.DamageOrigin = gunEndPoint.transform.position;
+			OnAttackStart?.Invoke(newAttack);
 		}
 		private void ShotHitObject()
 		{
-			var e = new OnAttackEventArgs(gunEndPoint.transform.position,
-				targetHitPosition);
-			OnAttackStart?.Invoke(e);
+			var newAttack = new Attack(targetHitPosition-gunEndPoint.transform.position, targetHitPosition, stats.attackDamage);
+			newAttack.DamageOrigin = gunEndPoint.transform.position;
+			OnAttackStart?.Invoke(newAttack);
 		}
-		private void ShotHitTarget(Vector3 shootDirection, DefenceHandler target)
+		private void ShotHitTarget(Vector3 origin, DefenceHandler target)
 		{
 			var heightVector = new Vector3(0, target.GetAimHeight(), 0);
-			var e = new OnAttackEventArgs(gunEndPoint.transform.position, targetHitPosition + heightVector, target);
-			OnAttackStart?.Invoke(e);
-			var itKilled = target.TakeDamage(shootDirection, stats.attackDamage, e.AttackEndPosition);
+			var newAttack = new Attack(origin, targetHitPosition + heightVector,stats.attackDamage);
+			OnAttackStart?.Invoke(newAttack);
+			var itKilled = target.TakeDamage(newAttack);
 			if (itKilled) OnKillEnemy?.Invoke();
 		}
 		private Vector3 GetShotMissPosition()

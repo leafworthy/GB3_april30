@@ -5,44 +5,22 @@ using UnityEngine;
 
 public class HUD : Singleton<HUD>
 {
-	public GameObject GangstaBeanHUDPrefab;
-	public GameObject BrockLeeHUDPrefab;
-	public List<GameObject> HUDSlots = new List<GameObject>();
+	public List<HUDSlot> HUDSlots = new List<HUDSlot>();
 
 	public static void SetPlayers(List<Player> players)
 	{
-		for (var index = 0; index < players.Count; index++){
+		DisableAllHUDSlots();
+		for (var index = 0; index < players.Count; index++)
+		{
 			var player = players[index];
-			switch (player.currentCharacter)
-			{
-				case Character.None:
-					CreateCharHUD(I.GangstaBeanHUDPrefab, player,I.HUDSlots[index]);
-					break;
-				case Character.Karrot:
-					CreateCharHUD(I.GangstaBeanHUDPrefab, player, I.HUDSlots[index]);
-					break;
-				case Character.Bean:
-					CreateCharHUD(I.GangstaBeanHUDPrefab, player, I.HUDSlots[index]);
-					break;
-				case Character.Brock:
-					CreateCharHUD(I.BrockLeeHUDPrefab, player, I.HUDSlots[index]);
-					break;
-				case Character.Tmato:
-					CreateCharHUD(I.BrockLeeHUDPrefab, player, I.HUDSlots[index]);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
-
+			var slot = I.HUDSlots[index];
+			slot.gameObject.SetActive(true);
+			slot.SetCharacter(player.currentCharacter, players[index]);
 		}
 	}
 
-	private static void CreateCharHUD(GameObject charHUDPrefab, Player player, GameObject parent)
+	private static void DisableAllHUDSlots()
 	{
-		var newHUD = MAKER.Make(charHUDPrefab, Vector2.zero);
-		newHUD.transform.SetParent(parent.transform);
-		newHUD.transform.localPosition = Vector3.zero;
-		var newHudChar = newHUD.GetComponent<CharacterHUD>();
-		newHudChar.SetPlayer(player);
+		foreach (var hudSlot in I.HUDSlots) hudSlot.gameObject.SetActive(false);
 	}
 }

@@ -112,6 +112,10 @@ namespace _SCRIPTS
 					Debug.Log("main menu");
 					GAME.EndGameMainMenu();
 					break;
+				case MenuButton.ButtonType.Quit:
+					Debug.Log("quit");
+					Application.Quit();
+					break;
 			}
 		}
 

@@ -16,7 +16,6 @@ namespace _SCRIPTS
 		private UnitStats stats;
 
 		private bool canMove = true;
-		private readonly float hitPushMultiplier = .25f;
 
 		private bool isPressingDash;
 		private bool isTryingToMove;
@@ -38,6 +37,34 @@ namespace _SCRIPTS
 
 		public event Action<bool> OnMoveDirectionChange;
 
+		public enum PushType
+		{
+		low,
+		normal,
+		high,
+		highest
+		}
+
+		public float GetPushTypeMultiplier(PushType pushType)
+		{
+			switch (pushType)
+			{
+				case PushType.low:
+					return .5f;
+					break;
+				case PushType.normal:
+					return 1f;
+					break;
+				case PushType.high:
+					return 1.5f;
+					break;
+				case PushType.highest:
+					return 3f;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(pushType), pushType, null);
+			}
+		}
 		private void Awake()
 		{
 			stats = GetComponent<UnitStats>();
@@ -158,21 +185,34 @@ namespace _SCRIPTS
 			rb.velocity = tempVel;
 		}
 
-		private void Health_OnDamaged(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition,
-		                              bool isPoison)
+		private void Health_OnDamaged(Attack attack)
 		{
-			Push(DamageDirection.normalized, DamageAmount, DamagePosition);
-			if (rb.velocity.x > 0)
+			Push(attack.DamageDirection.normalized, attack.DamageAmount);
+			if (attack.DamageDirection.x > 0)
 				OnMoveDirectionChange?.Invoke(false);
 			else
 				OnMoveDirectionChange?.Invoke(true);
 		}
 
-		public void Push(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition)
+		private PushType GetPushTypeFromDamage(float damageAmount)
+		{
+			if (damageAmount < 10) return PushType.low;
+
+			if (damageAmount < 25) return PushType.normal;
+
+			return !(damageAmount < 40) ? PushType.highest : PushType.high;
+		}
+
+		public void Push(Vector3 DamageDirection, float damageAmount)
+		{
+			Push(DamageDirection, GetPushTypeFromDamage(damageAmount));
+		}
+
+		public void Push(Vector3 DamageDirection, PushType pushType)
 		{
 			var tempVel = Vector3.zero;
-			tempVel += new Vector3(DamageDirection.x * DamageAmount * stats.hitPushMultiplier,
-				DamageDirection.y * DamageAmount * hitPushMultiplier, 0);
+			tempVel += new Vector3(DamageDirection.x * GetPushTypeMultiplier(pushType),
+				DamageDirection.y * GetPushTypeMultiplier(pushType), 0);
 			isPushed = true;
 			AddVelocity(tempVel * overallVelocityMultiplier);
 		}
@@ -216,7 +256,7 @@ namespace _SCRIPTS
 			if (isPressingDash) return;
 			Debug.Log("first start");
 			isPressingDash = true;
-			Push(moveDir, stats.dashSpeed, transform.position);
+			Push(moveDir, stats.dashSpeed);
 			DisableMovement();
 			OnDash?.Invoke();
 		}

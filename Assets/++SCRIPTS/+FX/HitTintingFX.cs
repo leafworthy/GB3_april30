@@ -22,9 +22,9 @@ public class HitTintingFX : MonoBehaviour {
         SetMaterial(renderer.material);
     }
 
-    private void Damaged(Vector3 arg1, float damage, Vector3 arg3, bool isPoison = false)
+    private void Damaged(Attack attack)
     {
-        if (isPoison)
+        if (attack.IsPoison)
         {
             SetTintColor(poisonTintColor);
         }
@@ -34,12 +34,12 @@ public class HitTintingFX : MonoBehaviour {
         }
 
         var intensity = SHAKER.ShakeIntensityType.low;
-        if (damage > 10)
+        if (attack.DamageAmount > 10)
         {
             intensity = SHAKER.ShakeIntensityType.medium;
         }
 
-        if (damage > 30)
+        if (attack.DamageAmount > 30)
         {
             intensity = SHAKER.ShakeIntensityType.high;
         }

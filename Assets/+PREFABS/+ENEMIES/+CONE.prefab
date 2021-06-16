@@ -368,7 +368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDamage: 10
   attackRange: 10
-  aggroRange: 200
+  aggroRange: 40
   healthMax: 200
   attackRate: 2
   moveSpeed: 30
@@ -377,7 +377,7 @@ MonoBehaviour:
   dashMultiplier: 1
   dashSpeed: 15
   hitPushMultiplier: 0.3
-  reloadTime: 0.3
+  activeRange: 40
 --- !u!114 &4317599530125453782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -448,6 +448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d082acbe0e394fdab0da3224886adda7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasNullPath: 0
 --- !u!114 &2209905426164157073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,7 +477,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveVelocity: {x: 0, y: 0}
   pushVelocity: {x: 0, y: 0}
-  overallVelocityMultiplier: 4
 --- !u!114 &5634887154196346202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -489,6 +489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41351132bc614e109d40a33d31ca2405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wandersWhenIdle: 1
   state: 0
 --- !u!114 &7659033533810467042
 MonoBehaviour:

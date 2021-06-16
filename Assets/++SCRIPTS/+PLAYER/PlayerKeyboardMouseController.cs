@@ -34,6 +34,7 @@ namespace _SCRIPTS
 		public event Action OnJumpRelease;
 
 		public event Action<Vector3> OnAttackPress;
+		public event Action OnReloadPress;
 		public event Action OnAttackRelease;
 
 		public event Action OnMoveRelease;

@@ -70,7 +70,7 @@ namespace _SCRIPTS
 			var enemy = hitObject.GetComponent<DefenceHandler>();
 			if (enemy.IsPlayer() != isPlayer)
 			{
-				enemy.TakeDamage(velocity.normalized, DamageAmount, hitPoint);
+				enemy.TakeDamage(new Attack(hitPoint-velocity.normalized,hitPoint,DamageAmount));
 				hasReachedTarget = true;
 				velocity = Vector3.zero;
 				transform.SetParent(hitObject.transform);

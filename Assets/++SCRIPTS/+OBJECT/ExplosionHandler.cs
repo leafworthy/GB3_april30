@@ -7,7 +7,7 @@ namespace _SCRIPTS
 		private ThrownProjectile projectile;
 		[SerializeField] private GameObject ExplosionPrefab;
 		private float explosionRadius = 30;
-
+		private float explosionDamage = 30;
 
 		private void Start()
 		{
@@ -16,7 +16,7 @@ namespace _SCRIPTS
 			projectile.OnHitNothing += Explode;
 		}
 
-		private void Explode(DefenceHandler arg1, Vector3 explosionPosition)
+		private void Explode(DefenceHandler target, Vector3 explosionPosition)
 		{
 			Explode(explosionPosition);
 		}
@@ -33,7 +33,10 @@ namespace _SCRIPTS
 			{
 				var defence = hit.GetComponent<DefenceHandler>();
 				if (defence is null) continue;
-				defence.TakeDamage(hit.transform.position - explosionPosition, 100*Vector3.Distance(hit.transform.position,  explosionPosition), explosionPosition);
+
+				var ratio = explosionRadius / Vector3.Distance(hit.transform.position, explosionPosition);
+				var newAttack = new Attack( explosionPosition, hit.transform.position, explosionDamage * ratio);
+				defence.TakeDamage(newAttack);
 			}
 		}
 	}

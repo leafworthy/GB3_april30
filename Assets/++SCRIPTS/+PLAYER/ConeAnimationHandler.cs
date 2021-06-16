@@ -14,9 +14,15 @@ namespace _SCRIPTS
 		private bool isDead;
 
 		private static readonly int HitTrigger = Animator.StringToHash("HitTrigger");
+		private EnemyAI ai;
+
+		private static readonly int AggroTrigger = Animator.StringToHash("AggroTrigger");
+
 
 		private void Start()
 		{
+			ai = GetComponent<EnemyAI>();
+			ai.OnAggro += AI_OnAggro;
 			animator = GetComponentInChildren<Animator>();
 
 			coneAttackHandler = GetComponent<ConeAttackHandler>();
@@ -32,8 +38,12 @@ namespace _SCRIPTS
 			movementHandler.OnMoveStop += MoveStop;
 		}
 
+		private void AI_OnAggro()
+		{
+			animator.SetTrigger(AggroTrigger);
+		}
 
-		private void Defence_OnDamaged(Vector3 vector3, float f, Vector3 arg3, bool isPoison)
+		private void Defence_OnDamaged(Attack attack)
 		{
 			animator.SetTrigger(HitTrigger);
 		}

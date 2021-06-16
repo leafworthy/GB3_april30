@@ -66,14 +66,9 @@ namespace _SCRIPTS
 			var target = hitObject.collider.gameObject.GetComponent<DefenceHandler>();
 			if (target != null)
 			{
-				var e = new OnAttackEventArgs(attackPoint.transform.position, newTargetPosition + new Vector3(0,
-					target.GetAimHeight(), 0), target);
-				target.TakeDamage(newTargetPosition - transform.position, stats.attackDamage, e.AttackEndPosition);
-			}
-			else
-			{
-				var e = new OnAttackEventArgs(attackPoint.transform.position,
-					newTargetPosition + new Vector3(0, 5f, 0));
+				var newAttack = new Attack(transform.position, newTargetPosition,
+					stats.attackDamage);
+				target.TakeDamage(newAttack);
 			}
 		}
 

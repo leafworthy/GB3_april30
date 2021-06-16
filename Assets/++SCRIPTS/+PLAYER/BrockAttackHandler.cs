@@ -178,10 +178,9 @@ namespace _SCRIPTS
 				{
 					if (!enemy.IsPlayer())
 					{
-						var attackDirection = hit2D.transform.position - transform.position;
-
-						var didItKill = enemy.TakeDamage(attackDirection, GetAttackDamage(attackType),
-							enemy.transform.position);
+						var newAttack = new Attack(transform.position, hit2D.transform.position,
+							GetAttackDamage(attackType));
+						var didItKill = enemy.TakeDamage(newAttack);
 
 						ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.specialCooldown, attackHitSpecialAmount);
 						if (didItKill)
@@ -320,8 +319,8 @@ namespace _SCRIPTS
 				return;
 			}
 
-			if (!CanAttack() || !jumpHandler.isStanding) return;
-			if (!jumpHandler.isStanding) return;
+			if (!CanAttack() || !jumpHandler.isDoneLanding) return;
+			if (!jumpHandler.isDoneLanding) return;
 
 			isCharging = true;
 			coolDown = chargingCooldown;

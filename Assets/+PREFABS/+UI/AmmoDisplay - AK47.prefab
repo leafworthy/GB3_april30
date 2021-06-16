@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8439354633672588681}
   - component: {fileID: 4692734460152416238}
   - component: {fileID: 2188023259647980109}
+  - component: {fileID: 5900246908892155355}
   m_Layer: 5
   m_Name: AmmoDisplay - AK47
   m_TagString: Untagged
@@ -54,6 +55,7 @@ MonoBehaviour:
   bar: {fileID: 4311877537820065372}
   ammoText: {fileID: 9015301216268201897}
   shakeObject: {fileID: 6461169507196523211}
+  ammoDisplayCanvas: {fileID: 5900246908892155355}
 --- !u!114 &2188023259647980109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,6 +76,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!225 &5900246908892155355
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2632418498461373267}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4621689880880719281
 GameObject:
   m_ObjectHideFlags: 0

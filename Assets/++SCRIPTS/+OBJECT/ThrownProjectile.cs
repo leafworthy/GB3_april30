@@ -192,7 +192,8 @@ namespace _SCRIPTS
 
 			if (target.IsPlayer() != isPlayer)
 			{
-				target.TakeDamage(velocity.normalized, DamageAmount, hitPoint);
+				var newAttack = new Attack(hitPoint-velocity.normalized, hitPoint, DamageAmount);
+				target.TakeDamage(newAttack);
 				hasReachedTarget = true;
 				velocity = Vector3.zero;
 				Debug.Log("HIT");

@@ -29,6 +29,7 @@ namespace _SCRIPTS
 			animationEvents.OnDashStop += DashStop;
 			animationEvents.OnLandingStop += LandingStop;
 
+
 			attackHandler = GetComponent<BeanAttackHandler>();
 			attackHandler.OnAim += Aim;
 			attackHandler.OnAimStop += AimStop;
@@ -36,6 +37,7 @@ namespace _SCRIPTS
 			attackHandler.OnAttackStop += AttackStop;
 			attackHandler.OnNadeThrowStart += NadeThrow;
 			attackHandler.OnKnifeStart += KnifeStart;
+			attackHandler.OnReloadStart += ReloadStart;
 
 
 			movementHandler = GetComponent<MovementHandler>();
@@ -46,6 +48,11 @@ namespace _SCRIPTS
 			jumpHandler = GetComponent<JumpHandler>();
 			jumpHandler.OnJump += Jump;
 			jumpHandler.OnLand += Land;
+		}
+
+		private void ReloadStart()
+		{
+			topAnimator.SetTrigger("ReloadTrigger");
 		}
 
 		private void LandingStop()
@@ -111,7 +118,7 @@ namespace _SCRIPTS
 			isAttacking = false;
 		}
 
-		private void AttackStart(OnAttackEventArgs obj)
+		private void AttackStart(Attack attack)
 		{
 			isAttacking = true;
 		}

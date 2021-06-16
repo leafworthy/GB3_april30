@@ -172,10 +172,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4019382461760971928}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5900016, z: 0}
+  m_LocalPosition: {x: 0, y: 0.59000206, z: 0}
   m_LocalScale: {x: 4.998901, y: 1.4781382, z: 0.5685147}
   m_Children: []
-  m_Father: {fileID: 4019382462400588580}
+  m_Father: {fileID: 7854039214064336565}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4019382461760971930
@@ -273,7 +273,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6450056046302690784}
-  - {fileID: 4019382461760971929}
   - {fileID: 7854039214064336565}
   - {fileID: 8873275814285994072}
   m_Father: {fileID: 0}
@@ -361,18 +360,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7ded222ed74784ba6068785257fd28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 20
+  attackDamage: 10
   attackRange: 0
-  aggroRange: 200
-  healthMax: 120
+  aggroRange: 50
+  healthMax: 80
   attackRate: 1
-  moveSpeed: 100
+  moveSpeed: 60
   height: 3
   isPlayer: 0
   dashMultiplier: 1
   dashSpeed: 15
   hitPushMultiplier: 1
-  reloadTime: 0.3
+  activeRange: 50
 --- !u!114 &8277624868828922794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,6 +442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d082acbe0e394fdab0da3224886adda7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasNullPath: 0
 --- !u!114 &6314081128718311661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,7 +471,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveVelocity: {x: 0, y: 0}
   pushVelocity: {x: 0, y: 0}
-  overallVelocityMultiplier: 1
 --- !u!114 &520185619149840166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,6 +483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41351132bc614e109d40a33d31ca2405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wandersWhenIdle: 0
   state: 0
 --- !u!114 &4760691623764410213
 MonoBehaviour:
@@ -607,8 +607,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4641828159876782187}
+  - {fileID: 4019382461760971929}
   m_Father: {fileID: 4019382462400588580}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8768275385289164082
 GameObject:
@@ -639,7 +640,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4019382462400588580}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &7675260140935632433
 CircleCollider2D:

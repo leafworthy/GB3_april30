@@ -1154,6 +1154,7 @@ GameObject:
   - component: {fileID: 3519814523738519553}
   - component: {fileID: 4321627868987079106}
   - component: {fileID: 6846205001386908871}
+  - component: {fileID: 8164156743866017849}
   m_Layer: 5
   m_Name: AmmoDisplayLong
   m_TagString: Untagged
@@ -1193,24 +1194,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b52fd38032439eb5337e7532e96c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponIcon: {fileID: 2317018695230202110}
-  barType: {fileID: 5077624568673590190}
   bar: {fileID: 0}
-  barShort: {fileID: 2561825616968414087}
-  barLong: {fileID: 1618969210179922045}
   ammoText: {fileID: 375384943183679840}
-  clipAmmoText: {fileID: 3866418597035452025}
-  ammoToDisplay:
-    type: 0
-    reserveAmmo: 0
-    clipSize: 0
-    AmmoInClip: 0
-    maxReserveAmmo: 0
-    barColor: {r: 0, g: 0, b: 0, a: 0}
-    length: 0
-    weaponIconIndex: 0
-  LayoutElement: {fileID: 6846205001386908871}
-  shakeIcon: {fileID: 7386433163230552149}
+  shakeObject: {fileID: 0}
+  ammoDisplayCanvas: {fileID: 0}
 --- !u!114 &6846205001386908871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1231,6 +1218,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!225 &8164156743866017849
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6458683196844808561}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6762164313473798709
 GameObject:
   m_ObjectHideFlags: 0

@@ -42,20 +42,20 @@ namespace _SCRIPTS
 			}
 		}
 
-		private void Object_OnDamaged(Vector3 damageSource, float damage, Vector3 position, bool isPoison)
+		private void Object_OnDamaged(Attack attack)
 		{
 			if (!broken || DontDestroyColliderOnBroken)
 			{
 				int randomDebreeAmount = Random.Range(debreeMin, debreeMax);
-				Vector3 bloodDir = (defenceHandler.GetPosition() - damageSource).normalized;
 
-				SprayDebree(randomDebreeAmount, position, bloodDir);
-				SprayDebree(randomDebreeAmount, position, -bloodDir);
+				Vector3 bloodDir = attack.DamageDirection;
+				SprayDebree(randomDebreeAmount, attack.DamagePosition, bloodDir);
+				SprayDebree(randomDebreeAmount, attack.DamagePosition, -bloodDir);
 				currentDamageState++;
 				var bulletHits = ASSETS.FX.GetBulletHits(debreeType);
 				if (bulletHits.Count > 0)
 				{
-					var newBulletHit = MAKER.Make(bulletHits.GetRandom(), position);
+					var newBulletHit = MAKER.Make(bulletHits.GetRandom(), attack.DamagePosition);
 					MAKER.Unmake(newBulletHit, 2);
 					var sortingGroup = GetComponent<SortingGroup>();
 					var sortingLayerName = "Default";
@@ -75,7 +75,7 @@ namespace _SCRIPTS
 					if (!defenceHandler.IsInvincible())
 					{
 						OnBreak?.Invoke();
-						Break(position, randomDebreeAmount, bloodDir);
+						Break(attack.DamagePosition, randomDebreeAmount, bloodDir);
 					}
 				}
 				else

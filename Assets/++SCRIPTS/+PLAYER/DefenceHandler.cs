@@ -1,11 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
+
 namespace _SCRIPTS
 {
 	public class DefenceHandler : MonoBehaviour
 	{
-		public event Action<Vector3, float, Vector3, bool> OnDamaged;
+		public event Action<Attack> OnDamaged;
 		public event Action<float> OnFractionChanged;
 		public event Action OnDying;
 		public event Action OnDead;
@@ -53,16 +54,16 @@ namespace _SCRIPTS
 			OnFractionChanged?.Invoke(1);
 		}
 
-		public bool TakeDamage(Vector3 DamageDirection, float DamageAmount, Vector3 DamagePosition,
-		                       bool isPoison = false)
+
+		public bool TakeDamage(Attack attack)
 		{
 			if (!IsDeadOrDying())
 			{
-				health -= DamageAmount;
+				health -= attack.DamageAmount;
 				OnFractionChanged?.Invoke(health / healthMax);
-				OnDamaged?.Invoke(DamageDirection, DamageAmount, DamagePosition, isPoison);
+				OnDamaged?.Invoke(attack);
 
-				SprayBlood(15, DamagePosition, DamageDirection);
+				SprayBlood(15, attack.DamagePosition, attack.DamageDirection);
 
 				if (health <= 0)
 				{

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace _SCRIPTS
@@ -33,7 +34,7 @@ namespace _SCRIPTS
 		}
 
 
-		private void Defence_OnDamaged(Vector3 vector3, float f, Vector3 arg3, bool isPoison)
+		private void Defence_OnDamaged(Attack attack)
 		{
 			animator.SetTrigger(HitTrigger);
 		}

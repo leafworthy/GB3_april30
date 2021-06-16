@@ -16,6 +16,7 @@ namespace _SCRIPTS
 		event Action OnJumpPress;
 		event Action OnJumpRelease;
 		event Action<Vector3> OnAttackPress;
+		event Action OnReloadPress;
 		event Action OnAttackRelease;
 		event Action OnMoveRelease;
 		event Action<Vector3> OnMovePress;

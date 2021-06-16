@@ -22,11 +22,9 @@ namespace _SCRIPTS
 			if (faceRight)
 			{
 				FlipToRight();
-				Debug.Log("flip to right");
 			}
 			else
 			{
-				Debug.Log("flip to left");
 				FlipToLeft();
 			}
 		}

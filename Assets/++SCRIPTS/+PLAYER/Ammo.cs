@@ -11,7 +11,7 @@ public class Ammo
 	public int maxReserveAmmo;
 	public event Action OnAmmoGained;
 	public event Action OnAmmoUsed;
-	bool reloads = true;
+	public bool reloads = true;
 
 
 	public bool hasAmmoInClip()
@@ -23,7 +23,7 @@ public class Ammo
 	{
 		return reserveAmmo > 0;
 	}
-	public void Add(int amount)
+	public void AddAmmoToReserve(int amount)
 	{
 		reserveAmmo = Mathf.Min(reserveAmmo + amount, maxReserveAmmo);
 		OnAmmoGained?.Invoke();
@@ -71,5 +71,10 @@ public class Ammo
 	public bool hasFullAmmo()
 	{
 		return reserveAmmo == maxReserveAmmo;
+	}
+
+	public bool clipIsFull()
+	{
+		return (AmmoInClip >= clipSize);
 	}
 }

@@ -84,7 +84,7 @@ namespace _SCRIPTS
 						var comp = gameObject.AddComponent<RecycleGameObject>();
 						comp.Shutdown();
 						//GameObject.Destroy (gameObject);
-						Debug.Log("bad destroy" + gameObject.name);
+//						Debug.Log("bad destroy" + gameObject.name);
 					}
 
 				}

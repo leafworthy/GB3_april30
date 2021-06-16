@@ -7,7 +7,8 @@ public class MenuButton : MonoBehaviour
 	{
 		Restart,
 		Resume,
-		MainMenu
+		MainMenu,
+		Quit
 	}
 	private bool isHighlighted;
 	public Sprite OnSprite;

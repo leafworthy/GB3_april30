@@ -25,6 +25,25 @@ namespace _SCRIPTS
         public event Action OnAirThrowStop;
         public event Action OnMoveStart;
         public event Action OnMoveStop;
+        public event Action OnReloadStart;
+        public event Action OnReload;
+        public event Action OnReloadStop;
+
+        public void ReloadStart()
+        {
+            OnReloadStart?.Invoke();
+        }
+
+        public void Reload()
+        {
+            OnReload?.Invoke();
+        }
+
+        public void ReloadStop()
+        {
+            OnReloadStop?.Invoke();
+        }
+
 
         public void MoveStart()
         {

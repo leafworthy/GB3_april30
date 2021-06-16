@@ -8,6 +8,7 @@ public class AmmoDisplay : MonoBehaviour
 	public TMP_Text ammoText;
 	protected Ammo ammoToDisplay;
 	public GameObject shakeObject;
+	public CanvasGroup ammoDisplayCanvas;
 
 
 	protected virtual void UpdateDisplay(bool shake = false)
@@ -17,12 +18,31 @@ public class AmmoDisplay : MonoBehaviour
 			ammoText.text = ammoToDisplay.AmmoInClip.ToString();
 		}
 
+		if (!ammoToDisplay.hasAmmoInClip() && ammoToDisplay.reloads)
+		{
+			GreyOut();
+		}
+		else
+		{
+			Ungrey();
+		}
+
 		bar.UpdateBar(ammoToDisplay.reserveAmmo + ammoToDisplay.AmmoInClip,
 			ammoToDisplay.maxReserveAmmo + ammoToDisplay.clipSize);
 		if (shake)
 		{
 			ShakeObject();
 		}
+	}
+
+	private void GreyOut()
+	{
+		ammoDisplayCanvas.alpha = .25f;
+	}
+
+	private void Ungrey()
+	{
+		ammoDisplayCanvas.alpha = 1;
 	}
 
 	protected void ShakeObject()

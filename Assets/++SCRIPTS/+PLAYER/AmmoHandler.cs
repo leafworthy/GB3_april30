@@ -41,7 +41,12 @@ public class AmmoHandler : MonoBehaviour
 	private void AddAmmo(AmmoType type, int amount)
 	{
 		var ammo = ammoList.FirstOrDefault(t=>t.type == type);
-		ammo.Add(amount);
+		ammo.AddAmmoToReserve(amount);
+	}
+
+	public void ReloadStart()
+	{
+		isReloading = true;
 	}
 	public void Reload(AmmoType ammoType)
 	{
@@ -50,21 +55,13 @@ public class AmmoHandler : MonoBehaviour
 			Debug.Log("Out of ammo");
 			return;
 		}
-
-		if (isReloading) return;
-		isReloading = true;
-		Debug.Log("reload start");
-		Invoke(nameof(ReloadComplete), stats.reloadTime);
 		var ammo = ammoList.FirstOrDefault(t => t.type == ammoType);
-		ammoCurrentlyReloading = ammo;
+		ammo?.Reload();
 	}
 
-	private void ReloadComplete()
+	public void ReloadStop()
 	{
-		Debug.Log("reload complete");
 		isReloading = false;
-		ammoCurrentlyReloading.Reload();
-		ammoCurrentlyReloading = null;
 	}
 
 	private void OnUseAmmo(AmmoType type, int amount)
@@ -101,6 +98,13 @@ public class AmmoHandler : MonoBehaviour
 	{
 		var ammo = ammoList.FirstOrDefault(t => t.type == type);
 		if (ammo is null) return;
-		ammo.Add(batNormalCooldown);
+		ammo.AddAmmoToReserve(batNormalCooldown);
+	}
+
+	public bool clipIsFull(AmmoType type)
+	{
+		var ammo = ammoList.FirstOrDefault(t => t.type == type);
+		if (ammo is null) return false;
+		return ammo.clipIsFull();
 	}
 }

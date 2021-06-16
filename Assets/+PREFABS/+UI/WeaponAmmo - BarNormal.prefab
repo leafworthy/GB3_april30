@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6517055484223694346}
   - component: {fileID: 3545120928561097166}
   - component: {fileID: 481633972028288589}
+  - component: {fileID: 1069865219109093101}
   m_Layer: 5
   m_Name: WeaponAmmo - BarNormal
   m_TagString: Untagged
@@ -73,7 +74,20 @@ MonoBehaviour:
   bar: {fileID: 3886815122027607175}
   ammoText: {fileID: 0}
   shakeObject: {fileID: 8558255821094062408}
+  ammoDisplayCanvas: {fileID: 1069865219109093101}
   IndicatorShine: {fileID: 8508374929086637626}
+--- !u!225 &1069865219109093101
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 857827500733417680}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1053305428175502444
 GameObject:
   m_ObjectHideFlags: 0

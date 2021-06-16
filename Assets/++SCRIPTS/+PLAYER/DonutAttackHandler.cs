@@ -90,9 +90,11 @@ namespace _SCRIPTS
 			if (!isOn) return;
 			var position = transform.position;
 			var otherPosition = other.transform.position;
-			other.TakeDamage(otherPosition - position, stats.attackDamage, position);
-			defence.TakeDamage(position - otherPosition, stats.attackDamage, position);
-			defence.GetComponent<MovementHandler>().Push(position - otherPosition, stats.attackDamage/2, position);
+			var otherAttack = new Attack(position,otherPosition, stats.attackDamage);
+			var bouncebackAttack = new Attack(otherPosition, position, stats.attackDamage);
+			other.TakeDamage(otherAttack);
+			defence.TakeDamage(bouncebackAttack);
+			defence.GetComponent<MovementHandler>().Push(bouncebackAttack.DamageDirection, MovementHandler.PushType.highest);
 		}
 
 

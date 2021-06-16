@@ -39,28 +39,29 @@ namespace _SCRIPTS
 		}
 
 
-		private void GunAttackHandlerOnAttack(OnAttackEventArgs e)
+		private void GunAttackHandlerOnAttack(Attack attack)
 		{
-			var newBullet = MAKER.Make(ASSETS.FX.bulletPrefab, e.AttackStartPosition);
+			var newBullet = MAKER.Make(ASSETS.FX.bulletPrefab, attack.DamageOrigin);
 
 			var bulletScript = newBullet.GetComponent<BulletFX>();
-			bulletScript.Fire(e.AttackStartPosition, e.AttackEndPosition);
+			Vector2 damagePosition = attack.DamagePosition;
+			bulletScript.Fire(attack.DamageOrigin, damagePosition);
 
-			var newBulletHitAnimation = MAKER.Make(ASSETS.FX.bulletHitAnimPrefab, e.AttackEndPosition);
+			var newBulletHitAnimation = MAKER.Make(ASSETS.FX.bulletHitAnimPrefab, damagePosition);
 			MAKER.Unmake(newBulletHitAnimation, 5);
 
-			SpawnMuzzleFlash(e);
+			SpawnMuzzleFlash(attack);
 
-			var newBulletShell = MAKER.Make(ASSETS.FX.bulletShellPrefab, e.AttackStartPosition);
-			newBulletShell.GetComponent<FallToFloor>().Fire((e.AttackStartPosition - e.AttackEndPosition).normalized);
-			SHAKER.ShakeCamera(e.AttackStartPosition, SHAKER.ShakeIntensityType.low);
+			var newBulletShell = MAKER.Make(ASSETS.FX.bulletShellPrefab, attack.DamageOrigin);
+			newBulletShell.GetComponent<FallToFloor>().Fire((attack.DamageOrigin - damagePosition).normalized);
+			SHAKER.ShakeCamera(attack.DamageOrigin, SHAKER.ShakeIntensityType.medium);
 			AUDIO.I.PlaySound(ASSETS.sounds.shoot_sounds.GetRandom());
 		}
 
-		private void SpawnMuzzleFlash(OnAttackEventArgs e)
+		private void SpawnMuzzleFlash(Attack attack)
 		{
 			if (!hasMuzzleFlash) return;
-			var newMuzzleFlash = MAKER.Make(ASSETS.FX.muzzleFlashPrefab, e.AttackStartPosition);
+			var newMuzzleFlash = MAKER.Make(ASSETS.FX.muzzleFlashPrefab, attack.DamageOrigin);
 			MAKER.Unmake(newMuzzleFlash, .05f);
 		}
 	}

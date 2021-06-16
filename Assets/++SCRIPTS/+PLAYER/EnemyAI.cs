@@ -6,7 +6,7 @@ namespace _SCRIPTS
 {
 	public class EnemyAI : MonoBehaviour
 	{
-
+		private bool hasAggrodBefore;
 		private DefenceHandler defenceHandler;
 		private IAttackHandler attackHandler;
 		private AstarAI astarAI;
@@ -14,7 +14,7 @@ namespace _SCRIPTS
 		private EnemyController controller;
 		private bool isOn = true;
 		private bool hasRealTarget;
-
+		public bool wandersWhenIdle = true;
 		private enum State
 		{
 			Idle,
@@ -74,6 +74,7 @@ namespace _SCRIPTS
 
 		private void UpdateAggro()
 		{
+			hasAggrodBefore = true;
 			if (CanAttackTarget())
 			{
 				controller.StopMoving();
@@ -149,7 +150,7 @@ namespace _SCRIPTS
 
 		private void Wander()
 		{
-
+			if (!wandersWhenIdle || hasAggrodBefore) return;
 			if (currentWanderCooldown <= 0)
 			{
 				TargetNewWanderPosition();

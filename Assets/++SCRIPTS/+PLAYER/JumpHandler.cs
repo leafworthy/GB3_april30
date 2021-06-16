@@ -20,7 +20,7 @@ namespace _SCRIPTS
 		private bool isOnLandable;
 		public bool isJumping;
 		private bool isGrounded = true;
-		public bool isStanding = true;
+		public bool isDoneLanding = true;
 		private bool jumpPressed;
 		private Vector3 velocity;
 		private float landingTime = .5f;
@@ -56,15 +56,13 @@ namespace _SCRIPTS
 
 		private void LandingStop()
 		{
-			Debug.Log("landing stop");
 			OnLandingStop?.Invoke();
-			isStanding = true;
+			isDoneLanding = true;
 		}
 
 		private void LandingStart()
 		{
-			Debug.Log("landing start");
-			isStanding = false;
+			isDoneLanding = false;
 		}
 
 		private void JumpRelease()
@@ -84,7 +82,7 @@ namespace _SCRIPTS
 		private bool CanJump()
 		{
 
-			return movementHandler.CanMove() && !isJumping && !jumpPressed && isStanding;
+			return movementHandler.CanMove() && !isJumping && !jumpPressed && isDoneLanding;
 		}
 
 		void FixedUpdate()
@@ -186,11 +184,11 @@ namespace _SCRIPTS
 		{
 			Debug.Log("jump");
 			isOnLandable = false;
-			isStanding = false;
+			isDoneLanding = false;
 			isJumping = true;
 			isFalling = false;
 			isGrounded = false;
-			isStanding = false;
+			isDoneLanding = false;
 			currentLandable = null;
 
 			velocity = jumpVector;
@@ -210,7 +208,7 @@ namespace _SCRIPTS
 				LandOnGround();
 			}
 
-			isStanding = false;
+			isDoneLanding = false;
 			Invoke("LandingStop", landingTime);
 			Debug.Log("land");
 			OnLand?.Invoke();
@@ -223,7 +221,7 @@ namespace _SCRIPTS
 			isJumping = false;
 			isFalling = false;
 			isGrounded = true;
-			isStanding = false;
+			isDoneLanding = false;
 
 			sortingGroup.sortingOrder = 0;
 			jumpObject.transform.localPosition = originalJumpObjectPosition;

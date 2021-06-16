@@ -19,7 +19,7 @@ namespace _SCRIPTS
 
 		private float triggerTolerance = .6f;
 		private float stickTolerance = .05f;
-		private float aimTolerance = .8f;
+		private float aimTolerance = .2f;
 
 		private Vector3 aimDirection;
 		private Vector3 moveDirection;
@@ -30,6 +30,7 @@ namespace _SCRIPTS
 		private bool startButtonPressed;
 		private Player owner;
 		private bool leftTriggerPressed;
+		private bool reloadPressed;
 		public event Action<Player> OnPauseButtonPress;
 		public event Action<Player> OnPauseButtonRelease;
 
@@ -45,6 +46,9 @@ namespace _SCRIPTS
 		public event Action OnJumpRelease;
 
 		public event Action<Vector3> OnAttackPress;
+		public event Action OnReloadPress;
+		public event Action OnReloadRelease;
+
 		public event Action OnAttackRelease;
 
 		public event Action OnMoveRelease;
@@ -55,6 +59,7 @@ namespace _SCRIPTS
 
 		public event Action OnChargePress;
 		public event Action OnChargeRelease;
+
 
 		private void Start()
 		{
@@ -68,6 +73,7 @@ namespace _SCRIPTS
 			if (!isOn) return;
 			if(PAUSE.isPaused) return;
 			HandleAiming();
+			HandleReloading();
 			HandleMovement();
 			HandleAttacking();
 			HandleJumping();
@@ -121,6 +127,20 @@ namespace _SCRIPTS
 			return GamePad.GetButton(CButton.Y, playerIndex);
 		}
 
+		private void HandleReloading()
+		{
+			if (Is_RightBumper_ButtonDown())
+			{
+				if (reloadPressed) return;
+				OnReloadPress?.Invoke();
+				reloadPressed = true;
+			}
+			else if (reloadPressed)
+			{
+				OnReloadRelease?.Invoke();
+				reloadPressed = false;
+			}
+		}
 		private void HandleCharging()
 		{
 			if (Is_B_ButtonDown())
@@ -133,6 +153,11 @@ namespace _SCRIPTS
 				OnChargeRelease?.Invoke();
 				chargePressed = false;
 			}
+		}
+
+		private bool Is_RightBumper_ButtonDown()
+		{
+			return GamePad.GetButton(CButton.RB, playerIndex);
 		}
 		private bool Is_B_ButtonDown()
 		{
@@ -240,7 +265,7 @@ namespace _SCRIPTS
 		}
 		private bool IsAimStickActive()
 		{
-			return GetRightStickDir().magnitude >= aimTolerance;
+			return GetRightStickDirUnnormalized().magnitude >= aimTolerance;
 		}
 
 		private bool IsRightTriggerDown()
@@ -259,6 +284,12 @@ namespace _SCRIPTS
 		{
 			return new Vector3(GamePad.GetAxis(CAxis.RX, playerIndex),
 				-GamePad.GetAxis(CAxis.RY, playerIndex), 0).normalized;
+		}
+
+		private Vector3 GetRightStickDirUnnormalized()
+		{
+			return new Vector3(GamePad.GetAxis(CAxis.RX, playerIndex),
+				-GamePad.GetAxis(CAxis.RY, playerIndex), 0);
 		}
 
 		private Vector3 GetRightStickDirAmplitude()

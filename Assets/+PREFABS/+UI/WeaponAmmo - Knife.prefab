@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 5130313915543273717}
   - component: {fileID: 3202479965437595441}
   - component: {fileID: 3633605713473267430}
+  - component: {fileID: 5817412736488646229}
   m_Layer: 5
   m_Name: WeaponAmmo - Knife
   m_TagString: Untagged
@@ -148,7 +149,20 @@ MonoBehaviour:
   bar: {fileID: 2932705368705012344}
   ammoText: {fileID: 0}
   shakeObject: {fileID: 7748085196546797495}
+  ammoDisplayCanvas: {fileID: 5817412736488646229}
   IndicatorShine: {fileID: 7732790336146440389}
+--- !u!225 &5817412736488646229
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1631481385751391791}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3033359028062290697
 GameObject:
   m_ObjectHideFlags: 0

@@ -45,7 +45,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.18394798, y: 0.68325865}
-  m_Size: {x: 7.9107885, y: 2.2344635}
+  m_Size: {x: 8.97, y: 3.58}
   m_Direction: 1
 --- !u!1 &4330567752162112082
 GameObject:
@@ -186,11 +186,42 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4330567752762269710}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.86, y: 0.59, z: 0}
+  m_LocalPosition: {x: -0.8600006, y: 0.59000015, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4330567752162112081}
   - {fileID: 7431454428623212983}
+  m_Father: {fileID: 4588401036631506653}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5859870553395041908
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4588401036631506653}
+  m_Layer: 7
+  m_Name: FlipObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4588401036631506653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5859870553395041908}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4330567752762269709}
   m_Father: {fileID: 7431454428826219932}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -352,7 +383,7 @@ Transform:
   - {fileID: 4330567752202396689}
   - {fileID: 7431454427251243553}
   - {fileID: 7431454429020420951}
-  - {fileID: 4330567752762269709}
+  - {fileID: 4588401036631506653}
   - {fileID: 3153177483704415968}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -381,7 +412,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.19, y: 13.29}
+  m_Size: {x: 8.61, y: 13.29}
   m_EdgeRadius: 0
 --- !u!50 &7431454428826219935
 Rigidbody2D:
@@ -438,8 +469,8 @@ MonoBehaviour:
   isPlayer: 0
   dashMultiplier: 1
   dashSpeed: 15
-  hitPushMultiplier: 1
-  reloadTime: 0.3
+  hitPushMultiplier: 0.5
+  activeRange: 300
 --- !u!114 &7431454428826219941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -537,6 +568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d082acbe0e394fdab0da3224886adda7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasNullPath: 0
 --- !u!114 &524242975675547221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -549,7 +581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f48a3a9e8f2c4b27b4827ce74093bd29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animScaleObject: {fileID: 4330567752762269709}
+  animScaleObject: {fileID: 4588401036631506653}
   isFacingRight: 1
 --- !u!114 &4767347597205688902
 MonoBehaviour:
@@ -565,7 +597,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveVelocity: {x: 0, y: 0}
   pushVelocity: {x: 0, y: 0}
-  overallVelocityMultiplier: 4
 --- !u!210 &8734020408948818940
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -589,6 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41351132bc614e109d40a33d31ca2405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wandersWhenIdle: 1
   state: 0
 --- !u!114 &536371090444542826
 MonoBehaviour:
@@ -813,6 +845,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242739, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: barColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159643716270242749, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6159643717769961305, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
