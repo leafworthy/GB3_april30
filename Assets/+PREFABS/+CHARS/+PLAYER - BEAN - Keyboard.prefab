@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 4051832538069549722}
   - component: {fileID: 2011146074571832810}
   - component: {fileID: 7217147817202528938}
+  - component: {fileID: 4783011135363159085}
   m_Layer: 6
   m_Name: +PLAYER - BEAN - Keyboard
   m_TagString: Player
@@ -202,6 +203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDamage: 40
   attackRange: 200
+  aggroRange: 50
   healthMax: 100
   attackRate: 0.15
   moveSpeed: 65
@@ -210,7 +212,7 @@ MonoBehaviour:
   dashMultiplier: 0
   dashSpeed: 90
   hitPushMultiplier: 0.5
-  reloadTime: 1
+  activeRange: 200
 --- !u!114 &5676118248608074043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,7 +284,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   isJumping: 0
-  isStanding: 1
+  isDoneLanding: 1
 --- !u!114 &5483405559309912437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,7 +299,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveVelocity: {x: 0, y: 0}
   pushVelocity: {x: 0, y: 0}
-  overallVelocityMultiplier: 4
 --- !u!114 &1992002696751343726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,18 +441,21 @@ MonoBehaviour:
     clipSize: 20
     AmmoInClip: 15
     maxReserveAmmo: 300
+    reloads: 1
   secondaryAmmo:
     type: 2
     reserveAmmo: 30
     clipSize: 5
     AmmoInClip: 4
     maxReserveAmmo: 90
+    reloads: 1
   tertiaryAmmo:
     type: 1
     reserveAmmo: 6
     clipSize: 1
     AmmoInClip: 1
     maxReserveAmmo: 6
+    reloads: 1
   isReloading: 0
 --- !u!61 &7217147817202528938
 BoxCollider2D:
@@ -479,6 +483,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.6953092, y: 0.59648967}
   m_EdgeRadius: 0
+--- !u!114 &4783011135363159085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643642257131631256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d0dd3d5961e41c681249726e477d1da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1643642257704107292
 GameObject:
   m_ObjectHideFlags: 0

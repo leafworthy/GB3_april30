@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -109,7 +110,6 @@ namespace _SCRIPTS
 		private void PlayerKnifeRelease()
 		{
 			OnAttackStop?.Invoke();
-
 		}
 
 		private void PlayerKnifePress(Vector3 obj)
@@ -119,7 +119,6 @@ namespace _SCRIPTS
 			OnUseAmmo?.Invoke(AmmoHandler.AmmoType.meleeCooldown, 999);
 			OnKnifeStart?.Invoke();
 		}
-
 
 
 		private void PlayerRemoteOnAim(Vector3 aimDirection)
@@ -169,6 +168,7 @@ namespace _SCRIPTS
 				PlayerRemoteShootRelease();
 				return;
 			}
+
 			if (!ammoHandler.HasAmmoInClip(AmmoHandler.AmmoType.ak47))
 			{
 				StartReloading();
@@ -183,9 +183,7 @@ namespace _SCRIPTS
 		private void StartReloading()
 		{
 			if (!ammoHandler.HasAmmo(AmmoHandler.AmmoType.ak47) || ammoHandler.clipIsFull(AmmoHandler.AmmoType.ak47))
-			{
 				PlayerRemoteShootRelease();
-			}
 			else
 			{
 				OnReloadStart?.Invoke();
@@ -204,23 +202,32 @@ namespace _SCRIPTS
 		{
 			if (attackType != 3) return;
 			float hitRange = 25;
-			float knifeDamageMultiplier = 1.5f;
-			var circleCast = Physics2D.OverlapCircleAll(transform.position, hitRange);
-
-			foreach (var hit2D in circleCast)
+			var knifeDamageMultiplier = 1.5f;
+			var circleCast = Physics2D.OverlapCircleAll(transform.position, hitRange, ASSETS.layers.EnemyLayer).ToList();
+			if (circleCast.Count <= 0) return;
+			var closest = circleCast[0];
+			foreach (var col in circleCast)
 			{
-				Debug.Log("hit");
-				var enemy = hit2D.transform.gameObject.GetComponent<DefenceHandler>();
-				if (enemy == null) continue;
-				if (enemy.IsPlayer()) continue;
-				var newAttack = new Attack(transform.position, enemy.transform.position, stats.attackDamage * knifeDamageMultiplier);
-				var didItKill = enemy.TakeDamage(newAttack);
-
-
-				if (!didItKill) continue;
-				ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.meleeCooldown, 999);
-				OnKillEnemy?.Invoke();
+				if (Vector2.Distance(col.gameObject.transform.position, transform.position) <
+				    Vector2.Distance(closest.transform.position, transform.position))
+				{
+					closest = col;
+				}
 			}
+			var hit2D = closest;
+
+			Debug.Log("hit");
+			var enemy = hit2D.transform.gameObject.GetComponent<DefenceHandler>();
+			if (enemy == null) return;
+			if (enemy.IsPlayer()) return;
+			var newAttack = new Attack(transform.position, enemy.transform.position,
+				stats.attackDamage * knifeDamageMultiplier);
+			var didItKill = enemy.TakeDamage(newAttack);
+
+
+			if (!didItKill) return;
+			ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.meleeCooldown, 999);
+			OnKillEnemy?.Invoke();
 		}
 
 
@@ -246,31 +253,38 @@ namespace _SCRIPTS
 			else
 				ShotMissed();
 		}
+
 		private void ShotMissed()
 		{
 			var shotPosition = GetShotMissPosition();
-			var newAttack = new Attack((Vector3)gunEndPoint.transform.position - shotPosition, GetShotMissPosition(),0);
+			var newAttack = new Attack((Vector3) gunEndPoint.transform.position - shotPosition, GetShotMissPosition(),
+				0);
 			newAttack.DamageOrigin = gunEndPoint.transform.position;
 			OnAttackStart?.Invoke(newAttack);
 		}
+
 		private void ShotHitObject()
 		{
-			var newAttack = new Attack(targetHitPosition-gunEndPoint.transform.position, targetHitPosition, stats.attackDamage);
+			var newAttack = new Attack(targetHitPosition - gunEndPoint.transform.position, targetHitPosition,
+				stats.attackDamage);
 			newAttack.DamageOrigin = gunEndPoint.transform.position;
 			OnAttackStart?.Invoke(newAttack);
 		}
+
 		private void ShotHitTarget(Vector3 origin, DefenceHandler target)
 		{
 			var heightVector = new Vector3(0, target.GetAimHeight(), 0);
-			var newAttack = new Attack(origin, targetHitPosition + heightVector,stats.attackDamage);
+			var newAttack = new Attack(origin, targetHitPosition + heightVector, stats.attackDamage);
 			OnAttackStart?.Invoke(newAttack);
 			var itKilled = target.TakeDamage(newAttack);
 			if (itKilled) OnKillEnemy?.Invoke();
 		}
+
 		private Vector3 GetShotMissPosition()
 		{
 			return GetAimCenter() + aimDir * stats.attackRange;
 		}
+
 		private GameObject CheckRaycastHit(Vector3 targetDirection)
 		{
 			var raycastHit = Physics2D.Raycast(footPoint.transform.position,
@@ -286,11 +300,13 @@ namespace _SCRIPTS
 
 			return null;
 		}
+
 		private void AimInDirection(Vector3 newDirection)
 		{
 			aimDir = newDirection.normalized;
 			OnAim?.Invoke(aimDir);
 		}
+
 		private void ShootWithCooldown(Vector3 target)
 		{
 			if (!(Time.time >= currentCooldownTime)) return;
@@ -304,11 +320,13 @@ namespace _SCRIPTS
 		{
 			OnNadeAim?.Invoke(dir);
 		}
+
 		private void FixedUpdate()
 		{
 			ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.meleeCooldown, knifeCoolDown);
 			if (isNading) AimNade(nadeAimDir);
 		}
+
 		private void NadeWithCooldown(Vector3 target)
 		{
 			if (!(Time.time >= currentCooldownTime)) return;

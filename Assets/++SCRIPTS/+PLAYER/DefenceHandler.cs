@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-
 namespace _SCRIPTS
 {
 	public class DefenceHandler : MonoBehaviour
@@ -145,6 +144,12 @@ namespace _SCRIPTS
 		public bool IsDying()
 		{
 			return isDying;
+		}
+
+		public void AddHealth(int amount)
+		{
+			health = Mathf.Min(health + amount, healthMax);
+			OnFractionChanged?.Invoke(GetFraction());
 		}
 	}
 }

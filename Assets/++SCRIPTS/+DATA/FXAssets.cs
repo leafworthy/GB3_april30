@@ -28,6 +28,11 @@ namespace _SCRIPTS
         public GameObject muzzleFlashPrefab;
         public GameObject bulletShellPrefab;
 
+        public GameObject pickupEffectPrefab;
+        public GameObject healthPickupPrefab;
+        public GameObject speedPickupPrefab;
+        public GameObject ammoPickupPrefab;
+
         public List<GameObject> GetBulletHits(FXAssets.DebreeType debreeType)
         {
             switch (debreeType)

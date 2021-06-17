@@ -61,7 +61,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4019382461760971929}
   m_Father: {fileID: 4641828159876782187}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -171,12 +172,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4019382461760971928}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.59000206, z: 0}
-  m_LocalScale: {x: 4.998901, y: 1.4781382, z: 0.5685147}
+  m_LocalRotation: {x: -0, y: -0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.015539323, y: 0.020836892, z: 0}
+  m_LocalScale: {x: -0.1765444, y: 0.052202877, z: 0.020078031}
   m_Children: []
-  m_Father: {fileID: 7854039214064336565}
-  m_RootOrder: 1
+  m_Father: {fileID: 2123745141737194032}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4019382461760971930
 SpriteRenderer:
@@ -254,6 +255,7 @@ GameObject:
   - component: {fileID: 2505822213530538088}
   - component: {fileID: 2540430931499043486}
   - component: {fileID: 634896186003514457}
+  - component: {fileID: -229570479108911878}
   m_Layer: 7
   m_Name: +DONUT
   m_TagString: Untagged
@@ -484,6 +486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wandersWhenIdle: 0
+  invincibleUntilAggro: 0
   state: 0
 --- !u!114 &4760691623764410213
 MonoBehaviour:
@@ -549,6 +552,18 @@ MonoBehaviour:
   renderer: {fileID: 5753234950461873550}
   hurtTintColor: {r: 1, g: 0, b: 0, a: 1}
   poisonTintColor: {r: 0, g: 1, b: 0, a: 1}
+--- !u!114 &-229570479108911878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019382462400588572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ce54d0809474c0f91ddaf0d8d3d6309, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4019382462604234510
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,7 +622,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4641828159876782187}
-  - {fileID: 4019382461760971929}
   m_Father: {fileID: 4019382462400588580}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

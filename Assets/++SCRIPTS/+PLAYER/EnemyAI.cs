@@ -1,4 +1,5 @@
-using System;using System.Configuration;
+using System;
+using System.Configuration;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,6 +16,8 @@ namespace _SCRIPTS
 		private bool isOn = true;
 		private bool hasRealTarget;
 		public bool wandersWhenIdle = true;
+		public bool invincibleUntilAggro = false;
+
 		private enum State
 		{
 			Idle,
@@ -30,6 +33,19 @@ namespace _SCRIPTS
 		public event Action OnAggro;
 
 		private UnitStats stats;
+
+		private void DisableAllColliders()
+		{
+			var moreColliders = GetComponentsInChildren<Collider2D>();
+			foreach (var col in moreColliders) col.enabled = false;
+		}
+
+		private void EnableAllColliders()
+		{
+			var moreColliders = GetComponentsInChildren<Collider2D>();
+			foreach (var col in moreColliders) col.enabled = true;
+		}
+
 		private void Start()
 		{
 			stats = GetComponent<UnitStats>();
@@ -40,6 +56,7 @@ namespace _SCRIPTS
 
 			defenceHandler = GetComponent<DefenceHandler>();
 			defenceHandler.OnDead += Defence_OnDead;
+			if (invincibleUntilAggro) DisableAllColliders();
 
 			attackHandler = GetComponent<IAttackHandler>();
 
@@ -75,6 +92,7 @@ namespace _SCRIPTS
 		private void UpdateAggro()
 		{
 			hasAggrodBefore = true;
+			if (invincibleUntilAggro) EnableAllColliders();
 			if (CanAttackTarget())
 			{
 				controller.StopMoving();
@@ -89,9 +107,7 @@ namespace _SCRIPTS
 					SetState(State.Idle);
 				}
 				else
-				{
 					astarAI.SetTargetPosition(currentTarget.transform);
-				}
 			}
 		}
 
@@ -102,7 +118,8 @@ namespace _SCRIPTS
 
 		private void UpdateIdle()
 		{
-			var potentialTargets = Physics2D.OverlapCircleAll(transform.position, stats.aggroRange, ASSETS.layers.PlayerLayer);
+			var potentialTargets =
+				Physics2D.OverlapCircleAll(transform.position, stats.aggroRange, ASSETS.layers.PlayerLayer);
 			if (potentialTargets.Length > 0)
 			{
 				var closest = potentialTargets[0];
@@ -111,10 +128,7 @@ namespace _SCRIPTS
 					if (target.GetComponent<IPlayerController>() is null) continue;
 					var distance = Vector3.Distance(target.transform.position, transform.position);
 					var currentClosestDistance = Vector3.Distance(closest.transform.position, transform.position);
-					if (distance < currentClosestDistance)
-					{
-						closest = target;
-					}
+					if (distance < currentClosestDistance) closest = target;
 				}
 
 				hasRealTarget = true;
@@ -134,47 +148,32 @@ namespace _SCRIPTS
 						if (target.GetComponent<IPlayerController>() is null) continue;
 						var distance = Vector3.Distance(target.transform.position, transform.position);
 						var currentClosestDistance = Vector3.Distance(closest.transform.position, transform.position);
-						if (distance < currentClosestDistance)
-						{
-							closest = target;
-						}
+						if (distance < currentClosestDistance) closest = target;
 					}
 
 					hasRealTarget = false;
 					Wander();
 				}
-
 			}
-
 		}
 
 		private void Wander()
 		{
-			if (!wandersWhenIdle || hasAggrodBefore) return;
+			if (!wandersWhenIdle || !hasAggrodBefore) return;
 			if (currentWanderCooldown <= 0)
-			{
 				TargetNewWanderPosition();
-			}
 			else
 			{
 				if (Vector3.Distance(wanderTarget.transform.position, transform.position) < stats.attackRange)
-				{
 					TargetNewWanderPosition();
-				}
 				currentWanderCooldown -= Time.deltaTime;
 			}
-
-
-
 		}
 
 		private void TargetNewWanderPosition()
 		{
 			currentWanderCooldown = wanderRate;
-			if (wanderTarget == null)
-			{
-				wanderTarget = new GameObject();
-			}
+			if (wanderTarget == null) wanderTarget = new GameObject();
 
 			wanderTarget.transform.position =
 				(Vector3) Random.insideUnitCircle * stats.aggroRange + transform.position;

@@ -1,6 +1,7 @@
 ﻿using _SCRIPTS;
 using UnityEngine;
 
+
 public class HitTintingFX : MonoBehaviour {
 
     private Material material;
@@ -45,7 +46,7 @@ public class HitTintingFX : MonoBehaviour {
         }
 
         SHAKER.ShakeCamera(transform.position, intensity);
-        HITSTUN.StartStun(duration);
+        HITSTUN.StartStun(HITSTUN.StunLength.Normal);
     }
 
     private void Update() {

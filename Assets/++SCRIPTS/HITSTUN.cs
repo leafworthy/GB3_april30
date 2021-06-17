@@ -1,12 +1,21 @@
+using System;
 using _SCRIPTS;
 using UnityEngine;
 
 public class HITSTUN : Singleton<HITSTUN>
 {
+	public enum StunLength
+	{
+		Short,
+		Normal,
+		Long,
+		Special
+	}
 	private static bool isStunned;
 	private static float currentStunDuration;
-	public static void StartStun(float duration)
+	public static void StartStun(StunLength length)
 	{
+		var duration = GetDurationFromLength(length);
 		if (isStunned)
 		{
 			if (currentStunDuration < duration)
@@ -20,6 +29,17 @@ public class HITSTUN : Singleton<HITSTUN>
 			currentStunDuration = duration;
 			isStunned = true;
 		}
+	}
+
+	private static float GetDurationFromLength(StunLength length)
+	{
+		return length switch
+		       {
+			       StunLength.Short => .01f,
+			       StunLength.Normal => .0175f,
+			       StunLength.Long => .025f,
+			       StunLength.Special => .5f,
+		       };
 	}
 
 	public void Update()

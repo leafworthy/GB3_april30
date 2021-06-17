@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace _SCRIPTS
 {
@@ -16,5 +17,17 @@ namespace _SCRIPTS
         public float dashSpeed = 15;
         public float hitPushMultiplier = 1;
         public float activeRange= 200;
+
+        private float baseSpeed;
+
+        private void Start()
+        {
+            baseSpeed = moveSpeed;
+        }
+
+        public void ResetSpeed()
+        {
+            moveSpeed = baseSpeed;
+        }
     }
 }

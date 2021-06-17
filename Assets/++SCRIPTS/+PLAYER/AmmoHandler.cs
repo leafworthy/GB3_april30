@@ -94,11 +94,11 @@ public class AmmoHandler : MonoBehaviour
 		return ammo.hasAmmoInClip();
 	}
 
-	public void AddAmmoToReserve(AmmoType type, int batNormalCooldown)
+	public void AddAmmoToReserve(AmmoType type, int amount)
 	{
 		var ammo = ammoList.FirstOrDefault(t => t.type == type);
 		if (ammo is null) return;
-		ammo.AddAmmoToReserve(batNormalCooldown);
+		ammo.AddAmmoToReserve(amount);
 	}
 
 	public bool clipIsFull(AmmoType type)

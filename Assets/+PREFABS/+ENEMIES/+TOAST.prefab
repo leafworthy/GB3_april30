@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7431454428826219932}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &7449202522025196190
 CapsuleCollider2D:
@@ -76,7 +76,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 13.4, y: -0.7, z: 0}
   m_LocalScale: {x: 15, y: 15, z: 15}
-  m_Children: []
+  m_Children:
+  - {fileID: 7431454427251243553}
   m_Father: {fileID: 4330567752762269709}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -223,7 +224,7 @@ Transform:
   m_Children:
   - {fileID: 4330567752762269709}
   m_Father: {fileID: 7431454428826219932}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7431454427251243552
 GameObject:
@@ -250,11 +251,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7431454427251243552}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.56000376, y: 0.5900016, z: 0}
-  m_LocalScale: {x: 6.91, y: 2.043236, z: 0.78586}
+  m_LocalPosition: {x: -0.87333363, y: 0.046666797, z: 0}
+  m_LocalScale: {x: 0.4606667, y: 0.13621575, z: 0.05239067}
   m_Children: []
-  m_Father: {fileID: 7431454428826219932}
-  m_RootOrder: 1
+  m_Father: {fileID: 4330567752162112081}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7431454427251243554
 SpriteRenderer:
@@ -362,6 +363,7 @@ GameObject:
   - component: {fileID: 6331622855130972574}
   - component: {fileID: 536371090444542826}
   - component: {fileID: -5220611770622036096}
+  - component: {fileID: -368593261660092427}
   m_Layer: 7
   m_Name: +TOAST
   m_TagString: Untagged
@@ -381,7 +383,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4330567752202396689}
-  - {fileID: 7431454427251243553}
   - {fileID: 7431454429020420951}
   - {fileID: 4588401036631506653}
   - {fileID: 3153177483704415968}
@@ -621,6 +622,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wandersWhenIdle: 1
+  invincibleUntilAggro: 0
   state: 0
 --- !u!114 &536371090444542826
 MonoBehaviour:
@@ -658,6 +660,18 @@ MonoBehaviour:
   renderer: {fileID: 4330567752162112095}
   hurtTintColor: {r: 1, g: 0, b: 0, a: 1}
   poisonTintColor: {r: 0, g: 1, b: 0, a: 1}
+--- !u!114 &-368593261660092427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7431454428826219940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ce54d0809474c0f91ddaf0d8d3d6309, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7431454429020420949
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,7 +701,7 @@ Transform:
   m_LocalScale: {x: 1.7190214, y: 1.7190214, z: 1.7190214}
   m_Children: []
   m_Father: {fileID: 7431454428826219932}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7431454429020420950
 SpriteRenderer:
