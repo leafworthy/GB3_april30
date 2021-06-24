@@ -12,12 +12,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce30f498daf4848f59b8a0ccf1105de6, type: 3}
   m_Name: AudioAssets
   m_EditorClassIdentifier: 
-  shoot_sounds:
-  - {fileID: 8300000, guid: d269e333ebdca47a59de5ac6949163d2, type: 3}
-  - {fileID: 8300000, guid: 8552343dae9fc4d559e6d285c7918928, type: 3}
-  - {fileID: 8300000, guid: 602d019673ff24fe98d59751e0947cd4, type: 3}
-  - {fileID: 8300000, guid: 466f0f0fca8044a24be1754e842eff59, type: 3}
-  - {fileID: 8300000, guid: 37f41832f27d44743a8387163831e105, type: 3}
-  knifehit_sounds:
-  - {fileID: 8300000, guid: ee5734dcdccbc4a109ee7c1eafd896b7, type: 3}
-  - {fileID: 8300000, guid: 522239a946dbd436a9fedd6320aa433e, type: 3}
+  player_walk_sounds_concrete:
+  - {fileID: 8300000, guid: 715bd4c2ec2df4bd4975a467002b3469, type: 3}
+  - {fileID: 8300000, guid: 4d17ab89b6d8d46d4bb201f66eb0f8be, type: 3}
+  - {fileID: 8300000, guid: 256587df86cb74815859e09eafe58e97, type: 3}
+  - {fileID: 8300000, guid: edcbd2602224241cba7a7c7888c0e952, type: 3}
+  ak47_shoot_sounds:
+  - {fileID: 8300000, guid: fef8f0c0c159b4e3094f945cb29d2e45, type: 3}
+  - {fileID: 8300000, guid: cbee6e71e560e4afd846bf5426ee9468, type: 3}
+  brock_gethit_sounds:
+  - {fileID: 8300000, guid: aa40e538814994f298f95a803dee912c, type: 3}
+  brock_walk_sounds:
+  - {fileID: 8300000, guid: 715bd4c2ec2df4bd4975a467002b3469, type: 3}
+  - {fileID: 8300000, guid: 4d17ab89b6d8d46d4bb201f66eb0f8be, type: 3}
+  - {fileID: 8300000, guid: 256587df86cb74815859e09eafe58e97, type: 3}
+  - {fileID: 8300000, guid: edcbd2602224241cba7a7c7888c0e952, type: 3}
+  brock_bat_swing_sounds:
+  - {fileID: 8300000, guid: 26c283ae8bd8e40ab934238fc6ea4678, type: 3}
+  - {fileID: 8300000, guid: 3c494470fc97643309e67f4bfec1ab04, type: 3}
+  - {fileID: 8300000, guid: 346c654cf5643475091f7782204291a3, type: 3}
+  - {fileID: 8300000, guid: 8149952a85c9940879a43bb0c9f3c9c0, type: 3}
+  - {fileID: 8300000, guid: e169a803f7c974b5480de194c3599887, type: 3}
+  brock_bathit_sounds:
+  - {fileID: 8300000, guid: 1ead5ab4b2488432ba554e4afe74d48c, type: 3}
+  brock_homerunhit_sounds:
+  - {fileID: 8300000, guid: ad542ac0af7cb487a83c84c43c61f7b4, type: 3}
+  brock_teleport_sounds:
+  - {fileID: 8300000, guid: da61b5ad0a82543999e30a2a2e1f400b, type: 3}
+  cone_gethit_sounds:
+  - {fileID: 8300000, guid: 5fca7ef8db8cb455db7fe3dda9de26ca, type: 3}
+  - {fileID: 8300000, guid: caad532f60ce146b98f46930a9f4327d, type: 3}
+  cone_walk_sounds:
+  - {fileID: 8300000, guid: 1975d37806de04dea9358058b7c7d31c, type: 3}
+  cone_roar_sounds:
+  - {fileID: 8300000, guid: 40692167b38f94793a68f0edcc803437, type: 3}
+  cone_attack_sounds:
+  - {fileID: 8300000, guid: c452b7a298aeb46d197fadbb1dd669a5, type: 3}
+  cone_die_sounds: []
+  toast_gethit_sounds: []
+  toast_walk_sounds: []
+  toast_roar_sounds: []
+  toast_attack_sounds: []
+  toast_die_sounds: []
+  bean_roll_sounds:
+  - {fileID: 8300000, guid: a93302a81b3c94af5b411d07cc7e9e71, type: 3}
+  bean_knifehit_sounds:
+  - {fileID: 8300000, guid: 13b95c14534bb4c85a1d2f42d7d47a02, type: 3}
+  bean_reload_sounds:
+  - {fileID: 8300000, guid: aaa007cae6b974510b6a764fd27aa2cd, type: 3}
+  bean_nade_throw_sounds:
+  - {fileID: 8300000, guid: 4e2b0759f034c474bb3ebee267452b4c, type: 3}
+  bean_nade_bounce_sounds:
+  - {fileID: 8300000, guid: fb63747642bc744d9aacd0c4ebef57c2, type: 3}
+  bean_nade_explosion_sounds:
+  - {fileID: 8300000, guid: 51a8c7a60491d4caeb2100c831b014b6, type: 3}

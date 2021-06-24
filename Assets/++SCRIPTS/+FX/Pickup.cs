@@ -6,9 +6,7 @@ using UnityEngine;
 [Serializable]
 public class Pickup : MonoBehaviour
 {
-	public PickupType type;
-
-	public List<PickupEffect> effects = new List<PickupEffect>();
+	private List<PickupEffect> effects = new List<PickupEffect>();
 
 	private Animator animator;
 	private static readonly int PickupTrigger = Animator.StringToHash("PickupTrigger");

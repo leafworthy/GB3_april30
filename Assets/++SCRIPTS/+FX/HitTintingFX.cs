@@ -37,7 +37,7 @@ public class HitTintingFX : MonoBehaviour {
         var intensity = SHAKER.ShakeIntensityType.low;
         if (attack.DamageAmount > 10)
         {
-            intensity = SHAKER.ShakeIntensityType.medium;
+            intensity = SHAKER.ShakeIntensityType.normal;
         }
 
         if (attack.DamageAmount > 30)

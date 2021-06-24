@@ -15,7 +15,7 @@ public class PickupHandler : MonoBehaviour
 	{
 		foreach (var currentEffect in currentEffects)
 		{
-			if (!currentEffect.UpdateEffect())
+			if (!currentEffect.CanUpdateEffect())
 			{
 				effectsToRemove.Add(currentEffect);
 			}

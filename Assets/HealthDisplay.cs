@@ -26,8 +26,8 @@ public class HealthDisplay : MonoBehaviour
 
 	private void UpdateDisplay(float f)
 	{
-		healthText.text = Mathf.Ceil(playerDefence.health).ToString();
-		bar.UpdateBar(playerDefence.health, playerDefence.healthMax);
+		healthText.text = Mathf.Ceil(playerDefence.Health).ToString();
+		bar.UpdateBar(playerDefence.Health, playerDefence.HealthMax);
 		var shaker = shakeIcon.gameObject.AddComponent<ObjectShaker>();
 		shaker.Shake(ObjectShaker.ShakeIntensityType.low);
 	}

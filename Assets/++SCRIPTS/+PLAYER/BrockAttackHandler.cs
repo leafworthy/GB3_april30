@@ -197,11 +197,11 @@ namespace _SCRIPTS
 		{
 			if (attackType == 5)
 			{
-				return stats.attackRange*2;
+				return stats.GetStat(StatType.attackRange) *2;
 			}
 			else
 			{
-				return stats.attackRange;
+				return stats.GetStat(StatType.attackRange);
 			}
 		}
 

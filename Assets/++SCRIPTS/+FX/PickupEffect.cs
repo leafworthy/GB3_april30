@@ -20,7 +20,7 @@ public class PickupEffect
 		isRunning = true;
 	}
 
-	public virtual bool UpdateEffect()
+	public virtual bool CanUpdateEffect()
 	{
 		if (!isRunning) return false;
 		if (timeLeft <= 0 && isRunning)

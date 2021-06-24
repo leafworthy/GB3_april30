@@ -3,11 +3,14 @@ using System.Linq;
 using _SCRIPTS;
 using UnityEngine;
 
-public class MoveSpeedEffect : PickupEffect
+public class StatChangeEffect : PickupEffect
 {
-	private float originalSpeed;
+	private StatType statType;
+	private bool hasFlashingEffect;
+	private float originalValue;
 	private UnitStats stats;
-	private float speedFactor = 1.5f;
+	private float changeFactor = 1;
+	private float changeFloat;
 	private float rate = .3f;
 	private float counter = 0;
 	private List<HitTintingFX> hitTintingFX;
@@ -19,13 +22,13 @@ public class MoveSpeedEffect : PickupEffect
 		hitTintingFX = _stats.GetComponents<HitTintingFX>().ToList();
 
 		stats = _stats;
-		originalSpeed = stats.moveSpeed;
-		stats.moveSpeed = stats.moveSpeed *speedFactor;
+		var stat = stats.GetStat(statType);
+		stats.SetStat(statType, stat *changeFactor+changeFloat);
 	}
 
-	public override bool UpdateEffect()
+	public override bool CanUpdateEffect()
 	{
-
+		if (!hasFlashingEffect) return false;
 		if (counter <= 0)
 		{
 			Debug.Log("tint");
@@ -39,6 +42,7 @@ public class MoveSpeedEffect : PickupEffect
 				}
 
 			}
+
 			counter = rate;
 		}
 		else
@@ -46,18 +50,21 @@ public class MoveSpeedEffect : PickupEffect
 			counter -= Time.deltaTime;
 		}
 
-		return base.UpdateEffect();
+		return base.CanUpdateEffect();
 	}
 
 	protected override void StopEffect()
 	{
-		stats.ResetSpeed();
+		stats.ResetStat(statType);
 	}
 
-	public MoveSpeedEffect(float _effectDuration, float _speedFactor, Color tint) : base(_effectDuration)
+	public StatChangeEffect(float _effectDuration, float _changeFactor, Color tint, StatType statType, bool hasFlashingEffect, float _floatChange = 0f) : base(_effectDuration)
 	{
 		tintColor = tint;
-		speedFactor = _speedFactor;
+		this.statType = statType;
+		this.hasFlashingEffect = hasFlashingEffect;
+		changeFactor = _changeFactor;
 		effectDuration = _effectDuration;
+		changeFloat = _floatChange;
 	}
 }

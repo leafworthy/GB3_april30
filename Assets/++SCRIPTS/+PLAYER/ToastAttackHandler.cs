@@ -44,7 +44,7 @@ namespace _SCRIPTS
 			if (!isOn) return;
 			if (Time.time >= currentCooldownTime)
 			{
-				currentCooldownTime = Time.time + stats.attackRate;
+				currentCooldownTime = Time.time + stats.GetStat(StatType.attackRate);
 				currentAttackTarget = target;
 				OnAttackStart?.Invoke();
 			}
@@ -67,7 +67,7 @@ namespace _SCRIPTS
 			if (target != null)
 			{
 				var newAttack = new Attack(transform.position, newTargetPosition,
-					stats.attackDamage);
+					stats.GetStat(StatType.attackDamage));
 				target.TakeDamage(newAttack);
 			}
 		}
@@ -87,7 +87,7 @@ namespace _SCRIPTS
 		{
 			if (!isOn) return false;
 			float targetDistance = Vector3.Distance(GetAimCenter(), target);
-			if (targetDistance < stats.attackRange)
+			if (targetDistance < stats.GetStat(StatType.attackRange))
 			{
 				return true;
 			}

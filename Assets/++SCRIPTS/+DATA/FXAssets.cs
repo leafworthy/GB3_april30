@@ -32,6 +32,9 @@ namespace _SCRIPTS
         public GameObject healthPickupPrefab;
         public GameObject speedPickupPrefab;
         public GameObject ammoPickupPrefab;
+        public GameObject damagePickupPrefab;
+        public GameObject nadesPickupPrefab;
+        public GameObject cashPickupPrefab;
 
         public List<GameObject> GetBulletHits(FXAssets.DebreeType debreeType)
         {

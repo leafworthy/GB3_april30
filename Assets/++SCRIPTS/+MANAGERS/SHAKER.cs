@@ -14,7 +14,7 @@ namespace _SCRIPTS
 		public enum ShakeIntensityType
 		{
 			low,
-			medium,
+			normal,
 			high
 		}
 		private void Start()
@@ -35,7 +35,7 @@ namespace _SCRIPTS
 				case ShakeIntensityType.low:
 					ShakeCamera(shakePosition, 1);
 					break;
-				case ShakeIntensityType.medium:
+				case ShakeIntensityType.normal:
 					ShakeCamera(shakePosition, 2);
 					break;
 				case ShakeIntensityType.high:

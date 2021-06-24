@@ -113,13 +113,14 @@ namespace _SCRIPTS
 
 		private bool currentTargetOutOfRange()
 		{
-			return Vector3.Distance(transform.position, currentTarget.transform.position) > stats.aggroRange;
+			return Vector3.Distance(transform.position, currentTarget.transform.position) >
+			       stats.GetStat(StatType.aggroRange);
 		}
 
 		private void UpdateIdle()
 		{
 			var potentialTargets =
-				Physics2D.OverlapCircleAll(transform.position, stats.aggroRange, ASSETS.layers.PlayerLayer);
+				Physics2D.OverlapCircleAll(transform.position, stats.GetStat(StatType.aggroRange), ASSETS.layers.PlayerLayer);
 			if (potentialTargets.Length > 0)
 			{
 				var closest = potentialTargets[0];
@@ -139,7 +140,7 @@ namespace _SCRIPTS
 			else
 			{
 				var potentialTargets2 =
-					Physics2D.OverlapCircleAll(transform.position, stats.activeRange, ASSETS.layers.PlayerLayer);
+					Physics2D.OverlapCircleAll(transform.position, stats.GetStat(StatType.activeRange), ASSETS.layers.PlayerLayer);
 				if (potentialTargets2.Length > 0)
 				{
 					var closest = potentialTargets2[0];
@@ -164,7 +165,8 @@ namespace _SCRIPTS
 				TargetNewWanderPosition();
 			else
 			{
-				if (Vector3.Distance(wanderTarget.transform.position, transform.position) < stats.attackRange)
+				if (Vector3.Distance(wanderTarget.transform.position, transform.position) <
+				    stats.GetStat(StatType.attackRange))
 					TargetNewWanderPosition();
 				currentWanderCooldown -= Time.deltaTime;
 			}
@@ -176,7 +178,7 @@ namespace _SCRIPTS
 			if (wanderTarget == null) wanderTarget = new GameObject();
 
 			wanderTarget.transform.position =
-				(Vector3) Random.insideUnitCircle * stats.aggroRange + transform.position;
+				(Vector3) Random.insideUnitCircle * stats.GetStat(StatType.aggroRange) + transform.position;
 			currentTarget = wanderTarget;
 			astarAI.SetTargetPosition(currentTarget.transform);
 		}
@@ -204,7 +206,7 @@ namespace _SCRIPTS
 		private void OnDrawGizmosSelected()
 		{
 			Gizmos.color = Color.yellow;
-			Gizmos.DrawWireSphere(transform.position, GetComponent<UnitStats>().aggroRange);
+			Gizmos.DrawWireSphere(transform.position, GetComponent<UnitStats>().GetStat(StatType.aggroRange));
 		}
 	}
 }

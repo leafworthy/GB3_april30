@@ -50,9 +50,10 @@ namespace _SCRIPTS
 
 		public void SetSpawnedPlayerGO(GameObject newGO)
 		{
+			Debug.Log("spawned player");
 			SpawnedPlayerGO = newGO;
 			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<DefenceHandler>();
-			spawnedPlayerDefence.OnDead += Die;
+			spawnedPlayerDefence.OnDying += Die;
 			attackHandler = SpawnedPlayerGO.GetComponent<IAttackHandler>();
 			attackHandler.OnKillEnemy += KillEnemy;
 		}

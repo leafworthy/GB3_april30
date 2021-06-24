@@ -19,7 +19,7 @@ namespace _SCRIPTS
 			aimer.OnAim += AimerOnAim;
 
 			gunAttackHandler = GetComponent<BeanAttackHandler>();
-			gunAttackHandler.OnAttackStart += GunAttackHandlerOnAttack;
+			gunAttackHandler.OnShootStart += GunShootHandlerOnShoot;
 			stats = GetComponent<UnitStats>();
 		}
 
@@ -39,7 +39,7 @@ namespace _SCRIPTS
 		}
 
 
-		private void GunAttackHandlerOnAttack(Attack attack)
+		private void GunShootHandlerOnShoot(Attack attack)
 		{
 			var newBullet = MAKER.Make(ASSETS.FX.bulletPrefab, attack.DamageOrigin);
 
@@ -54,8 +54,8 @@ namespace _SCRIPTS
 
 			var newBulletShell = MAKER.Make(ASSETS.FX.bulletShellPrefab, attack.DamageOrigin);
 			newBulletShell.GetComponent<FallToFloor>().Fire((attack.DamageOrigin - damagePosition).normalized);
-			SHAKER.ShakeCamera(attack.DamageOrigin, SHAKER.ShakeIntensityType.medium);
-			AUDIO.I.PlaySound(ASSETS.sounds.shoot_sounds.GetRandom());
+			SHAKER.ShakeCamera(attack.DamageOrigin, SHAKER.ShakeIntensityType.normal);
+			AUDIO.I.PlaySound(ASSETS.sounds.ak47_shoot_sounds.GetRandom());
 		}
 
 		private void SpawnMuzzleFlash(Attack attack)

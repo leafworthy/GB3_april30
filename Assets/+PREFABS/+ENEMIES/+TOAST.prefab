@@ -364,6 +364,7 @@ GameObject:
   - component: {fileID: 536371090444542826}
   - component: {fileID: -5220611770622036096}
   - component: {fileID: -368593261660092427}
+  - component: {fileID: 8057387513146874984}
   m_Layer: 7
   m_Name: +TOAST
   m_TagString: Untagged
@@ -460,18 +461,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7ded222ed74784ba6068785257fd28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 5
-  attackRange: 15
-  aggroRange: 250
-  healthMax: 100
-  attackRate: 1
-  moveSpeed: 30
-  height: 3
   isPlayer: 0
-  dashMultiplier: 1
-  dashSpeed: 15
-  hitPushMultiplier: 0.5
-  activeRange: 300
+  unitData: {fileID: 11400000, guid: 6d0c3ca5e09a04955ab12f1cbf396c17, type: 2}
 --- !u!114 &7431454428826219941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -670,6 +661,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ce54d0809474c0f91ddaf0d8d3d6309, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8057387513146874984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7431454428826219940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb6c1d80b2cb548319c9010df482c9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7431454429020420949

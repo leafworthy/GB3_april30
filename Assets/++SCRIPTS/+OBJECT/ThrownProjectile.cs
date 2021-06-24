@@ -96,6 +96,7 @@ namespace _SCRIPTS
 				var defense = raycastHit.Value.collider.gameObject.GetComponent<DefenceHandler>();
 				if (defense is null)
 				{
+					AUDIO.I.PlaySound(ASSETS.sounds.bean_nade_bounce_sounds.GetRandom());
 					Bounce(false);
 				}
 				else if(!defense.IsPlayer())

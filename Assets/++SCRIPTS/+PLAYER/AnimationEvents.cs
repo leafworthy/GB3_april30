@@ -28,7 +28,18 @@ namespace _SCRIPTS
         public event Action OnReloadStart;
         public event Action OnReload;
         public event Action OnReloadStop;
+        public event Action OnStep;
+        public event Action OnShoot;
+        public event Action OnRoar;
 
+        public void Roar()
+        {
+            OnRoar?.Invoke();
+        }
+        public void Step()
+        {
+            OnStep?.Invoke();
+        }
         public void ReloadStart()
         {
             OnReloadStart?.Invoke();

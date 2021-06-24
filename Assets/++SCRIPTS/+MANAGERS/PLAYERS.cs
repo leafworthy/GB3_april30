@@ -31,6 +31,7 @@ namespace _SCRIPTS
 
 		private static void FindPlayers()
 		{
+				players.Clear();
 			foreach (GameObject playerGO in GameObject.FindGameObjectsWithTag("Player"))
 			{
 				var player = playerGO.GetComponent<Player>();
@@ -52,9 +53,11 @@ namespace _SCRIPTS
 
 		private static void PlayerDies(Player deadPlayer)
 		{
+			Debug.Log("player dead");
 			OnPlayerDead?.Invoke(deadPlayer);
 			if (GetNumberOfLivingPlayers() <= 0)
 			{
+				Debug.Log("all dead");
 				OnAllPlayersDead?.Invoke();
 
 			}
@@ -62,7 +65,7 @@ namespace _SCRIPTS
 
 		public static int GetNumberOfLivingPlayers()
 		{
-			if (!PlayersHaveBeenFound()) return 0;
+			//if (!PlayersHaveBeenFound()) return 0;
 			return players.Count(t => !t.IsDead());
 		}
 

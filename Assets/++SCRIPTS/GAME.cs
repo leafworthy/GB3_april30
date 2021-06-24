@@ -24,6 +24,7 @@ namespace _SCRIPTS
 		private void Start()
 		{
 			CHARS.OnCharacterSelectionComplete += CHARS_OnCharacterSelectionComplete;
+			PLAYERS.OnAllPlayersDead += RestartLevel;
 			StartMainMenu();
 		}
 

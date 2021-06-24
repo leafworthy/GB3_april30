@@ -17,7 +17,7 @@ namespace _SCRIPTS
 		public event Action OnAttackStop;
 		public event Action<Vector3> OnAim;
 		public event Action OnAimStop;
-		public event Action<Attack> OnAttackStart;
+		public event Action<Attack> OnShootStart;
 		public event Action<AmmoHandler.AmmoType, int> OnUseAmmo;
 		public event Action OnKnifeStart;
 		public event Action<Vector3> OnNadeAim;
@@ -220,8 +220,9 @@ namespace _SCRIPTS
 			var enemy = hit2D.transform.gameObject.GetComponent<DefenceHandler>();
 			if (enemy == null) return;
 			if (enemy.IsPlayer()) return;
+			var damage = stats.GetStat(StatType.attackDamage);
 			var newAttack = new Attack(transform.position, enemy.transform.position,
-				stats.attackDamage * knifeDamageMultiplier);
+				stats.GetStat(StatType.attackDamage) * knifeDamageMultiplier);
 			var didItKill = enemy.TakeDamage(newAttack);
 
 
@@ -260,36 +261,36 @@ namespace _SCRIPTS
 			var newAttack = new Attack((Vector3) gunEndPoint.transform.position - shotPosition, GetShotMissPosition(),
 				0);
 			newAttack.DamageOrigin = gunEndPoint.transform.position;
-			OnAttackStart?.Invoke(newAttack);
+			OnShootStart?.Invoke(newAttack);
 		}
 
 		private void ShotHitObject()
 		{
 			var newAttack = new Attack(targetHitPosition - gunEndPoint.transform.position, targetHitPosition,
-				stats.attackDamage);
+				stats.GetStat(StatType.attackDamage));
 			newAttack.DamageOrigin = gunEndPoint.transform.position;
-			OnAttackStart?.Invoke(newAttack);
+			OnShootStart?.Invoke(newAttack);
 		}
 
 		private void ShotHitTarget(Vector3 origin, DefenceHandler target)
 		{
 			var heightVector = new Vector3(0, target.GetAimHeight(), 0);
-			var newAttack = new Attack(origin, targetHitPosition + heightVector, stats.attackDamage);
-			OnAttackStart?.Invoke(newAttack);
+			var newAttack = new Attack(origin, targetHitPosition + heightVector, stats.GetStat(StatType.attackDamage));
+			OnShootStart?.Invoke(newAttack);
 			var itKilled = target.TakeDamage(newAttack);
 			if (itKilled) OnKillEnemy?.Invoke();
 		}
 
 		private Vector3 GetShotMissPosition()
 		{
-			return GetAimCenter() + aimDir * stats.attackRange;
+			return GetAimCenter() + aimDir * stats.GetStat(StatType.attackRange);
 		}
 
 		private GameObject CheckRaycastHit(Vector3 targetDirection)
 		{
 			var raycastHit = Physics2D.Raycast(footPoint.transform.position,
 				targetDirection.normalized,
-				stats.attackRange,
+				stats.GetStat(StatType.attackRange),
 				ASSETS.layers.EnemyLayer);
 
 			if (raycastHit.collider != null)
@@ -311,7 +312,7 @@ namespace _SCRIPTS
 		{
 			if (!(Time.time >= currentCooldownTime)) return;
 			OnUseAmmo?.Invoke(AmmoHandler.AmmoType.ak47, 1);
-			currentCooldownTime = Time.time + stats.attackRate;
+			currentCooldownTime = Time.time + stats.GetStat(StatType.attackRate);
 			ShootTarget(target);
 		}
 
@@ -332,13 +333,13 @@ namespace _SCRIPTS
 			if (!(Time.time >= currentCooldownTime)) return;
 			OnUseAmmo?.Invoke(AmmoHandler.AmmoType.nades, 1);
 			OnNadeThrowStart?.Invoke();
-			currentCooldownTime = Time.time + stats.attackRate;
+			currentCooldownTime = Time.time + stats.GetStat(StatType.attackRate);
 		}
 
 		public bool CanAttack(Vector3 target)
 		{
 			var targetDistance = Vector3.Distance(GetAimCenter(), target);
-			if (targetDistance < stats.attackRange) return true;
+			if (targetDistance < stats.GetStat(StatType.attackRate)) return true;
 
 			return false;
 		}

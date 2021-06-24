@@ -191,6 +191,7 @@ GameObject:
   - component: {fileID: 2953078431081980772}
   - component: {fileID: 6763759508221308576}
   - component: {fileID: 8321066564146422052}
+  - component: {fileID: 7566285724352199211}
   m_Layer: 6
   m_Name: +PLAYER - LEE
   m_TagString: Player
@@ -291,18 +292,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7ded222ed74784ba6068785257fd28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 25
-  attackRange: 15
-  aggroRange: 50
-  healthMax: 300
-  attackRate: 0.4
-  moveSpeed: 70
-  height: 3
   isPlayer: 1
-  dashMultiplier: 3
-  dashSpeed: 2
-  hitPushMultiplier: 0.5
-  reloadTime: 0.3
+  unitData: {fileID: 11400000, guid: 55b9a01585bee4f8fb54f331a7c4ac4d, type: 2}
 --- !u!114 &4124175620475615131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,7 +319,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   isJumping: 0
-  isStanding: 1
+  isDoneLanding: 1
 --- !u!114 &1730899913388502724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,7 +346,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveVelocity: {x: 0, y: 0}
   pushVelocity: {x: 0, y: 0}
-  overallVelocityMultiplier: 4
 --- !u!114 &1364995849855492122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,18 +466,21 @@ MonoBehaviour:
     clipSize: 0
     AmmoInClip: 0
     maxReserveAmmo: 100
+    reloads: 1
   secondaryAmmo:
     type: 5
     reserveAmmo: 10
     clipSize: 10
     AmmoInClip: 10
     maxReserveAmmo: 10
+    reloads: 1
   tertiaryAmmo:
     type: 4
     reserveAmmo: 100
     clipSize: 0
     AmmoInClip: 0
     maxReserveAmmo: 100
+    reloads: 1
   isReloading: 0
 --- !u!114 &8321066564146422052
 MonoBehaviour:
@@ -504,6 +497,18 @@ MonoBehaviour:
   aimTargetGraphic: {fileID: 0}
   aimLightTransform: {fileID: 0}
   hasMuzzleFlash: 0
+--- !u!114 &7566285724352199211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a827aa05e9584ef4b4166562ea303188, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3833892833947842660
 GameObject:
   m_ObjectHideFlags: 0

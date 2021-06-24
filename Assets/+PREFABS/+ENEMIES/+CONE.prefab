@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 668381582522397677}
   - component: {fileID: 9063152299922591426}
   - component: {fileID: -2832218038013204157}
+  - component: {fileID: 3696825763128644555}
   m_Layer: 7
   m_Name: +CONE
   m_TagString: Untagged
@@ -366,18 +367,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7ded222ed74784ba6068785257fd28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 10
-  attackRange: 10
-  aggroRange: 40
-  healthMax: 200
-  attackRate: 2
-  moveSpeed: 30
-  height: 3
   isPlayer: 0
-  dashMultiplier: 1
-  dashSpeed: 15
-  hitPushMultiplier: 0.3
-  activeRange: 40
+  unitData: {fileID: 11400000, guid: c02aec4cc3eec40779caeffd1cb4e07c, type: 2}
 --- !u!114 &4317599530125453782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -581,6 +572,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ce54d0809474c0f91ddaf0d8d3d6309, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3696825763128644555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136819711188386144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bcf25ad81e24afea5b9e52db61f5850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9136819711387657586

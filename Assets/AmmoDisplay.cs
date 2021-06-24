@@ -6,6 +6,7 @@ public class AmmoDisplay : MonoBehaviour
 {
 	public AmmoBar bar;
 	public TMP_Text ammoText;
+	public TMP_Text totalText;
 	protected Ammo ammoToDisplay;
 	public GameObject shakeObject;
 	public CanvasGroup ammoDisplayCanvas;
@@ -15,10 +16,19 @@ public class AmmoDisplay : MonoBehaviour
 	{
 		if (ammoText != null)
 		{
-			ammoText.text = ammoToDisplay.AmmoInClip.ToString();
+			ammoText.text = ammoToDisplay.reloads ? ammoToDisplay.AmmoInClip.ToString() : ammoToDisplay.reserveAmmo.ToString();
+		}
+
+		if (totalText != null)
+		{
+			totalText.text = ammoToDisplay.reserveAmmo.ToString();
 		}
 
 		if (!ammoToDisplay.hasAmmoInClip() && ammoToDisplay.reloads)
+		{
+			GreyOut();
+		}
+		else if(!ammoToDisplay.hasAmmo() && !ammoToDisplay.reloads)
 		{
 			GreyOut();
 		}
@@ -27,8 +37,7 @@ public class AmmoDisplay : MonoBehaviour
 			Ungrey();
 		}
 
-		bar.UpdateBar(ammoToDisplay.reserveAmmo + ammoToDisplay.AmmoInClip,
-			ammoToDisplay.maxReserveAmmo + ammoToDisplay.clipSize);
+		bar.UpdateBar(ammoToDisplay.reserveAmmo, ammoToDisplay.maxReserveAmmo);
 		if (shake)
 		{
 			ShakeObject();

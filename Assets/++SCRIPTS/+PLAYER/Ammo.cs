@@ -37,32 +37,33 @@ public class Ammo
 
 	public void Use(int amount)
 	{
-		if (AmmoInClip < amount)
+		if (reloads)
 		{
-			amount -= AmmoInClip;
-			AmmoInClip = 0;
+			AmmoInClip = Mathf.Max(AmmoInClip - amount, 0);
+			OnAmmoUsed?.Invoke();
 		}
 		else
-			AmmoInClip -= amount;
-
-		reserveAmmo = Mathf.Max(reserveAmmo - amount, 0);
-		OnAmmoUsed?.Invoke();
+		{
+			reserveAmmo = Mathf.Max(reserveAmmo - amount, 0);
+			OnAmmoUsed?.Invoke();
+		}
 	}
 
 	public void Reload()
 	{
 		if (!reloads) return;
 		if (reserveAmmo <= 0) return;
-		if (AmmoInClip == clipSize) return;
-		if (clipSize - AmmoInClip > reserveAmmo)
+		if (AmmoInClip >= clipSize) return;
+		var ammoNeeded = clipSize - AmmoInClip;
+		if (ammoNeeded > reserveAmmo)
 		{
 			AmmoInClip += reserveAmmo;
 			reserveAmmo = 0;
 		}
 		else
 		{
-			AmmoInClip = clipSize;
-			reserveAmmo -= clipSize;
+			reserveAmmo -= ammoNeeded;
+			AmmoInClip += ammoNeeded;
 		}
 
 		OnAmmoGained?.Invoke();

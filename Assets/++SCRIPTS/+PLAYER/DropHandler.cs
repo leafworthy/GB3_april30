@@ -11,11 +11,28 @@ public class DropHandler : MonoBehaviour
 	{
 		playerHealth = GetComponent<DefenceHandler>();
 		playerHealth.OnDying += Drop;
+
+
 		dropsToSpawn.Add(ASSETS.FX.ammoPickupPrefab);
 		dropsToSpawn.Add(ASSETS.FX.ammoPickupPrefab);
 		dropsToSpawn.Add(ASSETS.FX.ammoPickupPrefab);
 		dropsToSpawn.Add(ASSETS.FX.ammoPickupPrefab);
+
+		dropsToSpawn.Add(ASSETS.FX.cashPickupPrefab);
+		dropsToSpawn.Add(ASSETS.FX.cashPickupPrefab);
+		dropsToSpawn.Add(ASSETS.FX.cashPickupPrefab);
+		dropsToSpawn.Add(ASSETS.FX.cashPickupPrefab);
+
 		dropsToSpawn.Add(ASSETS.FX.healthPickupPrefab);
+		dropsToSpawn.Add(ASSETS.FX.healthPickupPrefab);
+		dropsToSpawn.Add(ASSETS.FX.healthPickupPrefab);
+		dropsToSpawn.Add(ASSETS.FX.healthPickupPrefab);
+
+		dropsToSpawn.Add(ASSETS.FX.nadesPickupPrefab);
+		dropsToSpawn.Add(ASSETS.FX.nadesPickupPrefab);
+
+		dropsToSpawn.Add(ASSETS.FX.damagePickupPrefab);
+
 		dropsToSpawn.Add(ASSETS.FX.speedPickupPrefab);
 	}
 

@@ -90,8 +90,8 @@ namespace _SCRIPTS
 			if (!isOn) return;
 			var position = transform.position;
 			var otherPosition = other.transform.position;
-			var otherAttack = new Attack(position,otherPosition, stats.attackDamage);
-			var bouncebackAttack = new Attack(otherPosition, position, stats.attackDamage);
+			var otherAttack = new Attack(position,otherPosition, stats.GetStat(StatType.attackDamage));
+			var bouncebackAttack = new Attack(otherPosition, position, stats.GetStat(StatType.attackDamage));
 			other.TakeDamage(otherAttack);
 			defence.TakeDamage(bouncebackAttack);
 			defence.GetComponent<MovementHandler>().Push(bouncebackAttack.DamageDirection, MovementHandler.PushType.highest);
@@ -102,7 +102,7 @@ namespace _SCRIPTS
 		{
 			if (!isOn) return false;
 			var targetDistance = Vector3.Distance(GetAimCenter(), target);
-			return targetDistance < stats.attackRange;
+			return targetDistance < stats.GetStat(StatType.attackRange);
 		}
 
 

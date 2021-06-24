@@ -33,7 +33,7 @@ namespace _SCRIPTS
 			attackHandler = GetComponent<BeanAttackHandler>();
 			attackHandler.OnAim += Aim;
 			attackHandler.OnAimStop += AimStop;
-			attackHandler.OnAttackStart += AttackStart;
+			attackHandler.OnShootStart += ShootStart;
 			attackHandler.OnAttackStop += AttackStop;
 			attackHandler.OnNadeThrowStart += NadeThrow;
 			attackHandler.OnKnifeStart += KnifeStart;
@@ -118,7 +118,7 @@ namespace _SCRIPTS
 			isAttacking = false;
 		}
 
-		private void AttackStart(Attack attack)
+		private void ShootStart(Attack attack)
 		{
 			isAttacking = true;
 		}

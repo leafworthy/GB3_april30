@@ -13,7 +13,8 @@ public class AmmoHandler : MonoBehaviour
 		pistol,
 		specialCooldown,
 		meleeCooldown,
-		kunai
+		kunai,
+		cash
 	}
 
 	private List<Ammo> ammoList = new List<Ammo>();

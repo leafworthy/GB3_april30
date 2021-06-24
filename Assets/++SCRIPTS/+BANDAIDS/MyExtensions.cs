@@ -20,10 +20,18 @@ namespace _SCRIPTS
 			list = shuffledList;
 		}
 
-		public static T GetRandom<T>(this List<T> list)
+		public static  T GetRandom<T>(this List<T> list) where T:Object
 		{
-			return list[Random.Range(0, list.Count)];
+			if (list.Count == 0) return null;
+			return list[(int)Random.Range(0, list.Count)];
+		}
+
+		public static void PlayRandom(this List<AudioClip> list)
+		{
+			AUDIO.I.PlaySound(list.GetRandom());
 		}
 
 	}
+
+
 }

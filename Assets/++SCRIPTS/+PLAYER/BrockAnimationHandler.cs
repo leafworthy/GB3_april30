@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace _SCRIPTS
 {
-	public class BrockAnimation : MonoBehaviour
+	public class BrockAnimationHandler : MonoBehaviour
 	{
 		public Animator animator;
 

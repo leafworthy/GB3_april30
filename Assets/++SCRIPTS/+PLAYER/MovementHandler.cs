@@ -163,13 +163,13 @@ namespace _SCRIPTS
 		private Vector3 GetMoveVelocity()
 		{
 			var dir = (targetPosition - transform.position).normalized;
-			return dir * stats.moveSpeed;
+			return dir * stats.GetStat(StatType.moveSpeed);
 		}
 
 		private Vector2 GetDashVelocity()
 		{
 			var dir = moveDir;
-			return dir * stats.dashSpeed;
+			return dir * stats.GetStat(StatType.dashSpeed);
 		}
 
 		private void FixedUpdate()
@@ -230,7 +230,8 @@ namespace _SCRIPTS
 
 		private void Teleport()
 		{
-			rb.MovePosition(transform.position + moveDir * stats.moveSpeed * stats.dashMultiplier);
+			rb.MovePosition(transform.position +
+			                moveDir * stats.GetStat(StatType.moveSpeed) * stats.GetStat(StatType.dashMultiplier));
 		}
 
 		private void DashStop()
@@ -256,7 +257,7 @@ namespace _SCRIPTS
 			if (isPressingDash) return;
 			Debug.Log("first start");
 			isPressingDash = true;
-			Push(moveDir, stats.dashSpeed);
+			Push(moveDir, stats.GetStat(StatType.dashSpeed));
 			DisableMovement();
 			OnDash?.Invoke();
 		}
@@ -288,7 +289,7 @@ namespace _SCRIPTS
 				else
 					OnMoveDirectionChange?.Invoke(false);
 
-				MoveTo(transform.position + direction * (stats.moveSpeed * 2));
+				MoveTo(transform.position + direction * (stats.GetStat(StatType.moveSpeed) * 2));
 			}
 		}
 

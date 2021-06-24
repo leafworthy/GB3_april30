@@ -91,7 +91,6 @@ GameObject:
   - component: {fileID: 1929749786428421014}
   - component: {fileID: 5483405559309912437}
   - component: {fileID: 1992002696751343726}
-  - component: {fileID: 825551787369046192}
   - component: {fileID: 7611672806404738084}
   - component: {fileID: 7975086854433813612}
   - component: {fileID: 2115586798083210974}
@@ -201,18 +200,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7ded222ed74784ba6068785257fd28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 40
-  attackRange: 200
-  aggroRange: 50
-  healthMax: 100
-  attackRate: 0.15
-  moveSpeed: 65
-  height: 5
   isPlayer: 1
-  dashMultiplier: 0
-  dashSpeed: 90
-  hitPushMultiplier: 0.5
-  activeRange: 200
+  unitData: {fileID: 0}
 --- !u!114 &5676118248608074043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,20 +301,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animScaleObject: {fileID: 6151748755242720578}
-  isFacingRight: 1
---- !u!114 &825551787369046192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1643642257131631256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f48a3a9e8f2c4b27b4827ce74093bd29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animScaleObject: {fileID: 2266660076447527491}
   isFacingRight: 1
 --- !u!114 &7611672806404738084
 MonoBehaviour:
@@ -850,11 +825,6 @@ GameObject:
 --- !u!1 &1643642257464710794 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5095889973572830137, guid: 00909d1dfc93948889d95f669ca73974, type: 3}
-  m_PrefabInstance: {fileID: 5798207508384961843}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2266660076447527491 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5693557454176986992, guid: 00909d1dfc93948889d95f669ca73974, type: 3}
   m_PrefabInstance: {fileID: 5798207508384961843}
   m_PrefabAsset: {fileID: 0}
 --- !u!212 &1643642258410679602 stripped

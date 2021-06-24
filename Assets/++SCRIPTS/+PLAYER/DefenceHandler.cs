@@ -11,8 +11,26 @@ namespace _SCRIPTS
 		public event Action OnDead;
 		private event Action OnWounded;
 
-		public float healthMax;
-		public float health;
+		public float HealthMax
+		{
+
+			get { return stats.GetStat(StatType.healthMax); }
+			private set { stats.SetStat(StatType.healthMax, value); }
+		}
+
+		public float Health
+		{
+			get
+			{
+				return stats.GetStat(StatType.health);
+			}
+			private set
+			{
+				stats.SetStat(StatType.health, value);
+			}
+		}
+
+
 		private float woundHealth = .8f;
 		private UnitStats stats;
 		public bool isInvincible;
@@ -23,33 +41,19 @@ namespace _SCRIPTS
 
 		public bool IsWounded()
 		{
-			return health / healthMax <= woundHealth;
+			return Health / HealthMax <= woundHealth;
 		}
 
 		public float GetFraction()
 		{
-			if (stats is null)
-			{
-				stats = GetComponent<UnitStats>();
-			}
-
-			if (stats != null)
-				healthMax = stats.healthMax;
-			else
-				healthMax = 100;
-			return health / healthMax;
+			return stats.GetStat(StatType.health) / HealthMax;
 		}
 		private void Start()
 		{
 			animationEvents = GetComponentInChildren<AnimationEvents>();
 			animationEvents.OnDieStop += Die;
 			stats = GetComponent<UnitStats>();
-			if (stats != null)
-				healthMax = stats.healthMax;
-			else
-				healthMax = 100;
-
-			health = healthMax;
+			Health = HealthMax;
 			OnFractionChanged?.Invoke(1);
 		}
 
@@ -58,16 +62,16 @@ namespace _SCRIPTS
 		{
 			if (!IsDeadOrDying())
 			{
-				health -= attack.DamageAmount;
-				OnFractionChanged?.Invoke(health / healthMax);
+				stats.ChangeStat(StatType.health, -attack.DamageAmount);
+				OnFractionChanged?.Invoke(Health / HealthMax);
 				OnDamaged?.Invoke(attack);
 
 				SprayBlood(15, attack.DamagePosition, attack.DamageDirection);
 
-				if (health <= 0)
+				if (Health <= 0)
 				{
 					StartDying();
-					health = 0;
+					Health = 0;
 					return true;
 				}
 				else if (IsWounded()) OnWounded?.Invoke();
@@ -126,7 +130,7 @@ namespace _SCRIPTS
 		public float GetAimHeight()
 		{
 			if (stats is null) return 0;
-			return stats.height;
+			return stats.GetStat(StatType.aimHeight);
 		}
 
 		public Vector3 GetPosition()
@@ -148,7 +152,7 @@ namespace _SCRIPTS
 
 		public void AddHealth(int amount)
 		{
-			health = Mathf.Min(health + amount, healthMax);
+			stats.ChangeStat(StatType.health, amount);
 			OnFractionChanged?.Invoke(GetFraction());
 		}
 	}
