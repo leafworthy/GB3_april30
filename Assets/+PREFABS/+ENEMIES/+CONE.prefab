@@ -261,6 +261,7 @@ GameObject:
   - component: {fileID: 9063152299922591426}
   - component: {fileID: -2832218038013204157}
   - component: {fileID: 3696825763128644555}
+  - component: {fileID: 6650088316574061485}
   m_Layer: 7
   m_Name: +CONE
   m_TagString: Untagged
@@ -381,8 +382,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthMax: 0
-  health: 0
   isInvincible: 0
 --- !u!114 &1868243376366810161
 MonoBehaviour:
@@ -439,7 +438,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d082acbe0e394fdab0da3224886adda7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasNullPath: 0
 --- !u!114 &2209905426164157073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -467,7 +465,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveVelocity: {x: 0, y: 0}
-  pushVelocity: {x: 0, y: 0}
 --- !u!114 &5634887154196346202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,9 +514,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6893fa1527270f948afbfeaee5536ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 494462091829049330}
-  hurtTintColor: {r: 1, g: 0, b: 0, a: 1}
-  poisonTintColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!114 &6249834367962991805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -586,6 +580,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bcf25ad81e24afea5b9e52db61f5850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6650088316574061485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136819711188386144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe15b50940a41e3a0f7beb7c5adbc47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderersToTint:
+  - {fileID: 494462091829049330}
 --- !u!1 &9136819711387657586
 GameObject:
   m_ObjectHideFlags: 0

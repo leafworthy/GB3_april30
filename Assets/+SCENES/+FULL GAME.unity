@@ -145,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6110766342226134774, guid: 86cd4dae2813b4b3b81ae8190ef8c5f9, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6110766342226134774, guid: 86cd4dae2813b4b3b81ae8190ef8c5f9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -187,51 +187,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8238487111484618520, guid: 86cd4dae2813b4b3b81ae8190ef8c5f9, type: 3}
+      propertyPath: levels
+      value: 
+      objectReference: {fileID: 11400000, guid: b0b82a38d582e4a6c883581ed97e5fa0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86cd4dae2813b4b3b81ae8190ef8c5f9, type: 3}
---- !u!1 &1629653997
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1629653999}
-  - component: {fileID: 1629653998}
-  m_Layer: 0
-  m_Name: SCENE TESTING
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1629653998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629653997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85f560685f38140febe1daac5e810cdb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1629653999
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629653997}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -94.66845, y: -16.31378, z: -36.5291}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2835704513147586686
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -382,7 +343,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7265756822954985104, guid: 879b308ee9ba54531a1aa87c35680e09, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7265756822954985104, guid: 879b308ee9ba54531a1aa87c35680e09, type: 3}
       propertyPath: m_LocalPosition.x

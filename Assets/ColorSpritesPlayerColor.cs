@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using _SCRIPTS;
 using UnityEngine;
 
 public class ColorSpritesPlayerColor : MonoBehaviour

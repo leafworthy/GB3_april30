@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using _SCRIPTS;
 using UnityEngine;
 
 public class HUD : Singleton<HUD>

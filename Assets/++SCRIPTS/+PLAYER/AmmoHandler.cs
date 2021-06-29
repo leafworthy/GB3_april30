@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _SCRIPTS;
 using UnityEngine;
 
 public class AmmoHandler : MonoBehaviour

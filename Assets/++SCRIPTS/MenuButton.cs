@@ -10,7 +10,6 @@ public class MenuButton : MonoBehaviour
 		MainMenu,
 		Quit
 	}
-	private bool isHighlighted;
 	public Sprite OnSprite;
 	public Sprite OffSprite;
 	public Image sprite;
@@ -25,12 +24,10 @@ public class MenuButton : MonoBehaviour
 	public void Highlight()
 	{
 		sprite.sprite = OnSprite;
-		isHighlighted = true;
 	}
 
 	public void UnHighlight()
 	{
 		sprite.sprite = OffSprite;
-		isHighlighted = false;
 	}
 }

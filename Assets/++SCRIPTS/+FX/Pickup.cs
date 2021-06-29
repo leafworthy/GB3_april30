@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
-using _SCRIPTS;
 using UnityEngine;
 
 [Serializable]
-public class Pickup : MonoBehaviour
+public abstract class Pickup : MonoBehaviour
 {
 	private List<PickupEffect> effects = new List<PickupEffect>();
-
+	public Color pickupTintColor;
 	private Animator animator;
 	private static readonly int PickupTrigger = Animator.StringToHash("PickupTrigger");
-	public event Action OnPickup;
+	public event Action<Collider2D, Color> OnPickup;
 	private bool hasBeenPickedUp;
 
 	public enum PickupType
@@ -33,13 +32,12 @@ public class Pickup : MonoBehaviour
 	{
 		if (hasBeenPickedUp) return;
 		animator ??= GetComponentInChildren<Animator>();
-		var pickupHandler = other.GetComponent<PickupHandler>();
+
+		var pickupHandler = other.GetComponent<PickupEffectHandler>();
 		if (pickupHandler is null) return;
 		pickupHandler.PickUp(this);
 		hasBeenPickedUp = true;
-		OnPickup?.Invoke();
+		OnPickup?.Invoke(other, pickupTintColor);
 		animator.SetTrigger(PickupTrigger);
-		var fx = MAKER.Make(ASSETS.FX.pickupEffectPrefab, transform.position);
-		//MAKER.Unmake(fx,3);
 	}
 }

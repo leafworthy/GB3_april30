@@ -2,93 +2,81 @@ using System;
 using Pathfinding;
 using UnityEngine;
 
-namespace _SCRIPTS
+public class AstarAI : MonoBehaviour
 {
-	public class AstarAI : MonoBehaviour
+	public event Action<Vector3> OnNewDirection;
+	public event Action OnReachedEndOfPath;
+
+	private Transform targetPosition;
+	private Seeker seeker;
+	private Path path;
+
+	private float nextWaypointDistance = 3;
+	private int currentWaypoint;
+
+	private void Start () {
+		seeker = GetComponent<Seeker>();
+		var aStar = FindObjectOfType<AstarPath>();
+		if (aStar is null)
+		{
+			this.enabled = false;
+		}
+	}
+
+	public void SetTargetPosition(Transform newTargetPosition)
 	{
-		public event Action<Vector3> OnNewDirection;
-		public event Action OnReachedEndOfPath;
+		targetPosition = newTargetPosition;
+		seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
+	}
 
-		private Transform targetPosition;
-		private Seeker seeker;
-		private Path path;
+	private void OnPathComplete (Path p)
+	{
+		if (p.error) return;
+		path = p;
+		currentWaypoint = 0;
+	}
 
-		private float nextWaypointDistance = 3;
-		private int currentWaypoint = 0;
-		[SerializeField]private bool hasNullPath;
+	private void Update ()
+	{
+		if (PathIsInvalid()) return;
+		UpdatePositionOnPath();
 
-		private void Start () {
-			seeker = GetComponent<Seeker>();
-			var aStar = FindObjectOfType<AstarPath>();
-			if (aStar is null)
+		Vector3 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
+		OnNewDirection?.Invoke(dir);
+	}
+
+	private void UpdatePositionOnPath()
+	{
+		while (true)
+		{
+			var distanceToWaypoint = Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]);
+			if (distanceToWaypoint < nextWaypointDistance)
 			{
-				this.enabled = false;
-			}
-		}
-
-		public void SetTargetPosition(Transform newTargetPosition)
-		{
-			targetPosition = newTargetPosition;
-			seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
-		}
-
-		private void OnPathComplete (Path p)
-		{
-			if (p.error) return;
-			path = p;
-			currentWaypoint = 0;
-		}
-
-		private void Update ()
-		{
-			if (PathIsInvalid()) return;
-			UpdatePositionOnPath();
-
-			Vector3 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
-			OnNewDirection?.Invoke(dir);
-		}
-
-		private void UpdatePositionOnPath()
-		{
-			while (true)
-			{
-				var distanceToWaypoint = Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]);
-				if (distanceToWaypoint < nextWaypointDistance)
+				if (currentWaypoint + 1 < path.vectorPath.Count)
 				{
-					if (currentWaypoint + 1 < path.vectorPath.Count)
-					{
-						currentWaypoint++;
-					}
-					else
-					{
-						OnReachedEndOfPath?.Invoke();
-						break;
-					}
+					currentWaypoint++;
 				}
 				else
 				{
+					OnReachedEndOfPath?.Invoke();
 					break;
 				}
 			}
+			else
+			{
+				break;
+			}
 		}
+	}
 
-		private bool PathIsInvalid()
+	private bool PathIsInvalid()
+	{
+		if (targetPosition is null)
 		{
-			if (targetPosition is null)
-			{
-				hasNullPath = true;
-				return true;
-			}
-
-			seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
-			if (path is null)
-			{
-				hasNullPath = true;
-				return true;
-			}
-
-			hasNullPath = false;
-			return false;
+			return true;
 		}
+
+		seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
+		return path is null;
 	}
 }

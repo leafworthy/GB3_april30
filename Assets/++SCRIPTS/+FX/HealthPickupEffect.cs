@@ -1,21 +1,15 @@
-using _SCRIPTS;
-
 public class HealthPickupEffect : PickupEffect
 {
-	private int amount = 25;
+	private int amount;
 
 	public override void StartEffect(UnitStats stats)
 	{
 		effectDuration = 0;
-		var defence = stats.gameObject.GetComponent<DefenceHandler>();
-		if (defence is null) return;
+		var defence = stats.GetComponent<DefenceHandler>();
 		defence.AddHealth(amount);
+		base.StartEffect(stats);
 	}
 
-	protected override void StopEffect()
-	{
-		base.StopEffect();
-	}
 
 	public HealthPickupEffect(float _effectDuration, int _amount) : base(_effectDuration)
 	{

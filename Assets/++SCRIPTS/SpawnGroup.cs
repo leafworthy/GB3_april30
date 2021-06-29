@@ -1,24 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace _SCRIPTS
+[System.Serializable]
+public class SpawnGroup : MonoBehaviour
 {
-	[System.Serializable]
-	public class SpawnGroup : MonoBehaviour
-	{
-		public List<GameObject> spawnPoints;
+	public List<GameObject> spawnPoints;
 
-		void OnValidate()
+	void OnValidate()
+	{
+		spawnPoints.Clear();
+		foreach (Transform child in transform)
 		{
-			spawnPoints.Clear();
-			foreach (Transform child in transform)
+			if (child != transform)
 			{
-				if (child != transform)
-				{
-					spawnPoints.Add(child.gameObject);
-				}
+				spawnPoints.Add(child.gameObject);
 			}
 		}
 	}
 }
-

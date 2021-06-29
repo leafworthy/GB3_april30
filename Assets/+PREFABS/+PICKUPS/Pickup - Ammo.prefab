@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc7b9d0ce8a1648b0ba91b612d2f060a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transform: {fileID: 8411723760554169224}
+  transformToDestroy: {fileID: 8411723760554169224}
 --- !u!1 &8411723760554169224
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,6 +212,7 @@ GameObject:
   - component: {fileID: 4425044919420509101}
   - component: {fileID: 324007030955300996}
   - component: {fileID: 4671007800745611644}
+  - component: {fileID: -5774376718243254020}
   m_Layer: 23
   m_Name: Pickup - Ammo
   m_TagString: Untagged
@@ -262,10 +263,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf03d5d109fe438d81db38036ef77633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 8158610963300836762}
-  tintColor: {r: 1, g: 1, b: 1, a: 1}
-  intensity: 1
-  stunLength: 2
+  shakeIntensity: 1
+  stunLength: 1
 --- !u!61 &324007030955300996
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -304,9 +303,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62006640295740bdb572908f2054304a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 5
+  pickupTintColor: {r: 1, g: 1, b: 1, a: 1}
   amount: 30
   ammoType: 0
+--- !u!114 &-5774376718243254020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8411723760554169224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe15b50940a41e3a0f7beb7c5adbc47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderersToTint:
+  - {fileID: 8158610963300836762}
 --- !u!1 &9184234644893955306
 GameObject:
   m_ObjectHideFlags: 0

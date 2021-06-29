@@ -4,81 +4,78 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-namespace _SCRIPTS
+[Serializable]
+public class APP : Singleton<APP>
 {
-	[Serializable]
-	public class APP : Singleton<APP>
+	private const string FilePath = "/savedUsers.leaf";
+	private User currentUser;
+
+	private List<ButtonAction> mainMenuButtons = new List<ButtonAction>();
+
+	private void Start()
 	{
-		private const string FilePath = "/savedUsers.leaf";
-		private User currentUser;
+		GAME.I.StartMainMenu();
+	}
 
-		private List<ButtonAction> mainMenuButtons = new List<ButtonAction>();
-
-		private void Start()
+	private void DisplayMainMenuBox()
+	{
+		mainMenuButtons.Clear();
+		if (SavedFileExists())
+			mainMenuButtons.Add(new ButtonAction("Load", LoadSavedUserAndStartNewGame));
+		else
 		{
-			GAME.I.StartMainMenu();
+			Debug.Log("New User");
+			currentUser = new User("New Default Player", new List<Player>());
 		}
 
-		private void DisplayMainMenuBox()
+		mainMenuButtons.Add(new ButtonAction("Quit", QuitApplication));
+
+		DISPLAY.ShowMenuBox("The Pirate Witch", "Main Menu", mainMenuButtons);
+	}
+
+	private bool SavedFileExists()
+	{
+		return File.Exists(Application.persistentDataPath + FilePath);
+	}
+
+	private void LoadSavedUserAndStartNewGame()
+	{
+		var loadedUser = LoadUser();
+		if (loadedUser != null)
 		{
-			mainMenuButtons.Clear();
-			if (SavedFileExists())
-				mainMenuButtons.Add(new ButtonAction("Load", LoadSavedUserAndStartNewGame));
-			else
-			{
-				Debug.Log("New User");
-				currentUser = new User("New Default Player", new List<Player>());
-			}
-
-			mainMenuButtons.Add(new ButtonAction("Quit", QuitApplication));
-
-			DISPLAY.ShowMenuBox("The Pirate Witch", "Main Menu", mainMenuButtons);
+			Debug.Log("user loaded" + loadedUser.userName);
+			currentUser = loadedUser;
 		}
-
-		private bool SavedFileExists()
-		{
-			return File.Exists(Application.persistentDataPath + FilePath);
-		}
-
-		private void LoadSavedUserAndStartNewGame()
-		{
-			var loadedUser = LoadUser();
-			if (loadedUser != null)
-			{
-				Debug.Log("user loaded" + loadedUser.userName);
-				currentUser = loadedUser;
-			}
-			else
-				Debug.Log("saved user invalid");
-		}
+		else
+			Debug.Log("saved user invalid");
+	}
 
 
-		private void OnGameEnd()
-		{
-			SaveUser();
-			DisplayMainMenuBox();
-		}
+	private void OnGameEnd()
+	{
+		SaveUser();
+		DisplayMainMenuBox();
+	}
 
-		public static void SaveUser()
-		{
-			var bf = new BinaryFormatter();
-			var file = File.Create(Application.persistentDataPath + FilePath);
-			bf.Serialize(file, I.currentUser);
-			file.Close();
-		}
+	public static void SaveUser()
+	{
+		var bf = new BinaryFormatter();
+		var file = File.Create(Application.persistentDataPath + FilePath);
+		bf.Serialize(file, I.currentUser);
+		file.Close();
+	}
 
-		public static User LoadUser()
-		{
-			var bf = new BinaryFormatter();
-			var file = File.Open(Application.persistentDataPath + FilePath, FileMode.Open);
-			var LoadedUser = (User) bf.Deserialize(file);
-			file.Close();
-			return LoadedUser;
-		}
+	public static User LoadUser()
+	{
+		var bf = new BinaryFormatter();
+		var file = File.Open(Application.persistentDataPath + FilePath, FileMode.Open);
+		var LoadedUser = (User) bf.Deserialize(file);
+		file.Close();
+		return LoadedUser;
+	}
 
-		public void QuitApplication()
-		{
-			Application.Quit();
-		}
+	public void QuitApplication()
+	{
+		Application.Quit();
 	}
 }

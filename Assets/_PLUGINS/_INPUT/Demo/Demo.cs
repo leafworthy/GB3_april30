@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Linq;
+﻿using System.Linq;
+using CarbonInput;
+using UnityEngine;
 
-namespace CarbonInput.Demo {
+namespace _PLUGINS._INPUT.Demo {
     public class Demo : MonoBehaviour {
         private int count = 0;
 	    private int minIndex = 1;

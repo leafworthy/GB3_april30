@@ -1,36 +1,39 @@
 ﻿using UnityEngine;
 
-public struct Bounds2D
+namespace _PLUGINS
 {
-    private float minX;
-    private float minY;
-    private float maxX;
-    private float maxY;
-
-    public Bounds2D(Bounds bounds)
+    public struct Bounds2D
     {
-        Vector2 min = bounds.min;
-        Vector2 max = bounds.max;
-        minX = min.x;
-        minY = min.y;
-        maxX = max.x;
-        maxY = max.y;
-    }
+        private float minX;
+        private float minY;
+        private float maxX;
+        private float maxY;
 
-    public bool Intersects(Bounds2D otherBounds)
-    {
-        if (minX > otherBounds.maxX || otherBounds.minX > maxX)
-            return false;
+        public Bounds2D(Bounds bounds)
+        {
+            Vector2 min = bounds.min;
+            Vector2 max = bounds.max;
+            minX = min.x;
+            minY = min.y;
+            maxX = max.x;
+            maxY = max.y;
+        }
 
-        // If one rectangle is above other 
-        if (maxY < otherBounds.minY || otherBounds.maxY < minY)
-            return false;
+        public bool Intersects(Bounds2D otherBounds)
+        {
+            if (minX > otherBounds.maxX || otherBounds.minX > maxX)
+                return false;
 
-        return true;
-    }
+            // If one rectangle is above other 
+            if (maxY < otherBounds.minY || otherBounds.maxY < minY)
+                return false;
 
-    public override string ToString()
-    {
-        return "Min: (" + minX + ", " + minY + ")  Max: (" + maxX + ", " + maxY + ")";
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "Min: (" + minX + ", " + minY + ")  Max: (" + maxX + ", " + maxY + ")";
+        }
     }
 }

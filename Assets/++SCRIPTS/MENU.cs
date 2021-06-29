@@ -1,41 +1,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace _SCRIPTS
-{
-	public class MENU:Singleton<MENU>  {
+public class MENU:Singleton<MENU>  {
 
 
-		[SerializeField] private static List<Player> Players = new List<Player>();
+	[SerializeField] private static List<Player> Players = new List<Player>();
 
-		private static bool isRunning;
+	private static bool isRunning;
 
-		private void Update()
+	private void Update()
+	{
+		if (!isRunning) return;
+	}
+
+	public static void StartMainMenu()
+	{
+		isRunning = true;
+		Players = GAME.GetPlayers();
+		I.gameObject.SetActive(true);
+		foreach (var player in GAME.GetPlayers())
 		{
-			if (!isRunning) return;
+			player.PressA += Player_OnJoin;
 		}
+	}
 
-		public static void StartMainMenu()
+	private static void Player_OnJoin(Player player)
+	{
+		Debug.Log("Player has joined" + player.playerIndex);
+		CharacterSelectionMenu.I.StartCharacterSelectionScreen(player);
+		foreach (var p in GAME.GetPlayers())
 		{
-			isRunning = true;
-			Players = GAME.GetPlayers();
-			I.gameObject.SetActive(true);
-			foreach (var player in GAME.GetPlayers())
-			{
-				player.PressA += Player_OnJoin;
-			}
+			p.PressA -= Player_OnJoin;
 		}
-
-		private static void Player_OnJoin(Player player)
-		{
-			Debug.Log("Player has joined" + player.playerIndex);
-			CHARS.I.StartCharacterSelectionScreen(player);
-			foreach (var p in GAME.GetPlayers())
-			{
-				p.PressA -= Player_OnJoin;
-			}
-			I.gameObject.SetActive(false);
-			isRunning = false;
-		}
+		I.gameObject.SetActive(false);
+		isRunning = false;
 	}
 }

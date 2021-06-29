@@ -1,16 +1,13 @@
 using UnityEngine;
 
-namespace _SCRIPTS
+public class ClickToQuit : MonoBehaviour
 {
-    public class ClickToQuit : MonoBehaviour
-    {
 
-        private void Update()
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Application.Quit();
-            }
+            Application.Quit();
         }
     }
 }

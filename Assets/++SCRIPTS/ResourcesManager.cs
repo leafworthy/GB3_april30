@@ -5,126 +5,123 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace _SCRIPTS
+public enum ResourceType
 {
-	public enum ResourceType
+	health,
+	mana,
+	wood,
+	none,
+	manaPotions
+}
+public class ResourcesManager
+{
+	[SerializeField] private Dictionary<ResourceType, Resource> resourcesDictionary = new Dictionary<ResourceType, Resource>();
+
+	public System.Action<Resource> OnResourceEmpty;
+	public System.Action<Resource> OnResourceFull;
+	public System.Action<Resource, float> OnResourceChange;
+
+	public ResourcesManager(List<Resource> resources)
 	{
-		health,
-		mana,
-		wood,
-		none,
-		manaPotions
+		foreach (Resource resource in resources)
+		{
+			AddResource(resource);
+		}
 	}
-	public class ResourcesManager
+
+	public void AddResource(Resource resource)
 	{
-		[SerializeField] private Dictionary<ResourceType, Resource> resourcesDictionary = new Dictionary<ResourceType, Resource>();
+		if (resourcesDictionary.ContainsKey(resource.type))
+		{
+			Resource tempResource = GetResource(resource.type);
+			tempResource.Add(resource);
+			if (resource.amount == resource.max)
+			{
+				OnResourceFull?.Invoke(resource);
+			}
+			SetResource(tempResource);
+		}
+		else
+		{
+			resourcesDictionary.Add(resource.type, resource);
+		}
+		OnResourceChange?.Invoke(resource, resource.amount);
+	}
 
-		public System.Action<Resource> OnResourceEmpty;
-		public System.Action<Resource> OnResourceFull;
-		public System.Action<Resource, float> OnResourceChange;
+	private void SetResource(Resource resource)
+	{
+		Resource tempResource = null;
+		resourcesDictionary.TryGetValue(resource.type, out tempResource);
+		if (tempResource != null)
+		{
+			tempResource = resource;
+		}
+		else
+		{
+			resourcesDictionary.Add(resource.type, resource);
+		}
+	}
 
-		public ResourcesManager(List<Resource> resources)
+	public void ChangeResource(ResourceType type, float amount)
+	{
+		if (amount > 0)
 		{
-			foreach (Resource resource in resources)
-			{
-				AddResource(resource);
-			}
+			AddResource(type, amount);
 		}
+		else
+		{
+			RemoveResource(type, amount);
+		}
+	}
 
-		public void AddResource(Resource resource)
+	private void RemoveResource(Resource resource)
+	{
+		if (resourcesDictionary.ContainsKey(resource.type))
 		{
-			if (resourcesDictionary.ContainsKey(resource.type))
+			Resource tempResource = GetResource(resource.type);
+			tempResource.Remove(resource);
+			if (resource.amount == resource.max)
 			{
-				Resource tempResource = GetResource(resource.type);
-				tempResource.Add(resource);
-				if (resource.amount == resource.max)
-				{
-					OnResourceFull?.Invoke(resource);
-				}
-				SetResource(tempResource);
+				OnResourceEmpty?.Invoke(resource);
 			}
-			else
-			{
-				resourcesDictionary.Add(resource.type, resource);
-			}
-			OnResourceChange?.Invoke(resource, resource.amount);
+			SetResource(tempResource);
 		}
+		else
+		{
+			Debug.Log("don't have it");
+		}
+	}
+	private void RemoveResource(ResourceType type, float amount)
+	{
+		RemoveResource(new Resource(amount, amount, type));
+	}
+	private void AddResource(ResourceType type, float amount)
+	{
+		AddResource(new Resource(amount, amount, type));
+	}
 
-		private void SetResource(Resource resource)
-		{
-			Resource tempResource = null;
-			resourcesDictionary.TryGetValue(resource.type, out tempResource);
-			if (tempResource != null)
-			{
-				tempResource = resource;
-			}
-			else
-			{
-				resourcesDictionary.Add(resource.type, resource);
-			}
-		}
+	private Resource GetResource(ResourceType type)
+	{
+		Resource resource = null;
+		resourcesDictionary.TryGetValue(type, out resource);
+		return resource;
+	}
 
-		public void ChangeResource(ResourceType type, float amount)
-		{
-			if (amount > 0)
-			{
-				AddResource(type, amount);
-			}
-			else
-			{
-				RemoveResource(type, amount);
-			}
-		}
-
-		private void RemoveResource(Resource resource)
-		{
-			if (resourcesDictionary.ContainsKey(resource.type))
-			{
-				Resource tempResource = GetResource(resource.type);
-				tempResource.Remove(resource);
-				if (resource.amount == resource.max)
-				{
-					OnResourceEmpty?.Invoke(resource);
-				}
-				SetResource(tempResource);
-			}
-			else
-			{
-				Debug.Log("don't have it");
-			}
-		}
-		private void RemoveResource(ResourceType type, float amount)
-		{
-			RemoveResource(new Resource(amount, amount, type));
-		}
-		private void AddResource(ResourceType type, float amount)
-		{
-			AddResource(new Resource(amount, amount, type));
-		}
-
-		private Resource GetResource(ResourceType type)
-		{
-			Resource resource = null;
-			resourcesDictionary.TryGetValue(type, out resource);
-			return resource;
-		}
-
-		public float GetResourceAmount(ResourceType type)
-		{
-			return GetResource(type).amount;
-		}
-		public float GetResourceMax(ResourceType type)
-		{
-			return GetResource(type).max;
-		}
+	public float GetResourceAmount(ResourceType type)
+	{
+		return GetResource(type).amount;
+	}
+	public float GetResourceMax(ResourceType type)
+	{
+		return GetResource(type).max;
+	}
 
 
-		public void Refill()
+	public void Refill()
+	{
+		foreach (KeyValuePair<ResourceType, Resource> resource in resourcesDictionary)
 		{
-			foreach (KeyValuePair<ResourceType, Resource> resource in resourcesDictionary)
-			{
-				resource.Value.Refill();
-			}
+			resource.Value.Refill();
 		}
 	}
 }

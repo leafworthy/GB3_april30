@@ -1,5 +1,4 @@
 using System;
-using _SCRIPTS;
 using UnityEngine;
 
 public class HITSTUN : Singleton<HITSTUN>
@@ -9,7 +8,8 @@ public class HITSTUN : Singleton<HITSTUN>
 		Short,
 		Normal,
 		Long,
-		Special
+		Special,
+		None
 	}
 	private static bool isStunned;
 	private static float currentStunDuration;

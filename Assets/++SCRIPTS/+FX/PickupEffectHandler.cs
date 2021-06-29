@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _SCRIPTS;
 using UnityEngine;
 
-public class PickupHandler : MonoBehaviour
+public class PickupEffectHandler : MonoBehaviour
 {
-	public event Action<Pickup> OnPickup;
-	private UnitStats stats;
 	private List<PickupEffect> currentEffects = new List<PickupEffect>();
 	private List<PickupEffect> effectsToRemove = new List<PickupEffect>();
 
@@ -15,32 +12,34 @@ public class PickupHandler : MonoBehaviour
 	{
 		foreach (var currentEffect in currentEffects)
 		{
-			if (!currentEffect.CanUpdateEffect())
-			{
-				effectsToRemove.Add(currentEffect);
-			}
+			currentEffect.UpdateEffect();
 		}
 
-		foreach (var pickupEffect in effectsToRemove)
+		foreach (var currentEffect in effectsToRemove)
 		{
-			currentEffects.Remove(pickupEffect);
-
+			currentEffects.Remove(currentEffect);
 		}
+		effectsToRemove.Clear();
 	}
 
 	public void PickUp(Pickup pickup)
 	{
-		stats = GetComponent<UnitStats>();
+		var stats = GetComponent<UnitStats>();
+		if (stats is null) return;
+
 		foreach (var pickupEffect in pickup.GetEffects())
 		{
 			var alreadyHaveIt = currentEffects.FirstOrDefault(t => t == pickupEffect);
 			if (alreadyHaveIt != null) continue;
 
 			pickupEffect.StartEffect(stats);
+			pickupEffect.OnDone += EffectDone;
 			currentEffects.Add(pickupEffect);
 		}
-		OnPickup?.Invoke(pickup);
 	}
 
-
+	private void EffectDone(PickupEffect effect)
+	{
+		effectsToRemove.Add(effect);
+	}
 }

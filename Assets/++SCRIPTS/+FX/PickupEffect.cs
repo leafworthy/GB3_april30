@@ -1,5 +1,4 @@
 using System;
-using _SCRIPTS;
 using UnityEngine;
 
 [Serializable]
@@ -7,7 +6,7 @@ public class PickupEffect
 {
 	[SerializeField] public float effectDuration;
 	private float timeLeft;
-	private bool isRunning;
+	protected bool isRunning;
 	public event Action<PickupEffect> OnDone;
 
 	protected PickupEffect(float _effectDuration)
@@ -20,16 +19,16 @@ public class PickupEffect
 		isRunning = true;
 	}
 
-	public virtual bool CanUpdateEffect()
+	public virtual void UpdateEffect()
 	{
-		if (!isRunning) return false;
 		if (timeLeft <= 0 && isRunning)
 		{
 			StopEffect();
-			return false;
 		}
-		timeLeft -= Time.deltaTime;
-		return true;
+		else
+		{
+			timeLeft -= Time.deltaTime;
+		}
 	}
 
 	protected virtual void StopEffect()

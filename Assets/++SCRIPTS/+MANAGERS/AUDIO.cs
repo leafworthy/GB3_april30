@@ -1,51 +1,29 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using AudioSource = UnityEngine.AudioSource;
 
-
-
-namespace _SCRIPTS
+public class AUDIO : Singleton<AUDIO>
 {
-    public class AUDIO : Singleton<AUDIO>
+    private List<AudioSource> AudioSources = new List<AudioSource>();
+
+    public static void PlaySound(AudioClip clip, float delay = 0)
     {
-        public List<AudioSource> AudioSources = new List<AudioSource>();
+        var source = I.GetAudioSource();
+        source.clip = clip;
 
-        private void Start()
+        source.PlayDelayed(delay);
+
+    }
+
+    private AudioSource GetAudioSource()
+    {
+        foreach (var t in AudioSources.Where(t => !t.isPlaying))
         {
-            GetAudioSource();
+            return t;
         }
 
-        public void PlaySound(string soundName, float delay = 0)
-        {
-            var source = GetAudioSource();
-            source.clip = Resources.Load("SFX/" + soundName) as AudioClip;
-
-            source.PlayDelayed(delay);
-
-        }
-
-        public void PlaySound(AudioClip clip, float delay = 0)
-        {
-            var source = GetAudioSource();
-            source.clip = clip;
-
-            source.PlayDelayed(delay);
-
-        }
-
-        private AudioSource GetAudioSource()
-        {
-            for (int i = 0; i < AudioSources.Count; i++)
-            {
-                if (!AudioSources[i].isPlaying)
-                {
-                    return AudioSources[i];
-                }
-            }
-
-            AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-            AudioSources.Add(audioSource);
-            return audioSource;
-        }
+        AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+        AudioSources.Add(audioSource);
+        return audioSource;
     }
 }

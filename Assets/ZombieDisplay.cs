@@ -1,4 +1,3 @@
-using _SCRIPTS;
 using TMPro;
 using UnityEngine;
 
@@ -7,7 +6,6 @@ public class ZombieDisplay : MonoBehaviour
 {
 	public AmmoBar bar;
 	public TMP_Text killText;
-	private DefenceHandler playerDefence;
 	public GameObject shakeIcon;
 	private Player currentPlayer;
 	private int totalKills;
@@ -20,6 +18,13 @@ public class ZombieDisplay : MonoBehaviour
 		player.OnKillEnemy += EnemyKilled;
 		originalTotalEnemies = ENEMIES.GetNumberOfLivingEnemies();
 		UpdateDisplay();
+		GAME.OnGameEnd += CleanUp;
+	}
+
+	private void CleanUp()
+	{
+		currentPlayer.OnKillEnemy -= EnemyKilled;
+		GAME.OnGameEnd -= CleanUp;
 	}
 
 	private void EnemyKilled(Player killer)

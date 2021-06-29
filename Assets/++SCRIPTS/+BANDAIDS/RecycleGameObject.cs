@@ -1,46 +1,16 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace _SCRIPTS
+
+public class RecycleGameObject : MonoBehaviour
 {
-	public interface IRecyle
+	public void ActivateGameObject()
 	{
-
-		void Restart();
-
-		void Shutdown();
+		gameObject.SetActive(true);
 
 	}
 
-	public class RecycleGameObject : MonoBehaviour
+	public void DeactivateGameObject()
 	{
-		private GameObject poolObj;
-
-
-		public void setPool(GameObject p)
-		{
-			poolObj = p;
-		}
-
-		public GameObject getPool()
-		{
-			return poolObj;
-		}
-
-
-
-		public void Restart()
-		{
-			gameObject.SetActive(true);
-
-		}
-
-		public void Shutdown()
-		{
-			gameObject.SetActive(false);
-
-
-		}
-
+		gameObject.SetActive(false);
 	}
 }

@@ -82,12 +82,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6110766342226134774}
   - component: {fileID: 4905115359606552637}
+  - component: {fileID: 8238487111484618520}
   - component: {fileID: 6110766342226134772}
   - component: {fileID: 6110766342226134775}
   - component: {fileID: 6110766342226134769}
   - component: {fileID: 6110766342226134773}
   - component: {fileID: 6110766342226134538}
-  - component: {fileID: 8238487111484618520}
   - component: {fileID: 6795468564300624067}
   - component: {fileID: 69483850}
   - component: {fileID: 69483851}
@@ -128,8 +128,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83bc4bc159fe247a3a260b481d94851a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartingLevelPrefab: {fileID: 7099486576316630768, guid: 295ac9d72938848598337b91366bbeeb, type: 3}
-  CurrentLevel: {fileID: 0}
+--- !u!114 &8238487111484618520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6110766342226134768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1e86b4dc5144c6299b6e305ba2ec62e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fx: {fileID: 11400000, guid: 799590e0c135347b7be9034ab3b05f05, type: 2}
+  _audio: {fileID: 11400000, guid: eb65b9037e96a4f8aa9c71b3dc8623cc, type: 2}
+  levels: {fileID: 11400000, guid: b0b82a38d582e4a6c883581ed97e5fa0, type: 2}
+  _players: {fileID: 11400000, guid: 7b544f4dc3ffc431fbecff536e622d81, type: 2}
 --- !u!114 &6110766342226134772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,9 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33b8429f24bf34514a10ef442e53f5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LineThickness: 3
-  radius: 1
-  setTexture: {fileID: 2800000, guid: 1c09acb1e14164cb5b3f0c14c6593fbf, type: 3}
 --- !u!114 &6110766342226134538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,23 +204,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98b0ab348c474b1e8a5c66371977cf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AudioSources: []
---- !u!114 &8238487111484618520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6110766342226134768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1e86b4dc5144c6299b6e305ba2ec62e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _fx: {fileID: 11400000, guid: 799590e0c135347b7be9034ab3b05f05, type: 2}
-  _audio: {fileID: 11400000, guid: eb65b9037e96a4f8aa9c71b3dc8623cc, type: 2}
-  _layers: {fileID: 11400000, guid: b0b82a38d582e4a6c883581ed97e5fa0, type: 2}
-  _players: {fileID: 11400000, guid: 7b544f4dc3ffc431fbecff536e622d81, type: 2}
 --- !u!114 &6795468564300624067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,8 +216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dcfbdb0cd8d24f6f9ae48131f672d1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorTexture: {fileID: 2800000, guid: ad47f71e3ce744ff5b0c94918ef932c3, type: 3}
-  cursorMode: 1
 --- !u!114 &69483850
 MonoBehaviour:
   m_ObjectHideFlags: 0

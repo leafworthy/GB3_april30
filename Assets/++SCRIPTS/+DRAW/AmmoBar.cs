@@ -1,4 +1,3 @@
-using _SCRIPTS;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -55,6 +55,7 @@ MonoBehaviour:
   secondaryAmmoDisplay: {fileID: 8676094376066310305}
   tertiaryAmmoDisplay: {fileID: 4668431695094923310}
   zombieDisplay: {fileID: 16250776675513184}
+  cashDisplay: {fileID: 1177383494087677350}
 --- !u!1 &497552256683972208
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,6 +620,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b453e10804084966a8ea8044540fc812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1177383494087677350 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7185334213253177962, guid: 16409663425d247aaaf2c61a8ef2d1bd, type: 3}
+  m_PrefabInstance: {fileID: 8350104071258748876}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff7e02566a944235b352a8342557a381, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &8430480921935058485

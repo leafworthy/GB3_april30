@@ -1,53 +1,59 @@
 using UnityEngine;
 
-namespace _SCRIPTS
+public class ThrowProjectileHandler : MonoBehaviour
 {
-	public class ThrowProjectileHandler : MonoBehaviour
+	[SerializeField] private GameObject AirThrowPoint;
+	[SerializeField] private GameObject ProjectilePrefab;
+	[SerializeField] private GameObject ThrowPoint;
+	private AnimationEvents animationEvents;
+
+	private DirectionHandler directionHandler;
+	private UnitStats stats;
+	private BrockAttackHandler attackHandler;
+	private Vector3 aimDir;
+
+	private void Awake()
 	{
-		[SerializeField] private GameObject AirThrowPoint;
-		[SerializeField] private GameObject ProjectilePrefab;
-		[SerializeField] private GameObject ThrowPoint;
-		private AnimationEvents animationEvents;
+		attackHandler = GetComponent<BrockAttackHandler>();
+		attackHandler.OnAim += OnAim;
+		stats = GetComponent<UnitStats>();
+		directionHandler = GetComponent<DirectionHandler>();
+		animationEvents = GetComponentInChildren<AnimationEvents>();
+		animationEvents.OnThrow += Throw;
+		animationEvents.OnAirThrow += AirThrow;
+	}
 
-		private FaceDirection faceDirection;
-		private UnitStats stats;
+	private void OnAim(Vector3 newAimDir)
+	{
+		aimDir = newAimDir;
+	}
 
-		private void Awake()
-		{
-			stats = GetComponent<UnitStats>();
-			faceDirection = GetComponent<FaceDirection>();
-			animationEvents = GetComponentInChildren<AnimationEvents>();
-			animationEvents.OnThrow += Throw;
-			animationEvents.OnAirThrow += AirThrow;
-		}
+	private void AirThrow()
+	{
+		var spawnPoint = transform.position ;
+		var directionMult = directionHandler.isFacingRight ? 1 : -1;
+		CreateProjectile(new Vector3(directionMult, -.5f, 0));
+		CreateProjectile(new Vector3(directionMult, -1f, 0));
+		CreateProjectile(new Vector3(directionMult, -.75f, 0));
+	}
 
-		private void AirThrow()
-		{
-			var spawnPoint = transform.position ;
-			var directionMult = faceDirection.isFacingRight ? 1 : -1;
-			CreateProjectile(new Vector3(directionMult, -.5f, 0));
-			CreateProjectile(new Vector3(directionMult, -1f, 0));
-			CreateProjectile(new Vector3(directionMult, -.75f, 0));
-		}
+	private void CreateProjectile(Vector3 direction)
+	{
+		var newProjectile = MAKER.Make(ProjectilePrefab, transform.position);
 
-		private void CreateProjectile(Vector3 direction)
-		{
-			var newProjectile = MAKER.Make(ProjectilePrefab, transform.position);
+		var projectileScript = newProjectile.GetComponent<Projectile>();
+		projectileScript.HeightObject.transform.position = AirThrowPoint.transform.position;
 
-			var projectileScript = newProjectile.GetComponent<Projectile>();
-			projectileScript.HeightObject.transform.position = AirThrowPoint.transform.position;
+		projectileScript.Fire(direction, stats.isPlayer, transform.position.y,
+			AirThrowPoint.transform.position.y);
+	}
 
-			projectileScript.Fire(direction, stats.isPlayer, transform.position.y,
-				AirThrowPoint.transform.position.y);
-		}
-
-		private void Throw()
-		{
-			Debug.Log("throw handled");
-			var newProjectile = MAKER.Make(ProjectilePrefab, transform.position);
-			var projectileScript = newProjectile.GetComponent<Projectile>();
-			var directionMult = faceDirection.isFacingRight ? 1 : -1;
-			projectileScript.Fire(new Vector3(directionMult, 0, 0), stats.isPlayer, transform.position.y, ThrowPoint.transform.position.y);
-		}
+	private void Throw()
+	{
+		Debug.Log("throw handled");
+		var newProjectile = MAKER.Make(ProjectilePrefab, transform.position);
+		var projectileScript = newProjectile.GetComponent<Projectile>();
+		var directionMult = directionHandler.isFacingRight ? 1 : -1;
+		projectileScript.Fire(aimDir, stats.isPlayer, transform.position.y, ThrowPoint.transform.position.y, false);
 	}
 }

@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 2607559789959507207}
   - component: {fileID: 2105460953985707566}
   - component: {fileID: 6455281008963053526}
+  - component: {fileID: -6848287823809317540}
   m_Layer: 23
   m_Name: Pickup - Nades
   m_TagString: Untagged
@@ -176,10 +177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf03d5d109fe438d81db38036ef77633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 8186633916263952694}
-  tintColor: {r: 1, g: 1, b: 1, a: 1}
-  intensity: 1
-  stunLength: 2
+  shakeIntensity: 1
+  stunLength: 1
 --- !u!61 &2105460953985707566
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -218,10 +217,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62006640295740bdb572908f2054304a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
-  effects: []
+  pickupTintColor: {r: 0.019517321, g: 0.4433962, b: 0, a: 1}
   amount: 3
   ammoType: 1
+--- !u!114 &-6848287823809317540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7925052256559260962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe15b50940a41e3a0f7beb7c5adbc47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderersToTint:
+  - {fileID: 8186633916263952694}
 --- !u!1 &8186633916263952688
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,4 +350,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc7b9d0ce8a1648b0ba91b612d2f060a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transform: {fileID: 7925052256559260962}
+  transformToDestroy: {fileID: 7925052256559260962}

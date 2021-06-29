@@ -1,4 +1,3 @@
-using _SCRIPTS;
 using UnityEngine;
 
 public class PoisonDamageEffect:MonoBehaviour

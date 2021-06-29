@@ -94,7 +94,8 @@ GameObject:
   - component: {fileID: 4887187065001405980}
   - component: {fileID: 8828577639993690152}
   - component: {fileID: 4869122179920481025}
-  - component: {fileID: 1067838594976997}
+  - component: {fileID: 8758517900811676564}
+  - component: {fileID: -6529683497788567960}
   m_Layer: 23
   m_Name: Pickup - Health
   m_TagString: Untagged
@@ -145,10 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf03d5d109fe438d81db38036ef77633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 8650928308111112186}
-  tintColor: {r: 1, g: 1, b: 1, a: 1}
-  intensity: 1
-  stunLength: 2
+  shakeIntensity: 1
+  stunLength: 1
 --- !u!61 &4869122179920481025
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -175,7 +174,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.4789653, y: 2.3859296}
   m_EdgeRadius: 0
---- !u!114 &1067838594976997
+--- !u!114 &8758517900811676564
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -184,15 +183,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 3698000994739175437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53d71a6b4670412fbe8e2c59511db2af, type: 3}
+  m_Script: {fileID: 11500000, guid: 0fe15b50940a41e3a0f7beb7c5adbc47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 7
-  changeFactor: 1
-  changeAmount: 25
-  tintColor: {r: 1, g: 1, b: 1, a: 1}
-  duration: 0
-  hasTintEffect: 1
+  renderersToTint:
+  - {fileID: 8650928308111112186}
+--- !u!114 &-6529683497788567960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3698000994739175437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6205f81677ef4dc3b12513a37cb1d63e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickupTintColor: {r: 0.99074435, g: 0.5330188, b: 1, a: 0}
+  amount: 20
 --- !u!1 &4078421510611429231
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,4 +349,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc7b9d0ce8a1648b0ba91b612d2f060a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transform: {fileID: 3698000994739175437}
+  transformToDestroy: {fileID: 3698000994739175437}

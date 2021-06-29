@@ -2,47 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace _SCRIPTS
-{
-    public class CapturePlayerTrigger2D : MonoBehaviour {
+public class CapturePlayerTrigger2D : MonoBehaviour {
 
-        public event Action<Collider2D> OnCapturedTriggerEnter2D;
-        public event Action<Collider2D> OnCapturedTriggerExit2D;
-        public event Action<IPlayerController> OnPlayerTriggerEnter2D;
-        public event Action<IPlayerController> OnPlayerTriggerExit2D;
+    public event Action<Collider2D> OnCapturedTriggerEnter2D;
+    public event Action<Collider2D> OnCapturedTriggerExit2D;
+    public event Action<IPlayerController> OnPlayerTriggerEnter2D;
+    public event Action<IPlayerController> OnPlayerTriggerExit2D;
 
-        public List<IPlayerController> playersInside = new List<IPlayerController>();
+    public List<IPlayerController> playersInside = new List<IPlayerController>();
 
-        private void OnTriggerEnter2D(Collider2D collider) {
-            OnCapturedTriggerEnter2D?.Invoke(collider);
+    private void OnTriggerEnter2D(Collider2D collider) {
+        OnCapturedTriggerEnter2D?.Invoke(collider);
 
-            IPlayerController playerRemoteMain = collider.GetComponent<IPlayerController>();
-            if (playerRemoteMain != null) {
-                OnPlayerTriggerEnter2D?.Invoke(playerRemoteMain);
-                if (!playersInside.Contains(playerRemoteMain))
-                {
-                    playersInside.Add(playerRemoteMain);
-                }
-            }
-        }
-
-        private void OnTriggerExit2D(Collider2D collider)
-        {
-            OnCapturedTriggerExit2D?.Invoke(collider);
-            IPlayerController playerRemoteMain = collider.GetComponent<IPlayerController>();
-            if (playerRemoteMain != null)
+        IPlayerController playerRemoteMain = collider.GetComponent<IPlayerController>();
+        if (playerRemoteMain != null) {
+            OnPlayerTriggerEnter2D?.Invoke(playerRemoteMain);
+            if (!playersInside.Contains(playerRemoteMain))
             {
-                if (playersInside.Contains(playerRemoteMain))
-                {
-                    playersInside.Remove(playerRemoteMain);
-                }
-                OnPlayerTriggerExit2D?.Invoke(playerRemoteMain);
+                playersInside.Add(playerRemoteMain);
             }
         }
+    }
 
-        public bool ContainsPlayer()
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        OnCapturedTriggerExit2D?.Invoke(collider);
+        IPlayerController playerRemoteMain = collider.GetComponent<IPlayerController>();
+        if (playerRemoteMain != null)
         {
-            return playersInside.Count > 0;
+            if (playersInside.Contains(playerRemoteMain))
+            {
+                playersInside.Remove(playerRemoteMain);
+            }
+            OnPlayerTriggerExit2D?.Invoke(playerRemoteMain);
         }
+    }
+
+    public bool ContainsPlayer()
+    {
+        return playersInside.Count > 0;
     }
 }

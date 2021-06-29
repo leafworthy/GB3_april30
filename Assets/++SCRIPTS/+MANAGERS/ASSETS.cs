@@ -1,33 +1,30 @@
-namespace _SCRIPTS
+public class ASSETS : Singleton<ASSETS>
 {
-	public class ASSETS : Singleton<ASSETS>
+	public static FXAssets FX
 	{
-		public static FXAssets FX
-		{
-			get { return I._fx;}
-		}
+		get { return I._fx;}
+	}
 
-		public FXAssets _fx;
-		public static AudioAssets sounds
-		{
-			get { return I._audio; }
-		}
+	public FXAssets _fx;
+	public static AudioAssets sounds
+	{
+		get { return I._audio; }
+	}
 
 
-		public AudioAssets _audio;
+	public AudioAssets _audio;
 
-		public static LayerAssets layers
-		{
-			get { return I._layers; }
-		}
+	public static LevelAssets LevelAssets
+	{
+		get { return I.levels; }
+	}
 
-		public LayerAssets _layers;
+	public LevelAssets levels;
 
-		public PlayerAssets _players;
+	public PlayerAssets _players;
 
-		public static PlayerAssets players
-		{
-			get { return I._players; }
-		}
+	public static PlayerAssets players
+	{
+		get { return I._players; }
 	}
 }

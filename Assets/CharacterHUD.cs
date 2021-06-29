@@ -1,6 +1,4 @@
-using _SCRIPTS;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CharacterHUD:MonoBehaviour
 {
@@ -13,12 +11,16 @@ public class CharacterHUD:MonoBehaviour
 	public AmmoDisplay secondaryAmmoDisplay;
 	public AmmoDisplay tertiaryAmmoDisplay;
 	public ZombieDisplay zombieDisplay;
+	public CashDisplay cashDisplay;
+
 
 	public  void SetPlayer(Player newPlayer)
 	{
 		 currentPlayer = newPlayer;
 		 healthDisplay.SetPlayer(currentPlayer);
 		 zombieDisplay.SetPlayer(currentPlayer);
+		 cashDisplay.SetPlayer(currentPlayer);
+
 		 currentAmmoHandler = newPlayer.SpawnedPlayerGO.GetComponent<AmmoHandler>();
 		 primaryAmmoDisplay.SetAmmo(currentAmmoHandler.primaryAmmo);
 		 secondaryAmmoDisplay.SetAmmo(currentAmmoHandler.secondaryAmmo);

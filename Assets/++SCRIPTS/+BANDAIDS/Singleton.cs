@@ -1,65 +1,62 @@
 using UnityEngine;
 
-namespace _SCRIPTS
+public abstract class Singleton<T> : MonoBehaviour where T : Component
 {
-	public abstract class Singleton<T> : MonoBehaviour where T : Component
+
+	#region Fields
+
+	/// <summary>
+	/// The instance.
+	/// </summary>
+	private static T _instance;
+
+	#endregion
+
+	#region Properties
+
+	/// <summary>
+	/// Gets the instance.
+	/// </summary>
+	/// <value>The instance.</value>
+	public static T I
 	{
-
-		#region Fields
-
-		/// <summary>
-		/// The instance.
-		/// </summary>
-		private static T _instance;
-
-		#endregion
-
-		#region Properties
-
-		/// <summary>
-		/// Gets the instance.
-		/// </summary>
-		/// <value>The instance.</value>
-		public static T I
-		{
-			get
-			{
-				if (_instance == null)
-				{
-					_instance = FindObjectOfType<T>();
-					if (_instance == null)
-					{
-						GameObject obj = new GameObject();
-						obj.name = typeof(T).Name;
-						_instance = obj.AddComponent<T>();
-					}
-				}
-				return _instance;
-			}
-		}
-
-		#endregion
-
-		#region Methods
-
-		/// <summary>
-		/// Use this for initialization.
-		/// </summary>
-		protected virtual void Awake()
+		get
 		{
 			if (_instance == null)
 			{
-				_instance = this as T;
+				_instance = FindObjectOfType<T>();
+				if (_instance == null)
+				{
+					GameObject obj = new GameObject();
+					obj.name = typeof(T).Name;
+					_instance = obj.AddComponent<T>();
+				}
 			}
-			else
-			{
-				Debug.Log("singleton duplicated", this);
-				Debug.Break();
-				//GameObject.Destroy(gameObject);
-			}
+			return _instance;
 		}
-
-		#endregion
-
 	}
+
+	#endregion
+
+	#region Methods
+
+	/// <summary>
+	/// Use this for initialization.
+	/// </summary>
+	protected virtual void Awake()
+	{
+		if (_instance == null)
+		{
+			_instance = this as T;
+		}
+		else
+		{
+			Debug.Log("singleton duplicated", this);
+			Debug.Break();
+			//GameObject.Destroy(gameObject);
+		}
+	}
+
+	#endregion
+
 }

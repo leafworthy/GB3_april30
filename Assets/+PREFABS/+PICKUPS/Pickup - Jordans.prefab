@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc7b9d0ce8a1648b0ba91b612d2f060a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transform: {fileID: 7758255762084250802}
+  transformToDestroy: {fileID: 0}
 --- !u!1 &6945212583106241488
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,6 +243,7 @@ GameObject:
   - component: {fileID: 2485499202358430871}
   - component: {fileID: 1975307953861971902}
   - component: {fileID: 2739164181342745369}
+  - component: {fileID: -1660481985475299582}
   m_Layer: 23
   m_Name: Pickup - Jordans
   m_TagString: Untagged
@@ -293,10 +294,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf03d5d109fe438d81db38036ef77633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 6729575578952286189}
-  tintColor: {r: 1, g: 1, b: 1, a: 1}
-  intensity: 1
-  stunLength: 2
+  shakeIntensity: 1
+  stunLength: 1
 --- !u!61 &1975307953861971902
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -335,9 +334,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53d71a6b4670412fbe8e2c59511db2af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 4
+  pickupTintColor: {r: 0.990566, g: 0.8041785, b: 0, a: 1}
+  type: 3
   changeFactor: 1.5
   changeAmount: 0
-  tintColor: {r: 1, g: 0.939844, b: 0, a: 0.6313726}
-  duration: 3
+  duration: 5
   hasTintEffect: 1
+--- !u!114 &-1660481985475299582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7758255762084250802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe15b50940a41e3a0f7beb7c5adbc47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderersToTint:
+  - {fileID: 6729575578952286189}

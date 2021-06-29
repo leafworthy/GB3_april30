@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public class UnitStat
@@ -6,49 +7,60 @@ public class UnitStat
 	public StatType type;
 	public float value;
 	private float originalValue;
-	private bool isSet;
+	private bool originalValueHasBeenSet;
+	public float maxValue;
+	public float minValue;
+	public bool isLimited = false;
 
 	public UnitStat(UnitStat stat)
 	{
-		this.type = stat.type;
-		this.value = stat.GetValue();
-		this.originalValue = stat.originalValue;
-		this.isSet = stat.isSet;
+		type = stat.type;
+		value = stat.GetValue();
+		maxValue = stat.maxValue;
+		minValue = stat.minValue;
+		isLimited = stat.isLimited;
+		SetOriginalValue();
 	}
 
 	public float GetValue()
 	{
-		Set();
 		return value;
 	}
 
-	private void Set()
+	private void SetOriginalValue()
 	{
-		if (isSet) return;
-		isSet = true;
+		if (originalValueHasBeenSet) return;
+		originalValueHasBeenSet = true;
 		originalValue = value;
 	}
 
 	public void ChangeValue(float changeInValue)
 	{
-		Set();
 		value += changeInValue;
+		LimitValue();
+	}
+
+	private void LimitValue()
+	{
+
+		if (!isLimited) return;
+		value = Mathf.Min(value, maxValue);
+		value = Mathf.Max(value, minValue);
 	}
 
 	public void SetValue(float newValue)
 	{
-		Set();
 		value = newValue;
+		LimitValue();
 	}
 	public void ResetValue()
 	{
-		Set();
 		value = originalValue;
+		LimitValue();
 	}
 
 	public float GetBaseValue()
 	{
-		Set();
 		return originalValue;
 	}
 }
