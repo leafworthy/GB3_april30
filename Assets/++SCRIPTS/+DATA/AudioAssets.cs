@@ -13,6 +13,8 @@ public class AudioAssets : ScriptableObject
 
 	public List<AudioClip> player_walk_sounds_concrete = new List<AudioClip>();
 	public List<AudioClip> ak47_shoot_sounds = new List<AudioClip>();
+	public List<AudioClip> jump_sound = new List<AudioClip>();
+	public List<AudioClip> land_sound = new List<AudioClip>();
 
 	[Header("Brock Sounds")]
 	public List<AudioClip> brock_gethit_sounds = new List<AudioClip>();
@@ -44,5 +46,12 @@ public class AudioAssets : ScriptableObject
 	public List<AudioClip> bean_nade_bounce_sounds = new List<AudioClip>();
 	public List<AudioClip> bean_nade_explosion_sounds = new List<AudioClip>();
 
+	[Header("UI Sounds")]
+	public List<AudioClip> pickup_pickup_sounds = new List<AudioClip>();
 
+	public List<AudioClip> pauseMenu_select_sounds = new List<AudioClip>();
+	public List<AudioClip> pauseMenu_move_sounds = new List<AudioClip>();
+	public List<AudioClip> charSelect_move_sounds= new List<AudioClip>();
+	public List<AudioClip> charSelect_select_sounds = new List<AudioClip>();
+	public List<AudioClip> bloodSounds;
 }

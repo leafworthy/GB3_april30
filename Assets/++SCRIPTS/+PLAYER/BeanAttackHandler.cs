@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 [Serializable]
-public class BeanAttackHandler : MonoBehaviour, IAttackHandler, IShootHandler
+public class BeanAttackHandler : MonoBehaviour, IAttackHandler, IShootHandler, IAimHandler
 {
 	[SerializeField] private GameObject aimCenter;
 	[SerializeField] private GameObject gunEndPoint;
@@ -36,6 +36,7 @@ public class BeanAttackHandler : MonoBehaviour, IAttackHandler, IShootHandler
 	private UnitStats stats;
 	private IPlayerController playerRemote;
 	private int knifeCoolDown = 4;
+	private Player player;
 
 	private void EnableAttacking()
 	{
@@ -57,6 +58,7 @@ public class BeanAttackHandler : MonoBehaviour, IAttackHandler, IShootHandler
 	private void Awake()
 	{
 		stats = GetComponent<UnitStats>();
+		player = stats.player;
 		ammoHandler = GetComponent<AmmoHandler>();
 
 		playerRemote = GetComponent<IPlayerController>();
@@ -332,6 +334,11 @@ public class BeanAttackHandler : MonoBehaviour, IAttackHandler, IShootHandler
 		OnUseAmmo?.Invoke(AmmoHandler.AmmoType.nades, 1);
 		OnNadeThrowStart?.Invoke();
 		currentCooldownTime = Time.time + stats.GetStatValue(StatType.attackRate);
+	}
+
+	public Player GetPlayer()
+	{
+		return player;
 	}
 
 	public bool CanAttack(Vector3 target)

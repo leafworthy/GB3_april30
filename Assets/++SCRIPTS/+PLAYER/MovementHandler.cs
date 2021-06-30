@@ -48,9 +48,9 @@ public class MovementHandler : MonoBehaviour
 			case PushType.normal:
 				return 2f;
 			case PushType.high:
-				return 3f;
+				return 2.5f;
 			case PushType.highest:
-				return 4f;
+				return 3f;
 			default:
 				throw new ArgumentOutOfRangeException(nameof(pushType), pushType, null);
 		}

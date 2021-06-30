@@ -8,12 +8,19 @@ public class PLAYERS : Singleton<PLAYERS>
 	private static List<Player> players = new List<Player>();
 	public static event Action OnAllPlayersDead;
 	public static event Action<Player> OnPlayerDead;
-
+	private static Player enemyPlayer;
 	public static void AddPlayer(Player newPlayer)
 	{
 		Debug.Log("player added");
-		players.Add(newPlayer);
-		newPlayer.OnDead += PlayerDies;
+		if (newPlayer.isPlayer)
+		{
+			players.Add(newPlayer);
+			newPlayer.OnDead += PlayerDies;
+		}
+		else
+		{
+			enemyPlayer = newPlayer;
+		}
 	}
 
 	private static void PlayerDies(Player deadPlayer)
@@ -34,4 +41,8 @@ public class PLAYERS : Singleton<PLAYERS>
 		return players.Count(t => !t.IsDead());
 	}
 
+	public static Player GetEnemyPlayer()
+	{
+		return enemyPlayer;
+	}
 }

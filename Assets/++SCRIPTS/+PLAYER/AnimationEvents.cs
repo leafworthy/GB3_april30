@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class AnimationEvents : MonoBehaviour
 {
+    public event Action OnAfterHit;
     public event Action<int> OnAttackStart;
     public event Action<int> OnAttackStop;
     public event Action OnLandingStart;
@@ -30,7 +31,12 @@ public class AnimationEvents : MonoBehaviour
     public event Action OnShoot;
     public event Action OnRoar;
     public event Action OnTeleport;
+    public event Action<bool> OnInvincible;
 
+    public void AfterHit()
+    {
+        OnAfterHit?.Invoke();
+    }
     public void Teleport()
     {
         OnTeleport?.Invoke();
@@ -158,6 +164,16 @@ public class AnimationEvents : MonoBehaviour
     public void LandingStart()
     {
         OnLandingStart?.Invoke();
+    }
+
+    public void InvincibleStart()
+    {
+        OnInvincible?.Invoke(true);
+    }
+
+    public void InvincibleStop()
+    {
+        OnInvincible?.Invoke(false);
     }
 
 }

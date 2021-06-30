@@ -9,6 +9,7 @@ public class EnemyAI : MonoBehaviour
 	private IAttackHandler attackHandler;
 	private AstarAI astarAI;
 	private GameObject currentTarget;
+	private DefenceHandler currentTargetDefence;
 	private EnemyController controller;
 	private bool isOn = true;
 	public bool wandersWhenIdle = true;
@@ -130,6 +131,7 @@ public class EnemyAI : MonoBehaviour
 			closest = GetClosestTarget(potentialTargets, closest);
 
 			currentTarget = closest.gameObject;
+			currentTargetDefence = currentTarget.GetComponent<DefenceHandler>();
 			SetState(State.Aggro);
 		}
 		else
@@ -146,6 +148,7 @@ public class EnemyAI : MonoBehaviour
 		foreach (var target in potentialTargets)
 		{
 			if (target.GetComponent<IPlayerController>() is null) continue;
+			if (target.GetComponent<DefenceHandler>().isInvincible) continue;
 			var position = transform.position;
 			var distance = Vector3.Distance(target.transform.position, position);
 			var currentClosestDistance = Vector3.Distance(closest.transform.position, position);
@@ -196,7 +199,7 @@ public class EnemyAI : MonoBehaviour
 
 	private bool CanAttackTarget()
 	{
-		return attackHandler.CanAttack(currentTarget.transform.position);
+		return !currentTargetDefence.isInvincible && attackHandler.CanAttack(currentTarget.transform.position);
 	}
 
 	private void OnDrawGizmosSelected()

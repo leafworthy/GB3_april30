@@ -8,6 +8,7 @@ using UnityEngine;
 public class UnitStats : MonoBehaviour
 {
     public bool isPlayer;
+    public Player player;
     public UnitStatsData unitData;
     [SerializeField]private List<UnitStat> unitStats = new List<UnitStat>();
     public Action<UnitStat> OnStatChange;
@@ -19,6 +20,11 @@ public class UnitStats : MonoBehaviour
             unitStats.Add(new UnitStat(stat));
         }
         isPlayer = unitData.isPlayer;
+    }
+
+    public void SetPlayer(Player _player)
+    {
+        player = _player;
     }
 
     public float GetStatValue(StatType type)

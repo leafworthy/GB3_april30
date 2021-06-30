@@ -6,7 +6,7 @@ using UnityEngine;
 public class ENEMIES : Singleton<ENEMIES>
 {
 	private static List<DefenceHandler> enemyList = new List<DefenceHandler>();
-	public static event Action<Player> OnEnemyDead;
+	public static event Action<IAttackHandler> OnEnemyKilled;
 	public static event Action OnAllEnemiesDead;
 
 	private static void AddEnemy(DefenceHandler enemyDefence)
@@ -14,8 +14,14 @@ public class ENEMIES : Singleton<ENEMIES>
 		if (!enemyList.Contains(enemyDefence))
 		{
 			enemyDefence.OnDead += EnemyDies;
+			enemyDefence.OnKilled += EnemyKilled;
 			enemyList.Add(enemyDefence);
 		}
+	}
+
+	private static void EnemyKilled(IAttackHandler killer)
+	{
+		OnEnemyKilled?.Invoke(killer);
 	}
 
 	private static void EnemyDies()

@@ -28,12 +28,15 @@ public class BeanAnimationHandler : MonoBehaviour
 	private static readonly int JumpTrigger = Animator.StringToHash("JumpTrigger");
 	private static readonly int LandTrigger = Animator.StringToHash("LandTrigger");
 	private static readonly int ReloadTrigger = Animator.StringToHash("ReloadTrigger");
+	private static readonly int FlyingTrigger = Animator.StringToHash("FlyingTrigger");
+	private bool isRunning;
 
 
 	private void Start()
 	{
 		defenceHandler = GetComponent<DefenceHandler>();
 		defenceHandler.OnDying += Dying;
+		defenceHandler.OnWounded += OnWounded;
 		animationEvents = GetComponentInChildren<AnimationEvents>();
 		animationEvents.OnDashStop += DashStop;
 		animationEvents.OnLandingStop += LandingStop;
@@ -63,6 +66,13 @@ public class BeanAnimationHandler : MonoBehaviour
 
 	}
 
+	private void OnWounded(Attack attack)
+	{
+		Debug.Log("damaged, trigger set");
+		topAnimator.gameObject.SetActive(false);
+		bottomAnimator.SetTrigger(FlyingTrigger);
+	}
+
 	private void OnFallInStop()
 	{
 		topAnimator.gameObject.SetActive(true);
@@ -80,12 +90,14 @@ public class BeanAnimationHandler : MonoBehaviour
 
 	private void Land()
 	{
+		Debug.Log("land");
 		bottomAnimator.SetTrigger(LandTrigger);
 		topAnimator.gameObject.SetActive(false);
 	}
 
 	private void Jump()
 	{
+		Debug.Log("jump");
 		topAnimator.gameObject.SetActive(false);
 		bottomAnimator.SetTrigger(JumpTrigger);
 	}
@@ -120,11 +132,15 @@ public class BeanAnimationHandler : MonoBehaviour
 
 	private void MoveStop()
 	{
+		Debug.Log("move stop");
+		isRunning = false;
 		moveDir = Vector3.zero;
 	}
 
 	private void MoveStart(Vector3 newDir)
 	{
+		Debug.Log("move start");
+		isRunning = true;
 		moveDir = newDir;
 	}
 
@@ -157,14 +173,9 @@ public class BeanAnimationHandler : MonoBehaviour
 	private void UpdateAnimator()
 	{
 		moveDir = movementHandler.GetVelocity();
-		if (moveDir.magnitude > .02f)
-		{
-			bottomAnimator.SetBool(IsRunning, true);
-		}
-		else
-		{
-			bottomAnimator.SetBool(IsRunning, false);
-		}
+
+		bottomAnimator.SetBool(IsRunning, isRunning);
+
 
 		topAnimator.SetBool(IsFacingLeft, aimingDir.x<0);
 		topAnimator.SetFloat(Vertical, aimingDir.y);

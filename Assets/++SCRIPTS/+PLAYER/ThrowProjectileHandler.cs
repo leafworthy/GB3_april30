@@ -9,8 +9,8 @@ public class ThrowProjectileHandler : MonoBehaviour
 
 	private DirectionHandler directionHandler;
 	private UnitStats stats;
-	private BrockAttackHandler attackHandler;
 	private Vector3 aimDir;
+	private BrockAttackHandler attackHandler;
 
 	private void Awake()
 	{
@@ -45,7 +45,7 @@ public class ThrowProjectileHandler : MonoBehaviour
 		projectileScript.HeightObject.transform.position = AirThrowPoint.transform.position;
 
 		projectileScript.Fire(direction, stats.isPlayer, transform.position.y,
-			AirThrowPoint.transform.position.y);
+			AirThrowPoint.transform.position.y, attackHandler);
 	}
 
 	private void Throw()
@@ -54,6 +54,6 @@ public class ThrowProjectileHandler : MonoBehaviour
 		var newProjectile = MAKER.Make(ProjectilePrefab, transform.position);
 		var projectileScript = newProjectile.GetComponent<Projectile>();
 		var directionMult = directionHandler.isFacingRight ? 1 : -1;
-		projectileScript.Fire(aimDir, stats.isPlayer, transform.position.y, ThrowPoint.transform.position.y, false);
+		projectileScript.Fire(aimDir, stats.isPlayer, transform.position.y, ThrowPoint.transform.position.y, false, attackHandler);
 	}
 }

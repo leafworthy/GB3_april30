@@ -39,12 +39,10 @@ public class ConeAttackHandler : MonoBehaviour, IAttackHandler
 	public void Controller_AttackButtonPress(Vector3 target)
 	{
 		if (!isOn) return;
-		if (Time.time >= currentCooldownTime)
-		{
-			currentCooldownTime = Time.time + stats.GetStatValue(StatType.attackRange);
-			currentAttackTarget = target;
-			OnAttackStart?.Invoke();
-		}
+		if (!(Time.time >= currentCooldownTime)) return;
+		currentCooldownTime = Time.time + stats.GetStatValue(StatType.attackRate);
+		currentAttackTarget = target;
+		OnAttackStart?.Invoke();
 	}
 
 	public void Controller_StopAttack()
@@ -61,12 +59,10 @@ public class ConeAttackHandler : MonoBehaviour, IAttackHandler
 
 		newTargetPosition = hitObject.point;
 		var target = hitObject.collider.gameObject.GetComponent<DefenceHandler>();
-		if (target != null)
-		{
-			var newAttack = new Attack(transform.position, newTargetPosition,
-				stats.GetStatValue(StatType.attackDamage));
-			target.TakeDamage(newAttack);
-		}
+		if (target == null) return;
+		var newAttack = new Attack(transform.position, newTargetPosition,
+			stats.GetStatValue(StatType.attackDamage));
+		target.TakeDamage(newAttack);
 	}
 
 	private RaycastHit2D GetAttackHitObject(Vector3 targetPosition)
@@ -78,18 +74,16 @@ public class ConeAttackHandler : MonoBehaviour, IAttackHandler
 	}
 
 
-
+	public Player GetPlayer()
+	{
+		return PLAYERS.GetEnemyPlayer();
+	}
 
 	public bool CanAttack(Vector3 target)
 	{
 		if (!isOn) return false;
-		float targetDistance = Vector3.Distance(GetAimCenter(), target);
-		if (targetDistance < stats.GetStatValue(StatType.attackRange))
-		{
-			return true;
-		}
-
-		return false;
+		var targetDistance = Vector3.Distance(GetAimCenter(), target);
+		return targetDistance < stats.GetStatValue(StatType.attackRange);
 	}
 
 	public OnAttackEventArgs GetAttackEvent(DefenceHandler target)

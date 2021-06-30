@@ -12,6 +12,7 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 	public event Action OnChargeStart;
 	public event Action<bool> OnChargeStop;
 	public event Action OnJumpAttack;
+	public event Action<int> OnHitConnected;
 
 	private AnimationEvents animEvents;
 	private JumpHandler jumpHandler;
@@ -37,6 +38,8 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 	private int attackKillSpecialAmount = 30;
 	private UnitStats stats;
 	private bool isGoingToAttackAfterAttack;
+	private bool isAfterHitStillAttacking;
+	private bool hasReleased;
 
 
 	private void Awake()
@@ -47,6 +50,7 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 
 		playerRemote = GetComponent<IPlayerController>();
 		playerRemote.OnAttackPress += PlayerRemoteAttackPress;
+		playerRemote.OnAttackRelease += PlayerRemoteAttackRelease;
 		playerRemote.OnChargePress += PlayerRemoteChargePress;
 		playerRemote.OnChargeRelease += PlayerRemoteChargeRelease;
 		playerRemote.OnRightTriggerPress += PlayerRemoteRightTriggerPress;
@@ -59,11 +63,22 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 		animEvents.OnAttackStop += Anim_AttackStop;
 		animEvents.OnLandingStart += Anim_LandingStart;
 		animEvents.OnLandingStop += Anim_LandingStop;
+		animEvents.OnAfterHit += Anim_AfterHit;
 
 		animEvents.OnThrowStart += ThrowStart;
 		animEvents.OnThrowStop += ThrowStop;
 		animEvents.OnThrow += Throw;
 		animEvents.OnAirThrow += Airthrow;
+	}
+
+	private void Anim_AfterHit()
+	{
+		isAfterHitStillAttacking = true;
+	}
+
+	private void PlayerRemoteAttackRelease()
+	{
+		hasReleased = true;
 	}
 
 	private void PlayerAimStop()
@@ -167,6 +182,7 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 	private void Anim_AttackStop(int obj)
 	{
 		isAttacking = false;
+		isAfterHitStillAttacking = false;
 		if (isGoingToAttackAfterAttack)
 		{
 			PlayerRemoteAttackPress(Vector3.zero);
@@ -184,6 +200,7 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 			{
 				if (!enemy.IsPlayer())
 				{
+					OnHitConnected?.Invoke(attackType);
 					var newAttack = new Attack(transform.position, hit2D.transform.position,
 						GetAttackDamage(attackType));
 					var didItKill = enemy.TakeDamage(newAttack);
@@ -231,19 +248,6 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 		}
 	}
 
-	private void HandleCooldown()
-	{
-		if (coolDown > 0)
-		{
-			isCoolingDown = true;
-			coolDown -= Time.deltaTime;
-		}
-		else
-		{
-			isCoolingDown = false;
-			coolDown = 0;
-		}
-	}
 
 	private void PlayerRemoteAttackPress(Vector3 obj)
 	{
@@ -252,6 +256,7 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 			if (!ammoHandler.HasFullAmmo(AmmoHandler.AmmoType.meleeCooldown)) return;
 			Debug.Log("ATTACK");
 			isGoingToAttackAfterAttack = false;
+			isAfterHitStillAttacking = false;
 			if (jumpHandler.isJumping)
 				StartJumpAttack();
 			else
@@ -259,6 +264,7 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 		}
 		else
 		{
+			if (!isAfterHitStillAttacking) return;
 			Debug.Log("attack queued");
 			isGoingToAttackAfterAttack = true;
 		}
@@ -276,6 +282,9 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 				break;
 			case 2:
 				Attack2();
+				break;
+			default:
+				Attack1();
 				break;
 		}
 	}
@@ -336,6 +345,11 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 			OnChargeStop?.Invoke(!isCoolingDown);
 			if (isCoolingDown) animEvents.AttackStop();
 		}
+	}
+
+	public Player GetPlayer()
+	{
+		return stats.player;
 	}
 
 	public bool CanAttack(Vector3 getPosition)

@@ -19,7 +19,7 @@ public class HitFX : MonoBehaviour {
     {
         tintHandler.StartTint(attack.IsPoison ? poisonTintColor : hurtTintColor);
         SHAKER.ShakeCamera(transform.position, GetShakeIntensityFromDamage(attack));
-        HITSTUN.StartStun(attack.Stunlength);
+      //  HITSTUN.StartStun(attack.Stunlength);
     }
 
     private static SHAKER.ShakeIntensityType GetShakeIntensityFromDamage(Attack attack)

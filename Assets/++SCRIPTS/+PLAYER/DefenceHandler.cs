@@ -4,13 +4,14 @@ using UnityEngine;
 public class DefenceHandler : MonoBehaviour
 {
 	public event Action<Attack> OnDamaged;
+	public event Action<Attack> OnWounded;
 	public event Action<float> OnFractionChanged;
 	public event Action OnDying;
+	public event Action<IAttackHandler> OnKilled;
 	public event Action OnDead;
 
 	public float HealthMax
 	{
-
 		get
 		{
 			stats ??= GetComponent<UnitStats>();
@@ -42,40 +43,53 @@ public class DefenceHandler : MonoBehaviour
 	private bool isDying;
 	private bool isDead;
 	private AnimationEvents animationEvents;
+	private float woundingAttackDamage = 25;
 
 
 	public float GetFraction()
 	{
 		return Health / HealthMax;
 	}
+
 	private void Start()
 	{
 		animationEvents = GetComponentInChildren<AnimationEvents>();
 		animationEvents.OnDieStop += Die;
+		animationEvents.OnInvincible += OnInvincibleChange;
 		stats = GetComponent<UnitStats>();
 		Health = HealthMax;
 		OnFractionChanged?.Invoke(1);
 	}
 
+	private void OnInvincibleChange(bool turnInvincible)
+	{
+		isInvincible = turnInvincible;
+	}
+
 
 	public bool TakeDamage(Attack attack)
 	{
-		if (!IsDeadOrDying())
+		if (isInvincible) return false;
+		if (IsDeadOrDying()) return false;
+		stats.ChangeStat(StatType.health, -attack.DamageAmount);
+		OnFractionChanged?.Invoke(Health / HealthMax);
+		OnDamaged?.Invoke(attack);
+		if (attack.DamageAmount >= woundingAttackDamage)
 		{
-			stats.ChangeStat(StatType.health, -attack.DamageAmount);
-			OnFractionChanged?.Invoke(Health / HealthMax);
-			OnDamaged?.Invoke(attack);
-
-			SprayBlood(15, attack.DamagePosition, attack.DamageDirection);
-
-			if (!(Health <= 0)) return false;
-			StartDying();
-			Health = 0;
-			return true;
-
+			OnWounded?.Invoke(attack);
 		}
+		AUDIO.PlaySound(ASSETS.sounds.bloodSounds.GetRandom());
+		SprayBlood(15, attack.DamagePosition, attack.DamageDirection);
 
-		return false;
+		if (!(Health <= 0)) return false;
+		if (attack.Owner != null)
+		{
+			OnKilled?.Invoke(attack.Owner);
+		}
+		StartDying();
+		Health = 0;
+		return true;
+
 	}
 
 	private void SprayBlood(int quantity, Vector3 getPosition, Vector3 bloodDir)

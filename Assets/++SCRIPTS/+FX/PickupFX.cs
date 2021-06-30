@@ -20,7 +20,7 @@ public class PickupFX : MonoBehaviour
 		tintHandler.StartTint(pickupTintColor);
 		var otherTintHandler = col.gameObject.GetComponent<TintHandler>();
 		otherTintHandler.StartTint(pickupTintColor);
-
+AUDIO.PlaySound(ASSETS.sounds.pickup_pickup_sounds.GetRandom());
 		var position = transform.position;
 		SHAKER.ShakeCamera(position,shakeIntensity);
 		HITSTUN.StartStun(stunLength);

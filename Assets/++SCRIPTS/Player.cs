@@ -41,6 +41,9 @@ public class Player : MonoBehaviour
 	public event Action<Player> OnDying;
 	public event Action<Player> OnKillEnemy;
 
+	public bool isPlayer = true;
+
+
 	public void Join(CharacterButton firstButton)
 	{
 		hasJoined = true;
@@ -55,6 +58,8 @@ public class Player : MonoBehaviour
 		spawnedPlayerDefence.OnDead += Dead;
 		attackHandler = SpawnedPlayerGO.GetComponent<IAttackHandler>();
 		attackHandler.OnKillEnemy += KillEnemy;
+		var stats = SpawnedPlayerGO.GetComponent<UnitStats>();
+		stats.SetPlayer(this);
 	}
 
 	private void KillEnemy()

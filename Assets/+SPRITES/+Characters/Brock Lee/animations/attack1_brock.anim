@@ -41,6 +41,8 @@ AnimationClip:
       value: {fileID: -7985768844597405833, guid: f808c415777c5436087ba86050f5ef86, type: 3}
     - time: 0.13333334
       value: {fileID: -8787101755844543722, guid: f808c415777c5436087ba86050f5ef86, type: 3}
+    - time: 0.2
+      value: {fileID: 7832512042628075495, guid: f808c415777c5436087ba86050f5ef86, type: 3}
     - time: 0.26666668
       value: {fileID: 7832512042628075495, guid: f808c415777c5436087ba86050f5ef86, type: 3}
     attribute: m_Sprite
@@ -72,6 +74,7 @@ AnimationClip:
     - {fileID: -6473338671220464938, guid: f808c415777c5436087ba86050f5ef86, type: 3}
     - {fileID: -7985768844597405833, guid: f808c415777c5436087ba86050f5ef86, type: 3}
     - {fileID: -8787101755844543722, guid: f808c415777c5436087ba86050f5ef86, type: 3}
+    - {fileID: 7832512042628075495, guid: f808c415777c5436087ba86050f5ef86, type: 3}
     - {fileID: 7832512042628075495, guid: f808c415777c5436087ba86050f5ef86, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
@@ -149,6 +152,13 @@ AnimationClip:
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 1
+    messageOptions: 0
+  - time: 0.2
+    functionName: AfterHit
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
     messageOptions: 0
   - time: 0.26666668
     functionName: AttackStop

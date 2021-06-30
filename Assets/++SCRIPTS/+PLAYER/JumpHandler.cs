@@ -32,11 +32,14 @@ public class JumpHandler : MonoBehaviour
 	private MovementHandler movementHandler;
 	private SortingGroup sortingGroup;
 	private AnimationEvents animEvents;
+	private DefenceHandler defenceHandler;
 
 
 
 	void Awake()
 	{
+		defenceHandler = GetComponent<DefenceHandler>();
+		defenceHandler.OnWounded += OnWounded;
 		animEvents = GetComponentInChildren<AnimationEvents>();
 		animEvents.OnLandingStart += LandingStart;
 		animEvents.OnLandingStop += LandingStop;
@@ -49,6 +52,11 @@ public class JumpHandler : MonoBehaviour
 		originalJumpObjectPosition = jumpObject.transform.localPosition;
 		originalShadowObjectPosition = shadowObject.transform.localPosition;
 
+	}
+
+	private void OnWounded(Attack obj)
+	{
+		Jump();
 	}
 
 	private void LandingStop()
@@ -73,6 +81,7 @@ public class JumpHandler : MonoBehaviour
 		{
 			jumpPressed = true;
 			Jump();
+			OnJump?.Invoke();
 		}
 	}
 
@@ -188,7 +197,6 @@ public class JumpHandler : MonoBehaviour
 
 		velocity = jumpVector;
 		gameObject.layer = (int) Mathf.Log(jumpingLayer.value, 2);
-		OnJump?.Invoke();
 	}
 
 	private void Land()

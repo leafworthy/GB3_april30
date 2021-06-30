@@ -26,8 +26,14 @@ public class DonutAttackHandler : MonoBehaviour, IAttackHandler
 		stats = GetComponent<UnitStats>();
 		defence = GetComponent<DefenceHandler>();
 		defence.OnDying += AttackStop;
+		defence.OnDamaged += Damaged;
 		isOn = true;
 		isCooledDown = true;
+	}
+
+	private void Damaged(Attack attack)
+	{
+		movement.Push(attack.DamageDirection, MovementHandler.PushType.highest);
 	}
 
 	private void FixedUpdate()
@@ -95,6 +101,11 @@ public class DonutAttackHandler : MonoBehaviour, IAttackHandler
 		defence.GetComponent<MovementHandler>().Push(bouncebackAttack.DamageDirection, MovementHandler.PushType.highest);
 	}
 
+
+	public Player GetPlayer()
+	{
+		return PLAYERS.GetEnemyPlayer();
+	}
 
 	public bool CanAttack(Vector3 target)
 	{

@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 69483852}
   - component: {fileID: 69483853}
   - component: {fileID: 69483854}
+  - component: {fileID: 788288280631580191}
   m_Layer: 0
   m_Name: +GAME MANAGER
   m_TagString: Untagged
@@ -240,6 +241,7 @@ MonoBehaviour:
   buttonIndex: 0
   playerColor: {r: 1, g: 0, b: 0, a: 1}
   SpawnedPlayerGO: {fileID: 0}
+  isPlayer: 1
 --- !u!114 &69483851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,6 +266,7 @@ MonoBehaviour:
   buttonIndex: 0
   playerColor: {r: 0, g: 1, b: 0.025922537, a: 1}
   SpawnedPlayerGO: {fileID: 0}
+  isPlayer: 1
 --- !u!114 &69483852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,6 +291,7 @@ MonoBehaviour:
   buttonIndex: 0
   playerColor: {r: 0, g: 0.065570354, b: 1, a: 1}
   SpawnedPlayerGO: {fileID: 0}
+  isPlayer: 1
 --- !u!114 &69483853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,6 +316,7 @@ MonoBehaviour:
   buttonIndex: 0
   playerColor: {r: 1, g: 0, b: 0.7932253, a: 1}
   SpawnedPlayerGO: {fileID: 0}
+  isPlayer: 1
 --- !u!114 &69483854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,3 +329,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c39ae7c48264cb5882e46eae7247e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &788288280631580191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6110766342226134768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4423d2502995413c940e8200548c9d64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentCharacter: 0
+  playerIndex: 5
+  hasJoined: 0
+  currentButton: {fileID: 0}
+  hasSelectedCharacter: 0
+  A_Pressed: 0
+  B_Pressed: 0
+  Left_Pressed: 0
+  Right_Pressed: 0
+  buttonIndex: 0
+  playerColor: {r: 1, g: 0, b: 0, a: 1}
+  SpawnedPlayerGO: {fileID: 0}
+  isPlayer: 0

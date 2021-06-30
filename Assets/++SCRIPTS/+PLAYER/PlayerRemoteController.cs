@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerRemoteController : MonoBehaviour, IMovementController, IPlayerController
@@ -59,6 +60,8 @@ public class PlayerRemoteController : MonoBehaviour, IMovementController, IPlaye
 		isOn = true;
 	}
 
+
+
 	private void Update()
 	{
 		HandlePausing();
@@ -66,8 +69,8 @@ public class PlayerRemoteController : MonoBehaviour, IMovementController, IPlaye
 		if(PAUSE.isPaused) return;
 		HandleAiming();
 		HandleReloading();
-		HandleMovement();
 		HandleAttacking();
+		HandleMovement();
 		HandleJumping();
 		HandleCharging();
 		HandleDashing();
@@ -156,19 +159,20 @@ public class PlayerRemoteController : MonoBehaviour, IMovementController, IPlaye
 		return GamePad.GetButton(CButton.B, playerIndex);
 	}
 
+	public static int numTimesPressed = 0;
 	private void HandleAttacking()
 	{
 		if (IsAttackButtonDown())
 		{
-			if (!attackPressed)
-			{
-				OnAttackPress?.Invoke(GetRightStickDir());
-			}
 
-			attackPressed = true;
+				Debug.Log(numTimesPressed++ + "ON");
+
+				OnAttackPress?.Invoke(GetRightStickDir());
+				attackPressed = true;
 		}
-		else if (attackPressed)
+		else
 		{
+			Debug.Log( "OFF");
 			attackPressed = false;
 			OnAttackRelease?.Invoke();
 		}

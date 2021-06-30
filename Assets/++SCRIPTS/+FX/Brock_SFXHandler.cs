@@ -9,13 +9,25 @@ public class Brock_SFXHandler : MonoBehaviour
 	{
 		animEvents = GetComponentInChildren<AnimationEvents>();
 		attackHandler = GetComponentInChildren<BrockAttackHandler>();
+		attackHandler.OnHitConnected += Attack_OnHitConnected;
 
 		animEvents.OnStep += Anim_OnStep;
-		animEvents.OnDash += Anim_OnTeleport;
-		animEvents.OnAttackHit += Anim_OnAttackHit;
 		animEvents.OnAttackStart += Anim_OnBatSwing;
 		animEvents.OnThrow += Anim_Throw;
 		animEvents.OnHitStart += Anim_HitStart;
+		animEvents.OnTeleport += Anim_OnTeleport;
+	}
+
+	private void Attack_OnHitConnected(int attackType)
+	{
+		if (attackType == 5)
+		{
+
+			ASSETS.sounds.brock_homerunhit_sounds.PlayRandom();
+			return;
+		}
+
+		ASSETS.sounds.brock_bathit_sounds.PlayRandom();
 	}
 
 	private void Anim_HitStart()
@@ -39,16 +51,7 @@ public class Brock_SFXHandler : MonoBehaviour
 		ASSETS.sounds.brock_teleport_sounds.PlayRandom();
 	}
 
-	private void Anim_OnAttackHit(int attackID)
-	{
-		if (attackID == 5)
-		{
 
-			ASSETS.sounds.brock_homerunhit_sounds.PlayRandom();
-			return;
-		}
-		ASSETS.sounds.brock_bathit_sounds.PlayRandom();
-	}
 
 
 	private void Anim_OnStep()
