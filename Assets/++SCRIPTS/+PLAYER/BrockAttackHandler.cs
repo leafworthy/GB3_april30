@@ -23,11 +23,9 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 	private readonly float chargingCooldown = .5f;
 	private readonly float jumpAttackCooldown = .5f;
 
-	private float coolDown;
 
 	private bool isAttacking;
 	private bool isCharging;
-	private bool isCoolingDown;
 	private bool isLanding;
 
 	private IPlayerController playerRemote;
@@ -40,6 +38,9 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 	private bool isGoingToAttackAfterAttack;
 	private bool isAfterHitStillAttacking;
 	private bool hasReleased;
+	private Vector3 aimDir;
+
+
 
 
 	private void Awake()
@@ -47,6 +48,7 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 		stats = GetComponent<UnitStats>();
 		jumpHandler = GetComponent<JumpHandler>();
 		ammoHandler = GetComponent<AmmoHandler>();
+		movement = GetComponent<MovementHandler>();
 
 		playerRemote = GetComponent<IPlayerController>();
 		playerRemote.OnAttackPress += PlayerRemoteAttackPress;
@@ -64,11 +66,19 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 		animEvents.OnLandingStart += Anim_LandingStart;
 		animEvents.OnLandingStop += Anim_LandingStop;
 		animEvents.OnAfterHit += Anim_AfterHit;
-
+		animEvents.OnDash += ChargeAttackDash;
 		animEvents.OnThrowStart += ThrowStart;
 		animEvents.OnThrowStop += ThrowStop;
 		animEvents.OnThrow += Throw;
 		animEvents.OnAirThrow += Airthrow;
+	}
+
+	private float SpecialAttackDistance = 20;
+	private MovementHandler movement;
+
+	private void ChargeAttackDash()
+	{
+
 	}
 
 	private void Anim_AfterHit()
@@ -88,7 +98,8 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 
 	private void PlayerRemoteOnAim(Vector3 newDirection)
 	{
-		var aimDir = newDirection.normalized;
+		aimDir = newDirection.normalized;
+		movement.FaceDir(aimDir.x >= 0);
 		OnAim?.Invoke(aimDir);
 	}
 
@@ -111,14 +122,12 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 	{
 		Debug.Log("standing kunai");
 		OnThrow?.Invoke();
-		coolDown = attack1Cooldown;
 	}
 
 	private void StartAirKunaiAttack()
 	{
 		Debug.Log("air kunai");
 		OnAirThrow?.Invoke();
-		coolDown = attack1Cooldown;
 	}
 
 	private void PlayerRemoteRightTriggerPress(Vector3 aimDirection)
@@ -132,7 +141,6 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 		else
 			StartStandingKunaiAttack();
 	}
-
 
 
 	private void FixedUpdate()
@@ -183,49 +191,74 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 	{
 		isAttacking = false;
 		isAfterHitStillAttacking = false;
-		if (isGoingToAttackAfterAttack)
-		{
-			PlayerRemoteAttackPress(Vector3.zero);
-		}
+		if (isGoingToAttackAfterAttack) PlayerRemoteAttackPress(Vector3.zero);
 	}
 
 	private void Anim_AttackHit(int attackType)
 	{
-		var circleCast = Physics2D.OverlapCircleAll(transform.position, GetHitRange(attackType));
-
-		foreach (var hit2D in circleCast)
+		if (attackType != 5)
 		{
-			var enemy = hit2D.transform.gameObject.GetComponent<DefenceHandler>();
-			if (enemy != null)
-			{
-				if (!enemy.IsPlayer())
-				{
-					OnHitConnected?.Invoke(attackType);
-					var newAttack = new Attack(transform.position, hit2D.transform.position,
-						GetAttackDamage(attackType));
-					var didItKill = enemy.TakeDamage(newAttack);
+			var circleCast = Physics2D.OverlapCircleAll(transform.position, GetHitRange(attackType));
 
-					ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.specialCooldown, attackHitSpecialAmount);
-					if (didItKill)
-					{
-						ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.specialCooldown, attackKillSpecialAmount);
-						OnKillEnemy?.Invoke();
-					}
-				}
+			foreach (var hit2D in circleCast)
+			{
+				HitTarget(attackType, hit2D, true);
 			}
 		}
+		else
+		{
+			var raycast = Physics2D.RaycastAll((Vector2) transform.position, movement.GetMoveDir(), SpecialAttackDistance,
+				ASSETS.LevelAssets.EnemyLayer);
+			Debug.DrawRay((Vector2)transform.position, (Vector2) movement.GetMoveDir()*SpecialAttackDistance, Color.red);
+
+			Debug.Log(movement.GetMoveDir() + "movedir");
+			if (raycast.Length <= 0)
+			{
+				Debug.Log("miss");
+				return;
+			}
+			OnHitConnected?.Invoke(attackType);
+
+			foreach (var raycastHit2D in raycast)
+			{
+				HitTarget(attackType, raycastHit2D.collider, false);
+			}
+
+			var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position+ (Vector2)movement.GetMoveDir()*SpecialAttackDistance, GetHitRange(attackType));
+
+			foreach (var hit2D in circleCast)
+			{
+				HitTarget(attackType, hit2D, true);
+			}
+		}
+	}
+
+	private void HitTarget(int attackType, Collider2D hit2D, bool connect)
+	{
+		var enemy = hit2D.transform.gameObject.GetComponent<DefenceHandler>();
+		if (enemy == null) return;
+		if (enemy.IsPlayer()) return;
+		if (connect)
+		{
+			OnHitConnected?.Invoke(attackType);
+		}
+		var newAttack = new Attack(transform.position, hit2D.transform.position,
+			GetAttackDamage(attackType), false, HITSTUN.StunLength.Long, true, this);
+		var didItKill = enemy.TakeDamage(newAttack);
+
+
+		ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.specialCooldown, attackHitSpecialAmount);
+		if (!didItKill) return;
+		ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.specialCooldown, attackKillSpecialAmount);
+		OnKillEnemy?.Invoke();
 	}
 
 	private float GetHitRange(int attackType)
 	{
 		if (attackType == 5)
-		{
-			return stats.GetStatValue(StatType.attackRange) *2;
-		}
+			return stats.GetStatValue(StatType.attackRange) * 2;
 		else
-		{
 			return stats.GetStatValue(StatType.attackRange);
-		}
 	}
 
 	private float GetAttackDamage(int attackType)
@@ -233,13 +266,13 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 		switch (attackType)
 		{
 			case 1:
-				return 25;
-			case 2:
-				return 25;
-			case 3:
-				return 40;
-			case 4:
 				return 50;
+			case 2:
+				return 50;
+			case 3:
+				return 100;
+			case 4:
+				return 100;
 			case 5:
 				return 200;
 			default:
@@ -297,54 +330,43 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 	private void StartJumpAttack()
 	{
 		OnJumpAttack?.Invoke();
-		coolDown = jumpAttackCooldown;
 	}
 
 	private void Attack1()
 	{
 		Debug.Log("attack1");
 		OnAttack1?.Invoke();
-		coolDown = attack1Cooldown;
 	}
 
 	private void Attack2()
 	{
 		OnAttack2?.Invoke();
 		Debug.Log("attack2");
-		coolDown = attack2Cooldown;
 	}
 
 	private void Attack3()
 	{
 		OnAttack3?.Invoke();
 		Debug.Log("attack3");
-		coolDown = attack3Cooldown;
 	}
 
 	private void PlayerRemoteChargePress()
 	{
-		if (!ammoHandler.HasFullAmmo(AmmoHandler.AmmoType.specialCooldown))
-		{
-			return;
-		}
+		if (!ammoHandler.HasFullAmmo(AmmoHandler.AmmoType.specialCooldown)) return;
 
 		if (!CanAttack() || !jumpHandler.isDoneLanding) return;
 		if (!jumpHandler.isDoneLanding) return;
 
 		isCharging = true;
-		coolDown = chargingCooldown;
 		OnUseAmmo?.Invoke(AmmoHandler.AmmoType.specialCooldown, 100);
 		OnChargeStart?.Invoke();
 	}
 
 	private void PlayerRemoteChargeRelease()
 	{
-		if (isCharging)
-		{
-			isCharging = false;
-			OnChargeStop?.Invoke(!isCoolingDown);
-			if (isCoolingDown) animEvents.AttackStop();
-		}
+		if (!isCharging) return;
+		isCharging = false;
+		OnChargeStop?.Invoke(true);
 	}
 
 	public Player GetPlayer()

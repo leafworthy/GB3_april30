@@ -52,6 +52,7 @@ public class BrockAnimationHandler : MonoBehaviour
 		attackHandler.OnThrow += Throw;
 		attackHandler.OnAirThrow += AirThrow;
 
+
 		defenceHandler = GetComponent<DefenceHandler>();
 		defenceHandler.OnDamaged += OnHit;
 		defenceHandler.OnDying += Die;
@@ -80,6 +81,8 @@ public class BrockAnimationHandler : MonoBehaviour
 	private void AttackStop(int obj)
 	{
 		isAttacking = false;
+		animator.ResetTrigger(ChargeAttackTrigger);
+		animator.ResetTrigger(LandingStartTrigger);
 	}
 
 	private void LandStop()
@@ -155,6 +158,7 @@ public class BrockAnimationHandler : MonoBehaviour
 		isFalling = false;
 		isJumping = false;
 		isLanding = true;
+		animator.ResetTrigger(JumpAttackTrigger);
 		animator.SetTrigger(LandingStartTrigger);
 	}
 

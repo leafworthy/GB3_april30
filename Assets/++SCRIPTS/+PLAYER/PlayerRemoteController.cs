@@ -165,14 +165,12 @@ public class PlayerRemoteController : MonoBehaviour, IMovementController, IPlaye
 		if (IsAttackButtonDown())
 		{
 
-				Debug.Log(numTimesPressed++ + "ON");
 
 				OnAttackPress?.Invoke(GetRightStickDir());
 				attackPressed = true;
 		}
 		else
 		{
-			Debug.Log( "OFF");
 			attackPressed = false;
 			OnAttackRelease?.Invoke();
 		}
@@ -180,7 +178,6 @@ public class PlayerRemoteController : MonoBehaviour, IMovementController, IPlaye
 		if (IsLeftTriggerDown())
 		{
 			OnLeftTriggerPress?.Invoke(GetRightStickDirAmplitude());
-			Debug.Log("LEFTTRIGGERPRESSED");
 			leftTriggerPressed = true;
 		}
 		else if (leftTriggerPressed)

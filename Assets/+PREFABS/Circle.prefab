@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5358864741575734680}
   - component: {fileID: 8888606270887711093}
   - component: {fileID: 7429525410010728146}
+  - component: {fileID: 6720873447707427082}
   m_Layer: 0
   m_Name: Circle
   m_TagString: Untagged
@@ -72,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 55cbf16464e514ef19129473e710737f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9e3b171b9611a4e26b0b67f5ed881b68, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -95,3 +96,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f1f44aae9b4218bb3aa17d3d13820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6720873447707427082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089077613810556204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMovable: 0
+  renderBelowAll: 0
+  light: {fileID: 0}
+  movingDependencies: []
+  sortType: 0
+  SorterPositionOffset: {x: 0, y: 0, z: 0}
+  SorterPositionOffset2: {x: 0, y: 0, z: 0}
+  renderersToSort:
+  - {fileID: 8888606270887711093}

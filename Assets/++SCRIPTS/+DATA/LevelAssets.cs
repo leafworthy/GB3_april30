@@ -8,4 +8,5 @@ public class LevelAssets : ScriptableObject
 	public LayerMask PlayerLayer;
 	public LayerMask EnemyLayer;
 	public LayerMask LandableLayer;
+	public LayerMask PlayerDashLayer;
 }

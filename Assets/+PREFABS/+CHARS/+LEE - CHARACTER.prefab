@@ -112,7 +112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3833892833502990260}
   m_Layer: 0
-  m_Name: Animation
+  m_Name: GraphicObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -311,6 +311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 1
+  player: {fileID: 0}
   unitData: {fileID: 11400000, guid: 55b9a01585bee4f8fb54f331a7c4ac4d, type: 2}
   unitStats: []
 --- !u!114 &1730899913388502724
@@ -471,7 +472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   primaryAmmo:
     type: 3
-    reserveAmmo: 0
+    reserveAmmo: 100
     clipSize: 0
     AmmoInClip: 0
     maxReserveAmmo: 100
@@ -744,7 +745,7 @@ GameObject:
   - component: {fileID: 4970532535790339243}
   - component: {fileID: 1466485418516300865}
   m_Layer: 0
-  m_Name: AnimatedSprite
+  m_Name: '####ANIMATION'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

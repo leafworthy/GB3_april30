@@ -54,7 +54,7 @@ public class NadeHandler : MonoBehaviour
 		var projectileScript = newProjectile.GetComponent<ThrownProjectile>();
 
 		projectileScript.Throw(new Vector2(aimDirection.x, aimDirection.y), stats.isPlayer, hitpoint.y,
-			ThrowPoint.transform.position.y, hitpoint, throwTime);
+			ThrowPoint.transform.position.y, hitpoint, throwTime, attack);
 	}
 
 	private static void ClearCircles()

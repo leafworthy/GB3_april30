@@ -21,11 +21,12 @@ public class ThrownProjectile : MonoBehaviour
 	private Vector2 shadowVelocity;
 	private int bounces;
 	private int maxBounces = 2;
-
+	private IAttackHandler owner;
 
 	public void Throw(Vector3 initialVelocity, bool _isPlayer, float _FloorHeight, float _ThrowHeight, Vector3 hitPoint,
-	                  float throwTime)
+	                  float throwTime, IAttackHandler attacker)
 	{
+		owner = attacker;
 		origin = HeightObject.transform.position;
 		origin.y = _ThrowHeight;
 		HeightObject.transform.position = origin;
@@ -140,19 +141,7 @@ public class ThrownProjectile : MonoBehaviour
 	private void LandOrBounceY()
 	{
 
-		if (bounces > maxBounces)
-		{
-			Debug.Log("enough bounces");
 			Land();
-		}
-		else
-		{
-			bounces++;
-			Debug.Log(bounces);
-			HeightObject.transform.position =
-				new Vector3(HeightObject.transform.position.x, transform.position.y, 0);
-			Bounce(true);
-		}
 	}
 
 	private void Bounce(bool flipYVelocity)
@@ -177,7 +166,7 @@ public class ThrownProjectile : MonoBehaviour
 
 		if (target.IsPlayer() != isPlayer)
 		{
-			var newAttack = new Attack(hitPoint-velocity.normalized, hitPoint, DamageAmount);
+			var newAttack = new Attack(hitPoint-velocity.normalized, hitPoint, DamageAmount, false,HITSTUN.StunLength.Normal, true, owner);
 			target.TakeDamage(newAttack);
 			hasReachedTarget = true;
 			velocity = Vector3.zero;
