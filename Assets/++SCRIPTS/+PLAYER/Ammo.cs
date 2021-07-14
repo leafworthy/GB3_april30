@@ -12,6 +12,7 @@ public class Ammo
 	public event Action OnAmmoGained;
 	public event Action OnAmmoUsed;
 	public bool reloads = true;
+	public bool unlimited;
 
 
 	public bool hasAmmoInClip()
@@ -21,6 +22,7 @@ public class Ammo
 
 	public bool hasAmmo()
 	{
+		if (unlimited) return true;
 		return reserveAmmo > 0;
 	}
 	public void AddAmmoToReserve(int amount)
@@ -51,10 +53,16 @@ public class Ammo
 
 	public void Reload()
 	{
+		if (unlimited)
+		{
+			AmmoInClip = clipSize;
+			return;
+		}
 		if (!reloads) return;
-		if (reserveAmmo <= 0) return;
+		if ((reserveAmmo <= 0))return;
 		if (AmmoInClip >= clipSize) return;
 		var ammoNeeded = clipSize - AmmoInClip;
+
 		if (ammoNeeded > reserveAmmo)
 		{
 			AmmoInClip += reserveAmmo;

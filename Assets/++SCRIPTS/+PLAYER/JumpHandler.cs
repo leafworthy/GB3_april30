@@ -30,21 +30,20 @@ public class JumpHandler : MonoBehaviour
 	private IPlayerController remoteController;
 	private Landable currentLandable;
 	private MovementHandler movementHandler;
-	private SortingGroup sortingGroup;
 	private AnimationEvents animEvents;
 	private DefenceHandler defenceHandler;
+	private IAttackHandler attackHandler;
 
 
-
-	void Awake()
+	void Start()
 	{
+		attackHandler = GetComponent<IAttackHandler>();
 		defenceHandler = GetComponent<DefenceHandler>();
 		defenceHandler.OnWounded += OnWounded;
 		animEvents = GetComponentInChildren<AnimationEvents>();
 		animEvents.OnLandingStart += LandingStart;
 		animEvents.OnLandingStop += LandingStop;
 		movementHandler = GetComponent<MovementHandler>();
-		sortingGroup = GetComponent<SortingGroup>();
 
 		remoteController = GetComponent<IPlayerController>();
 		remoteController.OnJumpPress += JumpPress;
@@ -56,7 +55,8 @@ public class JumpHandler : MonoBehaviour
 
 	private void OnWounded(Attack obj)
 	{
-		Jump();
+		animEvents.Reset();
+		Jump(.3f);
 	}
 
 	private void LandingStop()
@@ -88,18 +88,16 @@ public class JumpHandler : MonoBehaviour
 	private bool CanJump()
 	{
 
-		return movementHandler.CanMove() && !isJumping && !jumpPressed && isDoneLanding;
+		return movementHandler.canMove && !isJumping && !jumpPressed && isDoneLanding&& !attackHandler.isBusy();
 	}
 
-	void FixedUpdate()
+	private void FixedUpdate()
 	{
 		HandleLandable();
-		if (isJumping)
-		{
-			HandleVelocity();
-			HandleFalling();
-			HandleLanding();
-		}
+		if (!isJumping) return;
+		HandleVelocity();
+		HandleFalling();
+		HandleLanding();
 	}
 
 	private void HandleVelocity()
@@ -143,13 +141,11 @@ public class JumpHandler : MonoBehaviour
 			{
 				shadowObject.transform.localPosition =
 					new Vector3(shadowObject.transform.localPosition.x, currentLandable.height, 0);
-				Debug.Log("up");
-				sortingGroup.sortingOrder = 1;
+
 			}
 		}
 		else
 		{
-			sortingGroup.sortingOrder = 0;
 			if (!isJumping && isOnLandable)
 			{
 				FallFromLanded();
@@ -163,7 +159,6 @@ public class JumpHandler : MonoBehaviour
 
 	private void FallFromLanded()
 	{
-		Debug.Log("fall from landed");
 
 		isOnLandable = false;
 		isFalling = true;
@@ -185,7 +180,7 @@ public class JumpHandler : MonoBehaviour
 		return raycastHit;
 	}
 
-	private void Jump()
+	private void Jump(float mult = 1)
 	{
 		Debug.Log("jump");
 		isOnLandable = false;
@@ -195,7 +190,7 @@ public class JumpHandler : MonoBehaviour
 		isDoneLanding = false;
 		currentLandable = null;
 
-		velocity = jumpVector;
+		velocity = jumpVector* mult;
 		gameObject.layer = (int) Mathf.Log(jumpingLayer.value, 2);
 	}
 
@@ -225,7 +220,6 @@ public class JumpHandler : MonoBehaviour
 		isFalling = false;
 		isDoneLanding = false;
 
-		sortingGroup.sortingOrder = 0;
 		jumpObject.transform.localPosition = originalJumpObjectPosition;
 		gameObject.layer = (int) Mathf.Log(groundedLayer.value, 2);
 		currentLandable = null;
@@ -242,6 +236,5 @@ public class JumpHandler : MonoBehaviour
 		jumpObject.transform.localPosition = originalJumpObjectPosition + new Vector3(0, height, 0);
 		gameObject.layer = (int) Mathf.Log(landedLayer.value, 2);
 
-		sortingGroup.sortingOrder = 1;
 	}
 }

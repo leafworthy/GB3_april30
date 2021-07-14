@@ -6,15 +6,18 @@ public class BeanAnimationHandler : MonoBehaviour
 	public Animator bottomAnimator;
 
 	private bool isAiming;
+	private bool isDead;
 	private bool isAttacking;
+	private bool isRunning;
 
+	private DashHandler dashHandler;
 	private MovementHandler movementHandler;
 	private AnimationEvents animationEvents;
 	private BeanAttackHandler attackHandler;
-	Vector3 aimingDir;
-	private Vector3 moveDir;
+	private Vector3 aimingDir;
 	private DefenceHandler defenceHandler;
 	private JumpHandler jumpHandler;
+
 	private static readonly int IsRunning = Animator.StringToHash("isRunning");
 	private static readonly int IsFacingLeft = Animator.StringToHash("isFacingLeft");
 	private static readonly int Vertical = Animator.StringToHash("Vertical");
@@ -29,11 +32,15 @@ public class BeanAnimationHandler : MonoBehaviour
 	private static readonly int LandTrigger = Animator.StringToHash("LandTrigger");
 	private static readonly int ReloadTrigger = Animator.StringToHash("ReloadTrigger");
 	private static readonly int FlyingTrigger = Animator.StringToHash("FlyingTrigger");
-	private bool isRunning;
 
+	private static readonly int IsGlocking = Animator.StringToHash("isGlocking");
+	private SpriteRenderer topSpriteRenderer;
 
 	private void Start()
 	{
+		dashHandler = GetComponent<DashHandler>();
+		dashHandler.OnDashCommand += DashCommand;
+
 		defenceHandler = GetComponent<DefenceHandler>();
 		defenceHandler.OnDying += Dying;
 		defenceHandler.OnWounded += OnWounded;
@@ -41,7 +48,6 @@ public class BeanAnimationHandler : MonoBehaviour
 		animationEvents.OnDashStop += DashStop;
 		animationEvents.OnLandingStop += LandingStop;
 		animationEvents.OnRoar += OnFallInStop;
-
 
 		attackHandler = GetComponent<BeanAttackHandler>();
 		attackHandler.OnAim += Aim;
@@ -52,60 +58,65 @@ public class BeanAnimationHandler : MonoBehaviour
 		attackHandler.OnKnifeStart += KnifeStart;
 		attackHandler.OnReloadStart += ReloadStart;
 
-
 		movementHandler = GetComponent<MovementHandler>();
 		movementHandler.OnMoveStart += MoveStart;
 		movementHandler.OnMoveStop += MoveStop;
-		movementHandler.OnDash += Dash;
 
 		jumpHandler = GetComponent<JumpHandler>();
 		jumpHandler.OnJump += Jump;
 		jumpHandler.OnLand += Land;
 
-		topAnimator.gameObject.SetActive(false);
-
+		topSpriteRenderer = topAnimator.GetComponent<SpriteRenderer>();
+		SetTopActive(false);
 	}
+
+
 
 	private void OnWounded(Attack attack)
 	{
-		Debug.Log("damaged, trigger set");
-		topAnimator.gameObject.SetActive(false);
+		SetTopActive(false);
 		bottomAnimator.SetTrigger(FlyingTrigger);
+	}
+
+	private void SetTopActive(bool on)
+	{
+		topSpriteRenderer.enabled = on;
 	}
 
 	private void OnFallInStop()
 	{
-		topAnimator.gameObject.SetActive(true);
+		SetTopActive(true);
 	}
 
 	private void ReloadStart()
 	{
+		bottomAnimator.SetBool(IsGlocking, attackHandler.IsGlocking);
+		topAnimator.SetBool(IsGlocking, attackHandler.IsGlocking);
+		SetTopActive(true);
 		topAnimator.SetTrigger(ReloadTrigger);
 	}
 
 	private void LandingStop()
 	{
-		topAnimator.gameObject.SetActive(true);
+		SetTopActive(true);
 	}
 
 	private void Land()
 	{
-		Debug.Log("land");
+		SetTopActive(false);
 		bottomAnimator.SetTrigger(LandTrigger);
-		topAnimator.gameObject.SetActive(false);
 	}
 
 	private void Jump()
 	{
-		Debug.Log("jump");
-		topAnimator.gameObject.SetActive(false);
+		SetTopActive(false);
 		bottomAnimator.SetTrigger(JumpTrigger);
 	}
 
 	private void Dying()
 	{
-		topAnimator.gameObject.SetActive(false);
-		bottomAnimator.SetBool(IsDead,true);
+		SetTopActive(false);
+		isDead = true;
 	}
 
 	private void NadeThrow()
@@ -120,28 +131,23 @@ public class BeanAnimationHandler : MonoBehaviour
 
 	private void DashStop()
 	{
-		topAnimator.gameObject.SetActive(true);
+		SetTopActive(true);
 	}
 
-	private void Dash()
+	private void DashCommand()
 	{
-		topAnimator.gameObject.SetActive(false);
+		SetTopActive(false);
 		bottomAnimator.SetTrigger(DashTrigger);
 	}
 
-
 	private void MoveStop()
 	{
-		Debug.Log("move stop");
 		isRunning = false;
-		moveDir = Vector3.zero;
 	}
 
 	private void MoveStart(Vector3 newDir)
 	{
-		Debug.Log("move start");
 		isRunning = true;
-		moveDir = newDir;
 	}
 
 	private void AttackStop()
@@ -172,20 +178,32 @@ public class BeanAnimationHandler : MonoBehaviour
 
 	private void UpdateAnimator()
 	{
-		moveDir = movementHandler.GetVelocity();
+		var clampedDir = aimingDir;
+		if ((clampedDir.x < .25f) && (clampedDir.x > 0))
+		{
+			clampedDir.x = .25f;
+		}
 
+		if ((clampedDir.x < 0) && (clampedDir.x > -.25))
+		{
+			clampedDir.x = -.25f;
+		}
+		bottomAnimator.SetBool(IsGlocking, attackHandler.IsGlocking);
+		topAnimator.SetBool(IsGlocking, attackHandler.IsGlocking);
 		bottomAnimator.SetBool(IsRunning, isRunning);
-
-
-		topAnimator.SetBool(IsFacingLeft, aimingDir.x<0);
-		topAnimator.SetFloat(Vertical, aimingDir.y);
-		topAnimator.SetFloat(Horizontal, aimingDir.x);
-		bottomAnimator.SetFloat(Vertical, aimingDir.y);
-		bottomAnimator.SetFloat(Horizontal, aimingDir.x);
-
+		topAnimator.SetBool(IsFacingLeft, clampedDir.x < 0);
+		topAnimator.SetFloat(Vertical, clampedDir.y);
+		topAnimator.SetFloat(Horizontal, clampedDir.x);
+		bottomAnimator.SetFloat(Vertical, clampedDir.y);
+		bottomAnimator.SetFloat(Horizontal, clampedDir.x);
 		topAnimator.SetBool(IsShooting, isAttacking);
 		topAnimator.SetBool(IsAiming, isAiming);
 		bottomAnimator.SetBool(IsShooting, isAttacking);
 		bottomAnimator.SetBool(IsAiming, isAiming);
+		bottomAnimator.SetBool(IsDead,isDead);
+		topAnimator.SetBool(IsDead, isDead);
+
+
+
 	}
 }

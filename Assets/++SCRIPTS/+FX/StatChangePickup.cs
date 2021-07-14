@@ -16,5 +16,12 @@ public class StatChangePickup : Pickup
 		return newList;
 	}
 
-
+	public override AudioClip GetPickupSound()
+	{
+		if (type == StatType.moveSpeed)
+		{
+			return ASSETS.sounds.pickup_speed_sounds.GetRandom();
+		}
+		return base.GetPickupSound();
+	}
 }

@@ -14,8 +14,6 @@ namespace _PLUGINS
         [NonSerialized]
         public bool forceSort;
 
-        public Light2D light;
-
         [NonSerialized]
         public List<IsoSpriteSorting> staticDependencies = new List<IsoSpriteSorting>(16);
         [NonSerialized]
@@ -284,7 +282,7 @@ namespace _PLUGINS
             {
                 for (int j = 0; j < renderersToSort.Length; ++j)
                 {
-                    renderersToSort[j].sortingOrder = value;
+                    renderersToSort[j].sortingOrder = value+j;
                 }
             }
         }

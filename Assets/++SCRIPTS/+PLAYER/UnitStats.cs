@@ -50,7 +50,7 @@ public class UnitStats : MonoBehaviour
     {
         var stat = unitStats.FirstOrDefault(t => t.type == type);
         if (stat is null) return;
-        Debug.Log("setting stat " + stat.type + " from "+stat.value+" to " + value);
+       // Debug.Log("setting stat " + stat.type + " from "+stat.value+" to " + value);
         stat.SetValue(value);
         OnStatChange?.Invoke(stat);
     }
@@ -59,7 +59,7 @@ public class UnitStats : MonoBehaviour
     {
         var stat = unitStats.FirstOrDefault(t => t.type == type);
         if (stat is null) return;
-        Debug.Log("changing stat " + stat.type + " "+stat.value+" by " + value);
+//        Debug.Log("changing stat " + stat.type + " "+stat.value+" by " + value);
         stat.ChangeValue(value);
         OnStatChange?.Invoke(stat);
     }
@@ -68,7 +68,7 @@ public class UnitStats : MonoBehaviour
     {
         var stat = unitStats.FirstOrDefault(t => t.type == type);
         if(stat is null) return;
-        Debug.Log("resetting stat " + stat.type + " " + stat.value + " to " + stat.GetBaseValue());
+      // Debug.Log("resetting stat " + stat.type + " " + stat.value + " to " + stat.GetBaseValue());
         stat.ResetValue();
         OnStatChange?.Invoke(stat);
     }

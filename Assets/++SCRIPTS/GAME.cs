@@ -16,19 +16,25 @@ public class GAME : Singleton<GAME>
 	private LEVEL currentLevel;
 	private List<Player> currentPlayers;
 	private bool isPlaying;
+	public  bool isTesting;
 
 	private void Start()
 	{
 		CharacterSelectionMenu.OnCharacterSelectionComplete += CHARS_OnCharacterSelectionComplete;
 		PLAYERS.OnAllPlayersDead += EndGameRestart;
 		StartMainMenu();
+		Debug.Log("instancing level");
+
 	}
 
 	private void CHARS_OnCharacterSelectionComplete(List<Player> joiningPlayers)
 	{
+		var startingLevelGO = Instantiate(ASSETS.LevelAssets.StartingLevelPrefab);
+		currentLevel = startingLevelGO.GetComponent<LEVEL>();
 		if (isPlaying) return;
 		Debug.Log("GAME:Selection complete, starting level...");
-		StartCoroutine(WaitAndStartLevel(joiningPlayers));
+		isPlaying = true;
+		PlayLevel(joiningPlayers);
 
 	}
 
@@ -37,17 +43,15 @@ public class GAME : Singleton<GAME>
 		while (!isPlaying)
 		{
 			yield return new WaitForSeconds(.05f);
+			Debug.Log("restarting level...");
 			isPlaying = true;
-			Debug.Log("waited");
 			PlayLevel(joiningPlayers);
 		}
 	}
 
 	private void PlayLevel(List<Player> joiningPlayers)
 	{
-		Debug.Log("instancing level");
-		var startingLevelGO = Instantiate(ASSETS.LevelAssets.StartingLevelPrefab);
-		currentLevel = startingLevelGO.GetComponent<LEVEL>();
+		currentLevel.gameObject.SetActive(true);
 		currentPlayers = joiningPlayers;
 		currentLevel.PlayLevel(joiningPlayers);
 		OnGameStart?.Invoke();
@@ -66,20 +70,24 @@ public class GAME : Singleton<GAME>
 
 	public static void EndGameMainMenu()
 	{
-		I.isPlaying = false;
-		OnGameEnd?.Invoke();
+		I.EndGame();
 		I.currentLevel.EndLevel();
 		I.StartMainMenu();
 	}
 
 	public void EndGameRestart()
 	{
-		isPlaying = false;
-		Debug.Log("end game restart");
-		OnGameEnd?.Invoke();
+		EndGame();
 		currentLevel.EndLevel();
 		Debug.Log("level gone");
 		RestartLevel();
+	}
+
+	private void EndGame()
+	{
+		isPlaying = false;
+		Debug.Log("end game restart");
+		OnGameEnd?.Invoke();
 	}
 
 	public static List<Player> GetPlayers()

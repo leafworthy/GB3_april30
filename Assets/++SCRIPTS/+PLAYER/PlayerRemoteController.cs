@@ -98,11 +98,9 @@ public class PlayerRemoteController : MonoBehaviour, IMovementController, IPlaye
 
 		if (Is_Y_ButtonDown())
 		{
-			if (!dashButtonPressed)
-			{
-				dashButtonPressed = true;
-				OnDashButtonPress?.Invoke();
-			}
+			if (dashButtonPressed) return;
+			dashButtonPressed = true;
+			OnDashButtonPress?.Invoke();
 		}
 		else
 		{

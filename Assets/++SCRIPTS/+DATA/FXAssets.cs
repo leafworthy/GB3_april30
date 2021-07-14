@@ -21,10 +21,13 @@ public class FXAssets : ScriptableObject
     public List<GameObject> wood_bulletholes_front = new List<GameObject>();
     public List<GameObject> wood_bulletholes_side = new List<GameObject>();
 
-    public GameObject bulletPrefab;
+    public GameObject AKbulletPrefab;
+    public GameObject GlockBulletPrefab;
     public GameObject bulletHitAnimPrefab;
     public GameObject muzzleFlashPrefab;
     public GameObject bulletShellPrefab;
+    public GameObject explosionPrefab;
+    public GameObject nadePrefab;
 
     public GameObject pickupEffectPrefab;
     public GameObject healthPickupPrefab;
@@ -33,9 +36,12 @@ public class FXAssets : ScriptableObject
     public GameObject damagePickupPrefab;
     public GameObject nadesPickupPrefab;
     public GameObject cashPickupPrefab;
+    public GameObject nadeTargetPrefab;
+    public GameObject trajectoryMarkerPrefab;
 
-    public Texture2D bulletTexture2D;
+    public Texture2D AKbulletTexture2D;
     public Texture2D cursorTexture2D;
+    public Texture2D GlockBulletTexture2D;
 
     public List<GameObject> GetBulletHits(FXAssets.DebreeType debreeType)
     {

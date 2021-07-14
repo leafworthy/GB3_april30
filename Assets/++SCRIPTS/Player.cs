@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public enum Character
@@ -17,15 +18,22 @@ public class Player : MonoBehaviour
 	public bool hasJoined;
 	public CharacterButton currentButton;
 	public bool hasSelectedCharacter;
-
-	public bool A_Pressed;
-	public bool B_Pressed;
-	public bool Left_Pressed;
-	public bool Right_Pressed;
-	public int buttonIndex;
 	public Color playerColor;
-	private bool Up_Pressed;
-	private bool Down_Pressed;
+
+
+	public bool isUsingKeyboard;
+	public KeyboardControlSetup keyboardControlSetup;
+	public GameObject SpawnedPlayerGO;
+	private DefenceHandler spawnedPlayerDefence;
+	private IAttackHandler attackHandler;
+	public event Action<Player> OnDead;
+	public event Action<Player> OnDying;
+	public event Action<Player> OnKillEnemy;
+	private IPlayerMenuControl menuControl;
+	public bool isPlayer = true;
+
+
+	public int buttonIndex;
 
 	public event Action<Player> MoveRight;
 	public event Action<Player> MoveLeft;
@@ -33,25 +41,81 @@ public class Player : MonoBehaviour
 	public event Action<Player> MoveDown;
 	public event Action<Player> PressA;
 	public event Action<Player> PressB;
+	public event Action<Player> PressPause;
 
-	public GameObject SpawnedPlayerGO;
-	private DefenceHandler spawnedPlayerDefence;
-	private IAttackHandler attackHandler;
-	public event Action<Player> OnDead;
-	public event Action<Player> OnDying;
-	public event Action<Player> OnKillEnemy;
+	private void Start()
+	{
+		SetupMenuControl();
 
-	public bool isPlayer = true;
+		GAME.OnGameEnd += CleanUp;
+	}
 
+	private void SetupMenuControl()
+	{
+		menuControl = isUsingKeyboard
+			? (IPlayerMenuControl) new PlayerMenuKeyboardControl(this)
+			: new PlayerMenuRemoteControl(this);
+
+		menuControl.MenuMoveDown += OnMoveDown;
+		menuControl.MenuMoveUp += OnMoveUp;
+		menuControl.MenuMoveLeft += OnMoveLeft;
+		menuControl.MenuMoveRight += OnMoveRight;
+		menuControl.MenuPressA += OnPressA;
+		menuControl.MenuPressB += OnPressB;
+		menuControl.MenuPressPause += OnPressPause;
+	}
+
+	private void OnPressPause(Player obj)
+	{
+		PressPause?.Invoke(obj);
+	}
+
+	private void OnMoveUp(Player obj)
+	{
+		MoveUp?.Invoke(obj);
+	}
+
+	private void OnMoveDown(Player obj)
+	{
+		MoveDown?.Invoke(obj);
+	}
+
+	private void OnPressA(Player obj)
+	{
+		PressA?.Invoke(obj);
+	}
+
+	private void OnPressB(Player obj)
+	{
+		PressB?.Invoke(obj);
+	}
+
+	private void OnMoveRight(Player obj)
+	{
+		MoveRight?.Invoke(obj);
+	}
+
+	private void OnMoveLeft(Player obj)
+	{
+		MoveLeft?.Invoke(obj);
+	}
 
 	public void Join(CharacterButton firstButton)
 	{
+		if(hasJoined) return;
 		hasJoined = true;
 		firstButton.HighlightButton(this);
+
+	}
+
+	private void Update()
+	{
+		menuControl?.UpdateButtons();
 	}
 
 	public void SetSpawnedPlayerGO(GameObject newGO)
 	{
+		Debug.Log("spawned player go set");
 		SpawnedPlayerGO = newGO;
 		spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<DefenceHandler>();
 		spawnedPlayerDefence.OnDying += Die;
@@ -77,100 +141,27 @@ public class Player : MonoBehaviour
 		OnDead?.Invoke(this);
 	}
 
-	private void Update()
-	{
-
-		if (GamePad.GetButton(CButton.B, playerIndex))
-		{
-			if (!B_Pressed)
-			{
-				B_Pressed = true;
-				PressB?.Invoke(this);
-			}
-		}
-		else
-			B_Pressed = false;
-
-		if (GamePad.GetButton(CButton.A, playerIndex))
-		{
-			if (!A_Pressed)
-			{
-				A_Pressed = true;
-				PressA?.Invoke(this);
-			}
-		}
-		else
-			A_Pressed = false;
-
-		HandleLeftRightMoves();
-		HandleUpDownMoves();
-	}
-
-	private void HandleLeftRightMoves()
-	{
-		var dpadX = GamePad.GetAxis(CAxis.LX, playerIndex);
-		if (dpadX > .5)
-		{
-			if (!Right_Pressed)
-			{
-				MoveRight?.Invoke(this);
-				Right_Pressed = true;
-			}
-		}
-		else
-			Right_Pressed = false;
-
-		if (dpadX < -.5)
-		{
-			if (!Left_Pressed)
-			{
-				MoveLeft?.Invoke(this);
-				Left_Pressed = true;
-			}
-		}
-		else
-			Left_Pressed = false;
-	}
-
-	private void HandleUpDownMoves()
-	{
-		var dpadY = GamePad.GetAxis(CAxis.LY, playerIndex);
-		if (dpadY > .5)
-		{
-			if (!Up_Pressed)
-			{
-				MoveUp?.Invoke(this);
-				Up_Pressed = true;
-			}
-		}
-		else
-			Up_Pressed = false;
-
-		if (dpadY < -.5)
-		{
-			if (!Down_Pressed)
-			{
-				MoveDown?.Invoke(this);
-				Down_Pressed = true;
-			}
-		}
-		else
-			Down_Pressed = false;
-	}
-
-
 	public void CleanUp()
 	{
 		currentCharacter = Character.None;
 		hasJoined = false;
 		currentButton = null;
 		hasSelectedCharacter = false;
-		A_Pressed = false;
-		B_Pressed = false;
-		Left_Pressed = false;
-		Right_Pressed = false;
-		buttonIndex = 0;
 		SpawnedPlayerGO = null;
+		if (spawnedPlayerDefence != null)
+		{
+			spawnedPlayerDefence.OnDying -= Die;
+			spawnedPlayerDefence.OnDead -= Dead;
+		}
+
+		attackHandler.OnKillEnemy -= KillEnemy;
+		menuControl.MenuMoveDown -= OnMoveDown;
+		menuControl.MenuMoveUp -= OnMoveUp;
+		menuControl.MenuMoveLeft -= OnMoveLeft;
+		menuControl.MenuMoveRight -= OnMoveRight;
+		menuControl.MenuPressA -= OnPressA;
+		menuControl.MenuPressB -= OnPressB;
+		menuControl.MenuPressPause -= OnPressPause;
 	}
 
 	public bool IsDead()

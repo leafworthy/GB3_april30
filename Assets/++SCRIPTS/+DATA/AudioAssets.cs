@@ -18,7 +18,7 @@ public class AudioAssets : ScriptableObject
 
 	[Header("Brock Sounds")]
 	public List<AudioClip> brock_gethit_sounds = new List<AudioClip>();
-	public List<AudioClip> brock_walk_sounds = new List<AudioClip>();
+	public List<AudioClip> brock_charge_sounds = new List<AudioClip>();
 	public List<AudioClip> brock_bat_swing_sounds = new List<AudioClip>();
 	public List<AudioClip> brock_bathit_sounds = new List<AudioClip>();
 	public List<AudioClip> brock_homerunhit_sounds = new List<AudioClip>();
@@ -45,13 +45,19 @@ public class AudioAssets : ScriptableObject
 	public List<AudioClip> bean_nade_throw_sounds = new List<AudioClip>();
 	public List<AudioClip> bean_nade_bounce_sounds = new List<AudioClip>();
 	public List<AudioClip> bean_nade_explosion_sounds = new List<AudioClip>();
+	public List<AudioClip> bean_gun_miss_sounds = new List<AudioClip>();
 
 	[Header("UI Sounds")]
 	public List<AudioClip> pickup_pickup_sounds = new List<AudioClip>();
 
+	public List<AudioClip> pickup_speed_sounds = new List<AudioClip>();
+	public List<AudioClip> press_start_sounds = new List<AudioClip>();
+	public List<AudioClip> pauseMenu_start_sounds = new List<AudioClip>();
+	public List<AudioClip> pauseMenu_stop_sounds = new List<AudioClip>();
 	public List<AudioClip> pauseMenu_select_sounds = new List<AudioClip>();
 	public List<AudioClip> pauseMenu_move_sounds = new List<AudioClip>();
 	public List<AudioClip> charSelect_move_sounds= new List<AudioClip>();
 	public List<AudioClip> charSelect_select_sounds = new List<AudioClip>();
+	public List<AudioClip> charSelect_deselect_sounds = new List<AudioClip>();
 	public List<AudioClip> bloodSounds;
 }

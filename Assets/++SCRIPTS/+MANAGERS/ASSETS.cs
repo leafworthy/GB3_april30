@@ -21,10 +21,10 @@ public class ASSETS : Singleton<ASSETS>
 
 	public LevelAssets levels;
 
-	public PlayerAssets _players;
+	public CharacterPrefabAssets characterPrefabs;
 
-	public static PlayerAssets players
+	public static CharacterPrefabAssets CharacterPrefabs
 	{
-		get { return I._players; }
+		get { return I.characterPrefabs; }
 	}
 }

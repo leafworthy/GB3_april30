@@ -32,7 +32,12 @@ public class LEVEL : MonoBehaviour
 		player.SetSpawnedPlayerGO(spawnedPlayerGO);
 		cameraFollowTargetGroup.AddMember(spawnedPlayerGO.transform,1,0);
 
-		var newPlayerController = spawnedPlayerGO.GetComponent<IPlayerController>();
+		IPlayerController newPlayerController;
+		if (player.isUsingKeyboard)
+			newPlayerController = spawnedPlayerGO.AddComponent<PlayerKeyboardMouseController>();
+		else
+			newPlayerController = spawnedPlayerGO.AddComponent<PlayerRemoteController>();
+
 		newPlayerController.SetPlayer(player);
 		playerControllersInLevel.Add(newPlayerController);
 
@@ -46,16 +51,16 @@ public class LEVEL : MonoBehaviour
 		switch (player.currentCharacter)
 		{
 			case Character.Karrot:
-				return ASSETS.players.GangstaBeanPlayerPrefab;
+				return ASSETS.CharacterPrefabs.GangstaBeanPlayerPrefab;
 				break;
 			case Character.Bean:
-				return ASSETS.players.GangstaBeanPlayerPrefab;
+				return ASSETS.CharacterPrefabs.GangstaBeanPlayerPrefab;
 				break;
 			case Character.Brock:
-				return ASSETS.players.BrockLeePlayerPrefab;
+				return ASSETS.CharacterPrefabs.BrockLeePlayerPrefab;
 				break;
 			case Character.Tmato:
-				return ASSETS.players.BrockLeePlayerPrefab;
+				return ASSETS.CharacterPrefabs.BrockLeePlayerPrefab;
 				break;
 		}
 		return null;

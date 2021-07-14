@@ -202,6 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bar: {fileID: 4968789300922442557}
   ammoText: {fileID: 2555649599302787984}
+  totalText: {fileID: 0}
   shakeObject: {fileID: 558756531434626802}
   ammoDisplayCanvas: {fileID: 7987492822349207500}
 --- !u!114 &4627130832988143220
@@ -404,6 +405,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6662247674250873919}
     m_Modifications:
+    - target: {fileID: 358049723444971638, guid: 18f6e4f281a3845fbb0ad6f0236e8e1f, type: 3}
+      propertyPath: m_fontSize
+      value: 11.95
+      objectReference: {fileID: 0}
     - target: {fileID: 4494365528250556722, guid: 18f6e4f281a3845fbb0ad6f0236e8e1f, type: 3}
       propertyPath: m_Name
       value: cap
@@ -490,11 +495,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8651193357103725911, guid: 18f6e4f281a3845fbb0ad6f0236e8e1f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 26.9
+      value: 30.9
       objectReference: {fileID: 0}
     - target: {fileID: 8651193357103725911, guid: 18f6e4f281a3845fbb0ad6f0236e8e1f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.80000305
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 8651193357103725911, guid: 18f6e4f281a3845fbb0ad6f0236e8e1f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

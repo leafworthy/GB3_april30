@@ -11,6 +11,12 @@ public class Cone_SFXHandler : MonoBehaviour
 		animEvents.OnStep += Anim_OnStep;
 		animEvents.OnRoar += Anim_OnRoar;
 		animEvents.OnHitStart += Anim_OnHit;
+		animEvents.OnDieStart += Anim_OnDie;
+	}
+
+	private void Anim_OnDie()
+	{
+		ASSETS.sounds.cone_die_sounds.PlayRandom();
 	}
 
 	private void Anim_OnHit()

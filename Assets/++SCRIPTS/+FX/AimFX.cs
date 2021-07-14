@@ -11,7 +11,7 @@ public class AimFX : MonoBehaviour
 	private bool isAiming;
 	private AnimationEvents animationEvents;
 
-	private void Awake()
+	private void Start()
 	{
 		animationEvents = GetComponentInChildren<AnimationEvents>();
 		animationEvents.OnRoar += OnRoar;
@@ -54,14 +54,6 @@ public class AimFX : MonoBehaviour
 		if (aimLightTransform == null) return;
 		var lightRotation = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
 		aimLightTransform.eulerAngles = new Vector3(0, 0, lightRotation);
-		if (aimDir.x >= 0)
-		{
-			movementHandler.FaceDir(true);
-		}
-		else
-		{
-			movementHandler.FaceDir(false);
 
-		}
 	}
 }

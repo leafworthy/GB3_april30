@@ -13,6 +13,8 @@ public class KeyboardControlSetup:ScriptableObject
 	public KeyboardKey Attack2Key;
 	public KeyboardKey Attack3Key;
 	public KeyboardKey Attack4Key;
+	public KeyboardKey ReloadKey;
+	public KeyboardKey KnifeKey;
 
 	public KeyboardKey JumpKey;
 	public KeyboardKey PauseKey;

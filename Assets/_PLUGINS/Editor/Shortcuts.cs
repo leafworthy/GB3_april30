@@ -144,7 +144,6 @@ public class Shortcuts
 		mainObject.gameObject.AddComponent<ObjectDamageFX>();
 		mainObject.gameObject.AddComponent<DefenceHandler>();
 		mainObject.gameObject.AddComponent<PolygonCollider2D>();
-		mainObject.gameObject.AddComponent<SortingGroup>();
 		Selection.activeTransform = mainObject;
 	}
 }

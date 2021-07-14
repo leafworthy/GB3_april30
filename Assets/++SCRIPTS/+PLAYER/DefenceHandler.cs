@@ -46,7 +46,7 @@ public class DefenceHandler : MonoBehaviour
 	private float woundingAttackDamage = 25;
 
 
-	public float GetFraction()
+	private float GetFraction()
 	{
 		return Health / HealthMax;
 	}
@@ -66,7 +66,6 @@ public class DefenceHandler : MonoBehaviour
 		isInvincible = turnInvincible;
 	}
 
-
 	public bool TakeDamage(Attack attack)
 	{
 		if (isInvincible) return false;
@@ -74,11 +73,12 @@ public class DefenceHandler : MonoBehaviour
 		stats.ChangeStat(StatType.health, -attack.DamageAmount);
 		OnFractionChanged?.Invoke(Health / HealthMax);
 		OnDamaged?.Invoke(attack);
+
 		if (attack.DamageAmount >= woundingAttackDamage)
 		{
 			OnWounded?.Invoke(attack);
 		}
-		AUDIO.PlaySound(ASSETS.sounds.bloodSounds.GetRandom());
+		ASSETS.sounds.bloodSounds.PlayRandom();
 		SprayBlood(15, attack.DamagePosition, attack.DamageDirection);
 
 		if (!(Health <= 0)) return false;
@@ -91,6 +91,7 @@ public class DefenceHandler : MonoBehaviour
 		return true;
 
 	}
+
 
 	private void SprayBlood(int quantity, Vector3 getPosition, Vector3 bloodDir)
 	{
@@ -117,9 +118,19 @@ public class DefenceHandler : MonoBehaviour
 	private void StartDying()
 	{
 		OnDying?.Invoke();
+		DisableAllColliders();
 		isDying = true;
 		gameObject.layer = LayerMask.NameToLayer("Dead");
 		foreach (var col in GetComponents<Collider2D>()) Destroy(col);
+	}
+
+	private void DisableAllColliders()
+	{
+		var colliders = GetComponents<Collider2D>();
+		foreach (var col in colliders) col.enabled = false;
+
+		var moreColliders = GetComponentsInChildren<Collider2D>();
+		foreach (var col in moreColliders) col.enabled = false;
 	}
 
 	public bool IsDead()

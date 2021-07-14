@@ -18,6 +18,7 @@ public class BrockAnimationHandler : MonoBehaviour
 	private DefenceHandler defenceHandler;
 	private JumpHandler jumpHandler;
 	private AnimationEvents animEvents;
+	private DashHandler dashHandler;
 
 	private static readonly int HitTrigger = Animator.StringToHash("HitTrigger");
 	private static readonly int IsWalking = Animator.StringToHash("isWalking");
@@ -40,6 +41,8 @@ public class BrockAnimationHandler : MonoBehaviour
 	private static readonly int IsLanding = Animator.StringToHash("isLanding");
 	private static readonly int Attacking = Animator.StringToHash("IsAttacking");
 
+
+
 	private void Start()
 	{
 		attackHandler = GetComponent<BrockAttackHandler>();
@@ -52,6 +55,8 @@ public class BrockAnimationHandler : MonoBehaviour
 		attackHandler.OnThrow += Throw;
 		attackHandler.OnAirThrow += AirThrow;
 
+		dashHandler = GetComponent<DashHandler>();
+		dashHandler.OnDashCommand += DashCommand;
 
 		defenceHandler = GetComponent<DefenceHandler>();
 		defenceHandler.OnDamaged += OnHit;
@@ -60,13 +65,13 @@ public class BrockAnimationHandler : MonoBehaviour
 		movementHandler = GetComponent<MovementHandler>();
 		movementHandler.OnMoveStart += MoveStart;
 		movementHandler.OnMoveStop += MoveStop;
-		movementHandler.OnDash += Dash;
 
 
 		jumpHandler = GetComponent<JumpHandler>();
 		jumpHandler.OnJump += Jump;
 		jumpHandler.OnLand += Land;
 		jumpHandler.OnFall += Fall;
+
 		animEvents = GetComponentInChildren<AnimationEvents>();
 		animEvents.OnLandingStop += LandStop;
 		animEvents.OnAttackStop += AttackStop;
@@ -100,7 +105,7 @@ public class BrockAnimationHandler : MonoBehaviour
 		animator.SetTrigger(KunaiThrowTrigger);
 	}
 
-	private void Dash()
+	private void DashCommand()
 	{
 		animator.SetTrigger(DashTrigger);
 	}
@@ -139,7 +144,6 @@ public class BrockAnimationHandler : MonoBehaviour
 
 	private void Attack2()
 	{
-		Debug.Log("attack2trigger");
 		animator.SetTrigger(Attack2Trigger);
 	}
 

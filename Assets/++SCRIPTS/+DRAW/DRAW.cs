@@ -7,7 +7,6 @@ using System.Linq;
 
 public class DRAW : Singleton<DRAW>
 {
-	private static Texture2D texture2D;
 
 	public static Vector2 convertWorldToLinePoint(Vector2 v)
 	{
@@ -21,9 +20,8 @@ public class DRAW : Singleton<DRAW>
 		return v;
 	}
 
-	public static void line(Vector2 start, Vector2 end, Color color, float thickness = 3, bool fade = false)
+	public static void line(Vector2 start, Vector2 end, Color color, float thickness, Texture2D texture2D)
 	{
-		texture2D = ASSETS.FX.bulletTexture2D;
 		var _coloredLineColor = color;
 		var _coloredLineTexture = texture2D;
 		_coloredLineTexture.SetPixel(0, 0, _coloredLineColor);

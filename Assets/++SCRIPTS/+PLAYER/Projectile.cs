@@ -77,7 +77,7 @@ public class Projectile : MonoBehaviour
 			hasReachedTarget = true;
 			velocity = Vector3.zero;
 			transform.SetParent(hitObject.transform);
-			Debug.Log("HIT");
+
 			MAKER.Unmake(gameObject, 1);
 		}
 	}

@@ -157,7 +157,7 @@ namespace _PLUGINS
 			for (var i = 0; i < spriteList.Count; ++i)
 			{
 				spriteList[i].RendererSortingOrder = orderCurrent;
-				orderCurrent += 1;
+				orderCurrent += spriteList[i].renderersToSort.Length;
 			}
 		}
 

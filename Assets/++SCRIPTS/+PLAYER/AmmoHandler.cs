@@ -13,15 +13,16 @@ public class AmmoHandler : MonoBehaviour
 		specialCooldown,
 		meleeCooldown,
 		kunai,
-		cash
+		cash,
+		glock
 	}
 
 	private List<Ammo> ammoList = new List<Ammo>();
 	public Ammo primaryAmmo;
 	public Ammo secondaryAmmo;
 	public Ammo tertiaryAmmo;
+	public Ammo unlimitedAmmo;
 
-	public bool isReloading;
 	private UnitStats stats;
 
 	private IAttackHandler beanAttackHandler;
@@ -36,6 +37,7 @@ public class AmmoHandler : MonoBehaviour
 		ammoList.Add(primaryAmmo);
 		ammoList.Add(secondaryAmmo);
 		ammoList.Add(tertiaryAmmo);
+		ammoList.Add(unlimitedAmmo);
 	}
 
 	private void AddAmmo(AmmoType type, int amount)
@@ -44,10 +46,7 @@ public class AmmoHandler : MonoBehaviour
 		ammo.AddAmmoToReserve(amount);
 	}
 
-	public void ReloadStart()
-	{
-		isReloading = true;
-	}
+
 	public void Reload(AmmoType ammoType)
 	{
 		if (!HasAmmo(ammoType))
@@ -59,10 +58,7 @@ public class AmmoHandler : MonoBehaviour
 		ammo?.Reload();
 	}
 
-	public void ReloadStop()
-	{
-		isReloading = false;
-	}
+
 
 	private void OnUseAmmo(AmmoType type, int amount)
 	{

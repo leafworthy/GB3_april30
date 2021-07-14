@@ -11,30 +11,30 @@ public class DonutAttackHandler : MonoBehaviour, IAttackHandler
 	private DefenceHandler defence;
 	private AnimationEvents animEvents;
 	private bool isAttackRolling;
-	private MovementHandler movement;
-	private float timer;
 	private float currentCooldown;
-	private float coolDown = .2f;
-	private float isCoolingDown;
+	private float coolDown = .25f;
 	private bool isCooledDown;
+	private PushHandler pushHandler;
 
 	protected virtual void Start()
 	{
-		movement = GetComponent<MovementHandler>();
+		pushHandler = GetComponent<PushHandler>();
+		GetComponent<MovementHandler>();
 		animEvents = GetComponentInChildren<AnimationEvents>();
 		animEvents.OnMoveStart += AttackStart;
 		stats = GetComponent<UnitStats>();
 		defence = GetComponent<DefenceHandler>();
-		defence.OnDying += AttackStop;
 		defence.OnDamaged += Damaged;
+		defence.OnDying += AttackStop;
 		isOn = true;
 		isCooledDown = true;
 	}
 
-	private void Damaged(Attack attack)
+	private void Damaged(Attack obj)
 	{
-		movement.Push(attack.DamageDirection, MovementHandler.PushType.highest);
+		pushHandler.Push(obj.DamageDirection,obj.DamageAmount*.3f);
 	}
+
 
 	private void FixedUpdate()
 	{
@@ -82,7 +82,6 @@ public class DonutAttackHandler : MonoBehaviour, IAttackHandler
 		if (otherDefence.IsPlayer())
 		{
 			AttackHit(otherDefence);
-			Debug.Log("HIT");
 			currentCooldown = coolDown;
 		}
 	}
@@ -98,7 +97,7 @@ public class DonutAttackHandler : MonoBehaviour, IAttackHandler
 		var bouncebackAttack = new Attack(otherPosition, position, stats.GetStatValue(StatType.attackDamage));
 		other.TakeDamage(otherAttack);
 		defence.TakeDamage(bouncebackAttack);
-		defence.GetComponent<MovementHandler>().Push(bouncebackAttack.DamageDirection, MovementHandler.PushType.highest);
+		pushHandler.Push(bouncebackAttack.DamageDirection, bouncebackAttack.DamageAmount * .3f);
 	}
 
 
@@ -127,5 +126,10 @@ public class DonutAttackHandler : MonoBehaviour, IAttackHandler
 
 	public event Action OnKillEnemy;
 	public event Action<AmmoHandler.AmmoType, int> OnUseAmmo;
+	public bool isBusy()
+	{
+		return false;
+	}
+
 	public event Action<Vector3> OnAim;
 }

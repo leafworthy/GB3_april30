@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class AmmoDisplay : MonoBehaviour
 	protected Ammo ammoToDisplay;
 	public GameObject shakeObject;
 	public CanvasGroup ammoDisplayCanvas;
+	private bool init;
 
 
 	protected virtual void UpdateDisplay(bool shake = false)
@@ -69,7 +71,19 @@ public class AmmoDisplay : MonoBehaviour
 		ammoToDisplay = newAmmo;
 		ammoToDisplay.OnAmmoUsed += AmmoUsedUpdateDisplay;
 		ammoToDisplay.OnAmmoGained += AmmoGainedUpdateDisplay;
+		GAME.OnGameEnd += CleanUp;
+		init = true;
 		UpdateDisplay(false);
+	}
+
+
+
+	private void CleanUp()
+	{
+		if (!init) return;
+		init = false;
+		ammoToDisplay.OnAmmoGained -= AmmoUsedUpdateDisplay;
+		ammoToDisplay.OnAmmoGained -= AmmoGainedUpdateDisplay;
 	}
 
 	private void AmmoUsedUpdateDisplay()

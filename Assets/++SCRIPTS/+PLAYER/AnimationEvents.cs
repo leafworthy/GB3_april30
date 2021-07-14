@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class AnimationEvents : MonoBehaviour
 {
+    public event Action OnReset;
     public event Action OnAfterHit;
     public event Action<int> OnAttackStart;
     public event Action<int> OnAttackStop;
@@ -176,4 +177,8 @@ public class AnimationEvents : MonoBehaviour
         OnInvincible?.Invoke(false);
     }
 
+    public void Reset()
+    {
+        OnReset?.Invoke();
+    }
 }

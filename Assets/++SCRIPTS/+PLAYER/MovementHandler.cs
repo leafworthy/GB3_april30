@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class MovementHandler : MonoBehaviour
 {
-	public event Action OnDash;
 	public event Action<Vector3> OnMoveStart;
 	public event Action OnMoveStop;
 	public event Action<bool> OnMoveDirectionChange;
@@ -11,64 +10,30 @@ public class MovementHandler : MonoBehaviour
 	private AnimationEvents animEvents;
 	private DefenceHandler health;
 	private IMovementController controller;
-	private Rigidbody2D rb;
 	private UnitStats stats;
 
-	private bool canMove = true;
-
+	public bool canMove;
 	private bool isOn;
-	private bool isPressingDash;
-	private bool isTryingToMove;
+	public bool isTryingToMove;
 
 	private Vector2 moveVelocity;
-	private Vector2 moveDir;
+	public Vector2 moveDir;
 	private Vector2 targetPosition;
-	private Vector2 velocity;
+	public Vector2 velocity;
 
-	private const float velocityDecayFactor = .9f;
+	private static float velocityDecayFactor = .9f;
+	public event Action OnStopAllMovement;
 	private const float overallVelocityMultiplier = 4;
 
-	public enum PushType
-	{
-		low,
-		normal,
-		high,
-		highest
-	}
-
-	private static float GetPushTypeMultiplier(PushType pushType)
-	{
-		switch (pushType)
-		{
-			case PushType.low:
-				return .2f;
-			case PushType.normal:
-				return .3f;
-			case PushType.high:
-				return 1f;
-			case PushType.highest:
-				return 2f;
-			default:
-				throw new ArgumentOutOfRangeException(nameof(pushType), pushType, null);
-		}
-	}
-
-	private void Awake()
+	private void Start()
 	{
 		stats = GetComponent<UnitStats>();
-		rb = GetComponent<Rigidbody2D>();
 
 		controller = GetComponent<IMovementController>();
 		controller.OnMovePress += ControllerMoveInDirection;
 		controller.OnMoveRelease += ControllerStopMoving;
-		controller.OnDashButtonPress += ControllerDashPress;
 
 		animEvents = GetComponentInChildren<AnimationEvents>();
-		animEvents.OnDashStart += DashStart;
-		animEvents.OnDash += Dash;
-		animEvents.OnDashStop += DashStop;
-		animEvents.OnTeleport += Teleport;
-
 		animEvents.OnAttackStart += DisableMovement;
 		animEvents.OnAttackStop += EnableMovement;
 		animEvents.OnLandingStart += DisableMovement;
@@ -79,58 +44,65 @@ public class MovementHandler : MonoBehaviour
 		animEvents.OnThrowStop += EnableMovement;
 		animEvents.OnMoveStart += EnableMovement;
 		animEvents.OnMoveStop += DisableMovement;
+		animEvents.OnReset += Reset;
 
 		health = GetComponent<DefenceHandler>();
 		health.OnDamaged += Health_OnDamaged;
-		health.OnDying += Health_Dead;
+		health.OnDying += DisableMovement;
+		health.OnDead += Dead;
 		isOn = true;
+		canMove = true;
 	}
 
-	private void Health_Dead()
+	private void Reset()
 	{
-		canMove = false;
-		DisableAllColliders();
+		isOn = true;
+		canMove = true;
 	}
 
-	private void DisableAllColliders()
+	private void OnDisable()
 	{
-		var colliders = GetComponents<Collider2D>();
-		foreach (var col in colliders) col.enabled = false;
-
-		var moreColliders = GetComponentsInChildren<Collider2D>();
-		foreach (var col in moreColliders) col.enabled = false;
+		Dead();
 	}
 
-
-	private Vector2 CalculateMoveVelocityWithDeltaTime()
+	private void Dead()
 	{
-		if (!canMove) return Vector3.zero;
-		moveVelocity = IsTryingToMove() ? GetMoveVelocity() : Vector2.zero;
-		return moveVelocity * Time.fixedDeltaTime;
+		controller.OnMovePress -= ControllerMoveInDirection;
+		controller.OnMoveRelease -= ControllerStopMoving;
+		animEvents.OnAttackStart -= DisableMovement;
+		animEvents.OnAttackStop -= EnableMovement;
+		animEvents.OnLandingStart -= DisableMovement;
+		animEvents.OnLandingStop -= EnableMovement;
+		animEvents.OnHitStart -= DisableMovement;
+		animEvents.OnHitStop -= EnableMovement;
+		animEvents.OnThrowStart -= DisableMovement;
+		animEvents.OnThrowStop -= EnableMovement;
+		animEvents.OnMoveStart -= EnableMovement;
+		animEvents.OnMoveStop -= DisableMovement;
+		health.OnDamaged -= Health_OnDamaged;
+		health.OnDying -= DisableMovement;
+		health.OnDead -= Dead;
+		OnStopAllMovement?.Invoke();
 	}
 
-	private bool IsTryingToMove()
+
+	private void Health_OnDamaged(Attack attack)
 	{
-		return isTryingToMove;
+		FaceDir(!(attack.DamageDirection.x > 0));
 	}
 
-	private Vector2 GetMoveVelocity()
-	{
-		var dir = (targetPosition - (Vector2)transform.position).normalized;
-		return dir * stats.GetStatValue(StatType.moveSpeed);
-	}
 
 	private void FixedUpdate()
 	{
-		if (!isOn) return;
+		if (!isOn || PAUSE.isPaused) return;
 		AddVelocity(CalculateMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
-		DecayVelocity();
 		ApplyVelocity();
+		DecayVelocity();
 	}
 
 	private void ApplyVelocity()
 	{
-		transform.position = (Vector2)transform.position + velocity*Time.fixedDeltaTime;
+		MoveObjectTo((Vector2) transform.position + velocity * Time.fixedDeltaTime);
 	}
 
 	private void DecayVelocity()
@@ -139,10 +111,15 @@ public class MovementHandler : MonoBehaviour
 		velocity = tempVel;
 	}
 
-	private void Health_OnDamaged(Attack attack)
+
+	public void EnableMovement()
 	{
-		Push(attack.DamageDirection.normalized, PushType.highest);
-		OnMoveDirectionChange?.Invoke(!(attack.DamageDirection.x > 0));
+		EnableMovement(0);
+	}
+
+	public void DisableMovement()
+	{
+		DisableMovement(0);
 	}
 
 	public void FaceDir(bool faceRight)
@@ -150,67 +127,30 @@ public class MovementHandler : MonoBehaviour
 		OnMoveDirectionChange?.Invoke(faceRight);
 	}
 
-	public void Push(Vector3 DamageDirection, PushType pushType)
+	public void AddVelocity(Vector2 tempVel)
 	{
-		var tempVel = Vector3.zero;
-		tempVel += new Vector3(DamageDirection.x * GetPushTypeMultiplier(pushType),
-			DamageDirection.y * GetPushTypeMultiplier(pushType), 0);
-
-		AddVelocity(tempVel);
-	}
-
-	private void AddVelocity(Vector2 tempVel)
-	{
-		Debug.Log("add velocity " + tempVel + " to "+velocity);
 		tempVel += velocity;
 		velocity = tempVel;
 	}
 
-	private void DashStart()
+	public void MoveObjectTo(Vector2 destination, bool teleport = false)
 	{
-		health.isInvincible = true;
-		gameObject.layer = (int) Mathf.Log(ASSETS.LevelAssets.PlayerDashLayer.value, 2);
+		var layerInt = 0;
+		if (stats.isPlayer)
+			layerInt = teleport ? ASSETS.LevelAssets.BuildingLayer : ASSETS.LevelAssets.EnemyLayer;
+		else
+			layerInt = teleport ? ASSETS.LevelAssets.BuildingLayer : ASSETS.LevelAssets.PlayerLayer;
+
+		var ray = Physics2D.LinecastAll(transform.position, destination, ASSETS.LevelAssets.BuildingLayer);
+		if (ray.Length > 0)
+		{
+			velocity = Vector2.zero;
+			destination = ray[0].point;
+		}
+
+		transform.position = destination;
 	}
 
-	private void Dash()
-	{
-		Debug.Log("trying to dash");
-		Push(moveDir, PushType.highest);
-
-	}
-
-	private void Teleport()
-	{
-		var destination = (Vector2) transform.position + moveDir * stats.GetStatValue(StatType.teleportSpeed);
-		rb.MovePosition(destination);
-	}
-	private void DashStop()
-	{
-		isPressingDash = false;
-		health.isInvincible = false;
-		gameObject.layer = (int) Mathf.Log(ASSETS.LevelAssets.PlayerLayer.value, 2);
-		EnableMovement();
-	}
-
-	private void EnableMovement()
-	{
-		EnableMovement(0);
-	}
-
-	private void DisableMovement()
-	{
-		DisableMovement(0);
-	}
-
-
-	private void ControllerDashPress()
-	{
-		if (isPressingDash) return;
-		Debug.Log("first start");
-		isPressingDash = true;
-		DisableMovement();
-		OnDash?.Invoke();
-	}
 
 	private void DisableMovement(int attackType)
 	{
@@ -222,7 +162,7 @@ public class MovementHandler : MonoBehaviour
 		if (!health.IsDeadOrDying()) canMove = true;
 	}
 
-	private void MoveTo(Vector3 target)
+	private void ControllerMoveTo(Vector3 target)
 	{
 		moveDir = target - transform.position;
 		isTryingToMove = true;
@@ -236,29 +176,26 @@ public class MovementHandler : MonoBehaviour
 		if (!canMove) return;
 		OnMoveDirectionChange?.Invoke(direction.x >= 0);
 
-		MoveTo(transform.position + direction * (stats.GetStatValue(StatType.moveSpeed) * 2));
+		ControllerMoveTo(transform.position + direction * (stats.GetStatValue(StatType.moveSpeed) * 2));
 	}
 
 	private void ControllerStopMoving()
 	{
-
 		isTryingToMove = false;
 		OnMoveStop?.Invoke();
 	}
 
 
-	public Vector3 GetVelocity()
+	private Vector2 CalculateMoveVelocityWithDeltaTime()
 	{
-		return velocity;
+		if (!canMove) return Vector3.zero;
+		moveVelocity = isTryingToMove ? GetMoveVelocity() : Vector2.zero;
+		return moveVelocity * Time.fixedDeltaTime;
 	}
 
-	public bool CanMove()
+	private Vector2 GetMoveVelocity()
 	{
-		return canMove;
-	}
-
-	public Vector2 GetMoveDir()
-	{
-		return moveDir;
+		var dir = (targetPosition - (Vector2) transform.position).normalized;
+		return dir * stats.GetStatValue(StatType.moveSpeed);
 	}
 }

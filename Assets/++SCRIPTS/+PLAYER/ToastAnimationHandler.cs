@@ -13,9 +13,13 @@ public class ToastAnimationHandler : MonoBehaviour
 	private bool isDead;
 
 	private static readonly int HitTrigger = Animator.StringToHash("HitTrigger");
+	private AnimationEvents animationEvents;
+	private bool isBeingHit;
 
 	private void Start()
 	{
+		animationEvents = GetComponentInChildren<AnimationEvents>();
+		animationEvents.OnHitStop += HitStop;
 		animator = GetComponentInChildren<Animator>();
 
 		toastAttackHandler = GetComponent<ToastAttackHandler>();
@@ -31,9 +35,16 @@ public class ToastAnimationHandler : MonoBehaviour
 		movementHandler.OnMoveStop += MoveStop;
 	}
 
+	private void HitStop()
+	{
+		isBeingHit = false;
+	}
+
 
 	private void Defence_OnDamaged(Attack attack)
 	{
+		//if (isBeingHit) return;
+		isBeingHit = true;
 		animator.SetTrigger(HitTrigger);
 	}
 

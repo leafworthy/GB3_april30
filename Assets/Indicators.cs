@@ -131,8 +131,9 @@ public class Indicators : MonoBehaviour
 		    case PlayerIndex.Four:
 			    p4indicator.SetActiveObject(2);
 			    break;
-		    default:
-			    throw new ArgumentOutOfRangeException(nameof(index), index, null);
+		    case PlayerIndex.Five:
+			    p4indicator.SetActiveObject(2);
+			    break;
 	    }
     }
 }

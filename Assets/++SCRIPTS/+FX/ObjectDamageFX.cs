@@ -55,17 +55,7 @@ public class ObjectDamageFX : MonoBehaviour
 			{
 				var newBulletHit = MAKER.Make(bulletHits.GetRandom(), attack.DamagePosition);
 				MAKER.Unmake(newBulletHit, 2);
-				var sortingGroup = GetComponent<SortingGroup>();
-				var sortingLayerName = "Default";
-				if (sortingGroup != null)
-				{
-					sortingLayerName = sortingGroup.sortingLayerName;
-					var bulletHitSprite = newBulletHit.GetComponent<SpriteRenderer>();
-					if (bulletHitSprite != null)
-					{
-						bulletHitSprite.sortingLayerName = sortingLayerName;
-					}
-				}
+
 			}
 
 			if (currentDamageState >= totalDamageStates)
@@ -110,17 +100,12 @@ public class ObjectDamageFX : MonoBehaviour
 
 	private void SprayDebree(int quantity, Vector3 position, Vector3 sprayDirection)
 	{
-		var sortingGroup = GetComponent<SortingGroup>();
-		var sortingLayerName = "Default";
-		if (sortingGroup != null)
-		{
-			sortingLayerName = sortingGroup.sortingLayerName;
-		}
 
-		for (int j = 0; j < quantity; j++)
+
+		for (var j = 0; j < quantity; j++)
 		{
 			var newDebree = MAKER.Make(ASSETS.FX.wood_debree.GetRandom().gameObject, position);
-			newDebree.GetComponent<FallToFloor>().Fire((sprayDirection.normalized), 2, defenceHandler.GetAimHeight(), sortingLayerName);
+			newDebree.GetComponent<FallToFloor>().Fire((sprayDirection.normalized), 2, defenceHandler.GetAimHeight());
 		}
 	}
 }

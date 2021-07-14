@@ -11,6 +11,12 @@ public abstract class Pickup : MonoBehaviour
 	private static readonly int PickupTrigger = Animator.StringToHash("PickupTrigger");
 	public event Action<Collider2D, Color> OnPickup;
 	private bool hasBeenPickedUp;
+	protected AudioClip Pickup_Sound;
+
+	public virtual AudioClip GetPickupSound()
+	{
+		return ASSETS.sounds.pickup_pickup_sounds.GetRandom();
+	}
 
 	public enum PickupType
 	{

@@ -15,6 +15,7 @@ public class MENU:Singleton<MENU>  {
 
 	public static void StartMainMenu()
 	{
+		if (GAME.I.isTesting) return;
 		isRunning = true;
 		Players = GAME.GetPlayers();
 		I.gameObject.SetActive(true);
@@ -26,6 +27,7 @@ public class MENU:Singleton<MENU>  {
 
 	private static void Player_OnJoin(Player player)
 	{
+		if(player.hasJoined) return;
 		Debug.Log("Player has joined" + player.playerIndex);
 		CharacterSelectionMenu.I.StartCharacterSelectionScreen(player);
 		foreach (var p in GAME.GetPlayers())

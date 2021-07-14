@@ -14,8 +14,10 @@ public class KeyboardKey
 	{
 		if (Input.GetKey(key))
 		{
+
 			if(isPressed && !isAutomatic) return;
 			OnPress?.Invoke();
+			Debug.Log("keypress " + key.ToString());
 			isPressed = true;
 		}
 		else

@@ -43,7 +43,7 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 
 
 
-	private void Awake()
+	private void Start()
 	{
 		stats = GetComponent<UnitStats>();
 		jumpHandler = GetComponent<JumpHandler>();
@@ -73,8 +73,10 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 		animEvents.OnAirThrow += Airthrow;
 	}
 
-	private float SpecialAttackDistance = 20;
+	private float SpecialAttackDistance = 3;
 	private MovementHandler movement;
+	private float SpecialAttackWidth =3 ;
+	[SerializeField]private GameObject aimCenter;
 
 	private void ChargeAttackDash()
 	{
@@ -99,18 +101,23 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 	private void PlayerRemoteOnAim(Vector3 newDirection)
 	{
 		aimDir = newDirection.normalized;
-		movement.FaceDir(aimDir.x >= 0);
+		if (!movement.isTryingToMove)
+		{
+			movement.FaceDir(aimDir.x >= 0);
+		}
+
+		Debug.Log("aiming");
 		OnAim?.Invoke(aimDir);
 	}
 
 	private void Throw()
 	{
-		OnUseAmmo?.Invoke(AmmoHandler.AmmoType.kunai, 1);
+		OnUseAmmo?.Invoke(AmmoHandler.AmmoType.nades, 1);
 	}
 
 	private void Airthrow()
 	{
-		OnUseAmmo?.Invoke(AmmoHandler.AmmoType.kunai, 3);
+		OnUseAmmo?.Invoke(AmmoHandler.AmmoType.nades, 3);
 	}
 
 	private void Anim_AttackStart(int obj)
@@ -120,19 +127,17 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 
 	private void StartStandingKunaiAttack()
 	{
-		Debug.Log("standing kunai");
 		OnThrow?.Invoke();
 	}
 
 	private void StartAirKunaiAttack()
 	{
-		Debug.Log("air kunai");
 		OnAirThrow?.Invoke();
 	}
 
 	private void PlayerRemoteRightTriggerPress(Vector3 aimDirection)
 	{
-		if (!ammoHandler.HasAmmo(AmmoHandler.AmmoType.kunai)) return;
+		if (!ammoHandler.HasAmmo(AmmoHandler.AmmoType.nades)) return;
 		if (!CanAttack()) return;
 
 		isAttacking = true;
@@ -207,11 +212,12 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 		}
 		else
 		{
-			var raycast = Physics2D.RaycastAll((Vector2) transform.position, movement.GetMoveDir(), SpecialAttackDistance,
+			SpecialAttackDistance = Vector2.Distance(aimCenter.transform.position,
+				Camera.main.ScreenToWorldPoint(Input.mousePosition));
+			var raycast = Physics2D.CircleCastAll((Vector2) transform.position, SpecialAttackWidth, aimDir, SpecialAttackDistance,
 				ASSETS.LevelAssets.EnemyLayer);
-			Debug.DrawRay((Vector2)transform.position, (Vector2) movement.GetMoveDir()*SpecialAttackDistance, Color.red);
+			Debug.DrawRay((Vector2)transform.position, (Vector2) aimDir *SpecialAttackDistance, Color.red);
 
-			Debug.Log(movement.GetMoveDir() + "movedir");
 			if (raycast.Length <= 0)
 			{
 				Debug.Log("miss");
@@ -224,7 +230,8 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 				HitTarget(attackType, raycastHit2D.collider, false);
 			}
 
-			var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position+ (Vector2)movement.GetMoveDir()*SpecialAttackDistance, GetHitRange(attackType));
+
+			var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position+ (Vector2)aimDir*SpecialAttackDistance, GetHitRange(attackType));
 
 			foreach (var hit2D in circleCast)
 			{
@@ -247,9 +254,9 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 		var didItKill = enemy.TakeDamage(newAttack);
 
 
-		ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.specialCooldown, attackHitSpecialAmount);
+		ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.ak47, attackHitSpecialAmount);
 		if (!didItKill) return;
-		ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.specialCooldown, attackKillSpecialAmount);
+		ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.ak47, attackKillSpecialAmount);
 		OnKillEnemy?.Invoke();
 	}
 
@@ -287,7 +294,7 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 		if (CanAttack())
 		{
 			if (!ammoHandler.HasFullAmmo(AmmoHandler.AmmoType.meleeCooldown)) return;
-			Debug.Log("ATTACK");
+
 			isGoingToAttackAfterAttack = false;
 			isAfterHitStillAttacking = false;
 			if (jumpHandler.isJumping)
@@ -307,7 +314,6 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 	{
 		OnUseAmmo?.Invoke(AmmoHandler.AmmoType.meleeCooldown, 1000);
 		var randomAttack = Random.Range(1, 3);
-		Debug.Log("random attack");
 		switch (randomAttack)
 		{
 			case 1:
@@ -344,21 +350,18 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 		Debug.Log("attack2");
 	}
 
-	private void Attack3()
-	{
-		OnAttack3?.Invoke();
-		Debug.Log("attack3");
-	}
+
 
 	private void PlayerRemoteChargePress()
 	{
-		if (!ammoHandler.HasFullAmmo(AmmoHandler.AmmoType.specialCooldown)) return;
+		Debug.Log("charge press");
+		if (!ammoHandler.HasFullAmmo(AmmoHandler.AmmoType.ak47)) return;
 
 		if (!CanAttack() || !jumpHandler.isDoneLanding) return;
 		if (!jumpHandler.isDoneLanding) return;
 
 		isCharging = true;
-		OnUseAmmo?.Invoke(AmmoHandler.AmmoType.specialCooldown, 100);
+		OnUseAmmo?.Invoke(AmmoHandler.AmmoType.ak47, 100);
 		OnChargeStart?.Invoke();
 	}
 
@@ -386,6 +389,15 @@ public class BrockAttackHandler : MonoBehaviour, IAttackHandler, IAimHandler
 
 	public event Action OnKillEnemy;
 	public event Action<AmmoHandler.AmmoType, int> OnUseAmmo;
+	public bool isBusy()
+	{
+		return !CanAttack();
+	}
+
 	public event Action<Vector3> OnAim;
 	public event Action OnAimStop;
+	public Vector2 GetAimCenter()
+	{
+		return aimCenter.transform.position;
+	}
 }

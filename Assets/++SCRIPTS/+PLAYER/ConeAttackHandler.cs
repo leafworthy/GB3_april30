@@ -106,5 +106,10 @@ public class ConeAttackHandler : MonoBehaviour, IAttackHandler
 
 	public event Action OnKillEnemy;
 	public event Action<AmmoHandler.AmmoType, int> OnUseAmmo;
+	public bool isBusy()
+	{
+		return false;
+	}
+
 	public event Action<Vector3> OnAim;
 }

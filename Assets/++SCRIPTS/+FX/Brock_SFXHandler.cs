@@ -12,10 +12,20 @@ public class Brock_SFXHandler : MonoBehaviour
 		attackHandler.OnHitConnected += Attack_OnHitConnected;
 
 		animEvents.OnStep += Anim_OnStep;
-		animEvents.OnAttackStart += Anim_OnBatSwing;
+		animEvents.OnAttackStart += Anim_AttackStart;
+		animEvents.OnAttackStop += Anim_AttackStop;
 		animEvents.OnThrow += Anim_Throw;
 		animEvents.OnHitStart += Anim_HitStart;
 		animEvents.OnTeleport += Anim_OnTeleport;
+	}
+
+	private void Anim_AttackStop(int attackType)
+	{
+		if (attackType == 0)
+		{
+
+			AUDIO.I.StopSpecialSound();
+		}
 	}
 
 	private void Attack_OnHitConnected(int attackType)
@@ -23,7 +33,7 @@ public class Brock_SFXHandler : MonoBehaviour
 		if (attackType == 5)
 		{
 
-			ASSETS.sounds.brock_homerunhit_sounds.PlayRandom();
+			AUDIO.I.StartSpecialSound(ASSETS.sounds.brock_homerunhit_sounds.GetRandom());
 			return;
 		}
 
@@ -40,9 +50,22 @@ public class Brock_SFXHandler : MonoBehaviour
 		ASSETS.sounds.brock_bat_swing_sounds.PlayRandom();
 	}
 
-	private void Anim_OnBatSwing(int obj)
+	private void Anim_AttackStart(int attackType)
 	{
-		ASSETS.sounds.brock_bat_swing_sounds.PlayRandom();
+		if (attackType == 5)
+		{
+
+			ASSETS.sounds.brock_charge_sounds.PlayRandom();
+		}else if (attackType == 0)
+		{
+			ASSETS.sounds.brock_charge_sounds.PlayRandom();
+		}
+		else
+		{
+
+			ASSETS.sounds.brock_bat_swing_sounds.PlayRandom();
+		}
+
 	}
 
 

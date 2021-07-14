@@ -22,8 +22,8 @@ public class PAUSE : Singleton<PAUSE>
 
 	private void GameStart()
 	{
-		foreach (var playerController in GAME.getPlayerControllersInLevel())
-			playerController.OnPauseButtonPress += Player_OnPausePressed;
+		foreach (var player in GAME.GetPlayers())
+			player.PressPause += Player_OnPausePressed;
 	}
 
 	private void GameEnd()
@@ -37,10 +37,16 @@ public class PAUSE : Singleton<PAUSE>
 
 	private void Player_OnPausePressed(Player player)
 	{
+		Debug.Log("pause pressed");
 		if (!isPaused)
 			Pause(player);
 		else
-			Unpause();
+		{
+			if (player == pausingPlayer)
+			{
+				Unpause();
+			}
+		}
 	}
 
 	private void PlayerPressDown(Player obj)
@@ -51,6 +57,7 @@ public class PAUSE : Singleton<PAUSE>
 			currentButtonIndex = 0;
 		else
 			currentButtonIndex++;
+		ASSETS.sounds.pauseMenu_move_sounds.PlayRandom();
 
 		HighlightButton(currentButtonIndex);
 	}
@@ -63,6 +70,7 @@ public class PAUSE : Singleton<PAUSE>
 			currentButtonIndex = Buttons.Count - 1;
 		else
 			currentButtonIndex--;
+		ASSETS.sounds.pauseMenu_move_sounds.PlayRandom();
 
 		HighlightButton(currentButtonIndex);
 	}
@@ -83,6 +91,8 @@ public class PAUSE : Singleton<PAUSE>
 	{
 		Debug.Log("player press A");
 		currentButton = Buttons[currentButtonIndex];
+		ASSETS.sounds.pauseMenu_select_sounds.PlayRandom();
+
 		switch (currentButton.type)
 		{
 			case MenuButton.ButtonType.Restart:
@@ -127,12 +137,12 @@ public class PAUSE : Singleton<PAUSE>
 		currentButton.UnHighlight();
 		Time.timeScale = 1;
 		I.visibleObject.SetActive(false);
+		ASSETS.sounds.pauseMenu_stop_sounds.PlayRandom();
 
 		pausingPlayer.PressA -= PlayerPressA;
 		pausingPlayer.PressB -= PlayerPressB;
 		pausingPlayer.MoveUp -= PlayerPressUp;
 		pausingPlayer.MoveDown -= PlayerPressDown;
-		pausingPlayer.A_Pressed = true;
 		pausingPlayer = null;
 	}
 
@@ -140,6 +150,7 @@ public class PAUSE : Singleton<PAUSE>
 	{
 		Debug.Log("pause by " + player.currentCharacter.ToString());
 		isPaused = true;
+		ASSETS.sounds.pauseMenu_start_sounds.PlayRandom();
 
 		Time.timeScale = 0;
 		I.visibleObject.SetActive(true);

@@ -2,20 +2,42 @@ using UnityEngine;
 
 public class Bean_SFXHandler : MonoBehaviour
 {
-	private AnimationEvents animEvents;
+	public AnimationEvents animEventsBottom;
+	public AnimationEvents animEventsTop;
 	private BeanAttackHandler attackHandler;
+	private JumpHandler jumpHandler;
 
 	private void Awake()
 	{
-		animEvents = GetComponentInChildren<AnimationEvents>();
 		attackHandler = GetComponentInChildren<BeanAttackHandler>();
+		jumpHandler = GetComponent<JumpHandler>();
+		jumpHandler.OnJump += Jump;
+		jumpHandler.OnLand += Land;
 
-		attackHandler.OnShootStart += AnimOnShootStart;
-		animEvents.OnStep += Anim_OnStep;
-		animEvents.OnDash += Anim_OnRoll;
-		animEvents.OnAttackHit += Anim_OnKnifeHit;
-		animEvents.OnThrow += Anim_OnNadeThrow;
-		animEvents.OnReload += Anim_OnReload;
+		attackHandler.OnShootStart += AttackOnShootStart;
+		attackHandler.OnShootMiss += AttackOnShootMiss;
+		animEventsBottom.OnStep += Anim_OnStep;
+		animEventsBottom.OnDash += Anim_OnRoll;
+		animEventsTop.OnAttackHit += Anim_OnKnifeHit;
+		animEventsTop.OnThrow += Anim_OnNadeThrow;
+		animEventsTop.OnReload += Anim_OnReload;
+
+	}
+
+	private void AttackOnShootMiss()
+	{
+		ASSETS.sounds.bean_gun_miss_sounds.PlayRandom();
+
+	}
+
+	private void Land()
+	{
+		ASSETS.sounds.land_sound.PlayRandom();
+	}
+
+	private void Jump()
+	{
+		ASSETS.sounds.jump_sound.PlayRandom();
 	}
 
 	private void Anim_OnReload()
@@ -39,7 +61,7 @@ public class Bean_SFXHandler : MonoBehaviour
 		ASSETS.sounds.bean_knifehit_sounds.PlayRandom();
 	}
 
-	private void AnimOnShootStart(Attack attack)
+	private void AttackOnShootStart(Attack attack)
 	{
 
 		ASSETS.sounds.ak47_shoot_sounds.PlayRandom();

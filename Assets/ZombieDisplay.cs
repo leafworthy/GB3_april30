@@ -15,7 +15,7 @@ public class ZombieDisplay : MonoBehaviour
 	{
 		totalKills = 0;
 		currentPlayer = player;
-		player.OnKillEnemy += EnemyKilled;
+		ENEMIES.OnEnemyKilled += EnemyKilled;
 		originalTotalEnemies = ENEMIES.GetNumberOfLivingEnemies();
 		UpdateDisplay();
 		GAME.OnGameEnd += CleanUp;
@@ -23,17 +23,15 @@ public class ZombieDisplay : MonoBehaviour
 
 	private void CleanUp()
 	{
-		currentPlayer.OnKillEnemy -= EnemyKilled;
+		ENEMIES.OnEnemyKilled -= EnemyKilled;
 		GAME.OnGameEnd -= CleanUp;
 	}
 
-	private void EnemyKilled(Player killer)
+	private void EnemyKilled(IAttackHandler killer)
 	{
-		if (killer == currentPlayer)
-		{
-			totalKills++;
-			UpdateDisplay();
-		}
+		if (killer.GetPlayer() != currentPlayer) return;
+		totalKills++;
+		UpdateDisplay();
 	}
 
 	private void UpdateDisplay()

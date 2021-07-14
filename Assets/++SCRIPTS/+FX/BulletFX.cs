@@ -8,6 +8,7 @@ public class BulletFX : MonoBehaviour
 	private Vector2 start;
 	private Vector2 end;
 	private bool isOn = true;
+	private bool isGlock;
 
 	private void Start()
 	{
@@ -20,8 +21,9 @@ public class BulletFX : MonoBehaviour
 		//Destroy(gameObject);
 	}
 
-	public void Fire (Vector2 start, Vector2 end)
+	public void Fire (Vector2 start, Vector2 end, bool isGlock)
 	{
+		this.isGlock = isGlock;
 		this.start = start;
 		this.end = end;
 		shotCounter = shotTime;
@@ -40,13 +42,19 @@ public class BulletFX : MonoBehaviour
 		}
 	}
 
-	void OnGUI ()
+	private void OnGUI ()
 	{
-		if (isOn) {
-			if (shotCounter > 0) {
-				DRAW.line (DRAW.convertWorldToLinePoint (start), DRAW.convertWorldToLinePoint(end), Color.white);
-
-			}
+		if (!isOn) return;
+		if (shotCounter <= 0) return;
+		if (isGlock)
+		{
+			DRAW.line(DRAW.convertWorldToLinePoint(start), DRAW.convertWorldToLinePoint(end), Color.white, 25,
+				ASSETS.FX.GlockBulletTexture2D);
+		}
+		else
+		{
+			DRAW.line(DRAW.convertWorldToLinePoint(start), DRAW.convertWorldToLinePoint(end), Color.white, 10,
+				ASSETS.FX.AKbulletTexture2D);
 		}
 	}
 

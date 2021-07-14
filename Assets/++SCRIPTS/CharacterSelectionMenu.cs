@@ -17,7 +17,6 @@ public class CharacterSelectionMenu : Singleton<CharacterSelectionMenu>
 	{
 		isRunning = false;
 		playersAllSelected = false;
-		foreach (var player in Players) player.CleanUp();
 
 		foreach (var button in Buttons) button.CleanUp();
 	}
@@ -29,6 +28,7 @@ public class CharacterSelectionMenu : Singleton<CharacterSelectionMenu>
 
 	public void StartCharacterSelectionScreen(Player firstPlayer)
 	{
+		if (GAME.I.isTesting) return;
 		GraphicObject.SetActive(true);
 		Players.Clear();
 		Players = GAME.GetPlayers();
@@ -39,7 +39,6 @@ public class CharacterSelectionMenu : Singleton<CharacterSelectionMenu>
 		HideGoGoGo();
 		isRunning = true;
 		JoinPlayer(firstPlayer);
-		firstPlayer.A_Pressed = true;
 	}
 
 	private void StopCharacterSelectionScreen()
@@ -50,7 +49,7 @@ public class CharacterSelectionMenu : Singleton<CharacterSelectionMenu>
 		foreach (var player in joinedPlayers)
 			Debug.Log("Player " + player.playerIndex + " has joined the game as " +
 			          player.currentCharacter.ToString());
-
+		ASSETS.sounds.pickup_speed_sounds.PlayRandom();
 		StopListeningToPlayers();
 		OnCharacterSelectionComplete?.Invoke(joinedPlayers);
 		isRunning = false;
@@ -61,6 +60,7 @@ public class CharacterSelectionMenu : Singleton<CharacterSelectionMenu>
 	{
 		foreach (var player in Players)
 		{
+			player.PressPause += PlayerPressB;
 			player.PressA += PlayerPressA;
 			player.PressB += PlayerPressB;
 			player.MoveRight += PlayerMoveRight;
@@ -74,6 +74,7 @@ public class CharacterSelectionMenu : Singleton<CharacterSelectionMenu>
 	{
 		foreach (var player in Players)
 		{
+			player.PressPause -= PlayerPressB;
 			player.PressA -= PlayerPressA;
 			player.PressB -= PlayerPressB;
 			player.MoveRight -= PlayerMoveRight;
@@ -93,70 +94,12 @@ public class CharacterSelectionMenu : Singleton<CharacterSelectionMenu>
 		//
 	}
 
-	private void Update()
-	{
-		if (!isRunning) return;
-		HandlePlayerInputs();
-	}
-
-	private void HandlePlayerInputs()
-	{
-		foreach (var player in Players) GetButtonsPressed(player);
-	}
-
-	private void GetButtonsPressed(Player player)
-	{
-		if (GamePad.GetButton(CButton.B, player.playerIndex))
-		{
-			if (!player.B_Pressed)
-			{
-				player.B_Pressed = true;
-				PlayerPressB(player);
-			}
-		}
-		else
-			player.B_Pressed = false;
-
-		if (GamePad.GetButton(CButton.A, player.playerIndex))
-		{
-			if (!player.A_Pressed)
-			{
-				player.A_Pressed = true;
-				PlayerPressA(player);
-			}
-		}
-		else
-			player.A_Pressed = false;
-
-		if (player.hasSelectedCharacter) return;
-		var dpad = GamePad.GetAxis(CAxis.LX, player.playerIndex);
-		if (dpad > .5)
-		{
-			if (!player.Right_Pressed)
-			{
-				PlayerMoveRight(player);
-				player.Right_Pressed = true;
-			}
-		}
-		else
-			player.Right_Pressed = false;
-
-		if (dpad < -.5)
-		{
-			if (!player.Left_Pressed)
-			{
-				PlayerMoveLeft(player);
-				player.Left_Pressed = true;
-			}
-		}
-		else
-			player.Left_Pressed = false;
-	}
-
 	private void PlayerMoveLeft(Player player)
 	{
-		Debug.Log("Player" + player.playerIndex + " has moved left");
 		if (!player.hasJoined) return;
+		Debug.Log("player move left");
+		ASSETS.sounds.charSelect_move_sounds.PlayRandom();
+
 		player.currentButton.UnHighlightButton(player);
 		if (player.buttonIndex == 0)
 		{
@@ -174,6 +117,8 @@ public class CharacterSelectionMenu : Singleton<CharacterSelectionMenu>
 	{
 		if (!player.hasJoined) return;
 
+		Debug.Log("player move right");
+		ASSETS.sounds.charSelect_move_sounds.PlayRandom();
 		player.currentButton.UnHighlightButton(player);
 		if (player.buttonIndex == Buttons.Count - 1)
 		{
@@ -209,6 +154,7 @@ public class CharacterSelectionMenu : Singleton<CharacterSelectionMenu>
 
 	private void DeselectCharacter(Player player)
 	{
+		ASSETS.sounds.charSelect_deselect_sounds.PlayRandom();
 		Debug.Log("Player has deselected" + player.playerIndex);
 		player.currentButton.DeselectCharacter(player);
 		CheckIfPlayersAllSelected();
@@ -216,13 +162,17 @@ public class CharacterSelectionMenu : Singleton<CharacterSelectionMenu>
 
 	private void JoinPlayer(Player player)
 	{
+		if (player.hasJoined) return;
 		Debug.Log("Player has joined" + player.playerIndex);
 		player.Join(Buttons[0]);
+		ASSETS.sounds.press_start_sounds.PlayRandom();
 	}
 
 	private void SelectCharacter(Player player)
 	{
 		player.currentButton.SelectCharacter(player);
+		ASSETS.sounds.charSelect_select_sounds.PlayRandom();
+		AUDIO.PlaySound(ASSETS.sounds.charSelect_select_sounds.GetRandom());
 		Debug.Log("Player" + player.playerIndex + " has selected" + player.currentButton.character);
 		CheckIfPlayersAllSelected();
 	}
@@ -236,6 +186,8 @@ public class CharacterSelectionMenu : Singleton<CharacterSelectionMenu>
 		}
 
 		ShowGoGoGo();
+
+
 		Debug.Log("done selecting");
 	}
 

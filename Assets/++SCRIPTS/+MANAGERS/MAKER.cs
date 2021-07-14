@@ -110,6 +110,8 @@ public class MAKER : Singleton<MAKER>
 	}
 
 
-
-
+	public static GameObject Make(GameObject prefab)
+	{
+		return Make(prefab, Vector2.zero);
+	}
 }

@@ -2,7 +2,7 @@ using System;
 using NaughtyAttributes;
 using UnityEngine;
 
-public class ThrownProjectile : MonoBehaviour
+public class ThrownProjectile : MonoBehaviour, IExplode
 {
 	private Vector3 gravity = new Vector3(0, 3.5f, 0);
 	private Vector3 velocity;
@@ -16,8 +16,8 @@ public class ThrownProjectile : MonoBehaviour
 	[SerializeField] private float maxYDistance = 8;
 	private Vector3 origin;
 
-	public event Action<DefenceHandler, Vector3> OnHitTarget;
-	public event Action<Vector3> OnHitNothing;
+	public event Action<DefenceHandler, Vector3, IAttackHandler> OnHitTarget;
+	public event Action<Vector3, IAttackHandler> OnHitNothing;
 	private Vector2 shadowVelocity;
 	private int bounces;
 	private int maxBounces = 2;
@@ -81,7 +81,7 @@ public class ThrownProjectile : MonoBehaviour
 			var defense = raycastHit.Value.collider.gameObject.GetComponent<DefenceHandler>();
 			if (defense is null)
 			{
-				AUDIO.PlaySound(ASSETS.sounds.bean_nade_bounce_sounds.GetRandom());
+				ASSETS.sounds.bean_nade_bounce_sounds.PlayRandom();
 				Bounce(false);
 			}
 			else if(!defense.IsPlayer())
@@ -100,7 +100,6 @@ public class ThrownProjectile : MonoBehaviour
 
 	private void DragVelocityAndRotation()
 	{
-		rotationVelocity = rotationVelocity * .8f;
 		velocity -= gravity * Time.fixedDeltaTime;
 		velocity = new Vector3(velocity.x, velocity.y, 0);
 	}
@@ -171,7 +170,7 @@ public class ThrownProjectile : MonoBehaviour
 			hasReachedTarget = true;
 			velocity = Vector3.zero;
 			Debug.Log("HIT");
-			OnHitTarget?.Invoke(target, hitPoint);
+			OnHitTarget?.Invoke(target, hitPoint, owner);
 			MAKER.Unmake(gameObject);
 		}
 	}
@@ -180,7 +179,7 @@ public class ThrownProjectile : MonoBehaviour
 		velocity = Vector3.zero;
 		hasReachedTarget = true;
 		HeightObject.transform.position = new Vector3(HeightObject.transform.position.x, FloorHeight);
-		OnHitNothing?.Invoke(HeightObject.transform.position);
+		OnHitNothing?.Invoke(HeightObject.transform.position, owner);
 		MAKER.Unmake(gameObject);
 	}
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9a20f1912a546c888a283f6162ba7b, type: 3}
   m_Name: LevelAssets
   m_EditorClassIdentifier: 
-  StartingLevelPrefab: {fileID: 7099486576316630768, guid: 295ac9d72938848598337b91366bbeeb, type: 3}
+  StartingLevelPrefab: {fileID: 7099486576316630768, guid: 04db809baad2848cf9ca9136f59de67e, type: 3}
   PlayerLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -25,3 +25,6 @@ MonoBehaviour:
   PlayerDashLayer:
     serializedVersion: 2
     m_Bits: 16777216
+  BuildingLayer:
+    serializedVersion: 2
+    m_Bits: 512
