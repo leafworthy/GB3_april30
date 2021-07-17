@@ -11,6 +11,9 @@ public class AstarAI : MonoBehaviour
 	private Seeker seeker;
 	private Path path;
 
+	private int rate = 30;
+	private int counter;
+
 	private float nextWaypointDistance = 3;
 	private int currentWaypoint;
 
@@ -26,7 +29,6 @@ public class AstarAI : MonoBehaviour
 	public void SetTargetPosition(Transform newTargetPosition)
 	{
 		targetPosition = newTargetPosition;
-		seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
 	}
 
 	private void OnPathComplete (Path p)
@@ -36,37 +38,39 @@ public class AstarAI : MonoBehaviour
 		currentWaypoint = 0;
 	}
 
-	private void Update ()
+	private void FixedUpdate ()
 	{
+
+		if (counter >= rate)
+		{
+			counter = 0;
+			seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
+			return;
+		}
+		counter++;
+
 		if (PathIsInvalid()) return;
 		UpdatePositionOnPath();
 
 		Vector3 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
 		OnNewDirection?.Invoke(dir);
+
 	}
 
 	private void UpdatePositionOnPath()
 	{
-		while (true)
-		{
+
 			var distanceToWaypoint = Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]);
-			if (distanceToWaypoint < nextWaypointDistance)
+			if (!(distanceToWaypoint < nextWaypointDistance)) return;
+			if (currentWaypoint + 1 < path.vectorPath.Count)
 			{
-				if (currentWaypoint + 1 < path.vectorPath.Count)
-				{
-					currentWaypoint++;
-				}
-				else
-				{
-					OnReachedEndOfPath?.Invoke();
-					break;
-				}
+				currentWaypoint++;
 			}
 			else
 			{
-				break;
+				OnReachedEndOfPath?.Invoke();
 			}
-		}
+
 	}
 
 	private bool PathIsInvalid()
@@ -76,7 +80,7 @@ public class AstarAI : MonoBehaviour
 			return true;
 		}
 
-		seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
+
 		return path is null;
 	}
 }

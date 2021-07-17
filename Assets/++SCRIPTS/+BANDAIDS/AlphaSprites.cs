@@ -7,7 +7,8 @@ public class AlphaSprites : MonoBehaviour
 {
 	[SerializeField] private float currentAlpha = 1;
 	[SerializeField] private List<SpriteRenderer> sprites = new List<SpriteRenderer>();
-	public bool updateAlpha = false;
+	public bool updateAlpha;
+	private string dontalpha = "dontalpha";
 
 	private void Start()
 	{
@@ -19,8 +20,6 @@ public class AlphaSprites : MonoBehaviour
 	{
 		currentAlpha = newAlpha;
 		updateAlphaSprites();
-		int voovoo = 26;
-
 	}
 
 
@@ -29,7 +28,7 @@ public class AlphaSprites : MonoBehaviour
 	private void GetSprites()
 	{
 		sprites.Clear();
-		foreach (SpriteRenderer sr in GetComponentsInChildren<SpriteRenderer>())
+		foreach (var sr in GetComponentsInChildren<SpriteRenderer>())
 		{
 			sprites.Add(sr);
 		}
@@ -51,12 +50,10 @@ public class AlphaSprites : MonoBehaviour
 
 		foreach (SpriteRenderer spriteRenderer in sprites)
 		{
-			if (!spriteRenderer.CompareTag("dontalpha"))
-			{
-				var col = spriteRenderer.color;
-				col.a = currentAlpha;
-				spriteRenderer.color = col;
-			}
+			if (spriteRenderer.CompareTag(dontalpha)) continue;
+			var col = spriteRenderer.color;
+			col.a = currentAlpha;
+			spriteRenderer.color = col;
 		}
 	}
 }

@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cinemachine;
 using UnityEngine;
 
@@ -13,8 +13,10 @@ public class LEVEL : MonoBehaviour
 	public void PlayLevel(List<Player> joiningPlayers)
 	{
 		if (isPlaying) return;
+		GameObject o;
+		(o = gameObject).SetActive(true);
 		isPlaying = true;
-		Debug.Log("Level starting" + gameObject.name);
+		Debug.Log("Level starting" + o.name);
 		foreach (var player in joiningPlayers)
 		{
 			SpawnPlayer(player);
@@ -27,9 +29,13 @@ public class LEVEL : MonoBehaviour
 	private void SpawnPlayer(Player player)
 	{
 		GameObject prefab = GetPrefabFromCharacter(player);
+		if (prefab == null)
+		{
+			Debug.Break();
+		}
 		PLAYERS.AddPlayer(player);
 		var spawnedPlayerGO = MAKER.Make(prefab, spawnPoints[playerControllersInLevel.Count].transform.position);
-		player.SetSpawnedPlayerGO(spawnedPlayerGO);
+ 		player.SetSpawnedPlayerGO(spawnedPlayerGO);
 		cameraFollowTargetGroup.AddMember(spawnedPlayerGO.transform,1,0);
 
 		IPlayerController newPlayerController;
@@ -52,16 +58,12 @@ public class LEVEL : MonoBehaviour
 		{
 			case Character.Karrot:
 				return ASSETS.CharacterPrefabs.GangstaBeanPlayerPrefab;
-				break;
 			case Character.Bean:
 				return ASSETS.CharacterPrefabs.GangstaBeanPlayerPrefab;
-				break;
 			case Character.Brock:
 				return ASSETS.CharacterPrefabs.BrockLeePlayerPrefab;
-				break;
 			case Character.Tmato:
 				return ASSETS.CharacterPrefabs.BrockLeePlayerPrefab;
-				break;
 		}
 		return null;
 	}
@@ -69,9 +71,15 @@ public class LEVEL : MonoBehaviour
 
 	public void EndLevel()
 	{
-		Debug.Log("level destroy");
+		Debug.Log("level deactivated");
 		isPlaying = false;
+		playerControllersInLevel.Clear();
+		var tempTargetsGroup = cameraFollowTargetGroup.m_Targets.ToList();
+		foreach (var t in tempTargetsGroup)
+		{
+			cameraFollowTargetGroup.RemoveMember(t.target);
+		}
 		MAKER.DestroyAllUnits();
-		Destroy(gameObject);
+		gameObject.SetActive(false);
 	}
 }

@@ -1,15 +1,13 @@
 ﻿//draw
 
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 public class DRAW : Singleton<DRAW>
 {
 
 	public static Vector2 convertWorldToLinePoint(Vector2 v)
 	{
+		if (Camera.main == null) return Vector2.zero;
 		v = convertScreenToLinePoint(Camera.main.WorldToScreenPoint(v));
 		return v;
 	}
@@ -22,6 +20,7 @@ public class DRAW : Singleton<DRAW>
 
 	public static void line(Vector2 start, Vector2 end, Color color, float thickness, Texture2D texture2D)
 	{
+		if (PAUSE.isPaused) return;
 		var _coloredLineColor = color;
 		var _coloredLineTexture = texture2D;
 		_coloredLineTexture.SetPixel(0, 0, _coloredLineColor);

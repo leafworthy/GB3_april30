@@ -1,5 +1,4 @@
 using System;
-using NaughtyAttributes;
 using UnityEngine;
 
 public class ThrownProjectile : MonoBehaviour, IExplode
@@ -16,15 +15,13 @@ public class ThrownProjectile : MonoBehaviour, IExplode
 	[SerializeField] private float maxYDistance = 8;
 	private Vector3 origin;
 
-	public event Action<DefenceHandler, Vector3, IAttackHandler> OnHitTarget;
-	public event Action<Vector3, IAttackHandler> OnHitNothing;
+	public event Action<DefenceHandler, Vector3, IPlayerAttackHandler> OnHitTarget;
+	public event Action<Vector3, IPlayerAttackHandler> OnExplode;
 	private Vector2 shadowVelocity;
-	private int bounces;
-	private int maxBounces = 2;
-	private IAttackHandler owner;
+	private IPlayerAttackHandler owner;
 
 	public void Throw(Vector3 initialVelocity, bool _isPlayer, float _FloorHeight, float _ThrowHeight, Vector3 hitPoint,
-	                  float throwTime, IAttackHandler attacker)
+	                  float throwTime, IPlayerAttackHandler attacker)
 	{
 		owner = attacker;
 		origin = HeightObject.transform.position;
@@ -36,7 +33,6 @@ public class ThrownProjectile : MonoBehaviour, IExplode
 		hasReachedTarget = false;
 		FloorHeight = _FloorHeight;
 		isPlayer = _isPlayer;
-		bounces = 0;
 		velocity = initialVelocity;
 		if (velocity.x <= 0)
 		{
@@ -60,9 +56,10 @@ public class ThrownProjectile : MonoBehaviour, IExplode
 
 	private void FlipLocalXScale()
 	{
-		var localScale = transform.localScale;
+		var transform1 = transform;
+		var localScale = transform1.localScale;
 		localScale = new Vector3(-localScale.x, localScale.y, localScale.z);
-		transform.localScale = localScale;
+		transform1.localScale = localScale;
 	}
 
 
@@ -179,7 +176,7 @@ public class ThrownProjectile : MonoBehaviour, IExplode
 		velocity = Vector3.zero;
 		hasReachedTarget = true;
 		HeightObject.transform.position = new Vector3(HeightObject.transform.position.x, FloorHeight);
-		OnHitNothing?.Invoke(HeightObject.transform.position, owner);
+		OnExplode?.Invoke(HeightObject.transform.position, owner);
 		MAKER.Unmake(gameObject);
 	}
 }

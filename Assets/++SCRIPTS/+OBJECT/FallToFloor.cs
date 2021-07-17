@@ -17,7 +17,6 @@ public class FallToFloor : MonoBehaviour
 
 	public void Fire(Vector3 shootAngle, float ForceMultiplier = 1, float distanceToFloor = 5)
 	{
-		Debug.Log("shoot angle" + shootAngle);
 		hasLanded = false;
 		velocity = new Vector3(
 			           Random.Range(minVelocity, maxVelocity) * shootAngle.x*3,
@@ -32,9 +31,10 @@ public class FallToFloor : MonoBehaviour
 	{
 		if (hasLanded)
 			return;
-		transform.Rotate(new Vector3(0, 0, rotationRate * Time.deltaTime * 10));
+		Transform transform1;
+		(transform1 = transform).Rotate(new Vector3(0, 0, rotationRate * Time.deltaTime * 10));
 		velocity -= GAME.Gravity * Time.deltaTime;
-		transform.position += velocity;
+		transform1.position += velocity;
 		if (!(transform.position.y <= floorPoint)) return;
 		hasLanded = true;
 		if (hasDeathTime) MAKER.Unmake(gameObject, 3f);

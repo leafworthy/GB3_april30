@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -23,17 +22,14 @@ public class AmmoHandler : MonoBehaviour
 	public Ammo tertiaryAmmo;
 	public Ammo unlimitedAmmo;
 
-	private UnitStats stats;
 
-	private IAttackHandler beanAttackHandler;
+	private IPlayerAttackHandler beanAttackHandler;
 	private Ammo ammoCurrentlyReloading;
-	public event Action<Ammo> OnAmmoChanged;
 
 	private void Start()
 	{
-		beanAttackHandler = GetComponent<IAttackHandler>();
+		beanAttackHandler = GetComponent<IPlayerAttackHandler>();
 		beanAttackHandler.OnUseAmmo += OnUseAmmo;
-		stats = GetComponent<UnitStats>();
 		ammoList.Add(primaryAmmo);
 		ammoList.Add(secondaryAmmo);
 		ammoList.Add(tertiaryAmmo);
@@ -65,7 +61,6 @@ public class AmmoHandler : MonoBehaviour
 		var ammo = ammoList.FirstOrDefault(t => t.type == type);
 		if (ammo is null) return;
 		ammo.Use(amount);
-		OnAmmoChanged?.Invoke(ammo);
 	}
 
 	public bool HasAmmo(AmmoType type)

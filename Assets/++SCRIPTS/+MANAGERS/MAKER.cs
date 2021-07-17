@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MAKER : Singleton<MAKER>
 {
 	//CREATOR DESTROYER
 
-	private static List<GameObject> allUnits = new List<GameObject> ();
+	private static List<GameObject> allActiveUnits = new List<GameObject> ();
 
 	private static Dictionary<RecycleGameObject, ObjectPool> pools = new Dictionary<RecycleGameObject, ObjectPool> ();
 
@@ -26,17 +26,18 @@ public class MAKER : Singleton<MAKER>
 
 	public static void DestroyAllUnits ()
 	{
-		foreach (var t in allUnits)
+		var tempList = allActiveUnits.ToList();
+		foreach (var t in tempList)
 		{
-			Destroy (t);
+			Unmake(t);
 		}
-		allUnits.Clear();
+		allActiveUnits.Clear();
 	}
 
 
 	public static GameObject Make (GameObject prefab, Vector2 pos)
 	{
-
+		if (prefab == null) return null;
 		GameObject instance = null;
 		RecycleGameObject recycledScript = prefab.GetComponent<RecycleGameObject> ();
 		if (recycledScript != null) {
@@ -59,7 +60,7 @@ public class MAKER : Singleton<MAKER>
 		}
 
 
-		allUnits.Add (instance);
+		allActiveUnits.Add (instance);
 		return instance;
 	}
 
@@ -75,7 +76,7 @@ public class MAKER : Singleton<MAKER>
 			if (recyleGameObject != null) {
 				recyleGameObject.DeactivateGameObject ();
 			} else {
-				allUnits.Remove (gameObject);
+				allActiveUnits.Remove (gameObject);
 				var comp = gameObject.AddComponent<RecycleGameObject>();
 				comp.DeactivateGameObject();
 			}

@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BulletFX : MonoBehaviour
 {
@@ -32,6 +31,7 @@ public class BulletFX : MonoBehaviour
 
 	void FixedUpdate ()
 	{
+		if (PAUSE.isPaused) return;
 		if (isOn) {
 			if (shotCounter > 0) {
 				shotCounter--;
@@ -44,6 +44,7 @@ public class BulletFX : MonoBehaviour
 
 	private void OnGUI ()
 	{
+		if (PAUSE.isPaused) return;
 		if (!isOn) return;
 		if (shotCounter <= 0) return;
 		if (isGlock)

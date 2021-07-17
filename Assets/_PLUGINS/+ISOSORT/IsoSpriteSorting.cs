@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
 
 namespace _PLUGINS
 {
@@ -131,14 +130,12 @@ namespace _PLUGINS
 #endif
 
 
-        void Awake()
+        private void Awake()
         {
-            if (Application.isPlaying)
-            {
-                IsoSpriteSortingManager temp = IsoSpriteSortingManager.I; //bring the instance into existence so the Update function will run;
-                var i = 1;
-                Setup();
-            }
+            if (!Application.isPlaying) return;
+            var temp = IsoSpriteSortingManager.I; //bring the instance into existence so the Update function will run;
+
+            Setup();
         }
 
         private void Setup()
@@ -152,7 +149,7 @@ namespace _PLUGINS
             {
                 cachedBounds = new Bounds2D(renderersToSort[0].bounds);
             }
-            System.Array.Sort(renderersToSort, (a, b) => a.sortingOrder.CompareTo(b.sortingOrder));
+            Array.Sort(renderersToSort, (a, b) => a.sortingOrder.CompareTo(b.sortingOrder));
             IsoSpriteSortingManager.RegisterSprite(this);
         }
 

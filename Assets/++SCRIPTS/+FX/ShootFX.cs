@@ -14,6 +14,7 @@ public class ShootFX : MonoBehaviour
 
 	private void GunShootHandlerOnShoot(Attack attack)
 	{
+		if (PAUSE.isPaused) return;
 		var prefab = Shooter.IsGlocking ? ASSETS.FX.AKbulletPrefab : ASSETS.FX.GlockBulletPrefab;
 		var newBullet = MAKER.Make(prefab, attack.DamageOrigin);
 
@@ -34,6 +35,7 @@ public class ShootFX : MonoBehaviour
 
 	private void SpawnMuzzleFlash(Attack attack)
 	{
+		if (PAUSE.isPaused) return;
 		if (!hasMuzzleFlash) return;
 		var newMuzzleFlash = MAKER.Make(ASSETS.FX.muzzleFlashPrefab, attack.DamageOrigin);
 		MAKER.Unmake(newMuzzleFlash, .05f);

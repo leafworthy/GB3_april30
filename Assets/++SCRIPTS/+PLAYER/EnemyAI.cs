@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -73,7 +74,7 @@ public class EnemyAI : MonoBehaviour
 
 	private void Defence_OnDead()
 	{
-		controller.Die();
+		controller.Stop();
 		isOn = false;
 	}
 
@@ -104,12 +105,12 @@ public class EnemyAI : MonoBehaviour
 		else
 		{
 			controller.StopAttacking();
-			if (currentTargetOutOfRange())
-			{
-				controller.StopMoving();
-				SetState(State.Idle);
-			}
-			else
+			//if (currentTargetOutOfRange())
+			//{
+				//controller.StopMoving();
+				//SetState(State.Idle);
+			//}
+			//else
 				astarAI.SetTargetPosition(currentTarget.transform);
 		}
 	}
@@ -122,10 +123,9 @@ public class EnemyAI : MonoBehaviour
 
 	private void UpdateIdle()
 	{
-		var potentialTargets =
-			Physics2D.OverlapCircleAll(transform.position, stats.GetStatValue(StatType.aggroRange), ASSETS.LevelAssets.PlayerLayer);
+		var potentialTargets = PLAYERS.GetPlayerGOs();
 
-		if (potentialTargets.Length > 0)
+		if (potentialTargets.Count > 0)
 		{
 			var closest = potentialTargets[0];
 			closest = GetClosestTarget(potentialTargets, closest);
@@ -143,7 +143,7 @@ public class EnemyAI : MonoBehaviour
 		}
 	}
 
-	private Collider2D GetClosestTarget(Collider2D[] potentialTargets, Collider2D closest)
+	private GameObject GetClosestTarget(List<GameObject> potentialTargets, GameObject closest)
 	{
 		foreach (var target in potentialTargets)
 		{
