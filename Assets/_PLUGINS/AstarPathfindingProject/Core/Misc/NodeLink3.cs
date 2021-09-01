@@ -1,9 +1,10 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using _PLUGINS.AstarPathfindingProject.Generators.NodeClasses;
+using UnityEngine;
 
-namespace Pathfinding {
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	public class NodeLink3Node : PointNode {
 		public NodeLink3 link;
 		public Vector3 portalA;

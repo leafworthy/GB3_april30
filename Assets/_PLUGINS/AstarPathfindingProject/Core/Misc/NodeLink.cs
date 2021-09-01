@@ -1,11 +1,11 @@
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using UnityEditor;
 using UnityEngine;
 #if UNITY_EDITOR
-using UnityEditor;
+
 #endif
 
-namespace Pathfinding {
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>
 	/// Connects two nodes with a direct connection.
 	/// It is not possible to detect this link when following a path (which may be good or bad), for that you can use NodeLink2.

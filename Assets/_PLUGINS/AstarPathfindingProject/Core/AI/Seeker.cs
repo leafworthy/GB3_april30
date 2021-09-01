@@ -1,10 +1,15 @@
-using UnityEngine;
 using System.Collections.Generic;
-#if UNITY_5_5_OR_NEWER
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Modifiers;
+using _PLUGINS.AstarPathfindingProject.PackageTools;
+using _PLUGINS.AstarPathfindingProject.Pathfinders;
+using UnityEngine;
 using UnityEngine.Profiling;
+#if UNITY_5_5_OR_NEWER
+
 #endif
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core.AI {
 	/// <summary>
 	/// Handles path calls for a single unit.
 	/// \ingroup relevant
@@ -78,7 +83,7 @@ namespace Pathfinding {
 		/// Note that this field only stores which graph indices that are allowed. This means that if the graphs change their ordering
 		/// then this mask may no longer be correct.
 		///
-		/// If you know the name of the graph you can use the <see cref="Pathfinding.GraphMask.FromGraphName"/> method:
+		/// If you know the name of the graph you can use the <see cref="GraphMask.FromGraphName"/> method:
 		/// <code>
 		/// GraphMask mask1 = GraphMask.FromGraphName("My Grid Graph");
 		/// GraphMask mask2 = GraphMask.FromGraphName("My Other Grid Graph");

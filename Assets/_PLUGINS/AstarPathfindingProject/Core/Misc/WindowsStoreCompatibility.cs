@@ -8,7 +8,7 @@ using TP = System.Reflection.TypeInfo;
 using TP = System.Type;
 #endif
 
-namespace Pathfinding.WindowsStore {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	public static class WindowsStoreCompatibility {
 		public static System.Type GetTypeFromInfo (TP type) {
 #if NETFX_CORE

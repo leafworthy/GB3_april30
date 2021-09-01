@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes_SpecialCase;
 using UnityEngine;
 
 namespace _PLUGINS
@@ -41,24 +42,36 @@ namespace _PLUGINS
 
         public SortType sortType = SortType.Point;
 
-        public Vector3 SorterPositionOffset = new Vector3();
-        public Vector3 SorterPositionOffset2 = new Vector3();
+        public GameObject SorterPositionOffset;
+        public GameObject SorterPositionOffset2;
 
         private Transform t;
 
-        private Vector3 SortingPoint1
+        private Vector3 SortingPoint1 => GetPositionOffset(ref SorterPositionOffset, "Point1");
+
+        private Vector3 GetPositionOffset(ref GameObject sorterPositionOffset, string Name)
         {
-            get
+            if (sorterPositionOffset != null) return sorterPositionOffset.transform.position;
+
+            if (transform.Find(Name))
             {
-                return SorterPositionOffset + t.position;
+                var sortingPointTransform = transform.Find(Name);
+                sorterPositionOffset = sortingPointTransform.gameObject;
+                return sorterPositionOffset.transform.position;
             }
+
+            sorterPositionOffset = new GameObject(Name);
+            sorterPositionOffset.transform.SetParent(gameObject.transform, false);
+            return sorterPositionOffset.transform.position;
         }
-        private Vector3 SortingPoint2
+
+        private Vector3 SortingPoint2 => GetPositionOffset(ref SorterPositionOffset2, "Point2");
+
+        [Button()]
+        public void MakeSortingPointGameObjects()
         {
-            get
-            {
-                return SorterPositionOffset2 + t.position;
-            }
+            GetPositionOffset(ref SorterPositionOffset, "Point1");
+            GetPositionOffset(ref SorterPositionOffset2, "Point2");
         }
 
         public Vector3 AsPoint
@@ -104,41 +117,17 @@ namespace _PLUGINS
 
         public Renderer[] renderersToSort;
 
-#if UNITY_EDITOR
-        public void SortScene()
-        {
-            IsoSpriteSorting[] isoSorters = FindObjectsOfType(typeof(IsoSpriteSorting)) as IsoSpriteSorting[];
-            for (int i = 0; i < isoSorters.Length; i++)
-            {
-                isoSorters[i].Setup();
-            }
-            IsoSpriteSortingManager.UpdateSorting();
-            for (int i = 0; i < isoSorters.Length; i++)
-            {
-                isoSorters[i].Unregister();
-            }
-            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
-        }
 
-        private void Update()
-        {
-            if (!Application.isPlaying)
-            {
-                SortScene();
-            }
-        }
-#endif
 
 
         private void Awake()
         {
             if (!Application.isPlaying) return;
-            var temp = IsoSpriteSortingManager.I; //bring the instance into existence so the Update function will run;
-
-            Setup();
+           Setup();
         }
 
-        private void Setup()
+
+        public void Setup()
         {
             t = transform;
             if (renderersToSort == null || renderersToSort.Length == 0)
@@ -153,12 +142,7 @@ namespace _PLUGINS
             IsoSpriteSortingManager.RegisterSprite(this);
         }
 
-        public static int CompairIsoSortersBasic(IsoSpriteSorting sprite1, IsoSpriteSorting sprite2)
-        {
-            float y1 = sprite1.sortType == SortType.Point ? sprite1.SortingPoint1.y : sprite1.SortingLineCenterHeight;
-            float y2 = sprite2.sortType == SortType.Point ? sprite2.SortingPoint1.y : sprite2.SortingLineCenterHeight;
-            return y2.CompareTo(y1);
-        }
+
 
         public static int CompareIsoSorters(IsoSpriteSorting sprite1, IsoSpriteSorting sprite2)
         {
@@ -242,17 +226,16 @@ namespace _PLUGINS
             {
                 return -1;
             }
-            else if (pointY < line.SortingPoint1.y && pointY < line.SortingPoint2.y)
+
+            if (pointY < line.SortingPoint1.y && pointY < line.SortingPoint2.y)
             {
                 return 1;
             }
-            else
-            {
-                float slope = (line.SortingPoint2.y - line.SortingPoint1.y) / (line.SortingPoint2.x - line.SortingPoint1.x);
-                float intercept = line.SortingPoint1.y - (slope * line.SortingPoint1.x);
-                float yOnLineForPoint = (slope * point.x) + intercept;
-                return yOnLineForPoint > point.y ? 1 : -1;
-            }
+
+            float slope = (line.SortingPoint2.y - line.SortingPoint1.y) / (line.SortingPoint2.x - line.SortingPoint1.x);
+            float intercept = line.SortingPoint1.y - (slope * line.SortingPoint1.x);
+            float yOnLineForPoint = (slope * point.x) + intercept;
+            return yOnLineForPoint > point.y ? 1 : -1;
         }
 
         private static bool PointWithinLineArea(Vector3 point, Vector3 linePoint1, Vector3 linePoint2)
@@ -308,7 +291,7 @@ namespace _PLUGINS
             }
         }
 
-        private void Unregister()
+        public void Unregister()
         {
             IsoSpriteSortingManager.UnregisterSprite(this);
         }

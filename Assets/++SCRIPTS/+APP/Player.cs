@@ -12,28 +12,23 @@ public enum Character
 
 public class Player : MonoBehaviour
 {
-	public Character currentCharacter;
-	public PlayerIndex playerIndex;
-	public bool hasJoined;
+	public PlayerData data;
+
 	public CharacterButton currentButton;
-	public bool hasSelectedCharacter;
-	public Color playerColor;
-
-
-	public bool isUsingKeyboard;
-	public KeyboardControlSetup keyboardControlSetup;
 	public GameObject SpawnedPlayerGO;
 	private DefenceHandler spawnedPlayerDefence;
 	private IPlayerAttackHandler attackHandler;
-	public event Action<Player> OnDead;
-	public event Action<Player> OnDying;
-	public event Action<Player> OnKillEnemy;
 	private IPlayerMenuControl menuControl;
-	public bool isPlayer = true;
+
+	public bool hasJoined;
+	public bool hasChosenCharacter;
 	public bool isDead;
-
 	public int buttonIndex;
+	public bool hasSpawned;
+	public bool isJoining;
+	public Character currentCharacter;
 
+	public event Action<Player> OnDead;
 	public event Action<Player> MoveRight;
 	public event Action<Player> MoveLeft;
 	public event Action<Player> MoveUp;
@@ -46,12 +41,12 @@ public class Player : MonoBehaviour
 	{
 		SetupMenuControl();
 
-		GAME.OnGameEnd += CleanUp;
+		LEVELS.OnLevelStop += CleanUp;
 	}
 
 	private void SetupMenuControl()
 	{
-		menuControl = isUsingKeyboard
+		menuControl = data.isUsingKeyboard
 			? (IPlayerMenuControl) new PlayerMenuKeyboardControl(this)
 			: new PlayerMenuRemoteControl(this);
 
@@ -99,12 +94,10 @@ public class Player : MonoBehaviour
 		MoveLeft?.Invoke(obj);
 	}
 
-	public void Join(CharacterButton firstButton)
+	public void JoinSelection(CharacterButton firstButton)
 	{
-		if(hasJoined) return;
 		hasJoined = true;
 		firstButton.HighlightButton(this);
-
 	}
 
 	private void Update()
@@ -112,28 +105,15 @@ public class Player : MonoBehaviour
 		menuControl?.UpdateButtons();
 	}
 
-	public void SetSpawnedPlayerGO(GameObject newGO)
+	private void SetSpawnedPlayerGO(GameObject newGO)
 	{
-		Debug.Log("spawned player go set");
 		SpawnedPlayerGO = newGO;
 		spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<DefenceHandler>();
-		spawnedPlayerDefence.OnDying += Die;
 		spawnedPlayerDefence.OnDead += Dead;
-		attackHandler = SpawnedPlayerGO.GetComponent<IPlayerAttackHandler>();
-		attackHandler.OnKillEnemy += KillEnemy;
 		var stats = SpawnedPlayerGO.GetComponent<UnitStats>();
 		stats.SetPlayer(this);
 	}
 
-	private void KillEnemy()
-	{
-		OnKillEnemy?.Invoke(this);
-	}
-
-	private void Die()
-	{
-		OnDying?.Invoke(this);
-	}
 
 	private void Dead()
 	{
@@ -144,19 +124,14 @@ public class Player : MonoBehaviour
 	{
 		Debug.Log("player cleanup");
 		hasJoined = false;
+		hasSpawned = false;
 		currentButton = null;
-		hasSelectedCharacter = false;
+		hasChosenCharacter = false;
 		SpawnedPlayerGO = null;
 		isDead = false;
 		if (spawnedPlayerDefence != null)
 		{
-			spawnedPlayerDefence.OnDying -= Die;
 			spawnedPlayerDefence.OnDead -= Dead;
-		}
-
-		if (attackHandler != null)
-		{
-			attackHandler.OnKillEnemy -= KillEnemy;
 		}
 
 		if (menuControl == null) return;
@@ -170,4 +145,40 @@ public class Player : MonoBehaviour
 		SetupMenuControl();
 	}
 
+	private void SetController()
+	{
+		IPlayerController newPlayerController;
+		if (data.isUsingKeyboard)
+			newPlayerController = SpawnedPlayerGO.AddComponent<PlayerKeyboardMouseController>();
+		else
+			newPlayerController = SpawnedPlayerGO.AddComponent<PlayerRemoteController>();
+		newPlayerController.SetPlayer(this);
+	}
+
+	public void Spawn(Vector2 SpawnPoint)
+	{
+		if (hasSpawned) return;
+		hasSpawned = true;
+
+		var spawnedPlayerGO = MAKER.Make(GetPrefabFromCharacter(this), SpawnPoint);
+		SetSpawnedPlayerGO(spawnedPlayerGO);
+		SetController();
+	}
+
+	private static GameObject GetPrefabFromCharacter(Player player)
+	{
+		switch (player.currentCharacter)
+		{
+			case Character.Karrot:
+				return ASSETS.Players.GangstaBeanPlayerPrefab;
+			case Character.Bean:
+				return ASSETS.Players.GangstaBeanPlayerPrefab;
+			case Character.Brock:
+				return ASSETS.Players.BrockLeePlayerPrefab;
+			case Character.Tmato:
+				return ASSETS.Players.BrockLeePlayerPrefab;
+		}
+
+		return null;
+	}
 }

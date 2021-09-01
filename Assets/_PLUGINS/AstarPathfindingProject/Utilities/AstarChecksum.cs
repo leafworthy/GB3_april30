@@ -1,5 +1,4 @@
-using System;
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Utilities {
 	/// <summary>Calculates checksums of byte arrays</summary>
 	public class Checksum {
 		/// <summary>

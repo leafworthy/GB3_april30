@@ -5,9 +5,8 @@
 //#define PROFILE // Uncomment to enable profiling
 //#define KEEP_SAMPLES
 using System;
-using System.Collections.Generic;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Utilities {
 	public class Profile {
 		const bool PROFILE_MEM = false;
 

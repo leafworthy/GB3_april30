@@ -12,6 +12,26 @@ public class FXAssets : ScriptableObject
         cushion
     }
     public List<GameObject> blood_debree = new List<GameObject>();
+    public List<GameObject> bloodspray = new List<GameObject>();
+
+
+    public GameObject fire1_small;
+    public GameObject fire2_medium;
+
+    public GameObject dust1_ground;
+    public GameObject dust2_jump;
+
+    public GameObject hit1_starhit;
+    public GameObject hit2_biglongflash;
+    public GameObject hit3_shield;
+    public GameObject hit4_star_particles;
+    public GameObject hit5_xstrike;
+    public GameObject hit5_line_burst;
+
+    public GameObject explosion1_nade;
+    public GameObject explosion2_oval;
+    public GameObject explosion3_huge;
+    public GameObject explosionPrefab;
 
     public List<GameObject> glass_debree = new List<GameObject>();
     public List<GameObject> wood_debree = new List<GameObject>();
@@ -21,12 +41,15 @@ public class FXAssets : ScriptableObject
     public List<GameObject> wood_bulletholes_front = new List<GameObject>();
     public List<GameObject> wood_bulletholes_side = new List<GameObject>();
 
+
+
+
+    public GameObject BulletPrefab;
     public GameObject AKbulletPrefab;
     public GameObject GlockBulletPrefab;
     public GameObject bulletHitAnimPrefab;
     public GameObject muzzleFlashPrefab;
     public GameObject bulletShellPrefab;
-    public GameObject explosionPrefab;
     public GameObject nadePrefab;
 
     public GameObject pickupEffectPrefab;
@@ -75,4 +98,6 @@ public class FXAssets : ScriptableObject
 
         return null;
     }
+
+
 }

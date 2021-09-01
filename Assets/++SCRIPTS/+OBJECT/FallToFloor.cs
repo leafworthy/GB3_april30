@@ -33,7 +33,7 @@ public class FallToFloor : MonoBehaviour
 			return;
 		Transform transform1;
 		(transform1 = transform).Rotate(new Vector3(0, 0, rotationRate * Time.deltaTime * 10));
-		velocity -= GAME.Gravity * Time.deltaTime;
+		velocity -= LEVELS.Gravity * Time.deltaTime;
 		transform1.position += velocity;
 		if (!(transform.position.y <= floorPoint)) return;
 		hasLanded = true;

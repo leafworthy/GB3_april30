@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>
 	/// Lightweight Stack Pool.
 	/// Handy class for pooling stacks of type T.

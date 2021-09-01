@@ -16,7 +16,7 @@ public class Projectile : MonoBehaviour
 	private bool hasGravity;
 	private Vector3 gravity = new Vector3(0, 2.5f, 0);
 	private bool hitsGround;
-	private IPlayerAttackHandler attacker;
+	private Player attacker;
 
 	private void FixedUpdate()
 	{
@@ -73,7 +73,7 @@ public class Projectile : MonoBehaviour
 		var enemy = hitObject.GetComponent<DefenceHandler>();
 		if (enemy.IsPlayer() != isPlayer)
 		{
-			enemy.TakeDamage(new Attack(hitPoint - velocity.normalized, hitPoint, DamageAmount, false,HITSTUN.StunLength.Normal,true,attacker));
+			enemy.TakeDamage(new Attack(hitPoint - velocity.normalized, hitPoint, DamageAmount, false,STUNNER.StunLength.Normal,true,attacker));
 			hasReachedTarget = true;
 			velocity = Vector3.zero;
 			transform.SetParent(hitObject.transform);
@@ -84,7 +84,7 @@ public class Projectile : MonoBehaviour
 
 
 	public void Fire(Vector3 AimDirection, bool _isPlayer, float _FloorHeight, float _ThrowHeight,
-	                 bool _hitsGround = true, IPlayerAttackHandler _attacker = null)
+	                 bool _hitsGround = true, Player _attacker = null)
 	{
 		var newHeightObjectPosition = HeightObject.transform.position;
 		newHeightObjectPosition.y = _ThrowHeight;

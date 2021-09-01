@@ -1,10 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Generators.NodeClasses;
 using UnityEngine;
 
-namespace Pathfinding {
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.Utilities {
 	/// <summary>
 	/// Implements the funnel algorithm as well as various related methods.
 	/// See: http://digestingduck.blogspot.se/2010/03/simple-stupid-funnel-algorithm.html

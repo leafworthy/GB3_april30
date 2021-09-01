@@ -1,11 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.IO;
+using _PLUGINS._INPUT.Scripts;
 using UnityEditor;
-using System.IO;
+using UnityEngine;
 
-namespace CarbonInput {
+namespace _PLUGINS._INPUT.Editor {
     /// <summary>
-    /// Editor extension used to initialize the Unity Input axes. 
+    /// Editor extension used to initialize the Unity Input axes.
     /// </summary>
     public static class CarbonInputMapper {
         /// <summary>

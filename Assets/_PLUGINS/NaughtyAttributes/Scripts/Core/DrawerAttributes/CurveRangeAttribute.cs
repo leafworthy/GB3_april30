@@ -1,7 +1,8 @@
 ﻿using System;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.Utility;
 using UnityEngine;
 
-namespace NaughtyAttributes
+namespace _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes
 {
 	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
 	public class CurveRangeAttribute : DrawerAttribute

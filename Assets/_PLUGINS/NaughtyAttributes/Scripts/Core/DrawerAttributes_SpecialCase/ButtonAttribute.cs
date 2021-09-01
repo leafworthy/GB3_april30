@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NaughtyAttributes
+namespace _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes_SpecialCase
 {
 	public enum EButtonEnableMode
 	{
@@ -22,7 +22,7 @@ namespace NaughtyAttributes
 	public class ButtonAttribute : SpecialCaseDrawerAttribute
 	{
 		public string Text { get; private set; }
-		public EButtonEnableMode SelectedEnableMode { get; private set; }		
+		public EButtonEnableMode SelectedEnableMode { get; private set; }
 
 		public ButtonAttribute(string text = null, EButtonEnableMode enabledMode = EButtonEnableMode.Always)
 		{

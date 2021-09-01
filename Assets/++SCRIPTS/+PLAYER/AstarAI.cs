@@ -1,5 +1,6 @@
 using System;
-using Pathfinding;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.AI;
 using UnityEngine;
 
 public class AstarAI : MonoBehaviour
@@ -10,14 +11,16 @@ public class AstarAI : MonoBehaviour
 	private Transform targetPosition;
 	private Seeker seeker;
 	private Path path;
+	private Vector3 dir;
 
 	private int rate = 30;
 	private int counter;
 
 	private float nextWaypointDistance = 3;
 	private int currentWaypoint;
+	private bool isIdle;
 
-	private void Start () {
+	private void OnEnable () {
 		seeker = GetComponent<Seeker>();
 		var aStar = FindObjectOfType<AstarPath>();
 		if (aStar is null)
@@ -43,7 +46,13 @@ public class AstarAI : MonoBehaviour
 
 		if (counter >= rate)
 		{
+			if (seeker == null)
+			{
+
+				seeker = GetComponent<Seeker>();
+			}
 			counter = 0;
+			if (targetPosition == null) return;
 			seeker.StartPath(transform.position, targetPosition.position, OnPathComplete);
 			return;
 		}
@@ -52,8 +61,7 @@ public class AstarAI : MonoBehaviour
 		if (PathIsInvalid()) return;
 		UpdatePositionOnPath();
 
-		Vector3 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
-		OnNewDirection?.Invoke(dir);
+
 
 	}
 
@@ -61,14 +69,25 @@ public class AstarAI : MonoBehaviour
 	{
 
 			var distanceToWaypoint = Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]);
-			if (!(distanceToWaypoint < nextWaypointDistance)) return;
+			if (!(distanceToWaypoint < nextWaypointDistance))
+			{
+				isIdle = false;
+				return;
+			}
 			if (currentWaypoint + 1 < path.vectorPath.Count)
 			{
+
 				currentWaypoint++;
+				dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
+				OnNewDirection?.Invoke(dir);
 			}
 			else
 			{
-				OnReachedEndOfPath?.Invoke();
+				if (!isIdle)
+				{
+					isIdle = true;
+					OnReachedEndOfPath?.Invoke();
+				}
 			}
 
 	}

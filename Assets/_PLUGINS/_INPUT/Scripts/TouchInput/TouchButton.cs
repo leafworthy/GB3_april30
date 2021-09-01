@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace CarbonInput {
+namespace _PLUGINS._INPUT.Scripts.TouchInput {
     /// <summary>
     /// Touch control simulating a single gamepad button.
     /// </summary>
@@ -40,7 +40,7 @@ namespace CarbonInput {
             image.color = color;
             if(Mapping != null) Mapping[Button] = pressed;
         }
-        
+
         public void OnPointerDown(PointerEventData eventData) {
             UpdateState(true);
         }

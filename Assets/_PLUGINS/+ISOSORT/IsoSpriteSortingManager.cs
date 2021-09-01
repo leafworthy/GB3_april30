@@ -4,7 +4,7 @@ using UnityEngine;
 namespace _PLUGINS
 {
 	[ExecuteInEditMode]
-	public class IsoSpriteSortingManager : Singleton<IsoSpriteSortingManager>
+	public class IsoSpriteSortingManager : MonoBehaviour
 	{
 		private static List<IsoSpriteSorting> floorSpriteList = new List<IsoSpriteSorting>(64);
 		private static List<IsoSpriteSorting> staticSpriteList = new List<IsoSpriteSorting>(256);
@@ -17,17 +17,19 @@ namespace _PLUGINS
 		{
 			if (newSprite.renderBelowAll)
 			{
-				floorSpriteList.Add(newSprite);
+				if (!floorSpriteList.Contains(newSprite)) floorSpriteList.Add(newSprite);
 				SortListSimple(floorSpriteList);
 				SetSortOrderNegative(floorSpriteList);
 			}
 			else
 			{
 				if (newSprite.isMovable)
-					moveableSpriteList.Add(newSprite);
+				{
+					if (!moveableSpriteList.Contains(newSprite)) moveableSpriteList.Add(newSprite);
+				}
 				else
 				{
-					staticSpriteList.Add(newSprite);
+					if (!staticSpriteList.Contains(newSprite)) staticSpriteList.Add(newSprite);
 					SetupStaticDependencies(newSprite);
 				}
 			}
@@ -74,15 +76,27 @@ namespace _PLUGINS
 
 		private static void RemoveStaticDependencies(IsoSpriteSorting spriteToRemove)
 		{
-			for (var i = 0; i < spriteToRemove.inverseStaticDependencies.Count; i++)
-			{
-				var otherSprite = spriteToRemove.inverseStaticDependencies[i];
+			foreach (var otherSprite in spriteToRemove.inverseStaticDependencies)
 				otherSprite.staticDependencies.Remove(spriteToRemove);
-			}
 		}
+#if UNITY_EDITOR
+		public void SortScene()
+		{
+			var isoSorters = FindObjectsOfType(typeof(IsoSpriteSorting)) as IsoSpriteSorting[];
+			for (var i = 0; i < isoSorters.Length; i++) isoSorters[i].Setup();
 
+			UpdateSorting();
+			for (var i = 0; i < isoSorters.Length; i++) isoSorters[i].Unregister();
+
+			UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager
+				.GetActiveScene());
+		}
+#endif
 		private void Update()
 		{
+#if UNITY_EDITOR
+			if (!Application.isPlaying) SortScene();
+#endif
 			UpdateSorting();
 		}
 
@@ -167,7 +181,8 @@ namespace _PLUGINS
 			for (var i = 0; i < spriteList.Count; ++i) spriteList[i].RendererSortingOrder = startOrder + i;
 		}
 
-		public static void FilterListByVisibility(List<IsoSpriteSorting> fullList, List<IsoSpriteSorting> destinationList)
+		public static void FilterListByVisibility(List<IsoSpriteSorting> fullList,
+		                                          List<IsoSpriteSorting> destinationList)
 		{
 			destinationList.Clear();
 			for (var i = 0; i < fullList.Count; i++)

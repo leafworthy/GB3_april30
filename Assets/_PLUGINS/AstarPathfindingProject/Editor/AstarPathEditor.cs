@@ -1,11 +1,17 @@
-using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
-using System.Reflection;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
+using _PLUGINS.AstarPathfindingProject.Editor.GraphEditors;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using _PLUGINS.AstarPathfindingProject.PackageTools.Editor;
+using _PLUGINS.AstarPathfindingProject.Utilities;
+using UnityEditor;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Editor {
 	[CustomEditor(typeof(AstarPath))]
-	public class AstarPathEditor : Editor {
+	public class AstarPathEditor : UnityEditor.Editor {
 		/// <summary>List of all graph editors available (e.g GridGraphEditor)</summary>
 		static Dictionary<string, CustomGraphEditorAttribute> graphEditorTypes = new Dictionary<string, CustomGraphEditorAttribute>();
 
@@ -761,7 +767,7 @@ namespace Pathfinding {
 				GUILayout.BeginHorizontal();
 
 				if (GUILayout.Button("Generate cache")) {
-					var serializationSettings = new Pathfinding.Serialization.SerializeSettings();
+					var serializationSettings = new SerializeSettings();
 					serializationSettings.nodes = true;
 
 					if (EditorUtility.DisplayDialog("Scan before generating cache?", "Do you want to scan the graphs before saving the cache.\n" +
@@ -802,7 +808,7 @@ namespace Pathfinding {
 					string path = EditorUtility.SaveFilePanel("Save Graphs", "", "graph.bytes", "bytes");
 
 					if (path != "") {
-						var serializationSettings = Pathfinding.Serialization.SerializeSettings.Settings;
+						var serializationSettings = SerializeSettings.Settings;
 						if (EditorUtility.DisplayDialog("Include node data?", "Do you want to include node data in the save file. " +
 							"If node data is included the graph can be restored completely without having to scan it first.", "Include node data", "Only settings")) {
 							serializationSettings.nodes = true;
@@ -815,7 +821,7 @@ namespace Pathfinding {
 
 						uint checksum;
 						var bytes = SerializeGraphs(serializationSettings, out checksum);
-						Pathfinding.Serialization.AstarSerializer.SaveToFile(path, bytes);
+						AstarSerializer.SaveToFile(path, bytes);
 
 						EditorUtility.DisplayDialog("Done Saving", "Done saving graph data.", "Ok");
 					}
@@ -826,7 +832,7 @@ namespace Pathfinding {
 
 					if (path != "") {
 						try {
-							byte[] bytes = Pathfinding.Serialization.AstarSerializer.LoadFromFile(path);
+							byte[] bytes = AstarSerializer.LoadFromFile(path);
 							DeserializeGraphs(bytes);
 						} catch (System.Exception e) {
 							Debug.LogError("Could not load from file at '"+path+"'\n"+e);
@@ -1149,8 +1155,8 @@ namespace Pathfinding {
 
 					if (graph == null) continue;
 
-					if (graph.guid == new Pathfinding.Util.Guid()) {
-						graph.guid = Pathfinding.Util.Guid.NewGuid();
+					if (graph.guid == new Guid()) {
+						graph.guid = Guid.NewGuid();
 					}
 
 					graphEditors[i] = CreateGraphEditor(graph);
@@ -1164,8 +1170,8 @@ namespace Pathfinding {
 						return;
 					}
 
-					if (script.graphs[i].guid == new Pathfinding.Util.Guid()) {
-						script.graphs[i].guid = Pathfinding.Util.Guid.NewGuid();
+					if (script.graphs[i].guid == new Guid()) {
+						script.graphs[i].guid = Guid.NewGuid();
 					}
 
 					graphEditors[i].target = script.graphs[i];
@@ -1298,13 +1304,13 @@ namespace Pathfinding {
 		}
 
 		public byte[] SerializeGraphs (out uint checksum) {
-			var settings = Pathfinding.Serialization.SerializeSettings.Settings;
+			var settings = SerializeSettings.Settings;
 
 			settings.editorSettings = true;
 			return SerializeGraphs(settings, out checksum);
 		}
 
-		public byte[] SerializeGraphs (Pathfinding.Serialization.SerializeSettings settings, out uint checksum) {
+		public byte[] SerializeGraphs (SerializeSettings settings, out uint checksum) {
 			byte[] bytes = null;
 			uint tmpChecksum = 0;
 
@@ -1313,7 +1319,7 @@ namespace Pathfinding {
 			for (int i = 0; i < graphEditors.Length; i++) {
 				if (graphEditors[i] == null) continue;
 				output.Length = 0;
-				Pathfinding.Serialization.TinyJsonSerializer.Serialize(graphEditors[i], output);
+				TinyJsonSerializer.Serialize(graphEditors[i], output);
 				(graphEditors[i].target as IGraphInternals).SerializedEditorSettings = output.ToString();
 			}
 			// Serialize all graphs (including serialized editor data)
@@ -1341,7 +1347,7 @@ namespace Pathfinding {
 				// Deserialize editor settings
 				for (int i = 0; i < graphEditors.Length; i++) {
 					var data = (graphEditors[i].target as IGraphInternals).SerializedEditorSettings;
-					if (data != null) Pathfinding.Serialization.TinyJsonDeserializer.Deserialize(data, graphEditors[i].GetType(), graphEditors[i]);
+					if (data != null) TinyJsonDeserializer.Deserialize(data, graphEditors[i].GetType(), graphEditors[i]);
 				}
 			} catch (System.Exception e) {
 				Debug.LogError("Failed to deserialize graphs");

@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	public interface IAstarPooledObject {
 		void OnEnterPool ();
 	}

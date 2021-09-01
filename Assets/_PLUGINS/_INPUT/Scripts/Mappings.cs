@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
 // User don't have to use this directly, so there is no need to have this in global namespace
-namespace CarbonInput {
+namespace _PLUGINS._INPUT.Scripts {
     /// <summary>
-    /// Describes a mapping for a single gamepad button. 
-    /// For normal gamepads, IsWrapper is false and therefor the Button attribute is used. 
-    /// If IsWrapper is set to true, the KeyCode is used. 
+    /// Describes a mapping for a single gamepad button.
+    /// For normal gamepads, IsWrapper is false and therefor the Button attribute is used.
+    /// If IsWrapper is set to true, the KeyCode is used.
     /// </summary>
     [System.Serializable]
     public class ButtonMapping {
@@ -55,8 +55,8 @@ namespace CarbonInput {
     }
 
     /// <summary>
-    /// Describes a mapping for a single gamepad axis. 
-    /// Every axis can be inverted. 
+    /// Describes a mapping for a single gamepad axis.
+    /// Every axis can be inverted.
     /// </summary>
     [System.Serializable]
     public class AxisMapping {
@@ -79,7 +79,7 @@ namespace CarbonInput {
         /// </summary>
         public AxisType Type = AxisType.Default;
         /// <summary>
-        /// If Type is ButtonWrapper, this is the value returned if the button is not pressed. 
+        /// If Type is ButtonWrapper, this is the value returned if the button is not pressed.
         /// If Type is Clamped, this is the lower bound of the axis.
         /// </summary>
         public float Min = 0.0f;
@@ -144,7 +144,7 @@ namespace CarbonInput {
             /// </summary>
             ButtonWrapper2,
             /// <summary>
-            /// Gamepad axis goes from -1 to 1, but it should go from 0 to 1. 
+            /// Gamepad axis goes from -1 to 1, but it should go from 0 to 1.
             /// </summary>
             TriggerLimiter
         }

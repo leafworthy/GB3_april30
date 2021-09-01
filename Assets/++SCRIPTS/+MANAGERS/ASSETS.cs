@@ -1,30 +1,30 @@
+using UnityEngine;
+
 public class ASSETS : Singleton<ASSETS>
 {
-	public static FXAssets FX
+	private void Start()
 	{
-		get { return I._fx;}
+		_fx = Resources.Load<FXAssets>("Assets/FX");
+		if (_fx == null) Debug.Break();
+		_audio = Resources.Load<AudioAssets>("Assets/Audio");
+		_levels = Resources.Load<LevelAssets>("Assets/Levels");
+		_players = Resources.Load<CharacterPrefabAssets>("Assets/Players");
+		_ui = Resources.Load<UIAssets>("Assets/UI");
 	}
 
-	public FXAssets _fx;
-	public static AudioAssets sounds
-	{
-		get { return I._audio; }
-	}
 
+	public static FXAssets FX => I._fx;
+	private FXAssets _fx;
 
-	public AudioAssets _audio;
+	public static AudioAssets sounds => I._audio;
+	private AudioAssets _audio;
 
-	public static LevelAssets LevelAssets
-	{
-		get { return I.levels; }
-	}
+	public static LevelAssets LevelAssets => I._levels;
+	private LevelAssets _levels;
 
-	public LevelAssets levels;
+	public static CharacterPrefabAssets Players => I._players;
+	private CharacterPrefabAssets _players;
 
-	public CharacterPrefabAssets characterPrefabs;
-
-	public static CharacterPrefabAssets CharacterPrefabs
-	{
-		get { return I.characterPrefabs; }
-	}
+	public static UIAssets ui => I._ui;
+	private UIAssets _ui;
 }

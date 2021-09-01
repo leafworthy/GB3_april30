@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes;
+using _PLUGINS.NaughtyAttributes.Scripts.Editor.Utility;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 
-namespace NaughtyAttributes.Editor
+namespace _PLUGINS.NaughtyAttributes.Scripts.Editor.PropertyDrawers
 {
 	[CustomPropertyDrawer(typeof(AnimatorParamAttribute))]
 	public class AnimatorParamPropertyDrawer : PropertyDrawerBase

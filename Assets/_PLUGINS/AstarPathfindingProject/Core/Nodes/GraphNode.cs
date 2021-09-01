@@ -1,10 +1,10 @@
-using UnityEngine;
 using System.Collections.Generic;
-using Pathfinding.Serialization;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using UnityEngine;
 
-namespace Pathfinding {
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.Core.Nodes {
 	/// <summary>Represents a connection to another node</summary>
 	public struct Connection {
 		/// <summary>Node which this connection goes to</summary>
@@ -222,7 +222,7 @@ namespace Pathfinding {
 		/// <summary>
 		/// Penalty cost for walking on this node.
 		/// This can be used to make it harder/slower to walk over certain nodes.
-		/// A cost of 1000 (<see cref="Pathfinding.Int3.Precision"/>) corresponds to the cost of moving 1 world unit.
+		/// A cost of 1000 (<see cref="Int3.Precision"/>) corresponds to the cost of moving 1 world unit.
 		///
 		/// See: graph-updates (view in online documentation for working links)
 		/// </summary>
@@ -264,7 +264,7 @@ namespace Pathfinding {
 		/// The graph is divided into clusters of small hierarchical nodes in which there is a path from every node to every other node.
 		/// This structure is used to speed up connected component calculations which is used to quickly determine if a node is reachable from another node.
 		///
-		/// See: <see cref="Pathfinding.HierarchicalGraph"/>
+		/// See: <see cref="HierarchicalGraph"/>
 		///
 		/// Warning: This is an internal property and you should most likely not change it.
 		/// </summary>
@@ -293,7 +293,7 @@ namespace Pathfinding {
 		/// Each area represents a set of nodes such that there is no valid path between nodes of different colors.
 		///
 		/// See: https://en.wikipedia.org/wiki/Connected_component_(graph_theory)
-		/// See: <see cref="Pathfinding.HierarchicalGraph"/>
+		/// See: <see cref="HierarchicalGraph"/>
 		/// </summary>
 		public uint Area {
 			get {
@@ -303,7 +303,7 @@ namespace Pathfinding {
 
 		/// <summary>
 		/// Graph which contains this node.
-		/// See: <see cref="Pathfinding.AstarData.graphs"/>
+		/// See: <see cref="AstarData.graphs"/>
 		/// See: <see cref="Graph"/>
 		/// </summary>
 		public uint GraphIndex {
@@ -335,10 +335,10 @@ namespace Pathfinding {
 		/// Inform the system that the node's connectivity has changed.
 		/// This is used for recalculating the connected components of the graph.
 		///
-		/// See: <see cref="Pathfinding.HierarchicalGraph"/>
+		/// See: <see cref="HierarchicalGraph"/>
 		///
 		/// You must call this method if you change the connectivity or walkability of the node without going through the high level methods
-		/// such as the <see cref="Walkable"/> property or the <see cref="AddConnection"/> method. For example if your manually change the <see cref="Pathfinding.MeshNode.connections"/> array you need to call this method.
+		/// such as the <see cref="Walkable"/> property or the <see cref="AddConnection"/> method. For example if your manually change the <see cref="MeshNode.connections"/> array you need to call this method.
 		/// </summary>
 		public void SetConnectivityDirty () {
 			AstarPath.active.hierarchicalGraph.AddDirtyNode(this);

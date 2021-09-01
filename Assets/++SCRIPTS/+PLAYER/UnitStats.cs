@@ -10,6 +10,7 @@ public class UnitStats : MonoBehaviour
     public UnitStatsData unitData;
     [SerializeField]private List<UnitStat> unitStats = new List<UnitStat>();
     public Action<UnitStat> OnStatChange;
+    private UnitStat stat;
 
     private void Awake()
     {
@@ -27,26 +28,26 @@ public class UnitStats : MonoBehaviour
 
     public float GetStatValue(StatType type)
     {
-        var stat = unitStats.FirstOrDefault(t => t.type == type);
+        stat = unitStats.FirstOrDefault(t => t.type == type);
         if (stat is null) return 0;
         return stat.GetValue();
     }
 
     public UnitStat GetStat(StatType type)
     {
-        var stat = unitStats.FirstOrDefault(t => t.type == type);
+        stat = unitStats.FirstOrDefault(t => t.type == type);
         return stat;
     }
 
     public float GetBaseStat(StatType type)
     {
-        var stat = unitStats.FirstOrDefault(t => t.type == type);
+        stat = unitStats.FirstOrDefault(t => t.type == type);
         return stat.GetBaseValue();
     }
 
     public void SetStat(StatType type,float value)
     {
-        var stat = unitStats.FirstOrDefault(t => t.type == type);
+        stat = unitStats.FirstOrDefault(t => t.type == type);
         if (stat is null) return;
        // Debug.Log("setting stat " + stat.type + " from "+stat.value+" to " + value);
         stat.SetValue(value);
@@ -55,7 +56,7 @@ public class UnitStats : MonoBehaviour
 
     public void ChangeStat(StatType type, float value)
     {
-        var stat = unitStats.FirstOrDefault(t => t.type == type);
+        stat = unitStats.FirstOrDefault(t => t.type == type);
         if (stat is null) return;
 //        Debug.Log("changing stat " + stat.type + " "+stat.value+" by " + value);
         stat.ChangeValue(value);
@@ -64,7 +65,7 @@ public class UnitStats : MonoBehaviour
 
     public void ResetStat(StatType type)
     {
-        var stat = unitStats.FirstOrDefault(t => t.type == type);
+        stat = unitStats.FirstOrDefault(t => t.type == type);
         if(stat is null) return;
       // Debug.Log("resetting stat " + stat.type + " " + stat.value + " to " + stat.GetBaseValue());
         stat.ResetValue();

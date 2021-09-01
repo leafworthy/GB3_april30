@@ -202,14 +202,34 @@ public class BeanAnimationHandler : MonoBehaviour, IRecyclable
 
 	private void Update()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		UpdateAnimator();
 	}
 
 	private void UpdateAnimator()
 	{
+		if (bottomAnimator == null)
+		{
+			FindAnimators();
+		}
+
+		if (attackHandler == null)
+		{
+			attackHandler = GetComponent<BeanAttackHandler>();
+		}
 		var clampedDir = aimingDir;
-		if (clampedDir.x < .25f && clampedDir.x > 0) clampedDir.x = .25f;
+		if (clampedDir.x <= .25f && clampedDir.x >= 0)
+		{
+			clampedDir.x = .25f;
+			if (aimingDir.y > 0)
+			{
+				clampedDir.y = 1f;
+			}
+			else
+			{
+				clampedDir.y = -1;
+			}
+		}
 
 		if (clampedDir.x < 0 && clampedDir.x > -.25) clampedDir.x = -.25f;
 		bottomAnimator.SetBool(IsGlocking, attackHandler.IsGlocking);

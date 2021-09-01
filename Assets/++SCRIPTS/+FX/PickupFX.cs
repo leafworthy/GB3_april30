@@ -4,7 +4,7 @@ using UnityEngine;
 public class PickupFX : MonoBehaviour
 {
 	[SerializeField] private SHAKER.ShakeIntensityType shakeIntensity;
-	[SerializeField] private HITSTUN.StunLength stunLength;
+	[SerializeField] private STUNNER.StunLength stunLength;
 	private Pickup pickup;
 	private TintHandler tintHandler;
 
@@ -20,10 +20,10 @@ public class PickupFX : MonoBehaviour
 		tintHandler.StartTint(pickupTintColor);
 		var otherTintHandler = col.gameObject.GetComponent<TintHandler>();
 		otherTintHandler.StartTint(pickupTintColor);
-		AUDIO.PlaySound(pickup.GetPickupSound());
 		var position = transform.position;
+		AUDIO.PlaySound(pickup.GetPickupSound());
 		SHAKER.ShakeCamera(position,shakeIntensity);
-		HITSTUN.StartStun(stunLength);
+		STUNNER.StartStun(stunLength);
 		MAKER.Make(ASSETS.FX.pickupEffectPrefab, position);
 	}
 }

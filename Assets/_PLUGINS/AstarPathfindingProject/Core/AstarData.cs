@@ -1,13 +1,18 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Pathfinding.WindowsStore;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using _PLUGINS.AstarPathfindingProject.Utilities;
+using UnityEngine;
+
 #if UNITY_WINRT && !UNITY_EDITOR
 //using MarkerMetro.Unity.WinLegacy.IO;
 //using MarkerMetro.Unity.WinLegacy.Reflection;
 #endif
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core {
 	[System.Serializable]
 	/// <summary>
 	/// Stores the navigation graphs for the A* Pathfinding System.
@@ -217,7 +222,7 @@ namespace Pathfinding {
 		/// });
 		/// </code>
 		///
-		/// See: <see cref="Pathfinding.NavGraph.GetNodes"/> for getting the nodes of a single graph instead of all.
+		/// See: <see cref="NavGraph.GetNodes"/> for getting the nodes of a single graph instead of all.
 		/// See: graph-updates (view in online documentation for working links)
 		/// </summary>
 		public void GetNodes (System.Action<GraphNode> callback) {
@@ -265,7 +270,7 @@ namespace Pathfinding {
 		/// See: DeserializeGraphs(byte[])
 		/// </summary>
 		public byte[] SerializeGraphs () {
-			return SerializeGraphs(Pathfinding.Serialization.SerializeSettings.Settings);
+			return SerializeGraphs(SerializeSettings.Settings);
 		}
 
 		/// <summary>
@@ -273,7 +278,7 @@ namespace Pathfinding {
 		/// See: DeserializeGraphs(byte[])
 		/// See: Pathfinding.Serialization.SerializeSettings
 		/// </summary>
-		public byte[] SerializeGraphs (Pathfinding.Serialization.SerializeSettings settings) {
+		public byte[] SerializeGraphs (SerializeSettings settings) {
 			uint checksum;
 
 			return SerializeGraphs(settings, out checksum);
@@ -284,9 +289,9 @@ namespace Pathfinding {
 		/// Serializes all graphs to a byte array
 		/// A similar function exists in the AstarPathEditor.cs script to save additional info
 		/// </summary>
-		public byte[] SerializeGraphs (Pathfinding.Serialization.SerializeSettings settings, out uint checksum) {
+		public byte[] SerializeGraphs (SerializeSettings settings, out uint checksum) {
 			var graphLock = AssertSafe();
-			var sr = new Pathfinding.Serialization.AstarSerializer(this, settings);
+			var sr = new AstarSerializer(this, settings);
 
 			sr.OpenSerialize();
 			sr.SerializeGraphs(graphs);
@@ -346,7 +351,7 @@ namespace Pathfinding {
 
 			try {
 				if (bytes != null) {
-					var sr = new Pathfinding.Serialization.AstarSerializer(this);
+					var sr = new AstarSerializer(this);
 
 					if (sr.OpenDeserialize(bytes)) {
 						DeserializeGraphsPartAdditive(sr);
@@ -368,7 +373,7 @@ namespace Pathfinding {
 		}
 
 		/// <summary>Helper function for deserializing graphs</summary>
-		void DeserializeGraphsPartAdditive (Pathfinding.Serialization.AstarSerializer sr) {
+		void DeserializeGraphsPartAdditive (AstarSerializer sr) {
 			if (graphs == null) graphs = new NavGraph[0];
 
 			var gr = new List<NavGraph>(graphs);
@@ -394,7 +399,7 @@ namespace Pathfinding {
 				for (int j = i+1; j < graphs.Length; j++) {
 					if (graphs[i] != null && graphs[j] != null && graphs[i].guid == graphs[j].guid) {
 						Debug.LogWarning("Guid Conflict when importing graphs additively. Imported graph will get a new Guid.\nThis message is (relatively) harmless.");
-						graphs[i].guid = Pathfinding.Util.Guid.NewGuid();
+						graphs[i].guid = Guid.NewGuid();
 						break;
 					}
 				}

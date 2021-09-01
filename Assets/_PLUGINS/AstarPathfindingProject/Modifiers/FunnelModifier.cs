@@ -1,8 +1,10 @@
-using UnityEngine;
 using System.Collections.Generic;
-using Pathfinding.Util;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Utilities;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Modifiers {
 	[AddComponentMenu("Pathfinding/Modifiers/Funnel")]
 	[System.Serializable]
 	/// <summary>
@@ -32,7 +34,7 @@ namespace Pathfinding {
 		///
 		/// [Open online documentation to see images]
 		///
-		/// See: <see cref="Pathfinding.Funnel.Unwrap"/> for more example images.
+		/// See: <see cref="Funnel.Unwrap"/> for more example images.
 		///
 		/// Note: This is required if you want to use the funnel modifier for 2D games (i.e in the XY plane).
 		/// </summary>

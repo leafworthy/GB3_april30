@@ -7,7 +7,7 @@ public class DefenceHandler : MonoBehaviour
 	public event Action<Attack> OnWounded;
 	public event Action<float> OnFractionChanged;
 	public event Action OnDying;
-	public event Action<IPlayerAttackHandler> OnKilled;
+	public event Action<Player> OnKilled;
 	public event Action OnDead;
 
 	public float HealthMax
@@ -54,8 +54,12 @@ public class DefenceHandler : MonoBehaviour
 	private void Start()
 	{
 		animationEvents = GetComponentInChildren<AnimationEvents>();
-		animationEvents.OnDieStop += Die;
-		animationEvents.OnInvincible += OnInvincibleChange;
+		if (animationEvents != null)
+		{
+			animationEvents.OnDieStop += Die;
+			animationEvents.OnInvincible += OnInvincibleChange;
+		}
+
 		stats = GetComponent<UnitStats>();
 		Health = HealthMax;
 		OnFractionChanged?.Invoke(1);
@@ -84,7 +88,12 @@ public class DefenceHandler : MonoBehaviour
 		if (!(Health <= 0)) return false;
 		if (attack.Owner != null)
 		{
-			OnKilled?.Invoke(attack.Owner);
+			Debug.Log("enemy killed" + attack.Owner.ToString());
+			ENEMIES.EnemyKilled(attack.Owner);
+		}
+		else
+		{
+			Debug.Log("attack owner null");
 		}
 		StartDying();
 		Health = 0;

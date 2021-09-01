@@ -1,9 +1,11 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.PackageTools;
+using UnityEngine;
 
-namespace Pathfinding {
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.TurnBased {
 	/// <summary>
 	/// Manager for blocker scripts such as SingleNodeBlocker.
 	///

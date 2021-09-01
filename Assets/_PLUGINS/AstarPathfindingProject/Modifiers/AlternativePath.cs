@@ -1,7 +1,9 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Modifiers {
 	[AddComponentMenu("Pathfinding/Modifiers/Alternative Path")]
 	[System.Serializable]
 	/// <summary>

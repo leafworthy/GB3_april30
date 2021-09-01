@@ -5,21 +5,29 @@ using UnityEngine;
 
 public class ENEMIES : Singleton<ENEMIES>
 {
-	private static List<DefenceHandler> enemyList = new List<DefenceHandler>();
-	public static event Action<IPlayerAttackHandler> OnEnemyKilled;
+	private static List<DefenceHandler> Enemies = new List<DefenceHandler>();
+	public static event Action<Player> OnEnemyKilled;
 	public static event Action OnAllEnemiesDead;
 
-	private static void AddEnemy(DefenceHandler enemyDefence)
+	private void Start()
 	{
-		if (!enemyList.Contains(enemyDefence))
-		{
-			enemyDefence.OnDead += EnemyDies;
-			enemyDefence.OnKilled += EnemyKilled;
-			enemyList.Add(enemyDefence);
-		}
+		LEVELS.OnLevelStart += OnLevelStart;
 	}
 
-	private static void EnemyKilled(IPlayerAttackHandler killer)
+	private void OnLevelStart(List<Player> obj)
+	{
+		CollectAllEnemies();
+	}
+
+	private static void CollectEnemy(DefenceHandler enemyDefence)
+	{
+		if (Enemies.Contains(enemyDefence)) return;
+		enemyDefence.OnDead += EnemyDies;
+		enemyDefence.OnKilled += EnemyKilled;
+		Enemies.Add(enemyDefence);
+	}
+
+	public static void EnemyKilled(Player killer)
 	{
 		OnEnemyKilled?.Invoke(killer);
 	}
@@ -32,50 +40,26 @@ public class ENEMIES : Singleton<ENEMIES>
 		}
 	}
 
-	public static DefenceHandler IPlayerControllerEnemy(Vector3 position, float maxRange)
-	{
-		DefenceHandler closest = null;
-		foreach (DefenceHandler enemy in enemyList)
-		{
-			if (enemy.IsDeadOrDying()) continue;
-			if (Vector3.Distance(position, enemy.GetPosition()) <= maxRange)
-			{
-				if (closest == null)
-				{
-					closest = enemy;
-				}
-				else
-				{
-					if (Vector3.Distance(position, enemy.GetPosition()) <
-					    Vector3.Distance(position, closest.GetPosition()))
-					{
-						closest = enemy;
-					}
-				}
-			}
-		}
 
-		return closest;
-	}
 
 	public static int GetNumberOfLivingEnemies()
 	{
-		if (enemyList.Count <= 0)
+		if (Enemies.Count <= 0)
 		{
 			CollectAllEnemies();
 		}
 
-		return enemyList.Where(t=>!t.IsDead()).ToList().Count;
+		return Enemies.Where(t=>!t.IsDead()).ToList().Count;
 	}
 
-	public static void CollectAllEnemies()
+	private static void CollectAllEnemies()
 	{
 		var enemies = GameObject.FindObjectsOfType<EnemyController>();
 		foreach (EnemyController enemy in enemies)
 		{
 			var enemyDefence = enemy.gameObject.GetComponent<DefenceHandler>();
 
-			AddEnemy(enemyDefence);
+			CollectEnemy(enemyDefence);
 
 		}
 	}

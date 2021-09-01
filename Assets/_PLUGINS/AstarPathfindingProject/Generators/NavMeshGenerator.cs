@@ -1,10 +1,13 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
+using _PLUGINS.AstarPathfindingProject.Generators.NodeClasses;
+using _PLUGINS.AstarPathfindingProject.Generators.Utilities;
+using UnityEngine;
 
-namespace Pathfinding {
-	using Pathfinding.Util;
-	using Pathfinding.Serialization;
-
+namespace _PLUGINS.AstarPathfindingProject.Generators {
 	public interface INavmesh {
 		void GetNodes (System.Action<GraphNode> del);
 	}
@@ -23,7 +26,7 @@ namespace Pathfinding {
 	/// [Open online documentation to see images]
 	/// </summary>
 	[JsonOptIn]
-	[Pathfinding.Util.Preserve]
+	[Preserve]
 	public class NavMeshGraph : NavmeshBase, IUpdatableGraph {
 		/// <summary>Mesh to construct navmesh from</summary>
 		[JsonMember]

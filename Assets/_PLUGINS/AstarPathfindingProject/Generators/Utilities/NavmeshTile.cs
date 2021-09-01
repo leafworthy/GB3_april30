@@ -1,7 +1,8 @@
-namespace Pathfinding {
-	using Pathfinding.Util;
-	using UnityEngine;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Generators.NodeClasses;
 
+namespace _PLUGINS.AstarPathfindingProject.Generators.Utilities {
 	public class NavmeshTile : INavmeshHolder {
 		/// <summary>Tile triangles</summary>
 		public int[] tris;

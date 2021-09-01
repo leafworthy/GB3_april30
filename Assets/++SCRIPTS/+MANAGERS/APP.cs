@@ -12,10 +12,6 @@ public class APP : Singleton<APP>
 
 	private List<ButtonAction> mainMenuButtons = new List<ButtonAction>();
 
-	private void Start()
-	{
-		GAME.I.StartMainMenu();
-	}
 
 	private void DisplayMainMenuBox()
 	{

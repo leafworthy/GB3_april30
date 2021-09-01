@@ -1,7 +1,7 @@
 using UnityEngine;
 
-namespace Pathfinding {
-	/// <summary>Exposes internal methods from <see cref="Pathfinding.VersionedMonoBehaviour"/></summary>
+namespace _PLUGINS.AstarPathfindingProject.PackageTools {
+	/// <summary>Exposes internal methods from <see cref="VersionedMonoBehaviour"/></summary>
 	public interface IVersionedMonoBehaviourInternal {
 		void UpgradeFromUnityThread ();
 	}

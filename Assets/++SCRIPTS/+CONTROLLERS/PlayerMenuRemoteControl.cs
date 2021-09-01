@@ -1,11 +1,12 @@
 using System;
+using _PLUGINS._INPUT.Scripts;
 
 public class PlayerMenuRemoteControl : IPlayerMenuControl
 {
 	public PlayerMenuRemoteControl(Player player)
 	{
 		owner = player;
-		playerIndex = player.playerIndex;
+		playerIndex = player.data.playerIndex;
 	}
 
 	private bool A_Pressed;

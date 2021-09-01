@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class RoomActivator : MonoBehaviour
 {
-	[SerializeField] private Room room;
+	[SerializeField] private RoomFader roomFader;
 	[SerializeField] private CapturePlayerTrigger2D activationTrigger;
 
 	private void Awake()
 	{
 
-		if (room.ContainsPlayer())
+		if (roomFader.ContainsPlayer())
 		{
-			room.ShowUnFadedInterior();
+			roomFader.ShowUnFadedInterior();
 		}
 		else
 		{
-			room.ShowUnFadedExterior();
+			roomFader.ShowUnFadedExterior();
 		}
 	}
 
@@ -24,25 +24,25 @@ public class RoomActivator : MonoBehaviour
 		if (activationTrigger.ContainsPlayer())
 		{
 			Debug.Log("activation");
-			if (room.PlayerIsBehind())
+			if (roomFader.PlayerIsBehind())
 			{
-				room.ShowFadedInterior();
+				roomFader.ShowFadedInterior();
 			}
 			else
 			{
-				room.ShowUnFadedInterior();
+				roomFader.ShowUnFadedInterior();
 			}
 
 			return;
 		}
 
-		if (room.PlayerIsBehind())
+		if (roomFader.PlayerIsBehind())
 		{
-			room.ShowFadedExterior();
+			roomFader.ShowFadedExterior();
 		}
 		else
 		{
-			room.ShowUnFadedExterior();
+			roomFader.ShowUnFadedExterior();
 		}
 	}
 }

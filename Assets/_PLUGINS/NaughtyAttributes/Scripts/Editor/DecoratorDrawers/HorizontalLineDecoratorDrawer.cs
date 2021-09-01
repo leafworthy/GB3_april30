@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.Utility;
+using _PLUGINS.NaughtyAttributes.Scripts.Editor.Utility;
 using UnityEditor;
+using UnityEngine;
 
-namespace NaughtyAttributes.Editor
+namespace _PLUGINS.NaughtyAttributes.Scripts.Editor.DecoratorDrawers
 {
 	[CustomPropertyDrawer(typeof(HorizontalLineAttribute))]
 	public class HorizontalLineDecoratorDrawer : DecoratorDrawer

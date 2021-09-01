@@ -1,9 +1,12 @@
 //#define ProfileAstar
 
-using UnityEngine;
 using System.Text;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.PackageTools;
+using _PLUGINS.AstarPathfindingProject.Pathfinders;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	[AddComponentMenu("Pathfinding/Pathfinding Debugger")]
 	[ExecuteInEditMode]
 	/// <summary>
@@ -281,8 +284,8 @@ namespace Pathfinding {
 						text.Append("\nSearch Speed	(nodes/ms)	").Append(searchSpeed.ToString("0")).Append(" ("+AstarPath.TotalSearchedNodes+" / ").Append(((double)AstarPath.TotalSearchTime/10000F).ToString("0")+")");
 #endif
 
-						if (Pathfinding.Util.ListPool<Vector3>.GetSize() > maxVecPool) maxVecPool = Pathfinding.Util.ListPool<Vector3>.GetSize ();
-						if (Pathfinding.Util.ListPool<Pathfinding.GraphNode>.GetSize() > maxNodePool) maxNodePool = Pathfinding.Util.ListPool<Pathfinding.GraphNode>.GetSize ();
+						if (ListPool<Vector3>.GetSize() > maxVecPool) maxVecPool = ListPool<Vector3>.GetSize ();
+						if (ListPool<GraphNode>.GetSize() > maxNodePool) maxNodePool = ListPool<GraphNode>.GetSize ();
 
 						text.Append("\nPool Sizes (size/total created)");
 

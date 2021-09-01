@@ -44,8 +44,9 @@ public class EnemyAI : MonoBehaviour
 		foreach (var col in moreColliders) col.enabled = true;
 	}
 
-	private void Start()
+	private void OnEnable()
 	{
+		isOn = true;
 		stats = GetComponent<UnitStats>();
 		astarAI = GetComponent<AstarAI>();
 		astarAI.OnNewDirection += AI_OnNewDirection;
@@ -60,6 +61,14 @@ public class EnemyAI : MonoBehaviour
 		attackHandler = GetComponent<IAttackHandler>();
 
 		SetState(State.Idle);
+	}
+
+	private void OnDisable()
+	{
+
+		astarAI.OnNewDirection -= AI_OnNewDirection;
+		astarAI.OnReachedEndOfPath -= AI_OnReachedEndOfPath;
+		defenceHandler.OnDead -= Defence_OnDead;
 	}
 
 	private void AI_OnNewDirection(Vector3 newDir)
@@ -80,7 +89,7 @@ public class EnemyAI : MonoBehaviour
 
 	private void Update()
 	{
-		if (!isOn || PAUSE.isPaused) return;
+		if (!isOn || Menu_Pause.isPaused) return;
 
 		switch (state)
 		{
@@ -123,11 +132,11 @@ public class EnemyAI : MonoBehaviour
 
 	private void UpdateIdle()
 	{
-		var potentialTargets = PLAYERS.GetPlayerGOs();
+		var potentialTargets = PLAYERS.GetSpawnedPlayers();
 
 		if (potentialTargets.Count > 0)
 		{
-			var closest = potentialTargets[0];
+			var closest = potentialTargets[0].SpawnedPlayerGO;
 			closest = GetClosestTarget(potentialTargets, closest);
 
 			currentTarget = closest.gameObject;
@@ -143,16 +152,16 @@ public class EnemyAI : MonoBehaviour
 		}
 	}
 
-	private GameObject GetClosestTarget(List<GameObject> potentialTargets, GameObject closest)
+	private GameObject GetClosestTarget(List<Player> potentialTargets, GameObject closest)
 	{
 		foreach (var target in potentialTargets)
 		{
 			if (target.GetComponent<IPlayerController>() is null) continue;
 			if (target.GetComponent<DefenceHandler>().isInvincible) continue;
 			var position = transform.position;
-			var distance = Vector3.Distance(target.transform.position, position);
+			var distance = Vector3.Distance(target.SpawnedPlayerGO.transform.position, position);
 			var currentClosestDistance = Vector3.Distance(closest.transform.position, position);
-			if (distance < currentClosestDistance) closest = target;
+			if (distance < currentClosestDistance) closest = target.SpawnedPlayerGO;
 		}
 
 		return closest;

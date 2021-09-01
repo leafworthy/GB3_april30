@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
-namespace CarbonInput {
+namespace _PLUGINS._INPUT.Scripts {
 	/// <summary>
 	/// This class will check if a new gamepad was connected or if a gamepad lost its connection.
 	/// If this is the case, they are reinitialized.

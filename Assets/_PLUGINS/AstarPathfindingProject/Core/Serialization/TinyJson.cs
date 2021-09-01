@@ -1,13 +1,16 @@
-using UnityEngine;
-using System.Collections.Generic;
-using Pathfinding.WindowsStore;
 using System;
+using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Utilities;
+using UnityEngine;
+using Guid = _PLUGINS.AstarPathfindingProject.Utilities.Guid;
+
 #if NETFX_CORE
 using System.Linq;
 using WinRTLegacy;
 #endif
 
-namespace Pathfinding.Serialization {
+namespace _PLUGINS.AstarPathfindingProject.Core.Serialization {
 	public class JsonMemberAttribute : System.Attribute {
 	}
 	public class JsonOptInAttribute : System.Attribute {
@@ -38,7 +41,7 @@ namespace Pathfinding.Serialization {
 			serializers[typeof(string)] = v => output.AppendFormat("\"{0}\"", v.ToString().Replace("\"", "\\\""));
 			serializers[typeof(Vector2)] = v => output.AppendFormat("{{ \"x\": {0}, \"y\": {1} }}", ((Vector2)v).x.ToString("R", invariantCulture), ((Vector2)v).y.ToString("R", invariantCulture));
 			serializers[typeof(Vector3)] = v => output.AppendFormat("{{ \"x\": {0}, \"y\": {1}, \"z\": {2} }}", ((Vector3)v).x.ToString("R", invariantCulture), ((Vector3)v).y.ToString("R", invariantCulture), ((Vector3)v).z.ToString("R", invariantCulture));
-			serializers[typeof(Pathfinding.Util.Guid)] = v => output.AppendFormat("{{ \"value\": \"{0}\" }}", v.ToString());
+			serializers[typeof(Guid)] = v => output.AppendFormat("{{ \"value\": \"{0}\" }}", v.ToString());
 			serializers[typeof(LayerMask)] = v => output.AppendFormat("{{ \"value\": {0} }}", ((int)(LayerMask)v).ToString());
 		}
 
@@ -226,10 +229,10 @@ namespace Pathfinding.Serialization {
 				result.z = float.Parse(EatField(), numberFormat);
 				Eat("}");
 				return result;
-			} else if (Type.Equals(tp, typeof(Pathfinding.Util.Guid))) {
+			} else if (Type.Equals(tp, typeof(Guid))) {
 				Eat("{");
 				EatField();
-				var result = Pathfinding.Util.Guid.Parse(EatField());
+				var result = Guid.Parse(EatField());
 				Eat("}");
 				return result;
 			} else if (Type.Equals(tp, typeof(LayerMask))) {

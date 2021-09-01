@@ -1,7 +1,8 @@
-using UnityEngine;
+using _PLUGINS.AstarPathfindingProject.Modifiers;
+using _PLUGINS.AstarPathfindingProject.PackageTools.Editor;
 using UnityEditor;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Editor.ModifierEditors {
 	[CustomEditor(typeof(SimpleSmoothModifier))]
 	[CanEditMultipleObjects]
 	public class SmoothModifierEditor : EditorBase {

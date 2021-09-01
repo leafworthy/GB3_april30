@@ -1,15 +1,22 @@
-using UnityEngine;
 using System.Collections.Generic;
-#if UNITY_5_5_OR_NEWER
+using System.IO;
+using System.Linq;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
+using _PLUGINS.AstarPathfindingProject.Generators.NodeClasses;
+using _PLUGINS.AstarPathfindingProject.Generators.Utilities;
+using _PLUGINS.AstarPathfindingProject.Navmesh;
+using _PLUGINS.AstarPathfindingProject.Utilities;
+using UnityEngine;
 using UnityEngine.Profiling;
+#if UNITY_5_5_OR_NEWER
+
 #endif
 
-namespace Pathfinding {
-	using System.IO;
-	using Pathfinding.Util;
-	using Pathfinding.Serialization;
+namespace _PLUGINS.AstarPathfindingProject.Generators {
 	using Math = System.Math;
-	using System.Linq;
 
 	/// <summary>Base class for RecastGraph and NavMeshGraph</summary>
 	public abstract class NavmeshBase : NavGraph, INavmesh, INavmeshHolder, ITransformedGraph {
@@ -76,7 +83,7 @@ namespace Pathfinding {
 		/// This can be important on sloped surfaces. See the image below in which the closest point for each blue point is queried for:
 		/// [Open online documentation to see images]
 		///
-		/// You can also control this using a <see cref="Pathfinding.NNConstraint.distanceXZ field on an NNConstraint"/>.
+		/// You can also control this using a <see cref="NNConstraint.distanceXZ"/>.
 		/// </summary>
 		[JsonMember]
 		public bool nearestSearchOnlyXZ;
@@ -91,7 +98,7 @@ namespace Pathfinding {
 		/// <summary>
 		/// Handles navmesh cutting.
 		/// See: <see cref="enableNavmeshCutting"/>
-		/// See: <see cref="Pathfinding.NavmeshUpdates"/>
+		/// See: <see cref="NavmeshUpdates"/>
 		/// </summary>
 		internal readonly NavmeshUpdates.NavmeshUpdateSettings navmeshUpdateData;
 
@@ -249,7 +256,7 @@ namespace Pathfinding {
 
 			if (tiles != null) {
 				for (int i = 0; i < tiles.Length; i++) {
-					Pathfinding.Util.ObjectPool<BBTree>.Release (ref tiles[i].bbTree);
+					ObjectPool<BBTree>.Release (ref tiles[i].bbTree);
 				}
 			}
 		}
@@ -1032,7 +1039,7 @@ namespace Pathfinding {
 		}
 
 
-		public override void OnDrawGizmos (Pathfinding.Util.RetainedGizmos gizmos, bool drawNodes) {
+		public override void OnDrawGizmos (RetainedGizmos gizmos, bool drawNodes) {
 			if (!drawNodes) {
 				return;
 			}

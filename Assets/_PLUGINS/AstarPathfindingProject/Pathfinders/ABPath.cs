@@ -1,7 +1,13 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using _PLUGINS.AstarPathfindingProject.Generators.NodeClasses;
+using _PLUGINS.AstarPathfindingProject.Utilities;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Pathfinders {
 	/// <summary>
 	/// Basic path, finds the shortest path from A to B.
 	/// \ingroup paths
@@ -230,7 +236,7 @@ namespace Pathfinding {
 		}
 
 #if !ASTAR_NO_GRID_GRAPH
-		/// <summary>Cached <see cref="Pathfinding.NNConstraint.None"/> to reduce allocations</summary>
+		/// <summary>Cached <see cref="NNConstraint.None"/> to reduce allocations</summary>
 		static readonly NNConstraint NNConstraintNone = NNConstraint.None;
 
 		/// <summary>

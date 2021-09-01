@@ -1,13 +1,14 @@
+using _PLUGINS.AstarPathfindingProject.Core.AI;
+using _PLUGINS.AstarPathfindingProject.PackageTools;
 using UnityEngine;
-using System.Collections;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Behaviors {
 	/// <summary>
 	/// Sets the destination of an AI to the position of a specified object.
 	/// This component should be attached to a GameObject together with a movement script such as AIPath, RichAI or AILerp.
 	/// This component will then make the AI move towards the <see cref="target"/> set on this component.
 	///
-	/// See: <see cref="Pathfinding.IAstarAI.destination"/>
+	/// See: <see cref="IAstarAI.destination"/>
 	///
 	/// [Open online documentation to see images]
 	/// </summary>

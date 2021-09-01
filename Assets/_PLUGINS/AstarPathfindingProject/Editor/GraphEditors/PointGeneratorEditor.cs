@@ -1,7 +1,9 @@
-using UnityEngine;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using _PLUGINS.AstarPathfindingProject.PackageTools.Editor;
 using UnityEditor;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Editor.GraphEditors {
 	[CustomGraphEditor(typeof(PointGraph), "Point Graph")]
 	public class PointGraphEditor : GraphEditor {
 		static readonly GUIContent[] nearestNodeDistanceModeLabels = {

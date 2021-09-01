@@ -1,8 +1,9 @@
 using System;
+using _PLUGINS.AstarPathfindingProject.Core;
 using UnityEditor;
 using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Editor {
 	public class AstarUpdateWindow : EditorWindow {
 		static GUIStyle largeStyle;
 		static GUIStyle normalStyle;

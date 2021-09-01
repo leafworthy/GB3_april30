@@ -1,6 +1,8 @@
+using _PLUGINS.AstarPathfindingProject.Modifiers;
+using _PLUGINS.AstarPathfindingProject.PackageTools.Editor;
 using UnityEditor;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Editor.ModifierEditors {
 	[CustomEditor(typeof(RaycastModifier))]
 	[CanEditMultipleObjects]
 	public class RaycastModifierEditor : EditorBase {

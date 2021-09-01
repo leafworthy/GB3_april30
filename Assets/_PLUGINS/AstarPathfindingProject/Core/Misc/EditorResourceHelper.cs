@@ -1,9 +1,8 @@
-namespace Pathfinding {
-#if UNITY_EDITOR
-	using UnityEditor;
-	using UnityEngine;
-	using System.Collections.Generic;
+using System.Collections.Generic;
+using UnityEngine;
 
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
+#if UNITY_EDITOR
 	/// <summary>Internal utility class for looking up editor resources</summary>
 	public static class EditorResourceHelper {
 		/// <summary>

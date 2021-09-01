@@ -1,9 +1,11 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using _PLUGINS.AstarPathfindingProject.Generators.NodeClasses;
+using UnityEngine;
 
-namespace Pathfinding {
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>
 	/// Connects two nodes via two intermediate point nodes.
 	/// In contrast to the NodeLink component, this link type will not connect the nodes directly
@@ -249,7 +251,7 @@ namespace Pathfinding {
 			}
 		}
 
-		internal static void SerializeReferences (Pathfinding.Serialization.GraphSerializationContext ctx) {
+		internal static void SerializeReferences (GraphSerializationContext ctx) {
 			var links = GetModifiersOfType<NodeLink2>();
 
 			ctx.writer.Write(links.Count);
@@ -265,7 +267,7 @@ namespace Pathfinding {
 			}
 		}
 
-		internal static void DeserializeReferences (Pathfinding.Serialization.GraphSerializationContext ctx) {
+		internal static void DeserializeReferences (GraphSerializationContext ctx) {
 			int count = ctx.reader.ReadInt32();
 
 			for (int i = 0; i < count; i++) {

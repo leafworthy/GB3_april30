@@ -2,10 +2,10 @@ using System;
 using Cinemachine;
 using UnityEngine;
 
-public class SHAKER : Singleton<SHAKER>
+public class SHAKER:Singleton<SHAKER>
 {
-	private CinemachineImpulseSource shaker;
-	private Vector3 shakeVector = new Vector3(1, 1, 0);
+	private static CinemachineImpulseSource cinemachineImpulseSource;
+	private static Vector3 shakeVector = new Vector3(1, 1, 0);
 	private static float MaxShakeMagnitude = 10;
 	private static bool isOn = true;
 
@@ -17,7 +17,8 @@ public class SHAKER : Singleton<SHAKER>
 	}
 	private void Start()
 	{
-		GAME.OnGameEnd += CleanUp;
+		LEVELS.OnLevelStop += CleanUp;
+		cinemachineImpulseSource = GetComponent<CinemachineImpulseSource>();
 		CinemachineImpulseManager.Instance.IgnoreTimeScale = true;
 	}
 
@@ -37,7 +38,7 @@ public class SHAKER : Singleton<SHAKER>
 				ShakeCamera(shakePosition, 2);
 				break;
 			case ShakeIntensityType.high:
-				ShakeCamera(shakePosition, 3);
+				ShakeCamera(shakePosition, 4);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -47,13 +48,7 @@ public class SHAKER : Singleton<SHAKER>
 	private static void ShakeCamera( Vector3 shakePosition,float shakeMagnitude)
 	{
 		shakeMagnitude = Mathf.Min(shakeMagnitude, MaxShakeMagnitude);
-
 		if (!isOn) return;
-		if (I.shaker is null)
-		{
-			I.shaker = I.GetComponent<CinemachineImpulseSource>();
-		}
-
-		I.shaker.GenerateImpulseAt(shakePosition, I.shakeVector*shakeMagnitude);
+		cinemachineImpulseSource.GenerateImpulseAt(shakePosition, shakeVector*shakeMagnitude);
 	}
 }

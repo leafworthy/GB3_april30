@@ -1,13 +1,12 @@
 using System.Collections.Generic;
-using Pathfinding.Util;
-using Pathfinding.Serialization;
-using System.Linq;
-using UnityEngine;
-#if UNITY_5_5_OR_NEWER
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Utilities;
 using UnityEngine.Profiling;
+#if UNITY_5_5_OR_NEWER
+
 #endif
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>
 	/// Holds a hierarchical graph to speed up certain pathfinding queries.
 	///
@@ -21,7 +20,7 @@ namespace Pathfinding {
 	///
 	/// A connected component is a set of nodes such that there is a valid path between every pair of nodes in that set.
 	/// Thus the query above can simply be answered by checking if they are in the same connected component.
-	/// The connected component is exposed on nodes as the <see cref="Pathfinding.GraphNode.Area"/> property and on this class using the <see cref="GetArea"/> method.
+	/// The connected component is exposed on nodes as the <see cref="GraphNode.Area"/> property and on this class using the <see cref="GetArea"/> method.
 	///
 	/// In the image below (showing a 200x200 grid graph) each connected component is colored using a separate color.
 	/// The actual color doesn't signify anything in particular however, only that they are different.
@@ -53,9 +52,9 @@ namespace Pathfinding {
 	///
 	/// [Open online documentation to see videos]
 	///
-	/// See: <see cref="Pathfinding.PathUtilities.IsPathPossible"/>
-	/// See: <see cref="Pathfinding.NNConstraint"/>
-	/// See: <see cref="Pathfinding.GraphNode.Area"/>
+	/// See: <see cref="PathUtilities.IsPathPossible"/>
+	/// See: <see cref="NNConstraint"/>
+	/// See: <see cref="GraphNode.Area"/>
 	/// </summary>
 	public class HierarchicalGraph {
 		const int Tiling = 16;
@@ -311,8 +310,8 @@ namespace Pathfinding {
 			que.Clear();
 		}
 
-		public void OnDrawGizmos (Pathfinding.Util.RetainedGizmos gizmos) {
-			var hasher = new Pathfinding.Util.RetainedGizmos.Hasher(AstarPath.active);
+		public void OnDrawGizmos (RetainedGizmos gizmos) {
+			var hasher = new RetainedGizmos.Hasher(AstarPath.active);
 
 			hasher.AddHash(gizmoVersion);
 

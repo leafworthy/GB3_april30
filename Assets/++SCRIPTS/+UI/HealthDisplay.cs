@@ -17,8 +17,8 @@ public class HealthDisplay : MonoBehaviour
 		}
 		playerDefence = player.SpawnedPlayerGO.GetComponent<DefenceHandler>();
 
-		bar.fastBarImage.color = player.playerColor;
-		bar.capSpriteRenderer.color = player.playerColor;
+		bar.fastBarImage.color = player.data.playerColor;
+		bar.capSpriteRenderer.color = player.data.playerColor;
 		playerDefence.OnFractionChanged += UpdateDisplay;
 		UpdateDisplay(0);
 	}

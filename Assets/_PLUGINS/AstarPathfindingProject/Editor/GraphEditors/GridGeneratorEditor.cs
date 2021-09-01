@@ -1,10 +1,13 @@
-using UnityEngine;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using _PLUGINS.AstarPathfindingProject.Generators.Utilities;
+using _PLUGINS.AstarPathfindingProject.PackageTools.Editor;
 using UnityEditor;
-using Pathfinding.Serialization;
+using UnityEngine;
 
-namespace Pathfinding {
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.Editor.GraphEditors {
 	[CustomGraphEditor(typeof(GridGraph), "Grid Graph")]
 	public class GridGraphEditor : GraphEditor {
 		[JsonMember]

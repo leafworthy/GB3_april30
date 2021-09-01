@@ -70,7 +70,7 @@ public class AmmoDisplay : MonoBehaviour
 		ammoToDisplay = newAmmo;
 		ammoToDisplay.OnAmmoUsed += AmmoUsedUpdateDisplay;
 		ammoToDisplay.OnAmmoGained += AmmoGainedUpdateDisplay;
-		GAME.OnGameEnd += CleanUp;
+		LEVELS.OnLevelStop += CleanUp;
 		init = true;
 		UpdateDisplay(false);
 	}

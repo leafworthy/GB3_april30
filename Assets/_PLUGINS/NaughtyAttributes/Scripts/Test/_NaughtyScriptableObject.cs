@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes_SpecialCase;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.MetaAttributes;
 using UnityEngine;
 
-namespace NaughtyAttributes.Test
+namespace _PLUGINS.NaughtyAttributes.Scripts.Test
 {
 	//[CreateAssetMenu(fileName = "NaughtyScriptableObject", menuName = "NaughtyAttributes/_NaughtyScriptableObject")]
 	public class _NaughtyScriptableObject : ScriptableObject

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>Holds a coordinate in integers</summary>
 	public struct Int3 : System.IEquatable<Int3> {
 		public int x;

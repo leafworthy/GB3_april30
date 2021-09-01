@@ -37,6 +37,7 @@ public class BrockAttackHandler : MonoBehaviour, IPlayerAttackHandler, IAimHandl
 	private void Start()
 	{
 		stats = GetComponent<UnitStats>();
+		player = stats.player;
 		jumpHandler = GetComponent<JumpHandler>();
 		ammoHandler = GetComponent<AmmoHandler>();
 		movement = GetComponent<MovementHandler>();
@@ -68,6 +69,7 @@ public class BrockAttackHandler : MonoBehaviour, IPlayerAttackHandler, IAimHandl
 	private MovementHandler movement;
 	private float SpecialAttackWidth =3 ;
 	[SerializeField]private GameObject aimCenter;
+	private Player player;
 
 	private void ChargeAttackDash()
 	{
@@ -225,7 +227,7 @@ public class BrockAttackHandler : MonoBehaviour, IPlayerAttackHandler, IAimHandl
 			OnHitConnected?.Invoke(attackType);
 		}
 		var newAttack = new Attack(transform.position, hit2D.transform.position,
-			GetAttackDamage(attackType), false, HITSTUN.StunLength.Long, true, this);
+			GetAttackDamage(attackType), false, STUNNER.StunLength.Long, true, player);
 		var didItKill = enemy.TakeDamage(newAttack);
 
 

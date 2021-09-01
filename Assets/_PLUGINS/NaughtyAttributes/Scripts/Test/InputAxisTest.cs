@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes_SpecialCase;
+using UnityEngine;
 
-namespace NaughtyAttributes.Test
+namespace _PLUGINS.NaughtyAttributes.Scripts.Test
 {
 	public class InputAxisTest : MonoBehaviour
 	{

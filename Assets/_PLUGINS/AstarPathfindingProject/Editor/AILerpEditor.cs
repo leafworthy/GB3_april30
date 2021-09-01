@@ -1,7 +1,9 @@
+using _PLUGINS.AstarPathfindingProject.Core.AI;
+using _PLUGINS.AstarPathfindingProject.PackageTools.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Editor {
 	[CustomEditor(typeof(AILerp), true)]
 	[CanEditMultipleObjects]
 	public class AILerpEditor : EditorBase {

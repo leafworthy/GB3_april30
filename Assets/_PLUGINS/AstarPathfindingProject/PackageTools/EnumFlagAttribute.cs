@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.PackageTools {
 	/// <summary>\author http://wiki.unity3d.com/index.php/EnumFlagPropertyDrawer</summary>
 	public class EnumFlagAttribute : PropertyAttribute {
 	}

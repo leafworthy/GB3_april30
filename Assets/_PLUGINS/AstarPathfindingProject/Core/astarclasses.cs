@@ -1,12 +1,17 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using _PLUGINS.AstarPathfindingProject.Generators.NodeClasses;
+using _PLUGINS.AstarPathfindingProject.Generators.Utilities;
+using _PLUGINS.AstarPathfindingProject.Pathfinders;
+using _PLUGINS.AstarPathfindingProject.Utilities;
+using UnityEngine;
 
-// Empty namespace declaration to avoid errors in the free version
+namespace _PLUGINS.AstarPathfindingProject.Core
+{
+	// Empty namespace declaration to avoid errors in the free version
 // Which does not have any classes in the RVO namespace
-namespace Pathfinding.RVO {}
-
-namespace Pathfinding {
-	using Pathfinding.Util;
 
 #if UNITY_5_0
 	/// <summary>Used in Unity 5.0 since the HelpURLAttribute was first added in Unity 5.1</summary>
@@ -102,7 +107,7 @@ namespace Pathfinding {
 
 	/// <summary>
 	/// Returned by graph ray- or linecasts containing info about the hit.
-	/// This is the return value by the <see cref="Pathfinding.IRaycastableGraph.Linecast"/> methods.
+	/// This is the return value by the <see cref="IRaycastableGraph.Linecast"/> methods.
 	/// Some members will also be initialized even if nothing was hit, see the individual member descriptions for more info.
 	///
 	/// [Open online documentation to see images]
@@ -206,7 +211,7 @@ namespace Pathfinding {
 		/// This can be important on sloped surfaces. See the image below in which the closest point for each blue point is queried for:
 		/// [Open online documentation to see images]
 		///
-		/// The navmesh/recast graphs also contain a global option for this: <see cref="Pathfinding.NavmeshBase.nearestSearchOnlyXZ"/>.
+		/// The navmesh/recast graphs also contain a global option for this: <see cref="NavmeshBase.nearestSearchOnlyXZ"/>.
 		/// </summary>
 		public bool distanceXZ;
 
@@ -272,11 +277,11 @@ namespace Pathfinding {
 		public static NNConstraint None {
 			get {
 				return new NNConstraint {
-						   constrainWalkability = false,
-						   constrainArea = false,
-						   constrainTags = false,
-						   constrainDistance = false,
-						   graphMask = -1,
+					constrainWalkability = false,
+					constrainArea = false,
+					constrainTags = false,
+					constrainDistance = false,
+					graphMask = -1,
 				};
 			}
 		}
@@ -295,7 +300,7 @@ namespace Pathfinding {
 		public static new PathNNConstraint Default {
 			get {
 				return new PathNNConstraint {
-						   constrainArea = true
+					constrainArea = true
 				};
 			}
 		}
@@ -601,7 +606,7 @@ namespace Pathfinding {
 		/// \miscsnippets MiscSnippets.cs GraphUpdateObject.RevertFromBackup
 		///
 		/// See: blocking (view in online documentation for working links)
-		/// See: <see cref="Pathfinding.PathUtilities.UpdateGraphsNoBlock"/>
+		/// See: <see cref="PathUtilities.UpdateGraphsNoBlock"/>
 		/// </summary>
 		public virtual void RevertFromBackup () {
 			if (trackChangedNodes) {
@@ -741,7 +746,7 @@ namespace Pathfinding {
 				System.Math.Max(a.ymin, b.ymin),
 				System.Math.Min(a.xmax, b.xmax),
 				System.Math.Min(a.ymax, b.ymax)
-				);
+			);
 		}
 
 		/// <summary>Returns if the two rectangles intersect each other</summary>
@@ -759,7 +764,7 @@ namespace Pathfinding {
 				System.Math.Min(a.ymin, b.ymin),
 				System.Math.Max(a.xmax, b.xmax),
 				System.Math.Max(a.ymax, b.ymax)
-				);
+			);
 		}
 
 		/// <summary>Returns a new IntRect which is expanded to contain the point</summary>
@@ -769,7 +774,7 @@ namespace Pathfinding {
 				System.Math.Min(ymin, y),
 				System.Math.Max(xmax, x),
 				System.Math.Max(ymax, y)
-				);
+			);
 		}
 
 		/// <summary>Returns a new rect which is expanded by range in all directions.</summary>
@@ -779,7 +784,7 @@ namespace Pathfinding {
 				ymin-range,
 				xmax+range,
 				ymax+range
-				);
+			);
 		}
 
 		public override string ToString () {
@@ -893,7 +898,7 @@ namespace Pathfinding {
 
 	#region Delegates
 
-	/* Delegate with on Path object as parameter.
+/* Delegate with on Path object as parameter.
 	 * This is used for callbacks when a path has finished calculation.\n
 	 * Example function:
 	 * \snippet MiscSnippets.cs OnPathDelegate
@@ -1018,27 +1023,27 @@ namespace Pathfinding {
 		/// Use the penalty of each node to color the graph.
 		/// This does not show penalties added by tags.
 		/// See: graph-updates (view in online documentation for working links)
-		/// See: <see cref="Pathfinding.GraphNode.Penalty"/>
+		/// See: <see cref="GraphNode.Penalty"/>
 		/// </summary>
 		Penalty,
 		/// <summary>
 		/// Visualize the connected components of the graph.
 		/// A node with a given color can reach any other node with the same color.
 		///
-		/// See: <see cref="Pathfinding.HierarchicalGraph"/>
+		/// See: <see cref="HierarchicalGraph"/>
 		/// See: https://en.wikipedia.org/wiki/Connected_component_(graph_theory)
 		/// </summary>
 		Areas,
 		/// <summary>
 		/// Use the tag of each node to color the graph.
 		/// See: tags (view in online documentation for working links)
-		/// See: <see cref="Pathfinding.GraphNode.Tag"/>
+		/// See: <see cref="GraphNode.Tag"/>
 		/// </summary>
 		Tags,
 		/// <summary>
 		/// Visualize the hierarchical graph structure of the graph.
 		/// This is mostly for internal use.
-		/// See: <see cref="Pathfinding.HierarchicalGraph"/>
+		/// See: <see cref="HierarchicalGraph"/>
 		/// </summary>
 		HierarchicalNode,
 	}
@@ -1071,19 +1076,19 @@ namespace Pathfinding {
 	public enum PathCompleteState {
 		/// <summary>
 		/// The path has not been calculated yet.
-		/// See: <see cref="Pathfinding.Path.IsDone()"/>
+		/// See: <see cref="Path.IsDone"/>
 		/// </summary>
 		NotCalculated = 0,
 		/// <summary>
 		/// The path calculation is done, but it failed.
-		/// See: <see cref="Pathfinding.Path.error"/>
+		/// See: <see cref="Path.error"/>
 		/// </summary>
 		Error = 1,
 		/// <summary>The path has been successfully calculated</summary>
 		Complete = 2,
 		/// <summary>
 		/// The path has been calculated, but only a partial path could be found.
-		/// See: <see cref="Pathfinding.ABPath.calculatePartial"/>
+		/// See: <see cref="ABPath.calculatePartial"/>
 		/// </summary>
 		Partial = 3,
 	}
@@ -1133,9 +1138,7 @@ namespace Pathfinding {
 	}
 
 	#endregion
-}
 
-namespace Pathfinding.Util {
 	/// <summary>Prevents code stripping. See: https://docs.unity3d.com/Manual/ManagedCodeStripping.html</summary>
 	public class PreserveAttribute : System.Attribute {
 	}

@@ -1,12 +1,13 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Behaviors;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core.AI {
 	/// <summary>
 	/// Common interface for all movement scripts in the A* Pathfinding Project.
-	/// See: <see cref="Pathfinding.AIPath"/>
+	/// See: <see cref="AIPath"/>
 	/// See: <see cref="Pathfinding.RichAI"/>
-	/// See: <see cref="Pathfinding.AILerp"/>
+	/// See: <see cref="AILerp"/>
 	/// </summary>
 	public interface IAstarAI {
 		/// <summary>
@@ -17,7 +18,7 @@ namespace Pathfinding {
 		/// However since the height value is used for some things, the radius field is always visible for consistency and easier visualization of the character.
 		/// That said, it may be used for something in a future release.
 		///
-		/// Note: The <see cref="Pathfinding.AILerp"/> script doesn't really have any use of knowing the radius or the height of the character, so this property will always return 0 in that script.
+		/// Note: The <see cref="AILerp"/> script doesn't really have any use of knowing the radius or the height of the character, so this property will always return 0 in that script.
 		/// </summary>
 		float radius { get; set; }
 
@@ -25,7 +26,7 @@ namespace Pathfinding {
 		/// Radius of the agent in world units.
 		/// This is visualized in the scene view as a yellow cylinder around the character.
 		///
-		/// Note: The <see cref="Pathfinding.AILerp"/> script doesn't really have any use of knowing the radius or the height of the character, so this property will always return 0 in that script.
+		/// Note: The <see cref="AILerp"/> script doesn't really have any use of knowing the radius or the height of the character, so this property will always return 0 in that script.
 		/// </summary>
 		float height { get; set; }
 
@@ -245,7 +246,7 @@ namespace Pathfinding {
 		/// Called when the agent recalculates its path.
 		/// This is called both for automatic path recalculations (see <see cref="canSearch)"/> and manual ones (see <see cref="SearchPath)"/>.
 		///
-		/// See: Take a look at the <see cref="Pathfinding.AIDestinationSetter"/> source code for an example of how it can be used.
+		/// See: Take a look at the <see cref="AIDestinationSetter"/> source code for an example of how it can be used.
 		/// </summary>
 		System.Action onSearchPath { get; set; }
 

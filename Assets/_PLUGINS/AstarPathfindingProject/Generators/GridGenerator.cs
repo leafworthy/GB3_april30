@@ -1,14 +1,19 @@
 using System.Collections.Generic;
-using Math = System.Math;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
+using _PLUGINS.AstarPathfindingProject.Generators.NodeClasses;
+using _PLUGINS.AstarPathfindingProject.Generators.Utilities;
+using _PLUGINS.AstarPathfindingProject.Utilities;
 using UnityEngine;
-#if UNITY_5_5_OR_NEWER
 using UnityEngine.Profiling;
+using Math = System.Math;
+#if UNITY_5_5_OR_NEWER
+
 #endif
 
-namespace Pathfinding {
-	using Pathfinding.Serialization;
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.Generators {
 	/// <summary>
 	/// Generates a grid of nodes.
 	/// The GridGraph does exactly what the name implies, generates nodes in a grid pattern.\n
@@ -78,11 +83,11 @@ namespace Pathfinding {
 	/// make sure that the trees actually have colliders attached to them and that the tree prefabs are
 	/// in the correct layer (the layer should be included in the 'Collision Testing' mask).
 	///
-	/// See: <see cref="Pathfinding.GraphCollision"/> for documentation on the 'Height Testing' and 'Collision Testing' sections
+	/// See: <see cref="GraphCollision"/> for documentation on the 'Height Testing' and 'Collision Testing' sections
 	/// of the grid graph settings.
 	/// </summary>
 	[JsonOptIn]
-	[Pathfinding.Util.Preserve]
+	[Preserve]
 	public class GridGraph : NavGraph, IUpdatableGraph, ITransformedGraph {
 		/// <summary>This function will be called when this graph is destroyed</summary>
 		protected override void OnDestroy () {
@@ -1256,7 +1261,7 @@ namespace Pathfinding {
 			}
 
 			// Return the list to the pool
-			Pathfinding.Util.ListPool<GraphNode>.Release (ref nodesInRect);
+			ListPool<GraphNode>.Release (ref nodesInRect);
 		}
 
 		/// <summary>

@@ -1,9 +1,13 @@
-using UnityEngine;
 using System.Collections.Generic;
-using Pathfinding.Util;
-using Pathfinding.Serialization;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
+using _PLUGINS.AstarPathfindingProject.Generators.Utilities;
+using _PLUGINS.AstarPathfindingProject.Utilities;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Generators {
 	/// <summary>
 	/// Exposes internal methods for graphs.
 	/// This is used to hide methods that should not be used by any user code
@@ -124,7 +128,7 @@ namespace Pathfinding {
 		/// gg.GetNodes((System.Action<GraphNode>)nodes.Add);
 		/// </code>
 		///
-		/// See: <see cref="Pathfinding.AstarData.GetNodes"/>
+		/// See: <see cref="AstarData.GetNodes"/>
 		/// </summary>
 		public abstract void GetNodes (System.Action<GraphNode> action);
 
@@ -395,7 +399,7 @@ namespace Pathfinding {
 	public class GraphCollision {
 		/// <summary>
 		/// Collision shape to use.
-		/// See: <see cref="Pathfinding.ColliderType"/>
+		/// See: <see cref="ColliderType"/>
 		/// </summary>
 		public ColliderType type = ColliderType.Capsule;
 
@@ -665,7 +669,7 @@ namespace Pathfinding {
 
 	/// <summary>
 	/// Determines collision check shape.
-	/// See: <see cref="Pathfinding.GraphCollision"/>
+	/// See: <see cref="GraphCollision"/>
 	/// </summary>
 	public enum ColliderType {
 		/// <summary>Uses a Sphere, Physics.CheckSphere. In 2D this is a circle instead.</summary>

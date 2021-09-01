@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using _PLUGINS._INPUT.Scripts;
 using UnityEditor;
+using UnityEngine;
 
-namespace CarbonInput {
+namespace _PLUGINS._INPUT.Editor {
     /// <summary>
     /// Editor for <see cref="CarbonController"/>.
     /// </summary>
     [CustomEditor(typeof(CarbonController))]
-    public class CarbonMappingEditor : Editor {
+    public class CarbonMappingEditor : UnityEditor.Editor {
         /// <summary>
         /// Foldout buttons
         /// </summary>

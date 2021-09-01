@@ -1,4 +1,4 @@
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Editor {
 	/// <summary>Added to editors of custom graph types</summary>
 	[System.AttributeUsage(System.AttributeTargets.All, Inherited = false, AllowMultiple = true)]
 	public class CustomGraphEditorAttribute : System.Attribute {

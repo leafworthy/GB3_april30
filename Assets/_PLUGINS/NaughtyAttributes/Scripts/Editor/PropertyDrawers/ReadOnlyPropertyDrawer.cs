@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes;
 using UnityEditor;
+using UnityEngine;
 
-namespace NaughtyAttributes.Editor
+namespace _PLUGINS.NaughtyAttributes.Scripts.Editor.PropertyDrawers
 {
 	[CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
 	public class ReadOnlyPropertyDrawer : PropertyDrawerBase

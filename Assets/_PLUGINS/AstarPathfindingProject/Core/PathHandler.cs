@@ -1,7 +1,8 @@
 #define DECREASE_KEY
-using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core {
 	/// <summary>
 	/// Stores temporary node data for a single pathfinding request.
 	/// Every node has one PathNode per thread used.

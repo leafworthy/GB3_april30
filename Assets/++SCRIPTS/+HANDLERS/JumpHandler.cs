@@ -45,8 +45,12 @@ public class JumpHandler : MonoBehaviour
 		movementHandler = GetComponent<MovementHandler>();
 
 		remoteController = GetComponent<IPlayerController>();
-		remoteController.OnJumpPress += JumpPress;
-		remoteController.OnJumpRelease += JumpRelease;
+		if (remoteController != null)
+		{
+			remoteController.OnJumpPress += JumpPress;
+			remoteController.OnJumpRelease += JumpRelease;
+		}
+
 		originalJumpObjectPosition = jumpObject.transform.localPosition;
 		originalShadowObjectPosition = shadowObject.transform.localPosition;
 
@@ -101,7 +105,7 @@ public class JumpHandler : MonoBehaviour
 
 	private void HandleVelocity()
 	{
-		velocity -= GAME.Gravity * Time.fixedDeltaTime;
+		velocity -= LEVELS.Gravity * Time.fixedDeltaTime;
 		jumpObject.transform.localPosition += velocity;
 	}
 

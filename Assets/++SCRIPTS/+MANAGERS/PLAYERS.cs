@@ -7,56 +7,85 @@ public class PLAYERS : Singleton<PLAYERS>
 {
 	private static List<Player> players = new List<Player>();
 	public static event Action OnAllPlayersDead;
-	public static event Action<Player> OnPlayerDead;
-	private static Player enemyPlayer;
-	private static List<GameObject> playerGOs = new List<GameObject>();
+	private static Player EnemyPlayer;
 
-
-
-	public static void AddPlayer(Player newPlayer)
+	private void Start()
 	{
-		Debug.Log("player added");
-		if (newPlayer.isPlayer)
+		Init();
+	}
+
+	private  void Init()
+	{
+		players.Clear();
+		var playerAssets = Resources.LoadAll<PlayerData>("PlayerData").ToList();
+		foreach (var playerData in playerAssets)
 		{
-			newPlayer.OnDead += PlayerDies;
-			if (!players.Contains(newPlayer)) players.Add(newPlayer);
+			var newPlayer = gameObject.AddComponent<Player>();
+			newPlayer.data = playerData;
+			AddPlayer(newPlayer);
 		}
-		else
-			enemyPlayer = newPlayer;
+	}
+
+	private static void JoinPlayer(Player player)
+	{
+		if (player.hasJoined) return;
+		if (!player.data.isPlayer)
+		{
+			EnemyPlayer = player;
+		}
+		player.hasJoined = true;
+		OnPlayerJoin?.Invoke(player);
+	}
+
+	private static void AddPlayer(Player newPlayer)
+	{
+			newPlayer.OnDead += PlayerDies;
+			newPlayer.PressA += JoinPlayer;
+			newPlayer.PressB += JoinPlayer;
+			newPlayer.PressPause += JoinPlayer;
+			if (!players.Contains(newPlayer)) players.Add(newPlayer);
 	}
 
 	private static void PlayerDies(Player deadPlayer)
 	{
-		Debug.Log("player dead");
 		deadPlayer.OnDead -= PlayerDies;
-		OnPlayerDead?.Invoke(deadPlayer);
-		//players.Remove(deadPlayer);
 		deadPlayer.isDead = true;
-		if (GetNumberOfLivingPlayers() > 0) return;
-		Debug.Log("all dead");
+		CheckIfAllPlayersDead();
+	}
+
+	private static void CheckIfAllPlayersDead()
+	{
+		if (GetJoinedPlayers().Count(t => !t.isDead) > 0) return;
 		OnAllPlayersDead?.Invoke();
 	}
 
-	private static int GetNumberOfLivingPlayers()
+
+
+	public static event Action<Player> OnPlayerJoin;
+
+	public static List<Player> GetJoinedPlayers()
 	{
-		//if (!PlayersHaveBeenFound()) return 0;
-		var count = players.Count(t => !t.isDead);
-		Debug.Log(count + " player count");
-		return count;
+		return players.Where(t => t.hasJoined).ToList();
+	}
+
+	public static List<Player> GetJoiningPlayers()
+	{
+		return players.Where(t => t.isJoining).ToList();
+	}
+
+	public static List<Player> GetAllPlayers()
+	{
+		return players;
 	}
 
 	public static Player GetEnemyPlayer()
 	{
-		return enemyPlayer;
+		return EnemyPlayer;
 	}
 
-	public static List<GameObject> GetPlayerGOs()
+	public static List<Player> GetSpawnedPlayers()
 	{
-		playerGOs.Clear();
-		foreach (var player in players.Where(t => !t.isDead))
-		{
-			playerGOs.Add(player.SpawnedPlayerGO);
-		}
-		return playerGOs;
+
+		return players.Where(t => t.hasSpawned).ToList();
 	}
 }

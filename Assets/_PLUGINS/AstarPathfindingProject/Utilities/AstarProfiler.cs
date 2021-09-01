@@ -2,14 +2,16 @@
 //#define ProfileAstar //@SHOWINEDITOR
 //#define ASTAR_UNITY_PRO_PROFILER //@SHOWINEDITOR Requires ProfileAstar, profiles section of astar code which will show up in the Unity Pro Profiler.
 
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core;
 using UnityEngine;
-#if UNITY_5_5_OR_NEWER
 using UnityEngine.Profiling;
+#if UNITY_5_5_OR_NEWER
+
 #endif
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Utilities {
 	public class AstarProfiler {
 		public class ProfilePoint {
 			//public DateTime lastRecorded;

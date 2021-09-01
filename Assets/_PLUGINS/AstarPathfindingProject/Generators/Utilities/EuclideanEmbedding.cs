@@ -1,8 +1,7 @@
 #pragma warning disable 414
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Generators.Utilities {
 	public enum HeuristicOptimizationMode {
 		None,
 		Random,

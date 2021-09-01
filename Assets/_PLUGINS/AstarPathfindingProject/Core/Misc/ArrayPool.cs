@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>
 	/// Lightweight Array Pool.
 	/// Handy class for pooling arrays of type T.

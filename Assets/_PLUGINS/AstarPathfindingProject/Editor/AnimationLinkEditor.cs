@@ -1,10 +1,11 @@
-using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using UnityEditor;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Editor {
 	[CustomEditor(typeof(AnimationLink))]
-	public class AnimationLinkEditor : Editor {
+	public class AnimationLinkEditor : UnityEditor.Editor {
 		public override void OnInspectorGUI () {
 			DrawDefaultInspector();
 
@@ -12,11 +13,11 @@ namespace Pathfinding {
 
 			EditorGUI.BeginDisabledGroup(script.EndTransform == null);
 			if (GUILayout.Button("Autoposition Endpoint")) {
-				List<Vector3> buffer = Pathfinding.Util.ListPool<Vector3>.Claim ();
+				List<Vector3> buffer = ListPool<Vector3>.Claim ();
 				Vector3 endpos;
 				script.CalculateOffsets(buffer, out endpos);
 				script.EndTransform.position = endpos;
-				Pathfinding.Util.ListPool<Vector3>.Release (buffer);
+				ListPool<Vector3>.Release (buffer);
 			}
 			EditorGUI.EndDisabledGroup();
 		}

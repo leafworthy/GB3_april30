@@ -1,7 +1,9 @@
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
 using UnityEngine;
-using Pathfinding.Serialization;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Generators.NodeClasses {
 	/// <summary>Base class for GridNode and LevelGridNode</summary>
 	public abstract class GridNodeBase : GraphNode {
 		protected GridNodeBase (AstarPath astar) : base(astar) {

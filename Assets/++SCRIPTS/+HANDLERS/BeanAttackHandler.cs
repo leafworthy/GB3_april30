@@ -71,16 +71,20 @@ public class BeanAttackHandler : MonoBehaviour, IPlayerAttackHandler, IShootHand
 		ammoHandler = GetComponent<AmmoHandler>();
 
 		playerController = GetComponent<IPlayerController>();
-		playerController.OnLeftTriggerPress += PlayerControllerNadePress;
-		playerController.OnLeftTriggerRelease += PlayerControllerNadeRelease;
+		if (playerController != null)
+		{
+			playerController.OnLeftTriggerPress += PlayerControllerNadePress;
+			playerController.OnLeftTriggerRelease += PlayerControllerNadeRelease;
 
-		playerController.OnRightTriggerPress += PlayerControllerShootPress;
-		playerController.OnRightTriggerRelease += PlayerControllerShootRelease;
-		playerController.OnAim += PlayerControllerOnAim;
 
-		playerController.OnAttackPress += PlayerKnifePress;
-		playerController.OnAttackRelease += PlayerKnifeRelease;
-		playerController.OnReloadPress += PlayerReload;
+			playerController.OnRightTriggerPress += PlayerControllerShootPress;
+			playerController.OnRightTriggerRelease += PlayerControllerShootRelease;
+			playerController.OnAim += PlayerControllerOnAim;
+
+			playerController.OnAttackPress += PlayerKnifePress;
+			playerController.OnAttackRelease += PlayerKnifeRelease;
+			playerController.OnReloadPress += PlayerReload;
+		}
 
 		jumpHandler = GetComponent<JumpHandler>();
 		jumpHandler.OnJump += DisableAttacking;
@@ -138,7 +142,7 @@ public class BeanAttackHandler : MonoBehaviour, IPlayerAttackHandler, IShootHand
 
 	private void PlayerKnifePress(Vector3 obj)
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		if (CantAttack()) return;
 		if (!ammoHandler.HasFullAmmo(AmmoHandler.AmmoType.meleeCooldown)) return;
 		OnUseAmmo?.Invoke(AmmoHandler.AmmoType.meleeCooldown, 999);
@@ -153,7 +157,7 @@ public class BeanAttackHandler : MonoBehaviour, IPlayerAttackHandler, IShootHand
 
 	private void PlayerControllerNadeRelease(Vector3 aimDirection)
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		if (!isNading) return;
 		isNading = false;
 		if (CantAttack()) return;
@@ -188,7 +192,7 @@ public class BeanAttackHandler : MonoBehaviour, IPlayerAttackHandler, IShootHand
 
 	private void PlayerControllerShootPress(Vector3 aimDirection)
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		if (CantAttack())
 		{
 			if (!isAttacking) return;
@@ -310,8 +314,10 @@ public class BeanAttackHandler : MonoBehaviour, IPlayerAttackHandler, IShootHand
 
 		private void ShotMissed()
 		{
-			var newAttack = new Attack( gunEndPoint.transform.position, GetShotMissPosition(),
-				0);
+			var missPosition = GetShotMissPosition();
+			var newAttack = new Attack( gunEndPoint.transform.position, missPosition,
+				0, false,STUNNER.StunLength.Normal,true,player);
+			newAttack.HitPosition = missPosition;
 			OnShootStart?.Invoke(newAttack);
 			OnShootMiss?.Invoke();
 		}
@@ -320,8 +326,8 @@ public class BeanAttackHandler : MonoBehaviour, IPlayerAttackHandler, IShootHand
 		{
 			var newAttack = new Attack(gunEndPoint.transform.position,
 				targetHitPosition,
-				stats.GetStatValue(StatType.attackDamage), false, HITSTUN.StunLength.None);
-
+				stats.GetStatValue(StatType.attackDamage), false, STUNNER.StunLength.None, true, player);
+			newAttack.HitPosition = targetHitPosition;
 			OnShootStart?.Invoke(newAttack);
 			OnShootMiss?.Invoke();
 		}
@@ -334,7 +340,8 @@ public class BeanAttackHandler : MonoBehaviour, IPlayerAttackHandler, IShootHand
 				: stats.GetStatValue(
 					StatType.attackDamage);
 			var newAttack = new Attack(origin, targetHitPosition + (Vector2) heightVector,
-				damage);
+				damage, false, STUNNER.StunLength.Normal, true, player);
+			newAttack.HitPosition = targetHitPosition;
 			OnShootStart?.Invoke(newAttack);
 			var itKilled = target.TakeDamage(newAttack);
 			if (itKilled) OnKillEnemy?.Invoke();
@@ -395,7 +402,7 @@ public class BeanAttackHandler : MonoBehaviour, IPlayerAttackHandler, IShootHand
 		{
 			ammoHandler.AddAmmoToReserve(AmmoHandler.AmmoType.meleeCooldown, knifeCoolDown);
 			if (isNading) AimNade(nadeAimDir);
-			if (isNading && player.isUsingKeyboard) AimNadeAt(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+			if (isNading && player.data.isUsingKeyboard) AimNadeAt(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 		}
 
 		private void AimNadeAt(Vector2 target)

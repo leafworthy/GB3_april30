@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using _PLUGINS._INPUT.Scripts;
 using UnityEditor;
+using UnityEngine;
 
-namespace CarbonInput {
+namespace _PLUGINS._INPUT.Editor {
     /// <summary>
     /// Editor for <see cref="CarbonSettings"/>.
     /// </summary>
     [CustomEditor(typeof(CarbonSettings))]
-    public class CarbonSettingsEditor : Editor {
+    public class CarbonSettingsEditor : UnityEditor.Editor {
         /// <summary>
         /// Short info text for <see cref="AnyBehaviour"/>
         /// </summary>

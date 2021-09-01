@@ -1,8 +1,10 @@
 using System.Collections.Generic;
-using Pathfinding.Serialization;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
 using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Generators.NodeClasses {
 	/// <summary>Node used for the GridGraph</summary>
 	public class GridNode : GridNodeBase {
 		public GridNode (AstarPath astar) : base(astar) {

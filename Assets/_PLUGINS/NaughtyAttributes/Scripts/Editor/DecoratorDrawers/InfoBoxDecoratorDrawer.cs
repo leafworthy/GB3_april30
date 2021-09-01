@@ -1,7 +1,9 @@
-﻿using UnityEditor;
+﻿using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes;
+using _PLUGINS.NaughtyAttributes.Scripts.Editor.Utility;
+using UnityEditor;
 using UnityEngine;
 
-namespace NaughtyAttributes.Editor
+namespace _PLUGINS.NaughtyAttributes.Scripts.Editor.DecoratorDrawers
 {
 	[CustomPropertyDrawer(typeof(InfoBoxAttribute))]
 	public class InfoBoxDecoratorDrawer : DecoratorDrawer

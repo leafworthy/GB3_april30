@@ -1,7 +1,11 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using _PLUGINS.AstarPathfindingProject.Pathfinders;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Modifiers {
 	[System.Serializable]
 	/// <summary>
 	/// Adjusts start and end points of a path.
@@ -93,7 +97,7 @@ namespace Pathfinding {
 			/// The point is set to the closest point on one of the connections from the start/end node.
 			/// This mode may be useful in a grid based or point graph based world when using the AILerp script.
 			///
-			/// Note: If you are using this mode with a <see cref="Pathfinding.PointGraph"/> you probably also want to use the <see cref="Pathfinding.PointGraph.NodeDistanceMode Connection"/> for <see cref="Pathfinding.PointGraph.nearestNodeDistanceMode"/>.
+			/// Note: If you are using this mode with a <see cref="PointGraph"/> you probably also want to use the <see cref="PointGraph.NodeDistanceMode"/> for <see cref="PointGraph.nearestNodeDistanceMode"/>.
 			///
 			/// [Open online documentation to see images]
 			/// </summary>

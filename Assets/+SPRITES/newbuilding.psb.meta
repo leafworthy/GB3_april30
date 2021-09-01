@@ -2247,8 +2247,22 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 4, y: 4}
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    boneReadOnly: 0
   platformSettings: []
   mosaicLayers: 1
+  characterMode: 1
   documentPivot: {x: 0, y: 0}
   documentAlignment: 7
   importHiddenLayers: 0
@@ -2257,13 +2271,13 @@ ScriptedImporter:
   documentSize: {x: 845, y: 507}
   paperDollMode: 0
   keepDupilcateSpriteName: 0
+  skeletonAssetReferenceID: 
   spriteCategoryList:
     categories: []
   textureActualWidth: 2048
   textureActualHeight: 2048
   spritePackingTag: 
   resliceFromLayer: 0
-  characterMode: 1
   mosaicPSDLayers: []
   rigPSDLayers:
   - name: Inserted Image
@@ -3022,13 +3036,10 @@ ScriptedImporter:
     spriteID: e52ce3b6b286c4794bc42f66ddbf6e97
     layerID: 1
     mosaicPosition: {x: 4, y: 4}
-  characterData:
-    bones: []
-    parts: []
-    dimension: {x: 0, y: 0}
-    characterGroups: []
+  sharedRigPSDLayers: []
   generateGOHierarchy: 0
   textureAssetName: newbuilding Texture
   prefabAssetName: newbuilding Prefab
   spriteLibAssetName: newbuilding Sprite Lib
+  skeletonAssetName: newbuilding Skeleton
   secondarySpriteTextures: []

@@ -1,4 +1,4 @@
-﻿namespace CarbonInput {
+﻿namespace _PLUGINS._INPUT.Scripts.TouchInput {
     /// <summary>
     /// Internal wrapper class, used to access touch input.
     /// </summary>

@@ -1,10 +1,14 @@
 //#define ASTAR_POOL_DEBUG //@SHOWINEDITOR Enables debugging of path pooling. Will log warnings and info messages about paths not beeing pooled correctly.
 
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core.AI;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Utilities;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core {
 	/// <summary>
 	/// Provides additional traversal information to a path request.
 	/// See: turnbased (view in online documentation for working links)
@@ -420,7 +424,7 @@ namespace Pathfinding {
 
 		/// <summary>
 		/// Returns the state of the path in the pathfinding pipeline.
-		/// Deprecated: Use the <see cref="Pathfinding.Path.PipelineState"/> property instead
+		/// Deprecated: Use the <see cref="PipelineState"/> property instead
 		/// </summary>
 		[System.Obsolete("Use the 'PipelineState' property instead")]
 		public PathState GetState () {
@@ -487,8 +491,8 @@ namespace Pathfinding {
 		/// Warning: Do not call this function manually.
 		/// </summary>
 		protected virtual void OnEnterPool () {
-			if (vectorPath != null) Pathfinding.Util.ListPool<Vector3>.Release (ref vectorPath);
-			if (path != null) Pathfinding.Util.ListPool<GraphNode>.Release (ref path);
+			if (vectorPath != null) ListPool<Vector3>.Release (ref vectorPath);
+			if (path != null) ListPool<GraphNode>.Release (ref path);
 			// Clear the callback to remove a potential memory leak
 			// while the path is in the pool (which it could be for a long time).
 			callback = null;
@@ -528,8 +532,8 @@ namespace Pathfinding {
 			errorLog = "";
 			completeState = PathCompleteState.NotCalculated;
 
-			path = Pathfinding.Util.ListPool<GraphNode>.Claim ();
-			vectorPath = Pathfinding.Util.ListPool<Vector3>.Claim ();
+			path = ListPool<GraphNode>.Claim ();
+			vectorPath = ListPool<Vector3>.Claim ();
 
 			currentR = null;
 

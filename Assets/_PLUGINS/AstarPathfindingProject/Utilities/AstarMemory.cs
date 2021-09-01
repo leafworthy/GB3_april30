@@ -1,6 +1,6 @@
 using System;
 
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Utilities {
 	/// <summary>Various utilities for handling arrays and memory</summary>
 	public static class Memory {
 		/// <summary>

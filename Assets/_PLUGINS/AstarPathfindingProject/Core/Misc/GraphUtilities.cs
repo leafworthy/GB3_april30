@@ -1,16 +1,18 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using _PLUGINS.AstarPathfindingProject.Generators.NodeClasses;
+using _PLUGINS.AstarPathfindingProject.Utilities;
+using UnityEngine;
 
-namespace Pathfinding {
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>
 	/// Contains utility methods for getting useful information out of graph.
-	/// This class works a lot with the <see cref="Pathfinding.GraphNode"/> class, a useful function to get nodes is <see cref="AstarPath.GetNearest"/>.
+	/// This class works a lot with the <see cref="GraphNode"/> class, a useful function to get nodes is <see cref="AstarPath.GetNearest"/>.
 	///
 	/// See: <see cref="AstarPath.GetNearest"/>
-	/// See: <see cref="Pathfinding.GraphUpdateUtilities"/>
-	/// See: <see cref="Pathfinding.PathUtilities"/>
+	/// See: <see cref="GraphUpdateUtilities"/>
+	/// See: <see cref="PathUtilities"/>
 	///
 	/// \ingroup utils
 	/// </summary>

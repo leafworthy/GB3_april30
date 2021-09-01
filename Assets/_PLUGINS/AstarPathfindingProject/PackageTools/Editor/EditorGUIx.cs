@@ -1,8 +1,10 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
 using UnityEditor;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.PackageTools.Editor {
 	/// <summary>Simple GUI utility functions</summary>
 	public static class GUIUtilityx {
 		static Stack<Color> colors = new Stack<Color>();
@@ -33,7 +35,7 @@ namespace Pathfinding {
 		GUIStyle labelStyle;
 		GUIStyle areaStyle;
 		bool visible;
-		Editor editor;
+		UnityEditor.Editor editor;
 
 		/// <summary>
 		/// Is this area open.
@@ -45,7 +47,7 @@ namespace Pathfinding {
 		public static bool fancyEffects;
 		const float animationSpeed = 100f;
 
-		public FadeArea (bool open, Editor editor, GUIStyle areaStyle, GUIStyle labelStyle = null) {
+		public FadeArea (bool open, UnityEditor.Editor editor, GUIStyle areaStyle, GUIStyle labelStyle = null) {
 			this.areaStyle = areaStyle;
 			this.labelStyle = labelStyle;
 			this.editor = editor;
@@ -217,7 +219,7 @@ namespace Pathfinding {
 
 			string[] currentLayerNames;
 			if (!layerNames.TryGetValue(selected.value, out currentLayerNames)) {
-				var layers = Pathfinding.Util.ListPool<string>.Claim ();
+				var layers = ListPool<string>.Claim ();
 
 				int emptyLayers = 0;
 				for (int i = 0; i < 32; i++) {
@@ -235,7 +237,7 @@ namespace Pathfinding {
 				}
 
 				currentLayerNames = layerNames[selected.value] = layers.ToArray();
-				Pathfinding.Util.ListPool<string>.Release (ref layers);
+				ListPool<string>.Release (ref layers);
 			}
 
 			selected.value = EditorGUILayout.MaskField(label, selected.value, currentLayerNames);

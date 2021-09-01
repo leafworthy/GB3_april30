@@ -1,9 +1,12 @@
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
 using UnityEngine;
 
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Utilities {
 	public class GraphGizmoHelper : IAstarPooledObject, System.IDisposable {
 		public RetainedGizmos.Hasher hasher { get; private set; }
-		Pathfinding.Util.RetainedGizmos gizmos;
+		RetainedGizmos gizmos;
 		PathHandler debugData;
 		ushort debugPathID;
 		GraphDebugMode debugMode;

@@ -1,6 +1,9 @@
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.PackageTools;
 using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.TurnBased {
 	/// <summary>
 	/// Blocks single nodes in a graph.
 	///

@@ -18,18 +18,19 @@ public class ZombieDisplay : MonoBehaviour
 		ENEMIES.OnEnemyKilled += EnemyKilled;
 		originalTotalEnemies = ENEMIES.GetNumberOfLivingEnemies();
 		UpdateDisplay();
-		GAME.OnGameEnd += CleanUp;
+		LEVELS.OnLevelStop += CleanUp;
 	}
 
 	private void CleanUp()
 	{
 		ENEMIES.OnEnemyKilled -= EnemyKilled;
-		GAME.OnGameEnd -= CleanUp;
+		LEVELS.OnLevelStop -= CleanUp;
 	}
 
-	private void EnemyKilled(IPlayerAttackHandler killer)
+	private void EnemyKilled(Player killer)
 	{
-		if (killer.GetPlayer() != currentPlayer) return;
+		Debug.Log(killer + totalKills.ToString());
+		if (killer!= currentPlayer) return;
 		totalKills++;
 		UpdateDisplay();
 	}
@@ -37,7 +38,7 @@ public class ZombieDisplay : MonoBehaviour
 	private void UpdateDisplay()
 	{
 		killText.text = totalKills.ToString();
-		bar.UpdateBar(totalKills, originalTotalEnemies);
+		//bar.UpdateBar(totalKills, originalTotalEnemies);
 		var shaker = shakeIcon.gameObject.AddComponent<ObjectShaker>();
 		shaker.Shake(ObjectShaker.ShakeIntensityType.medium);
 	}

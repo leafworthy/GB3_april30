@@ -1,10 +1,15 @@
-using UnityEngine;
 using System.Collections.Generic;
-#if UNITY_5_5_OR_NEWER
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Generators.Utilities;
+using UnityEngine;
 using UnityEngine.Profiling;
+#if UNITY_5_5_OR_NEWER
+
 #endif
 
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Utilities {
 	/// <summary>
 	/// Helper for drawing Gizmos in a performant way.
 	/// This is a replacement for the Unity Gizmos class as that is not very performant

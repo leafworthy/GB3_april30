@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Utilities {
 	[ExecuteInEditMode]
 	/// <summary>
 	/// Helper class to keep track of references to GameObjects.
@@ -22,12 +22,12 @@ namespace Pathfinding {
 
 		public void Reset () {
 			if (string.IsNullOrEmpty(guid)) {
-				guid = Pathfinding.Util.Guid.NewGuid().ToString();
+				guid = Guid.NewGuid().ToString();
 				Debug.Log("Created new GUID - "+guid);
 			} else {
 				foreach (UnityReferenceHelper urh in FindObjectsOfType(typeof(UnityReferenceHelper)) as UnityReferenceHelper[]) {
 					if (urh != this && guid == urh.guid) {
-						guid = Pathfinding.Util.Guid.NewGuid().ToString();
+						guid = Guid.NewGuid().ToString();
 						Debug.Log("Created new GUID - "+guid);
 						return;
 					}

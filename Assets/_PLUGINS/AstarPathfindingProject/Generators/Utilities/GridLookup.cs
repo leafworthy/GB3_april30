@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
 
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Generators.Utilities {
 	/// <summary>
 	/// Holds a lookup datastructure to quickly find objects inside rectangles.
 	/// Objects of type T occupy an integer rectangle in the grid and they can be
@@ -155,7 +157,7 @@ namespace Pathfinding.Util {
 		/// Note: For better memory usage, consider pooling the list using Pathfinding.Util.ListPool after you are done with it
 		/// </summary>
 		public List<U> QueryRect<U>(IntRect r) where U : class, T {
-			List<U> result = Pathfinding.Util.ListPool<U>.Claim ();
+			List<U> result = ListPool<U>.Claim ();
 
 			// Loop through tiles and check which objects are inside them
 			for (int z = r.ymin; z <= r.ymax; z++) {

@@ -6,14 +6,15 @@
 /// \author el anónimo at the UnifyCommunity wiki (at least he seems to have created the page)
 /// </summary>
 
-using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
+
 #if NETFX_CORE && !UNITY_EDITOR
 //using MarkerMetro.Unity.WinLegacy.IO;
 #endif
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Generators.Utilities {
 	public class ObjImporter {
 		private struct meshStruct {
 			public Vector3[] vertices;

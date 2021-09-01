@@ -1,11 +1,13 @@
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using _PLUGINS.AstarPathfindingProject.Utilities;
 using UnityEngine;
-#if UNITY_5_5_OR_NEWER
 using UnityEngine.Profiling;
+#if UNITY_5_5_OR_NEWER
+
 #endif
 
-namespace Pathfinding {
-	using UnityEngine;
-
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>
 	/// An item of work that can be executed when graphs are safe to update.
 	/// See: <see cref="AstarPath.UpdateGraphs"/>
@@ -108,10 +110,10 @@ namespace Pathfinding {
 
 		/// <summary>
 		/// If a WorkItem needs to have a valid area information during execution, call this method to ensure there are no pending flood fills.
-		/// If you are using the <see cref="Pathfinding.GraphNode.Area"/> property or the <see cref="Pathfinding.PathUtilities.IsPathPossible"/> method in your work items, then you might want to call this method before you use them
+		/// If you are using the <see cref="GraphNode.Area"/> property or the <see cref="PathUtilities.IsPathPossible"/> method in your work items, then you might want to call this method before you use them
 		/// to ensure that the data is up to date.
 		///
-		/// See: <see cref="Pathfinding.HierarchicalGraph"/>
+		/// See: <see cref="HierarchicalGraph"/>
 		///
 		/// <code>
 		/// AstarPath.active.AddWorkItem(new AstarWorkItem((IWorkItemContext ctx) => {
@@ -128,7 +130,7 @@ namespace Pathfinding {
 
 		/// <summary>
 		/// Trigger a graph modification event.
-		/// This will cause a <see cref="Pathfinding.GraphModifier.PostUpdate"/> event to be issued after all graph updates have finished.
+		/// This will cause a <see cref="GraphModifier.PostUpdate"/> event to be issued after all graph updates have finished.
 		/// Some scripts listen for this event. For example off-mesh links listen to it and will recalculate which nodes they are connected to when it it sent.
 		/// If a graph is dirtied multiple times, or even if multiple graphs are dirtied, the event will only be sent once.
 		/// </summary>

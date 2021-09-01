@@ -1,6 +1,7 @@
-using Pathfinding.Serialization;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
+using _PLUGINS.AstarPathfindingProject.Generators;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	[JsonOptIn]
 	/// <summary>Defined here only so non-editor classes can use the <see cref="target"/> field</summary>
 	public class GraphEditorBase {

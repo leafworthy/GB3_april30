@@ -1,8 +1,14 @@
-using UnityEngine;
 using System.Collections.Generic;
-using Pathfinding.Serialization;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
+using _PLUGINS.AstarPathfindingProject.Generators.NodeClasses;
+using _PLUGINS.AstarPathfindingProject.Modifiers;
+using _PLUGINS.AstarPathfindingProject.Utilities;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Generators {
 	/// <summary>
 	/// Basic point graph.
 	/// \ingroup graphs
@@ -31,7 +37,7 @@ namespace Pathfinding {
 	/// [Open online documentation to see images]
 	/// </summary>
 	[JsonOptIn]
-	[Pathfinding.Util.Preserve]
+	[Preserve]
 	public class PointGraph : NavGraph {
 		/// <summary>Childs of this transform are treated as nodes</summary>
 		[JsonMember]
@@ -114,7 +120,7 @@ namespace Pathfinding {
 		/// When using the %Connection option you may also want to use the %Connection option for the Seeker's Start End Modifier snapping options.
 		/// This is not strictly necessary, but it most cases it is what you want.
 		///
-		/// See: <see cref="Pathfinding.StartEndModifier.exactEndPoint"/>
+		/// See: <see cref="StartEndModifier.exactEndPoint"/>
 		/// </summary>
 		public enum NodeDistanceMode {
 			/// <summary>
@@ -503,7 +509,7 @@ namespace Pathfinding {
 
 
 #if UNITY_EDITOR
-		public override void OnDrawGizmos (Pathfinding.Util.RetainedGizmos gizmos, bool drawNodes) {
+		public override void OnDrawGizmos (RetainedGizmos gizmos, bool drawNodes) {
 			base.OnDrawGizmos(gizmos, drawNodes);
 
 			if (!drawNodes) return;

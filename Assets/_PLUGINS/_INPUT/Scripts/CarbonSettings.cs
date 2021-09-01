@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CarbonInput {
+namespace _PLUGINS._INPUT.Scripts {
     /// <summary>
     /// Used to store global settings for CarbonInput.
     /// </summary>

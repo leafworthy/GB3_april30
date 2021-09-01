@@ -12,16 +12,16 @@ public class NadeLaunchHandler:MonoBehaviour, IExplode  {
 	private Vector3 jumpVel;
 	private float rotationSpeed = 330;
 	private float currentRotationSpeed = 130;
-	private IPlayerAttackHandler owner;
+	private Player owner;
 
 	public void Launch(Vector2 _start, Vector2 _end, Vector2 startingVelocity, float _throwTime,
-	                   IPlayerAttackHandler _owner)
+	                   Player _owner)
 	{
 		owner = _owner;
 		currentRotationSpeed = rotationSpeed;
 		throwTime = _throwTime*Time.fixedDeltaTime;
 		start = _start;
-		jumpVel.y = throwTime * GAME.Gravity.y/2;
+		jumpVel.y = throwTime * LEVELS.Gravity.y/2;
 		jumpObject.transform.localPosition = new Vector3(0, 1.24f,0);
 		transform.position = start;
 		end = _end;
@@ -39,7 +39,7 @@ public class NadeLaunchHandler:MonoBehaviour, IExplode  {
 		jumpObject.transform.localEulerAngles += new Vector3(0,0, currentRotationSpeed * Time.fixedDeltaTime);
 		currentRotationSpeed *= .99f;
 		jumpObject.transform.localPosition = jumpObject.transform.localPosition+jumpVel ;
-		jumpVel.y = jumpVel.y - GAME.Gravity.y*Time.fixedDeltaTime;
+		jumpVel.y = jumpVel.y - LEVELS.Gravity.y*Time.fixedDeltaTime;
 		if (jumpObject.transform.localPosition.y < 0)
 		{
 			jumpObject.transform.localPosition = new Vector3(0, 1, 0);
@@ -55,6 +55,6 @@ public class NadeLaunchHandler:MonoBehaviour, IExplode  {
 
 	}
 
-	public event Action<Vector3, IPlayerAttackHandler> OnExplode;
+	public event Action<Vector3, Player> OnExplode;
 
 }

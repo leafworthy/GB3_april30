@@ -1,8 +1,12 @@
-using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.AI;
+using _PLUGINS.AstarPathfindingProject.Modifiers;
+using _PLUGINS.AstarPathfindingProject.PackageTools.Editor;
+using UnityEditor;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Editor {
 	[CustomEditor(typeof(Seeker))]
 	[CanEditMultipleObjects]
 	public class SeekerEditor : EditorBase {

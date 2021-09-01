@@ -3,8 +3,9 @@
 #endif
 using System.Collections.Generic;
 using System.Threading;
+using _PLUGINS.AstarPathfindingProject.Core;
 
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Utilities {
 	/// <summary>
 	/// Helper for parallelizing tasks.
 	/// More specifically this class is useful if the tasks need some large and slow to initialize 'scratch pad'.

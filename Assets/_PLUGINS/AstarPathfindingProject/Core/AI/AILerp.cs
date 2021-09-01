@@ -1,10 +1,12 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Behaviors;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Modifiers;
+using _PLUGINS.AstarPathfindingProject.PackageTools;
+using _PLUGINS.AstarPathfindingProject.Pathfinders;
+using UnityEngine;
 
-namespace Pathfinding {
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.Core.AI {
 	/// <summary>
 	/// Linearly interpolating movement script.
 	/// This movement script will follow the path exactly, it uses linear interpolation to move between the waypoints in the path.
@@ -24,7 +26,7 @@ namespace Pathfinding {
 	///
 	/// \subsection rec-smooth Recommended setup for smooth movement
 	/// If you on the other hand want smoother movement I recommend setting 'Start Point Snapping' and 'End Point Snapping' to 'ClosestOnNode' and to add the Simple Smooth Modifier to the GameObject as well.
-	/// Alternatively you can use the <see cref="Pathfinding.FunnelModifier Funnel"/> which works better on navmesh/recast graphs or the <see cref="Pathfinding.RaycastModifier"/>.
+	/// Alternatively you can use the <see cref="FunnelModifier"/> which works better on navmesh/recast graphs or the <see cref="RaycastModifier"/>.
 	///
 	/// You should not combine the Simple Smooth Modifier or the Funnel Modifier with the NodeConnection snapping mode. This may lead to very odd behavior.
 	///
@@ -150,7 +152,7 @@ namespace Pathfinding {
 		/// The AI will try to follow/move towards this target.
 		/// It can be a point on the ground where the player has clicked in an RTS for example, or it can be the player object in a zombie game.
 		///
-		/// Deprecated: In 4.0 this will automatically add a <see cref="Pathfinding.AIDestinationSetter"/> component and set the target on that component.
+		/// Deprecated: In 4.0 this will automatically add a <see cref="AIDestinationSetter"/> component and set the target on that component.
 		/// Try instead to use the <see cref="destination"/> property which does not require a transform to be created as the target or use
 		/// the AIDestinationSetter component directly.
 		/// </summary>

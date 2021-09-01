@@ -1,6 +1,6 @@
 using System.Threading;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>Queue of paths to be processed by the system</summary>
 	class ThreadControlQueue {
 		public class QueueTerminationException : System.Exception {

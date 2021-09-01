@@ -1,6 +1,8 @@
-using UnityEngine;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.AI;
+using _PLUGINS.AstarPathfindingProject.PackageTools;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Modifiers {
 	/// <summary>
 	/// Base for all path modifiers.
 	/// See: MonoModifier

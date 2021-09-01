@@ -1,12 +1,14 @@
-using UnityEngine;
-using UnityEditor;
-#if UNITY_2018_1_OR_NEWER
-using UnityEngine.Networking;
-#endif
 using System.Collections.Generic;
 using System.Linq;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.PackageTools.Editor;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.Networking;
+#if UNITY_2018_1_OR_NEWER
+#endif
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Editor {
 	/// <summary>Handles update checking for the A* Pathfinding Project</summary>
 	[InitializeOnLoad]
 	public static class AstarUpdateChecker {

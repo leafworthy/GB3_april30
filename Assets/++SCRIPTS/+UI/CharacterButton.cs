@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _PLUGINS._INPUT.Scripts;
 using UnityEngine;
 
 public class CharacterButton : MonoBehaviour
@@ -27,6 +28,7 @@ public class CharacterButton : MonoBehaviour
 
 	public void HighlightButton(Player player)
 	{
+		Debug.Log("highlight");
 		player.currentButton = this;
 		playersWhoHighlightedThisCharacter.Add(player);
 
@@ -43,8 +45,8 @@ public class CharacterButton : MonoBehaviour
 	{
 		playersWhoSelectedThisCharacter.Add(player);
 		player.currentCharacter = character;
-		player.hasSelectedCharacter = true;
-		indicators.Select(player.playerIndex);
+		player.hasChosenCharacter = true;
+		indicators.Select(player.data.playerIndex);
 		UpdateState();
 	}
 
@@ -52,8 +54,8 @@ public class CharacterButton : MonoBehaviour
 	{
 		playersWhoSelectedThisCharacter.Remove(player);
 		player.currentCharacter = character;
-		player.hasSelectedCharacter = false;
-		indicators.Select(player.playerIndex);
+		player.hasChosenCharacter = false;
+		indicators.Select(player.data.playerIndex);
 		UpdateState();
 	}
 
@@ -79,39 +81,40 @@ public class CharacterButton : MonoBehaviour
 		UpdateIndicator();
 	}
 
-	public void SetPlayerColors(List<Player> players)
+	public void SetPlayerColors()
 	{
-		var p1 = players.FirstOrDefault(p => p.playerIndex == PlayerIndex.One);
-		var p2 = players.FirstOrDefault(p => p.playerIndex == PlayerIndex.Two);
-		var p3 = players.FirstOrDefault(p => p.playerIndex == PlayerIndex.Three);
-		var p4 = players.FirstOrDefault(p => p.playerIndex == PlayerIndex.Four);
-		indicators.SetColors(p1.playerColor, p2.playerColor, p3.playerColor, p4.playerColor);
+		var players = PLAYERS.GetAllPlayers();
+		var p1 = players.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.One);
+		var p2 = players.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Two);
+		var p3 = players.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Three);
+		var p4 = players.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Four);
+	 	indicators.SetColors(p1.data.playerColor, p2.data.playerColor, p3.data.playerColor, p4.data.playerColor);
 	}
 
 	private void UpdateIndicator()
 	{
-		var p1 = playersWhoHighlightedThisCharacter.FirstOrDefault(p => p.playerIndex == PlayerIndex.One);
-		var p2 = playersWhoHighlightedThisCharacter.FirstOrDefault(p => p.playerIndex == PlayerIndex.Two);
-		var p3 = playersWhoHighlightedThisCharacter.FirstOrDefault(p => p.playerIndex == PlayerIndex.Three);
-		var p4 = playersWhoHighlightedThisCharacter.FirstOrDefault(p => p.playerIndex == PlayerIndex.Four);
+		var p1 = playersWhoHighlightedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.One);
+		var p2 = playersWhoHighlightedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Two);
+		var p3 = playersWhoHighlightedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Three);
+		var p4 = playersWhoHighlightedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Four);
 		indicators.HighlightTheTrueOnes(p1!=null, p2 != null, p3 != null, p4 != null);
 
-		if (playersWhoSelectedThisCharacter.FirstOrDefault(p => p.playerIndex == PlayerIndex.One) != null)
+		if (playersWhoSelectedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.One) != null)
 		{
 			indicators.Select(PlayerIndex.One);
 		}
 
-		if (playersWhoSelectedThisCharacter.FirstOrDefault(p => p.playerIndex == PlayerIndex.Two) != null)
+		if (playersWhoSelectedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Two) != null)
 		{
 			indicators.Select(PlayerIndex.Two);
 		}
 
-		if (playersWhoSelectedThisCharacter.FirstOrDefault(p => p.playerIndex == PlayerIndex.Three) != null)
+		if (playersWhoSelectedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Three) != null)
 		{
 			indicators.Select(PlayerIndex.Three);
 		}
 
-		if (playersWhoSelectedThisCharacter.FirstOrDefault(p => p.playerIndex == PlayerIndex.Four) != null)
+		if (playersWhoSelectedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Four) != null)
 		{
 			indicators.Select(PlayerIndex.Four);
 		}

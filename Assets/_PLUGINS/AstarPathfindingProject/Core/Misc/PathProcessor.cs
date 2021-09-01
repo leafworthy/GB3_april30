@@ -1,12 +1,15 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-#if UNITY_5_5_OR_NEWER
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Utilities;
+using UnityEngine;
 using UnityEngine.Profiling;
+#if UNITY_5_5_OR_NEWER
+
 #endif
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 #if NETFX_CORE
 	using Thread = Pathfinding.WindowsStore.Thread;
 #else

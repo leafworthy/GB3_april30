@@ -1,7 +1,10 @@
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
 using UnityEngine;
-using Pathfinding.Serialization;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Generators.NodeClasses {
 	/// <summary>Interface for something that holds a triangle based navmesh</summary>
 	public interface INavmeshHolder : ITransformedGraph, INavmesh {
 		/// <summary>Position of vertex number i in the world</summary>
@@ -124,12 +127,12 @@ namespace Pathfinding {
 			Int3 a, b, c;
 
 			GetVertices(out a, out b, out c);
-			return Pathfinding.Polygon.ClosestPointOnTriangle((Vector3)a, (Vector3)b, (Vector3)c, p);
+			return Polygon.ClosestPointOnTriangle((Vector3)a, (Vector3)b, (Vector3)c, p);
 		}
 
 		/// <summary>
 		/// Closest point on the node when seen from above.
-		/// This method is mostly for internal use as the <see cref="Pathfinding.NavmeshBase.Linecast"/> methods use it.
+		/// This method is mostly for internal use as the <see cref="NavmeshBase.Linecast"/> methods use it.
 		///
 		/// - The returned point is the closest one on the node to p when seen from above (relative to the graph).
 		///   This is important mostly for sloped surfaces.
@@ -149,7 +152,7 @@ namespace Pathfinding {
 			p = GetNavmeshHolder(GraphIndex).transform.InverseTransform(p);
 
 			// Find the closest point on the triangle to p when looking at the triangle from above (relative to the graph)
-			var closest = Pathfinding.Polygon.ClosestPointOnTriangleXZ((Vector3)a, (Vector3)b, (Vector3)c, p);
+			var closest = Polygon.ClosestPointOnTriangleXZ((Vector3)a, (Vector3)b, (Vector3)c, p);
 
 			// Make sure the point is actually inside the node
 			var i3closest = (Int3)closest;

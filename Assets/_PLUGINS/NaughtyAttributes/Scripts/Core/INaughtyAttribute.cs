@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NaughtyAttributes
+﻿namespace _PLUGINS.NaughtyAttributes.Scripts.Core
 {
 	public interface INaughtyAttribute
 	{

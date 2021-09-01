@@ -2,7 +2,7 @@
 #pragma warning disable 429
 #define DECREASE_KEY
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>
 	/// Binary heap implementation.
 	/// Binary heaps are really fast for ordering nodes in a way that

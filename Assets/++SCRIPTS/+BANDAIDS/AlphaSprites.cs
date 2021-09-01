@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using NaughtyAttributes;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes_SpecialCase;
 using UnityEngine;
 
 [ExecuteInEditMode]

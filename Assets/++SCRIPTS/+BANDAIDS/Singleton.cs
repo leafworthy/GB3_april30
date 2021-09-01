@@ -2,61 +2,39 @@ using UnityEngine;
 
 public abstract class Singleton<T> : MonoBehaviour where T : Component
 {
-
-	#region Fields
-
-	/// <summary>
-	/// The instance.
-	/// </summary>
 	private static T _instance;
 
-	#endregion
 
-	#region Properties
-
-	/// <summary>
-	/// Gets the instance.
-	/// </summary>
-	/// <value>The instance.</value>
 	public static T I
 	{
 		get
 		{
-			if (_instance == null)
-			{
-				_instance = FindObjectOfType<T>();
-				if (_instance == null)
-				{
-					GameObject obj = new GameObject();
-					obj.name = typeof(T).Name;
-					_instance = obj.AddComponent<T>();
-				}
-			}
+			AddToScene();
 			return _instance;
 		}
 	}
 
-	#endregion
-
-	#region Methods
-
-	/// <summary>
-	/// Use this for initialization.
-	/// </summary>
-	protected virtual void Awake()
+	public static void AddToScene(GameObject go = null)
 	{
-		if (_instance == null)
+		if (_instance != null) return;
+		_instance = FindObjectOfType<T>();
+		if (_instance != null) return;
+		if (go == null)
 		{
-			_instance = this as T;
+			go = new GameObject();
+		go.name = typeof(T).Name;
 		}
-		else
-		{
-			Debug.Log("singleton duplicated", this);
-			Debug.Break();
-			//GameObject.Destroy(gameObject);
-		}
+
+
+		_instance = go.AddComponent<T>();
 	}
 
-	#endregion
 
+	protected virtual void Awake()
+	{
+		if (!Application.isPlaying) return;
+		if (_instance == null)
+			_instance = this as T;
+		Debug.Log("SINGLETON ONLINE: " + typeof(T).Name, this);
+	}
 }

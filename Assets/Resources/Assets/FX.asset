@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 407748f8e61d04f5f912ae517c71ae70, type: 3}
+  m_Name: FX
+  m_EditorClassIdentifier: 
+  blood_debree:
+  - {fileID: 3905781446934895332, guid: 9e077f8a1146b43f2bd60dfeb0bb9a3c, type: 3}
+  bloodspray:
+  - {fileID: 3669365072248332733, guid: b483dec654b8f4359a4e06a43056b11f, type: 3}
+  - {fileID: 8607137669434755911, guid: 1fd210333c4ef42bfb6ba027db34fe65, type: 3}
+  - {fileID: 1281758287970996863, guid: dc59cdfe431d8454292ff16fb7d9604f, type: 3}
+  - {fileID: 1475301273269053330, guid: b7ddabde3ddcf491da05512faceddb8f, type: 3}
+  - {fileID: 1161360281329181223, guid: acb944d2e6fd24319a089a05e7be7966, type: 3}
+  fire1_small: {fileID: 2207006132302788756, guid: befe27353c30741b08cf5c496e02d81e, type: 3}
+  fire2_medium: {fileID: 8853736686724509044, guid: 1bcbbf6c1104f415dbda8ae36fac50ad, type: 3}
+  dust1_ground: {fileID: 2962123226612387536, guid: dac767481796944a9aa031c92801c081, type: 3}
+  dust2_jump: {fileID: 6842605188387041256, guid: 507c967e0a4544ca29195beb6464c934, type: 3}
+  hit1_starhit: {fileID: 8979199651990724296, guid: d25472d0e8f6d4d32a58ea7e95b128be, type: 3}
+  hit2_biglongflash: {fileID: 3671484944098810245, guid: 06a3c06842c7142d8962e2b8c3b71c49, type: 3}
+  hit3_shield: {fileID: 3890912145229883013, guid: d2ea17d9c2f3442088e9a2053800999b, type: 3}
+  hit4_star_particles: {fileID: 6323747369669430564, guid: fedb6d9c3089541f5a2e84dd23106b69, type: 3}
+  hit5_xstrike: {fileID: 8186259455222809638, guid: 4fddcd609c7264519a5162e022e7dcea, type: 3}
+  hit5_line_burst: {fileID: 313640530479458826, guid: 2623a4cce9e29478aaee2f83cc7098fb, type: 3}
+  explosion1_nade: {fileID: 151527518366300311, guid: b0ca4a9c9376a45529cb584fd0c72c90, type: 3}
+  explosion2_oval: {fileID: 4857530249097659871, guid: 2903c4d29e453499f959d1dc6848629b, type: 3}
+  explosion3_huge: {fileID: 5296165292360782326, guid: 7ce8d9f2c4d1340f18a59fbb5a83fa9c, type: 3}
+  explosionPrefab: {fileID: 151527518366300311, guid: b0ca4a9c9376a45529cb584fd0c72c90, type: 3}
+  glass_debree:
+  - {fileID: 6677168030224654885, guid: 41fbf261aa8e04cd8802fad2962bc2d3, type: 3}
+  - {fileID: 7685128426197465723, guid: 4c261f9ec0a584d1593006c1fd48f0f6, type: 3}
+  - {fileID: 5040545657386324660, guid: 9857cb06fbf8f4a8e8b1ac9e94e58203, type: 3}
+  - {fileID: 6245917922050948411, guid: 8afdda9d9673f4c82b07bb900d542b29, type: 3}
+  - {fileID: 4919135802285553305, guid: 8dae1aa0a47194f03ae35ddb0a89e329, type: 3}
+  - {fileID: 4174730351176865751, guid: f35691836bd354319a3cb152d6d50f98, type: 3}
+  - {fileID: 106809684000172482, guid: 41d496cb0531f4c80b907c09eef5438f, type: 3}
+  wood_debree:
+  - {fileID: 4981694844534007948, guid: 77a8aa0c55f7645bf9cc6edc83b2e72c, type: 3}
+  - {fileID: 8327028603968585181, guid: 7528a319b29bf437980f121bbb153cf5, type: 3}
+  - {fileID: 4861537618159527734, guid: 61ef65700fdb24988a8978593d79743c, type: 3}
+  - {fileID: 2638101635010728103, guid: 858976416f8564413a5d2e85388fbe2e, type: 3}
+  - {fileID: 5158504993205599794, guid: 76b80b37af2874de5a27d71abec1be6d, type: 3}
+  - {fileID: 5343459494472065775, guid: 8ad78b2c1de4a4441906a4450816ba2e, type: 3}
+  cushion_debree:
+  - {fileID: 5653478817255949151, guid: ff3819dd742cf4c15910ace9acce0150, type: 3}
+  - {fileID: 1631891678545791689, guid: 60d04fa569b1b49cfbe3680bb57bda85, type: 3}
+  - {fileID: 6101028326269576059, guid: 53b4587d82cd84c8997d1eb6b7ac67f2, type: 3}
+  glass_bulletholes_front:
+  - {fileID: 512518915136655071, guid: 32dac82229f6a40f398407a13eb53a18, type: 3}
+  - {fileID: 3454001156590103368, guid: b3d8c00d39b294e4bbfd0b2bc32b635d, type: 3}
+  - {fileID: 547172828184867822, guid: 9a4e846a4f2c048138de87a0c58acdf9, type: 3}
+  - {fileID: 1110624594457893761, guid: c0429706bf83e4f6f91a35576dfc03dd, type: 3}
+  - {fileID: 3996004591344180112, guid: dd813edf8394b4b61a6e4832c92fe6b4, type: 3}
+  - {fileID: 3920816230088606397, guid: 82d00173c6e1d4619b2c788a11d19f8c, type: 3}
+  wood_bulletholes_front:
+  - {fileID: 3401487293997815238, guid: 1bec369a2a87f4cf09a4ef9dc6ac4c5b, type: 3}
+  - {fileID: 7869394915675300253, guid: 7d9fdadfbf6af47bcb30d417d47b0a96, type: 3}
+  - {fileID: 3130722971630911909, guid: 2c358d9763e994691b69149b2783ac57, type: 3}
+  - {fileID: 3571490604174696088, guid: b8ed773a29e7b4032901468f5b9de281, type: 3}
+  - {fileID: 5376210687827449197, guid: 245aa490a4dd9486287c7e5864df1607, type: 3}
+  - {fileID: 6447352269935305445, guid: 0ad6fe97667134f6c9a9f823fa6240bb, type: 3}
+  - {fileID: 3996073365208742184, guid: 5570282ff9c5846079c0ab1353cdb974, type: 3}
+  - {fileID: 5854698516637688262, guid: 41543bf669784457fa731eb5ade09415, type: 3}
+  - {fileID: 4793084259008575317, guid: 5dee99e11c5f94af6a9d79a99be14a45, type: 3}
+  - {fileID: 8280807677635948317, guid: fcc44752256bb4a8f99a5f5b67796060, type: 3}
+  wood_bulletholes_side:
+  - {fileID: 5690568590454419121, guid: c4d2313f6b5a84e47969cbdc32710ae3, type: 3}
+  - {fileID: 363728611462699818, guid: 1577e885a972d44229a6b5aba56c1e95, type: 3}
+  - {fileID: 2265397256540772918, guid: e84b0baa9f7b94e9586eeb872a1455db, type: 3}
+  - {fileID: 7403045616503772290, guid: 55939d3b5420b4cd8bbcc18f7a72adb1, type: 3}
+  - {fileID: 6681354246324245472, guid: b75eae8b4f1104c0385f59c3570233f4, type: 3}
+  - {fileID: 7711016964576881143, guid: 8efb3518a125a454c9908c2773dc05da, type: 3}
+  - {fileID: 482253770836731559, guid: 7239bebbb4dec40d68d4578a91fe4f1d, type: 3}
+  - {fileID: 6966866531504678542, guid: a8c959e19ec1b4d8c8ded2fbcfb5f12a, type: 3}
+  - {fileID: 5690568590454419121, guid: c4d2313f6b5a84e47969cbdc32710ae3, type: 3}
+  - {fileID: 3905015608447564280, guid: f8e21a692855d48a0a8ec06e6bbcc99c, type: 3}
+  BulletPrefab: {fileID: 6019640568627301849, guid: 451584a10e75c4dbc93f6c926138100f, type: 3}
+  AKbulletPrefab: {fileID: 6982520451114168931, guid: e2b01b0bea887495ea3a26aaa7df95da, type: 3}
+  GlockBulletPrefab: {fileID: 6982520451114168931, guid: ef8c9643d441740009e6201cdc335111, type: 3}
+  bulletHitAnimPrefab: {fileID: 8197703787509694218, guid: a69d12992b2b94311b8ce29ddd2a00e1, type: 3}
+  muzzleFlashPrefab: {fileID: 1000011318293772, guid: 7353b372e9fec4c5bbe372fec3b9a59f, type: 3}
+  bulletShellPrefab: {fileID: 3905781446934895332, guid: 33993bb052e7341578a19e11ec72d873, type: 3}
+  nadePrefab: {fileID: 4285860288122136219, guid: 922429fe01bca473bad1985390a17a0d, type: 3}
+  pickupEffectPrefab: {fileID: 3030070670593196035, guid: 9e7cef5d734e64820b2e25a71cc0a85f, type: 3}
+  healthPickupPrefab: {fileID: 3698000994739175437, guid: a8a2ac6b1a50f4a90aa2bf7769daf655, type: 3}
+  speedPickupPrefab: {fileID: 7758255762084250802, guid: 1012f098cbdd14191bdec922b0215b1a, type: 3}
+  ammoPickupPrefab: {fileID: 8411723760554169224, guid: 2029aeb14e645446ba7e28a499cc11a3, type: 3}
+  damagePickupPrefab: {fileID: 2349431842685938132, guid: e9135994c036544fdb0b51aa42540f4c, type: 3}
+  nadesPickupPrefab: {fileID: 7925052256559260962, guid: 8c9a5605bf8a24385b050cf6b4c6c83b, type: 3}
+  cashPickupPrefab: {fileID: 7302542937947035341, guid: a303126f59c1a4b2da41632e42d6d88c, type: 3}
+  nadeTargetPrefab: {fileID: 4854975885357852757, guid: e6f44b456b7964fd8ad02059f6df5ed9, type: 3}
+  trajectoryMarkerPrefab: {fileID: 8226123621889462168, guid: cafb799e45dce468baef960d5e5e538f, type: 3}
+  AKbulletTexture2D: {fileID: 2800000, guid: 1c09acb1e14164cb5b3f0c14c6593fbf, type: 3}
+  cursorTexture2D: {fileID: 2800000, guid: ad47f71e3ce744ff5b0c94918ef932c3, type: 3}
+  GlockBulletTexture2D: {fileID: 2800000, guid: e4266c969900a4a4bb3f5b6319978d92, type: 3}

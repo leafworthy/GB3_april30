@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace CarbonInput {
+namespace _PLUGINS._INPUT.Scripts.TouchInput {
     /// <summary>
-    /// Attach this to the canvas all touch controls are in. 
+    /// Attach this to the canvas all touch controls are in.
     /// On startup this script will check if there are any real gamepads and if so, it will disable the touch controls.
     /// </summary>
     public class DisableTouchInput : MonoBehaviour {
@@ -24,7 +24,7 @@ namespace CarbonInput {
 #if UNITY_STANDALONE
             if(HideOnPC) { Hide(); return; }
 #endif
-            if(HideOnConsole && Application.isConsolePlatform 
+            if(HideOnConsole && Application.isConsolePlatform
                 || GamePad.GamePadCount > 0) { // There are gamepads so we don't need touchcontrols
                 Hide();
             }

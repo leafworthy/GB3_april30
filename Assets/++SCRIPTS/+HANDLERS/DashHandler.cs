@@ -29,7 +29,10 @@ public class DashHandler : MonoBehaviour
 		stats = GetComponent<UnitStats>();
 
 		controller = GetComponent<IDashController>();
-		controller.OnDashButtonPress += ControllerDashPress;
+		if (controller != null)
+		{
+			controller.OnDashButtonPress += ControllerDashPress;
+		}
 
 		animEvents = GetComponentInChildren<AnimationEvents>();
 		animEvents.OnDashStart += Anim_DashStart;

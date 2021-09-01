@@ -20,7 +20,9 @@ public class DRAW : Singleton<DRAW>
 
 	public static void line(Vector2 start, Vector2 end, Color color, float thickness, Texture2D texture2D)
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
+		if (start == end) return;
+		Debug.Log("ITGETSHERE");
 		var _coloredLineColor = color;
 		var _coloredLineTexture = texture2D;
 		_coloredLineTexture.SetPixel(0, 0, _coloredLineColor);

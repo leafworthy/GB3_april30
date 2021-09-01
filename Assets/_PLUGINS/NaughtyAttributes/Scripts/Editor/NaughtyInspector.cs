@@ -1,10 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using _PLUGINS.NaughtyAttributes.Scripts.Core;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes_SpecialCase;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.MetaAttributes;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.Utility;
+using _PLUGINS.NaughtyAttributes.Scripts.Editor.PropertyDrawers_SpecialCase;
+using _PLUGINS.NaughtyAttributes.Scripts.Editor.Utility;
 using UnityEditor;
 using UnityEngine;
 
-namespace NaughtyAttributes.Editor
+namespace _PLUGINS.NaughtyAttributes.Scripts.Editor
 {
 	[CanEditMultipleObjects]
 	[CustomEditor(typeof(UnityEngine.Object), true)]

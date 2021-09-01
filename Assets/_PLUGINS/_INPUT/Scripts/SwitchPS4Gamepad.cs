@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace CarbonInput {
+namespace _PLUGINS._INPUT.Scripts {
 	public class SwitchPS4Gamepad : MonoBehaviour {
 		public CarbonController Wired;
 		public CarbonController Bluetooth;

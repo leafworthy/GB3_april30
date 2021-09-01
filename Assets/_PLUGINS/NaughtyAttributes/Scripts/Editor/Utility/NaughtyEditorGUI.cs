@@ -2,12 +2,17 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Reflection;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.DrawerAttributes_SpecialCase;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.ValidatorAttributes;
+using _PLUGINS.NaughtyAttributes.Scripts.Editor.PropertyDrawers_SpecialCase;
+using _PLUGINS.NaughtyAttributes.Scripts.Editor.PropertyValidators;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace NaughtyAttributes.Editor
+namespace _PLUGINS.NaughtyAttributes.Scripts.Editor.Utility
 {
 	public static class NaughtyEditorGUI
 	{

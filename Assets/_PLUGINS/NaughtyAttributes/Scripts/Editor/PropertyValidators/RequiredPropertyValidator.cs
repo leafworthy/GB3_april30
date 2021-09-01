@@ -1,6 +1,8 @@
-﻿using UnityEditor;
+﻿using _PLUGINS.NaughtyAttributes.Scripts.Core.ValidatorAttributes;
+using _PLUGINS.NaughtyAttributes.Scripts.Editor.Utility;
+using UnityEditor;
 
-namespace NaughtyAttributes.Editor
+namespace _PLUGINS.NaughtyAttributes.Scripts.Editor.PropertyValidators
 {
 	public class RequiredPropertyValidator : PropertyValidatorBase
 	{

@@ -1,7 +1,8 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.PackageTools;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>
 	/// GraphModifier is used for modifying graphs or processing graph data based on events.
 	/// This class is a simple container for a number of events.

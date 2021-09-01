@@ -1,7 +1,6 @@
 using UnityEngine;
-using System.Collections;
 
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	public static class MovementUtilities {
 		/// <summary>
 		/// Clamps the velocity to the max speed and optionally the forwards direction.

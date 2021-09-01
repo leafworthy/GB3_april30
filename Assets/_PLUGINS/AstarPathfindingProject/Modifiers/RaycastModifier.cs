@@ -1,9 +1,13 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.AI;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using _PLUGINS.AstarPathfindingProject.Utilities;
+using UnityEngine;
 
-namespace Pathfinding {
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.Modifiers {
 	/// <summary>
 	/// Simplifies a path using raycasting.
 	/// \ingroup modifiers
@@ -13,12 +17,12 @@ namespace Pathfinding {
 	/// will be asked if there are any colliders which intersect the line that is currently being checked.
 	///
 	/// See: https://docs.unity3d.com/ScriptReference/Physics.html
-	/// See: <see cref="Pathfinding.IRaycastableGraph"/>
+	/// See: <see cref="IRaycastableGraph"/>
 	///
 	/// This modifier is primarily intended for grid graphs and layered grid graphs. Though depending on your game it may also be
 	/// useful for point graphs. However note that point graphs do not have any built-in raycasting so you need to use physics raycasting for that graph.
 	///
-	/// For navmesh/recast graphs the <see cref="Pathfinding.FunnelModifier"/> is a much better and faster alternative.
+	/// For navmesh/recast graphs the <see cref="FunnelModifier"/> is a much better and faster alternative.
 	///
 	/// On grid graphs you can combine the FunnelModifier with this modifier by simply attaching both of them to a GameObject with a Seeker.
 	/// This may or may not give you better results. It will usually follow the border of the graph more closely when they are both used

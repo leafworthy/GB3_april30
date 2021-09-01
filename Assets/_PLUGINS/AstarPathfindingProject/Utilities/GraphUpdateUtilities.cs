@@ -1,13 +1,15 @@
 using System.Collections.Generic;
-using Pathfinding.Util;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Utilities {
 	/// <summary>
 	/// Contains useful functions for updating graphs.
 	/// This class works a lot with the GraphNode class, a useful function to get nodes is <see cref="AstarPath.GetNearest"/>.
 	///
 	/// See: <see cref="AstarPath.GetNearest"/>
-	/// See: <see cref="Pathfinding.PathUtilities"/>
+	/// See: <see cref="PathUtilities"/>
 	///
 	/// \since Added in 3.1
 	///

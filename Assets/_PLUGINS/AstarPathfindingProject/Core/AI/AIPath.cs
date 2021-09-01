@@ -1,11 +1,12 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Behaviors;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Generators.Utilities;
+using _PLUGINS.AstarPathfindingProject.Pathfinders;
+using UnityEngine;
+using UnityEngine.PlayerLoop;
 
-namespace Pathfinding {
-	using Pathfinding.RVO;
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.Core.AI {
 	/// <summary>
 	/// AI for following paths.
 	/// This AI is the default movement script which comes with the A* Pathfinding Project.
@@ -15,7 +16,7 @@ namespace Pathfinding {
 	/// may want to customize this script or write a custom movement script to be able to optimize it specifically for your game.
 	///
 	/// This script will try to move to a given <see cref="destination"/>. At <see cref="repathRate regular"/>, the path to the destination will be recalculated.
-	/// If you want to make the AI to follow a particular object you can attach the <see cref="Pathfinding.AIDestinationSetter"/> component.
+	/// If you want to make the AI to follow a particular object you can attach the <see cref="AIDestinationSetter"/> component.
 	/// Take a look at the getstarted (view in online documentation for working links) tutorial for more instructions on how to configure this script.
 	///
 	/// Here is a video of this script being used move an agent around (technically it uses the <see cref="Pathfinding.Examples.MineBotAI"/> script that inherits from this one but adds a bit of animation support for the example scenes):
@@ -54,8 +55,8 @@ namespace Pathfinding {
 	/// That method also handles things like making sure the AI doesn't fall through the ground using raycasting.
 	///
 	/// The AI recalculates its path regularly. This happens in the Update method which checks <see cref="shouldRecalculatePath"/> and if that returns true it will call <see cref="SearchPath"/>.
-	/// The <see cref="SearchPath"/> method will prepare a path request and send it to the <see cref="Pathfinding.Seeker"/> component which should be attached to the same GameObject as this script.
-	/// Since this script will when waking up register to the <see cref="Pathfinding.Seeker.pathCallback"/> delegate this script will be notified every time a new path is calculated by the <see cref="OnPathComplete"/> method being called.
+	/// The <see cref="SearchPath"/> method will prepare a path request and send it to the <see cref="Seeker"/> component which should be attached to the same GameObject as this script.
+	/// Since this script will when waking up register to the <see cref="Seeker.pathCallback"/> delegate this script will be notified every time a new path is calculated by the <see cref="OnPathComplete"/> method being called.
 	/// It may take one or sometimes multiple frames for the path to be calculated, but finally the <see cref="OnPathComplete"/> method will be called and the current path that the AI is following will be replaced.
 	/// </summary>
 	[AddComponentMenu("Pathfinding/AI/AIPath (2D,3D)")]
@@ -93,7 +94,7 @@ namespace Pathfinding {
 		/// Here are a few example videos showing some typical outcomes with good values as well as how it looks when this value is too low and too high.
 		/// <table>
 		/// <tr><td>[Open online documentation to see videos]</td><td>\xmlonly <verbatim><span class="label label-danger">Too low</span><br/></verbatim>\endxmlonly A too low value and a too low acceleration will result in the agent overshooting a lot and not managing to follow the path well.</td></tr>
-		/// <tr><td>[Open online documentation to see videos]</td><td>\xmlonly <verbatim><span class="label label-warning">Ok</span><br/></verbatim>\endxmlonly A low value but a high acceleration works decently to make the AI follow the path more closely. Note that the <see cref="Pathfinding.AILerp"/> component is better suited if you want the agent to follow the path without any deviations.</td></tr>
+		/// <tr><td>[Open online documentation to see videos]</td><td>\xmlonly <verbatim><span class="label label-warning">Ok</span><br/></verbatim>\endxmlonly A low value but a high acceleration works decently to make the AI follow the path more closely. Note that the <see cref="AILerp"/> component is better suited if you want the agent to follow the path without any deviations.</td></tr>
 		/// <tr><td>[Open online documentation to see videos]</td><td>\xmlonly <verbatim><span class="label label-success">Ok</span><br/></verbatim>\endxmlonly A reasonable value in this example.</td></tr>
 		/// <tr><td>[Open online documentation to see videos]</td><td>\xmlonly <verbatim><span class="label label-success">Ok</span><br/></verbatim>\endxmlonly A reasonable value in this example, but the path is followed slightly more loosely than in the previous video.</td></tr>
 		/// <tr><td>[Open online documentation to see videos]</td><td>\xmlonly <verbatim><span class="label label-danger">Too high</span><br/></verbatim>\endxmlonly A too high value will make the agent follow the path too loosely and may cause it to try to move through obstacles.</td></tr>

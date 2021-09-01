@@ -45,7 +45,7 @@ public class KunaiHandler : MonoBehaviour
 		projectileScript.HeightObject.transform.position = AirThrowPoint.transform.position;
 
 		projectileScript.Fire(direction, stats.isPlayer, transform.position.y,
-			AirThrowPoint.transform.position.y, true, attackHandler);
+			AirThrowPoint.transform.position.y, true, stats.player);
 	}
 
 	private void Throw()
@@ -54,6 +54,6 @@ public class KunaiHandler : MonoBehaviour
 		var newProjectile = MAKER.Make(ProjectilePrefab, transform.position);
 		var projectileScript = newProjectile.GetComponent<Projectile>();
 		var directionMult = directionHandler.isFacingRight ? 1 : -1;
-		projectileScript.Fire(aimDir, stats.isPlayer, transform.position.y, ThrowPoint.transform.position.y, false, attackHandler);
+		projectileScript.Fire(aimDir, stats.isPlayer, transform.position.y, ThrowPoint.transform.position.y, false, stats.player);
 	}
 }

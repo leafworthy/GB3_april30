@@ -1,6 +1,7 @@
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
 using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core {
 	[AddComponentMenu("Pathfinding/GraphUpdateScene")]
 	/// <summary>
 	/// Helper class for easily updating graphs.

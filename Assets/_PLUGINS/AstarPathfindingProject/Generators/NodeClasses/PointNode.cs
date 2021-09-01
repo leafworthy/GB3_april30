@@ -1,7 +1,10 @@
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
+using _PLUGINS.AstarPathfindingProject.Core.Serialization;
 using UnityEngine;
-using Pathfinding.Serialization;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Generators.NodeClasses {
 	/// <summary>
 	/// Node used for the PointGraph.
 	/// This is just a simple point with a list of connections (and associated costs) to other nodes.

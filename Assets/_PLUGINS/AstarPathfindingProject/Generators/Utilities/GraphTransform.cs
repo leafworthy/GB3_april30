@@ -1,6 +1,7 @@
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
 using UnityEngine;
 
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Generators.Utilities {
 	/// <summary>
 	/// Transforms to and from world space to a 2D movement plane.
 	/// The transformation is guaranteed to be purely a rotation
@@ -8,7 +9,7 @@ namespace Pathfinding.Util {
 	/// used to make it easier to write movement scripts which can
 	/// handle movement both in the XZ plane and in the XY plane.
 	///
-	/// See: <see cref="Pathfinding.Util.GraphTransform"/>
+	/// See: <see cref="GraphTransform"/>
 	/// </summary>
 	public interface IMovementPlane {
 		Vector2 ToPlane (Vector3 p);

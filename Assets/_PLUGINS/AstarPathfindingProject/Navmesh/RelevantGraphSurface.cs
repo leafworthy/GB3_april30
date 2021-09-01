@@ -1,6 +1,7 @@
+using _PLUGINS.AstarPathfindingProject.PackageTools;
 using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Navmesh {
 	/// <summary>
 	/// Pruning of recast navmesh regions.
 	/// A RelevantGraphSurface component placed in the scene specifies that

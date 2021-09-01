@@ -24,7 +24,7 @@ public class PlayerMenuKeyboardControl : IPlayerMenuControl
 	public PlayerMenuKeyboardControl(Player player)
 	{
 		owner = player;
-		var keySetup = player.keyboardControlSetup;
+		var keySetup = player.data.keyboardControlSetup;
 
 		keySetup.MoveUpKey.OnPress += MoveUpPress;
 		keys.Add(keySetup.MoveUpKey);
@@ -37,10 +37,6 @@ public class PlayerMenuKeyboardControl : IPlayerMenuControl
 
 		keySetup.MoveLeftKey.OnPress += MoveLeftPress;
 		keys.Add(keySetup.MoveLeftKey);
-
-		keySetup.Attack1Key.OnPress += Attack1Press;
-		keys.Add(keySetup.Attack1Key);
-
 
 		keySetup.JumpKey.OnPress += Jump_Press;
 		keys.Add(keySetup.JumpKey);
@@ -79,10 +75,6 @@ public class PlayerMenuKeyboardControl : IPlayerMenuControl
 		MenuMoveLeft?.Invoke(owner);
 	}
 
-	private void Attack1Press()
-	{
-		MenuPressA?.Invoke(owner);
-	}
 
 	private void MoveUpPress()
 	{

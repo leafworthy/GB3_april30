@@ -1,11 +1,12 @@
 //#define ASTARDEBUG   //"BBTree Debug" If enables, some queries to the tree will show debug lines. Turn off multithreading when using this since DrawLine calls cannot be called from a different thread
 
 using System;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Generators.NodeClasses;
 using UnityEngine;
 
-namespace Pathfinding {
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.Generators.Utilities {
 	/// <summary>
 	/// Axis Aligned Bounding Box Tree.
 	/// Holds a bounding box tree of triangles.

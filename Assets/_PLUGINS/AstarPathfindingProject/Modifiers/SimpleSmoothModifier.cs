@@ -1,9 +1,10 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.AI;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using UnityEngine;
 
-using Pathfinding.Util;
-
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Modifiers {
 	[AddComponentMenu("Pathfinding/Modifiers/Simple Smooth")]
 	[System.Serializable]
 	[RequireComponent(typeof(Seeker))]

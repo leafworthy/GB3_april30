@@ -54,8 +54,8 @@ public class PlayerKeyboardMouseController : MonoBehaviour, IPlayerController, I
 	private void Start()
 	{
 
-		GAME.OnGameStart += GameStart;
-		GAME.OnGameEnd += GameEnd;
+		LEVELS.OnLevelStart += GameStart;
+		LEVELS.OnLevelStop += GameEnd;
 	}
 
 	private void GameEnd()
@@ -63,7 +63,7 @@ public class PlayerKeyboardMouseController : MonoBehaviour, IPlayerController, I
 		isOn = false;
 	}
 
-	private void GameStart()
+	private void GameStart(List<Player> players)
 	{
 		isOn = true;
 	}
@@ -78,8 +78,8 @@ public class PlayerKeyboardMouseController : MonoBehaviour, IPlayerController, I
 			Debug.Break();
 		}
 		CURSOR.ShowCursor();
-		PAUSE.OnPause += PauseStart;
-		PAUSE.OnUnpause += PauseStop;
+		Menu_Pause.OnPause += PauseStart;
+		Menu_Pause.OnUnpause += PauseStop;
 		defenceHandler = GetComponent<DefenceHandler>();
 		defenceHandler.OnDead += Dead;
 		keySetup.MoveUpKey.OnPress += OnMoveUpPress;
@@ -170,55 +170,55 @@ public class PlayerKeyboardMouseController : MonoBehaviour, IPlayerController, I
 
 	private void OnChargePressEvent()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		OnChargePress?.Invoke();
 	}
 
 	private void OnChargeReleaseEvent()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		OnChargeRelease?.Invoke();
 	}
 
 	private void OnKnifeKeyButtonPressEvent()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		OnAttackPress?.Invoke(Vector2.zero);
 	}
 
 	private void OnReloadButtonPressEvent()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		OnReloadPress?.Invoke();
 	}
 
 	private void OnDashButtonReleaseEvent()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		OnDashButtonRelease?.Invoke();
 	}
 
 	private void OnDashButtonPressEvent()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		OnDashButtonPress?.Invoke();
 	}
 
 	private void OnJumpReleaseEvent()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		OnJumpRelease?.Invoke();
 	}
 
 	private void OnJumpPressEvent()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		OnJumpPress?.Invoke();
 	}
 
 	private void UpdateMovementDirection()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		if (!isMovingUp && !isMovingRight && !isMovingDown && !isMovingLeft)
 		{
 			moveDirection = Vector2.zero;
@@ -254,21 +254,21 @@ public class PlayerKeyboardMouseController : MonoBehaviour, IPlayerController, I
 
 	private void OnMoveUpPress()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		isMovingUp = true;
 		OnMovePress?.Invoke(moveDirection);
 	}
 
 	private void OnMoveRightPress()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		isMovingRight = true;
 		OnMovePress?.Invoke(Vector3.right);
 	}
 
 	private void OnMoveDownPress()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		isMovingDown = true;
 
 		OnMovePress?.Invoke(Vector3.down);
@@ -276,7 +276,7 @@ public class PlayerKeyboardMouseController : MonoBehaviour, IPlayerController, I
 
 	private void OnMoveLeftPress()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		isMovingLeft = true;
 		OnMovePress?.Invoke(Vector3.left);
 	}
@@ -303,25 +303,25 @@ public class PlayerKeyboardMouseController : MonoBehaviour, IPlayerController, I
 
 	private void OnAttack1Press()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		OnRightTriggerPress?.Invoke(aimDirection);
 	}
 
 	private void OnAttack2Press()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		OnLeftTriggerPress?.Invoke(aimDirection);
 	}
 
 	private void OnAttack1Release()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		OnRightTriggerRelease?.Invoke();
 	}
 
 	private void OnAttack2Release()
 	{
-		if (PAUSE.isPaused) return;
+		if (Menu_Pause.isPaused) return;
 		OnLeftTriggerRelease?.Invoke(aimDirection);
 	}
 
@@ -335,7 +335,7 @@ public class PlayerKeyboardMouseController : MonoBehaviour, IPlayerController, I
 		}
 		keySetup.PauseKey.update();
 		if (!isOn) return;
-		if (PAUSE.isPaused)
+		if (Menu_Pause.isPaused)
 		{
 			Debug.Log("paused");
 			return;
@@ -363,9 +363,9 @@ public class PlayerKeyboardMouseController : MonoBehaviour, IPlayerController, I
 	{
 		owner = player;
 
-		if (player.isUsingKeyboard)
+		if (player.data.isUsingKeyboard)
 		{
-			keySetup = player.keyboardControlSetup;
+			keySetup = player.data.keyboardControlSetup;
 		}
 
 		Init();
@@ -374,6 +374,6 @@ public class PlayerKeyboardMouseController : MonoBehaviour, IPlayerController, I
 
 	public Color GetPlayerColor()
 	{
-		return owner != null ? owner.playerColor : Color.white;
+		return owner != null ? owner.data. playerColor : Color.white;
 	}
 }

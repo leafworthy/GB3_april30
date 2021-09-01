@@ -1,6 +1,7 @@
 ﻿using System;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.Utility;
 
-namespace NaughtyAttributes
+namespace _PLUGINS.NaughtyAttributes.Scripts.Core.MetaAttributes
 {
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 	public class DisableIfAttribute : EnableIfAttributeBase

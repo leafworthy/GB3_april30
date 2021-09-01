@@ -10,10 +10,12 @@ public class NadeHandler : MonoBehaviour
 	private Vector2 pointA;
 	private Vector2 pointB;
 	private int throwTime = 30;
+	private UnitStats stats;
 	private static List<GameObject> Circles = new List<GameObject>();
 
 	private void Awake()
 	{
+		stats = GetComponent<UnitStats>();
 		attack = GetComponent<BeanAttackHandler>();
 	}
 
@@ -52,7 +54,7 @@ public class NadeHandler : MonoBehaviour
 		var nadeThrower = newProjectile.GetComponent<NadeLaunchHandler>();
 		var velocity = new Vector3((pointB.x - pointA.x) / throwTime,
 			(pointB.y - pointA.y) / throwTime);
-		nadeThrower.Launch(pointA, pointB, velocity, throwTime, attack);
+		nadeThrower.Launch(pointA, pointB, velocity, throwTime, stats.player);
 	}
 
 	private static void ClearCircles()

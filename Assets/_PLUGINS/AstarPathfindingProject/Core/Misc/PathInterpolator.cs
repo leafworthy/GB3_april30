@@ -1,7 +1,8 @@
-using UnityEngine;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Generators.Utilities;
+using UnityEngine;
 
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>Interpolates along a sequence of points</summary>
 	public class PathInterpolator {
 		List<Vector3> path;

@@ -1,7 +1,12 @@
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.Generators;
+using _PLUGINS.AstarPathfindingProject.PackageTools.Editor;
+using _PLUGINS.AstarPathfindingProject.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Editor.GraphEditors {
 	public class GraphEditor : GraphEditorBase {
 		public AstarPathEditor editor;
 

@@ -1,4 +1,4 @@
-﻿namespace CarbonInput {
+﻿namespace _PLUGINS._INPUT.Scripts {
     public class ControllerInstance {
         public CarbonController Controller;
         public int Index;

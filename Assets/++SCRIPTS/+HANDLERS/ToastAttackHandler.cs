@@ -78,11 +78,6 @@ public class ToastAttackHandler : MonoBehaviour, IAttackHandler
 	}
 
 
-	public Player GetPlayer()
-	{
-		return PLAYERS.GetEnemyPlayer();
-	}
-
 	public bool CanAttack(Vector3 target)
 	{
 		if (!isOn) return false;

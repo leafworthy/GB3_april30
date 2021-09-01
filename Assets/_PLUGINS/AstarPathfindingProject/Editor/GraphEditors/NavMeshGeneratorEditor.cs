@@ -1,7 +1,8 @@
-using UnityEngine;
+using _PLUGINS.AstarPathfindingProject.Generators;
 using UnityEditor;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Editor.GraphEditors {
 	[CustomGraphEditor(typeof(NavMeshGraph), "Navmesh Graph")]
 	public class NavMeshGraphEditor : GraphEditor {
 		public override void OnInspectorGUI (NavGraph target) {

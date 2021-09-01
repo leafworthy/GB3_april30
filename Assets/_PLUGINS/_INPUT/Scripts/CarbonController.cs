@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 // Users don't have to use this directly, so there is no need to have this in global namespace
-namespace CarbonInput {
+namespace _PLUGINS._INPUT.Scripts {
     /// <summary>
     /// Describes a mapping for a specific controller. This mapping is independend of the PlayerIndex.
     /// Each CarbonController defines how buttons and axes are mapped correctly to the Unity Input.

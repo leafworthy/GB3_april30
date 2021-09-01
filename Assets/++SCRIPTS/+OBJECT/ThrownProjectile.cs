@@ -15,13 +15,13 @@ public class ThrownProjectile : MonoBehaviour, IExplode
 	[SerializeField] private float maxYDistance = 8;
 	private Vector3 origin;
 
-	public event Action<DefenceHandler, Vector3, IPlayerAttackHandler> OnHitTarget;
-	public event Action<Vector3, IPlayerAttackHandler> OnExplode;
+	public event Action<DefenceHandler, Vector3, Player> OnHitTarget;
+	public event Action<Vector3, Player> OnExplode;
 	private Vector2 shadowVelocity;
-	private IPlayerAttackHandler owner;
+	private Player owner;
 
 	public void Throw(Vector3 initialVelocity, bool _isPlayer, float _FloorHeight, float _ThrowHeight, Vector3 hitPoint,
-	                  float throwTime, IPlayerAttackHandler attacker)
+	                  float throwTime, Player attacker)
 	{
 		owner = attacker;
 		origin = HeightObject.transform.position;
@@ -162,7 +162,7 @@ public class ThrownProjectile : MonoBehaviour, IExplode
 
 		if (target.IsPlayer() != isPlayer)
 		{
-			var newAttack = new Attack(hitPoint-velocity.normalized, hitPoint, DamageAmount, false,HITSTUN.StunLength.Normal, true, owner);
+			var newAttack = new Attack(hitPoint-velocity.normalized, hitPoint, DamageAmount, false,STUNNER.StunLength.Normal, true, owner);
 			target.TakeDamage(newAttack);
 			hasReachedTarget = true;
 			velocity = Vector3.zero;

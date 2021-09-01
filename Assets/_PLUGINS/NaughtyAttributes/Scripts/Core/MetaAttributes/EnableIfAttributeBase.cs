@@ -1,6 +1,6 @@
-﻿using System;
+﻿using _PLUGINS.NaughtyAttributes.Scripts.Core.Utility;
 
-namespace NaughtyAttributes
+namespace _PLUGINS.NaughtyAttributes.Scripts.Core.MetaAttributes
 {
 	public abstract class EnableIfAttributeBase : MetaAttribute
 	{

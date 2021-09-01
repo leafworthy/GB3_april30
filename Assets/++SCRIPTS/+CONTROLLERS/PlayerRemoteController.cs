@@ -1,4 +1,5 @@
 using System;
+using _PLUGINS._INPUT.Scripts;
 using UnityEngine;
 
 public class PlayerRemoteController : MonoBehaviour, IDashController, IPlayerController
@@ -64,7 +65,7 @@ public class PlayerRemoteController : MonoBehaviour, IDashController, IPlayerCon
 	{
 		HandlePausing();
 		if (!isOn) return;
-		if(PAUSE.isPaused) return;
+		if(Menu_Pause.isPaused) return;
 		HandleAiming();
 		HandleReloading();
 		HandleAttacking();
@@ -291,7 +292,7 @@ public class PlayerRemoteController : MonoBehaviour, IDashController, IPlayerCon
 	public void SetPlayer(Player player)
 	{
 		owner = player;
-		playerIndex = player.playerIndex;
+		playerIndex = player.data.playerIndex;
 
 	}
 
@@ -299,7 +300,7 @@ public class PlayerRemoteController : MonoBehaviour, IDashController, IPlayerCon
 	{
 		if (owner != null)
 		{
-			return owner.playerColor;
+			return owner.data.playerColor;
 		}
 		else
 		{

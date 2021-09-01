@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace CarbonInput {
+namespace _PLUGINS._INPUT.Scripts.TouchInput {
     /// <summary>
     /// Touch control simulating a thumbstick.
     /// </summary>
@@ -114,7 +114,7 @@ namespace CarbonInput {
         }
 
         /// <summary>
-        /// Sets the value of this stick in the <see cref="TouchMapping"/> and also sets the knob position. 
+        /// Sets the value of this stick in the <see cref="TouchMapping"/> and also sets the knob position.
         /// If <see cref="Movable"/> is true, it will also follow the user.
         /// </summary>
         /// <param name="pos">Touch position in world space</param>

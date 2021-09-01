@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>
 	/// Lightweight List Pool.
 	/// Handy class for pooling lists of type T.
@@ -148,7 +148,7 @@ namespace Pathfinding.Util {
 		/// \throws System.InvalidOperationException
 		/// Releasing a list when it has already been released will cause an exception to be thrown.
 		///
-		/// See: <see cref="Claim"/>
+		/// See: <see cref="System.Security.Claims.Claim"/>
 		/// </summary>
 		public static void Release (ref List<T> list) {
 			Release(list);
@@ -162,7 +162,7 @@ namespace Pathfinding.Util {
 		/// \throws System.InvalidOperationException
 		/// Releasing a list when it has already been released will cause an exception to be thrown.
 		///
-		/// See: <see cref="Claim"/>
+		/// See: <see cref="System.Security.Claims.Claim"/>
 		/// </summary>
 		public static void Release (List<T> list) {
 #if !ASTAR_NO_POOLING

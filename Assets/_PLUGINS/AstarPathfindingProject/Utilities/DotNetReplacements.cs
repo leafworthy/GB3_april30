@@ -1,4 +1,4 @@
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Utilities {
 	/// <summary>
 	/// Simple implementation of a GUID.
 	/// Version: Since 3.6.4 this struct works properly on platforms with different endianness such as Wii U.

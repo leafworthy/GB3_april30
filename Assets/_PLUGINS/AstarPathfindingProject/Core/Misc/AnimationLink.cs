@@ -1,7 +1,7 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	[HelpURL("http://arongranberg.com/astar/docs/class_pathfinding_1_1_animation_link.php")]
 	public class AnimationLink : NodeLink2 {
 		public string clip;
@@ -110,7 +110,7 @@ namespace Pathfinding {
 
 		public override void OnDrawGizmosSelected () {
 			base.OnDrawGizmosSelected();
-			List<Vector3> buffer = Pathfinding.Util.ListPool<Vector3>.Claim ();
+			List<Vector3> buffer = ListPool<Vector3>.Claim ();
 			Vector3 endPosition = Vector3.zero;
 			CalculateOffsets(buffer, out endPosition);
 			Gizmos.color = Color.blue;

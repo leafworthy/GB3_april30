@@ -1,11 +1,13 @@
-﻿using UnityEditor;
-using System.Reflection;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.MetaAttributes;
+using _PLUGINS.NaughtyAttributes.Scripts.Core.Utility;
+using UnityEditor;
 using UnityEngine;
 
-namespace NaughtyAttributes.Editor
+namespace _PLUGINS.NaughtyAttributes.Scripts.Editor.Utility
 {
 	public static class PropertyUtility
 	{

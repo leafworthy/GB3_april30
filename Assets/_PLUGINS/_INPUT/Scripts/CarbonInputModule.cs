@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
-namespace CarbonInput {
+namespace _PLUGINS._INPUT.Scripts {
 	[AddComponentMenu("Event/Carbon Input Module")]
 	public class CarbonInputModule : PointerInputModule {
 		private const float Threshold = 0.3f;

@@ -1,10 +1,10 @@
-using UnityEngine;
 using System.Collections.Generic;
-#if UNITY_5_5_OR_NEWER
 using UnityEngine.Profiling;
+#if UNITY_5_5_OR_NEWER
+
 #endif
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	class PathReturnQueue {
 		/// <summary>
 		/// Holds all paths which are waiting to be flagged as completed.

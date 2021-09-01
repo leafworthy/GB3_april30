@@ -22,16 +22,20 @@ public class MovementHandler : MonoBehaviour
 	public Vector2 velocity;
 
 	private static float velocityDecayFactor = .9f;
+	private Rigidbody2D rb;
 	public event Action OnStopAllMovement;
 	private const float overallVelocityMultiplier = 4;
 
 	private void Start()
 	{
 		stats = GetComponent<UnitStats>();
-
+		rb = GetComponent<Rigidbody2D>();
 		controller = GetComponent<IMovementController>();
-		controller.OnMovePress += ControllerMoveInDirection;
-		controller.OnMoveRelease += ControllerStopMoving;
+		if (controller != null)
+		{
+			controller.OnMovePress += ControllerMoveInDirection;
+			controller.OnMoveRelease += ControllerStopMoving;
+		}
 
 		animEvents = GetComponentInChildren<AnimationEvents>();
 		animEvents.OnAttackStart += DisableMovement;
@@ -94,7 +98,7 @@ public class MovementHandler : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (!isOn || PAUSE.isPaused) return;
+		if (!isOn || Menu_Pause.isPaused) return;
 		AddVelocity(CalculateMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
 		ApplyVelocity();
 		DecayVelocity();
@@ -135,20 +139,25 @@ public class MovementHandler : MonoBehaviour
 
 	public void MoveObjectTo(Vector2 destination, bool teleport = false)
 	{
-		var layerInt = 0;
+/*
+		 var layerInt = 0;
 		if (stats.isPlayer)
 			layerInt = teleport ? ASSETS.LevelAssets.BuildingLayer : ASSETS.LevelAssets.EnemyLayer;
 		else
 			layerInt = teleport ? ASSETS.LevelAssets.BuildingLayer : ASSETS.LevelAssets.PlayerLayer;
 
-		var ray = Physics2D.LinecastAll(transform.position, destination, ASSETS.LevelAssets.BuildingLayer);
-		if (ray.Length > 0)
+		var ray = Physics2D.Linecast(transform.position, destination, ASSETS.LevelAssets.BuildingLayer);
+		if (ray.collider != null)
 		{
 			velocity = Vector2.zero;
-			destination = ray[0].point;
 		}
+		else
+		{
 
-		transform.position = destination;
+			transform.position = destination;
+		}
+		*/
+		rb.MovePosition(destination);
 	}
 
 

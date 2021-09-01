@@ -1,10 +1,9 @@
-using UnityEngine;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using UnityEngine;
 
-namespace Pathfinding {
-	using Pathfinding.Util;
-
+namespace _PLUGINS.AstarPathfindingProject.Core {
 	/// <summary>
 	/// Contains various spline functions.
 	/// \ingroup utils
@@ -1169,7 +1168,7 @@ namespace Pathfinding {
 		public static Vector3[] ConvexHullXZ (Vector3[] points) {
 			if (points.Length == 0) return new Vector3[0];
 
-			var hull = Pathfinding.Util.ListPool<Vector3>.Claim ();
+			var hull = ListPool<Vector3>.Claim ();
 
 			int pointOnHull = 0;
 			for (int i = 1; i < points.Length; i++) if (points[i].x < points[pointOnHull].x) pointOnHull = i;
@@ -1194,7 +1193,7 @@ namespace Pathfinding {
 			var result = hull.ToArray();
 
 			// Return to pool
-			Pathfinding.Util.ListPool<Vector3>.Release (hull);
+			ListPool<Vector3>.Release (hull);
 			return result;
 		}
 

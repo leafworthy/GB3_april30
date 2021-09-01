@@ -1,4 +1,5 @@
 using System;
+using _PLUGINS._INPUT.Scripts;
 using UnityEngine;
 
 public class Indicators : MonoBehaviour

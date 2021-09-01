@@ -1,8 +1,11 @@
-using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
+using _PLUGINS.AstarPathfindingProject.Core;
+using _PLUGINS.AstarPathfindingProject.Core.Misc;
+using _PLUGINS.AstarPathfindingProject.PackageTools.Editor;
+using UnityEditor;
+using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Editor {
 	/// <summary>Editor for GraphUpdateScene</summary>
 	[CustomEditor(typeof(GraphUpdateScene))]
 	[CanEditMultipleObjects]
@@ -192,7 +195,7 @@ namespace Pathfinding {
 				EditorUtility.SetDirty(script);
 			}
 
-			List<Vector3> points = Pathfinding.Util.ListPool<Vector3>.Claim ();
+			List<Vector3> points = ListPool<Vector3>.Claim ();
 			points.AddRange(script.points);
 
 			Matrix4x4 invMatrix = script.transform.worldToLocalMatrix;
@@ -310,7 +313,7 @@ namespace Pathfinding {
 
 			// Make sure the convex hull stays up to date
 			script.RecalcConvex();
-			Pathfinding.Util.ListPool<Vector3>.Release (ref points);
+			ListPool<Vector3>.Release (ref points);
 
 			if (GUI.changed) HandleUtility.Repaint();
 		}

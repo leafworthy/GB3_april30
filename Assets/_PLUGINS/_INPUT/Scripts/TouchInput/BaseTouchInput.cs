@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CarbonInput {
+namespace _PLUGINS._INPUT.Scripts.TouchInput {
     /// <summary>
     /// Base class for all touch controls.
     /// </summary>

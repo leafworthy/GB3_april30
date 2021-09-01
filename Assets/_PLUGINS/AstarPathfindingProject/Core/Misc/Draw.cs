@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Pathfinding.Util {
+namespace _PLUGINS.AstarPathfindingProject.Core.Misc {
 	/// <summary>Helper methods for drawing gizmos and debug lines</summary>
 	public class Draw {
 		public static readonly Draw Debug = new Draw { gizmos = false };

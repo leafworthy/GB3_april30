@@ -1,6 +1,7 @@
+using _PLUGINS.AstarPathfindingProject.Core.Nodes;
 using UnityEngine;
 
-namespace Pathfinding {
+namespace _PLUGINS.AstarPathfindingProject.Core {
 	/// <summary>
 	/// Defines a shape for a Pathfinding.GraphUpdateObject.
 	/// The shape consists of a number of points which it can either calculate the convex hull of or use as a polygon directly.

@@ -4,6 +4,7 @@ public class AimFX : MonoBehaviour
 {
 	[SerializeField] private GameObject aimTargetGraphic;
 	[SerializeField] private Transform aimLightTransform;
+	[SerializeField] private Transform aimLightTransform2;
 	[SerializeField] private GameObject aimCenter;
 	private MovementHandler movementHandler;
 	private IAimHandler aimer;
@@ -20,12 +21,18 @@ public class AimFX : MonoBehaviour
 		aimer.OnAimStop += AimerOnAimStop;
 		movementHandler = GetComponent<MovementHandler>();
 		controller = GetComponent<IMovementController>();
-		controller.OnMovePress += ControllerMoveInDirection;
-		aimLightTransform.gameObject.SetActive(false);
+		if (controller != null)
+		{
+			controller.OnMovePress += ControllerMoveInDirection;
+		}
+
+		aimLightTransform2.gameObject.SetActive(true);
+		aimLightTransform.gameObject.SetActive(true);
 	}
 
 	private void OnRoar()
 	{
+		aimLightTransform2.gameObject.SetActive(true);
 		aimLightTransform.gameObject.SetActive(true);
 	}
 
@@ -40,6 +47,7 @@ public class AimFX : MonoBehaviour
 		if (aimLightTransform == null) return;
 		var lightRotation = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
 		aimLightTransform.eulerAngles = new Vector3(0, 0, lightRotation);
+		aimLightTransform2.eulerAngles = new Vector3(0, 0, lightRotation);
 	}
 
 
@@ -54,6 +62,7 @@ public class AimFX : MonoBehaviour
 		if (aimLightTransform == null) return;
 		var lightRotation = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
 		aimLightTransform.eulerAngles = new Vector3(0, 0, lightRotation);
+		aimLightTransform2.eulerAngles = new Vector3(0, 0, lightRotation);
 
 	}
 }
