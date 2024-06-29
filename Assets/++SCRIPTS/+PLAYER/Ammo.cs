@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public class Ammo
 {
-	public AmmoHandler.AmmoType type;
+	public AmmoInventory.AmmoType type;
 	public int reserveAmmo;
 	public int clipSize;
 	public int AmmoInClip;
@@ -20,10 +20,16 @@ public class Ammo
 		return AmmoInClip > 0;
 	}
 
-	public bool hasAmmo()
+	public bool hasReserveAmmo()
 	{
 		if (unlimited) return true;
 		return reserveAmmo > 0;
+	}
+
+	public bool hasAmmoInReserveOrClip()
+	{
+		if (unlimited) return true;
+		return reserveAmmo+AmmoInClip > 0;
 	}
 	public void AddAmmoToReserve(int amount)
 	{
@@ -77,7 +83,7 @@ public class Ammo
 		OnAmmoGained?.Invoke();
 	}
 
-	public bool hasFullAmmo()
+	public bool hasFullReserve()
 	{
 		return reserveAmmo == maxReserveAmmo;
 	}

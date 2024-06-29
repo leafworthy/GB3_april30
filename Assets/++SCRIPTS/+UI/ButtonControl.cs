@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ButtonControl : MonoBehaviour
@@ -19,8 +20,8 @@ public class ButtonControl : MonoBehaviour
 	public System.Action<float> OnScore0_1;
 
 	public AnimationCurve valueCurve;
-	public Bar pressBar;
-	public Bar cooldownBar;
+	[FormerlySerializedAs("pressHealthBar"),FormerlySerializedAs("pressBar")] public LifeBar pressLifeBar;
+	[FormerlySerializedAs("cooldownHealthBar"),FormerlySerializedAs("cooldownBar")] public LifeBar cooldownLifeBar;
 
 	//DEFINED BY ABILITY
 	public Text pushText;
@@ -35,8 +36,8 @@ public class ButtonControl : MonoBehaviour
 	void Start()
 	{
 		button = GetComponent<Button>();
-		pressBar.UpdateBar(0f, 1);
-		cooldownBar.UpdateBar(1f, 1);
+		pressLifeBar.UpdateBar(0f, 1);
+		cooldownLifeBar.UpdateBar(1f, 1);
 	}
 
 	void Update()
@@ -50,18 +51,18 @@ public class ButtonControl : MonoBehaviour
 				if (Time.time - startTime >= maxTime)
 				{
 					Bounce();
-					pressBar.UpdateBar(maxTime, maxTime);
+					pressLifeBar.UpdateBar(maxTime, maxTime);
 				}
 				else
 				{
-					pressBar.UpdateBar(duration, maxTime);
+					pressLifeBar.UpdateBar(duration, maxTime);
 					currentScore = duration / maxTime;
 				}
 			}
 			else
 			{
 				float timeSinceBounce = Time.time - bounceTime;
-				pressBar.UpdateBar(maxTime - timeSinceBounce, maxTime);
+				pressLifeBar.UpdateBar(maxTime - timeSinceBounce, maxTime);
 				currentScore = (maxTime - timeSinceBounce) / maxTime;
 			}
 		}
@@ -70,12 +71,12 @@ public class ButtonControl : MonoBehaviour
 			float duration = Time.time - timeOfLastPress;
 			if (duration < coolDown)
 			{
-				cooldownBar.UpdateBar(duration, coolDown);
+				cooldownLifeBar.UpdateBar(duration, coolDown);
 			}
 			else
 			{
 				cooledDown = true;
-				cooldownBar.UpdateBar(1, 1);
+				cooldownLifeBar.UpdateBar(1, 1);
 				ShowButton();
 			}
 		}
@@ -136,7 +137,7 @@ public class ButtonControl : MonoBehaviour
 		currentScore = 0f;
 		startTime = Time.time;
 		ShowButton();
-		pressBar.UpdateBar(0f, 1);
+		pressLifeBar.UpdateBar(0f, 1);
 	}
 
 
@@ -154,7 +155,7 @@ public class ButtonControl : MonoBehaviour
 		running = false;
 		timeOfLastPress = Time.time;
 		//DISPLAY.DisplayRisingNumber(GetScore0_100(), transform.position);
-		pressBar.UpdateBar(0f, 1);
+		pressLifeBar.UpdateBar(0f, 1);
 		OnScore0_1?.Invoke(GetScore0_1());
 	}
 

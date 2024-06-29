@@ -1,219 +1,221 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
+[RequireComponent(typeof(AstarPathfinder)), RequireComponent(typeof(Life)), RequireComponent(typeof(Targetter)),
+ RequireComponent(typeof(EnemyThoughts))]
 public class EnemyAI : MonoBehaviour
 {
-	private bool hasAggrodBefore;
-	private DefenceHandler defenceHandler;
-	private IAttackHandler attackHandler;
-	private AstarAI astarAI;
-	private GameObject currentTarget;
-	private DefenceHandler currentTargetDefence;
-	private EnemyController controller;
-	private bool isOn = true;
-	public bool wandersWhenIdle = true;
-	public bool invincibleUntilAggro;
-
 	private enum State
 	{
-		Idle,
-		Aggro
+		Wander,
+		WalkToTarget,
+		AttackTarget,
+		AttackObstacle,
+		WalkToObstacle
 	}
 
+	private State state;
+	private int wanderCounter;
+	private int wanderRate = 200;
 
-	[SerializeField] private State state;
-	private GameObject wanderTarget;
-	private float currentWanderCooldown;
-	private float wanderRate = 5;
-	public event Action OnIdle;
-	public event Action OnAggro;
+	#region events
 
-	private UnitStats stats;
+	public event Action<Life> OnAttack;
+	public event Action<Vector2> OnMoveInDirection;
+	public event Action OnStopMoving;
+	public event Action<Life> OnAggro;
 
-	private void DisableAllColliders()
-	{
-		var moreColliders = GetComponentsInChildren<Collider2D>();
-		foreach (var col in moreColliders) col.enabled = false;
-	}
+	#endregion
 
-	private void EnableAllColliders()
-	{
-		var moreColliders = GetComponentsInChildren<Collider2D>();
-		foreach (var col in moreColliders) col.enabled = true;
-	}
+	#region components
+
+	private AstarPathfinder pathmaker => GetComponent<AstarPathfinder>();
+	private Life life => GetComponent<Life>();
+	private Targetter targets => GetComponent<Targetter>();
+	private EnemyThoughts thoughts => GetComponent<EnemyThoughts>();
+
+	#endregion
+
+	#region unity events
 
 	private void OnEnable()
 	{
-		isOn = true;
-		stats = GetComponent<UnitStats>();
-		astarAI = GetComponent<AstarAI>();
-		astarAI.OnNewDirection += AI_OnNewDirection;
-		astarAI.OnReachedEndOfPath += AI_OnReachedEndOfPath;
-
-		controller = GetComponent<EnemyController>();
-
-		defenceHandler = GetComponent<DefenceHandler>();
-		defenceHandler.OnDead += Defence_OnDead;
-		if (invincibleUntilAggro) DisableAllColliders();
-
-		attackHandler = GetComponent<IAttackHandler>();
-
-		SetState(State.Idle);
+		pathmaker.enabled = true;
+		pathmaker.OnNewDirection += pathmakerOnOnNewDirection;
+		life.OnDamaged += Life_OnDamaged;
+		thoughts.Think("Just woke up, wandering.");
+		SetState(State.Wander);
 	}
 
 	private void OnDisable()
 	{
-
-		astarAI.OnNewDirection -= AI_OnNewDirection;
-		astarAI.OnReachedEndOfPath -= AI_OnReachedEndOfPath;
-		defenceHandler.OnDead -= Defence_OnDead;
+		pathmaker.OnNewDirection -= pathmakerOnOnNewDirection;
+		life.OnDamaged -= Life_OnDamaged;
 	}
 
-	private void AI_OnNewDirection(Vector3 newDir)
+	private void Life_OnDamaged(Attack attack)
 	{
-		controller.MoveInDirection(newDir);
+		targets.SetSpecialTarget(attack.Owner.spawnedPlayerDefence);
 	}
 
-	private void AI_OnReachedEndOfPath()
+	private void pathmakerOnOnNewDirection(Vector2 newDir)
 	{
-		SetState(State.Idle);
+		OnMoveInDirection?.Invoke(newDir);
 	}
 
-	private void Defence_OnDead()
+	private void FixedUpdate()
 	{
-		controller.Stop();
-		isOn = false;
-	}
-
-	private void Update()
-	{
-		if (!isOn || Menu_Pause.isPaused) return;
-
+		if (Game_GlobalVariables.IsPaused || life.IsDead()) return;
 		switch (state)
 		{
-			case State.Idle:
-				UpdateIdle();
+			case State.WalkToTarget:
+				UpdateWalkPathToTarget();
 				break;
-			case State.Aggro:
-				UpdateAggro();
+			case State.AttackTarget:
+				UpdateAttackPlayer();
+				break;
+			case State.WalkToObstacle:
+				UpdateWalkToObstacle();
+				break;
+			case State.AttackObstacle:
+				UpdateAttackObstacle();
+				break;
+			case State.Wander:
+				UpdateWander();
 				break;
 		}
 	}
 
-	private void UpdateAggro()
+	#endregion
+
+	#region state updates
+
+	private void UpdateWalkToObstacle()
 	{
-		hasAggrodBefore = true;
-		if (invincibleUntilAggro) EnableAllColliders();
-		if (CanAttackTarget())
+		if (targets.GetCurrentObstacle() == null)
 		{
-			controller.StopMoving();
-			controller.AttackTarget(currentTarget.transform.position);
+			SetState(State.Wander);
+			thoughts.Think("Lost obstacle, wandering.");
+			return;
 		}
+
+		if (targets.CanAttackObstacle())
+		{
+			SetState(State.AttackObstacle);
+			thoughts.Think("Close enough to attack obstacle.");
+			return;
+		}
+
+		pathmaker.SetTargetPosition(targets.GetCurrentObstacle().transform.position);
+		thoughts.Think("Walking to obstacle.");
+	}
+
+	private void UpdateWander()
+	{
+		
+		var target = targets.GetClosestTargetWithinAggroRange(transform.position);
+		if (target != null)
+		{
+			SetState(State.WalkToTarget);
+			OnAggro?.Invoke(target);
+			thoughts.Think("Found a target, walking to it.");
+			return;
+		}
+
+		wanderCounter++;
+		if (wanderCounter < wanderRate) return;
+		pathmaker.SetTargetPosition(targets.GetWanderPosition());
+		wanderCounter = 0;
+
+
+
+	}
+
+	private void UpdateAttackObstacle()
+	{
+		if (targets.HasLineOfSightWithCurrentTarget())
+		{
+			SetState(State.WalkToTarget);
+			OnAggro?.Invoke(targets.GetCurrentTarget());
+			thoughts.Think("I see a target, walking to it.");
+			return;
+		}
+
+		var obstacle = targets.GetClosestObstacleWithinAttackRange();
+		if (obstacle == null)
+		{
+			SetState(State.WalkToTarget);
+			thoughts.Think("Can't reach obstacle, walking to target.");
+			return;
+		}
+
+		var obstacleLife = obstacle.GetComponentInChildren<Life>();
+		if (obstacleLife == null)
+		{
+			SetState(State.WalkToTarget);
+			thoughts.Think("Obstacle has no life, walking to target.");
+			return;
+		}
+
+		if (targets.CanAttackObstacle())
+			StartAttack(obstacleLife);
 		else
-		{
-			controller.StopAttacking();
-			//if (currentTargetOutOfRange())
-			//{
-				//controller.StopMoving();
-				//SetState(State.Idle);
-			//}
-			//else
-				astarAI.SetTargetPosition(currentTarget.transform);
-		}
+			SetState(State.WalkToTarget);
 	}
 
-	private bool currentTargetOutOfRange()
+	private void UpdateAttackPlayer()
 	{
-		return Vector3.Distance(transform.position, currentTarget.transform.position) >
-		       stats.GetStatValue(StatType.aggroRange);
-	}
-
-	private void UpdateIdle()
-	{
-		var potentialTargets = PLAYERS.GetSpawnedPlayers();
-
-		if (potentialTargets.Count > 0)
-		{
-			var closest = potentialTargets[0].SpawnedPlayerGO;
-			closest = GetClosestTarget(potentialTargets, closest);
-
-			currentTarget = closest.gameObject;
-			currentTargetDefence = currentTarget.GetComponent<DefenceHandler>();
-			SetState(State.Aggro);
-		}
+		if (targets.CanAttackCurrentTarget())
+			StartAttack(targets.GetCurrentTarget());
 		else
-		{
-			var potentialTargets2 =
-				Physics2D.OverlapCircleAll(transform.position, stats.GetStatValue(StatType.activeRange), ASSETS.LevelAssets.PlayerLayer);
-			if (potentialTargets2.Length <= 0) return;
-			Wander();
-		}
+			SetState(State.WalkToTarget);
 	}
 
-	private GameObject GetClosestTarget(List<Player> potentialTargets, GameObject closest)
+	private void UpdateWalkPathToTarget()
 	{
-		foreach (var target in potentialTargets)
+		if (targets.GetCurrentTarget() == null)
 		{
-			if (target.GetComponent<IPlayerController>() is null) continue;
-			if (target.GetComponent<DefenceHandler>().isInvincible) continue;
-			var position = transform.position;
-			var distance = Vector3.Distance(target.SpawnedPlayerGO.transform.position, position);
-			var currentClosestDistance = Vector3.Distance(closest.transform.position, position);
-			if (distance < currentClosestDistance) closest = target.SpawnedPlayerGO;
+			SetState(State.Wander);
+			thoughts.Think("Lost target, wandering.");
+			return;
 		}
 
-		return closest;
-	}
-
-	private void Wander()
-	{
-		if (!wandersWhenIdle || !hasAggrodBefore) return;
-		if (currentWanderCooldown <= 0)
-			TargetNewWanderPosition();
-		else
+		if (!targets.HasLineOfSightWithCurrentTarget())
 		{
-			if (Vector3.Distance(wanderTarget.transform.position, transform.position) <
-			    stats.GetStatValue(StatType.attackRange))
-				TargetNewWanderPosition();
-			currentWanderCooldown -= Time.deltaTime;
+			if (targets.CanAttackObstacle())
+			{
+				SetState(State.AttackObstacle);
+				thoughts.Think("Can't reach target, attacking obstacle.");
+			}
+			else
+			{
+				SetState(State.Wander);
+				thoughts.Think("No line of sight to target, wandering.");
+			}
+
+			return;
 		}
+
+		if (targets.CanAttackCurrentTarget())
+		{
+			SetState(State.AttackTarget);
+			thoughts.Think("Close enough to attack target.");
+			return;
+		}
+
+		pathmaker.SetTargetPosition(targets.GetCurrentTarget().transform.position);
 	}
 
-	private void TargetNewWanderPosition()
-	{
-		currentWanderCooldown = wanderRate;
-		if (wanderTarget == null) wanderTarget = new GameObject();
+	#endregion
 
-		wanderTarget.transform.position =
-			(Vector3) Random.insideUnitCircle * stats.GetStatValue(StatType.aggroRange) + transform.position;
-		currentTarget = wanderTarget;
-		astarAI.SetTargetPosition(currentTarget.transform);
+	private void StartAttack(Life target)
+	{
+		OnStopMoving?.Invoke();
+		OnAttack?.Invoke(target);
 	}
 
 	private void SetState(State newState)
 	{
 		state = newState;
-		switch (newState)
-		{
-			case State.Idle:
-				OnIdle?.Invoke();
-				break;
-			case State.Aggro:
-				OnAggro?.Invoke();
-				break;
-		}
-	}
-
-	private bool CanAttackTarget()
-	{
-		return !currentTargetDefence.isInvincible && attackHandler.CanAttack(currentTarget.transform.position);
-	}
-
-	private void OnDrawGizmosSelected()
-	{
-		Gizmos.color = Color.yellow;
-		Gizmos.DrawWireSphere(transform.position, GetComponent<UnitStats>().GetStatValue(StatType.aggroRange));
 	}
 }

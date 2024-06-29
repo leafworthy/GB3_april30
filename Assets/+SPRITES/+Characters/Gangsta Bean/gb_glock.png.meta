@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: fb1f81bd2d9a84124aa238bbda987009
-labels:
-- Crucial
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -131,6 +129,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -141,7 +140,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: 2
-    mipBias: -100
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 0
@@ -150,7 +149,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 60
@@ -232,6 +231,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: 4
@@ -989,9 +1000,43 @@ TextureImporter:
     indices: 
     edges: []
     weights: []
-    secondaryTextures:
-    - texture: {fileID: 2800000, guid: f130daf58d42f48299084710cbca5681, type: 3}
-      name: _Emission
+    secondaryTextures: []
+    nameFileIdTable:
+      gb_glock_6: 4840206506832021895
+      gb_glock_8: -7176304944299667205
+      gb_glock_9: -473144252590809365
+      gb_glock_10: 2655211609866514219
+      gb_glock_28: 7646136360999558597
+      gb_glock_30: -5930720054870357148
+      gb_glock_34: 6408247080232971837
+      gb_glock_14: 8633622175368544258
+      gb_glock_22: -4324161557514992994
+      gb_glock_31: 724025246805450445
+      gb_glock_21: 6903515061958567236
+      gb_glock_7: -7728341318719868390
+      gb_glock_17: -5913665185570794591
+      gb_glock_19: -3884623733688446716
+      gb_glock_16: -1728712697241260058
+      gb_glock_29: -5947207082102124542
+      gb_glock_33: -6702264035388557156
+      gb_glock_5: -6028559466941662974
+      gb_glock_2: 7446690965417940057
+      gb_glock_15: 6462220761575200605
+      gb_glock_0: 3593439582023223299
+      gb_glock_11: -1683383808311441445
+      gb_glock_18: 1743749432651415430
+      gb_glock_32: -3106421944458538792
+      gb_glock_20: -6705101843040777358
+      gb_glock_3: -6498990113683999696
+      gb_glock_27: -6230814866559881728
+      gb_glock_24: -7805050032801641552
+      gb_glock_23: 1443320285115397423
+      gb_glock_12: -3917461935202304253
+      gb_glock_4: -4463709367340600523
+      gb_glock_1: 5258459416457219117
+      gb_glock_13: -4469603008859984506
+      gb_glock_25: 6894617874459376869
+      gb_glock_26: -5598172781754843586
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _PLUGINS._INPUT.Scripts;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterButton : MonoBehaviour
@@ -12,10 +12,11 @@ public class CharacterButton : MonoBehaviour
 	[SerializeField] private List<Player> playersWhoSelectedThisCharacter = new List<Player>();
 	[SerializeField] private List<Player> playersWhoHighlightedThisCharacter = new List<Player>();
 	[SerializeField] private ButtonState currentState;
-	[SerializeField] private Indicators indicators;
+	private CharacterSelectIndicators characterSelectIndicators;
 
 	private void Start()
 	{
+		characterSelectIndicators = GetComponentInChildren<CharacterSelectIndicators>();
 		UpdateIndicator();
 	}
 
@@ -28,8 +29,8 @@ public class CharacterButton : MonoBehaviour
 
 	public void HighlightButton(Player player)
 	{
-		Debug.Log("highlight");
-		player.currentButton = this;
+		
+		
 		playersWhoHighlightedThisCharacter.Add(player);
 
 		UpdateState();
@@ -43,39 +44,36 @@ public class CharacterButton : MonoBehaviour
 
 	public void SelectCharacter(Player player)
 	{
+		Debug.Log("select character");
+		if(playersWhoSelectedThisCharacter.Contains(player))
+		{
+			Debug.Log("double select character attempt");
+			return;
+		}
 		playersWhoSelectedThisCharacter.Add(player);
-		player.currentCharacter = character;
-		player.hasChosenCharacter = true;
-		indicators.Select(player.data.playerIndex);
+		UnHighlightButton(player);
+		characterSelectIndicators.Set(player.input.playerIndex, 2);
 		UpdateState();
 	}
 
 	public void DeselectCharacter(Player player)
 	{
+		Debug.Log("deselect character");
 		playersWhoSelectedThisCharacter.Remove(player);
-		player.currentCharacter = character;
-		player.hasChosenCharacter = false;
-		indicators.Select(player.data.playerIndex);
+		HighlightButton(player);
+		characterSelectIndicators.Set(player.input.playerIndex, 1);
 		UpdateState();
 	}
 
 	private void UpdateState()
 	{
-		if (playersWhoSelectedThisCharacter.Count <= 0)
+		if (playersWhoHighlightedThisCharacter.Count <= 0)
 		{
-			if (playersWhoHighlightedThisCharacter.Count <= 0)
-			{
-				SetState(ButtonState.Unhighlighted);
-			}
-			else
-			{
-				SetState(ButtonState.Highlighted);
-
-			}
+			SetState(playersWhoSelectedThisCharacter.Count <= 0 ? ButtonState.Unhighlighted : ButtonState.Selected);
 		}
 		else
 		{
-			SetState(ButtonState.Selected);
+			SetState(ButtonState.Highlighted);
 		}
 
 		UpdateIndicator();
@@ -83,40 +81,25 @@ public class CharacterButton : MonoBehaviour
 
 	public void SetPlayerColors()
 	{
-		var players = PLAYERS.GetAllPlayers();
-		var p1 = players.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.One);
-		var p2 = players.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Two);
-		var p3 = players.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Three);
-		var p4 = players.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Four);
-	 	indicators.SetColors(p1.data.playerColor, p2.data.playerColor, p3.data.playerColor, p4.data.playerColor);
+
+		characterSelectIndicators.SetColors();
 	}
 
 	private void UpdateIndicator()
 	{
-		var p1 = playersWhoHighlightedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.One);
-		var p2 = playersWhoHighlightedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Two);
-		var p3 = playersWhoHighlightedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Three);
-		var p4 = playersWhoHighlightedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Four);
-		indicators.HighlightTheTrueOnes(p1!=null, p2 != null, p3 != null, p4 != null);
-
-		if (playersWhoSelectedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.One) != null)
+		Debug.Log("update indicator function called by " + name, this);
+		characterSelectIndicators = GetComponentInChildren<CharacterSelectIndicators>();
+		characterSelectIndicators.SetAllUnhighlighted();
+		foreach (var player in playersWhoHighlightedThisCharacter)
 		{
-			indicators.Select(PlayerIndex.One);
+			characterSelectIndicators.Set(player.input.playerIndex, 1);
+			Debug.Log("Button " + character + " is highlighted for player " + player.input.playerIndex);
 		}
 
-		if (playersWhoSelectedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Two) != null)
+		foreach (var player in playersWhoSelectedThisCharacter)		
 		{
-			indicators.Select(PlayerIndex.Two);
-		}
-
-		if (playersWhoSelectedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Three) != null)
-		{
-			indicators.Select(PlayerIndex.Three);
-		}
-
-		if (playersWhoSelectedThisCharacter.FirstOrDefault(p => p.data.playerIndex == PlayerIndex.Four) != null)
-		{
-			indicators.Select(PlayerIndex.Four);
+			characterSelectIndicators.Set(player.input.playerIndex, 2);
+			Debug.Log("Button " + character + " is selected for player " + player.input.playerIndex, this);
 		}
 
 	}
@@ -127,16 +110,16 @@ public class CharacterButton : MonoBehaviour
 		switch (newState)
 		{
 			case ButtonState.Unhighlighted:
-				titleStates.SetActiveObject(0);
-				graphicStates.SetActiveObject(0);
+				titleStates.Set(0);
+				graphicStates.Set(0);
 				break;
 			case ButtonState.Highlighted:
-				titleStates.SetActiveObject(1);
-				graphicStates.SetActiveObject(1);
+				titleStates.Set(1);
+				graphicStates.Set(1);
 				break;
 			case ButtonState.Selected:
-				titleStates.SetActiveObject(2);
-				graphicStates.SetActiveObject(2);
+				titleStates.Set(2);
+				graphicStates.Set(2);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException(nameof(newState), newState, null);

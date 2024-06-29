@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AmmoDisplay : MonoBehaviour
 {
-	public AmmoBar bar;
+	[FormerlySerializedAs("healthBar"),FormerlySerializedAs("bar")] public AmmoLifeBar lifeBar;
 	public TMP_Text ammoText;
 	public TMP_Text totalText;
 	protected Ammo ammoToDisplay;
@@ -28,7 +30,7 @@ public class AmmoDisplay : MonoBehaviour
 		{
 			GreyOut();
 		}
-		else if(!ammoToDisplay.hasAmmo() && !ammoToDisplay.reloads)
+		else if(!ammoToDisplay.hasReserveAmmo() && !ammoToDisplay.reloads)
 		{
 			GreyOut();
 		}
@@ -37,7 +39,8 @@ public class AmmoDisplay : MonoBehaviour
 			Ungrey();
 		}
 
-		bar.UpdateBar(ammoToDisplay.reserveAmmo, ammoToDisplay.maxReserveAmmo);
+		if (lifeBar == null) return;
+		lifeBar.UpdateBar(ammoToDisplay.reserveAmmo, ammoToDisplay.maxReserveAmmo);
 		if (shake)
 		{
 			ShakeObject();
@@ -70,14 +73,14 @@ public class AmmoDisplay : MonoBehaviour
 		ammoToDisplay = newAmmo;
 		ammoToDisplay.OnAmmoUsed += AmmoUsedUpdateDisplay;
 		ammoToDisplay.OnAmmoGained += AmmoGainedUpdateDisplay;
-		LEVELS.OnLevelStop += CleanUp;
+		Level.OnStop += CleanUp;
 		init = true;
 		UpdateDisplay(false);
 	}
 
 
 
-	private void CleanUp()
+	private void CleanUp(Scene.Type type)
 	{
 		if (!init) return;
 		init = false;

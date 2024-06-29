@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a9a20f1912a546c888a283f6162ba7b, type: 3}
+  m_Name: Levels
+  m_EditorClassIdentifier: 
+  StartingLevelPrefab: {fileID: 5507100351343334437, guid: d2b779061d3324e46ab9257aeecccea9, type: 3}
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  EnemyLayer:
+    serializedVersion: 2
+    m_Bits: 3146368
+  LandableLayer:
+    serializedVersion: 2
+    m_Bits: 262144
+  LandedLayer:
+    serializedVersion: 2
+    m_Bits: 524288
+  BuildingLayer:
+    serializedVersion: 2
+    m_Bits: 2097664
+  JumpingLayer:
+    serializedVersion: 2
+    m_Bits: 65536
+  GroundedLayer:
+    serializedVersion: 2
+    m_Bits: 8192
+  DoorLayer:
+    serializedVersion: 2
+    m_Bits: 4194304
+  JumpableLayer:
+    serializedVersion: 2
+    m_Bits: 18874368
+  ShootableNotWalkableLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  Scene_GameSystems: GameManager
+  EnemyUnwalkableLayers:
+    serializedVersion: 2
+    m_Bits: 20189696
+  DefaultUnitData: {fileID: 11400000, guid: 8296f938af6624daebb576bb18932947, type: 2}
+  EnemyLayerOnLandable:
+    serializedVersion: 2
+    m_Bits: 1049216

@@ -1,31 +1,85 @@
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
+[Serializable]
 public class Attack
 {
-	public Attack(Vector2 damageOrigin, Vector2 damagePosition, float damageAmount = 0,  bool isPoison = false, STUNNER.StunLength stunlength =
-		              STUNNER.StunLength.Normal, bool shakes = true, Player _owner = null)
+	public static event Action<Attack> OnAnyAttack;
+	
+
+	public Attack(Life attacker, Life defender, float damageAmount)
 	{
-		DamageOrigin = damageOrigin;
-		DamagePosition = damagePosition;
-		DamageAmount = damageAmount;
-		Stunlength = stunlength;
-		Shakes = shakes;
-		IsPoison = isPoison;
-		if (_owner == null)
+		DestinationLife = defender;
+		OriginLife = attacker;
+		if(attacker != null)
 		{
-			_owner = PLAYERS.GetEnemyPlayer();
+			OriginHeight = attacker.AttackHeight;
+			OriginFloorPoint = attacker.transform.position;
+			Owner = attacker.player;
+			Owner = attacker.player;
 		}
-		Owner = _owner;
+
+		if (defender != null)
+		{
+			DestinationFloorPoint = defender.transform.position;
+			DestinationHeight = defender.AttackHeight;
+		}
+
+		DamageAmount = damageAmount;
+		
+		OnAnyAttack?.Invoke(this);
 	}
 
-	public Vector2 DamageDirection => DamagePosition - DamageOrigin;
+	public Attack(Life attacker, Vector2 attackFloorPoint, Vector2 destinationFloorPoint, Life defender, float damageAmount)
+	{
+		OriginFloorPoint = attackFloorPoint;
+		OriginLife = attacker;
+		if(attacker != null)
+		{
+			OriginHeight = attacker.AttackHeight;
+			Owner = attacker.player;
+		}
+		
+		DestinationFloorPoint = destinationFloorPoint;
+		if(defender != null)
+		{
+			DestinationLife = defender;
+			DestinationHeight = defender.AttackHeight;
+		}
+		
+		DamageAmount = damageAmount;
+		
+		OnAnyAttack?.Invoke(this);
+	}
 
+	
+
+
+
+	public Life OriginLife;
+	public Life DestinationLife;
+	public Vector2 Direction => DestinationFloorPoint - OriginFloorPoint;
+
+	public Vector2 FlippedDirection => OriginFloorPoint -DestinationFloorPoint;
+
+	public Attack GetFlippedAttack()
+	{
+		if(DestinationLife == null)
+			return new Attack(DestinationLife, OriginLife, DamageAmount);
+		return new Attack(DestinationLife, OriginLife, DamageAmount);
+	}
+	public Vector2 DestinationWithHeight => DestinationFloorPoint + new Vector2(0,DestinationHeight);
+	public Vector2 OriginWithHeight => OriginFloorPoint + new Vector2(0, OriginHeight);
+
+	public float OriginHeight;
+	public float DestinationHeight;
 	public float DamageAmount;
-	public Vector2 DamagePosition;
-	public bool IsPoison;
-	public STUNNER.StunLength Stunlength;
-	public bool Shakes;
-	public Vector2 DamageOrigin;
+	public bool IsPoison; 
+	
+	[FormerlySerializedAs("DestinationFlootPoint"),FormerlySerializedAs("Destination")] public Vector2 DestinationFloorPoint;
+	[FormerlySerializedAs("Origin")] public Vector2 OriginFloorPoint;
 	public Player Owner;
-	public Vector3 HitPosition;
+	public Color color = Color.red;
+	public bool IsDamaging;
 }

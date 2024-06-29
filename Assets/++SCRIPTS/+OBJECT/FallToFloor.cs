@@ -1,42 +1,58 @@
 using UnityEngine;
 
-public class FallToFloor : MonoBehaviour
+[RequireComponent(typeof(MoveAbility)), RequireComponent(typeof(JumpAbility))]
+public class FallToFloor : ThingWithHeight
 {
-	public float rotationRate = 135;
+	public SpriteRenderer spriteRendererToTint;
+	protected JumpAbility jumper;
+	protected MoveAbility mover;
+	protected float rotationRate = 100;
+	private float RotationRate;
+	private float PushSpeed = 25;
+	private float bounceSpeed = 1;
+	private float jumpSpeed = 1;
 
-
-	private Vector3 velocity;
-	private float minVelocity = .5f;
-	private float maxVelocity = 1f;
-	private float floorPoint;
-	private bool hasLanded;
-	public bool hasDeathTime = true;
-	private SpriteRenderer sprite;
-	private float rotationVeloctiy;
-	private bool hasFired;
-
-	public void Fire(Vector3 shootAngle, float ForceMultiplier = 1, float distanceToFloor = 5)
+	public void Fire(Vector3 shootAngle, Color color, float height)
 	{
-		hasLanded = false;
-		velocity = new Vector3(
-			           Random.Range(minVelocity, maxVelocity) * shootAngle.x*3,
-			           Random.Range(minVelocity, maxVelocity) * shootAngle.y * -3, 0f) *
-		           ForceMultiplier;
-		rotationRate = velocity.x * rotationRate;
-		floorPoint = transform.position.y - distanceToFloor - Random.Range(0, distanceToFloor / 2)- velocity.y*ForceMultiplier;
-
+		RotationRate = Random.Range(0, rotationRate);
+		jumper = GetComponent<JumpAbility>();
+		jumper.OnBounce += Jumper_OnBounce;
+		mover = GetComponent<MoveAbility>();
+		jumper.Jump(height, jumpSpeed, bounceSpeed);
+		mover.SetDragging(false);
+		mover.Push(shootAngle, Random.Range(0, PushSpeed));
+		spriteRendererToTint.color = color;
 	}
 
-	private void Update()
+	private void Jumper_OnBounce()
 	{
-		if (hasLanded)
-			return;
-		Transform transform1;
-		(transform1 = transform).Rotate(new Vector3(0, 0, rotationRate * Time.deltaTime * 10));
-		velocity -= LEVELS.Gravity * Time.deltaTime;
-		transform1.position += velocity;
-		if (!(transform.position.y <= floorPoint)) return;
-		hasLanded = true;
-		if (hasDeathTime) MAKER.Unmake(gameObject, 3f);
+		mover.SetDragging(true);
+	}
+
+	public void Fire(Attack attack, bool isFlipped = false)
+	{
+		RotationRate = Random.Range(0, rotationRate);
+		jumper = GetComponent<JumpAbility>();
+		mover = GetComponent<MoveAbility>();
+		jumper.Jump(attack.OriginHeight, Random.Range(0, bounceSpeed));
+		mover.SetDragging(false);
+		mover.Push(isFlipped ? attack.FlippedDirection : attack.Direction.normalized + new Vector2(Random.Range(-.5f, .5f), Random.Range(-.5f, 5f)),
+			Random.Range(0, PushSpeed));
+	}
+
+	protected override void FixedUpdate()
+	{
+		if (mover == null) mover = GetComponent<MoveAbility>();
+		if (jumper == null) jumper = GetComponent<JumpAbility>();
+		base.FixedUpdate();
+		if (jumper.IsJumping)
+			Rotate(RotationRate);
+		else
+			mover.SetDragging(true);
+	}
+
+	private void Rotate(float rotationSpeed)
+	{
+		JumpObject.transform.Rotate(new Vector3(0, 0, rotationSpeed * Time.fixedDeltaTime * 10));
 	}
 }

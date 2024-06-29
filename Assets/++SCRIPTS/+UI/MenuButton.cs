@@ -8,7 +8,13 @@ public class MenuButton : MonoBehaviour
 		Restart,
 		Resume,
 		MainMenu,
-		Quit
+		Quit,
+		Health,
+		Ammo,
+		Damage,
+		Speed,
+		Nades,
+		Gas
 	}
 	public Sprite OnSprite;
 	public Sprite OffSprite;
@@ -17,16 +23,16 @@ public class MenuButton : MonoBehaviour
 
 	private void Awake()
 	{
-		sprite = GetComponent<Image>();
+		if(sprite == null) sprite = GetComponentInChildren<Image>();
 		UnHighlight();
 	}
 
-	public void Highlight()
+	public virtual void Highlight()
 	{
 		sprite.sprite = OnSprite;
 	}
 
-	public void UnHighlight()
+	public virtual void UnHighlight()
 	{
 		sprite.sprite = OffSprite;
 	}

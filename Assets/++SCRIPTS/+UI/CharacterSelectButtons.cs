@@ -1,0 +1,104 @@
+﻿using System;
+using System.Runtime.CompilerServices;
+using UnityEngine;
+using UnityEngine.UI;
+
+
+namespace newInput.Scripts
+{
+	public class CharacterSelectButtons : MonoBehaviour
+	{
+		public CharacterSelectButton DefaultButton;
+		public event Action<Character> OnCharacterChosen;
+
+		private CharacterSelectButton currentlySelectedButton;
+		private bool hasSelected;
+		private bool hasJoined;
+
+		[SerializeField] private CharacterSelectButton[] buttons;
+
+		public void Init(Player player)
+		{
+			hasSelected = false;
+			player.Controller.UIAxis.OnLeft += OnLeft;
+			player.Controller.UIAxis.OnRight += OnRight;
+			player.Controller.Select.OnPress += OnSelect;
+			player.Controller.Cancel.OnPress += OnCancel;
+			buttons[0] = DefaultButton;
+			DeselectAllButtons();
+			currentlySelectedButton = DefaultButton;
+			currentlySelectedButton.Highlight();
+
+		}
+
+		private void DeselectAllButtons()
+		{
+			foreach (var button in buttons)
+			{
+				button.Unhighlight();
+				button.Deselect();
+			}
+		}
+
+		private void OnCancel(NewControlButton obj)
+		{
+			if (!hasSelected) return;
+			hasSelected = false;
+			currentlySelectedButton.Deselect();
+		}
+
+
+		private void OnSelect(NewControlButton obj)
+		{
+			Debug.Log("select");
+			if (SelectButtonIsPressedFromJoining()) return;
+			if (hasSelected)
+			{
+				ChooseCharacter();
+				return;
+			}
+
+			SelectCharacter();
+		}
+
+		private bool SelectButtonIsPressedFromJoining()
+		{
+			if (hasJoined) return false;
+			Debug.Log("Joining");
+			hasJoined = true;
+			return true;
+
+		}
+
+		private void SelectCharacter()
+		{
+			hasSelected = true;
+			currentlySelectedButton.Select();
+		}
+
+		private void ChooseCharacter()
+		{
+			currentlySelectedButton.Unhighlight();
+			OnCharacterChosen?.Invoke(currentlySelectedButton.character);
+		}
+
+		private void OnRight(NewInputAxis obj)
+		{
+			if (hasSelected) return;
+			hasJoined = true;
+			currentlySelectedButton.Unhighlight();
+			currentlySelectedButton = currentlySelectedButton.buttonToRight;
+			Debug.Log(currentlySelectedButton.character.ToString());
+			currentlySelectedButton.Highlight();
+		}
+
+		private void OnLeft(NewInputAxis obj)
+		{
+			if (hasSelected) return;
+			hasJoined = true;
+			currentlySelectedButton.Unhighlight();
+			currentlySelectedButton = currentlySelectedButton.buttonToLeft;
+			currentlySelectedButton.Highlight();
+		}
+	}
+}

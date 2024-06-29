@@ -4,7 +4,6 @@ using UnityEngine;
 [Serializable]
 public class UnitStat
 {
-	public StatType type;
 	public float value;
 	private float originalValue;
 	private bool originalValueHasBeenSet;
@@ -14,7 +13,6 @@ public class UnitStat
 
 	public UnitStat(UnitStat stat)
 	{
-		type = stat.type;
 		value = stat.GetValue();
 		maxValue = stat.maxValue;
 		minValue = stat.minValue;

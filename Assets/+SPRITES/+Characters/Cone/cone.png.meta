@@ -339,6 +339,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -349,7 +350,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: 2
-    mipBias: -100
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 0
@@ -358,7 +359,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -440,6 +441,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: 4
@@ -2668,6 +2681,112 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      cone_12: -8956806827693236254
+      cone_14: 7339337938630855539
+      cone_45: 6692262208895618019
+      cone_18: -6370923662551002893
+      cone_22: -771662389393496871
+      cone_78: -7948883077395074075
+      cone_77: -664526028057691179
+      cone_61: -6574222817073742551
+      cone_85: 6342667300485827104
+      cone_50: 4410104300482223647
+      cone_44: 1126918187919168506
+      cone_83: -8588484406875420662
+      cone_13: -3551114673114997188
+      cone_88: -237308080661637375
+      cone_101: -1287489999901537913
+      cone_42: 7321959860846677086
+      cone_79: 3033969489037203041
+      cone_48: -4282467677810955947
+      cone_102: -8610462483987950219
+      cone_89: 5006707010301427055
+      cone_71: -2731568435723567818
+      cone_17: -826987219924167877
+      cone_8: 1313867544056458468
+      cone_35: 5181677040943786087
+      cone_87: -4305926786371532551
+      cone_62: -28846551985039428
+      cone_37: -7491194087716811987
+      cone_76: -1722786057736169768
+      cone_67: -8164597622217277551
+      cone_29: 5443397272617740577
+      cone_86: -1037556987646448852
+      cone_100: 7655204208514048900
+      cone_15: 655544038524279925
+      cone_11: 3683452542727345809
+      cone_93: 7724709421532266529
+      cone_98: -316614207155294743
+      cone_9: 2563560375088470333
+      cone_19: 2122649997337869057
+      cone_70: 120315940244973604
+      cone_36: -3614805607440158499
+      cone_39: 1615441999276087209
+      cone_47: -5447577680573299986
+      cone_56: -8867702687258266888
+      cone_94: 5969885025410600837
+      cone_27: -3794382312801685037
+      cone_6: -4043385116848574810
+      cone_7: 961158504849093811
+      cone_49: 6336206327940164231
+      cone_31: 4213198211430841968
+      cone_65: -3521676921855834068
+      cone_92: 8802043647809992999
+      cone_51: -4278874087278426079
+      cone_95: -2967896087413127017
+      cone_21: -3935350817970409821
+      cone_104: 449514918121408418
+      cone_23: -3826504796897447945
+      cone_75: 8885945491501605536
+      cone_55: 6939849760204734234
+      cone_97: -711820154932406714
+      cone_58: 5750976687926110148
+      cone_26: -6581963370156847279
+      cone_46: -7855415847266532834
+      cone_103: 6946780385002287185
+      cone_5: -6369784969811496610
+      cone_69: 5781195873805275603
+      cone_3: -6370589699592846017
+      cone_59: -6284516536179853505
+      cone_2: 6000786322363176334
+      cone_63: 2247505835371905098
+      cone_84: 651686661453446324
+      cone_28: -1588919364764005686
+      cone_4: 1741074583150444418
+      cone_60: 8385050406406109476
+      cone_40: -1329254513989507341
+      cone_30: 6668347292306373730
+      cone_1: -119008986782384385
+      cone_81: 407885539479519706
+      cone_10: 7641928759793918279
+      cone_20: 2783525924628548753
+      cone_43: 6436538843084746719
+      cone_66: -6721961091601849561
+      cone_16: 7084867395593478288
+      cone_53: -5669893537075691671
+      cone_57: 1117084312194458354
+      cone_96: 3222400312234142067
+      cone_68: 6774179833640290099
+      cone_82: 6058018317129448128
+      cone_72: -3361840214572308772
+      cone_74: -8992904465135046054
+      cone_33: 8633162670395976172
+      cone_54: 3345819294168478372
+      cone_0: 7863867589095094433
+      cone_64: -6365095468847246875
+      cone_38: -6826917855271593167
+      cone_52: -3763184789787440470
+      cone_80: -7274856327130849628
+      cone_90: 2744351678258712957
+      cone_91: -6904572940445280790
+      cone_24: -2826218686519107936
+      cone_34: 736917826694938058
+      cone_32: 2389066841659622356
+      cone_73: 8478918334318302654
+      cone_99: -673020093313956827
+      cone_25: -8211092813343881559
+      cone_41: 5712021018610752600
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

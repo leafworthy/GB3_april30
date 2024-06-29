@@ -15,6 +15,10 @@ TagManager:
   - top
   - bottom
   - SpawnPoint
+  - MenuCamera
+  - LevelCamera
+  - GameCamera
+  - Shadow
   layers:
   - Default
   - TransparentFX
@@ -22,32 +26,32 @@ TagManager:
   - 
   - Water
   - UI
-  - Player
-  - ShootableOutside
+  - PlayerHitbox
+  - EnemyHitbox
   - Dead
-  - Building
+  - BuildingWalls
   - ShadowCollider
-  - 
-  - 
-  - 
-  - 
-  - 
-  - Jumping
-  - Object
-  - Landable
-  - Landed
-  - 
-  - 
-  - 
+  - EnemyFoot
+  - ShootButNotWalk
+  - PlayerFoot
+  - LightingSystem
+  - ZombieAttractor
+  - PlayerJumping
+  - 2DWater
+  - PlayerLandable
+  - PlayerLanded
+  - BuildingEntrance
+  - Jumpable
+  - PlayerInteractable
   - Pickups
-  - PlayerDashLayer
-  - EnemyDashLayer
+  - JumpableAndShootButNotWalk
+  - BuildingEntranceShootThrough
   - Lighting Internal (Game)
   - Lighting Internal (Scene)
   - PlayerBounds
+  - CameraCollider
   - 
-  - 
-  - 
+  - SortingCollider
   m_SortingLayers:
   - name: BG
     uniqueID: 3548630837
@@ -81,4 +85,7 @@ TagManager:
     locked: 0
   - name: CharacterSelect
     uniqueID: 939776681
+    locked: 0
+  - name: Light Layer 1
+    uniqueID: 2490685677
     locked: 0

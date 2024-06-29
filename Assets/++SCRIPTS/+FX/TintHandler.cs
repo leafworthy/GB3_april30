@@ -1,12 +1,28 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TintHandler : MonoBehaviour
 {
-	public List<Renderer> renderersToTint = new List<Renderer>();
+	private List<Renderer> renderersToTint = new List<Renderer>();
 	private Color materialTintColor;
-	private float tintFadeSpeed = 6f;
+	private const float tintFadeSpeed = 6f;
 	private static readonly int Tint = Shader.PropertyToID("_Tint");
+	private Life life;
+
+	
+	public void OnEnable()
+	{
+		renderersToTint = GetComponentsInChildren<Renderer>().ToList();
+		life = GetComponent<Life>();
+		if (life == null) return;
+		life.OnDamaged += Life_Damaged;
+	}
+
+	private void Life_Damaged(Attack attack)
+	{
+		StartTint(attack.color);
+	}
 
 	public void StartTint(Color tintColor)
 	{

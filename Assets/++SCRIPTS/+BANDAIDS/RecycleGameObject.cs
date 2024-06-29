@@ -1,34 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using UnityEngine;
-
 
 public class RecycleGameObject : MonoBehaviour
 {
-	private List<IRecyclable> RecyclableComponents = new List<IRecyclable>();
+	public event Action OnActivate;
+	public event Action OnCleanup; 
 	public void ActivateGameObject()
 	{
-		RecyclableComponents = GetComponentsInChildren<IRecyclable>().ToList();
 		gameObject.SetActive(true);
-		foreach (var recyclableComponent in RecyclableComponents)
-		{
-			recyclableComponent.Recycle();
-		}
+		OnActivate?.Invoke();
 	}
 
 	public void DeactivateGameObject()
 	{
-
-		foreach (var recyclableComponent in RecyclableComponents)
-		{
-			recyclableComponent.Breakdown();
-		}
+		OnCleanup?.Invoke();
 		gameObject.SetActive(false);
 	}
+
+
 }
 
-public interface IRecyclable
-{
-	void Recycle();
-	void Breakdown();
-}
+

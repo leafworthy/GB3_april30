@@ -125,10 +125,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -139,7 +141,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: 2
-    mipBias: -100
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 0
@@ -148,7 +150,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 60
@@ -167,6 +169,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -230,6 +233,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: 4
@@ -987,12 +1002,45 @@ TextureImporter:
     indices: 
     edges: []
     weights: []
-    secondaryTextures:
-    - texture: {fileID: 2800000, guid: cc398e161f8ce41f1932579fba85b156, type: 3}
-      name: _Emission
+    secondaryTextures: []
+    nameFileIdTable:
+      gb_glock_left_31: 5875093501941731442
+      gb_glock_left_2: -5373443142998392201
+      gb_glock_left_17: -1837960381612688382
+      gb_glock_left_18: -6840619336436357421
+      gb_glock_left_34: -6106195063670831165
+      gb_glock_left_10: 3078508462970519874
+      gb_glock_left_23: -4027168077938766484
+      gb_glock_left_8: 1529794075285748041
+      gb_glock_left_28: -2857919593709954923
+      gb_glock_left_3: -3675328564216078023
+      gb_glock_left_29: 6678219820694325091
+      gb_glock_left_6: 7230655711041857398
+      gb_glock_left_7: 4024268292782644466
+      gb_glock_left_9: -3992702661823585088
+      gb_glock_left_14: 427445513029727254
+      gb_glock_left_24: -4274030351174800127
+      gb_glock_left_22: 6884027203254438582
+      gb_glock_left_27: -8491999312357358969
+      gb_glock_left_15: -4964981700791890539
+      gb_glock_left_1: -3141806895195301374
+      gb_glock_left_0: 8074826020220337574
+      gb_glock_left_26: -2296503916302779502
+      gb_glock_left_19: -4334314488479319346
+      gb_glock_left_20: -5959553144997284465
+      gb_glock_left_33: 2482556865421277181
+      gb_glock_left_13: 1288508645976408573
+      gb_glock_left_11: -440994638008188404
+      gb_glock_left_30: 8669920629278170247
+      gb_glock_left_25: 7267765522430866763
+      gb_glock_left_12: 3323425936019023302
+      gb_glock_left_21: 5270959739097526105
+      gb_glock_left_4: 4416559649185548544
+      gb_glock_left_32: -3253307708108923258
+      gb_glock_left_5: -1102455200410041509
+      gb_glock_left_16: -8976327144338371804
   spritePackingTag: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

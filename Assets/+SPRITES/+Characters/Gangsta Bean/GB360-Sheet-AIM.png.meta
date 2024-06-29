@@ -110,10 +110,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+    flipGreenChannel: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -124,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: 2
-    mipBias: -100
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 0
@@ -133,7 +135,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -152,6 +154,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -215,6 +218,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: -1
@@ -867,12 +882,40 @@ TextureImporter:
     indices: 
     edges: []
     weights: []
-    secondaryTextures:
-    - texture: {fileID: 2800000, guid: ff0ca999d62644914b092c93b93e2da1, type: 3}
-      name: _Emission
+    secondaryTextures: []
+    nameFileIdTable:
+      GB360-Sheet-AIM_10: -145582216488087576
+      GB360-Sheet-AIM_27: -2033649755031377421
+      GB360-Sheet-AIM_4: 3480055836076134612
+      GB360-Sheet-AIM_0: 9163940951147961205
+      GB360-Sheet-AIM_3: -3243921302204856719
+      GB360-Sheet-AIM_25: -4677751012119814870
+      GB360-Sheet-AIM_23: -8694100375823878247
+      GB360-Sheet-AIM_15: -179321355471414254
+      GB360-Sheet-AIM_24: -7011107681119011710
+      GB360-Sheet-AIM_6: -4985923310444829349
+      GB360-Sheet-AIM_13: 5913490764562369595
+      GB360-Sheet-AIM_17: -7107979933429376070
+      GB360-Sheet-AIM_9: -1748777528971634015
+      GB360-Sheet-AIM_14: -8897620030242247550
+      GB360-Sheet-AIM_22: -3829654659118421478
+      GB360-Sheet-AIM_11: 6779349119209818420
+      GB360-Sheet-AIM_29: 3562058998794942941
+      GB360-Sheet-AIM_26: -1705204053616893600
+      GB360-Sheet-AIM_20: -2894474869381553111
+      GB360-Sheet-AIM_28: 7045213862755581129
+      GB360-Sheet-AIM_1: -617263000680729957
+      GB360-Sheet-AIM_2: 6240039638883290918
+      GB360-Sheet-AIM_21: -6181783012193037946
+      GB360-Sheet-AIM_5: -8270031342742188765
+      GB360-Sheet-AIM_16: -844480309048383381
+      GB360-Sheet-AIM_18: -8164245163452825427
+      GB360-Sheet-AIM_7: 5559124835884878018
+      GB360-Sheet-AIM_8: -9003137097431610899
+      GB360-Sheet-AIM_12: 1343976837207277387
+      GB360-Sheet-AIM_19: -5867777503113883441
   spritePackingTag: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

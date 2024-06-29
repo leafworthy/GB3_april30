@@ -180,6 +180,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -190,7 +191,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: 0
     aniso: 2
-    mipBias: -100
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 0
@@ -199,7 +200,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -281,6 +282,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: -1
@@ -1396,6 +1409,59 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      brock-all-animations_30: -6162799144748617630
+      brock-all-animations_17: 3432251044278758857
+      brock-all-animations_51: -274200743633927372
+      brock-all-animations_4: 7039712764132991997
+      brock-all-animations_15: 113730462092678583
+      brock-all-animations_7: 3400167740837527808
+      brock-all-animations_19: 8854324027383015558
+      brock-all-animations_21: 3013309964630616156
+      brock-all-animations_39: -6983418020070167889
+      brock-all-animations_38: -985543327147636677
+      brock-all-animations_32: 3829347862601362700
+      brock-all-animations_6: 4044016410186881304
+      brock-all-animations_45: -3406940239795072195
+      brock-all-animations_48: -8655762317520839033
+      brock-all-animations_37: -5090152617807515114
+      brock-all-animations_16: -3068070459674008680
+      brock-all-animations_20: -4808795722355681951
+      brock-all-animations_13: -5457933556242064997
+      brock-all-animations_29: -4915668624530178131
+      brock-all-animations_10: -1398008715071956898
+      brock-all-animations_36: 533356704718847367
+      brock-all-animations_42: 5922383844713066230
+      brock-all-animations_47: -8758664448399173144
+      brock-all-animations_31: 2727979052977603302
+      brock-all-animations_18: -5306739645468663419
+      brock-all-animations_5: 2799204588299223851
+      brock-all-animations_34: -478168470349156134
+      brock-all-animations_11: 3031065606366960394
+      brock-all-animations_46: 7783103284845452199
+      brock-all-animations_22: -5532705713808772309
+      brock-all-animations_9: 7841170949089425504
+      brock-all-animations_23: -5214298697278829642
+      brock-all-animations_25: 7408526629049748536
+      brock-all-animations_24: -8702366467414363340
+      brock-all-animations_35: 8442208855214066289
+      brock-all-animations_28: 4282819986540818620
+      brock-all-animations_8: 497914379813141191
+      brock-all-animations_1: 562645793203411937
+      brock-all-animations_12: -7647376811517892258
+      brock-all-animations_2: 5006809687900207938
+      brock-all-animations_0: 1618051251511694780
+      brock-all-animations_33: 7470185889051683147
+      brock-all-animations_44: -2993938981458370634
+      brock-all-animations_14: -6697704742167386147
+      brock-all-animations_26: -4856420109764524552
+      brock-all-animations_27: 1475161322373809713
+      brock-all-animations_49: -1724215027910691873
+      brock-all-animations_40: -6375067835872213311
+      brock-all-animations_3: 6245431799213058491
+      brock-all-animations_50: 762711635332438707
+      brock-all-animations_41: -2313973259440001440
+      brock-all-animations_43: 5518357746481752092
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

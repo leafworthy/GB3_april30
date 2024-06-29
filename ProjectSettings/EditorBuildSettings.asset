@@ -5,7 +5,20 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: Assets/+SCENES/LoadingScene.unity
+    guid: 50807668ccdf143e6b11fad544319b7d
   - enabled: 1
-    path: Assets/+SCENES/++FULL GAME.unity
-    guid: 55ce5afc69665486fb7ecac0462558b3
-  m_configObjects: {}
+    path: Assets/+SCENES/InLevel.unity
+    guid: a1dd112c25f554469a0e2ec9b7bb9d81
+  - enabled: 1
+    path: Assets/+SCENES/GameManager.unity
+    guid: bd2663378e1d2cf46baf99befb1bcaa1
+  - enabled: 1
+    path: Assets/+SCENES/MainMenu.unity
+    guid: 7d7fe2db287cc45f3a3f365cbea342b5
+  - enabled: 1
+    path: Assets/+SCENES/CharacterSelect.unity
+    guid: 4d3845097a89b458c9eb1a1bc80cd84e
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 7451d5faa9e87684da376e885706f830, type: 2}

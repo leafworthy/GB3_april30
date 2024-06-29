@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.482, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3796314483023015472}
   m_RootOrder: 1
@@ -56,6 +57,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3796314483023015472}
   m_RootOrder: 0
@@ -90,6 +92,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9222202420131561440}
   - {fileID: 8820576960486233041}
@@ -108,6 +111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34fb312cd986244928d19bd224fec79b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  front: {fileID: 5394692465716414664}
+  back: {fileID: 5055497244207480176}
 --- !u!114 &4747522151463605462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,9 +191,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMovable: 1
   renderBelowAll: 0
-  movingDependencies: []
+  sortingBounds: {fileID: 0}
+  renderBelowSortingOrder: 0
   sortType: 1
-  SorterPositionOffset: {fileID: 5394692465716414664}
-  SorterPositionOffset2: {fileID: 5055497244207480176}
+  SorterPositionOffset: {x: 0, y: 0, z: 0}
+  SorterPositionOffset2: {x: 0, y: 0, z: 0}
   renderersToSort:
   - {fileID: 1258887038579101219}
+  renderAboveAll: 0

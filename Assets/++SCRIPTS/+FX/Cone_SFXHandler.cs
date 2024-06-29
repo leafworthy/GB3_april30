@@ -2,17 +2,38 @@ using UnityEngine;
 
 public class Cone_SFXHandler : MonoBehaviour
 {
+	private Animations anim;
 	private AnimationEvents animEvents;
+	private RecycleGameObject recycle;
 
 	private void Awake()
 	{
-		animEvents = GetComponentInChildren<AnimationEvents>();
+		
+		Activate();
+	}
+
+	private void Activate()
+	{
+		anim = GetComponent<Animations>();
+		animEvents = anim.animEvents;
 		animEvents.OnAttackHit += Anim_OnAttackHit;
 		animEvents.OnStep += Anim_OnStep;
 		animEvents.OnRoar += Anim_OnRoar;
 		animEvents.OnHitStart += Anim_OnHit;
 		animEvents.OnDieStart += Anim_OnDie;
 	}
+
+	private void CleanUp()
+	{
+		animEvents.OnAttackHit -= Anim_OnAttackHit;
+		animEvents.OnStep -= Anim_OnStep;
+		animEvents.OnRoar -= Anim_OnRoar;
+		animEvents.OnHitStart -= Anim_OnHit;
+		animEvents.OnDieStart -= Anim_OnDie;
+	}
+
+
+
 
 	private void Anim_OnDie()
 	{

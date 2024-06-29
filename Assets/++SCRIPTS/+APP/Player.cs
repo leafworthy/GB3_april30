@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using newInput.Scripts;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public enum Character
 {
@@ -12,162 +16,133 @@ public enum Character
 
 public class Player : MonoBehaviour
 {
-	public PlayerData data;
+	public enum State
+	{
+		Unjoined,
+		SelectingCharacter,
+		Selected,
+		Alive,
+		Dead
+	}
 
-	public CharacterButton currentButton;
+	public State state;
+	private PlayerData data;
+
+	public CharacterButton CurrentButton;
 	public GameObject SpawnedPlayerGO;
-	private DefenceHandler spawnedPlayerDefence;
-	private IPlayerAttackHandler attackHandler;
-	private IPlayerMenuControl menuControl;
+	public PlayerController Controller;
 
-	public bool hasJoined;
-	public bool hasChosenCharacter;
-	public bool isDead;
+	public Life spawnedPlayerDefence;
+
 	public int buttonIndex;
-	public bool hasSpawned;
-	public bool isJoining;
-	public Character currentCharacter;
+	private UnitStats unitStats;
+	[FormerlySerializedAs("currentCharacter")]
+	public Character CurrentCharacter;
 
-	public event Action<Player> OnDead;
-	public event Action<Player> MoveRight;
-	public event Action<Player> MoveLeft;
-	public event Action<Player> MoveUp;
-	public event Action<Player> MoveDown;
-	public event Action<Player> PressA;
-	public event Action<Player> PressB;
-	public event Action<Player> PressPause;
+	private PlayerSayer sayer;
+	public PlayerInput input;
+	public bool isUsingMouse;
+	public Color color;
+	public string PlayerName = "unnamed";
+	public static event Action<Player> OnPlayerDies;
+	private GunAimer aimer;
+
+	public PlayerStatsHandler playerStats;
+	public int playerIndex;
+	public bool hasKey;
+	public List<PlayerInteractable> interactables = new();
+	private PlayerInteractable selectedInteractable;
+
+	public bool IsPlayer() => data.isPlayer;
 
 	private void Start()
 	{
-		SetupMenuControl();
-
-		LEVELS.OnLevelStop += CleanUp;
+		DontDestroyOnLoad(gameObject);
 	}
 
-	private void SetupMenuControl()
+	private void FixedUpdate()
 	{
-		menuControl = data.isUsingKeyboard
-			? (IPlayerMenuControl) new PlayerMenuKeyboardControl(this)
-			: new PlayerMenuRemoteControl(this);
-
-		menuControl.MenuMoveDown += OnMoveDown;
-		menuControl.MenuMoveUp += OnMoveUp;
-		menuControl.MenuMoveLeft += OnMoveLeft;
-		menuControl.MenuMoveRight += OnMoveRight;
-		menuControl.MenuPressA += OnPressA;
-		menuControl.MenuPressB += OnPressB;
-		menuControl.MenuPressPause += OnPressPause;
+		if (SpawnedPlayerGO != null)
+			SelectClosestInteractable();
 	}
 
-	private void OnPressPause(Player obj)
+	public void AddInteractable(PlayerInteractable interactable)
 	{
-		PressPause?.Invoke(obj);
+		if (interactable == null) return;
+		if (interactables.Contains(interactable)) return;
+		interactables.Add(interactable);
+		SelectClosestInteractable();
 	}
 
-	private void OnMoveUp(Player obj)
+	private void SelectClosestInteractable()
 	{
-		MoveUp?.Invoke(obj);
+		if (interactables.Count == 0) return;
+		var closest = interactables[0];
+		var closestDistance = Vector2.Distance(closest.GetInteractionPosition(), GetAimPosition());
+		foreach (var interactable in interactables)
+		{
+			var distance = Vector2.Distance(interactable.GetInteractionPosition(), GetAimPosition());
+
+			if (!(distance < closestDistance)) continue;
+			closest = interactable;
+			closestDistance = distance;
+		}
+
+		if (selectedInteractable != null) selectedInteractable.Deselect(this);
+		selectedInteractable = closest;
+		selectedInteractable.Select(this);
 	}
 
-	private void OnMoveDown(Player obj)
+	private Vector2 GetAimPosition()
 	{
-		MoveDown?.Invoke(obj);
+		if (aimer == null) aimer = SpawnedPlayerGO.GetComponentInChildren<GunAimer>();
+		return aimer.GetAimPoint();
 	}
 
-	private void OnPressA(Player obj)
+	public void RemoveInteractable(PlayerInteractable interactable)
 	{
-		PressA?.Invoke(obj);
+		if (interactable == null) return;
+		if (interactable == selectedInteractable) interactable.Deselect(this);
+		interactables.Remove(interactable);
+		SelectClosestInteractable();
 	}
 
-	private void OnPressB(Player obj)
+	private void SpawnedPlayer_Dead(Player player)
 	{
-		PressB?.Invoke(obj);
+		state = State.Dead;
+		OnPlayerDies?.Invoke(this);
 	}
 
-	private void OnMoveRight(Player obj)
+	private void OnLevelStop_CleanUp(Scene.Type type)
 	{
-		MoveRight?.Invoke(obj);
+		state = State.SelectingCharacter;
+		CurrentButton = null;
+		SpawnedPlayerGO = null;
+		Level.OnStop -= OnLevelStop_CleanUp;
+		if (spawnedPlayerDefence != null) spawnedPlayerDefence.OnDead -= SpawnedPlayer_Dead;
 	}
 
-	private void OnMoveLeft(Player obj)
+	public void Spawn(Vector2 SpawnPoint)
 	{
-		MoveLeft?.Invoke(obj);
-	}
-
-	public void JoinSelection(CharacterButton firstButton)
-	{
-		hasJoined = true;
-		firstButton.HighlightButton(this);
-	}
-
-	private void Update()
-	{
-		menuControl?.UpdateButtons();
+		state = State.Alive;
+		var spawnedPlayerGO = Instantiate(GetPrefabFromCharacter(this));
+		spawnedPlayerGO.transform.position = SpawnPoint;
+		SetSpawnedPlayerGO(spawnedPlayerGO);
 	}
 
 	private void SetSpawnedPlayerGO(GameObject newGO)
 	{
 		SpawnedPlayerGO = newGO;
-		spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<DefenceHandler>();
-		spawnedPlayerDefence.OnDead += Dead;
-		var stats = SpawnedPlayerGO.GetComponent<UnitStats>();
-		stats.SetPlayer(this);
-	}
-
-
-	private void Dead()
-	{
-		OnDead?.Invoke(this);
-	}
-
-	private void CleanUp()
-	{
-		Debug.Log("player cleanup");
-		hasJoined = false;
-		hasSpawned = false;
-		currentButton = null;
-		hasChosenCharacter = false;
-		SpawnedPlayerGO = null;
-		isDead = false;
-		if (spawnedPlayerDefence != null)
-		{
-			spawnedPlayerDefence.OnDead -= Dead;
-		}
-
-		if (menuControl == null) return;
-		menuControl.MenuMoveDown -= OnMoveDown;
-		menuControl.MenuMoveUp -= OnMoveUp;
-		menuControl.MenuMoveLeft -= OnMoveLeft;
-		menuControl.MenuMoveRight -= OnMoveRight;
-		menuControl.MenuPressA -= OnPressA;
-		menuControl.MenuPressB -= OnPressB;
-		menuControl.MenuPressPause -= OnPressPause;
-		SetupMenuControl();
-	}
-
-	private void SetController()
-	{
-		IPlayerController newPlayerController;
-		if (data.isUsingKeyboard)
-			newPlayerController = SpawnedPlayerGO.AddComponent<PlayerKeyboardMouseController>();
-		else
-			newPlayerController = SpawnedPlayerGO.AddComponent<PlayerRemoteController>();
-		newPlayerController.SetPlayer(this);
-	}
-
-	public void Spawn(Vector2 SpawnPoint)
-	{
-		if (hasSpawned) return;
-		hasSpawned = true;
-
-		var spawnedPlayerGO = MAKER.Make(GetPrefabFromCharacter(this), SpawnPoint);
-		SetSpawnedPlayerGO(spawnedPlayerGO);
-		SetController();
+		spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
+		spawnedPlayerDefence.OnDead += SpawnedPlayer_Dead;
+		unitStats = SpawnedPlayerGO.GetComponent<UnitStats>();
+		unitStats.SetPlayer(this);
+		sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
 	}
 
 	private static GameObject GetPrefabFromCharacter(Player player)
 	{
-		switch (player.currentCharacter)
+		switch (player.CurrentCharacter)
 		{
 			case Character.Karrot:
 				return ASSETS.Players.GangstaBeanPlayerPrefab;
@@ -181,4 +156,72 @@ public class Player : MonoBehaviour
 
 		return null;
 	}
+
+	public void Say(string message, float sayTimeInSeconds = 3)
+	{
+		if (sayer == null) sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
+		sayer.Say(message, sayTimeInSeconds);
+	}
+
+	public void Join(PlayerInput playerInput, PlayerData playerData, int index)
+	{
+		data = playerData;
+		if (playerInput == null)
+		{
+			if (!data.isPlayer)
+			{
+				PlayerName = "Enemy Player" + index;
+				return;
+			}
+		}
+		else
+			playerIndex = playerInput != null ? playerInput.playerIndex : 5;
+
+		color = data.playerColor;
+
+		PlayerName = "Player " + index;
+		input = playerInput;
+		Controller = GetComponent<PlayerController>();
+		Controller.InitializeAndLinkToPlayer(this);
+		isUsingMouse = input.GetDevice<Mouse>() != null || input.GetDevice<Keyboard>() != null;
+		playerStats = new PlayerStatsHandler(this);
+
+		Level.OnStop += OnLevelStop_CleanUp;
+		SetState(State.SelectingCharacter);
+	}
+
+	public void SetState(State newState)
+	{
+		state = newState;
+	}
+
+	public void StopSaying()
+	{
+		sayer.StopSaying();
+	}
+
+	public int GetStartingCash() => data.startingCash;
+
+	public int GetStartingGas() => data.startingGas;
+
+	public int GetPlayerStatAmount(PlayerStat.StatType statType) => (int) playerStats.GetStatValue(statType);
+
+	public void ChangePlayerStat(PlayerStat.StatType type, float change)
+	{
+		playerStats.ChangeStat(type, change);
+	}
+
+	public void GainKey()
+	{
+		hasKey = true;
+	}
+
+	public bool HasMoreMoneyThan(int amount) => playerStats.GetStatValue(PlayerStat.StatType.TotalCash) >= amount;
+
+	public void SpendMoney(int amount)
+	{
+		playerStats.ChangeStat(PlayerStat.StatType.TotalCash, -amount);
+	}
+
+	public bool isDead() => spawnedPlayerDefence.IsDead();
 }
