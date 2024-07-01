@@ -1,9 +1,11 @@
 ﻿using System;
+using __SCRIPTS._HUD;
+using __SCRIPTS._SCENES;
+using __SCRIPTS._UI;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace newInput.Scripts
+namespace __SCRIPTS._PLAYER
 {
 	public class PlayerSetupMenu : MonoBehaviour
 	{
@@ -39,7 +41,7 @@ namespace newInput.Scripts
 			readyText.SetActive(true);
 			readyPanel.SetActive(true);
 			menuPanel.SetActive(false);
-			Level.CurrentLevel.SpawnPlayer(owner);
+			LevelScene.CurrentLevelScene.SpawnPlayer(owner);
 			OnCharacterChosen?.Invoke(owner);
 			inputEnabled = false;
 			gameObject.SetActive(false);

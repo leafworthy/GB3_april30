@@ -1,99 +1,104 @@
-using System.Collections.Generic;
+using __SCRIPTS._BANDAIDS;
+using __SCRIPTS._PLAYER;
+using __SCRIPTS._SCENES;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class AmmoDisplay : MonoBehaviour
+namespace __SCRIPTS._UI
 {
-	[FormerlySerializedAs("healthBar"),FormerlySerializedAs("bar")] public AmmoLifeBar lifeBar;
-	public TMP_Text ammoText;
-	public TMP_Text totalText;
-	protected Ammo ammoToDisplay;
-	public GameObject shakeObject;
-	public CanvasGroup ammoDisplayCanvas;
-	private bool init;
-
-
-	protected virtual void UpdateDisplay(bool shake = false)
+	public class AmmoDisplay : MonoBehaviour
 	{
-		if (ammoText != null)
+		[FormerlySerializedAs("healthBar"),FormerlySerializedAs("bar")] public AmmoLifeFX lifeFX;
+		public TMP_Text ammoText;
+		public TMP_Text totalText;
+		protected Ammo ammoToDisplay;
+		public GameObject shakeObject;
+		public CanvasGroup ammoDisplayCanvas;
+		private bool init;
+
+
+		protected virtual void UpdateDisplay(bool shake = false)
 		{
-			ammoText.text = ammoToDisplay.reloads ? ammoToDisplay.AmmoInClip.ToString() : ammoToDisplay.reserveAmmo.ToString();
+			if (ammoText != null)
+			{
+				ammoText.text = ammoToDisplay.reloads ? ammoToDisplay.AmmoInClip.ToString() : ammoToDisplay.reserveAmmo.ToString();
+			}
+
+			if (totalText != null)
+			{
+				totalText.text = ammoToDisplay.reserveAmmo.ToString();
+			}
+
+			if (!ammoToDisplay.hasAmmoInClip() && ammoToDisplay.reloads)
+			{
+				GreyOut();
+			}
+			else if(!ammoToDisplay.hasReserveAmmo() && !ammoToDisplay.reloads)
+			{
+				GreyOut();
+			}
+			else
+			{
+				Ungrey();
+			}
+
+			if (lifeFX == null) return;
+			lifeFX.UpdateBar(ammoToDisplay.reserveAmmo, ammoToDisplay.maxReserveAmmo);
+			if (shake)
+			{
+				ShakeObject();
+			}
 		}
 
-		if (totalText != null)
+		private void GreyOut()
 		{
-			totalText.text = ammoToDisplay.reserveAmmo.ToString();
+			ammoDisplayCanvas.alpha = .25f;
 		}
 
-		if (!ammoToDisplay.hasAmmoInClip() && ammoToDisplay.reloads)
+		private void Ungrey()
 		{
-			GreyOut();
-		}
-		else if(!ammoToDisplay.hasReserveAmmo() && !ammoToDisplay.reloads)
-		{
-			GreyOut();
-		}
-		else
-		{
-			Ungrey();
+			ammoDisplayCanvas.alpha = 1;
 		}
 
-		if (lifeBar == null) return;
-		lifeBar.UpdateBar(ammoToDisplay.reserveAmmo, ammoToDisplay.maxReserveAmmo);
-		if (shake)
+		protected void ShakeObject()
 		{
-			ShakeObject();
+			var shaker = shakeObject.gameObject.AddComponent<ObjectShaker>();
+			shaker.Shake(ObjectShaker.ShakeIntensityType.low);
 		}
-	}
 
-	private void GreyOut()
-	{
-		ammoDisplayCanvas.alpha = .25f;
-	}
-
-	private void Ungrey()
-	{
-		ammoDisplayCanvas.alpha = 1;
-	}
-
-	protected void ShakeObject()
-	{
-		var shaker = shakeObject.gameObject.AddComponent<ObjectShaker>();
-		shaker.Shake(ObjectShaker.ShakeIntensityType.low);
-	}
-
-	public void SetAmmo(Ammo newAmmo)
-	{
-		if (ammoToDisplay != null)
+		public void SetAmmo(Ammo newAmmo)
 		{
+			if (ammoToDisplay != null)
+			{
+				ammoToDisplay.OnAmmoGained -= AmmoUsedUpdateDisplay;
+				ammoToDisplay.OnAmmoGained -= AmmoGainedUpdateDisplay;
+			}
+			ammoToDisplay = newAmmo;
+			ammoToDisplay.OnAmmoUsed += AmmoUsedUpdateDisplay;
+			ammoToDisplay.OnAmmoGained += AmmoGainedUpdateDisplay;
+			LevelScene.OnStop += CleanUp;
+			init = true;
+			UpdateDisplay(false);
+		}
+
+
+
+		private void CleanUp(Scene.Type type)
+		{
+			if (!init) return;
+			init = false;
 			ammoToDisplay.OnAmmoGained -= AmmoUsedUpdateDisplay;
 			ammoToDisplay.OnAmmoGained -= AmmoGainedUpdateDisplay;
 		}
-		ammoToDisplay = newAmmo;
-		ammoToDisplay.OnAmmoUsed += AmmoUsedUpdateDisplay;
-		ammoToDisplay.OnAmmoGained += AmmoGainedUpdateDisplay;
-		Level.OnStop += CleanUp;
-		init = true;
-		UpdateDisplay(false);
-	}
 
-
-
-	private void CleanUp(Scene.Type type)
-	{
-		if (!init) return;
-		init = false;
-		ammoToDisplay.OnAmmoGained -= AmmoUsedUpdateDisplay;
-		ammoToDisplay.OnAmmoGained -= AmmoGainedUpdateDisplay;
-	}
-
-	private void AmmoUsedUpdateDisplay()
-	{
-		UpdateDisplay(true);
-	}
-	private void AmmoGainedUpdateDisplay()
-	{
-		UpdateDisplay(false);
+		private void AmmoUsedUpdateDisplay()
+		{
+			UpdateDisplay(true);
+		}
+		private void AmmoGainedUpdateDisplay()
+		{
+			UpdateDisplay(false);
+		}
 	}
 }

@@ -1,24 +1,27 @@
-using System;
+using __SCRIPTS._SCENES;
 using UnityEngine;
 
-public abstract class Scene : MonoBehaviour
+namespace __SCRIPTS._UI
 {
-	public enum Type
+	public abstract class Scene : MonoBehaviour
 	{
-		MainMenu,
-		CharacterSelect,
-		Loading,
-		InLevel,
-		Paused,
-		Endscreen,
-		None
-	}
-	protected bool isActive;
+		public enum Type
+		{
+			MainMenu,
+			CharacterSelect,
+			Loading,
+			InLevel,
+			Paused,
+			Endscreen,
+			None
+		}
+		protected bool isActive;
 
 
 
-	protected void GoToScene(Type sceneType)
-	{
-		SceneLoader.I.SetDestinationScene(sceneType);
+		protected void GoToScene(Type sceneType)
+		{
+			SceneLoader.I.SetDestinationScene(sceneType);
+		}
 	}
 }

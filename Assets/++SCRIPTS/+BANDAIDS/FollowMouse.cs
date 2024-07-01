@@ -1,15 +1,20 @@
+using __SCRIPTS._CAMERA;
+using __SCRIPTS._COMMON;
 using UnityEngine;
 
-public class FollowMouse : MonoBehaviour
+namespace __SCRIPTS._BANDAIDS
 {
-    void Update()
+    public class FollowMouse : MonoBehaviour
     {
-        if (Game_GlobalVariables.IsPaused)
+        void Update()
         {
-            Debug.Log("no folloiw");
-            return;
-        }
-        transform.position = (Vector2)CursorManager.GetMousePosition();
+            if (GlobalManager.IsPaused)
+            {
+                Debug.Log("no folloiw");
+                return;
+            }
+            transform.position = (Vector2)CursorManager.GetMousePosition();
        
+        }
     }
 }

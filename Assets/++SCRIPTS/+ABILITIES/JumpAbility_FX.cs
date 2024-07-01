@@ -1,0 +1,38 @@
+using __SCRIPTS._ABILITIES;
+using __SCRIPTS._COMMON;
+using __SCRIPTS._FX;
+using __SCRIPTS._PLAYER;
+using UnityEngine;
+
+public class JumpAbility_FX : MonoBehaviour
+{
+	private JumpAbility jump;
+	private Body body;
+
+	private void OnEnable() 
+	{
+		jump = GetComponent<JumpAbility>();
+		jump.OnJump += Jump_OnJump;
+		jump.OnLand += Jump_OnLand;
+		body = GetComponent<Body>();
+	}
+
+	private void OnDisable()
+	{
+		jump.OnJump -= Jump_OnJump;
+		jump.OnLand -= Jump_OnLand;
+	
+	}
+
+	private void Jump_OnJump(Vector2 obj)
+	{
+		Maker.Make(FX.Assets.dust2_jump, transform.position + new Vector3(0, body.GetCurrentLandableHeight()));
+	}
+
+	private  void Jump_OnLand(Vector2 pos)
+	{
+		Maker.Make(FX.Assets.dust1_ground, pos);
+		var flipDust = Maker.Make(FX.Assets.dust1_ground, pos);
+		flipDust.transform.localScale = new Vector3(flipDust.transform.localScale.x * -1, flipDust.transform.localScale.y, 0);
+	}
+}

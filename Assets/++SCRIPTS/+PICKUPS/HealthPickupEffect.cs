@@ -1,18 +1,25 @@
-public class HealthPickupEffect : PickupEffect
+
+
+using __SCRIPTS._UNITS;
+
+namespace __SCRIPTS._PICKUPS
 {
-	private int amount;
-
-	public override void StartEffect(UnitStats stats)
+	public class HealthPickupEffect : PickupEffect
 	{
-		effectDuration = 0;
-		var defence = stats.GetComponent<Life>();
-		defence.AddHealth(amount);
-		base.StartEffect(stats);
-	}
+		private int amount;
+
+		public override void StartEffect(UnitStats stats)
+		{
+			effectDuration = 0;
+			var defence = stats.GetComponent<Life>();
+			defence.AddHealth(amount);
+			base.StartEffect(stats);
+		}
 
 
-	public HealthPickupEffect(float _effectDuration, int _amount) : base(_effectDuration)
-	{
-		amount = _amount;
+		public HealthPickupEffect(float _effectDuration, int _amount) : base(_effectDuration)
+		{
+			amount = _amount;
+		}
 	}
 }

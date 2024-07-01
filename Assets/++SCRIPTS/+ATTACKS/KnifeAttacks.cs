@@ -1,115 +1,128 @@
+using System;
 using System.Linq;
+using __SCRIPTS._ABILITIES;
+using __SCRIPTS._COMMON;
+using __SCRIPTS._MANAGERS;
+using __SCRIPTS._PLAYER;
+using __SCRIPTS._UNITS;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class KnifeAttacks : Attacks
+namespace __SCRIPTS._ATTACKS
 {
-	public float knifeDamageMultiplier = 3f;
-	private int knifeCoolDown = 4;
-
-	private AmmoInventory ammo;
-	private UnitStats stats;
-	private Player player;
-	private Body body;
-	private Animations anim;
-	private string KnifeAttackVerbName = "knifing";
-	private string AnimationName = "Top-Knife";
-	private bool isAttacking;
-	private bool hasPressed;
-
-	private void Start()
+	public class KnifeAttacks : Attacks
 	{
-		anim = GetComponent<Animations>();
-		body = GetComponent<Body>();
-		stats = GetComponent<UnitStats>();
-		player = stats.player;
-		ammo = GetComponent<AmmoInventory>();
-		player.Controller.Attack3.OnPress += PlayerKnifePress;
-		player.Controller.Attack3.OnRelease += PlayerKnifeRelease;
- 		anim.animEvents.OnAttackHit += Anim_AttackHit;
-	}
+		public float knifeDamageMultiplier = 3f;
+		private int knifeCoolDown = 4;
 
-	private void FixedUpdate()
-	{
-		if (ammo.HasFullReserve(AmmoInventory.AmmoType.meleeCooldown) && isAttacking)
+		private AmmoInventory ammo;
+		private UnitStats stats;
+		private Player player;
+		private Body body;
+		private Animations anim;
+		private string KnifeAttackVerbName = "knifing";
+		private string AnimationName = "Top-Knife";
+		private bool isAttacking;
+		private bool hasPressed;
+		public event Action OnMiss;
+		public event Action<Vector2> OnHit;
+
+		private void Start()
 		{
-			isAttacking = false;
-
-			anim.SetBool(Animations.IsBobbing, false);
-			body.arms.Stop(KnifeAttackVerbName);
-			return;
-		}
-		ammo.AddAmmoToReserve(AmmoInventory.AmmoType.meleeCooldown, knifeCoolDown);
-
-
-
-	}
-	private void PlayerKnifeRelease(NewControlButton newControlButton)
-	{
-		hasPressed = false;
-	}
-
-	private void PlayerKnifePress(NewControlButton newControlButton)
-	{
-		if (Game_GlobalVariables.IsPaused) return;
-		if (!ammo.HasFullReserve(AmmoInventory.AmmoType.meleeCooldown)) return;
-		if (!body.arms.Do(KnifeAttackVerbName)) return;
-		if (hasPressed) return;
-		isAttacking = true;
-		hasPressed = true;
-		ammo.UseAmmo(AmmoInventory.AmmoType.meleeCooldown, 999);
-		anim.Play(AnimationName, 1, 0);
-		anim.SetTrigger(Animations.KnifeTrigger);
-		anim.SetBool(Animations.IsBobbing, true);
-	}
-
-	private GameObject FindClosestHit()
-	{
-		float hitRange = 10;
-		var circleCast = Physics2D.OverlapCircleAll(transform.position, hitRange, ASSETS.LevelAssets.EnemyLayer)
-		                          .ToList();
-		if (circleCast.Count <= 0) return null;
-
-		var closest = circleCast[0];
-		foreach (var col in circleCast)
-		{
-			var colStats = col.GetComponentInChildren<Life>();
-			if (colStats.IsObstacle) continue;
-			if (colStats.cantDie) continue;
-			if (Vector2.Distance(col.gameObject.transform.position, transform.position) <
-			    Vector2.Distance(closest.transform.position, transform.position))
-				closest = col;
+			anim = GetComponent<Animations>();
+			body = GetComponent<Body>();
+			stats = GetComponent<UnitStats>();
+			player = stats.player;
+			ammo = GetComponent<AmmoInventory>();
+			player.Controller.Attack3.OnPress += PlayerKnifePress;
+			player.Controller.Attack3.OnRelease += PlayerKnifeRelease;
+			anim.animEvents.OnAttackHit += Anim_AttackHit;
 		}
 
-		return closest.gameObject;
-	}
-
-	private void Anim_AttackHit(int attackType)
-	{
-		if (attackType != 3) return;
-
-
-		var enemyHit = FindClosestHit();
-		if (enemyHit == null) return;
-		var enemy = enemyHit.transform.gameObject.GetComponent<Life>();
-		if (enemy == null)
+		private void FixedUpdate()
 		{
-			enemy = enemyHit.transform.gameObject.GetComponentInParent<Life>();
+			if (ammo.HasFullReserve(AmmoInventory.AmmoType.meleeCooldown) && isAttacking)
+			{
+				isAttacking = false;
+
+				anim.SetBool(Animations.IsBobbing, false);
+				body.arms.Stop(KnifeAttackVerbName);
+				return;
+			}
+			ammo.AddAmmoToReserve(AmmoInventory.AmmoType.meleeCooldown, knifeCoolDown);
+
+
+
+		}
+		private void PlayerKnifeRelease(NewControlButton newControlButton)
+		{
+			hasPressed = false;
 		}
 
-		if (enemy == null) return;
-		if (enemy.IsPlayer || enemy.cantDie || enemy.IsObstacle)
+		private void PlayerKnifePress(NewControlButton newControlButton)
 		{
-			ASSETS.sounds.brock_bat_swing_sounds.PlayRandom();
-			return;
+			if (GlobalManager.IsPaused) return;
+			if (!ammo.HasFullReserve(AmmoInventory.AmmoType.meleeCooldown)) return;
+			if (!body.arms.Do(KnifeAttackVerbName)) return;
+			if (hasPressed) return;
+			isAttacking = true;
+			hasPressed = true;
+			ammo.UseAmmo(AmmoInventory.AmmoType.meleeCooldown, 999);
+			anim.Play(AnimationName, 1, 0);
+			anim.SetTrigger(Animations.KnifeTrigger);
+			anim.SetBool(Animations.IsBobbing, true);
 		}
+
+		private GameObject FindClosestHit()
+		{
+			float hitRange = 10;
+			var circleCast = Physics2D.OverlapCircleAll(transform.position, hitRange, ASSETS.LevelAssets.EnemyLayer)
+			                          .ToList();
+			if (circleCast.Count <= 0) return null;
+
+			var closest = circleCast[0];
+			foreach (var col in circleCast)
+			{
+				var colStats = col.GetComponentInChildren<Life>();
+				if (colStats.IsObstacle) continue;
+				if (colStats.cantDie) continue;
+				if (Vector2.Distance(col.gameObject.transform.position, transform.position) <
+				    Vector2.Distance(closest.transform.position, transform.position))
+					closest = col;
+			}
+
+			return closest.gameObject;
+		}
+
+		private void Anim_AttackHit(int attackType)
+		{
+			if (attackType != 3) return;
+
+
+			var enemyHit = FindClosestHit();
+			if (enemyHit == null) return;
+			var enemy = enemyHit.transform.gameObject.GetComponent<Life>();
+			if (enemy == null)
+			{
+				enemy = enemyHit.transform.gameObject.GetComponentInParent<Life>();
+			}
+
+			if (enemy == null) return;
+			if (enemy.IsPlayer || enemy.cantDie || enemy.IsObstacle)
+			{
+				OnMiss?.Invoke();
+				return;
+			}
+			OnHit?.Invoke(enemyHit.transform.position);
 		
-		ASSETS.sounds.bean_knifehit_sounds.PlayRandom();
-		Maker.Make(ASSETS.FX.hit5_xstrike, enemy.transform.position);
+			
 		
-		var newAttack = new Attack(attacker, enemy, stats.AttackDamage * knifeDamageMultiplier);
+			var newAttack = new Attack(attacker, enemy, stats.AttackDamage * knifeDamageMultiplier);
 		
-		enemy.TakeDamage(newAttack);
+			enemy.TakeDamage(newAttack);
+
+		}
 
 	}
-
 }
+

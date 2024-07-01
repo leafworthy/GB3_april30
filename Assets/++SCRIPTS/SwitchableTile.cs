@@ -1,10 +1,9 @@
 using System;
-
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
+using UnityEngine;
+using UnityEngine.Tilemaps;
 
-namespace UnityEngine.Tilemaps
+namespace __SCRIPTS
 {
     [Serializable]
     [CreateAssetMenu(fileName = "New Switchable Tile", menuName = "Tiles/Switchable Tile")]

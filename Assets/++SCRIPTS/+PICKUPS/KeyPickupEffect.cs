@@ -1,17 +1,23 @@
-public class KeyPickupEffect : PickupEffect
+using __SCRIPTS._PLAYER;
+using __SCRIPTS._UNITS;
+
+namespace __SCRIPTS._PICKUPS
 {
-	private int amount = 1;
-	private AmmoInventory.AmmoType ammoType;
-
-	public override void StartEffect(UnitStats stats)
+	public class KeyPickupEffect : PickupEffect
 	{
-		effectDuration = 0;
-		stats.player.GainKey();
-	}
+		private int amount = 1;
+		private AmmoInventory.AmmoType ammoType;
 
-	public KeyPickupEffect(float _effectDuration, int _amount) : base(
-		_effectDuration)
-	{
-		amount = _amount;
+		public override void StartEffect(UnitStats stats)
+		{
+			effectDuration = 0;
+			stats.player.GainKey();
+		}
+
+		public KeyPickupEffect(float _effectDuration, int _amount) : base(
+			_effectDuration)
+		{
+			amount = _amount;
+		}
 	}
 }

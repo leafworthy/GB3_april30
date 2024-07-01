@@ -1,20 +1,23 @@
 using UnityEngine;
 
-[ExecuteInEditMode]
-public class AllChildrenZeroZPosition : MonoBehaviour
+namespace __SCRIPTS._BANDAIDS
 {
-    // Start is called before the first frame update
-    void Start()
+    [ExecuteInEditMode]
+    public class AllChildrenZeroZPosition : MonoBehaviour
     {
-
-    }
-
-    // Update is called once per frame
-    void OnEnable()
-    {
-        foreach (Transform t in transform)
+        // Start is called before the first frame update
+        void Start()
         {
-            t.position = new Vector3(t.position.x, t.position.y, 0);
+
+        }
+
+        // Update is called once per frame
+        void OnEnable()
+        {
+            foreach (Transform t in transform)
+            {
+                t.position = new Vector3(t.position.x, t.position.y, 0);
+            }
         }
     }
 }

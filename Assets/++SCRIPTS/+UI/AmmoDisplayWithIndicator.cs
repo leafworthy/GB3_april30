@@ -1,24 +1,27 @@
 using UnityEngine;
 
-public class AmmoDisplayWithIndicator : AmmoDisplay
+namespace __SCRIPTS._UI
 {
-	public GameObject IndicatorShine;
-
-	protected override void UpdateDisplay(bool shake = false)
+	public class AmmoDisplayWithIndicator : AmmoDisplay
 	{
-		if (lifeBar == null) return;
-		lifeBar.UpdateBar(ammoToDisplay.reserveAmmo, ammoToDisplay.maxReserveAmmo);
-		if (ammoToDisplay.reserveAmmo == ammoToDisplay.maxReserveAmmo)
+		public GameObject IndicatorShine;
+
+		protected override void UpdateDisplay(bool shake = false)
 		{
-			IndicatorShine.SetActive(true);
-		}
-		else
-		{
-			IndicatorShine.SetActive(false);
-		}
-		if (shake)
-		{
-			ShakeObject();
+			if (lifeFX == null) return;
+			lifeFX.UpdateBar(ammoToDisplay.reserveAmmo, ammoToDisplay.maxReserveAmmo);
+			if (ammoToDisplay.reserveAmmo == ammoToDisplay.maxReserveAmmo)
+			{
+				IndicatorShine.SetActive(true);
+			}
+			else
+			{
+				IndicatorShine.SetActive(false);
+			}
+			if (shake)
+			{
+				ShakeObject();
+			}
 		}
 	}
 }

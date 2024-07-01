@@ -1,12 +1,15 @@
 using TMPro;
 using UnityEngine;
 
-public class EnemyThoughts : MonoBehaviour
+namespace __SCRIPTS._PLAYER
 {
-	private TextMeshProUGUI text => GetComponentInChildren<TextMeshProUGUI>();
-	public void Think(string thought)
+	public class EnemyThoughts : MonoBehaviour
 	{
-		if (text == null) return;
-		text.text = thought;
+		private TextMeshProUGUI text => GetComponentInChildren<TextMeshProUGUI>();
+		public void Think(string thought)
+		{
+			if (text == null) return;
+			text.text = thought;
+		}
 	}
 }

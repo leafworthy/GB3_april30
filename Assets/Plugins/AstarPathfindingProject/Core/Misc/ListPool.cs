@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Pathfinding.Util {
 	/// <summary>
@@ -148,7 +149,7 @@ namespace Pathfinding.Util {
 		/// \throws System.InvalidOperationException
 		/// Releasing a list when it has already been released will cause an exception to be thrown.
 		///
-		/// See: <see cref="Claim"/>
+		/// See: <see cref="System.Security.Claims.Claim"/>
 		/// </summary>
 		public static void Release (ref List<T> list) {
 			Release(list);
@@ -162,7 +163,7 @@ namespace Pathfinding.Util {
 		/// \throws System.InvalidOperationException
 		/// Releasing a list when it has already been released will cause an exception to be thrown.
 		///
-		/// See: <see cref="Claim"/>
+		/// See: <see cref="System.Security.Claims.Claim"/>
 		/// </summary>
 		public static void Release (List<T> list) {
 #if !ASTAR_NO_POOLING

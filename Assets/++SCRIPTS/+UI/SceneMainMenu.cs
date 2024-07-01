@@ -1,20 +1,23 @@
-using System;
+using __SCRIPTS._PLAYER;
 using UnityEngine;
 
-public class SceneMainMenu : Scene
+namespace __SCRIPTS._UI
 {
-	private void Start()
+	public class SceneMainMenu : Scene
 	{
-		Players.ClearAllPlayers();
-		Players.OnPlayerJoins += PlayerOnJoins;
-		Players.SetActionMaps(Players.UIActionMap);
-	}
+		private void Start()
+		{
+			Players.ClearAllPlayers();
+			Players.OnPlayerJoins += PlayerOnJoins;
+			Players.SetActionMaps(Players.UIActionMap);
+		}
 
-	private void PlayerOnJoins(Player player)
-	{
-		Debug.Log("Player " + player.playerIndex + " has Joined");
-		Players.OnPlayerJoins -= PlayerOnJoins;
-		GoToScene(Type.CharacterSelect);
-	}
+		private void PlayerOnJoins(Player player)
+		{
+			Debug.Log("Player " + player.playerIndex + " has Joined");
+			Players.OnPlayerJoins -= PlayerOnJoins;
+			GoToScene(Type.CharacterSelect);
+		}
 
+	}
 }

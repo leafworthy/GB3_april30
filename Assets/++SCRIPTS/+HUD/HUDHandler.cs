@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HUDHandler : MonoBehaviour
+namespace __SCRIPTS._HUD
 {
-	public List<HUDSlot> HUDSlots = new List<HUDSlot>();
+	public class HUDHandler : MonoBehaviour
+	{
+		public List<HUDSlot> HUDSlots = new List<HUDSlot>();
+	}
 }

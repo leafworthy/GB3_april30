@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public class Landable : MonoBehaviour
+namespace __SCRIPTS._BANDAIDS
 {
-    public IsoSpriteSorting sorting;
-    public float height = 10;
+    public class Landable : MonoBehaviour
+    {
+        public IsoSpriteSorting sorting;
+        public float height = 10;
 
+    }
 }

@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 
-public class HealthPickup : Pickup
+namespace __SCRIPTS._PICKUPS
 {
-	public int amount;
-	public override List<PickupEffect> GetEffects()
+	public class HealthPickup : Pickup
 	{
-		var newList = new List<PickupEffect>();
-		newList.Add(new HealthPickupEffect(0, amount));
-		return newList;
+		public int amount;
+		public override List<PickupEffect> GetEffects()
+		{
+			var newList = new List<PickupEffect>();
+			newList.Add(new HealthPickupEffect(0, amount));
+			return newList;
+		}
 	}
 }

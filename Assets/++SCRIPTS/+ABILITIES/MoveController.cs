@@ -1,0 +1,209 @@
+using __SCRIPTS._ATTACKS;
+using __SCRIPTS._CAMERA;
+using __SCRIPTS._COMMON;
+using __SCRIPTS._FX;
+using __SCRIPTS._MANAGERS;
+using __SCRIPTS._PLAYER;
+using __SCRIPTS._UNITS;
+using UnityEngine;
+
+namespace __SCRIPTS._ABILITIES
+{
+	public class MoveController : MonoBehaviour
+	{
+		private bool canMove;
+
+		public bool CanMove
+		{
+			get => canMove;
+			set => canMove = value;
+		}
+
+		private bool isTryingToMove;
+
+		private Vector2 moveDir;
+
+		public Vector2 MoveDir => moveDir;
+
+		private Vector2 targetPosition;
+		private Life life;
+		private Body body;
+		private MoveAbility mover;
+		private UnitStats stats;
+		private Player owner;
+		private float damagePushMultiplier = 1;
+		private float moveSpeed;
+		private Animations anim;
+		private bool isDamaged;
+
+		private void Start()
+		{
+			anim = GetComponent<Animations>();
+			stats = GetComponent<UnitStats>();
+			mover = GetComponent<MoveAbility>();
+			life = GetComponent<Life>();
+			body = GetComponent<Body>();
+			owner = stats.player;
+
+			life.OnDamaged += Life_OnDamaged;
+			life.OnDead += Life_OnDead;
+			if (stats.IsPlayer)
+			{
+				owner = stats.player;
+				var _controller = owner.Controller;
+				_controller.MoveAxis.OnChange += Player_MoveInDirection;
+				_controller.MoveAxis.OnInactive += Player_StopMoving;
+				Debug.Log("here");
+			}
+			else
+			{
+				//Debug.Log("here");
+				var ai = GetComponent<EnemyAI>();
+				ai.OnMoveInDirection += AI_MoveInDirection;
+				ai.OnStopMoving += AI_StopMoving;
+				ai.OnAggro += AI_OnAggro;
+			}
+
+			canMove = true;
+			moveSpeed = stats.MoveSpeed;
+
+			anim.animEvents.OnStep += Anim_OnStep;
+			anim.animEvents.OnUseLegs += Anim_UseLegs;
+			anim.animEvents.OnStopUsingLegs += Anim_StopUsingLegs;
+			anim.animEvents.OnDashStop += Anim_DashStop;
+			anim.animEvents.OnRecovered += Anim_Recovered;
+		}
+
+		private void Anim_Recovered()
+		{
+			isDamaged = false;
+		}
+
+		private void AI_OnAggro(Life obj)
+		{
+			anim.SetTrigger(Animations.AggroTrigger);
+		}
+
+		private void Anim_DashStop()
+		{
+			mover.StopPush();
+		}
+
+
+		private void Reset()
+		{
+			canMove = true;
+		}
+
+		private void Anim_StopUsingLegs()
+		{
+			body.legs.Stop("On use legs");
+		}
+
+		private void Anim_UseLegs()
+		{
+			body.legs.Do("On use legs");
+		}
+
+		private void Anim_OnStep()
+		{
+		
+			var dust = Maker.Make(FX.Assets.dust1_ground, body.FootPoint.transform.position);
+			if (mover.moveDir.x > 0)
+			{
+				dust.transform.localScale = new Vector3(-Mathf.Abs(dust.transform.localScale.x),
+					dust.transform.localScale.y,
+					dust.transform.localScale.z);
+			}
+			else
+			{
+				dust.transform.localScale = new Vector3(Mathf.Abs(dust.transform.localScale.x),
+					dust.transform.localScale.y,
+					dust.transform.localScale.z);
+			}
+		}
+
+		public Vector2 GetMovePoint()
+		{
+			if (owner.isUsingMouse) return CursorManager.GetMousePosition();
+			return (Vector2) body.AimCenter.transform.position + MoveDir * AimAbility.aimDistanceFactor;
+		}
+
+		private void Life_OnDamaged(Attack attack)
+		{
+			mover.Push(attack.Direction, attack.DamageAmount * damagePushMultiplier);
+			body.BottomFaceDirection(attack.Direction.x < 0);
+			isDamaged = true;
+		}
+
+		private void Life_OnDead(Player player)
+		{
+			canMove = false;
+		}
+
+		private void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction)
+		{
+			if (GlobalManager.IsPaused) return;
+			if (isDamaged) return;
+			if (!canMove) return;
+
+			if (body.legs.isActive)
+			{
+				StopMoving();
+				return;
+			}
+
+			if (direction.magnitude < .5f)
+			{
+				StopMoving();
+				return;
+			}
+
+			StartMoving(direction);
+		}
+
+		private void StartMoving(Vector2 direction)
+		{
+			moveDir = direction;
+			body.BottomFaceDirection(direction.x > 0);
+			mover.MoveInDirection(direction, moveSpeed);
+			anim.SetBool(Animations.IsMoving, true);
+		}
+
+		private void StopMoving()
+		{
+			anim.SetBool(Animations.IsMoving, false);
+			mover.StopMoving();
+		}
+
+		private void Player_StopMoving(IControlAxis controlAxis)
+		{
+			if (GlobalManager.IsPaused)
+			{
+				Debug.Log("shit is paused tho");
+				return;
+			}
+			mover.StopMoving();
+		}
+
+		private void AI_StopMoving()
+		{
+			if (GlobalManager.IsPaused) return;
+			mover.StopMoving();
+		}
+
+		private void AI_MoveInDirection(Vector2 direction)
+		{
+			if (GlobalManager.IsPaused) return;
+			if (!CanMove) return;
+			if (body.arms.isActive) return;
+			StartMoving(direction);
+		}
+
+
+		public void Push(Vector2 moveMoveDir, float statsDashSpeed)
+		{
+			mover.Push(moveMoveDir, statsDashSpeed);
+		}
+	}
+}

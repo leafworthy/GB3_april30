@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
+using __SCRIPTS._PLAYER;
 using UnityEngine;
-using UnityEngine.UI;
 
-
-namespace newInput.Scripts
+namespace __SCRIPTS._UI
 {
 	public class CharacterSelectButtons : MonoBehaviour
 	{

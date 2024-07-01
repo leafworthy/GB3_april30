@@ -1,20 +1,24 @@
-﻿using System;
+﻿using __SCRIPTS._ABILITIES;
+using __SCRIPTS._PLAYER;
 using UnityEngine;
 
-public class FollowStick : MonoBehaviour
+namespace __SCRIPTS._BANDAIDS
 {
-	private GunAimer aim;
-
-	// Start is called before the first frame update
-	public void Init(Player player)
+	public class FollowStick : MonoBehaviour
 	{
-		aim = player.SpawnedPlayerGO.GetComponent<GunAimer>();
-		if (aim == null) return;
-		transform.position = aim.GetAimPoint();
-	}
+		private GunAimAbility aim;
 
-	private void Update()
-	{
-		transform.position = aim.GetAimPoint();
+		// Start is called before the first frame update
+		public void Init(Player player)
+		{
+			aim = player.SpawnedPlayerGO.GetComponent<GunAimAbility>();
+			if (aim == null) return;
+			transform.position = aim.GetAimPoint();
+		}
+
+		private void Update()
+		{
+			transform.position = aim.GetAimPoint();
+		}
 	}
 }

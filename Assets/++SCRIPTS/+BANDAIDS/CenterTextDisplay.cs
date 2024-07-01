@@ -1,17 +1,18 @@
-using UnityEngine;
-
-public static class CenterTextDisplay
+namespace __SCRIPTS._BANDAIDS
 {
-	private static ZombieWaveDisplay waveDisplay;
-	
-	public static void DisplayText(string textToDisplay)
+	public static class CenterTextDisplay
 	{
-		if (waveDisplay == null)
+		private static ZombieWaveDisplay waveDisplay;
+	
+		public static void DisplayText(string textToDisplay)
 		{
-			waveDisplay = ZombieWaves.I.GetComponentInChildren<ZombieWaveDisplay>(true);
-		}
+			if (waveDisplay == null)
+			{
+				waveDisplay = ZombieWaves.I.GetComponentInChildren<ZombieWaveDisplay>(true);
+			}
 
-		if (waveDisplay == null) return;
-		waveDisplay.DisplayText(textToDisplay);
+			if (waveDisplay == null) return;
+			waveDisplay.DisplayText(textToDisplay);
+		}
 	}
 }

@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class MyObject : MonoBehaviour
+namespace __SCRIPTS._BANDAIDS
 {
+	public class MyObject : MonoBehaviour
+	{
 	
+	}
 }
