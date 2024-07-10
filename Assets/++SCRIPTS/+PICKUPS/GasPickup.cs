@@ -1,14 +1,11 @@
 using System.Collections.Generic;
 
-namespace __SCRIPTS._PICKUPS
+public class GasPickup : Pickup
 {
-	public class GasPickup : Pickup
+	public int amount;
+	public override List<PickupEffect> GetEffects()
 	{
-		public int amount;
-		public override List<PickupEffect> GetEffects()
-		{
-			var newList = new List<PickupEffect> {new GasPickupEffect(0, amount)};
-			return newList;
-		}
+		var newList = new List<PickupEffect> {new GasPickupEffect(0, amount)};
+		return newList;
 	}
 }

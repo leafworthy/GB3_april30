@@ -1,58 +1,68 @@
 using System.Collections.Generic;
-using __SCRIPTS._COMMON;
-using __SCRIPTS._PLAYER;
 using UnityEngine;
 
-namespace __SCRIPTS._HUD
+public class HUDS : Singleton<HUDS>
 {
-	public class HUDS : MonoBehaviour
+	private bool isOn;
+	public HUDHandler currentHUD;
+	public GameObject Vignette;
+
+	private void Start()
 	{
-		private bool isOn;
-		public HUDHandler currentHUD;
-		private static HUDS I;
+		Vignette.SetActive(false);
+		
+		LevelGameScene.OnStart += LevelScene_OnStart;
+		LevelGameScene.OnStop += LevelScene_OnStop;
+		LevelGameScene.OnPlayerSpawned += LevelScene_OnPlayerSpawned;
+		DisableAllHUDSlots();
+		
+	}
 
-		private void Awake()
-		{
-			I = this;
-		}
+	private void LevelScene_OnStop(GameScene.Type obj)
+	{
+		Vignette.SetActive(false);
+		Players.OnPlayerJoins -= JoinInGame;
+		DisableAllHUDSlots();
+	}
 
-		private void Start()
-		{
-			Players.OnPlayerJoins += JoinInGame;
-			DisableAllHUDSlots();
-			//currentHUD.gameObject.SetActive(false);
-			CreateHUD(Players.AllJoinedPlayers);
-		}
+	private void LevelScene_OnPlayerSpawned(Player player)
+	{
+		SetHUDSlotCharacter(player);
+	}
 
+	private void LevelScene_OnStart()
+	{
+		//CreateHUDForPlayers(Players.AllJoinedPlayers);
+		Players.OnPlayerJoinsInGame += JoinInGame;
+		Vignette.SetActive(true);
+	}
+
+	
 	  
-
-
-
-		private void CreateHUD(List<Player> players)
+	private void CreateHUDForPlayers(List<Player> players)
+	{
+		foreach (var player in players)
 		{
-			foreach (var player in players)
-			{
-				SetHUDSlotCharacter(player);
-			}
+			SetHUDSlotCharacter(player);
 		}
+	}
 
-		private static void JoinInGame(Player player)
-		{
-			if (!GlobalManager.IsInLevel) return;
-			var slot = I.currentHUD.HUDSlots[(int)player.input.playerIndex];
-			slot.gameObject.SetActive(true);
-			slot.StartCharSelectMenu(player);
-		}
+	private static void JoinInGame(Player player)
+	{
+		if (!GlobalManager.IsInLevel) return;
+		var slot = I.currentHUD.HUDSlots[(int)player.input.playerIndex];
+		slot.gameObject.SetActive(true);
+		slot.StartCharSelectMenu(player);
+	}
 
-		private static void SetHUDSlotCharacter(Player player)
-		{
-			var slot = I.currentHUD.HUDSlots[(int)player.input.playerIndex];
-			slot.gameObject.SetActive(true);
-			slot.SetCharacter(player);
-		}
-		private void DisableAllHUDSlots()
-		{
-			foreach (var hudSlot in currentHUD.HUDSlots) hudSlot.gameObject.SetActive(false);
-		}
+	private static void SetHUDSlotCharacter(Player player)
+	{
+		var slot = I.currentHUD.HUDSlots[(int)player.input.playerIndex];
+		slot.gameObject.SetActive(true);
+		slot.SetCharacter(player);
+	}
+	private void DisableAllHUDSlots()
+	{
+		foreach (var hudSlot in currentHUD.HUDSlots) hudSlot.gameObject.SetActive(false);
 	}
 }

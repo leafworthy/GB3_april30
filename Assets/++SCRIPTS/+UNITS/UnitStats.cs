@@ -1,50 +1,43 @@
-﻿using __SCRIPTS._COMMON;
-using __SCRIPTS._FX;
-using __SCRIPTS._PLAYER;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace __SCRIPTS._UNITS
+public class UnitStats : MonoBehaviour
 {
-    public class UnitStats : MonoBehaviour
+    [HideInInspector] public Player player;
+    public UnitStatsData unitData;
+    
+
+    protected virtual void OnValidate()
     {
-        [HideInInspector] public Player player;
-        public UnitStatsData unitData;
-    
-
-        protected virtual void OnValidate()
-        {
-            if (unitData != null) return;
-            unitData = ASSETS.LevelAssets.DefaultUnitData;
-        }
+        if (unitData != null) return;
+        unitData = ASSETS.LevelAssets.DefaultUnitData;
+    }
 
 
-        public float AttackHeight => unitData.AttackHeight;
-        public float AttackDamage => unitData.AttackDamage;
-        public float AttackRange => unitData.AttackRange;
-        public float AttackRate => unitData.AttackRate;
+    public float AttackHeight => unitData.AttackHeight;
+    public float AttackDamage => unitData.AttackDamage;
+    public float AttackRange => unitData.AttackRange;
+    public float AttackRate => unitData.AttackRate;
 
-        public float Attack2Damage => unitData.AttackDamage;
-        public float Attack2Rate => unitData.AttackRate;
+    public float Attack2Damage => unitData.AttackDamage;
+    public float Attack2Rate => unitData.AttackRate;
 
     
-        public float HealthMax => unitData.HealthMax;
-        public float MoveSpeed => unitData.MoveSpeed;
-        public float DashSpeed => unitData.DashSpeed;
+    public float HealthMax => unitData.HealthMax;
+    public float MoveSpeed => unitData.MoveSpeed;
+    public float DashSpeed => unitData.DashSpeed;
     
-        public bool IsPlayer => IsThisAPlayer();
+    public bool IsPlayer => IsThisAPlayer();
 
-        private bool IsThisAPlayer() => player != null && player.IsPlayer();
+    private bool IsThisAPlayer() => player != null && player.IsPlayer();
 
-        public bool IsObstacle => unitData.isObstacle;
+    public bool IsObstacle => unitData.isObstacle;
 
-        public DebreeType DebreeType => unitData.DebreeType;
-        public float JumpSpeed => unitData.JumpSpeed;
-        public float AggroRange => unitData.AggroRange;
+    public DebreeType DebreeType => unitData.DebreeType;
+    public float JumpSpeed => unitData.JumpSpeed;
+    public float AggroRange => unitData.AggroRange;
 
-        public void SetPlayer(Player _player)
-        {
-            player = _player;
-        }
+    public void SetPlayer(Player _player)
+    {
+        player = _player;
     }
 }
-

@@ -1,12 +1,6 @@
-using __SCRIPTS._ATTACKS;
-using __SCRIPTS._CAMERA;
-using __SCRIPTS._COMMON;
-using __SCRIPTS._OBJECT;
 using UnityEngine;
 
-namespace __SCRIPTS._FX
-{
-	public class GunAttacks_FX : MonoBehaviour
+public class GunAttacks_FX : MonoBehaviour
 {
 	private GunAttacks gunAttacks;
 	private void OnEnable()
@@ -55,5 +49,4 @@ namespace __SCRIPTS._FX
 		bulletHitHeight.SetDistanceToGround(attack.DestinationHeight);
 		Maker.Unmake(newBulletHitAnimation, 5);
 	}
-}
 }

@@ -1,37 +1,33 @@
-﻿using __SCRIPTS._PLAYER;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace __SCRIPTS._UI
+public class CharacterSelectButton : MonoBehaviour
 {
-	public class CharacterSelectButton : MonoBehaviour
+	public Character character;
+	[SerializeField] private GameObject highlight;
+	[SerializeField] private GameObject selectionGraphic;
+
+	public CharacterSelectButton buttonToRight;
+	public CharacterSelectButton buttonToLeft;
+
+
+
+	public void Highlight()
 	{
-		public Character character;
-		[SerializeField] private GameObject highlight;
-		[SerializeField] private GameObject selectionGraphic;
+		highlight.SetActive(true);
+	}
 
-		public CharacterSelectButton buttonToRight;
-		public CharacterSelectButton buttonToLeft;
+	public void Unhighlight()
+	{
+		highlight.SetActive(false);
+	}
 
+	public void Select()
+	{
+		selectionGraphic.SetActive(true);
+	}
 
-
-		public void Highlight()
-		{
-			highlight.SetActive(true);
-		}
-
-		public void Unhighlight()
-		{
-			highlight.SetActive(false);
-		}
-
-		public void Select()
-		{
-			selectionGraphic.SetActive(true);
-		}
-
-		public void Deselect()
-		{
-			selectionGraphic.SetActive(false);
-		}
+	public void Deselect()
+	{
+		selectionGraphic.SetActive(false);
 	}
 }

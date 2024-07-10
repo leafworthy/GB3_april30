@@ -1,9 +1,9 @@
 
-using __SCRIPTS._FX;
-using __SCRIPTS._FX;
+using System;
 using UnityEngine.UI;
 
 
+[Serializable]
 	public class AmmoLifeFX : Life_FX
 	{
 		public Image capSpriteRenderer;

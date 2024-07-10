@@ -3,62 +3,59 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 
-namespace __SCRIPTS._BANDAIDS
+[Serializable,ExecuteInEditMode]
+public class HideRevealList : MonoBehaviour
 {
-	[Serializable,ExecuteInEditMode]
-	public class HideRevealList : MonoBehaviour
+	[SerializeField] public List<GOList> goListsToReveal = new List<GOList>();
+	[Range(0, 5),SerializeField]  protected int revealedObjectIndex;
+
+	private void Start()
 	{
-		[SerializeField] public List<GOList> goListsToReveal = new List<GOList>();
-		[Range(0, 5),SerializeField]  protected int revealedObjectIndex;
+		Refresh();
+	}
 
-		private void Start()
-		{
-			Refresh();
-		}
+	[Button]
+	private void Refresh()
+	{
+		SetActiveObject(revealedObjectIndex);
+	}
 
-		[Button]
-		private void Refresh()
-		{
-			SetActiveObject(revealedObjectIndex);
-		}
+	public void Set(int _revealedObjectIndex)
+	{
+		revealedObjectIndex = _revealedObjectIndex;
+		Refresh();
+	}
 
-		public void Set(int _revealedObjectIndex)
+	private void SetActiveObject(int objectIndex)
+	{
+		if (objectIndex > goListsToReveal.Count - 1) return;
+		for (var i = 0; i < goListsToReveal.Count; i++)
 		{
-			revealedObjectIndex = _revealedObjectIndex;
-			Refresh();
-		}
-
-		private void SetActiveObject(int objectIndex)
-		{
-			if (objectIndex > goListsToReveal.Count - 1) return;
-			for (var i = 0; i < goListsToReveal.Count; i++)
+			var list = goListsToReveal[i];
+			if (i == objectIndex)
 			{
-				var list = goListsToReveal[i];
-				if (i == objectIndex)
+				foreach (var obj in list.list)
 				{
-					foreach (var obj in list.list)
-					{
-						if(obj!= null) obj.SetActive(true);
-					}
-				}
-				else
-				{
-					foreach (var obj in list.list)
-					{
-						if (obj != null) obj.SetActive(false);
-					}
+					if(obj!= null) obj.SetActive(true);
 				}
 			}
-
+			else
+			{
+				foreach (var obj in list.list)
+				{
+					if (obj != null) obj.SetActive(false);
+				}
+			}
 		}
 
-
 	}
 
-	[Serializable]
-	public class GOList
-	{
-		public List<GameObject> list;
 
-	}
+}
+
+[Serializable]
+public class GOList
+{
+	public List<GameObject> list;
+
 }

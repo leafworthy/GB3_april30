@@ -4,46 +4,43 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.U2D;
 
-namespace __SCRIPTS._BANDAIDS
+public class ColorAllSprites : MonoBehaviour
 {
-	public class ColorAllSprites : MonoBehaviour
+	public HouseColorScheme.ColorType color;
+	private List<SpriteRenderer> spriteRenderer;
+	private HouseColorScheme houseColorScheme;
+	private SpriteShapeRenderer shapeRenderer;
+
+	public void Update()
 	{
-		public HouseColorScheme.ColorType color;
-		private List<SpriteRenderer> spriteRenderer;
-		private HouseColorScheme houseColorScheme;
-		private SpriteShapeRenderer shapeRenderer;
+		if (!Application.isPlaying) TintAll();
+	}
 
-		public void Update()
-		{
-			if (!Application.isPlaying) TintAll();
-		}
-
-		private void OnEnable()
-		{
+	private void OnEnable()
+	{
 		
-			TintAll();
-		}
+		TintAll();
+	}
 
-		private void GetAllSprites()
-		{
-			spriteRenderer = GetComponentsInChildren<SpriteRenderer>().ToList();
-			houseColorScheme = GetComponentInParent<ColorSchemeHandler>().houseColors;
-		}
+	private void GetAllSprites()
+	{
+		spriteRenderer = GetComponentsInChildren<SpriteRenderer>().ToList();
+		houseColorScheme = GetComponentInParent<ColorSchemeHandler>().houseColors;
+	}
 
 
-		[Button]
-		private void TintAll()
-		{
-			GetAllSprites();
-			shapeRenderer = GetComponent<SpriteShapeRenderer>();
-			if (shapeRenderer != null) shapeRenderer.color = houseColorScheme.GetColor(color);
+	[Button]
+	private void TintAll()
+	{
+		GetAllSprites();
+		shapeRenderer = GetComponent<SpriteShapeRenderer>();
+		if (shapeRenderer != null) shapeRenderer.color = houseColorScheme.GetColor(color);
 		
-			foreach (var sr in spriteRenderer)
-			{
-				if (sr.gameObject.CompareTag("dontcolor")) continue;
-				sr.color = houseColorScheme.GetColor(color);
-			}
-
+		foreach (var sr in spriteRenderer)
+		{
+			if (sr.gameObject.CompareTag("dontcolor")) continue;
+			sr.color = houseColorScheme.GetColor(color);
 		}
+
 	}
 }

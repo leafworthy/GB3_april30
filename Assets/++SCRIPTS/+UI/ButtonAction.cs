@@ -1,16 +1,13 @@
 using UnityEngine.Events;
 
-namespace __SCRIPTS._UI
+[System.Serializable]
+public class ButtonAction
 {
-	[System.Serializable]
-	public class ButtonAction
+	public string Name;
+	public UnityAction action;
+	public ButtonAction(string name, UnityAction action)
 	{
-		public string Name;
-		public UnityAction action;
-		public ButtonAction(string name, UnityAction action)
-		{
-			this.Name = name;
-			this.action = action;
-		}
+		this.Name = name;
+		this.action = action;
 	}
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace __SCRIPTS._COMMON
-{
+
 	public class RecycleGameObject : MonoBehaviour
 	{
 		public event Action OnActivate;
@@ -21,6 +20,6 @@ namespace __SCRIPTS._COMMON
 
 
 	}
-}
+
 
 

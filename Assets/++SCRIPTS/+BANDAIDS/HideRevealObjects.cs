@@ -2,83 +2,80 @@
 using NaughtyAttributes;
 using UnityEngine;
 
-namespace __SCRIPTS._BANDAIDS
+[ExecuteInEditMode]
+public class HideRevealObjects : MonoBehaviour
 {
-	[ExecuteInEditMode]
-	public class HideRevealObjects : MonoBehaviour
+	[SerializeField] public List<GameObject> objectsToReveal = new();
+	[Range(0, 20), SerializeField] private int revealedObjectIndex;
+	public bool isAdditive;
+	private Color playerColor;
+
+	private void Awake()
 	{
-		[SerializeField] public List<GameObject> objectsToReveal = new();
-		[Range(0, 20), SerializeField] private int revealedObjectIndex;
-		public bool isAdditive;
-		private Color playerColor;
+		Set(revealedObjectIndex);
+	}
 
-		private void Awake()
+	[Button]
+	private void Refresh()
+	{
+		GatherTransforms();
+		Set(revealedObjectIndex);
+	}
+
+	[Button]
+	public void SetToCurrent()
+	{
+		Set(revealedObjectIndex);
+	}
+
+	private void GatherTransforms()
+	{
+		objectsToReveal.Clear();
+
+		foreach (Transform child in transform)
 		{
-			Set(revealedObjectIndex);
+			if (child.parent != this.transform) continue;
+			objectsToReveal.Add(child.gameObject);
 		}
-
-		[Button]
-		private void Refresh()
-		{
-			GatherTransforms();
-			Set(revealedObjectIndex);
-		}
-
-		[Button]
-		public void SetToCurrent()
-		{
-			Set(revealedObjectIndex);
-		}
-
-		private void GatherTransforms()
-		{
-			objectsToReveal.Clear();
-
-			foreach (Transform child in transform)
-			{
-				if (child.parent != this.transform) continue;
-				objectsToReveal.Add(child.gameObject);
-			}
-		}
+	}
 
 	
 
-		public GameObject Set(int objectIndex)
+	public GameObject Set(int objectIndex)
+	{
+		if (objectsToReveal.Count <= 0) return null;
+		if (objectIndex >= objectsToReveal.Count)
 		{
-			if (objectsToReveal.Count <= 0) return null;
-			if (objectIndex >= objectsToReveal.Count)
-			{
-				objectIndex = objectsToReveal.Count - 1;
-			}
-			revealedObjectIndex = objectIndex;
-			foreach (var obj in objectsToReveal) obj.SetActive(false);
+			objectIndex = objectsToReveal.Count - 1;
+		}
+		revealedObjectIndex = objectIndex;
+		foreach (var obj in objectsToReveal) obj.SetActive(false);
 
-			if (isAdditive)
+		if (isAdditive)
+		{
+			for (int i = 0; i <= objectIndex; i++)
 			{
-				for (int i = 0; i <= objectIndex; i++)
-				{
-					objectsToReveal[i].SetActive(true);
-				}
+				objectsToReveal[i].SetActive(true);
 			}
-			else
-			{
-				objectsToReveal[revealedObjectIndex].SetActive(true);
-			}
-
-			if (objectIndex >= objectsToReveal.Count) return objectsToReveal[^1];
-			return objectsToReveal[objectIndex];
+		}
+		else
+		{
+			objectsToReveal[revealedObjectIndex].SetActive(true);
 		}
 
-		public void SetPlayerColor(Color color)
+		if (objectIndex >= objectsToReveal.Count) return objectsToReveal[^1];
+		return objectsToReveal[objectIndex];
+	}
+
+	public void SetPlayerColor(Color color)
+	{
+		playerColor = color;
+		var sprite = objectsToReveal[revealedObjectIndex].GetComponent<SpriteRenderer>();
+		if (sprite != null)
 		{
-			playerColor = color;
-			var sprite = objectsToReveal[revealedObjectIndex].GetComponent<SpriteRenderer>();
-			if (sprite != null)
-			{
-				var c1 = playerColor;
-				c1.a = sprite.color.a;
-				sprite.color = c1;
-			}
+			var c1 = playerColor;
+			c1.a = sprite.color.a;
+			sprite.color = c1;
 		}
 	}
 }

@@ -1,7 +1,3 @@
-using __SCRIPTS._ABILITIES;
-using __SCRIPTS._COMMON;
-using __SCRIPTS._FX;
-using __SCRIPTS._PLAYER;
 using UnityEngine;
 
 public class JumpAbility_FX : MonoBehaviour

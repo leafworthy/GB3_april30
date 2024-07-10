@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 9094547101877231843}
   - component: {fileID: 1103918653896745784}
   - component: {fileID: 8509757635381147939}
-  - component: {fileID: 1557967297392859688}
   m_Layer: 0
   m_Name: PlayerPrefab(Clone)
   m_TagString: Untagged
@@ -149,24 +148,10 @@ MonoBehaviour:
   spawnedPlayerDefence: {fileID: 0}
   buttonIndex: 0
   CurrentCharacter: 0
-  body: {fileID: 0}
   input: {fileID: 9094547101877231843}
   isUsingMouse: 1
   color: {r: 0, g: 0.18968306, b: 0.9528302, a: 1}
-  isHuman: 1
   PlayerName: Player 0
   playerIndex: 0
   hasKey: 0
   interactables: []
---- !u!114 &1557967297392859688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9104201789367033404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa1f1f44aae9b4218bb3aa17d3d13820, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

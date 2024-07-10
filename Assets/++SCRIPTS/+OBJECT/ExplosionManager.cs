@@ -1,44 +1,34 @@
 using System;
-using __SCRIPTS._ABILITIES;
-using __SCRIPTS._ATTACKS;
-using __SCRIPTS._CAMERA;
-using __SCRIPTS._COMMON;
-using __SCRIPTS._FX;
-using __SCRIPTS._PLAYER;
-using __SCRIPTS._UNITS;
 using UnityEngine;
 
-namespace __SCRIPTS._OBJECT
+public class ExplosionManager: MonoBehaviour
 {
-	public class ExplosionManager: MonoBehaviour
+	public static event Action OnExplosion;
+	public static void Explode(Vector3 explosionPosition, float explosionRadius, float explosionDamage, Player _owner)
 	{
-		public static event Action OnExplosion;
-		public static void Explode(Vector3 explosionPosition, float explosionRadius, float explosionDamage, Player _owner)
+		var pushFactor = 10;
+		Maker.Make(FX.Assets.explosions.GetRandom(), explosionPosition);
+		Maker.Make(FX.Assets.fires.GetRandom(), explosionPosition);
+
+		var layer = _owner.IsPlayer() ? ASSETS.LevelAssets.EnemyLayer : ASSETS.LevelAssets.PlayerLayer;
+		var hits = Physics2D.OverlapCircleAll(explosionPosition, explosionRadius, layer);
+		if (hits == null) return;
+		foreach (var hit in hits)
 		{
-			var pushFactor = 10;
-			Maker.Make(FX.Assets.explosions.GetRandom(), explosionPosition);
-			Maker.Make(FX.Assets.fires.GetRandom(), explosionPosition);
-
-			var layer = _owner.IsPlayer() ? ASSETS.LevelAssets.EnemyLayer : ASSETS.LevelAssets.PlayerLayer;
-			var hits = Physics2D.OverlapCircleAll(explosionPosition, explosionRadius, layer);
-			if (hits == null) return;
-			foreach (var hit in hits)
-			{
-				var defence = hit.GetComponent<Life>();
-				if (defence is null) continue;
-				var ratio = explosionRadius / Vector3.Distance(hit.transform.position, explosionPosition);
+			var defence = hit.GetComponent<Life>();
+			if (defence is null) continue;
+			var ratio = explosionRadius / Vector3.Distance(hit.transform.position, explosionPosition);
 			
-				var otherMove = defence.GetComponent<MoveAbility>();
-				if(otherMove != null)
-					otherMove.Push(explosionPosition - defence.transform.position, pushFactor * ratio);
-				var newAttack = new Attack(_owner.spawnedPlayerDefence, explosionPosition, defence.transform.position, defence, explosionDamage * ratio);
-				newAttack.IsDamaging = true;
-				defence.TakeDamage(newAttack);
-			}
-			CameraShaker.ShakeCamera(explosionPosition, CameraShaker.ShakeIntensityType.high);
-			OnExplosion?.Invoke();
-		
+			var otherMove = defence.GetComponent<MoveAbility>();
+			if(otherMove != null)
+				otherMove.Push(explosionPosition - defence.transform.position, pushFactor * ratio);
+			var newAttack = new Attack(_owner.spawnedPlayerDefence, explosionPosition, defence.transform.position, defence, explosionDamage * ratio);
+			newAttack.IsDamaging = true;
+			defence.TakeDamage(newAttack);
 		}
-
+		CameraShaker.ShakeCamera(explosionPosition, CameraShaker.ShakeIntensityType.high);
+		OnExplosion?.Invoke();
+		
 	}
+
 }

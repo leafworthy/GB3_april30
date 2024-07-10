@@ -1,139 +1,134 @@
 using System;
 using System.Collections.Generic;
-using __SCRIPTS._BANDAIDS;
-using __SCRIPTS._PLAYER;
 using UnityEngine;
 
-namespace __SCRIPTS._UI
+public class CharacterButton : MonoBehaviour
 {
-	public class CharacterButton : MonoBehaviour
+	[SerializeField] public Character character;
+	[SerializeField] private HideRevealObjects titleStates;
+	[SerializeField] private HideRevealObjects graphicStates;
+	[SerializeField] private List<Player> playersWhoSelectedThisCharacter = new List<Player>();
+	[SerializeField] private List<Player> playersWhoHighlightedThisCharacter = new List<Player>();
+	[SerializeField] private ButtonState currentState;
+	private CharacterSelectIndicators characterSelectIndicators;
+
+	private void Start()
 	{
-		[SerializeField] public Character character;
-		[SerializeField] private HideRevealObjects titleStates;
-		[SerializeField] private HideRevealObjects graphicStates;
-		[SerializeField] private List<Player> playersWhoSelectedThisCharacter = new List<Player>();
-		[SerializeField] private List<Player> playersWhoHighlightedThisCharacter = new List<Player>();
-		[SerializeField] private ButtonState currentState;
-		private CharacterSelectIndicators characterSelectIndicators;
+		characterSelectIndicators = GetComponentInChildren<CharacterSelectIndicators>();
+		UpdateIndicator();
+	}
 
-		private void Start()
-		{
-			characterSelectIndicators = GetComponentInChildren<CharacterSelectIndicators>();
-			UpdateIndicator();
-		}
+	private enum ButtonState
+	{
+		Unhighlighted,
+		Highlighted,
+		Selected
+	}
 
-		private enum ButtonState
-		{
-			Unhighlighted,
-			Highlighted,
-			Selected
-		}
-
-		public void HighlightButton(Player player)
-		{
+	public void HighlightButton(Player player)
+	{
 		
 		
-			playersWhoHighlightedThisCharacter.Add(player);
+		playersWhoHighlightedThisCharacter.Add(player);
 
-			UpdateState();
+		UpdateState();
+	}
+
+	public void UnHighlightButton(Player player)
+	{
+		playersWhoHighlightedThisCharacter.Remove(player);
+		UpdateState();
+	}
+
+	public void SelectCharacter(Player player)
+	{
+		Debug.Log("select character");
+		if(playersWhoSelectedThisCharacter.Contains(player))
+		{
+			Debug.Log("double select character attempt");
+			return;
+		}
+		playersWhoSelectedThisCharacter.Add(player);
+		UnHighlightButton(player);
+		characterSelectIndicators.Set(player.input.playerIndex, 2);
+		UpdateState();
+	}
+
+	public void DeselectCharacter(Player player)
+	{
+		Debug.Log("deselect character");
+		playersWhoSelectedThisCharacter.Remove(player);
+		HighlightButton(player);
+		characterSelectIndicators.Set(player.input.playerIndex, 1);
+		UpdateState();
+	}
+
+	private void UpdateState()
+	{
+		if (playersWhoHighlightedThisCharacter.Count <= 0)
+		{
+			SetState(playersWhoSelectedThisCharacter.Count <= 0 ? ButtonState.Unhighlighted : ButtonState.Selected);
+		}
+		else
+		{
+			SetState(ButtonState.Highlighted);
 		}
 
-		public void UnHighlightButton(Player player)
-		{
-			playersWhoHighlightedThisCharacter.Remove(player);
-			UpdateState();
-		}
+		UpdateIndicator();
+	}
 
-		public void SelectCharacter(Player player)
-		{
-			Debug.Log("select character");
-			if(playersWhoSelectedThisCharacter.Contains(player))
-			{
-				Debug.Log("double select character attempt");
-				return;
-			}
-			playersWhoSelectedThisCharacter.Add(player);
-			UnHighlightButton(player);
-			characterSelectIndicators.Set(player.input.playerIndex, 2);
-			UpdateState();
-		}
+	public void SetPlayerColors()
+	{
 
-		public void DeselectCharacter(Player player)
+		characterSelectIndicators.SetColors();
+	}
+
+	private void UpdateIndicator()
+	{
+		Debug.Log("update indicator function called by " + name, this);
+		characterSelectIndicators = GetComponentInChildren<CharacterSelectIndicators>();
+		characterSelectIndicators.SetAllUnhighlighted();
+		foreach (var player in playersWhoHighlightedThisCharacter)
 		{
-			Debug.Log("deselect character");
-			playersWhoSelectedThisCharacter.Remove(player);
-			HighlightButton(player);
 			characterSelectIndicators.Set(player.input.playerIndex, 1);
-			UpdateState();
+			Debug.Log("Button " + character + " is highlighted for player " + player.input.playerIndex);
 		}
 
-		private void UpdateState()
+		foreach (var player in playersWhoSelectedThisCharacter)		
 		{
-			if (playersWhoHighlightedThisCharacter.Count <= 0)
-			{
-				SetState(playersWhoSelectedThisCharacter.Count <= 0 ? ButtonState.Unhighlighted : ButtonState.Selected);
-			}
-			else
-			{
-				SetState(ButtonState.Highlighted);
-			}
-
-			UpdateIndicator();
+			characterSelectIndicators.Set(player.input.playerIndex, 2);
+			Debug.Log("Button " + character + " is selected for player " + player.input.playerIndex, this);
 		}
 
-		public void SetPlayerColors()
+	}
+
+	private void SetState(ButtonState newState)
+	{
+		currentState = newState;
+		switch (newState)
 		{
-
-			characterSelectIndicators.SetColors();
+			case ButtonState.Unhighlighted:
+				titleStates.Set(0);
+				graphicStates.Set(0);
+				break;
+			case ButtonState.Highlighted:
+				titleStates.Set(1);
+				graphicStates.Set(1);
+				break;
+			case ButtonState.Selected:
+				titleStates.Set(2);
+				graphicStates.Set(2);
+				break;
+			default:
+				throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
 		}
+	}
 
-		private void UpdateIndicator()
-		{
-			Debug.Log("update indicator function called by " + name, this);
-			characterSelectIndicators = GetComponentInChildren<CharacterSelectIndicators>();
-			characterSelectIndicators.SetAllUnhighlighted();
-			foreach (var player in playersWhoHighlightedThisCharacter)
-			{
-				characterSelectIndicators.Set(player.input.playerIndex, 1);
-				Debug.Log("Button " + character + " is highlighted for player " + player.input.playerIndex);
-			}
-
-			foreach (var player in playersWhoSelectedThisCharacter)		
-			{
-				characterSelectIndicators.Set(player.input.playerIndex, 2);
-				Debug.Log("Button " + character + " is selected for player " + player.input.playerIndex, this);
-			}
-
-		}
-
-		private void SetState(ButtonState newState)
-		{
-			currentState = newState;
-			switch (newState)
-			{
-				case ButtonState.Unhighlighted:
-					titleStates.Set(0);
-					graphicStates.Set(0);
-					break;
-				case ButtonState.Highlighted:
-					titleStates.Set(1);
-					graphicStates.Set(1);
-					break;
-				case ButtonState.Selected:
-					titleStates.Set(2);
-					graphicStates.Set(2);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
-			}
-		}
-
-		public void CleanUp()
-		{
-			SetState(ButtonState.Unhighlighted);
-			playersWhoHighlightedThisCharacter.Clear();
-			playersWhoSelectedThisCharacter.Clear();
-			UpdateIndicator();
-		}
+	public void CleanUp()
+	{
+		SetState(ButtonState.Unhighlighted);
+		playersWhoHighlightedThisCharacter.Clear();
+		playersWhoSelectedThisCharacter.Clear();
+		UpdateIndicator();
 	}
 }

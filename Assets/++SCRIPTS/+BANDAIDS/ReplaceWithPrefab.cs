@@ -2,59 +2,56 @@ using UnityEditor;
 using UnityEngine;
 
 #if UNITY_EDITOR
-namespace __SCRIPTS._BANDAIDS
+public class ReplaceWithPrefab : EditorWindow
 {
-	public class ReplaceWithPrefab : EditorWindow
+	[SerializeField] private GameObject prefab;
+
+	[MenuItem("Tools/Replace With Prefab")]
+	private static void CreateReplaceWithPrefab()
 	{
-		[SerializeField] private GameObject prefab;
+		GetWindow<ReplaceWithPrefab>();
+	}
 
-		[MenuItem("Tools/Replace With Prefab")]
-		private static void CreateReplaceWithPrefab()
+	private void OnGUI()
+	{
+		prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", prefab, typeof(GameObject), false);
+
+		if (GUILayout.Button("Replace"))
 		{
-			GetWindow<ReplaceWithPrefab>();
-		}
+			var selection = Selection.gameObjects;
 
-		private void OnGUI()
-		{
-			prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", prefab, typeof(GameObject), false);
-
-			if (GUILayout.Button("Replace"))
+			for (var i = selection.Length - 1; i >= 0; --i)
 			{
-				var selection = Selection.gameObjects;
+				var selected = selection[i];
+				var prefabType = PrefabUtility.GetPrefabAssetType(prefab);
+				GameObject newObject;
 
-				for (var i = selection.Length - 1; i >= 0; --i)
+				if (prefabType == PrefabAssetType.Regular)
+					newObject = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+				else
 				{
-					var selected = selection[i];
-					var prefabType = PrefabUtility.GetPrefabAssetType(prefab);
-					GameObject newObject;
-
-					if (prefabType == PrefabAssetType.Regular)
-						newObject = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
-					else
-					{
-						newObject = Instantiate(prefab);
-						newObject.name = prefab.name;
-					}
-
-					if (newObject == null)
-					{
-						Debug.LogError("Error instantiating prefab");
-						break;
-					}
-
-					Undo.RegisterCreatedObjectUndo(newObject, "Replace With Prefabs");
-					newObject.transform.parent = selected.transform.parent;
-					newObject.transform.localPosition = selected.transform.localPosition;
-					newObject.transform.localRotation = selected.transform.localRotation;
-					newObject.transform.localScale = selected.transform.localScale;
-					newObject.transform.SetSiblingIndex(selected.transform.GetSiblingIndex());
-					Undo.DestroyObjectImmediate(selected);
+					newObject = Instantiate(prefab);
+					newObject.name = prefab.name;
 				}
-			}
 
-			GUI.enabled = false;
-			EditorGUILayout.LabelField("Selection count: " + Selection.objects.Length);
+				if (newObject == null)
+				{
+					Debug.LogError("Error instantiating prefab");
+					break;
+				}
+
+				Undo.RegisterCreatedObjectUndo(newObject, "Replace With Prefabs");
+				newObject.transform.parent = selected.transform.parent;
+				newObject.transform.localPosition = selected.transform.localPosition;
+				newObject.transform.localRotation = selected.transform.localRotation;
+				newObject.transform.localScale = selected.transform.localScale;
+				newObject.transform.SetSiblingIndex(selected.transform.GetSiblingIndex());
+				Undo.DestroyObjectImmediate(selected);
+			}
 		}
+
+		GUI.enabled = false;
+		EditorGUILayout.LabelField("Selection count: " + Selection.objects.Length);
 	}
 }
 

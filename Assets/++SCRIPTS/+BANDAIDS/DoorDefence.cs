@@ -1,48 +1,44 @@
-using __SCRIPTS._ATTACKS;
 using NaughtyAttributes;
 using UnityEngine;
 
-namespace __SCRIPTS._BANDAIDS
+[ExecuteInEditMode]
+public class DoorDefence:MonoBehaviour
 {
-	[ExecuteInEditMode]
-	public class DoorDefence:MonoBehaviour
+	public int defence;
+	public HideRevealObjects defenceStates;
+	public virtual void Defend(Attack attack)
 	{
-		public int defence;
-		public HideRevealObjects defenceStates;
-		public virtual void Defend(Attack attack)
-		{
-			if (defence <= 0) return;
-			attack.DamageAmount = 0;
-			Damage();
-		}
+		if (defence <= 0) return;
+		attack.DamageAmount = 0;
+		Damage();
+	}
 
-		[Button()]
-		public void Repair()
-		{
-			defence += 2;
-			Refresh();
-		}
+	[Button()]
+	public void Repair()
+	{
+		defence += 2;
+		Refresh();
+	}
 
-		[Button()]
-		public void Damage()
-		{
-			defence--;
-			defence = Mathf.Max(0, defence);
-			Refresh();
-		}
+	[Button()]
+	public void Damage()
+	{
+		defence--;
+		defence = Mathf.Max(0, defence);
+		Refresh();
+	}
 
-		[Button()]
-		private void Refresh()
+	[Button()]
+	private void Refresh()
+	{
+		defenceStates ??= GetComponent<HideRevealObjects>();
+		if (defence >= defenceStates.objectsToReveal.Count - 1)
 		{
-			defenceStates ??= GetComponent<HideRevealObjects>();
-			if (defence >= defenceStates.objectsToReveal.Count - 1)
-			{
-				defenceStates.Set(defenceStates.objectsToReveal.Count-1);
-			}
-			else
-			{
-				defenceStates.Set(defence);
-			}
+			defenceStates.Set(defenceStates.objectsToReveal.Count-1);
+		}
+		else
+		{
+			defenceStates.Set(defence);
 		}
 	}
 }

@@ -1,54 +1,51 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace __SCRIPTS._COMMON
+public class ObjectPool : MonoBehaviour
 {
-	public class ObjectPool : MonoBehaviour
+
+	public RecycleGameObject prefab;
+	static int entities = 0;
+
+	public List<RecycleGameObject> poolInstances = new List<RecycleGameObject> ();
+
+	private RecycleGameObject CreateInstance (Vector3 pos)
 	{
+		entities++;
 
-		public RecycleGameObject prefab;
-		static int entities = 0;
+		var clone = Instantiate (prefab);
+		clone.transform.position = pos;
+		clone.name = prefab.name + entities;
 
-		public List<RecycleGameObject> poolInstances = new List<RecycleGameObject> ();
+		poolInstances.Add (clone);
 
-		private RecycleGameObject CreateInstance (Vector3 pos)
+		return clone;
+	}
+
+	public RecycleGameObject NextObject (Vector3 pos)
+	{
+		RecycleGameObject instance = null;
+		for (int i = 0; i < poolInstances.Count; i++)
 		{
-			entities++;
+			if (poolInstances[i] == null) continue;
+			if (poolInstances[i].gameObject == null) continue;
+			if (poolInstances[i].gameObject.activeSelf) continue;
+			instance = poolInstances[i];
+			instance.transform.position = pos;
 
-			var clone = Instantiate (prefab);
-			clone.transform.position = pos;
-			clone.name = prefab.name + entities;
-
-			poolInstances.Add (clone);
-
-			return clone;
 		}
 
-		public RecycleGameObject NextObject (Vector3 pos)
-		{
-			RecycleGameObject instance = null;
-			for (int i = 0; i < poolInstances.Count; i++)
-			{
-				if (poolInstances[i] == null) continue;
-				if (poolInstances[i].gameObject == null) continue;
-				if (poolInstances[i].gameObject.activeSelf) continue;
-				instance = poolInstances[i];
-				instance.transform.position = pos;
-
-			}
-
-			if (instance != null) {
-				instance.ActivateGameObject ();
-				return instance;
-			}
-
-			instance = CreateInstance (pos);
+		if (instance != null) {
 			instance.ActivateGameObject ();
-
-
 			return instance;
-
 		}
+
+		instance = CreateInstance (pos);
+		instance.ActivateGameObject ();
+
+
+		return instance;
 
 	}
+
 }

@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace __SCRIPTS._UI.RisingText
+namespace RisingText
 {
 	public class RisingText : MonoBehaviour
 	{

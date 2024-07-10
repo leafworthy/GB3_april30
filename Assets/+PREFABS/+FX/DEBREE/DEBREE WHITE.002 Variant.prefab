@@ -5,7 +5,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1021359760295436371, guid: 0ec37c334abb8444e884481421b88e6f, type: 3}
@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4896294812757534008, guid: 0ec37c334abb8444e884481421b88e6f, type: 3}
       propertyPath: m_Name
-      value: DEBREE WHITE.002
+      value: DEBREE WHITE.002 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 4896294812757534010, guid: 0ec37c334abb8444e884481421b88e6f, type: 3}
       propertyPath: m_RootOrder
@@ -68,6 +68,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 564717566164714455, guid: 0ec37c334abb8444e884481421b88e6f, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ec37c334abb8444e884481421b88e6f, type: 3}

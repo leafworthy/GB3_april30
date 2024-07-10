@@ -1,18 +1,15 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace __SCRIPTS._BANDAIDS
+public class ZombieWaveDisplay:MonoBehaviour
 {
-	public class ZombieWaveDisplay:MonoBehaviour
-	{
-		[SerializeField] private Animator animator;
-		[SerializeField]private TextMeshProUGUI WaveText;
-		private static readonly int DisplayTrigger = Animator.StringToHash("DisplayTrigger");
+	[SerializeField] private Animator animator;
+	[SerializeField]private TextMeshProUGUI WaveText;
+	private static readonly int DisplayTrigger = Animator.StringToHash("DisplayTrigger");
 
-		public void DisplayText(string textToDisplay)
-		{
-			WaveText.text = textToDisplay;
-			animator.SetTrigger(DisplayTrigger);
-		}
+	public void DisplayText(string textToDisplay)
+	{
+		WaveText.text = textToDisplay;
+		animator.SetTrigger(DisplayTrigger);
 	}
 }

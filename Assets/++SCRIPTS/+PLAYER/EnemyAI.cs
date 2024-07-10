@@ -1,227 +1,221 @@
 using System;
-using __SCRIPTS._ATTACKS;
-using __SCRIPTS._COMMON;
-using __SCRIPTS._UNITS;
 using UnityEngine;
 
-namespace __SCRIPTS._PLAYER
+[RequireComponent(typeof(AstarPathfinder)), RequireComponent(typeof(Life)), RequireComponent(typeof(Targetter)),
+ RequireComponent(typeof(EnemyThoughts))]
+public class EnemyAI : MonoBehaviour
 {
-	[RequireComponent(typeof(AstarPathfinder)), RequireComponent(typeof(Life)), RequireComponent(typeof(Targetter)),
-	 RequireComponent(typeof(EnemyThoughts))]
-	public class EnemyAI : MonoBehaviour
+	private enum State
 	{
-		private enum State
+		Wander,
+		WalkToTarget,
+		AttackTarget,
+		AttackObstacle,
+		WalkToObstacle
+	}
+
+	private State state;
+	private int wanderCounter;
+	private int wanderRate = 200;
+
+	#region events
+
+	public event Action<Life> OnAttack;
+	public event Action<Vector2> OnMoveInDirection;
+	public event Action OnStopMoving;
+	public event Action<Life> OnAggro;
+
+	#endregion
+
+	#region components
+
+	private AstarPathfinder pathmaker => GetComponent<AstarPathfinder>();
+	private Life life => GetComponent<Life>();
+	private Targetter targets => GetComponent<Targetter>();
+	private EnemyThoughts thoughts => GetComponent<EnemyThoughts>();
+
+	#endregion
+
+	#region unity events
+
+	private void OnEnable()
+	{
+		pathmaker.enabled = true;
+		pathmaker.OnNewDirection += pathmakerOnOnNewDirection;
+		life.OnDamaged += Life_OnDamaged;
+		thoughts.Think("Just woke up, wandering.");
+		SetState(State.Wander);
+	}
+
+	private void OnDisable()
+	{
+		pathmaker.OnNewDirection -= pathmakerOnOnNewDirection;
+		life.OnDamaged -= Life_OnDamaged;
+	}
+
+	private void Life_OnDamaged(Attack attack)
+	{
+		targets.SetSpecialTarget(attack.Owner.spawnedPlayerDefence);
+	}
+
+	private void pathmakerOnOnNewDirection(Vector2 newDir)
+	{
+		OnMoveInDirection?.Invoke(newDir);
+	}
+
+	private void FixedUpdate()
+	{
+		if (GlobalManager.IsPaused || life.IsDead()) return;
+		switch (state)
 		{
-			Wander,
-			WalkToTarget,
-			AttackTarget,
-			AttackObstacle,
-			WalkToObstacle
+			case State.WalkToTarget:
+				UpdateWalkPathToTarget();
+				break;
+			case State.AttackTarget:
+				UpdateAttackPlayer();
+				break;
+			case State.WalkToObstacle:
+				UpdateWalkToObstacle();
+				break;
+			case State.AttackObstacle:
+				UpdateAttackObstacle();
+				break;
+			case State.Wander:
+				UpdateWander();
+				break;
 		}
+	}
 
-		private State state;
-		private int wanderCounter;
-		private int wanderRate = 200;
+	#endregion
 
-		#region events
+	#region state updates
 
-		public event Action<Life> OnAttack;
-		public event Action<Vector2> OnMoveInDirection;
-		public event Action OnStopMoving;
-		public event Action<Life> OnAggro;
-
-		#endregion
-
-		#region components
-
-		private AstarPathfinder pathmaker => GetComponent<AstarPathfinder>();
-		private Life life => GetComponent<Life>();
-		private Targetter targets => GetComponent<Targetter>();
-		private EnemyThoughts thoughts => GetComponent<EnemyThoughts>();
-
-		#endregion
-
-		#region unity events
-
-		private void OnEnable()
+	private void UpdateWalkToObstacle()
+	{
+		if (targets.GetCurrentObstacle() == null)
 		{
-			pathmaker.enabled = true;
-			pathmaker.OnNewDirection += pathmakerOnOnNewDirection;
-			life.OnDamaged += Life_OnDamaged;
-			thoughts.Think("Just woke up, wandering.");
 			SetState(State.Wander);
+			thoughts.Think("Lost obstacle, wandering.");
+			return;
 		}
 
-		private void OnDisable()
+		if (targets.CanAttackObstacle())
 		{
-			pathmaker.OnNewDirection -= pathmakerOnOnNewDirection;
-			life.OnDamaged -= Life_OnDamaged;
+			SetState(State.AttackObstacle);
+			thoughts.Think("Close enough to attack obstacle.");
+			return;
 		}
 
-		private void Life_OnDamaged(Attack attack)
+		pathmaker.SetTargetPosition(targets.GetCurrentObstacle().transform.position);
+		thoughts.Think("Walking to obstacle.");
+	}
+
+	private void UpdateWander()
+	{
+		
+		var target = targets.GetClosestTargetWithinAggroRange(transform.position);
+		if (target != null)
 		{
-			targets.SetSpecialTarget(attack.Owner.spawnedPlayerDefence);
+			SetState(State.WalkToTarget);
+			OnAggro?.Invoke(target);
+			thoughts.Think("Found a target, walking to it.");
+			return;
 		}
 
-		private void pathmakerOnOnNewDirection(Vector2 newDir)
+		wanderCounter++;
+		if (wanderCounter < wanderRate) return;
+		pathmaker.SetTargetPosition(targets.GetWanderPosition());
+		wanderCounter = 0;
+
+
+
+	}
+
+	private void UpdateAttackObstacle()
+	{
+		if (targets.HasLineOfSightWithCurrentTarget())
 		{
-			OnMoveInDirection?.Invoke(newDir);
+			SetState(State.WalkToTarget);
+			OnAggro?.Invoke(targets.GetCurrentTarget());
+			thoughts.Think("I see a target, walking to it.");
+			return;
 		}
 
-		private void FixedUpdate()
+		var obstacle = targets.GetClosestObstacleWithinAttackRange();
+		if (obstacle == null)
 		{
-			if (GlobalManager.IsPaused || life.IsDead()) return;
-			switch (state)
-			{
-				case State.WalkToTarget:
-					UpdateWalkPathToTarget();
-					break;
-				case State.AttackTarget:
-					UpdateAttackPlayer();
-					break;
-				case State.WalkToObstacle:
-					UpdateWalkToObstacle();
-					break;
-				case State.AttackObstacle:
-					UpdateAttackObstacle();
-					break;
-				case State.Wander:
-					UpdateWander();
-					break;
-			}
+			SetState(State.WalkToTarget);
+			thoughts.Think("Can't reach obstacle, walking to target.");
+			return;
 		}
 
-		#endregion
-
-		#region state updates
-
-		private void UpdateWalkToObstacle()
+		var obstacleLife = obstacle.GetComponentInChildren<Life>();
+		if (obstacleLife == null)
 		{
-			if (targets.GetCurrentObstacle() == null)
-			{
-				SetState(State.Wander);
-				thoughts.Think("Lost obstacle, wandering.");
-				return;
-			}
+			SetState(State.WalkToTarget);
+			thoughts.Think("Obstacle has no life, walking to target.");
+			return;
+		}
 
+		if (targets.CanAttackObstacle())
+			StartAttack(obstacleLife);
+		else
+			SetState(State.WalkToTarget);
+	}
+
+	private void UpdateAttackPlayer()
+	{
+		if (targets.CanAttackCurrentTarget())
+			StartAttack(targets.GetCurrentTarget());
+		else
+			SetState(State.WalkToTarget);
+	}
+
+	private void UpdateWalkPathToTarget()
+	{
+		if (targets.GetCurrentTarget() == null)
+		{
+			SetState(State.Wander);
+			thoughts.Think("Lost target, wandering.");
+			return;
+		}
+
+		if (!targets.HasLineOfSightWithCurrentTarget())
+		{
 			if (targets.CanAttackObstacle())
 			{
 				SetState(State.AttackObstacle);
-				thoughts.Think("Close enough to attack obstacle.");
-				return;
+				thoughts.Think("Can't reach target, attacking obstacle.");
 			}
-
-			pathmaker.SetTargetPosition(targets.GetCurrentObstacle().transform.position);
-			thoughts.Think("Walking to obstacle.");
-		}
-
-		private void UpdateWander()
-		{
-		
-			var target = targets.GetClosestTargetWithinAggroRange(transform.position);
-			if (target != null)
-			{
-				SetState(State.WalkToTarget);
-				OnAggro?.Invoke(target);
-				thoughts.Think("Found a target, walking to it.");
-				return;
-			}
-
-			wanderCounter++;
-			if (wanderCounter < wanderRate) return;
-			pathmaker.SetTargetPosition(targets.GetWanderPosition());
-			wanderCounter = 0;
-
-
-
-		}
-
-		private void UpdateAttackObstacle()
-		{
-			if (targets.HasLineOfSightWithCurrentTarget())
-			{
-				SetState(State.WalkToTarget);
-				OnAggro?.Invoke(targets.GetCurrentTarget());
-				thoughts.Think("I see a target, walking to it.");
-				return;
-			}
-
-			var obstacle = targets.GetClosestObstacleWithinAttackRange();
-			if (obstacle == null)
-			{
-				SetState(State.WalkToTarget);
-				thoughts.Think("Can't reach obstacle, walking to target.");
-				return;
-			}
-
-			var obstacleLife = obstacle.GetComponentInChildren<Life>();
-			if (obstacleLife == null)
-			{
-				SetState(State.WalkToTarget);
-				thoughts.Think("Obstacle has no life, walking to target.");
-				return;
-			}
-
-			if (targets.CanAttackObstacle())
-				StartAttack(obstacleLife);
 			else
-				SetState(State.WalkToTarget);
-		}
-
-		private void UpdateAttackPlayer()
-		{
-			if (targets.CanAttackCurrentTarget())
-				StartAttack(targets.GetCurrentTarget());
-			else
-				SetState(State.WalkToTarget);
-		}
-
-		private void UpdateWalkPathToTarget()
-		{
-			if (targets.GetCurrentTarget() == null)
 			{
 				SetState(State.Wander);
-				thoughts.Think("Lost target, wandering.");
-				return;
+				thoughts.Think("No line of sight to target, wandering.");
 			}
 
-			if (!targets.HasLineOfSightWithCurrentTarget())
-			{
-				if (targets.CanAttackObstacle())
-				{
-					SetState(State.AttackObstacle);
-					thoughts.Think("Can't reach target, attacking obstacle.");
-				}
-				else
-				{
-					SetState(State.Wander);
-					thoughts.Think("No line of sight to target, wandering.");
-				}
-
-				return;
-			}
-
-			if (targets.CanAttackCurrentTarget())
-			{
-				SetState(State.AttackTarget);
-				thoughts.Think("Close enough to attack target.");
-				return;
-			}
-
-			pathmaker.SetTargetPosition(targets.GetCurrentTarget().transform.position);
+			return;
 		}
 
-		#endregion
-
-		private void StartAttack(Life target)
+		if (targets.CanAttackCurrentTarget())
 		{
-			OnStopMoving?.Invoke();
-			OnAttack?.Invoke(target);
+			SetState(State.AttackTarget);
+			thoughts.Think("Close enough to attack target.");
+			return;
 		}
 
-		private void SetState(State newState)
-		{
-			state = newState;
-		}
+		pathmaker.SetTargetPosition(targets.GetCurrentTarget().transform.position);
+	}
+
+	#endregion
+
+	private void StartAttack(Life target)
+	{
+		OnStopMoving?.Invoke();
+		OnAttack?.Invoke(target);
+	}
+
+	private void SetState(State newState)
+	{
+		state = newState;
 	}
 }

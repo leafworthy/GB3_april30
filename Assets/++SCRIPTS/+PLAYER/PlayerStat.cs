@@ -1,28 +1,25 @@
-﻿namespace __SCRIPTS._PLAYER
+﻿public class PlayerStat
 {
-	public class PlayerStat
+	public PlayerStat(StatType statType, float startingValue)
 	{
-		public PlayerStat(StatType statType, float startingValue)
-		{
-			value = startingValue;
-			type = statType;
-		}
-		public enum StatType
-		{
-			Kills,
-			AttacksTotal,
-			AttacksHit,
-			Accuracy,
-			TotalCash,
-			Gas
-		}
+		value = startingValue;
+		type = statType;
+	}
+	public enum StatType
+	{
+		Kills,
+		AttacksTotal,
+		AttacksHit,
+		Accuracy,
+		TotalCash,
+		Gas
+	}
 
-		public readonly StatType type;
-		public float value;
+	public readonly StatType type;
+	public float value;
 
-		public void ChangeStat(float change)
-		{
-			value += change;
-		}
+	public void ChangeStat(float change)
+	{
+		value += change;
 	}
 }
