@@ -4,41 +4,31 @@ using UnityEngine;
 public class Attacks : MonoBehaviour
 {
 	protected Life attacker;
-	public event Action OnAttackHitTarget;
 
 	private void OnEnable()
 	{
 		attacker = GetComponent<Life>();
 	}
 
-	protected void HitTarget(float attackDamage, Collider2D hit2D, bool connect)
+	protected void HitTarget(float attackDamage, Life targetLife, float extraPush = 0)
 	{
-		var enemy = hit2D.transform.gameObject.GetComponent<Life>();
-		if (enemy == null) return;
-		if (enemy.IsPlayer || enemy.cantDie || enemy.IsObstacle) return;
-		if (connect)
-		{
-			OnAttackHitTarget?.Invoke();
-			
-		}
-
-
-
-		var newAttack = new Attack(attacker, enemy, attackDamage);
-		enemy.TakeDamage(newAttack);
-		if (!enemy.IsDead()) return;
+		if (targetLife == null) return;
+		if (RaycastToObject(targetLife).collider == null) return;
+		var newAttack = new Attack(attacker, targetLife, attackDamage);
+		targetLife.TakeDamage(newAttack);
+		if (targetLife.IsDead()) return;
 		
-		var enemyMoveAbility = hit2D.transform.gameObject.GetComponent<MoveAbility>();
+		var enemyMoveAbility = targetLife.transform.gameObject.GetComponent<MoveAbility>();
 		if(enemyMoveAbility == null) return;
-		enemyMoveAbility.Push(newAttack.Direction, newAttack.DamageAmount * .2f);
+		enemyMoveAbility.Push(newAttack.Direction, newAttack.DamageAmount * extraPush);
 	}
 
-	protected RaycastHit2D GetAttackHitObject(Vector3 targetPosition)
+	protected RaycastHit2D RaycastToObject(Life currentTargetLife)
 	{
 		var position = attacker.transform.position;
 		var layer = attacker.IsPlayer ? ASSETS.LevelAssets.EnemyLayer : ASSETS.LevelAssets.PlayerLayer;
-		var direction = (targetPosition - position).normalized;
-		var distance = Vector3.Distance(position, targetPosition);
+		var direction = (currentTargetLife.transform.position - position).normalized;
+		var distance = Vector3.Distance(position, currentTargetLife.transform.position);
 		return Physics2D.Raycast(position, direction, distance, layer);
 	}
 }

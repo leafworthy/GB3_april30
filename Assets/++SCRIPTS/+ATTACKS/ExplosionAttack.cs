@@ -5,7 +5,6 @@ using UnityEngine;
 public class ExplosionAttack : Attacks
 {
 	private float currentCooldownTime;
-	private Vector2 currentAttackTarget;
 	private Life currentTargetLife;
 
 	private EnemyAI ai;
@@ -62,7 +61,6 @@ public class ExplosionAttack : Attacks
 		if (attacker.IsDead()) return;
 		var move = GetComponent<MoveAbility>();
 		currentTargetLife = newTarget;
-		currentAttackTarget = newTarget.transform.position;
 		anim.SetTrigger(Animations.Attack1Trigger);
 		move.Push(currentTargetLife.transform.position - transform.position, 10);
 	}
@@ -72,20 +70,15 @@ public class ExplosionAttack : Attacks
 		if (GlobalManager.IsPaused) return;
 		if (attacker.IsDead()) return;
 
-		var hitObject = GetAttackHitObject(currentAttackTarget);
+		var hitObject = RaycastToObject(currentTargetLife);
 		if (hitObject.collider == null) return;
 
-		currentAttackTarget = hitObject.point;
 
 		currentTargetLife = hitObject.collider.gameObject.GetComponent<Life>();
 		if (currentTargetLife == null) return;
-		AttackTarget(transform.position);
-	}
-
-	private void AttackTarget(Vector2 target)
-	{
-		currentAttackTarget = target;
 		anim.SetTrigger(Animations.Attack1Trigger);
 	}
+
+
 	
 }

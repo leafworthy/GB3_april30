@@ -5,14 +5,15 @@ using UnityEngine;
 public class MeleeAttack : Attacks
 {
 	private float currentCooldownTime;
-	private Vector2 currentAttackTarget;
 	private Life currentTargetLife;
 
 	private UnitStats stats;
 	private EnemyAI ai;
 	private Animations anim;
 	private Body body;
-	private Player owner;
+	public GameObject attackPoint;
+	public float extraPush = .2f;
+	private Targetter targetter;
 
 	
 
@@ -21,21 +22,26 @@ public class MeleeAttack : Attacks
 		body = GetComponent<Body>();
 		anim = GetComponent<Animations>();
 		stats = GetComponent<UnitStats>();
+		targetter = GetComponent<Targetter>();
 
 
 		if (stats.IsPlayer)
 		{
 			stats.player.Controller.Attack1.OnPress += Player_Attack;
-			owner = stats.player;
 		}
 		else
 		{
 			ai = GetComponent<EnemyAI>();
 			ai.OnAttack += AI_Attack;
-			owner = Players.EnemyPlayer;
 		}
 
-		anim.animEvents.OnAttackHit += AttackHit;
+		anim.animEvents.OnAttackHit += OnAttackHit;
+		anim.animEvents.OnAttackStop += OnAttackStop;
+	}
+
+	private void OnAttackStop(int obj)
+	{
+		body.arms.Stop("MeleeAttack");
 	}
 
 	private void OnDisable()
@@ -55,15 +61,8 @@ public class MeleeAttack : Attacks
 	{
 		if (GlobalManager.IsPaused) return;
 		if (attacker.IsDead()) return;
-
-		var hitObject = GetAttackHitObject(currentAttackTarget);
-		if (hitObject.collider == null) return;
-
-		currentAttackTarget = hitObject.point;
-
-		currentTargetLife = hitObject.collider.gameObject.GetComponent<Life>();
-		if (currentTargetLife == null) return;
-		AttackTarget(body.AttackStartPoint.transform.position);
+		if(!body.arms.Do("MeleeAttack")) return;
+		StartAttack();
 	}
 
 
@@ -72,37 +71,46 @@ public class MeleeAttack : Attacks
 		if (newTarget == null) return;
 		if (GlobalManager.IsPaused) return;
 		if (attacker.IsDead()) return;
+		if(!targetter.HasLineOfSightWith(newTarget.transform.position) && !newTarget.IsObstacle)
+		{
+			Debug.Log("THIS");
+			return;
+		}
 
 		if (!(Time.time >= currentCooldownTime)) return;
 		currentCooldownTime = Time.time + stats.AttackRate;
-		currentTargetLife = newTarget;
-		currentAttackTarget = newTarget.transform.position;
+		Debug.Log("trigger");
 		anim.SetTrigger(Animations.Attack1Trigger);
 	}
 
 
-	private void AttackTarget(Vector2 target)
+	private void StartAttack()
 	{
 		if (!(Time.time >= currentCooldownTime)) return;
 
 		currentCooldownTime = Time.time + stats.AttackRate;
-		currentAttackTarget = target;
+		
+		  
 		anim.SetTrigger(Animations.Attack1Trigger);
 	}
 
 
-	private void AttackHit(int attackType)
+	private void OnAttackHit(int attackType)
 	{
 		if (GlobalManager.IsPaused) return;
 		if (attacker.IsDead()) return;
-		if (currentTargetLife == null) return;
-		
-		var newAttack = new Attack(attacker, currentTargetLife, currentTargetLife.AttackHeight);
-		
-		if (Vector2.Distance(currentTargetLife.transform.position, currentAttackTarget) <
-		    stats.AttackRange * 2)
-			currentTargetLife.TakeDamage(newAttack);
-		
+		var layer = attacker.IsPlayer?ASSETS.LevelAssets.EnemyLayer: ASSETS.LevelAssets.PlayerLayer;
+		 var hits = Physics2D.OverlapCircleAll(attackPoint.transform.position, stats.AttackRange, layer);
+		 foreach (var hit in hits)
+		 {
+			 var life = hit.gameObject.GetComponent<Life>();
+			 if (life == null) continue;
+			 if (attacker.IsPlayer && life.IsObstacle) continue;
+			 if (!life.isEnemyOf(attacker)) continue;
+			 if(!targetter.HasLineOfSightWith(hit.transform.position))return;
+			 HitTarget(stats.AttackDamage, life, extraPush);
+			 return;
+		 }
 	}
 
 	

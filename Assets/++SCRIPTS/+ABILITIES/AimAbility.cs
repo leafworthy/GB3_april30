@@ -7,12 +7,12 @@ public class AimAbility : MonoBehaviour
 	protected Body body;
 	[HideInInspector] public Vector2 AimDir;
 	public const float aimDistanceFactor = 100;
-	private float minMagnitude = .3f;
+	private float minMagnitude = .3f; 
 
 	public virtual void Start()
 	{
+		 
 		body = GetComponent<Body>();
-		
 		life = GetComponent<Life>();
 		if (life == null) return;
 		owner = life.player;

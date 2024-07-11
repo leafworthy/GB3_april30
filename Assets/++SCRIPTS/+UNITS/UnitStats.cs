@@ -28,6 +28,8 @@ public class UnitStats : MonoBehaviour
     
     public bool IsPlayer => IsThisAPlayer();
 
+    public bool isEnemyOf(Life otherLife) => IsPlayer != otherLife.IsPlayer;
+
     private bool IsThisAPlayer() => player != null && player.IsPlayer();
 
     public bool IsObstacle => unitData.isObstacle;

@@ -10,7 +10,6 @@ public class MoveController : MonoBehaviour
 		set => canMove = value;
 	}
 
-	private bool isTryingToMove;
 
 	private Vector2 moveDir;
 
@@ -65,6 +64,8 @@ public class MoveController : MonoBehaviour
 		anim.animEvents.OnDashStop += Anim_DashStop;
 		anim.animEvents.OnRecovered += Anim_Recovered;
 	}
+
+
 
 	private void OnDisable()
 	{
@@ -181,24 +182,23 @@ public class MoveController : MonoBehaviour
 
 	private void StopMoving()
 	{
+		if (GlobalManager.IsPaused) return;
 		anim.SetBool(Animations.IsMoving, false);
 		mover.StopMoving();
 	}
 
+	
+
 	private void Player_StopMoving(IControlAxis controlAxis)
 	{
-		if (GlobalManager.IsPaused)
-		{
-			Debug.Log("shit is paused tho");
-			return;
-		}
-		mover.StopMoving();
+		
+		StopMoving();
 	}
 
 	private void AI_StopMoving()
 	{
-		if (GlobalManager.IsPaused) return;
-		mover.StopMoving();
+		
+		StopMoving();
 	}
 
 	private void AI_MoveInDirection(Vector2 direction)

@@ -36,8 +36,6 @@ public class ChargeAttack : Attacks
 		anim = GetComponent<Animations>();
 		stats = GetComponent<UnitStats>();
 		ammo = GetComponent<AmmoInventory>();
-		
-
 
 		if (attacker != null)
 		{
@@ -58,7 +56,6 @@ public class ChargeAttack : Attacks
 			attacker.player.Controller.Reload1.OnPress -= Player_ChargePress;
 			attacker.player.Controller.Reload1.OnRelease -= Player_ChargeRelease;
 		}
-	
 	}
 
 	private void Update()
@@ -66,7 +63,7 @@ public class ChargeAttack : Attacks
 		if (isCharging)
 		{
 			ShowAiming();
-			body.BottomFaceDirection(aim.AimDir.x>0);
+			body.BottomFaceDirection(aim.AimDir.x > 0);
 		}
 		else
 			HideAiming();
@@ -93,15 +90,9 @@ public class ChargeAttack : Attacks
 	{
 		if (GlobalManager.IsPaused) return;
 		// if (!ammo.HasFullAmmo(AmmoInventory.AmmoType.primaryAmmo)) return;
-		if (!body.arms.Do(verbName))
-		{
-			return;
-		}
+		if (!body.arms.Do(verbName)) return;
 
-		if (!body.legs.Do(verbName))
-		{
-			return;
-		}
+		if (!body.legs.Do(verbName)) return;
 		isCharging = true;
 		isFullyCharged = false;
 		OnChargePress?.Invoke();
@@ -147,23 +138,24 @@ public class ChargeAttack : Attacks
 		SpecialAttackDistance = Vector2.Distance(position, targetPoint);
 		body.arms.Stop(verbName);
 		body.legs.Stop(verbName);
-		if (!DidCollide(position, targetPoint, out var raycast)) return;
-		OnSpecialAttackHit?.Invoke(); 
+		if (!DidCollideWithBuilding(position, targetPoint, out var raycast)) return;
+		OnSpecialAttackHit?.Invoke();
 
 		foreach (var raycastHit2D in raycast)
 		{
-			HitTarget(attackDamage, raycastHit2D.collider, false);
+			var life = raycastHit2D.collider.GetComponent<Life>();
+			if (!life.isEnemyOf(attacker) || life.cantDie || life.IsObstacle) return;
+			HitTarget(attackDamage, life, .8f);
 			ammo.AddAmmoToReserve(AmmoInventory.AmmoType.primaryAmmo, attackKillSpecialAmount);
 		}
 
-
-		var circleCast = Physics2D.OverlapCircleAll(
-			(Vector2) transform.position + (Vector2) aim.AimDir * SpecialAttackDistance,
-			GetHitRange(attackType));
+		var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position + aim.AimDir * SpecialAttackDistance, GetHitRange(attackType));
 
 		foreach (var hit2D in circleCast)
 		{
-			HitTarget(attackType, hit2D, true);
+			var life = hit2D.gameObject.GetComponent<Life>();
+			if (!life.isEnemyOf(attacker) || life.cantDie || life.IsObstacle) return;
+			HitTarget(stats.Attack2Damage, life, .4f);
 			connect = true;
 			ammo.AddAmmoToReserve(AmmoInventory.AmmoType.primaryAmmo, attackKillSpecialAmount);
 			Maker.Make(FX.Assets.hits.GetRandom(), hit2D.transform.position);
@@ -171,17 +163,15 @@ public class ChargeAttack : Attacks
 
 		if (!connect) return;
 		OnAttackHit?.Invoke();
-		
 	}
 
-	private bool DidCollide(Vector3 position, Vector3 targetPoint, out RaycastHit2D[] raycast)
+	private bool DidCollideWithBuilding(Vector3 position, Vector3 targetPoint, out RaycastHit2D[] raycast)
 	{
-		var hitObstacle = Physics2D.Linecast((Vector2) position, targetPoint, ASSETS.LevelAssets.BuildingLayer);
+		var hitObstacle = Physics2D.Linecast(position, targetPoint, ASSETS.LevelAssets.BuildingLayer);
 		if (hitObstacle) targetPoint = hitObstacle.point;
 
-		raycast = Physics2D.CircleCastAll((Vector2) position, SpecialAttackWidth, aim.AimDir, SpecialAttackDistance,
-			ASSETS.LevelAssets.EnemyLayer);
-		Debug.DrawRay((Vector2) position, (Vector2) aim.AimDir * SpecialAttackDistance, Color.red);
+		raycast = Physics2D.CircleCastAll(position, SpecialAttackWidth, aim.AimDir, SpecialAttackDistance, ASSETS.LevelAssets.EnemyLayer);
+		Debug.DrawRay((Vector2) position, aim.AimDir * SpecialAttackDistance, Color.red);
 		transform.position = targetPoint;
 		return raycast.Length > 0;
 	}
@@ -190,9 +180,6 @@ public class ChargeAttack : Attacks
 	{
 		if (attackType == 5)
 			return stats.AttackRange * 2;
-		else
-			return stats.AttackRange;
+		return stats.AttackRange;
 	}
-
-	
 }

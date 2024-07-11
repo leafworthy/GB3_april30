@@ -128,6 +128,8 @@ public class MoveAbility : MonoBehaviour
 		moveVelocity = Vector2.zero;
 	}
 
+	
+
 	public void SetRBKinematic(bool on)
 	{
 		rb = GetComponent<Rigidbody2D>();
@@ -143,4 +145,6 @@ public class MoveAbility : MonoBehaviour
 	{
 		pushVelocity = Vector2.zero;
 	}
+
+
 }

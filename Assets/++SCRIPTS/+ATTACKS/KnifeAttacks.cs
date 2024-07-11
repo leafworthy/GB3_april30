@@ -16,8 +16,10 @@ public class KnifeAttacks : Attacks
 	private string AnimationName = "Top-Knife";
 	private bool isAttacking;
 	private bool hasPressed;
+	public GameObject attackPoint;
 	public event Action OnMiss;
 	public event Action<Vector2> OnHit;
+	public float hitSize = 15;
 
 	private void Start()
 	{
@@ -74,8 +76,8 @@ public class KnifeAttacks : Attacks
 
 	private GameObject FindClosestHit()
 	{
-		float hitRange = 10;
-		var circleCast = Physics2D.OverlapCircleAll(transform.position, hitRange, ASSETS.LevelAssets.EnemyLayer)
+	
+		var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, hitSize, ASSETS.LevelAssets.EnemyLayer)
 		                          .ToList();
 		if (circleCast.Count <= 0) return null;
 
@@ -97,28 +99,26 @@ public class KnifeAttacks : Attacks
 	{
 		if (attackType != 3) return;
 
-
 		var enemyHit = FindClosestHit();
-		if (enemyHit == null) return;
+		if (enemyHit == null)
+		{
+			OnMiss?.Invoke();
+			return;
+		}
 		var enemy = enemyHit.transform.gameObject.GetComponent<Life>();
 		if (enemy == null)
 		{
 			enemy = enemyHit.transform.gameObject.GetComponentInParent<Life>();
 		}
 
-		if (enemy == null) return;
-		if (enemy.IsPlayer || enemy.cantDie || enemy.IsObstacle)
+		if (enemy == null || enemy.IsPlayer || enemy.cantDie || enemy.IsObstacle)
 		{
 			OnMiss?.Invoke();
 			return;
 		}
 		OnHit?.Invoke(enemyHit.transform.position);
 		
-			
-		
-		var newAttack = new Attack(attacker, enemy, stats.AttackDamage * knifeDamageMultiplier);
-		
-		enemy.TakeDamage(newAttack);
+		HitTarget(stats.AttackDamage * knifeDamageMultiplier, enemy, .1f);
 
 	}
 

@@ -74,8 +74,10 @@ public class BatAttacks : Attacks
 		foreach (var col in closest2)
 		{
 			if (col == null) return;
-
-			HitTarget(GetAttackDamage(attackType), col, true);
+			var life = col.gameObject.GetComponent<Life>();
+			if (!life.isEnemyOf(attacker) || life.cantDie) return;
+			if (attacker.IsPlayer && life.IsObstacle) return;
+			HitTarget(GetAttackDamage(attackType), life, .2f);
 			OnHit?.Invoke();
 			ammo.AddAmmoToReserve(AmmoInventory.AmmoType.meleeCooldown, attackKillSpecialAmount);
 		}

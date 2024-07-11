@@ -407,6 +407,7 @@ Transform:
   - {fileID: 5220148635202177177}
   - {fileID: 2134200470507205701}
   - {fileID: 4205409551116249783}
+  - {fileID: 2345593434901270214}
   m_Father: {fileID: 3833892833502990260}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3833892833308743022
@@ -861,6 +862,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knifeDamageMultiplier: 3
+  attackPoint: {fileID: 8971666602374333099}
 --- !u!114 &4716467258387394285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1901,6 +1903,37 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 7.23, y: 2.16}
   m_Direction: 1
+--- !u!1 &8971666602374333099
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2345593434901270214}
+  m_Layer: 10
+  m_Name: KnifeAttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2345593434901270214
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8971666602374333099}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3833892833308743023}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6731457862597058697
 PrefabInstance:
   m_ObjectHideFlags: 0

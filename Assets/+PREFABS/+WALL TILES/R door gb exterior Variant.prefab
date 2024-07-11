@@ -5,9 +5,13 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 226066878141888133, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 8c34822b7022040fdb2f7864b7bc46f4, type: 2}
     - target: {fileID: 1178652393901442608, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_Size.y
       value: 32.2
@@ -18,12 +22,20 @@ PrefabInstance:
       objectReference: {fileID: -2039715745, guid: e75c2d2cf1e354ee589f6067a0644221, type: 3}
     - target: {fileID: 1178652393901442608, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_SortingOrder
-      value: 10042
+      value: 493
       objectReference: {fileID: 0}
     - target: {fileID: 1178652393901442608, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1938193910109536050, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 8c34822b7022040fdb2f7864b7bc46f4, type: 2}
+    - target: {fileID: 2435601796654625178, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 8c34822b7022040fdb2f7864b7bc46f4, type: 2}
     - target: {fileID: 3308524843949307885, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_LocalPosition.y
       value: 2.18
@@ -68,6 +80,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: R door gb exterior Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 5460669597377824045, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 8c34822b7022040fdb2f7864b7bc46f4, type: 2}
     - target: {fileID: 6098132265708557786, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_Radius
       value: 15
@@ -132,6 +148,10 @@ PrefabInstance:
       propertyPath: Health
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 7319715402796225529, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
+      propertyPath: unitData
+      value: 
+      objectReference: {fileID: 11400000, guid: 2abeee37e415d47d490673c7975dbd4d, type: 2}
     - target: {fileID: 7561614339992897747, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: SorterPositionOffset.x
       value: -4.5284424
@@ -154,7 +174,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: fb00336ecd0e743418906dc2bb5163f2, type: 3}
     - target: {fileID: 7662424548523257085, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_SortingOrder
-      value: 10031
+      value: 479
       objectReference: {fileID: 0}
     - target: {fileID: 7811873326184247868, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_Offset.y
@@ -168,6 +188,10 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 32.2
       objectReference: {fileID: 0}
+    - target: {fileID: 8971544241863656583, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 8c34822b7022040fdb2f7864b7bc46f4, type: 2}
     - target: {fileID: 8971544241863656583, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
       value: 11.931784
@@ -206,7 +230,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: c323ae94a805d4bf3bb5a2e32a75641c, type: 3}
     - target: {fileID: 9067193047227712927, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_SortingOrder
-      value: 10074
+      value: 615
       objectReference: {fileID: 0}
     - target: {fileID: 9138984871637670522, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_Controller
@@ -215,7 +239,15 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 7872935336795535818, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
     - {fileID: 7953839084340973897, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2016472817048669880, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4179736471012140856}
+    - targetCorrespondingSourceObject: {fileID: 8026351016165178176, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5721216386528386251}
   m_SourcePrefab: {fileID: 100100000, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
 --- !u!1 &647644334123196351 stripped
 GameObject:
@@ -232,6 +264,25 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -278,6 +329,25 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0

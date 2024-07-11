@@ -6,13 +6,13 @@ using Random = UnityEngine.Random;
 public class AstarPathfinder : MonoBehaviour
 {
 	public event Action<Vector2> OnNewDirection;
-
+	public event Action<Vector2> OnNewTargetPosition;
 	private Vector2 targetPosition;
 	private Seeker seeker;
 	private Path currentPath;
 	private Vector3 currentDirection;
 
-	private int rate = 15;
+	private int rate = 10;
 	private int counter;
 
 	private float nextWaypointDistance =2;
@@ -20,6 +20,7 @@ public class AstarPathfinder : MonoBehaviour
 	private Vector2 lastPosition;
 	private int frozenCounter;
 	private int freezeLimit = 200;
+	
 
 	private void OnEnable () {
 		seeker = GetComponent<Seeker>();
@@ -36,6 +37,8 @@ public class AstarPathfinder : MonoBehaviour
 
 	public void SetTargetPosition(Vector2 newTargetPosition)
 	{
+		OnNewTargetPosition?.Invoke(newTargetPosition);
+		//seeker.StartPath(transform.position, targetPosition, OnPathComplete);
 		targetPosition = newTargetPosition;
 	}
 

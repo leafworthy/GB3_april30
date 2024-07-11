@@ -23,6 +23,7 @@ public class Targetter : MonoBehaviour
 	private void OnDrawGizmos()
 	{
 		DrawAttackRange();
+		DrawAggroRange();
 		DrawCurrentTarget();
 		DrawCurrentObstacle();
 	}
@@ -37,7 +38,7 @@ public class Targetter : MonoBehaviour
 	private void DrawCurrentObstacle()
 	{
 		if (currentObstacle == null) return;
-		Gizmos.color = Color.green;
+		Gizmos.color = Color.magenta;
 		Gizmos.DrawLine(transform.position, currentObstacle.transform.position);
 	}
 
@@ -47,13 +48,19 @@ public class Targetter : MonoBehaviour
 		Gizmos.DrawWireSphere(transform.position, targetterLife.AttackRange);
 	}
 
+	private void DrawAggroRange()
+	{
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireSphere(transform.position, targetterLife.AggroRange);
+	}
+
 	#endregion
 
 	#region private functions
 
-	private List<Life> GetTargetsWithinAttackRange(LayerMask layer)
+	private List<Life> GetTargetsWithinAggroRange(LayerMask layer)
 	{
-		var list = Physics2D.OverlapCircleAll(transform.position, targetterLife.AttackRange, layer)?.ToList();
+		var list = Physics2D.OverlapCircleAll(transform.position, targetterLife.AggroRange, layer)?.ToList();
 		return list?.Select(x => x.GetComponentInChildren<Life>()).ToList();
 	}
 
@@ -85,27 +92,30 @@ public class Targetter : MonoBehaviour
 	private Life GetClosestObstacleTo(List<Life> targets, Vector2 position)
 	{
 		if (targets.Count <= 0) return null;
-		var closest = null as GameObject;
+		var closest = null as Life;
+		var currentClosestDistance = float.MaxValue;
 		foreach (var target in targets)
 		{
 			if(target == null) continue;
-			var go = target.gameObject;
-			if(go == null) continue;
-			var door = go.GetComponent<DoorInteraction>();
-			if (door == null) continue;
-			if (!doorIsValidTarget(door)) continue;
-
-			var doorLife = door.GetComponentInChildren<Life>();
-			if (doorLife == null) continue;
 			
-			if (buildingIsInTheWay(doorLife)) continue;
+			var go = target.gameObject;
+			Debug.DrawLine(position, target.transform.position, Color.gray);
+			var door = go.GetComponentInParent<DoorInteraction>();
+			if (door == null) continue;
+			if (!doorIsValidTarget(door)) continue;			
+			//if (buildingIsInTheWay(doorLife.transform.position)) continue;
 
 			var distance = Vector3.Distance(door.transform.position, position);
-			var currentClosestDistance = Vector3.Distance(closest.transform.position, position);
-			if (distance < currentClosestDistance) closest = door.gameObject;
+			if (distance < currentClosestDistance)
+			{
+				closest = target;
+				Debug.DrawLine(position, closest.transform.position, Color.magenta, .5f);
+			}
 		}
 
-		return closest == null ? null : closest.GetComponentInChildren<Life>();
+		if(closest != null)Debug.DrawLine(position, closest.transform.position, Color.white, .5f);
+
+		return closest;
 	}
 
 	private static bool doorIsValidTarget(DoorInteraction doorInteractionAnimator) =>
@@ -113,10 +123,9 @@ public class Targetter : MonoBehaviour
 
 
 
-	private bool buildingIsInTheWay(Life target)
+	private bool buildingIsInTheWay(Vector2 position)
 	{
-		if (target == null) return true;
-		var hit = Physics2D.Linecast(transform.position, target.transform.position, ASSETS.LevelAssets.EnemyUnwalkableLayers);
+		var hit = Physics2D.Linecast(transform.position, position, ASSETS.LevelAssets.EnemyUnwalkableLayers);
 		if (!hit) return false;
 		return hit.collider != null;
 	}
@@ -148,15 +157,20 @@ public class Targetter : MonoBehaviour
 		if (potentialObstacles == null) return null;
 		if(potentialObstacles.Count <= 0)
 		{
-			//Debug.Log( "No obstacles in range");
 			return null;
 		}
 		return GetClosestObstacleTo(potentialObstacles, transform.position);
 	}
 
+	private List<Life> GetTargetsWithinAttackRange(LayerMask layer)
+	{ 
+		var list = Physics2D.OverlapCircleAll(transform.position, targetterLife.AttackRange, layer)?.ToList();
+		return list?.Select(x => x.GetComponentInChildren<Life>()).ToList();
+	}
+
 	public bool CanAttackCurrentTarget() {
 		if(currentTarget == null) return false;
-		return !buildingIsInTheWay(currentTarget) && isWithinAttackRange(currentTarget.transform.position) && !(currentTarget == null);
+		return !buildingIsInTheWay(currentTarget.transform.position) && isWithinAttackRange(currentTarget.transform.position) && !(currentTarget == null);
 	}
 
 	public bool CanAttackObstacle() => GetCurrentObstacle() != null && !GetCurrentObstacle().IsDead() &&
@@ -169,11 +183,25 @@ public class Targetter : MonoBehaviour
 		specialTarget = ownerSpawnedPlayerDefence;
 	}
 
-	public Life GetCurrentObstacle() => currentObstacle;
+	public Life GetCurrentObstacle()
+	{
+		currentObstacle = GetClosestObstacleWithinAttackRange(); 
+		return currentObstacle;
+	}
 
-	public Vector2 GetWanderPosition() => (Vector2) transform.position + Random.insideUnitCircle * targetterLife.AggroRange*5;
-
+	public Vector2 GetWanderPosition(Vector2 wanderPoint)
+	{
+		var maxTries = 30;
+		for (int i = 0; i < maxTries; i++)
+		{
+			var point = wanderPoint + Random.insideUnitCircle * targetterLife.AggroRange;
+			if (!buildingIsInTheWay(point)) return point;
+		}
+	return  Vector2.zero ;
+	}
 	#endregion
 
-	public bool HasLineOfSightWithCurrentTarget() => !buildingIsInTheWay(currentTarget);
+	public bool HasLineOfSightWithCurrentTarget() => currentTarget && !buildingIsInTheWay(currentTarget.transform.position);
+
+	public bool HasLineOfSightWith(Vector3 transformPosition) => !buildingIsInTheWay(transformPosition);
 }
