@@ -27,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1607180135699174685}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6, y: 6.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2024437314187411470}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1403131798044607136
 SpriteRenderer:
@@ -157,6 +157,25 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -195,7 +214,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3608413066119975282
 RectTransform:
   m_ObjectHideFlags: 0
@@ -210,7 +229,6 @@ RectTransform:
   m_Children:
   - {fileID: 1422825024050846087}
   m_Father: {fileID: 2024437314187411470}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -234,6 +252,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 939776681
@@ -310,7 +329,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3608413066119975282}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -380,13 +398,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5926318197314211044}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.9588928, y: -2.5699997, z: 0.3}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8507358240378161013}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6037847901950388433
 MonoBehaviour:
@@ -436,6 +454,25 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -484,13 +521,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5956778534140253373}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 6.1500015, y: 1.0999985, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2024437314187411470}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7599226733927065709
 SpriteRenderer:
@@ -546,7 +583,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &574974462745048103
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -563,7 +600,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1287688945080067726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,13 +650,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945f6ce083fc04706bc5a50d952e2ac0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  door: {fileID: 7952065115464331908}
+  doorInteraction: {fileID: 7952065115464331908}
 --- !u!1001 &4368909489246218530
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 308669690191741601, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
@@ -799,6 +837,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5096250583384262381, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2357989592624621868, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       insertIndex: 1
@@ -812,6 +851,22 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5382163528459300439, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1735725246449900557}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 903736003923260199, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6404809737884524487}
+    - targetCorrespondingSourceObject: {fileID: 903736003923260199, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7738789211437807564}
+    - targetCorrespondingSourceObject: {fileID: 903736003923260199, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7952065115464331908}
+    - targetCorrespondingSourceObject: {fileID: 6806070673501800903, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5055054319351310850}
+    - targetCorrespondingSourceObject: {fileID: 308669690191741601, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1679628160573128468}
   m_SourcePrefab: {fileID: 100100000, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
 --- !u!212 &359072328796171202 stripped
 SpriteRenderer:
@@ -849,6 +904,25 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -881,9 +955,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoorAnimator: {fileID: 574974462745048103}
-  doorColliderDisabledOnOpen: {fileID: 8794875624471124184}
   isOpen: 0
   isBroken: 0
+  ColliderDisabledOnOpen: {fileID: 8794875624471124184}
   ShadowCollider: {fileID: 409785356654422746}
   life: {fileID: 2070054976837189028}
   closedSorting: {fileID: 1287688945080067726}
