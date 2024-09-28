@@ -18,20 +18,18 @@ public class EnemyAI : MonoBehaviour
 	private State state;
 	private int wanderCounter;
 	private int wanderRate = 200;
-	private float wanderDistance = 30;
+	private float wanderDistance = 10;
 	private Vector2 wanderPoint;
-	private Vector2 currentTargetWanderPosition;
-	private float closeEnoughWanderDistance = 5;
+	private Vector2 currentWanderPosition;
+	private float closeEnoughWanderDistance = 3;
 	private float idleCoolDown;
 	public float idleCoolDownMax = 2;
-	private bool isWandering;
 
 	#region events
 
 	public event Action<Life> OnAttack;
 	public event Action<Vector2> OnMoveInDirection;
 	public event Action OnStopMoving;
-	public event Action<Life> OnAggro;
 
 	#endregion
 
@@ -80,7 +78,7 @@ public class EnemyAI : MonoBehaviour
 				UpdateWalkPathToTarget();
 				break;
 			case State.AttackTarget:
-				UpdateAttackPlayer();
+				UpdateAttackTarget();
 				break;
 			case State.WalkToObstacle:
 				UpdateWalkToObstacle();
@@ -109,7 +107,7 @@ public class EnemyAI : MonoBehaviour
 
 		if (targets.GetCurrentObstacle() != null)
 		{
-			Debug.DrawLine( transform.position, targets.GetCurrentObstacle().transform.position, Color.green);
+			Debug.DrawLine(transform.position, targets.GetCurrentObstacle().transform.position, Color.green);
 			SetState(State.WalkToObstacle);
 			thoughts.Think("Walk to obstacle.");
 			return;
@@ -122,6 +120,7 @@ public class EnemyAI : MonoBehaviour
 			thoughts.Think("Idle.");
 			return;
 		}
+
 		SetState(State.Wander);
 		idleCoolDown = 0;
 		thoughts.Think("Nothing to do, wandering.");
@@ -133,8 +132,6 @@ public class EnemyAI : MonoBehaviour
 
 	private void UpdateWalkToObstacle()
 	{
-		
-		
 		if (targets.GetCurrentObstacle() == null)
 		{
 			SetState(State.WalkToTarget);
@@ -148,7 +145,7 @@ public class EnemyAI : MonoBehaviour
 		{
 			SetState(State.AttackObstacle);
 			thoughts.Think("Close enough to attack obstacle.");
-			Debug.DrawLine(transform.position, targets.GetCurrentObstacle().transform.position, Color.red, 1);
+			Debug.DrawLine(transform.position, targets.GetCurrentObstacle().transform.position, Color.magenta, 1);
 			return;
 		}
 
@@ -158,51 +155,63 @@ public class EnemyAI : MonoBehaviour
 
 	private void UpdateWander()
 	{
-		wanderCounter++;
-		if (wanderCounter >= wanderRate)
+		if (FoundATarget())
 		{
-			wanderCounter = 0;
-			SetState(State.Wander);
-			thoughts.Think("Wonder.");
-			isWandering = false;
-		}
-		if (!isWandering)
-		{
-			isWandering = true;
-			currentTargetWanderPosition = targets.GetWanderPosition(wanderPoint);
-			if(currentTargetWanderPosition == Vector2.zero)
-			{
-				StartIdle();
-				isWandering = false;
-				thoughts.Think("Can't find a spot to wander, idling.");
-				return;
-			}
-			pathmaker.SetTargetPosition(currentTargetWanderPosition);
-			thoughts.Think("Wandering to spot");
-			
-		}
-
-	
-		var target = targets.GetClosestTargetWithinAggroRange(transform.position);
-		if (target != null)
-		{
-			isWandering = false;
 			SetState(State.WalkToTarget);
-			OnAggro?.Invoke(target);
-			thoughts.Think("Found a target, walking to it.");
+			thoughts.Think("Wandered to a target, walking to it.");
 			return;
 		}
 
-		var distanceToTargetPosition = Vector2.Distance(transform.position, currentTargetWanderPosition);
-		pathmaker.SetTargetPosition(currentTargetWanderPosition);
-		Debug.DrawLine( transform.position, currentTargetWanderPosition, Color.red);
+		if (IsWanderTime())
+		{
+			if (CanFindWanderPosition())
+			{
+				StartWandering();
+				return;
+				
+			}
+			else
+			{
+				StartIdle();
+				thoughts.Think("Can't find a spot to wander, idling.");
+			}
+		}
+
+		Debug.DrawLine(transform.position, currentWanderPosition, Color.cyan);
 		
-		if (!(distanceToTargetPosition < closeEnoughWanderDistance)) return;
-		isWandering = false;
-		StartIdle();
+		if (IsCloseEnoughToWanderPosition()) StartIdle();
+	}
 
+	private bool IsCloseEnoughToWanderPosition()
+	{
+		var distanceToWanderPosition = Vector2.Distance(transform.position, currentWanderPosition);
+		return (distanceToWanderPosition < closeEnoughWanderDistance);
+	}
 
+	private bool IsWanderTime()
+	{
+		wanderCounter++;
+		return wanderCounter >= wanderRate;
+	}
 
+	private void StartWandering()
+	{
+		SetState(State.Wander);
+
+		pathmaker.SetTargetPosition(currentWanderPosition);
+		thoughts.Think("Wandering");
+	}
+
+	private bool FoundATarget()
+	{
+		var target = targets.GetClosestTargetWithinAggroRange(transform.position);
+		return target != null;
+	}
+
+	private bool CanFindWanderPosition()
+	{
+		currentWanderPosition = targets.GetWanderPosition(wanderPoint);
+		return currentWanderPosition != Vector2.zero;
 	}
 
 	private void UpdateAttackObstacle()
@@ -210,7 +219,6 @@ public class EnemyAI : MonoBehaviour
 		if (targets.HasLineOfSightWithCurrentTarget())
 		{
 			SetState(State.WalkToTarget);
-			OnAggro?.Invoke(targets.GetCurrentTarget());
 			thoughts.Think("I see a target, walking to it.");
 			return;
 		}
@@ -218,10 +226,10 @@ public class EnemyAI : MonoBehaviour
 		if (targets.CanAttackObstacle())
 			StartAttack(targets.GetCurrentObstacle());
 		else
-			SetState(State.WalkToTarget);
+			SetState(State.Wander);
 	}
 
-	private void UpdateAttackPlayer()
+	private void UpdateAttackTarget()
 	{
 		if (targets.CanAttackCurrentTarget())
 			StartAttack(targets.GetCurrentTarget());
@@ -231,7 +239,6 @@ public class EnemyAI : MonoBehaviour
 
 	private void UpdateWalkPathToTarget()
 	{
-		
 		if (targets.GetCurrentTarget() == null)
 		{
 			SetState(State.Wander);
@@ -245,11 +252,8 @@ public class EnemyAI : MonoBehaviour
 			thoughts.Think("Attacking obstacle.");
 			return;
 		}
-		else
-		{
-			Debug.Log("can't attack obstacle");
-		}
-		
+
+		thoughts.Think("Walk to Target -> Can't Attack obstacle.");
 
 		if (targets.CanAttackCurrentTarget())
 		{

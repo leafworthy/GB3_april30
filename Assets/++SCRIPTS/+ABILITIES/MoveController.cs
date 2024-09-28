@@ -52,7 +52,6 @@ public class MoveController : MonoBehaviour
 			ai = GetComponent<EnemyAI>();
 			ai.OnMoveInDirection += AI_MoveInDirection;
 			ai.OnStopMoving += AI_StopMoving;
-			ai.OnAggro += AI_OnAggro;
 		}
 
 		canMove = true;
@@ -79,7 +78,6 @@ public class MoveController : MonoBehaviour
 			if (ai == null) return;
 			ai.OnMoveInDirection -= AI_MoveInDirection;
 			ai.OnStopMoving -= AI_StopMoving;
-			ai.OnAggro -= AI_OnAggro;
 		}
 	
 	}
@@ -89,10 +87,7 @@ public class MoveController : MonoBehaviour
 		isDamaged = false;
 	}
 
-	private void AI_OnAggro(Life obj)
-	{
-		anim.SetTrigger(Animations.AggroTrigger);
-	}
+	
 
 	private void Anim_DashStop()
 	{

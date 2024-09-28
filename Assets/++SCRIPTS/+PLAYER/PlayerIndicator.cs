@@ -46,11 +46,9 @@ public class PlayerIndicator : MonoBehaviour
     public void ShowIndicator(Player player)
     {
         gameObject.SetActive(true);
-        Debug.Log("HERE Player" + (player.playerIndex + 1));
         switch (player.playerIndex+1)
         {
             case 1:
-                Debug.Log("HERE setactive");
                 P1.SetActive(true);
                 break;
             case 2:

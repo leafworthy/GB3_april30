@@ -13,9 +13,10 @@ public class Attacks : MonoBehaviour
 	protected void HitTarget(float attackDamage, Life targetLife, float extraPush = 0)
 	{
 		if (targetLife == null) return;
-		if (RaycastToObject(targetLife).collider == null) return;
+	
 		var newAttack = new Attack(attacker, targetLife, attackDamage);
 		targetLife.TakeDamage(newAttack);
+		Debug.Log("should take damage");
 		if (targetLife.IsDead()) return;
 		
 		var enemyMoveAbility = targetLife.transform.gameObject.GetComponent<MoveAbility>();

@@ -18,7 +18,6 @@ public class Life : UnitStats
 	private AnimationEvents animationEvents;
 	private Animations anim;
 	private bool isDead;
-	private float woundingAttackDamage = 25;
 	private LayerMask originalLayer;
 
 	[HideInInspector]public float Health;
@@ -55,7 +54,7 @@ public class Life : UnitStats
 	public void TakeDamage(Attack attack)
 	{
 		if (IsDead()) return;
-		OnDamaged?.Invoke(attack);
+		//OnDamaged?.Invoke(attack);
 		ChangeHealth(attack);
 
 		DrawAttack(attack);
@@ -66,7 +65,7 @@ public class Life : UnitStats
 			anim.SetTrigger(Animations.HitTrigger);
 			if (attack.IsDamaging)
 			{
-				OnDamaged?.Invoke(attack);
+				//do damaging hit
 			}
 		}
 
@@ -109,6 +108,7 @@ public class Life : UnitStats
 		if (cantDie) return;
 
 		if (isDead) return;
+		OnDamaged?.Invoke(attack);
 		OnDying?.Invoke(attack.Owner, this);
 		
 		if (attack.Owner != null) OnKilled?.Invoke(attack.Owner, this);

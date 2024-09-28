@@ -29,7 +29,7 @@ public class AimAbility_FX : MonoBehaviour
 		var hitPoint = aimAbility.CheckRaycastHit(aimAbility.GetAimDir());
 		if (hitPoint.collider != null)
 		{
-			Debug.DrawLine(body.FootPoint.transform.position, hitPoint.point, Color.red);
+			Debug.DrawLine(body.FootPoint.transform.position, hitPoint.point, Color.white);
 			var length = Vector2.Distance(body.FootPoint.transform.position, hitPoint.point);
 			flashlightLight.pointLightOuterRadius = 60 * length / life.AttackRange + 10;
 		}

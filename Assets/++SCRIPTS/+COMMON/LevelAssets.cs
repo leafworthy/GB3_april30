@@ -18,4 +18,5 @@ public class LevelAssets : ScriptableObject
 	public LayerMask EnemyUnwalkableLayers;
 	public UnitStatsData DefaultUnitData;
 	public LayerMask EnemyLayerOnLandable;
+	public LayerMask EnemiesCanHitTheseLayers;
 }

@@ -32,7 +32,7 @@ public class LevelGameScene : GameScene
 	private void StartLevel()
 	{
 		Debug.Log("level start");
-		Players.OnAllPlayersDead -= RestartLevel;
+		Players.OnAllPlayersDead += RestartLevel;
 		_levelDrops = gameObject.AddComponent<LevelDrops>();
 		CurrentLevelGameScene = this;
 		GlobalManager.IsInLevel = true;

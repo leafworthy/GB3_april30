@@ -50,7 +50,6 @@ public class ExplosionAttack : Attacks
 
 		life = GetComponent<Life>();
 		ExplosionManager.Explode(transform.position, explosionRadius, life.AttackDamage, life.player);
-		Debug.Log("explode");
 		life.DieNow();
 	}
 

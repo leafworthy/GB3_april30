@@ -6,7 +6,6 @@ using Random = UnityEngine.Random;
 public class AstarPathfinder : MonoBehaviour
 {
 	public event Action<Vector2> OnNewDirection;
-	public event Action<Vector2> OnNewTargetPosition;
 	private Vector2 targetPosition;
 	private Seeker seeker;
 	private Path currentPath;
@@ -37,8 +36,9 @@ public class AstarPathfinder : MonoBehaviour
 
 	public void SetTargetPosition(Vector2 newTargetPosition)
 	{
-		OnNewTargetPosition?.Invoke(newTargetPosition);
+		//OnNewTargetPosition?.Invoke(newTargetPosition);
 		//seeker.StartPath(transform.position, targetPosition, OnPathComplete);
+		Debug.Log("target position set" + newTargetPosition);
 		targetPosition = newTargetPosition;
 	}
 
@@ -47,25 +47,12 @@ public class AstarPathfinder : MonoBehaviour
 		if (p.error) return;
 		currentPath = p;
 		currentWaypoint = 1;
+		Debug.Log("path complete");
 	}
 
 	private void FixedUpdate ()
 	{
-		if(Vector2.Distance(lastPosition, transform.position) <= 0.1f)
-		{
-			
-			frozenCounter++;
-			if(frozenCounter > freezeLimit)
-			{
-				frozenCounter = 0;
-				seeker.StartPath(transform.position, GetRandomPosition(), OnPathComplete);
-				
-			}
-		}
-		else
-		{
-			frozenCounter = 0;
-		}
+		IfFrozen_StartNewPath();
 
 		lastPosition = transform.position;
 		if (counter >= rate)
@@ -83,6 +70,25 @@ public class AstarPathfinder : MonoBehaviour
 		
 		if (PathIsInvalid()) return;
 		UpdatePositionOnPath();
+	}
+
+	private void IfFrozen_StartNewPath()
+	{
+		if(Vector2.Distance(lastPosition, transform.position) <= 0.1f)
+		{
+			
+			frozenCounter++;
+			if(frozenCounter > freezeLimit)
+			{
+				frozenCounter = 0;
+				seeker.StartPath(transform.position, GetRandomPosition(), OnPathComplete);
+				
+			}
+		}
+		else
+		{
+			frozenCounter = 0;
+		}
 	}
 
 	private Vector2 GetRandomPosition()

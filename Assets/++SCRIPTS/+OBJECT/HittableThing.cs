@@ -22,11 +22,12 @@ public class HittableThing : ThingWithHeight
 		jumper = GetComponent<JumpAbility>();
 		life = GetComponentInChildren<Life>();
 		life.OnDamaged += (s)=> GetHit(s.Direction.normalized);
+		SetDistanceToGround(heightSet);
 	}
 
 	private void GetHit(Vector3 shootAngle)
 	{
-		jumper.Jump();
+		//jumper.Jump();
 		var speed = Random.Range(minVelocity, maxVelocity);
 		mover.Push(shootAngle, speed);
 	}

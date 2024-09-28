@@ -21,19 +21,16 @@ public class InteractionIndicator : MonoBehaviour
 	{
 		indicator.HideIndicator(player);
 
-		Debug.Log("Indicator hide on Deselect: " + interactable.name);
 	}
 
 	private void OnSelected(Player player)
 	{ 
 		indicator.ShowIndicator(player);
-		Debug.Log("Indicator show on Select: " + interactable.name);
 	}
 
 	private void PlayerExits(Player player)
 	{
 		if (indicator == null) return;
-		Debug.Log("Player Exits " + interactable.name);
 		player.RemoveInteractable(interactable);
 	}
 
@@ -41,7 +38,6 @@ public class InteractionIndicator : MonoBehaviour
 	private void PlayerEnters(Player player)
 	{
 		if (indicator == null) return;
-		Debug.Log("Player Enters " + interactable.name);
 		SetIndicatorColor(player);
 		player.AddInteractable(interactable);
 	}
