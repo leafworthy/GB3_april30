@@ -11,11 +11,12 @@ namespace RisingText
 
 	
 	
-		public void RiseWithText(string TextToRise)
+		public void RiseWithText(string TextToRise, Color textColor)
 		{
 			animator = GetComponentInChildren<Animator>();
 			text = GetComponentInChildren<TextMeshProUGUI>();
 			text.text = TextToRise;
+			text.color = textColor;
 			animator.SetTrigger(WithText);
 		}
 	}

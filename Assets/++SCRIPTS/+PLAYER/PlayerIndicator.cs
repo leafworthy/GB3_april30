@@ -7,8 +7,11 @@ public class PlayerIndicator : MonoBehaviour
     public GameObject P3;
     public GameObject P4;
 
+
     private void Start()
     {
+        Hide(gameObject);
+        return;
         Hide(P1);
         Hide(P2);
         Hide(P3);
@@ -17,6 +20,8 @@ public class PlayerIndicator : MonoBehaviour
 
     public void HideIndicator(Player player)
     {
+        Hide(gameObject);
+        return;
         Debug.Log("HIDING");
         switch (player.playerIndex +1)
         {
@@ -35,6 +40,7 @@ public class PlayerIndicator : MonoBehaviour
             default:
                 break;
         }
+        
     }
 
     private void Hide(GameObject go)
@@ -45,6 +51,8 @@ public class PlayerIndicator : MonoBehaviour
 
     public void ShowIndicator(Player player)
     {
+        gameObject.SetActive(true);
+        return;
         gameObject.SetActive(true);
         switch (player.playerIndex+1)
         {
@@ -63,10 +71,12 @@ public class PlayerIndicator : MonoBehaviour
             default:
                 break;
         }
+        
     }
 
     public void SetColor(Player player, Color newColor)
     {
+        return;
         switch (player.playerIndex+1)
         {
             case 1:

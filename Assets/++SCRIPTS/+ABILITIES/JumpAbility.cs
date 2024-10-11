@@ -21,7 +21,7 @@ public class JumpAbility : MonoBehaviour
 	private bool isActive = true;
 	private bool isJumping;
 	public Action<Vector2> OnFall;
-	public Action OnBounce;
+	public event Action OnBounce;
 	private bool initiated;
 	private float minBounceVelocity = 1000;
 	private float bounceVelocityDragFactor = .2f;

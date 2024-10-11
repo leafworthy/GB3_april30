@@ -11,17 +11,28 @@ public class FallToFloor : ThingWithHeight
 	private float PushSpeed = 25;
 	private float bounceSpeed = 1;
 	private float jumpSpeed = 1;
+	private bool _freezeRotation;
 
-	public void Fire(Vector3 shootAngle, Color color, float height)
+	public void Fire(Vector3 shootAngle, Color color, float height, bool freezeRotation = false)
 	{
 		RotationRate = Random.Range(0, rotationRate);
 		jumper = GetComponent<JumpAbility>();
 		jumper.OnBounce += Jumper_OnBounce;
+		jumper.OnResting += Jumper_OnResting;
 		mover = GetComponent<MoveAbility>();
 		jumper.Jump(height, jumpSpeed, bounceSpeed);
 		mover.SetDragging(false);
 		mover.Push(shootAngle, Random.Range(0, PushSpeed));
 		spriteRendererToTint.color = color;
+		_freezeRotation = freezeRotation;
+	}
+
+	private void Jumper_OnResting(Vector2 obj)
+	{ 
+		if (_freezeRotation)
+		{
+			transform.rotation = Quaternion.identity;
+		}
 	}
 
 	private void Jumper_OnBounce()
@@ -45,7 +56,7 @@ public class FallToFloor : ThingWithHeight
 		if (mover == null) mover = GetComponent<MoveAbility>();
 		if (jumper == null) jumper = GetComponent<JumpAbility>();
 		base.FixedUpdate();
-		if (jumper.IsJumping)
+		if (jumper.IsJumping && !_freezeRotation)
 			Rotate(RotationRate);
 		else
 			mover.SetDragging(true);

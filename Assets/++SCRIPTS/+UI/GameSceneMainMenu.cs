@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GameSceneMainMenu : GameScene
 {
+	
 	private void Start()
 	{
 		Players.ClearAllPlayers();

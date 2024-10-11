@@ -88,6 +88,10 @@ public class Player : MonoBehaviour
 			closestDistance = distance;
 		}
 
+		if(closest == selectedInteractable)
+		{
+			if(selectedInteractable.isSelected) return;
+		}
 		if (selectedInteractable != null) selectedInteractable.Deselect(this);
 		selectedInteractable = closest;
 		selectedInteractable.Select(this);
@@ -161,6 +165,7 @@ public class Player : MonoBehaviour
 	public void Say(string message, float sayTimeInSeconds = 3)
 	{
 		if (sayer == null) sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
+		Debug.Log("attempting to say: " + message);
 		sayer.Say(message, sayTimeInSeconds);
 	}
 

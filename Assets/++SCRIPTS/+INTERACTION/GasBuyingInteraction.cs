@@ -11,8 +11,8 @@ public class GasBuyingInteraction : TimedInteraction
 	protected override void Start()
 	{
 		base.Start();
-		OnPlayerEnters += Interactable_OnPlayerEnters;
-		OnPlayerExits += Interactable_OnPlayerExits;
+		OnSelected += Interactable_OnPlayerEnters;
+		OnDeselected += Interactable_OnPlayerExits;
 		OnTimeComplete += Interactable_OnTimeComplete;
 		hideRevealObjects = GetComponentInChildren<HideRevealObjects>();
 	}
@@ -31,6 +31,7 @@ public class GasBuyingInteraction : TimedInteraction
 
 	private void Interactable_OnPlayerEnters(Player player)
 	{
+		if (!canInteract(player)) return;
 		player.Say("$"+ price+" for gas", 0);
 	}
 	private void Interactable_OnPlayerExits(Player player)
@@ -38,8 +39,5 @@ public class GasBuyingInteraction : TimedInteraction
 		player.StopSaying();
 	}
 
-	protected override bool canInteract(Player player)
-	{
-		return player.HasMoreMoneyThan(price) && gasAmount < 0;
-	}
+	protected override bool canInteract(Player player) => player.HasMoreMoneyThan(price) && gasAmount > 0;
 }

@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class SceneStarter : MonoBehaviour
 {
 	public static bool hasStarted;
+	public GameObject display;
 	private void Awake()
 	{
 		if(hasStarted) return;
@@ -16,6 +17,7 @@ public class SceneStarter : MonoBehaviour
 	{
 		if(SceneLoader.hasLoaded) return;
 		SceneManager.LoadScene("GameManager", LoadSceneMode.Additive);
+		//display.SetActive(true);
 		Debug.Log("gamemanager created");
 	}
 }

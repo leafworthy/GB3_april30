@@ -44,7 +44,7 @@ public class SceneLoader : Singleton<SceneLoader>
 		base.Awake();
 		DontDestroyOnLoad(this);
 		SceneManager.LoadScene(StartingScene.ToString());
-		StartFadingIn();
+		FadeOut();
 		hasLoaded = true;
 		
 		//SetDestinationScene(StartingScene);

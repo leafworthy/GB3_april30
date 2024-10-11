@@ -56,7 +56,7 @@ public class LevelDrops : MonoBehaviour
 		}
 		var prefab = Maker.Make(lootPrefab, position);
 		var fallingObject = prefab.GetComponent<FallToFloor>();
-		fallingObject.Fire(new Vector3((float)Random.Range(-1, 1), 1),Color.white, 5);
+		fallingObject.Fire(new Vector3((float)Random.Range(-1, 1), -1),Color.white, 5, true);
 		OnLootDrop?.Invoke(position, type);
 	}
 	private void MakeDropList()

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class TimedInteraction : PlayerInteractable
 {
 	private float currentProgress;
-	private float totalTime = 1;
+	protected float totalTime = 1;
 	private bool isActive;
 	public event Action<Player> OnTimeComplete;
 	private Image loadingBarImage;

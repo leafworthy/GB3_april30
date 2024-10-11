@@ -1,3 +1,4 @@
+using RisingText;
 using UnityEngine;
 
 public class Life_AnyAttackHit_FX : MonoBehaviour
@@ -19,9 +20,7 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 	{
 		if (attack.DamageAmount <= 0) return;
 		if(attack.DestinationLife.cantDie) return;
-		var risingText = Maker.Make(FX.Assets.risingTextPrefab, attack.DestinationWithHeight);
-		var risingTextScript = risingText.GetComponent<RisingText.RisingText>();
-		risingTextScript.RiseWithText("-"+ attack.DamageAmount.ToString());
+		RisingTextCreator.CreateRisingText("-" + attack.DamageAmount.ToString(), attack.DestinationWithHeight, Color.red);
 	}
 
 	private void SprayDebree(Attack attack, Life hitLife)
