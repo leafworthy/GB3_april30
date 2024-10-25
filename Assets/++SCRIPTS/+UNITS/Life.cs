@@ -57,7 +57,7 @@ public class Life : UnitStats
 		//OnDamaged?.Invoke(attack);
 		ChangeHealth(attack);
 
-		DrawAttack(attack);
+		MyDebugUtilities.DrawAttack(attack);
 
 		CameraShaker.ShakeCamera(transform.position, CameraShaker.ShakeIntensityType.normal);
 		if (anim != null)

@@ -8,8 +8,6 @@ public class ZombieSpawnPoint : MonoBehaviour
 		var newZombie = Maker.Make(ZombiePrefab, transform.position);
 		var newLife = newZombie.GetComponent<Life>();
 		newLife.SetPlayer(Players.EnemyPlayer);
-		var newAI = newZombie.GetComponent<EnemyAI>();
-		newAI.SetWanderPoint(transform.position);
 		EnemyManager.CollectEnemy(newZombie);
 	}
 

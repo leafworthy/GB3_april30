@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7966186457735378124}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -3.96, y: -1.91, z: 0}
   m_LocalScale: {x: -1.01, y: 1.01, z: 1.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6340645602863054156}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8040947217642756494
 MonoBehaviour:
@@ -79,11 +79,32 @@ PolygonCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7966186457735378124}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: -6, y: -12}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -106,7 +127,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1913718479, guid: 86c7f5b40b54942e4a8223c5278317e4, type: 3}
@@ -237,16 +258,34 @@ PrefabInstance:
       propertyPath: door
       value: 
       objectReference: {fileID: 1936577562664772795}
+    - target: {fileID: 8148175653633725893, guid: 86c7f5b40b54942e4a8223c5278317e4, type: 3}
+      propertyPath: doorInteraction
+      value: 
+      objectReference: {fileID: 1936577562664772795}
     - target: {fileID: 8900346693427433425, guid: 86c7f5b40b54942e4a8223c5278317e4, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1913718483, guid: 86c7f5b40b54942e4a8223c5278317e4, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1009543798614170891, guid: 86c7f5b40b54942e4a8223c5278317e4, type: 3}
       insertIndex: 0
       addedObject: {fileID: 2393407831475456423}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5204297022536548475, guid: 86c7f5b40b54942e4a8223c5278317e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7409424684154161772}
+    - targetCorrespondingSourceObject: {fileID: 5204297022536548475, guid: 86c7f5b40b54942e4a8223c5278317e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1936577562664772795}
+    - targetCorrespondingSourceObject: {fileID: 5204297022536548475, guid: 86c7f5b40b54942e4a8223c5278317e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2731357400215499028}
+    - targetCorrespondingSourceObject: {fileID: 1913718479, guid: 86c7f5b40b54942e4a8223c5278317e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4883904064665332342}
   m_SourcePrefab: {fileID: 100100000, guid: 86c7f5b40b54942e4a8223c5278317e4, type: 3}
 --- !u!1 &1280572300847603772 stripped
 GameObject:
@@ -261,13 +300,33 @@ CircleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1280572300847603772}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: -5.64, y: 7.88}
-  serializedVersion: 2
   m_Radius: 20
 --- !u!114 &1936577562664772795
 MonoBehaviour:
@@ -281,12 +340,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210cbbba385a43b7961cfb161843890c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canInteract: 1
-  hasInteracted: 0
+  isSelected: 0
   DoorAnimator: {fileID: 6484305129628690067}
-  doorColliderDisabledOnOpen: {fileID: 6621389187954713313}
   isOpen: 0
   isBroken: 0
+  ColliderDisabledOnOpen: {fileID: 6621389187954713313}
   ShadowCollider: {fileID: 6651927034271840504}
   life: {fileID: 4419186420197361565}
   closedSorting: {fileID: 6484305129628690069}
@@ -302,7 +360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945f6ce083fc04706bc5a50d952e2ac0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  door: {fileID: 1936577562664772795}
+  doorInteraction: {fileID: 1936577562664772795}
 --- !u!114 &4419186420197361565 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7253323770755803098, guid: 86c7f5b40b54942e4a8223c5278317e4, type: 3}
