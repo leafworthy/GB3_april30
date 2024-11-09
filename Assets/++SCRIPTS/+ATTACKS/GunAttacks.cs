@@ -220,6 +220,8 @@ public class GunAttacks : Attacks
 		{
 			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, attacker.AttackRange,
 				ASSETS.LevelAssets.EnemyLayerOnLandable);
+			
+			Debug.DrawRay( body.FootPoint.transform.position, targetDirection.normalized * attacker.AttackRange, Color.red, 1f);
 			return raycastHit;
 		}
 		else

@@ -81,6 +81,7 @@ public class MoveAbility : MonoBehaviour
 	public void MoveInDirection(Vector2 direction, float newSpeed)
 	{
 		if (!IsActive) return;
+		Debug.Log("start moving");
 		moveDir = direction.normalized;
 		moveSpeed = newSpeed;
 		isMoving = true;
@@ -126,6 +127,7 @@ public class MoveAbility : MonoBehaviour
 	{
 		isMoving = false;
 		moveVelocity = Vector2.zero;
+		Debug.Log("stop moving");
 	}
 
 	

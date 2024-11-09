@@ -6,11 +6,7 @@ public class Targetter : MonoBehaviour
 {
 	private Life targetterLife => GetComponent<Life>();
 	private Life specialTarget;
-	public Life CurrentTarget { get; private set; }
-	public Life CurrentObstacle { get; private set; }
-
-	private List<Life> potentialObjectTargets = new();
-	private List<Life> potentialObstacles = new();
+	
 
 	#region private functions
 
@@ -21,7 +17,7 @@ public class Targetter : MonoBehaviour
 
 	private List<Life> GetAttackableTargetsInRange(LayerMask layer, float range) =>
 		Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
-		         .Where(life => life != null && CanAttack(life)).ToList();
+		         .Where(life => life != null && TargetIsValid(life)).ToList();
 
 	private List<Life> GetAggroTargets(LayerMask layer) => GetAttackableTargetsInRange(layer, targetterLife.AggroRange);
 
@@ -43,12 +39,12 @@ public class Targetter : MonoBehaviour
 
 	#region public functions
 
-	public Vector2 GetWanderPosition(Vector2 wanderPoint)
+	public Vector2 GetWanderPosition(Vector2 wanderPoint, float wanderDistance)
 	{
 		var maxTries = 30;
 		for (var i = 0; i < maxTries; i++)
 		{
-			var point = wanderPoint + Random.insideUnitCircle * targetterLife.AggroRange;
+			var point = wanderPoint + Random.insideUnitCircle * wanderDistance;
 			if (!buildingIsInTheWay(point)) return point;
 		}
 
@@ -62,6 +58,15 @@ public class Targetter : MonoBehaviour
 
 	private bool CanAttack(Life target)
 	{
+		if (!TargetIsValid(target)) return false;
+
+		if (!isWithinAttackRange(target.transform.position)) return false;
+
+		return HasLineOfSightWith(target.transform.position);
+	}
+
+	private bool TargetIsValid(Life target)
+	{
 		if (target == null || target.IsDead())
 			return false;
 		if (target.IsObstacle)
@@ -70,8 +75,6 @@ public class Targetter : MonoBehaviour
 				return false;
 		}
 
-		if (!isWithinAttackRange(target.transform.position)) return false;
-
-		return HasLineOfSightWith(target.transform.position);
+		return true;
 	}
 }
