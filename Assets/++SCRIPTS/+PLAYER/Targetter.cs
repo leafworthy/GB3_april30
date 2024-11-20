@@ -6,25 +6,29 @@ public class Targetter : MonoBehaviour
 {
 	private Life targetterLife => GetComponent<Life>();
 	private Life specialTarget;
-	
 
 	#region private functions
 
 	private Life GetClosest(List<Life> targets) => targets.OrderBy(t => Vector2.Distance(t.transform.position, transform.position)).FirstOrDefault();
-	public Life GetClosestDoorInAttackRange() => GetClosest(GetAttackableTargetsInRange(ASSETS.LevelAssets.DoorLayer, targetterLife.AttackRange));
-	public Life GetClosestPlayerInAttackRange() => GetClosest(GetAttackableTargetsInRange(ASSETS.LevelAssets.PlayerLayer, targetterLife.AttackRange));
+	public Life GetClosestAttackableObstacle() => GetClosest(GetValidObstaclesInRange(ASSETS.LevelAssets.DoorLayer, targetterLife.AttackRange));
+	public Life GetClosestAttackablePlayer() => GetClosest(GetAttackableTargetsInRange(ASSETS.LevelAssets.PlayerLayer, targetterLife.AttackRange));
 	public Life GetClosestPlayerInAggroRange() => GetClosest(GetAggroTargets(ASSETS.LevelAssets.PlayerLayer));
 
-	private List<Life> GetAttackableTargetsInRange(LayerMask layer, float range) =>
+	private List<Life> GetValidTargetsInRange(LayerMask layer, float range) =>
 		Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
 		         .Where(life => life != null && TargetIsValid(life)).ToList();
 
-	private List<Life> GetAggroTargets(LayerMask layer) => GetAttackableTargetsInRange(layer, targetterLife.AggroRange);
+	private List<Life> GetValidObstaclesInRange(LayerMask layer, float range)
+	{
+		return Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
+		                .Where(life => life != null && ObstacleIsValid(life)).ToList();
+	}
 
-	private List<Life> GetAttackableTargetsAtAttackRange(LayerMask layer) => GetAttackableTargetsInRange(layer, targetterLife.AttackRange);
+	private List<Life> GetAttackableTargetsInRange(LayerMask layer, float range) =>
+		Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
+		         .Where(life => life != null && TargetIsValid(life) && HasLineOfSightWith(life.transform.position)).ToList();
 
-	private bool doorIsValidTarget(DoorInteraction doorInteractionAnimator) =>
-		doorInteractionAnimator != null && !doorInteractionAnimator.isBroken && !doorInteractionAnimator.isOpen;
+	private List<Life> GetAggroTargets(LayerMask layer) => GetValidTargetsInRange(layer, targetterLife.AggroRange);
 
 	private bool buildingIsInTheWay(Vector2 position)
 	{
@@ -67,12 +71,36 @@ public class Targetter : MonoBehaviour
 
 	private bool TargetIsValid(Life target)
 	{
+		if (target != null && !target.IsDead()) return true;
+		Debug.Log("target null or dead");
+		return false;
+	}
+
+	private bool ObstacleIsValid(Life target)
+	{
 		if (target == null || target.IsDead())
-			return false;
-		if (target.IsObstacle)
 		{
-			if (!doorIsValidTarget(target.GetComponent<DoorInteraction>()))
-				return false;
+			Debug.Log("target null or dead");
+			return false;
+		}
+
+		if (!target.IsObstacle) return false;
+		var door = target.GetComponentInParent<DoorInteraction>();
+		if (door == null)
+		{
+			Debug.Log("door null");
+			return false;
+		}
+		if (door.isBroken)
+		{
+			Debug.Log("isBroken");
+			return false;
+		}
+
+		if (door.isOpen)
+		{
+			Debug.Log("isOpen");
+			return false;
 		}
 
 		return true;

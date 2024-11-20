@@ -4,9 +4,9 @@ using UnityEngine;
 [Serializable]
 public class GunAttacks : Attacks
 {
-	public event Action<Attack, Vector2> OnShoot;
+	public event Action<Attack, Vector2> OnShotFired;
+	public event Action<Attack, Vector3> OnShotMissed;
 	public event Action OnReload;
-	public static event Action<Attack, Vector2> OnAnyGunShoot;
 	public bool isGlocking { get; private set; }
 	public bool isShooting;
 
@@ -28,6 +28,7 @@ public class GunAttacks : Attacks
 	private float reloadTime = .2f;
 	private float reloadCounter;
 	private float reloadCooldown = 1f;
+	
 
 	private void OnValidate()
 	{
@@ -200,8 +201,7 @@ public class GunAttacks : Attacks
 
 		var newAttack = new Attack(attacker, body.FootPoint.transform.position, missPosition, null, 0);
 
-		OnShoot?.Invoke(newAttack, body.AttackStartPoint.transform.position);
-		OnAnyGunShoot?.Invoke(newAttack, body.AttackStartPoint.transform.position);
+		OnShotMissed?.Invoke(newAttack, body.AttackStartPoint.transform.position);
 	}
 
 	private void ShotHitTarget(RaycastHit2D hitObject)
@@ -209,8 +209,7 @@ public class GunAttacks : Attacks
 		var target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
 		if (target == null) return;
 		var newAttack = new Attack(attacker, body.FootPoint.transform.position, hitObject.point, target, currentDamage);
-		OnShoot?.Invoke(newAttack, body.AttackStartPoint.transform.position);
-		OnAnyGunShoot?.Invoke(newAttack, body.AttackStartPoint.transform.position);
+		OnShotFired?.Invoke(newAttack, body.AttackStartPoint.transform.position);
 		target.TakeDamage(newAttack);
 	}
 

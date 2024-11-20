@@ -32,7 +32,7 @@ public class DashAbility : MonoBehaviour
 
 	private void OnDisable()
 	{
-		owner.Controller.Dash.OnPress -= ControllerDashPress;
+		if(owner != null)owner.Controller.Dash.OnPress -= ControllerDashPress;
 		animEvents.OnDashStop -= Anim_DashStop;
 		animEvents.OnTeleport -= Anim_Teleport;
 	

@@ -6,16 +6,16 @@ public class GunAttacks_FX : MonoBehaviour
 	private void OnEnable()
 	{
 		gunAttacks = GetComponent<GunAttacks>();
-		gunAttacks.OnShoot += GunAttacks_Shoot;
+		gunAttacks.OnShotFired += GunAttacksOnOnShotFired;
 	}
 
 	private void OnDisable()
 	{ 
-		gunAttacks.OnShoot -= GunAttacks_Shoot;
+		gunAttacks.OnShotFired -= GunAttacksOnOnShotFired;
 	
 	}
 
-	private void GunAttacks_Shoot(Attack attack, Vector2 attackStartPosition)
+	private void GunAttacksOnOnShotFired(Attack attack, Vector2 attackStartPosition)
 	{
 	
 

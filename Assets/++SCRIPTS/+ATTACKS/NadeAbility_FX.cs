@@ -82,11 +82,12 @@ public class NadeAbility_FX : MonoBehaviour
 		}
 	}
 
-	private void Nade_OnThrow(Vector2 pointA, Vector2 velocity, float time, Player player)
+	
+	private void Nade_OnThrow(Vector2 startPoint, Vector2 velocity, float time, Player player)
 	{
 		var newProjectile = Maker.Make(FX.Assets.nadePrefab, body.AimCenter.transform.position);
 		var nadeThrower = newProjectile.GetComponent<Nade>();
-		nadeThrower.Launch(pointA, velocity, time, player);
+		nadeThrower.Launch(startPoint, velocity, time, player);
 	}
 
 	private void PlaceMarkers(Vector2 pointA, Vector2 pointB)

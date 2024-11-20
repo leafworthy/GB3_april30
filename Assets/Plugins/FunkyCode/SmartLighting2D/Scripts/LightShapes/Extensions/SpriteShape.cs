@@ -2,7 +2,6 @@
 using FunkyCode.SmartLighting2D.Scripts.Misc;
 using FunkyCode.Utilities;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace FunkyCode.SmartLighting2D.Scripts.LightShapes.Extensions
 {

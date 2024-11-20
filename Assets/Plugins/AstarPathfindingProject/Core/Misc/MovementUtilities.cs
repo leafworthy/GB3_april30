@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 namespace Pathfinding.Util {
 	public static class MovementUtilities {

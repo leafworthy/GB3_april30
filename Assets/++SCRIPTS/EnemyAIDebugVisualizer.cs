@@ -1,6 +1,3 @@
-using UnityEditor;
-using UnityEngine;
-
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -9,7 +6,7 @@ public class EnemyAIDebugVisualizer : MonoBehaviour
 	public Color aggroRangeColor = new Color(1f, 0f, 0f, 0.3f); // Red
 	public Color attackRangeColor = new Color(1f, 1f, 0f, 0.3f); // Yellow
 	public Color wanderRangeColor = new Color(0f, 0f, 1f, 0.3f); // Blue
-	public float wanderRadius = 2.0f; // Example wander radius value
+
 
 	private EnemyAI enemyAI;
 

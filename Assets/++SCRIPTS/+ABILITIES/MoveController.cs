@@ -169,6 +169,7 @@ public class MoveController : MonoBehaviour
 
 	private void StartMoving(Vector2 direction)
 	{
+		Debug.Log("start moving");
 		moveDir = direction;
 		body.BottomFaceDirection(direction.x > 0);
 		mover.MoveInDirection(direction, moveSpeed);
@@ -178,6 +179,7 @@ public class MoveController : MonoBehaviour
 	private void StopMoving()
 	{
 		if (GlobalManager.IsPaused) return;
+		Debug.Log("STOP MOVING CONROLLER");
 		anim.SetBool(Animations.IsMoving, false);
 		mover.StopMoving();
 	}
@@ -199,8 +201,16 @@ public class MoveController : MonoBehaviour
 	private void AI_MoveInDirection(Vector2 direction)
 	{
 		if (GlobalManager.IsPaused) return;
-		if (!CanMove) return;
-		if (body.arms.isActive) return;
+		if (!CanMove)
+		{
+			Debug.Log("CANT MOVE");
+			return;
+		}
+		if (body.arms.isActive)
+		{
+			Debug.Log("ARMS ACTIVE");
+			return;
+		}
 		StartMoving(direction);
 	}
 

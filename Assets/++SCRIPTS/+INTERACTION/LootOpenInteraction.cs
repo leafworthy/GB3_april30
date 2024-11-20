@@ -17,15 +17,9 @@ public class LootOpenInteraction : PlayerInteractable
 		OnPlayerExits += interactable_PlayerExits;
 	}
 
-	protected override bool canInteract(Player player)
-	{
-		return howMuchLoot > 0;
-	}
+	protected override bool canInteract(Player player) => howMuchLoot > 0;
 
-	protected override bool canEnter(Player player)
-	{
-		return howMuchLoot > 0;
-	}
+	protected override bool canEnter(Player player) => howMuchLoot > 0;
 
 	private void interactable_PlayerExits(Player player)
 	{
@@ -39,14 +33,11 @@ public class LootOpenInteraction : PlayerInteractable
 
 	private void interactable_OnInteract(Player player)
 	{
-		
 		hideRevealObjects.Set(1);
-		LevelDrops.DropLoot(dropPosition+transform.position, lootType);
+		LevelDrops.DropLoot(dropPosition + transform.position, lootType);
 		howMuchLoot--;
-		if (howMuchLoot <= 0)
-		{ 
-			
-			player.RemoveInteractable(this);
-		}
+		if (howMuchLoot >= 0) return;
+		hideRevealObjects.Set(2);
+		player.RemoveInteractable(this);
 	}
 }

@@ -1,4 +1,3 @@
-using System;
 namespace Pathfinding.Util {
 	/// <summary>Calculates checksums of byte arrays</summary>
 	public class Checksum {

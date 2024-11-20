@@ -1,6 +1,5 @@
 namespace Pathfinding {
 	using Pathfinding.Util;
-	using UnityEngine;
 
 	public class NavmeshTile : INavmeshHolder {
 		/// <summary>Tile triangles</summary>

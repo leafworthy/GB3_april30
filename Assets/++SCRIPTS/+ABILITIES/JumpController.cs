@@ -46,8 +46,11 @@ public class JumpController : MonoBehaviour
 
 	private void OnDisable()
 	{ 
+		if(life == null) return;
+		if(life.player == null) return;
 		life.player.Controller.Jump.OnPress -= Controller_Jump;
 	 
+		if(jump == null) return;
 		 jump.OnLand -= Land;
 		 jump.OnResting -= Jump_OnResting;
 		 jump.OnFall -= Jump_OnFall;

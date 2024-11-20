@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 #pragma warning disable 649
 

@@ -41,9 +41,10 @@ public class HideRevealObjects : MonoBehaviour
 
 	
 
-	public GameObject Set(int objectIndex)
+	public void Set(int objectIndex)
 	{
-		if (objectsToReveal.Count <= 0) return null;
+		if (objectsToReveal.Count <= 0) return;
+		if (objectIndex >= objectsToReveal.Count) return;
 		if (objectIndex >= objectsToReveal.Count)
 		{
 			objectIndex = objectsToReveal.Count - 1;
@@ -62,9 +63,6 @@ public class HideRevealObjects : MonoBehaviour
 		{
 			objectsToReveal[revealedObjectIndex].SetActive(true);
 		}
-
-		if (objectIndex >= objectsToReveal.Count) return objectsToReveal[^1];
-		return objectsToReveal[objectIndex];
 	}
 
 	public void SetPlayerColor(Color color)

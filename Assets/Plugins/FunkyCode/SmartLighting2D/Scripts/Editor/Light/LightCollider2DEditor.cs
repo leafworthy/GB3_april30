@@ -1,6 +1,5 @@
 ﻿using FunkyCode.SmartLighting2D.Scripts.Editor.Misc;
 using FunkyCode.SmartLighting2D.Scripts.Settings;
-using FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
 using FunkyCode.SmartLighting2D.Scripts.SpriteExtension;
 using UnityEditor;
 using UnityEditor.SceneManagement;

@@ -1,9 +1,7 @@
 using UnityEngine;
-using System.Collections;
 using UnityEngine.Serialization;
 
 namespace Pathfinding {
-	using Pathfinding.RVO;
 	using Pathfinding.Util;
 
 	/// <summary>

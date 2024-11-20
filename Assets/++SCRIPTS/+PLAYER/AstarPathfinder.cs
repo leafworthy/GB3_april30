@@ -18,8 +18,9 @@ public class AstarPathfinder : MonoBehaviour
 	private int currentWaypoint;
 	private Vector2 lastPosition;
 	private int frozenCounter;
-	private int freezeLimit = 200;
+	private int freezeLimit = 400;
 	private bool isPathing;
+	public event Action OnFreeze;
 
 	private void OnEnable()
 	{
@@ -33,16 +34,16 @@ public class AstarPathfinder : MonoBehaviour
 
 	public void SetTargetPosition(Vector2 newTargetPosition)
 	{
-		//OnNewTargetPosition?.Invoke(newTargetPosition);
-		//seeker.StartPath(transform.position, targetPosition, OnPathComplete);
-		Debug.Log("target position set" + newTargetPosition);
-		targetPosition = newTargetPosition;
 		isPathing = true;
+		seeker.StartPath(transform.position, targetPosition, OnPathComplete);
+		targetPosition = newTargetPosition;
 	}
 
 	private void OnPathComplete(Path p)
 	{
+		if(!isPathing) return;
 		if (p.error) return;
+		Debug.Log("path completed");
 		currentPath = p;
 		currentWaypoint = 1;
 	}
@@ -50,7 +51,7 @@ public class AstarPathfinder : MonoBehaviour
 	private void FixedUpdate()
 	{
 		if(!isPathing) return;
-		IfFrozen_StartNewPath();
+		//IfFrozen_StartNewPath();
 		lastPosition = transform.position;
 		if (counter >= rate)
 		{
@@ -71,11 +72,10 @@ public class AstarPathfinder : MonoBehaviour
 		if (Vector2.Distance(lastPosition, transform.position) <= 0.1f)
 		{
 			frozenCounter++;
-			if (frozenCounter > freezeLimit)
-			{
-				frozenCounter = 0;
-				seeker.StartPath(transform.position, GetRandomPosition(), OnPathComplete);
-			}
+			if (frozenCounter <= freezeLimit) return;
+			frozenCounter = 0;
+			Debug.Log("Freeze");
+			OnFreeze?.Invoke();
 		}
 		else
 			frozenCounter = 0;
@@ -86,6 +86,7 @@ public class AstarPathfinder : MonoBehaviour
 	private void UpdateDirection()
 	{
 		currentDirection = (currentPath.vectorPath[currentWaypoint] - transform.position).normalized;
+		Debug.Log("new direction from pathfinder");
 		OnNewDirection?.Invoke(currentDirection);
 	}
 
@@ -112,5 +113,11 @@ public class AstarPathfinder : MonoBehaviour
 		isPathing = false;
 		Debug.Log("stop pathing");
 		targetPosition = transform.position;
+	}
+
+	public void WalkInDirectionOfTarget(Vector3 target)
+	{
+		isPathing = false;
+		OnNewDirection?.Invoke((target - transform.position).normalized);
 	}
 }

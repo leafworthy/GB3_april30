@@ -5,7 +5,6 @@
 //#define PROFILE // Uncomment to enable profiling
 //#define KEEP_SAMPLES
 using System;
-using System.Collections.Generic;
 
 namespace Pathfinding {
 	public class Profile {

@@ -1,9 +1,4 @@
-using UnityEngine;
-using System.Collections.Generic;
-using Pathfinding.Util;
-using Pathfinding.Serialization;
 #if UNITY_5_5_OR_NEWER
-using UnityEngine.Profiling;
 #endif
 
 namespace Pathfinding {

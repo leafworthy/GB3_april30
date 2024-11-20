@@ -1,5 +1,4 @@
-﻿using System;
-using FunkyCode.SmartLighting2D.Scripts.Camera;
+﻿using FunkyCode.SmartLighting2D.Scripts.Camera;
 using FunkyCode.SmartLighting2D.Scripts.Components.Camera;
 using FunkyCode.SmartLighting2D.Scripts.Misc;
 using FunkyCode.SmartLighting2D.Scripts.Rendering;

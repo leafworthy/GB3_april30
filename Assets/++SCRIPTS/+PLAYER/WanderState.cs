@@ -1,0 +1,53 @@
+using UnityEngine;
+
+public class WanderState : IEnemyState
+{
+	private int wanderCounter;
+	private int wanderRate = 200;
+	private Vector3 wanderPosition;
+	private EnemyAI ai;
+	private float closeEnoughWanderDistance = 2;
+
+	public void OnEnterState(EnemyAI _ai)
+	{
+		ai = _ai;
+		wanderCounter = 0;
+		wanderPosition = ai.Targets.GetWanderPosition(ai.WanderPoint, ai.WanderRadius);
+		ai.Pathmaker.SetTargetPosition(wanderPosition);
+		
+	}
+
+	public void OnExitState()
+	{
+	}
+
+	public void UpdateState()
+	{
+		wanderCounter++;
+		if (ai.FoundTargetInAggroRange())
+		{
+			ai.Thoughts.Think("Found target in aggro range, going aggro");
+			ai.TransitionToState(new AggroState());
+			return;
+		}
+
+		if (wanderCounter >= wanderRate)
+		{
+			ai.Thoughts.Think("Wandered long enough, going idle: " + wanderPosition);
+			ai.TransitionToState(new IdleState());
+			return;
+		}
+
+		if (IsCloseEnoughToWanderPosition())
+		{
+			ai.Thoughts.Think("At wander point, going idle: " + wanderPosition);
+			ai.TransitionToState(new IdleState());
+		}
+		else
+		{
+			ai.Thoughts.Think("Wandering to position: " + wanderPosition);
+		}
+	}
+
+	private bool IsCloseEnoughToWanderPosition() => Vector2.Distance(ai.transform.position, wanderPosition) < closeEnoughWanderDistance;
+}

@@ -3,14 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
-using FunkyCode;
 using UnityEngine;
 
 public class LevelGameScene : GameScene
 {
 	private static bool isPlaying;
 	private static LevelDrops _levelDrops;
-	private static LightingManager2D _lightingManager;
 	public static LevelGameScene CurrentLevelGameScene;
 	
 	[SerializeField] private List<GameObject> spawnPoints = new();

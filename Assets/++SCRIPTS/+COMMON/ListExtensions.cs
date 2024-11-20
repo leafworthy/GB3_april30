@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public static class ListExtensions
 {
+	public static event Action<AudioClip, Vector3> OnPlaySoundAt;
 	public static event Action<AudioClip> OnPlaySound;
 	
 	public static void Shuffle<T>(this List<T> list)
@@ -33,10 +34,16 @@ public static class ListExtensions
 		return list.Count == 0 ? null : list[(int)Random.Range(0, list.Count)];
 	}
 
+	public static void PlayRandomAt(this List<AudioClip> list, Vector3 position)
+	{
+		OnPlaySoundAt?.Invoke(list.GetRandom(), position);
+		
+	}
+
 	public static void PlayRandom(this List<AudioClip> list)
 	{
 		OnPlaySound?.Invoke(list.GetRandom());
-		
+
 	}
 
 	public static void RemoveNulls<T>(this IList<T> list) where T : Object

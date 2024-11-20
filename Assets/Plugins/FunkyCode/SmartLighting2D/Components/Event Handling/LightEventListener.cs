@@ -2,7 +2,6 @@
 using System.Linq;
 using FunkyCode.SmartLighting2D.Scripts.Event_Handling;
 using UnityEngine;
-using FunkyCode.Utilities;
 
 namespace FunkyCode
 {

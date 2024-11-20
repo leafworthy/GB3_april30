@@ -25,12 +25,12 @@ public class Toast_SFX : MonoBehaviour
 		animEvents.OnDieStart -= Anim_OnDieStart;
 	}
 
-	private void Anim_OnDieStart() => SFX.sounds.toast_die_sounds.PlayRandom();
-	private void Anim_OnGetHit() => SFX.sounds.toast_gethit_sounds.PlayRandom();
+	private void Anim_OnDieStart() => SFX.sounds.toast_die_sounds.PlayRandomAt(transform.position);
+	private void Anim_OnGetHit() => SFX.sounds.toast_gethit_sounds.PlayRandomAt(transform.position);
 
-	private void Anim_OnAttackHit(int attackType) => SFX.sounds.toast_attack_sounds.PlayRandom();
+	private void Anim_OnAttackHit(int attackType) => SFX.sounds.toast_attack_sounds.PlayRandomAt(transform.position);
 
-	private void Anim_OnStep() => SFX.sounds.toast_walk_sounds.PlayRandom();
+	private void Anim_OnStep() => SFX.sounds.toast_walk_sounds.PlayRandomAt(transform.position);
 
-	private void Anim_OnRoar() => SFX.sounds.toast_roar_sounds.PlayRandom();
+	private void Anim_OnRoar() => SFX.sounds.toast_roar_sounds.PlayRandomAt(transform.position);
 }

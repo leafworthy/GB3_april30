@@ -10,7 +10,7 @@ public class InteractionIndicator : MonoBehaviour
 	private void Start()
 	{
 		indicator = MakeIndicator();
-		interactable = GetComponent<PlayerInteractable>();
+		interactable = GetComponentInChildren<PlayerInteractable>(true);
 		interactable.OnPlayerEnters += PlayerEnters;
 		interactable.OnPlayerExits += PlayerExits;
 		interactable.OnSelected += OnSelected;
@@ -38,6 +38,7 @@ public class InteractionIndicator : MonoBehaviour
 	private void PlayerEnters(Player player)
 	{
 		if (indicator == null) return;
+		if(player == null) return;
 		SetIndicatorColor(player);
 		player.AddInteractable(interactable);
 	}

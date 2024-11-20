@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Pathfinding {
 	[CustomEditor(typeof(AstarPath))]

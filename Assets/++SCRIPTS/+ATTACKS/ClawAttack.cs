@@ -36,18 +36,21 @@ public class ClawAttack : Attacks
 		ai.OnAttack -= AI_Attack;
 	}
 
-
 	private void AI_Attack(Life newTarget)
 	{
-		if (newTarget == null) return;
 		if (GlobalManager.IsPaused) return;
-		if (attacker.IsDead()) return;
-		if (!targetter.HasLineOfSightWith(newTarget.transform.position) && !newTarget.IsObstacle) return;
+		if (TargetIsInvalid(newTarget)) return;
+		currentTargetLife = newTarget;
+		StartAttack();
+	}
 
-		if (!(Time.time >= currentCooldownTime)) return;
-		currentCooldownTime = Time.time + attacker.AttackRate;
-		Debug.Log("AI Trying To Attack", this);
-		anim.SetTrigger(Animations.Attack1Trigger);
+	private bool TargetIsInvalid(Life newTarget)
+	{
+		if (attacker.IsDead() || newTarget.IsDead()) return true;
+		if (!targetter.HasLineOfSightWith(newTarget.transform.position) && !newTarget.IsObstacle) return true;
+		Debug.Log("no line of sight");
+		return false;
+
 	}
 
 	private void StartAttack()
@@ -62,20 +65,17 @@ public class ClawAttack : Attacks
 	private void OnAttackHit(int attackType)
 	{
 		if (GlobalManager.IsPaused) return;
-		if (attacker.IsDead()) return;
-		Debug.Log("hit target");
-		var layer = ASSETS.LevelAssets.EnemiesCanHitTheseLayers;
-		var hits = Physics2D.OverlapCircleAll(transform.position, attacker.AttackRange*1.1f, layer);
-		foreach (var hit in hits)
+		if (currentTargetLife == null) return;
+		if (attacker.IsDead() || currentTargetLife.IsDead()) return;
+		if (!currentTargetLife.IsObstacle)
 		{
-			Debug.Log("one hit", this);
-			var defender = hit.gameObject.GetComponent<Life>();
-			if (defender == null) continue;
-
-			
-
-			HitTarget(attacker.AttackDamage, defender, extraPush);
-			return;
+			if (!targetter.HasLineOfSightWith(currentTargetLife.transform.position))
+			{
+				Debug.Log("no line of sight");
+				return;
+			}
 		}
+
+		HitTarget(attacker.AttackDamage, currentTargetLife, extraPush);
 	}
 }

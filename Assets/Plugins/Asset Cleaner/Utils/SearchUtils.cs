@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using Leopotam.Ecs;
 using UnityEditor;
 using UnityEditor.Animations;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static Asset_Cleaner.AufCtx;

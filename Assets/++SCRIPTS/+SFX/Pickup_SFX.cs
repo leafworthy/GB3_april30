@@ -13,6 +13,6 @@ public class Pickup_SFX : MonoBehaviour
 
 	private void StartPickup(Collider2D col, Color pickupTintColor)
 	{
-		SFX.PlaySound(SFX.sounds.pickup_pickup_sounds.GetRandom());
+		SFX.PlayUISound(SFX.sounds.pickup_pickup_sounds.GetRandom());
 	}
 }

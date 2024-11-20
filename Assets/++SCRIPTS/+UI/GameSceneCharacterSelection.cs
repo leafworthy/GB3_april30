@@ -18,6 +18,7 @@ public class GameSceneCharacterSelection : GameScene
 	public static event Action OnPlayerUnjoins;
 	public static event Action OnPlayerStartsSelecting;
 	public static event Action OnTryToStartGame;
+
 	protected void Start()
 	{
 		CleanUp();
@@ -27,20 +28,28 @@ public class GameSceneCharacterSelection : GameScene
 			Debug.Log("Start seletion");
 			PlayerStartsSelecting(player);
 		}
-		foreach (var button in Buttons) button.SetPlayerColors();
+
+		foreach (var button in Buttons)
+		{
+			button.SetPlayerColors();
+		}
+
 		isActive = true;
 		Debug.Log("Character Selection Start");
 	}
 
 	private void OnDisable()
 	{
-
 		Players.OnPlayerJoins -= PlayerStartsSelecting;
 	}
 
 	private void CleanUp()
 	{
-		foreach (var button in Buttons) button.CleanUp();
+		foreach (var button in Buttons)
+		{
+			button.CleanUp();
+		}
+
 		HideGoGoGo();
 		playersAllChosen = false;
 		playersBeingListenedTo.Clear();
@@ -50,7 +59,7 @@ public class GameSceneCharacterSelection : GameScene
 	{
 		if (playersBeingListenedTo.Contains(player)) return;
 		Debug.Log(player.PlayerName + player.playerIndex + "has joined character selection");
-		
+
 		player.SetState(Player.State.SelectingCharacter);
 		player.CurrentButton = Buttons[0];
 		player.CurrentButton.HighlightButton(player);
@@ -115,41 +124,43 @@ public class GameSceneCharacterSelection : GameScene
 
 	private void PlayerMoveLeft(IControlAxis controlAxis)
 	{
-		if (!isActive)
-		{
-			Debug.Log("is inactive but trying anyways");
-			return;
-		}
-		var player = controlAxis.owner;
-		if (player.state != Player.State.SelectingCharacter) return;
-
-		OnPlayerMoveLeft?.Invoke();
-		player.CurrentButton.UnHighlightButton(player);
-		if (player.buttonIndex == 0)
-			player.buttonIndex = Buttons.Count - 1;
-		else
-			player.buttonIndex--;
-
-		player.CurrentButton = Buttons[player.buttonIndex];
-		player.CurrentButton.HighlightButton(player);
+		MoveButton(controlAxis, false);
 	}
 
 	private void PlayerMoveRight(IControlAxis controlAxis)
+	{
+		MoveButton(controlAxis,true);
+	}
+
+	private void MoveButton(IControlAxis controlAxis, bool toRight)
 	{
 		if (!isActive)
 		{
 			Debug.Log("is inactive but trying anyways");
 			return;
 		}
+
 		var player = controlAxis.owner;
 		if (player.state != Player.State.SelectingCharacter) return;
 
-		
-		player.CurrentButton.UnHighlightButton(player);
-		if (player.buttonIndex == Buttons.Count - 1)
-			player.buttonIndex = 0;
+		if (toRight)
+		{
+			OnPlayerMoveRight?.Invoke();
+			player.CurrentButton.UnHighlightButton(player);
+			if (player.buttonIndex == Buttons.Count - 1)
+				player.buttonIndex = 0;
+			else
+				player.buttonIndex++;
+		}
 		else
-			player.buttonIndex++;
+		{
+			OnPlayerMoveLeft?.Invoke();
+			player.CurrentButton.UnHighlightButton(player);
+			if (player.buttonIndex == 0)
+				player.buttonIndex = Buttons.Count - 1;
+			else
+				player.buttonIndex--;
+		}
 
 		player.CurrentButton = Buttons[player.buttonIndex];
 		player.CurrentButton.HighlightButton(player);
@@ -237,7 +248,7 @@ public class GameSceneCharacterSelection : GameScene
 
 	private void CheckIfPlayersAllSelected()
 	{
-		var playersStillSelecting =  playersBeingListenedTo.Where(t => t.state == Player.State.SelectingCharacter).ToList();
+		var playersStillSelecting = playersBeingListenedTo.Where(t => t.state == Player.State.SelectingCharacter).ToList();
 		if (playersStillSelecting.Count > 0)
 		{
 			HideGoGoGo();

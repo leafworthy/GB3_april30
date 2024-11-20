@@ -127,21 +127,9 @@ public class MoveAbility : MonoBehaviour
 	{
 		isMoving = false;
 		moveVelocity = Vector2.zero;
-		Debug.Log("stop moving");
+		Debug.Log("stopped movin");
 	}
 
-	
-
-	public void SetRBKinematic(bool on)
-	{
-		rb = GetComponent<Rigidbody2D>();
-		rb.isKinematic = on;
-	}
-
-	public void ActivateMovement()
-	{
-		IsActive = true;
-	}
 
 	public void StopPush()
 	{

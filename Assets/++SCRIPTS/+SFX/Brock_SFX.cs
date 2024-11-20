@@ -62,22 +62,22 @@ public class Brock_SFX : MonoBehaviour
 			 
 	}
 
-	private void MeleeAttackOnHit() => SFX.sounds.brock_bathit_sounds.PlayRandom();
-	private void ChargeAttack_OnAttackHit() => SFX.sounds.brock_bathit_sounds.PlayRandom();
+	private void MeleeAttackOnHit() => SFX.sounds.brock_bathit_sounds.PlayRandomAt(transform.position);
+	private void ChargeAttack_OnAttackHit() => SFX.sounds.brock_bathit_sounds.PlayRandomAt(transform.position);
 
 	private void KunaiAttacks_OnThrow(Vector3 vector3, Vector3 vector4, float arg3, Life arg4, bool arg5) =>
-		SFX.sounds.brock_bat_swing_sounds.PlayRandom();
+		SFX.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 
-	private void ChargeAttack_OnSpecialAttackHit() => SFX.sounds.brock_homerunhit_sounds.PlayRandom();
-	private void ChargeAttack_OnChargePress() => SFX.sounds.brock_charge_sounds.PlayRandom();
-	private void Jump_OnLand(Vector2 obj) => SFX.sounds.land_sound.PlayRandom();
-	private void Jump_OnJump(Vector2 obj) => SFX.sounds.jump_sound.PlayRandom();
-	private void Life_OnDamaged(Attack obj) => SFX.sounds.jump_sound.PlayRandom();
-	private void Anim_Dash() => SFX.sounds.bean_roll_sounds.PlayRandom();
-	private void Anim_Teleport() => SFX.sounds.brock_teleport_sounds.PlayRandom();
-	private void Anim_OnDie() => SFX.sounds.cone_die_sounds.PlayRandom();
-	private void Anim_OnHit() => SFX.sounds.cone_gethit_sounds.PlayRandom();
-	private void Anim_OnRoar() => SFX.sounds.cone_roar_sounds.PlayRandom();
-	private void Anim_OnAttackHit(int attackType) => SFX.sounds.cone_attack_sounds.PlayRandom();
-	private void Anim_OnStep() => SFX.sounds.cone_walk_sounds.PlayRandom();
+	private void ChargeAttack_OnSpecialAttackHit() => SFX.sounds.brock_homerunhit_sounds.PlayRandomAt(transform.position);
+	private void ChargeAttack_OnChargePress() => SFX.sounds.brock_charge_sounds.PlayRandomAt(transform.position);
+	private void Jump_OnLand(Vector2 obj) => SFX.sounds.land_sound.PlayRandomAt(transform.position);
+	private void Jump_OnJump(Vector2 obj) => SFX.sounds.jump_sound.PlayRandomAt(transform.position);
+	private void Life_OnDamaged(Attack obj) => SFX.sounds.jump_sound.PlayRandomAt(transform.position);
+	private void Anim_Dash() => SFX.sounds.bean_roll_sounds.PlayRandomAt(transform.position);
+	private void Anim_Teleport() => SFX.sounds.brock_teleport_sounds.PlayRandomAt(transform.position);
+	private void Anim_OnDie() => SFX.sounds.cone_die_sounds.PlayRandomAt(transform.position);
+	private void Anim_OnHit() => SFX.sounds.cone_gethit_sounds.PlayRandomAt(transform.position);
+	private void Anim_OnRoar() => SFX.sounds.cone_roar_sounds.PlayRandomAt(transform.position);
+	private void Anim_OnAttackHit(int attackType) => SFX.sounds.cone_attack_sounds.PlayRandomAt(transform.position);
+	private void Anim_OnStep() => SFX.sounds.cone_walk_sounds.PlayRandomAt(transform.position);
 }

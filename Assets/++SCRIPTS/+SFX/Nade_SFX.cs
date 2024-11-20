@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Explosion_SFX : MonoBehaviour
+public class Nade_SFX : MonoBehaviour
 {
 	private void OnEnable()
 	{
@@ -9,6 +9,6 @@ public class Explosion_SFX : MonoBehaviour
 
 	private void Instance_OnExplosion()
 	{
-		SFX.sounds.bean_nade_explosion_sounds.PlayRandom();
+		SFX.sounds.bean_nade_explosion_sounds.PlayRandomAt(transform.position);
 	}
 }

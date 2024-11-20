@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using UnityEditor;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace Asset_Cleaner {
     class AufWindow : EditorWindow {

@@ -141,7 +141,8 @@ PlayerSettings:
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
   bundleVersion: 1.1
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: 11400000, guid: 7451d5faa9e87684da376e885706f830, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -165,6 +166,7 @@ PlayerSettings:
   applicationIdentifier:
     Standalone: com.LeafWorthy.Gangsta-Bean-3
   buildNumber:
+    Bratwurst: 0
     Standalone: 0
     VisionOS: 0
     iPhone: 0
@@ -746,6 +748,7 @@ PlayerSettings:
   webWasm2023: 0
   scriptingDefineSymbols:
     Android: UNITY_POST_PROCESSING_STACK_V2
+    Bratwurst: UNITY_POST_PROCESSING_STACK_V2
     CloudRendering: UNITY_POST_PROCESSING_STACK_V2
     EmbeddedLinux: UNITY_POST_PROCESSING_STACK_V2
     GameCoreScarlett: UNITY_POST_PROCESSING_STACK_V2

@@ -1,6 +1,4 @@
 #define DECREASE_KEY
-using System.Collections.Generic;
-
 namespace Pathfinding {
 	/// <summary>
 	/// Stores temporary node data for a single pathfinding request.

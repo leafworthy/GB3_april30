@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
 	public Color color;
 	public string PlayerName = "unnamed";
 	public static event Action<Player> OnPlayerDies;
-	private GunAimAbility aimAbility;
+	private AimAbility aimAbility;
 
 	public PlayerStatsHandler playerStats;
 	public int playerIndex;
@@ -99,7 +99,7 @@ public class Player : MonoBehaviour
 
 	private Vector2 GetAimPosition()
 	{
-		if (aimAbility == null) aimAbility = SpawnedPlayerGO.GetComponentInChildren<GunAimAbility>();
+		if (aimAbility == null) aimAbility = SpawnedPlayerGO.GetComponentInChildren<AimAbility>();
 		return aimAbility.GetAimPoint();
 	}
 
