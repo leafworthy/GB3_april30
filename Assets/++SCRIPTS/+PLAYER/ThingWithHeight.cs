@@ -17,6 +17,7 @@ public class ThingWithHeight : MonoBehaviour
 	public IsoSpriteSorting Sorting;
 	public bool canLand;
 	private bool isAboveAll;
+	private bool lands;
 
 	protected virtual void Start()
 	{
@@ -27,6 +28,7 @@ public class ThingWithHeight : MonoBehaviour
 
 	protected virtual void FixedUpdate()
 	{
+		if(!lands) return;
 		UpdateDistanceToCurrentLandable();
 		UpdateGraphics();
 	}
@@ -96,11 +98,11 @@ public class ThingWithHeight : MonoBehaviour
 		return currentLandable.height;
 	}
 
-	public void SetDistanceToGround(float height)
+	public void SetDistanceToGround(float height, bool _lands = true)
 	{
+		lands = _lands;
 		DistanceToGround = height;
 		JumpObject.transform.localPosition = new Vector3(0, DistanceToGround, 0);
-		//Debug.Log("here");
 		if (ShadowObject != null) ShadowObject.transform.localPosition = new Vector3(0, GetCurrentLandableHeight(), 0);
 	}
 

@@ -28,7 +28,8 @@ public class GunAimAbility : AimAbility
 	{
 		base.Start();
 		gunAttacks = GetComponent<GunAttacks>();
-		gunAttacks.OnShotFired += GunOnShoot;
+		gunAttacks.OnShotHitTarget += GunOnShoot;
+		gunAttacks.OnShotMissed += GunOnShoot;
 		anim = GetComponent<Animations>();
 		anim.animEvents.OnAnimationComplete += Anim_OnComplete;
 		clipz.AddMany(E, EEN, EN, NE, NW, WN, WWN, W, WWS, WS, SW, SE, ES, EES);
@@ -39,7 +40,8 @@ public class GunAimAbility : AimAbility
 	private void OnDisable()
 	{
 		if (gunAttacks == null) return;
-		gunAttacks.OnShotFired -= GunOnShoot;
+		gunAttacks.OnShotHitTarget -= GunOnShoot;
+		gunAttacks.OnShotMissed -= GunOnShoot;
 	}
 	public override Vector3 GetAimDir()
 	{
@@ -62,6 +64,7 @@ public class GunAimAbility : AimAbility
 		anim.animator.speed = 1;
 		anim.SetFloat(Animations.ShootSpeed, 1);
 		anim.Play(GetAnimationClipNameFromDegrees(GetDegrees()), 1, .25f);
+		
 	}
 
 

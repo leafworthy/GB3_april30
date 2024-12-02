@@ -14,6 +14,7 @@ public class GameSceneMainMenu : GameScene
 	{
 		Debug.Log("Player " + player.playerIndex + " has Joined");
 		Players.OnPlayerJoins -= PlayerOnJoins;
+		SFX.sounds.charSelect_select_sounds.PlayRandom();
 		GoToScene(Type.CharacterSelect);
 	}
 

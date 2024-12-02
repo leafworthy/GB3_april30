@@ -11,7 +11,7 @@ public class ChargeAttack : Attacks
 	private bool isCharging;
 
 	private AmmoInventory ammo;
-	private UnitStats stats;
+	private Life life;
 
 	private int attackKillSpecialAmount = 30;
 	private float SpecialAttackDistance = 3;
@@ -34,7 +34,7 @@ public class ChargeAttack : Attacks
 		aim = GetComponent<GunAimAbility>();
 		body = GetComponent<Body>();
 		anim = GetComponent<Animations>();
-		stats = GetComponent<UnitStats>();
+		life = GetComponent<Life>();
 		ammo = GetComponent<AmmoInventory>();
 
 		if (attacker != null)
@@ -155,7 +155,7 @@ public class ChargeAttack : Attacks
 		{
 			var life = hit2D.gameObject.GetComponent<Life>();
 			if (!life.isEnemyOf(attacker) || life.cantDie || life.IsObstacle) return;
-			HitTarget(stats.Attack2Damage, life, .4f);
+			HitTarget(life.Attack2Damage, life, .4f);
 			connect = true;
 			ammo.AddAmmoToReserve(AmmoInventory.AmmoType.primaryAmmo, attackKillSpecialAmount);
 			Maker.Make(FX.Assets.hits.GetRandom(), hit2D.transform.position);
@@ -179,7 +179,7 @@ public class ChargeAttack : Attacks
 	private float GetHitRange(int attackType)
 	{
 		if (attackType == 5)
-			return stats.AttackRange * 2;
-		return stats.AttackRange;
+			return life.AttackRange * 2;
+		return life.AttackRange;
 	}
 }

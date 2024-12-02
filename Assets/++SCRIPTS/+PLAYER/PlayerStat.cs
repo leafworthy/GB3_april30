@@ -12,7 +12,8 @@
 		AttacksHit,
 		Accuracy,
 		TotalCash,
-		Gas
+		Gas,
+		Key
 	}
 
 	public readonly StatType type;

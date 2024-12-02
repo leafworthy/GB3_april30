@@ -34,7 +34,6 @@ public class Player : MonoBehaviour
 	public Life spawnedPlayerDefence;
 
 	public int buttonIndex;
-	private UnitStats unitStats;
 	[FormerlySerializedAs("currentCharacter")]
 	public Character CurrentCharacter;
 
@@ -76,7 +75,12 @@ public class Player : MonoBehaviour
 
 	private void SelectClosestInteractable()
 	{
-		if (interactables.Count == 0) return;
+		if (interactables.Count == 0)
+		{
+			Debug.Log("interactable nulled");
+			selectedInteractable = null;
+			return;
+		}
 		var closest = interactables[0];
 		var closestDistance = Vector2.Distance(closest.GetInteractionPosition(), GetAimPosition());
 		foreach (var interactable in interactables)
@@ -94,6 +98,7 @@ public class Player : MonoBehaviour
 		}
 		if (selectedInteractable != null) selectedInteractable.Deselect(this);
 		selectedInteractable = closest;
+		Debug.Log("interactable assigned" + closest.name, closest);
 		selectedInteractable.Select(this);
 	}
 
@@ -106,7 +111,12 @@ public class Player : MonoBehaviour
 	public void RemoveInteractable(PlayerInteractable interactable)
 	{
 		if (interactable == null) return;
-		if (interactable == selectedInteractable) interactable.Deselect(this);
+		if (interactable == selectedInteractable)
+		{
+			interactable.Deselect(this);
+			Debug.Log("interactable nulled");
+			selectedInteractable = null;
+		}
 		interactables.Remove(interactable);
 		SelectClosestInteractable();
 	}
@@ -140,8 +150,7 @@ public class Player : MonoBehaviour
 		SpawnedPlayerGO = newGO;
 		spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
 		spawnedPlayerDefence.OnDead += SpawnedPlayer_Dead;
-		unitStats = SpawnedPlayerGO.GetComponent<UnitStats>();
-		unitStats.SetPlayer(this);
+		spawnedPlayerDefence.SetPlayer(this);
 		sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
 	}
 
@@ -219,6 +228,7 @@ public class Player : MonoBehaviour
 
 	public void GainKey()
 	{
+		Debug.Log("got key!");
 		hasKey = true;
 	}
 

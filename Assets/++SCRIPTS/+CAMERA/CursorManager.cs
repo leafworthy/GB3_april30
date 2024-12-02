@@ -6,7 +6,7 @@ public class CursorManager : MonoBehaviour
 
 	[SerializeField]private GameObject currentCursor;
 	private Vector2 inGameCursorScale = new Vector2(5, 5);
-	private Vector2 inMenuCursorScale = new Vector2(.1f, .1f);
+	private Vector2 inMenuCursorScale = new Vector2(0, 0);
 
 	private void Start()
 	{
@@ -49,12 +49,14 @@ public class CursorManager : MonoBehaviour
 
 	private void Update()
 	{
-		currentCursor.transform.position = Mouse.current.position.ReadValue();
+		
+		currentCursor.transform.position = GetMousePosition();
 	}
 
 	public static Vector3 GetMousePosition()
 	{
 		var cam = GetCamera();
+		if(cam == null) return Vector3.zero;
 		var vec = cam.ScreenToWorldPoint((Vector2)Mouse.current.position.ReadValue());
 		vec.z = 0;
 		return vec;
@@ -62,6 +64,7 @@ public class CursorManager : MonoBehaviour
 
 	public static Camera GetCamera()
 	{
+		
 		var cam = Camera.main;
 		if (cam == null)
 		{

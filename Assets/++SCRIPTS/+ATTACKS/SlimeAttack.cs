@@ -5,7 +5,6 @@ public class SlimeAttack : MonoBehaviour
 	[SerializeField] private GameObject ProjectilePrefab;
 	private float currentCooldownTime;
 
-	private UnitStats stats;
 	private Life life;
 	private Body body;
 	private Animations anim;
@@ -26,7 +25,6 @@ public class SlimeAttack : MonoBehaviour
 		life = GetComponent<Life>();
 		body = GetComponent<Body>();
 		anim = GetComponent<Animations>();
-		stats = GetComponent<UnitStats>();
 
 		ai = GetComponent<EnemyAI>();
 		
@@ -52,7 +50,7 @@ public class SlimeAttack : MonoBehaviour
 	{
 		if (!(Time.time >= currentCooldownTime)) return;
 		currentTarget = targetLife;
-		currentCooldownTime = Time.time + stats.AttackRate;
+		currentCooldownTime = Time.time + life.AttackRate;
 		anim.SetTrigger(Animations.Attack1Trigger);
 	}
 
@@ -60,9 +58,9 @@ public class SlimeAttack : MonoBehaviour
 	{
 		if (currentTarget == null) return;
 
-		var newAttack = new Attack(life, currentTarget, stats.AttackDamage);
+		var newAttack = new Attack(life, currentTarget, life.AttackDamage);
 
-		if (Vector2.Distance(transform.position, currentTarget.transform.position) <= stats.AttackRange)
+		if (Vector2.Distance(transform.position, currentTarget.transform.position) <= life.AttackRange)
 		{
 			currentTarget.TakeDamage(newAttack);
 		}

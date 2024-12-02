@@ -12,7 +12,7 @@ public class Pickup_FX : MonoBehaviour
 	private void Start()
 	{
 		item = GetComponent<Item>();
-		lifeFX = GetComponent<Life_FX>();
+		lifeFX = GetComponentInChildren<Life_FX>();
 		pickup = GetComponent<Pickup>();
 		if (pickup == null) return;
 		pickup.OnPickup += StartPickup;
@@ -21,9 +21,10 @@ public class Pickup_FX : MonoBehaviour
 	private void StartPickup(Collider2D col, Color pickupTintColor)
 	{
 		lifeFX.StartTint(pickupTintColor);
-		var otherTintHandler = col.gameObject.GetComponent<Life_FX>();
+		var otherTintHandler = col.gameObject.GetComponentInChildren<Life_FX>(true);
 		otherTintHandler.StartTint(pickupTintColor);
-		var position = transform.position+Vector3.up;
+		var position = transform.position;
+		Maker.Make(FX.Assets.pickupEffectPrefab, position);
 		CameraShaker.ShakeCamera(position,shakeIntensity);
 		CameraStunner.StartStun(stunLength);
 		if(item.itemType == Item.ItemType.cash)

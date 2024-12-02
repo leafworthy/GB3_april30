@@ -26,7 +26,7 @@ public class GameSceneCharacterSelection : GameScene
 		foreach (var player in Players.AllJoinedPlayers)
 		{
 			Debug.Log("Start seletion");
-			PlayerStartsSelecting(player);
+			PlayerStartsSelectingFromMainMenu(player);
 		}
 
 		foreach (var button in Buttons)
@@ -36,6 +36,18 @@ public class GameSceneCharacterSelection : GameScene
 
 		isActive = true;
 		Debug.Log("Character Selection Start");
+	}
+
+	private void PlayerStartsSelectingFromMainMenu(Player player)
+	{
+		if (playersBeingListenedTo.Contains(player)) return;
+		Debug.Log(player.PlayerName + player.playerIndex + "has joined character selection");
+
+		player.SetState(Player.State.SelectingCharacter);
+		player.CurrentButton = Buttons[0];
+		player.CurrentButton.HighlightButton(player);
+		//OnPlayerStartsSelecting?.Invoke();
+		ListenToPlayer(player);
 	}
 
 	private void OnDisable()
@@ -63,7 +75,6 @@ public class GameSceneCharacterSelection : GameScene
 		player.SetState(Player.State.SelectingCharacter);
 		player.CurrentButton = Buttons[0];
 		player.CurrentButton.HighlightButton(player);
-
 		OnPlayerStartsSelecting?.Invoke();
 		ListenToPlayer(player);
 	}

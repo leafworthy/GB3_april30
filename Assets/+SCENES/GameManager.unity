@@ -38,12 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &503654731
+--- !u!1001 &1610994136
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -171,6 +171,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3314736168711803517, guid: 3818cc8efb31b4ecebcfad5c626ab6c0, type: 3}
+      propertyPath: currentlyVisible.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8504951967040856540, guid: 3818cc8efb31b4ecebcfad5c626ab6c0, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -188,4 +192,4 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 503654731}
+  - {fileID: 1610994136}

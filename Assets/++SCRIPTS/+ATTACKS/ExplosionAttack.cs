@@ -60,7 +60,7 @@ public class ExplosionAttack : Attacks
 		var move = GetComponent<MoveAbility>();
 		currentTargetLife = newTarget;
 		anim.SetTrigger(Animations.Attack1Trigger);
-		move.Push(currentTargetLife.transform.position - transform.position, 10);
+		move.Push(currentTargetLife.transform.position - transform.position, 4);
 	}
 
 	private void Player_Attack(NewControlButton newControlButton)

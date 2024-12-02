@@ -2,7 +2,7 @@
 
 public class Bullet_FX : MonoBehaviour
 {
-	private int shotTime = 2;
+	private int shotTime = 3;
 	private int shotCounter;
 	private bool isOn = true;
 	private bool isGlock;
@@ -32,8 +32,10 @@ public class Bullet_FX : MonoBehaviour
 
 		sorting.SorterPositionOffset = attack.OriginFloorPoint -(Vector2)transform.position;
 		sorting.SorterPositionOffset2 = attack.DestinationFloorPoint - (Vector2)transform.position;
-
-		IsoSpriteSorting.UpdateSorters();
+		sorting.Setup();
+		IsoSpriteSortingManager.UpdateSorting();
+		Debug.Log("bullet fx sort");
+		Debug.Log("sort complete");
 	}
 
 	private void FixedUpdate()
@@ -41,7 +43,10 @@ public class Bullet_FX : MonoBehaviour
 		if (GlobalManager.IsPaused) return;
 		if (!isOn) return;
 		if (shotCounter > 0)
+		{
+			
 			shotCounter--;
+		}
 		else
 		{
 			Maker.Unmake(gameObject);

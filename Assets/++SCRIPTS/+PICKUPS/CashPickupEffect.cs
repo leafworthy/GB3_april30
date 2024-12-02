@@ -3,14 +3,12 @@ using System;
 public class CashPickupEffect : PickupEffect
 {
 	private int amount;
-	public static event Action<UnitStats, int> OnCashPickup;
 
-	public override void StartEffect(UnitStats stats)
+	public override void StartEffect(Life life)
 	{
 		effectDuration = 0;
-		stats.player.ChangePlayerStat(PlayerStat.StatType.TotalCash,amount);
-		OnCashPickup?.Invoke(stats,amount);
-		base.StartEffect(stats);
+		life.player.ChangePlayerStat(PlayerStat.StatType.TotalCash,amount);
+		base.StartEffect(life);
 	}
 
 

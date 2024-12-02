@@ -44,6 +44,7 @@ public class PoisonDamageEffect:MonoBehaviour
 		var origin = (int) Random.Range(0, 2) == 1 ? transformPosition+new Vector3(-1,-1) : transformPosition+ new Vector3(1, -1);
 		var poisonAttack = new Attack(Owner, origin, transformPosition,Target, PoisonDamage);
 		poisonAttack.IsPoison = true;
+		poisonAttack.color = Color.green;
 		Target.TakeDamage(poisonAttack);
 	}
 }

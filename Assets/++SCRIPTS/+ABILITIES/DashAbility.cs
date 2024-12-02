@@ -4,7 +4,7 @@ public class DashAbility : MonoBehaviour
 {
 	private AnimationEvents animEvents;
 	private MoveController moveController;
-	private UnitStats stats;
+	private Life life;
 	private Player owner;
 	private JumpAbility jumps;
 	private Body body;
@@ -21,8 +21,8 @@ public class DashAbility : MonoBehaviour
 		jumps = GetComponent<JumpAbility>();
 		moveController = GetComponent<MoveController>();
 
-		stats = GetComponent<UnitStats>();
-		owner = stats.player;
+		life = GetComponent<Life>();
+		owner = life.player;
 		owner.Controller.Dash.OnPress += ControllerDashPress;
 
 		animEvents = anim.animEvents;
@@ -32,9 +32,11 @@ public class DashAbility : MonoBehaviour
 
 	private void OnDisable()
 	{
+		if (owner == null) return;
 		if(owner != null)owner.Controller.Dash.OnPress -= ControllerDashPress;
 		animEvents.OnDashStop -= Anim_DashStop;
 		animEvents.OnTeleport -= Anim_Teleport;
+		owner.Controller.Dash.OnPress -= ControllerDashPress;
 	
 	}
 
@@ -66,7 +68,7 @@ public class DashAbility : MonoBehaviour
 		anim.SetTrigger(Animations.DashTrigger);
 		if (!teleport)
 		{
-			moveController.Push(moveController.MoveDir, stats.DashSpeed);
+			moveController.Push(moveController.MoveDir, life.DashSpeed);
 			body.ChangeLayer(Body.BodyLayer.grounded);
 		}
 		else

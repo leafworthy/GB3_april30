@@ -12,6 +12,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: RB GATE TALL B Variant.001 Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 1821221124844362387, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
+      propertyPath: indicatorOffset.x
+      value: 5.834038
+      objectReference: {fileID: 0}
+    - target: {fileID: 1821221124844362387, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
+      propertyPath: indicatorOffset.y
+      value: 23.312592
+      objectReference: {fileID: 0}
+    - target: {fileID: 1821221124844362387, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
+      propertyPath: interactionPoint.x
+      value: 6.169609
+      objectReference: {fileID: 0}
+    - target: {fileID: 1821221124844362387, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
+      propertyPath: interactionPoint.y
+      value: -3.1234436
+      objectReference: {fileID: 0}
     - target: {fileID: 4464885448855992887, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -124,8 +140,42 @@ PrefabInstance:
       propertyPath: SorterPositionOffset.y
       value: -0.43048096
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6626679915394979318, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
+    - {fileID: 2731357400215499028, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6484305129628690056, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3853629398028740602}
   m_SourcePrefab: {fileID: 100100000, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
+--- !u!114 &4554110675286883718 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1936577562664772795, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
+  m_PrefabInstance: {fileID: 2725637165746346301}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 210cbbba385a43b7961cfb161843890c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &8948522336306020277 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6484305129628690056, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
+  m_PrefabInstance: {fileID: 2725637165746346301}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3853629398028740602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8948522336306020277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 945f6ce083fc04706bc5a50d952e2ac0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doorInteraction: {fileID: 4554110675286883718}

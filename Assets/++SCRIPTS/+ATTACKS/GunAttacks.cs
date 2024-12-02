@@ -4,8 +4,8 @@ using UnityEngine;
 [Serializable]
 public class GunAttacks : Attacks
 {
-	public event Action<Attack, Vector2> OnShotFired;
-	public event Action<Attack, Vector3> OnShotMissed;
+	public event Action<Attack, Vector2> OnShotHitTarget;
+	public event Action<Attack, Vector2> OnShotMissed;
 	public event Action OnReload;
 	public bool isGlocking { get; private set; }
 	public bool isShooting;
@@ -82,7 +82,7 @@ public class GunAttacks : Attacks
 		player.Controller.Reload1.OnPress -= Player_Reload;
 	}
 
-	private void Update()
+	private void FixedUpdate()
 	{
 		if (GlobalManager.IsPaused) return;
 		if (isReloading)
@@ -99,7 +99,8 @@ public class GunAttacks : Attacks
 		}
 
 		if (arms.currentActivity != VerbName) return;
-		if (isShooting || isPressing) ShootWithCooldown(aim.AimDir);
+		if (isShooting) ShootWithCooldown(aim.AimDir);
+		
 		anim.SetBool(Animations.IsGlocking, isGlocking);
 	}
 
@@ -176,6 +177,7 @@ public class GunAttacks : Attacks
 	{
 		if (ammoInventory.HasAmmoInReserveOrClip(AmmoInventory.AmmoType.primaryAmmo))
 		{
+			Debug.Log("have ammo");
 			isGlocking = false;
 			anim.SetBool(Animations.IsGlocking, isGlocking);
 			return;
@@ -197,11 +199,19 @@ public class GunAttacks : Attacks
 
 	private void ShotMissed()
 	{
-		var missPosition = aim.GetAimPoint();
-
+		var missPosition = (Vector2) body.FootPoint.transform.position + aim.AimDir.normalized * attacker.AttackRange;
+		var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, aim.AimDir.normalized, attacker.AttackRange,
+			ASSETS.LevelAssets.BuildingLayer);
+		if (raycastHit)
+		{
+			missPosition = raycastHit.point;
+		}
 		var newAttack = new Attack(attacker, body.FootPoint.transform.position, missPosition, null, 0);
 
 		OnShotMissed?.Invoke(newAttack, body.AttackStartPoint.transform.position);
+		
+		;
+		
 	}
 
 	private void ShotHitTarget(RaycastHit2D hitObject)
@@ -209,8 +219,10 @@ public class GunAttacks : Attacks
 		var target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
 		if (target == null) return;
 		var newAttack = new Attack(attacker, body.FootPoint.transform.position, hitObject.point, target, currentDamage);
-		OnShotFired?.Invoke(newAttack, body.AttackStartPoint.transform.position);
+		OnShotHitTarget?.Invoke(newAttack, body.AttackStartPoint.transform.position);
+		Debug.Log("Shot hit target", this);
 		target.TakeDamage(newAttack);
+		
 	}
 
 	private RaycastHit2D CheckRaycastHit(Vector2 targetDirection)
@@ -233,7 +245,7 @@ public class GunAttacks : Attacks
 
 	private void ShootWithCooldown(Vector3 target)
 	{
-		UseCorrectWeapon();
+		
 		if (!(Time.time >= currentCooldownTime)) return;
 
 		if (!ammoInventory.HasAmmoInClip(ammoType))
@@ -278,6 +290,7 @@ public class GunAttacks : Attacks
 		isReloading = false;
 		arms.Stop("Reload");
 		if (!isPressing) return;
+		Debug.Log("reloading stopped try shoot");
 		TryShooting();
 	}
 }

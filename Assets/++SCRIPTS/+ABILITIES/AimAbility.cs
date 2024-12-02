@@ -70,7 +70,7 @@ public class AimAbility : MonoBehaviour
 		var hitPoint = CheckRaycastHit(AimDir);
 		if (hitPoint.collider != null)
 		{
-			Debug.DrawLine(body.FootPoint.transform.position, hitPoint.point, Color.red);
+			Debug.DrawLine(body.FootPoint.transform.position, hitPoint.point, Color.white);
 		}
 		else
 		{

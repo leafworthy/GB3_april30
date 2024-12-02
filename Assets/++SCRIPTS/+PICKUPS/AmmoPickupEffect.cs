@@ -2,11 +2,11 @@ public class AmmoPickupEffect : PickupEffect
 {
 	private int amount = 25;
 	private AmmoInventory.AmmoType ammoType;
-	public override void StartEffect(UnitStats stats)
+	public override void StartEffect(Life life)
 	{
-		base.StartEffect(stats);
+		base.StartEffect(life);
 		effectDuration = 0;
-		var ammoHandler = stats.GetComponent<AmmoInventory>();
+		var ammoHandler = life.GetComponent<AmmoInventory>();
 		ammoHandler.AddAmmoToReserve(ammoType, amount);
 	}
 

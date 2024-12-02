@@ -30,7 +30,8 @@ public class Bean_SFX : MonoBehaviour
 		life.OnDamaged += Life_OnDamaged;
 		life.OnAttackHit += Life_AttackHit;
 		jump.OnJump += Jump_OnJump;
-		gunAttacks.OnShotFired += GunAttacksOnShotFired;
+		jump.OnLand += Jump_OnLand;
+		gunAttacks.OnShotHitTarget += GunAttacksOnOnShotHitTarget;
 		gunAttacks.OnShotMissed += GunAttacksOnShotMissed;
 		gunAttacks.OnReload += GunAttacks_OnReload;
 		knifeAttacks.OnMiss += KnifeAttacks_OnMiss;
@@ -52,7 +53,8 @@ public class Bean_SFX : MonoBehaviour
 		life.OnDamaged -= Life_OnDamaged;
 		life.OnAttackHit -= Life_AttackHit;
 		jump.OnJump -= Jump_OnJump;
-		gunAttacks.OnShotFired -= GunAttacksOnShotFired;
+		jump.OnLand -= Jump_OnLand;
+		gunAttacks.OnShotHitTarget -= GunAttacksOnOnShotHitTarget;
 		gunAttacks.OnShotMissed -= GunAttacksOnShotMissed;
 		gunAttacks.OnReload -= GunAttacks_OnReload;
 		knifeAttacks.OnMiss -= KnifeAttacks_OnMiss;
@@ -60,14 +62,22 @@ public class Bean_SFX : MonoBehaviour
 		nadeAbility.OnThrow -= NadeAbilityOnThrow;
 	}
 
-	private void GunAttacksOnShotMissed(Attack arg1, Vector3 arg2) => SFX.sounds.bean_gun_miss_sounds.PlayRandomAt(transform.position);
+	private void GunAttacksOnShotMissed(Attack attack, Vector2 hitPositionh)
+	{
+		SFX.sounds.bean_gun_miss_sounds.PlayRandomAt(hitPositionh);
+		SFX.sounds.ak47_shoot_sounds.PlayRandomAt(transform.position);
+	}
 
-	private void GunAttacksOnShotFired(Attack arg1, Vector2 arg2) => SFX.sounds.ak47_shoot_sounds.PlayRandomAt(transform.position);
+	private void GunAttacksOnOnShotHitTarget(Attack attack, Vector2 hitPosition)
+	{
+		SFX.sounds.GetBulletHitSounds(attack.DestinationLife.DebrisType).PlayRandomAt(hitPosition);
+		SFX.sounds.ak47_shoot_sounds.PlayRandomAt(attack.OriginFloorPoint);
+	}
 	private void NadeAbilityOnThrow(Vector2 vector2, Vector2 vector3, float arg3, Player arg4) => SFX.sounds.bean_nade_throw_sounds.PlayRandomAt(transform.position);
-	private void Life_AttackHit(Attack attack, Life hitLife) => SFX.sounds.GetHitSounds((int)hitLife.DebreeType).PlayRandomAt(attack.DestinationFloorPoint);
+	private void Life_AttackHit(Attack attack, Life hitLife) => SFX.sounds.bloodSounds.PlayRandomAt(transform.position);
 	private void KnifeAttacks_OnMiss() => SFX.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 	private void GunAttacks_OnReload() => SFX.sounds.bean_reload_sounds.PlayRandomAt(transform.position);
-
+	private void Jump_OnLand(Vector2 obj) => SFX.sounds.land_sound.PlayRandomAt(transform.position);
 	private void KnifeAttacks_OnHit(Vector2 vector2) => SFX.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
 
 	private void Jump_OnJump(Vector2 obj) => SFX.sounds.jump_sound.PlayRandomAt(transform.position);

@@ -48,7 +48,7 @@ public class ClawAttack : Attacks
 	{
 		if (attacker.IsDead() || newTarget.IsDead()) return true;
 		if (!targetter.HasLineOfSightWith(newTarget.transform.position) && !newTarget.IsObstacle) return true;
-		Debug.Log("no line of sight");
+		Debug.Log("no line of sight for claw attack");
 		return false;
 
 	}
@@ -71,7 +71,7 @@ public class ClawAttack : Attacks
 		{
 			if (!targetter.HasLineOfSightWith(currentTargetLife.transform.position))
 			{
-				Debug.Log("no line of sight");
+				Debug.Log("no line of sight for claw attack");
 				return;
 			}
 		}

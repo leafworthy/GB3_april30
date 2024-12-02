@@ -38,7 +38,7 @@ public class MoveAbility : MonoBehaviour
 		pushVelocity = Vector2.zero;
 	}
 
-	private void FixedUpdate()
+	private void Update()
 	{
 		if (GlobalManager.IsPaused) return;
 		
@@ -55,7 +55,7 @@ public class MoveAbility : MonoBehaviour
 	private void ApplyVelocity()
 	{
 		var totalVelocity =  moveVelocity + pushVelocity;
-		MoveObjectTo((Vector2) transform.position+ totalVelocity * Time.fixedDeltaTime);
+		MoveObjectTo((Vector2) transform.position+ totalVelocity * Time.deltaTime);
 	}
 
 	private void DecayVelocity()
@@ -81,7 +81,6 @@ public class MoveAbility : MonoBehaviour
 	public void MoveInDirection(Vector2 direction, float newSpeed)
 	{
 		if (!IsActive) return;
-		Debug.Log("start moving");
 		moveDir = direction.normalized;
 		moveSpeed = newSpeed;
 		isMoving = true;
@@ -107,7 +106,7 @@ public class MoveAbility : MonoBehaviour
 		if (GlobalManager.IsPaused) return;
 		if (rb != null)
 			rb.MovePosition(destination);
-		else
+		else 
 			transform.position = destination;
 	}
 
@@ -127,7 +126,6 @@ public class MoveAbility : MonoBehaviour
 	{
 		isMoving = false;
 		moveVelocity = Vector2.zero;
-		Debug.Log("stopped movin");
 	}
 
 

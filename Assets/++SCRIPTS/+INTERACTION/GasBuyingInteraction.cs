@@ -39,5 +39,10 @@ public class GasBuyingInteraction : TimedInteraction
 		player.StopSaying();
 	}
 
-	protected override bool canInteract(Player player) => player.HasMoreMoneyThan(price) && gasAmount > 0;
+	protected override bool canInteract(Player player)
+	{
+		if (!base.canInteract(player)) return false;
+		
+		return player.HasMoreMoneyThan(price) && gasAmount > 0;
+	}
 }

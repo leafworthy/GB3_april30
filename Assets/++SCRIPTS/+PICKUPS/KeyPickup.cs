@@ -6,7 +6,7 @@ public class KeyPickup : Pickup
 
 	public override List<PickupEffect> GetEffects()
 	{
-		var newList = new List<PickupEffect> {new GasPickupEffect(0, amount)};
+		var newList = new List<PickupEffect> {new KeyPickupEffect(0, amount)};
 		return newList;
 	}
 }

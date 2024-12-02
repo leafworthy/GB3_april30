@@ -1,13 +1,13 @@
 using System;
 using Cinemachine;
 using UnityEngine;
+using Random = System.Random;
 
 public class CameraShaker: Singleton<CameraShaker>
 {
 	private static CinemachineImpulseSource cinemachineImpulseSource;
-	private static Vector3 shakeVector = new Vector3(3, 3, 0);
-	private static float MaxShakeMagnitude = 10;
-	private static bool isOn = true;
+	public float shakeMultiplier = 1;
+
 
 	public enum ShakeIntensityType
 	{
@@ -42,8 +42,8 @@ public class CameraShaker: Singleton<CameraShaker>
 
 	private static void ShakeCamera( Vector3 shakePosition,float shakeMagnitude)
 	{
-		shakeMagnitude = Mathf.Min(shakeMagnitude, MaxShakeMagnitude);
-		cinemachineImpulseSource.GenerateImpulseWithForce(10);
-		if (!isOn) return;
+		
+		var shakeVector = new Vector3(UnityEngine.Random.Range(-1,1), UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1));
+		cinemachineImpulseSource.GenerateImpulseAtPositionWithVelocity(shakePosition, shakeVector* I.shakeMultiplier);
 	}
 }

@@ -16,6 +16,18 @@ PrefabInstance:
       propertyPath: howMuchLoot
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 524876770087417707, guid: bfba81839fb97463ea12894ee22ac758, type: 3}
+      propertyPath: dropPosition.x
+      value: 1.1446228
+      objectReference: {fileID: 0}
+    - target: {fileID: 524876770087417707, guid: bfba81839fb97463ea12894ee22ac758, type: 3}
+      propertyPath: dropPosition.y
+      value: -2.9952135
+      objectReference: {fileID: 0}
+    - target: {fileID: 524876770087417707, guid: bfba81839fb97463ea12894ee22ac758, type: 3}
+      propertyPath: lootContainerType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1246305717290202602, guid: bfba81839fb97463ea12894ee22ac758, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -138,7 +150,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5820321829677316864, guid: bfba81839fb97463ea12894ee22ac758, type: 3}
       propertyPath: indicatorOffset.y
-      value: 9.759445
+      value: 9.75943
+      objectReference: {fileID: 0}
+    - target: {fileID: 5820321829677316864, guid: bfba81839fb97463ea12894ee22ac758, type: 3}
+      propertyPath: interactionPoint.x
+      value: 1.1446228
+      objectReference: {fileID: 0}
+    - target: {fileID: 5820321829677316864, guid: bfba81839fb97463ea12894ee22ac758, type: 3}
+      propertyPath: interactionPoint.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7481249499997036318, guid: bfba81839fb97463ea12894ee22ac758, type: 3}
       propertyPath: m_Sprite

@@ -16,7 +16,7 @@ public class SceneStarter : MonoBehaviour
 	private void CreateGameManager()
 	{
 		if(SceneLoader.hasLoaded) return;
-		SceneManager.LoadScene("GameManager", LoadSceneMode.Additive);
+	SceneManager.LoadScene("GameManager", LoadSceneMode.Additive);
 		//display.SetActive(true);
 		Debug.Log("gamemanager created");
 	}

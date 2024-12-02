@@ -8,16 +8,14 @@ public class RamAttack : Attacks
 	private float currentCooldown;
 	private float coolDown = 2;
 	private bool isCooledDown;
-	private UnitStats stats;
-	private MoveAbility mover;
 	private Life life;
+	private MoveAbility mover;
 	private Player owner;
 
 	private void Start()
 	{
 		life = GetComponent<Life>();
 		mover = GetComponent<MoveAbility>();
-		stats = GetComponent<UnitStats>();
 		owner = Players.EnemyPlayer;
 		isCooledDown = true;
 	}
@@ -92,8 +90,8 @@ public class RamAttack : Attacks
 	private void AttackHit(Life other)
 	{
 		currentCooldown = coolDown;
-		var otherAttack = new Attack(life, other, stats.AttackDamage);
-		var bouncebackAttack = new Attack(other, life, stats.AttackDamage);
+		var otherAttack = new Attack(life, other, life.AttackDamage);
+		var bouncebackAttack = new Attack(other, life, life.AttackDamage);
 		other.TakeDamage(otherAttack);
 		life.TakeDamage(bouncebackAttack);
 		mover.Push(bouncebackAttack.Direction, bouncebackAttack.DamageAmount * 2);

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public enum DebreeType
+public enum DebrisType
 {
     blood,
     glass,
@@ -79,35 +79,35 @@ public class FXAssets : ScriptableObject
     public GameObject indicatorPrefab;
     [FormerlySerializedAs("RisingTextPrefab")] public GameObject risingTextPrefab;
 
-    public List<GameObject> GetBulletHits(DebreeType debreeType)
+    public List<GameObject> GetBulletHits(DebrisType debrisType)
     {
        
-        switch (debreeType)
+        switch (debrisType)
         {
-            case DebreeType.blood:
+            case DebrisType.blood:
                 return null;
-            case DebreeType.glass:
-            case DebreeType.wood:
-            case DebreeType.metal:
-            case DebreeType.wall:
+            case DebrisType.glass:
+            case DebrisType.wood:
+            case DebrisType.metal:
+            case DebrisType.wall:
                 return bulletholes;
         }
 
         return null;
     }
-    public GameObject GetDebree(DebreeType debreeType)
+    public GameObject GetDebree(DebrisType debrisType)
     {
-        switch (debreeType)
+        switch (debrisType)
         {
-            case DebreeType.blood:
+            case DebrisType.blood:
                 return blood_debree.GetRandom();
-            case DebreeType.glass:
+            case DebrisType.glass:
                 return glass_debree.GetRandom();
-            case DebreeType.wood:
+            case DebrisType.wood:
                 return wood_debree.GetRandom();
-            case DebreeType.metal:
+            case DebrisType.metal:
                 return metal_debree.GetRandom();
-            case DebreeType.wall:
+            case DebrisType.wall:
                 return wall_debree.GetRandom();
         }
 

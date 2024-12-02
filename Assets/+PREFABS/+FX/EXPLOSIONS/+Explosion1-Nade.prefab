@@ -50,7 +50,7 @@ MonoBehaviour:
   sortingBounds: {fileID: 0}
   renderBelowSortingOrder: 0
   sortType: 0
-  SorterPositionOffset: {x: 0, y: 0, z: 0}
+  SorterPositionOffset: {x: 0.13137817, y: -8.156376, z: 0}
   SorterPositionOffset2: {x: 0, y: 0, z: 0}
   renderersToSort:
   - {fileID: 4588832723812451772}
@@ -208,7 +208,7 @@ MonoBehaviour:
     - {x: 1, y: 0}
     - {x: -0.50000006, y: 0.8660254}
     - {x: -0.4999999, y: -0.86602545}
-  drawingEnabled: 0
+  drawingEnabled: 1
   drawingTranslucencyEnabled: 0
 --- !u!1 &5610455193236437328
 GameObject:
@@ -265,6 +265,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -302,7 +305,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &1752178215314036259
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -316,6 +319,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -378,14 +382,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ComponentVersion: 1
+  m_ComponentVersion: 2
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.4
   m_Color: {r: 0.745283, g: 0.24878065, b: 0, a: 1}
   m_Intensity: 10.31
   m_LightVolumeIntensity: 0
-  m_LightVolumeIntensityEnabled: 0
+  m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 35cf83d393033fee83a21e348b81acf1000000004518ed76d745c6bd6f984acc
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
@@ -395,8 +399,10 @@ MonoBehaviour:
   m_NormalMapDistance: 19.79
   m_NormalMapQuality: 1
   m_UseNormalMap: 1
-  m_ShadowIntensityEnabled: 0
+  m_ShadowsEnabled: 0
   m_ShadowIntensity: 0
+  m_ShadowSoftness: 0
+  m_ShadowSoftnessFalloffIntensity: 0.5
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0
   m_LocalBounds:

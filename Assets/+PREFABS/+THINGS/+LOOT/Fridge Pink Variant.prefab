@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10042
+  m_SortingOrder: 489
   m_Sprite: {fileID: -7168660786293277086, guid: cdae669d6d6cd4d38891b96b558551b1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -163,9 +163,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10042
+  m_SortingOrder: 490
   m_Sprite: {fileID: -5866142729720144498, guid: cdae669d6d6cd4d38891b96b558551b1, type: 3}
-  m_Color: {r: 0.9622642, g: 0.19517623, b: 0.19517623, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.8078432, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -251,9 +251,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10042
+  m_SortingOrder: 488
   m_Sprite: {fileID: -5866142729720144498, guid: cdae669d6d6cd4d38891b96b558551b1, type: 3}
-  m_Color: {r: 0.9622642, g: 0.19517623, b: 0.19517623, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.8078432, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -339,9 +339,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10042
+  m_SortingOrder: 492
   m_Sprite: {fileID: 4567927776462244554, guid: cdae669d6d6cd4d38891b96b558551b1, type: 3}
-  m_Color: {r: 0.9622642, g: 0.19517623, b: 0.19517623, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.8078432, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -479,7 +479,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10043
+  m_SortingOrder: 493
   m_Sprite: {fileID: -4859693258860288113, guid: cdae669d6d6cd4d38891b96b558551b1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -566,7 +566,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10042
+  m_SortingOrder: 491
   m_Sprite: {fileID: -2238580729125239455, guid: cdae669d6d6cd4d38891b96b558551b1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -586,6 +586,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 319466426358712245, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 8c34822b7022040fdb2f7864b7bc46f4, type: 2}
     - target: {fileID: 319466426358712245, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
       value: 19.6
@@ -648,11 +652,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5085922006997742396, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -233.4
       objectReference: {fileID: 0}
     - target: {fileID: 5085922006997742396, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 9.5
       objectReference: {fileID: 0}
     - target: {fileID: 5085922006997742396, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
       propertyPath: m_LocalPosition.z
@@ -782,7 +786,7 @@ CircleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 8c34822b7022040fdb2f7864b7bc46f4, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -824,7 +828,8 @@ MonoBehaviour:
   howMuchLoot: 2
   lootType: 3
   MessageToDisplay: E - loot
-  dropPosition: {x: 0, y: 0, z: 0}
+  dropPosition: {x: 1.8282623, y: -5.560936, z: 0}
+  lootContainerType: 3
 --- !u!114 &7921590353394365957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -838,6 +843,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indicatorOffset: {x: -3.382141, y: 15.236633, z: 0.00217247}
+  interactionPoint: {x: 1.4473724, y: -5.1038723, z: 0}
 --- !u!114 &5090155090738807094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -850,7 +856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be430b345dfe2431eaa880655ed6670d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tint: {r: 0.9622642, g: 0.19517623, b: 0.19517623, a: 1}
+  Tint: {r: 1, g: 0, b: 0.8078432, a: 1}
   toTint:
   - {fileID: 7301025384272635341}
   - {fileID: 4820291575015888079}

@@ -1,55 +1,75 @@
 using System.Collections.Generic;
 using System.Linq;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
+[ExecuteAlways]
 public class Life_FX : MonoBehaviour
 {
-	[Header("Color Options")]
-	public Image slowBarImage;
+	[Header("Color Options")] public Image slowBarImage;
 	public Image fastBarImage;
 	public bool HideWhenFull;
-	private List<Renderer> renderersToTint = new List<Renderer>();
+	private List<Renderer> renderersToTint = new();
 	private Color materialTintColor;
 	private const float tintFadeSpeed = 6f;
 	private static readonly int Tint = Shader.PropertyToID("_Tint");
+	public Color DebreeTint = Color.white;
+
 	public enum ColorMode
 	{
 		Single,
 		Gradient
 	}
+
 	public ColorMode colorMode;
 	public Color slowBarColor = Color.white;
-	public Gradient barGradient = new Gradient();
-	 
+	public Gradient barGradient = new();
 
-	private float targetFill = 0.0f;
+	private float targetFill;
 	private float smoothingFactor = .25f;
 	private Life _life;
 	private Color PlayerColor;
-
-	protected virtual void Start()
-	{
-		
-		_life = GetComponentInParent<Life>();
-		if (_life == null) return;
-			
-	}
+	public GameObject healthBar;
 
 	public void OnEnable()
 	{
 		renderersToTint = GetComponentsInChildren<Renderer>().ToList();
-		_life = GetComponent<Life>();
+		_life = GetComponentInParent<Life>();
 		if (_life == null) return;
 		_life.OnDamaged += Life_Damaged;
 		_life.OnFractionChanged += DefenceOnDefenceChanged;
 		_life.OnDying += DefenceOnDead;
+		if (_life.unitData.ShowLifeBar) return;
+		if (healthBar != null) healthBar.SetActive(false);
+	}
+
+
+
+	public void OnDisable()
+	{
+		if (_life == null) return;
+		_life.OnDamaged -= Life_Damaged;
+		_life.OnFractionChanged -= DefenceOnDefenceChanged;
+		_life.OnDying -= DefenceOnDead;
 	}
 
 	public void StartTint(Color tintColor)
 	{
+		Debug.Log("tint started ", this);
 		materialTintColor = new Color();
 		materialTintColor = tintColor;
+		foreach (var r in renderersToTint)
+		{
+			r.material.SetColor(Tint, materialTintColor);
+		}
+	}
+
+	[Button]
+	public void StartTintRed()
+	{
+		Debug.Log("tint started ", this);
+		materialTintColor = Color.red;
 		foreach (var r in renderersToTint)
 		{
 			r.material.SetColor(Tint, materialTintColor);
@@ -71,9 +91,10 @@ public class Life_FX : MonoBehaviour
 		_life.OnFractionChanged -= DefenceOnDefenceChanged;
 		_life.OnDying -= DefenceOnDead;
 	}
-	void UpdateGradient()
+
+	private void UpdateGradient()
 	{
-		var time = (_life == null) ? targetFill : _life.GetFraction();
+		var time = _life == null ? targetFill : _life.GetFraction();
 		if (colorMode == ColorMode.Gradient)
 			fastBarImage.color = barGradient.Evaluate(time);
 	}
@@ -89,35 +110,22 @@ public class Life_FX : MonoBehaviour
 		UpdateBarFill();
 	}
 
-
-
 	private void UpdateBarFill()
 	{
-		if (_life != null)
-		{
-			
-			targetFill = _life.GetFraction();
-			if (HideWhenFull && (targetFill > .9f))
-			{
-				gameObject.SetActive(false);
-			}
-			else
-			{
-				gameObject.SetActive(true);
-			}
-		}
+		if (_life == null) return;
+		if (healthBar == null) return;
 
-		if (slowBarImage != null)
+		if (!_life.unitData.ShowLifeBar) return;
+		targetFill = _life.GetFraction();
+		if (targetFill > .9f)
+			healthBar.SetActive(false);
+		else
 		{
-			slowBarImage.fillAmount = Mathf.Lerp(slowBarImage.fillAmount, targetFill, smoothingFactor);
-		}
-		if (fastBarImage != null)
-		{
-			fastBarImage.fillAmount = targetFill;
+			healthBar.SetActive(true);
+			if (slowBarImage != null) slowBarImage.fillAmount = Mathf.Lerp(slowBarImage.fillAmount, targetFill, smoothingFactor);
+			if (fastBarImage != null) fastBarImage.fillAmount = targetFill;
 		}
 	}
-
-	
 
 	private void Update()
 	{
@@ -126,8 +134,6 @@ public class Life_FX : MonoBehaviour
 		UpdateBarFill();
 		FadeOutTintAlpha();
 	}
-
-	
 
 	private void FadeOutTintAlpha()
 	{
@@ -139,7 +145,7 @@ public class Life_FX : MonoBehaviour
 		}
 	}
 
-	public void UpdateColor(Color targetColor)
+	private void UpdateColor(Color targetColor)
 	{
 		if (colorMode != ColorMode.Single || slowBarImage == null)
 			return;
@@ -147,9 +153,8 @@ public class Life_FX : MonoBehaviour
 		slowBarImage.color = slowBarColor;
 	}
 
-	public void UpdateColor(Gradient targetGradient)
+	private void UpdateColor(Gradient targetGradient)
 	{
-		// If the color is not set to gradient, then return.
 		if (colorMode != ColorMode.Gradient || slowBarImage == null)
 			return;
 

@@ -376,7 +376,6 @@ GameObject:
   - component: {fileID: 4100483857526968888}
   - component: {fileID: 6389367075203665505}
   - component: {fileID: 3437405899325310504}
-  - component: {fileID: 1012614458368500890}
   m_Layer: 12
   m_Name: Life.002
   m_TagString: Untagged
@@ -463,23 +462,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 8296f938af6624daebb576bb18932947, type: 2}
+  unitData: {fileID: 11400000, guid: 03b241913a1b948df8b5ab5d17e40694, type: 2}
   cantDie: 0
   Health: 0
---- !u!114 &1012614458368500890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4005694300556281707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e7ded222ed74784ba6068785257fd28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 03b241913a1b948df8b5ab5d17e40694, type: 2}
 --- !u!1001 &8284423203853163911
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -490,7 +475,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 308669690191741601, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 903736003923260199, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: m_Name
@@ -555,6 +540,10 @@ PrefabInstance:
     - target: {fileID: 4060789362924438240, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: m_SortingOrder
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4555309262593145997, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5096250583384262381, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: SorterPositionOffset.x
@@ -639,7 +628,8 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 8805742904476383078, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
     - {fileID: 5096250583384262381, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 308669690191741601, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2357989592624621868, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       insertIndex: -1
@@ -672,7 +662,7 @@ MonoBehaviour:
   renderBelowSortingOrder: 0
   sortType: 1
   SorterPositionOffset: {x: 13.010773, y: -2.3692322, z: 0}
-  SorterPositionOffset2: {x: -12.290009, y: -15.388115, z: 0}
+  SorterPositionOffset2: {x: -12.290009, y: -15.388107, z: 0}
   renderersToSort:
   - {fileID: 5378139544365309799}
   - {fileID: 1034545238}

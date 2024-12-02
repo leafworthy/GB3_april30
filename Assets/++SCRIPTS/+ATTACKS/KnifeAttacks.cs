@@ -8,7 +8,7 @@ public class KnifeAttacks : Attacks
 	private int knifeCoolDown = 4;
 
 	private AmmoInventory ammo;
-	private UnitStats stats;
+	private Life life;
 	private Player player;
 	private Body body;
 	private Animations anim;
@@ -25,8 +25,8 @@ public class KnifeAttacks : Attacks
 	{
 		anim = GetComponent<Animations>();
 		body = GetComponent<Body>();
-		stats = GetComponent<UnitStats>();
-		player = stats.player;
+		life = GetComponent<Life>();
+		player = life.player;
 		ammo = GetComponent<AmmoInventory>();
 		player.Controller.Attack3.OnPress += PlayerKnifePress;
 		player.Controller.Attack3.OnRelease += PlayerKnifeRelease;
@@ -118,7 +118,7 @@ public class KnifeAttacks : Attacks
 		}
 		OnHit?.Invoke(enemyHit.transform.position);
 		
-		HitTarget(stats.AttackDamage * knifeDamageMultiplier, enemy, .1f);
+		HitTarget(life.AttackDamage * knifeDamageMultiplier, enemy, .1f);
 
 	}
 

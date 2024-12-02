@@ -45,7 +45,7 @@ public class EnemyAI : MonoBehaviour
 		TransitionToState(new IdleState());
 	}
 
-	private void Update()
+	private void FixedUpdate()
 	{
 		if (GlobalManager.IsPaused || Life.IsDead()) return;
 

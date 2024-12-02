@@ -42,11 +42,9 @@ public class IsoSpriteSortingEditor : Editor
         IsoSpriteSorting myScript = (IsoSpriteSorting)target;
         if (GUILayout.Button("Sort Visible Scene"))
         {
-        //myScript.RendererSortingOrder = 0;
-         IsoSpriteSorting.SortScene();
+         IsoSpriteSorting.SortScene(); 
         } if (GUILayout.Button("Get Renderers"))
         {
-        //myScript.RendererSortingOrder = 0;
         myScript.GetRenderers();
         }
     }

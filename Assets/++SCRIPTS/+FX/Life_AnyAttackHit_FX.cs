@@ -10,10 +10,20 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 
 	private void Life_AttackHit(Attack attack, Life hitLife)
 	{
-		if (attack.DestinationLife.DebreeType == DebreeType.none) return;
+		if (attack.DestinationLife.DebrisType == DebrisType.none) return;
 		SprayDebree(attack,hitLife);
+		Debug.Log("hit", this);
 		MakeHitMark(attack,hitLife);
+		DamageTint(attack, hitLife);
 		CreateDamageRisingText(attack);
+	}
+
+	private void DamageTint(Attack attack, Life hitLife)
+	{
+		if(hitLife == null) return;
+		var otherTintHandler = hitLife.gameObject.GetComponentInChildren<Life_FX>(true);
+		if(otherTintHandler == null) return;
+		otherTintHandler.StartTint(attack.color);
 	}
 
 	private void CreateDamageRisingText(Attack attack)
@@ -27,48 +37,64 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 	{
 		if (attack.IsPoison) return;
 		MakeDebree(attack, hitLife);
-		if (hitLife.DebreeType != DebreeType.blood) return;
+		if (hitLife.DebrisType != DebrisType.blood) return;
 		CreateBloodSpray(attack);
 	}
 
 
 	private void MakeHitMark(Attack attack, Life hitLife)
 	{
-		var hitList = FX.Assets.GetBulletHits(attack.DestinationLife.DebreeType);
+		
+		var hitList = FX.Assets.GetBulletHits(attack.DestinationLife.DebrisType);
 
 		if (hitList == null) return;
-		var hit = hitList.GetRandom();
 
-		var heightCorrectionForDepth = new Vector2(0,-1f);
-		var hitMarkObject = Maker.Make(hit, (Vector2) attack.DestinationFloorPoint+ heightCorrectionForDepth);
+		var heightCorrectionForDepth = new Vector2(0, -1f);
+		var hitMarkObject = Maker.Make(hitList.GetRandom(), (Vector2) attack.DestinationFloorPoint + heightCorrectionForDepth);
 		
-		var hitHeightScript = hit.GetComponent<ThingWithHeight>();
-		var randomHeight = Random.Range(-2, 2);
-		hitHeightScript.SetDistanceToGround(attack.DestinationHeight + randomHeight);
-
-		if (!(attack.Direction.x < 0)) return;
-		var localScale = hitMarkObject.transform.localScale;
+		var hitHeightScript = hitMarkObject.GetComponent<ThingWithHeight>();
+		hitHeightScript.SetDistanceToGround(attack.DestinationHeight- heightCorrectionForDepth.y, false);
+		Debug.DrawLine( attack.DestinationFloorPoint, attack.DestinationFloorPoint + new Vector2(0, attack.DestinationHeight), Color.magenta, 5);
+		Debug.Log("hit mark height:  " + attack.DestinationHeight);
+		if (!(attack.Direction.x > 0))
+		{
+			
+			var localScale = hitMarkObject.transform.localScale;
 		hitMarkObject.transform.localScale = new Vector3(-Mathf.Abs(localScale.x), localScale.y, 0);
+		}
 		Maker.Unmake(hitMarkObject, 5);
+		Debug.DrawLine(attack.DestinationFloorPoint, attack.DestinationFloorPoint + heightCorrectionForDepth, Color.black, 1f);
+	
 	}
 
 	private void MakeDebree(Attack attack, Life hitLife)
 	{
-		if (attack.DestinationLife.DebreeType == DebreeType.none) return;
+		if (attack.DestinationLife.DebrisType == DebrisType.none) return;
 		var randAmount = Random.Range(2, 4);
+		var lifeFX = attack.DestinationLife.GetComponent<Life_FX>();
 		for (var j = 0; j < randAmount; j++)
 		{
 			//----->
-			var forwardDebree = Maker.Make(FX.Assets.GetDebree(attack.DestinationLife.DebreeType), attack.DestinationFloorPoint);
+			var forwardDebree = Maker.Make(FX.Assets.GetDebree(attack.DestinationLife.DebrisType), attack.DestinationFloorPoint);
+		
 			forwardDebree.GetComponent<FallToFloor>().Fire(attack);
 			Maker.Unmake(forwardDebree, 3);
 
 			//<-----
 			var flippedAttack = new Attack(hitLife, attack.OriginLife, attack.DamageAmount);
-			var backwardDebree = Maker.Make(FX.Assets.GetDebree(attack.DestinationLife.DebreeType), attack.DestinationFloorPoint);
+			var backwardDebree = Maker.Make(FX.Assets.GetDebree(attack.DestinationLife.DebrisType), attack.DestinationFloorPoint);
 			backwardDebree.GetComponent<FallToFloor>().Fire(flippedAttack);
 			Maker.Unmake(backwardDebree, 3);
+			if (lifeFX != null)
+			{
+				Debug.Log("tint");
+				var sprite = forwardDebree.GetComponentInChildren<SpriteRenderer>();
+				if (sprite != null) sprite.color = lifeFX.DebreeTint;
+				sprite = backwardDebree.GetComponentInChildren<SpriteRenderer>();
+				if (sprite != null) sprite.color = lifeFX.DebreeTint;
+			}
 		}
+		
 	}
 
 	private void CreateBloodSpray(Attack attack)

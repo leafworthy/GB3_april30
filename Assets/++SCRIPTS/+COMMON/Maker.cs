@@ -15,6 +15,12 @@ public class Maker : MonoBehaviour
 
 	private void Awake()
 	{
+		if(I != null)
+		{
+			Debug.Log("two managers");
+			Destroy(gameObject);
+			return;
+		}
 		I = this;
 		if (containerContainer == null) containerContainer = new GameObject("Object Pools");
 	}

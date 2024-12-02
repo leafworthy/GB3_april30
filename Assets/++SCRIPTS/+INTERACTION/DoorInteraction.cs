@@ -62,6 +62,7 @@ public class DoorInteraction : TimedInteraction
 		{
 			//start normal loading bar
 			base.InteractableOnActionPress(player);
+			SFX.sounds.door_repair_sound.PlayRandomAt(transform.position);
 			return;
 		}
 
@@ -73,6 +74,14 @@ public class DoorInteraction : TimedInteraction
 		if (isOpen == open) return;
 		isOpen = open;
 		DoorAnimator.SetBool(IsOpen, open);
+		if (isOpen)
+		{
+			SFX.sounds.door_open_sound.PlayRandomAt(transform.position);
+		}
+		else
+		{
+			SFX.sounds.door_close_sound.PlayRandomAt(transform.position);
+		}
 		UpdateGraph();
 	}
 
@@ -102,7 +111,10 @@ public class DoorInteraction : TimedInteraction
 
 		var attractor = GetComponentInChildren<ZombieAttractor>();
 		if (attractor != null) attractor.gameObject.SetActive(false);
-
+		
+		 SFX.sounds.door_break_sound.PlayRandomAt(life1.transform.position);
+		 SFX.sounds.door_break_sound.PlayRandomAt(life1.transform.position);
+		 Debug.Log("here");
 		SetCollidersEnabled(false);
 		OnBreak?.Invoke(player);
 	}

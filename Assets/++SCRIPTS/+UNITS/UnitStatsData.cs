@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "My Assets/UnitStats")]
 public class UnitStatsData : ScriptableObject
 {
-	public DebreeType DebreeType;
+	public DebrisType debrisType;
 	
 	public bool isObstacle;
 
@@ -19,4 +19,6 @@ public class UnitStatsData : ScriptableObject
 	public float JumpSpeed;
 
 	public float AggroRange;
+
+	public bool ShowLifeBar = false;
 }

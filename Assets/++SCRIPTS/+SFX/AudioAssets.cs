@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -53,19 +54,45 @@ public class AudioAssets : ScriptableObject
 	public List<AudioClip> charSelect_move_sounds= new();
 	public List<AudioClip> charSelect_select_sounds = new();
 	public List<AudioClip> charSelect_deselect_sounds = new();
-	public List<AudioClip> bloodSounds;
+	public List<AudioClip> bloodSounds = new();
 
-	public List<AudioClip> GetHitSounds(int debree)
+	[Header("Car Sounds")] public List<AudioClip> car_start_sound = new();
+	
+	[Header("Interaction Sounds")] public List<AudioClip> siphon_gas_sound = new();
+	public List<AudioClip> chest_open_sound = new();
+	public List<AudioClip> fridge_open_sound = new();
+	public List<AudioClip> trash_open_sound = new();
+	public List<AudioClip> drawer_open_sound = new();
+	public List<AudioClip> door_open_sound = new();
+	public List<AudioClip> door_close_sound = new();
+	public List<AudioClip> door_repair_sound = new();
+	public List<AudioClip> door_break_sound = new();
+	public List<AudioClip> light_switch_sound = new();
+
+
+	public List<AudioClip> knife_hit_wall_sound = new();
+	public List<AudioClip> knife_hit_blood_sound = new();
+	
+	public List<AudioClip> bullet_hit_blood_sounds = new();
+	public List<AudioClip> bullet_hit_glass_sounds = new();
+	public List<AudioClip> bullet_hit_metal_sounds = new();
+	public List<AudioClip> GetBulletHitSounds(DebrisType debris)
 	{
-		switch (debree)
+		switch (debris)
 		{
-			case 0:
-				return bloodSounds;
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-				return null;
+			case DebrisType.blood:
+				return bullet_hit_blood_sounds;
+			case DebrisType.glass:
+				return bullet_hit_glass_sounds;
+			case DebrisType.wood:
+			case DebrisType.metal:
+				return bullet_hit_metal_sounds;
+			case DebrisType.wall:
+				return bean_gun_miss_sounds;
+			case DebrisType.none:
+				break;
+			default:
+				throw new ArgumentOutOfRangeException(nameof(debris), debris, null);
 		}
 
 		return null;

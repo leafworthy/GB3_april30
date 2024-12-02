@@ -12,8 +12,8 @@ public class BatAttacks : Attacks
 	private const string batAttackVerbName = "bat attacking";
 	private bool isCharging;
 
+	private Life life;
 	private AmmoInventory ammo;
-	private UnitStats stats;
 
 	private int batNormalCooldown = 10;
 	private int attackKillSpecialAmount = 30;
@@ -33,8 +33,8 @@ public class BatAttacks : Attacks
 	{
 		body = GetComponent<Body>();
 		anim = GetComponent<Animations>();
-		stats = GetComponent<UnitStats>();
-		owner = stats.player;
+		life = GetComponent<Life>();
+		owner = life.player;
 		jumps = GetComponent<JumpAbility>();
 		ammo = GetComponent<AmmoInventory>();
 
@@ -86,8 +86,8 @@ public class BatAttacks : Attacks
 	private float GetHitRange(int attackType)
 	{
 		if (attackType == 5)
-			return stats.AttackRange * 2;
-		return stats.AttackRange;
+			return life.AttackRange * 2;
+		return life.AttackRange;
 	}
 
 	private float GetAttackDamage(int attackType)

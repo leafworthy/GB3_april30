@@ -34,7 +34,7 @@ public class UnitStats : MonoBehaviour
 
     public bool IsObstacle => unitData.isObstacle;
 
-    public DebreeType DebreeType => unitData.DebreeType;
+    public DebrisType DebrisType => unitData.debrisType;
     public float JumpSpeed => unitData.JumpSpeed;
     public float AggroRange => unitData.AggroRange;
 

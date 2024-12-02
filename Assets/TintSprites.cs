@@ -33,7 +33,7 @@ public class TintSprites : MonoBehaviour
 			if (spriteRenderer.CompareTag("dontcolor"))
 			{
 				spriteRenderer.color = Color.white;
-				return;
+				continue;
 			}
 			toTint.Add(spriteRenderer);
 		}

@@ -19,7 +19,6 @@ public class MoveController : MonoBehaviour
 	private Life life;
 	private Body body;
 	private MoveAbility mover;
-	private UnitStats stats;
 	private Player owner;
 	private float damagePushMultiplier = 1;
 	private float moveSpeed;
@@ -30,32 +29,30 @@ public class MoveController : MonoBehaviour
 	private void Start()
 	{
 		anim = GetComponent<Animations>();
-		stats = GetComponent<UnitStats>();
+		life = GetComponent<Life>();
 		mover = GetComponent<MoveAbility>();
 		life = GetComponent<Life>();
 		body = GetComponent<Body>();
-		owner = stats.player;
+		owner = life.player;
 
 		life.OnDamaged += Life_OnDamaged;
 		life.OnDead += Life_OnDead;
-		if (stats.IsPlayer)
+		if (life.IsPlayer)
 		{
-			owner = stats.player;
+			owner = life.player;
 			var _controller = owner.Controller;
 			_controller.MoveAxis.OnChange += Player_MoveInDirection;
 			_controller.MoveAxis.OnInactive += Player_StopMoving;
-			Debug.Log("here");
 		}
 		else
 		{
-			//Debug.Log("here");
 			ai = GetComponent<EnemyAI>();
 			ai.OnMoveInDirection += AI_MoveInDirection;
 			ai.OnStopMoving += AI_StopMoving;
 		}
 
 		canMove = true;
-		moveSpeed = stats.MoveSpeed;
+		moveSpeed = life.MoveSpeed;
 
 		anim.animEvents.OnStep += Anim_OnStep;
 		anim.animEvents.OnUseLegs += Anim_UseLegs;
@@ -68,7 +65,8 @@ public class MoveController : MonoBehaviour
 
 	private void OnDisable()
 	{
-		if (stats.IsPlayer)
+		if(life == null) return;
+		if (life.IsPlayer)
 		{
 			owner.Controller.MoveAxis.OnChange -= Player_MoveInDirection;
 			owner.Controller.MoveAxis.OnInactive -= Player_StopMoving;
@@ -79,6 +77,14 @@ public class MoveController : MonoBehaviour
 			ai.OnMoveInDirection -= AI_MoveInDirection;
 			ai.OnStopMoving -= AI_StopMoving;
 		}
+		life.OnDamaged -= Life_OnDamaged;
+		life.OnDead -= Life_OnDead;
+		anim.animEvents.OnStep -= Anim_OnStep;
+		anim.animEvents.OnUseLegs -= Anim_UseLegs;
+		anim.animEvents.OnStopUsingLegs -= Anim_StopUsingLegs;
+		anim.animEvents.OnDashStop -= Anim_DashStop;
+		anim.animEvents.OnRecovered -= Anim_Recovered;
+		 
 	
 	}
 
@@ -155,6 +161,7 @@ public class MoveController : MonoBehaviour
 		if (body.legs.isActive)
 		{
 			StopMoving();
+			Debug.Log("legs active");
 			return;
 		}
 
@@ -169,7 +176,7 @@ public class MoveController : MonoBehaviour
 
 	private void StartMoving(Vector2 direction)
 	{
-		Debug.Log("start moving");
+		
 		moveDir = direction;
 		body.BottomFaceDirection(direction.x > 0);
 		mover.MoveInDirection(direction, moveSpeed);
@@ -179,7 +186,6 @@ public class MoveController : MonoBehaviour
 	private void StopMoving()
 	{
 		if (GlobalManager.IsPaused) return;
-		Debug.Log("STOP MOVING CONROLLER");
 		anim.SetBool(Animations.IsMoving, false);
 		mover.StopMoving();
 	}
@@ -188,7 +194,6 @@ public class MoveController : MonoBehaviour
 
 	private void Player_StopMoving(IControlAxis controlAxis)
 	{
-		
 		StopMoving();
 	}
 

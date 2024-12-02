@@ -23,7 +23,7 @@ public class Attack
 		if (defender != null)
 		{
 			DestinationFloorPoint = defender.transform.position;
-			DestinationHeight = defender.AttackHeight;
+			DestinationHeight = attacker.AttackHeight;
 		}
 
 		DamageAmount = damageAmount;

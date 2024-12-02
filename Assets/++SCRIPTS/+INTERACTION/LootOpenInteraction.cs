@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class LootOpenInteraction : PlayerInteractable
@@ -7,7 +8,15 @@ public class LootOpenInteraction : PlayerInteractable
 	public string MessageToDisplay;
 	private HideRevealObjects hideRevealObjects;
 	public Vector3 dropPosition;
+	public LootContainerType lootContainerType;
 
+	public enum LootContainerType
+	{
+		chest,
+		drawer,
+		trash,
+		fridge
+	}
 	protected void Start()
 	{
 		hideRevealObjects = GetComponentInChildren<HideRevealObjects>();
@@ -17,27 +26,59 @@ public class LootOpenInteraction : PlayerInteractable
 		OnPlayerExits += interactable_PlayerExits;
 	}
 
-	protected override bool canInteract(Player player) => howMuchLoot > 0;
 
-	protected override bool canEnter(Player player) => howMuchLoot > 0;
+	protected override bool canInteract(Player player)
+	{
+		if (!base.canInteract(player)) return false;
+
+		return howMuchLoot > 0;
+	}
+
+	protected override bool canEnter(Player player) {
+		if(!base.canEnter(player)) return false;
+		return howMuchLoot > 0;
+	}
 
 	private void interactable_PlayerExits(Player player)
 	{
-		player.StopSaying();
+		//player.StopSaying();
 	}
 
 	private void interactable_PlayerEnters(Player player)
 	{
-		player.Say(MessageToDisplay, 2);
+		//player.Say(MessageToDisplay, 2);
 	}
 
 	private void interactable_OnInteract(Player player)
 	{
+		PlayLootOpenSound();
 		hideRevealObjects.Set(1);
 		LevelDrops.DropLoot(dropPosition + transform.position, lootType);
 		howMuchLoot--;
 		if (howMuchLoot >= 0) return;
 		hideRevealObjects.Set(2);
+		FinishInteraction(player);
 		player.RemoveInteractable(this);
+	}
+
+	private void PlayLootOpenSound()
+	{
+		switch (lootContainerType)
+		{
+			case LootContainerType.chest:
+				SFX.sounds.chest_open_sound.PlayRandomAt(transform.position);
+				break;
+			case LootContainerType.drawer:
+				SFX.sounds.drawer_open_sound.PlayRandomAt(transform.position);
+				break;
+			case LootContainerType.trash:
+				SFX.sounds.trash_open_sound.PlayRandomAt(transform.position);
+				break;
+			case LootContainerType.fridge:
+				SFX.sounds.fridge_open_sound.PlayRandomAt(transform.position);
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
 	}
 }

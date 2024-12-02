@@ -63,11 +63,8 @@ public class TimedInteraction : PlayerInteractable
 
 	private void Stop()
 	{
-		if (currentPlayer != null)
-		{
-			currentPlayer.StopSaying();
-			currentPlayer = null;
-		}
+		currentPlayer = null;
+		
 
 		loadingBar.SetActive(false);
 		isActive = false;

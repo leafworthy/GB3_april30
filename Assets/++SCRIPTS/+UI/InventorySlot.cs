@@ -14,18 +14,22 @@ public class InventorySlot : MonoBehaviour
 
 	public void AddItemToSlot(Item item)
 	{
-		if (isFull) return;
+		
 		if (currentItem == null)
 		{
 			currentItem = item;
 			
-		}else if (currentItem.itemType == item.itemType)
-			currentItem.itemAmount += item.itemAmount;
+		}
 
 		itemGraphic.sprite = item.itemGraphic;
 		itemGraphic.enabled = true;
-		isFull = true;
 		slotGraphic.sprite = fullGraphic;
+		if (item.itemType == Item.ItemType.key)
+		{
+
+			itemAmountText.text = "";
+			return;
+		}
 		itemAmountText.text = currentItem.itemAmount.ToString();
 	}
 

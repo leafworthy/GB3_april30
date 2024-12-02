@@ -32,6 +32,7 @@ public class LightSwitchInteraction : PlayerInteractable
     {
         if (isBroken) return;
         SetLightActive(!isOn);
+         SFX.sounds.light_switch_sound.PlayRandomAt(transform.position);
     }
 
 

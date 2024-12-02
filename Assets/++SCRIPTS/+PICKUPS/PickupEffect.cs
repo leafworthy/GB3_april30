@@ -13,7 +13,7 @@ public class PickupEffect
 	{
 		effectDuration = _effectDuration;
 	}
-	public virtual void StartEffect(UnitStats stats)
+	public virtual void StartEffect(Life life)
 	{
 		timeLeft = effectDuration;
 		isRunning = true;

@@ -20,6 +20,7 @@ public class LevelGameScene : GameScene
 	public static event Action OnStart;
 	public static event Action<Player> OnPlayerSpawned;
 
+
 	protected void Start()
 	{
 		gameObject.SetActive(true);

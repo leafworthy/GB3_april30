@@ -2,12 +2,12 @@ public class HealthPickupEffect : PickupEffect
 {
 	private int amount;
 
-	public override void StartEffect(UnitStats stats)
+	public override void StartEffect(Life life)
 	{
 		effectDuration = 0;
-		var defence = stats.GetComponent<Life>();
+		var defence = life.GetComponent<Life>();
 		defence.AddHealth(amount);
-		base.StartEffect(stats);
+		base.StartEffect(life);
 	}
 
 

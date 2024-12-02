@@ -78,7 +78,6 @@ public class IsoSpriteSortingManager : MonoBehaviour
             if (CalculateBoundsIntersection(newSprite, otherSprite))
             {
                 int compareResult = IsoSpriteSorting.CompareIsoSorters(newSprite, otherSprite);
-                //Debug.Log("Compared: " + newSprite.gameObject.name + " other: " + otherSprite.gameObject.name + " result: " + compareResult);
                 if (compareResult == -1)
                 {
                     otherSprite.staticDependencies.Add(newSprite);
@@ -128,16 +127,14 @@ public class IsoSpriteSortingManager : MonoBehaviour
         spriteToRemove.staticDependencies.Clear();
     }
 
-    void Update()
+    void Update() 
     {
-        IsoSpriteSorting.SortScene();
+        IsoSpriteSorting.UpdateSorters();
         
-        return;
-        if(Application.isPlaying)UpdateSorting();
-        else IsoSpriteSorting.SortScene();
+        
     }
 
-    private static readonly List<IsoSpriteSorting> sortedSprites = new List<IsoSpriteSorting>(64);
+    private static readonly List<IsoSpriteSorting> sortedSprites = new List<IsoSpriteSorting>(256);
     public static void UpdateSorting()
     {
         FilterListByVisibility(staticSpriteList, currentlyVisibleStaticSpriteList);

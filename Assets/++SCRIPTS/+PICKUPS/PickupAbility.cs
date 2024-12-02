@@ -25,16 +25,16 @@ public class PickupAbility : MonoBehaviour
 
 	public void PickUp(Pickup pickup)
 	{
-		var stats = GetComponent<UnitStats>();
-		if (stats is null) return;
-		OnPickup?.Invoke(pickup, stats.player);
+		var life = GetComponent<Life>();
+		if (life is null) return;
+		OnPickup?.Invoke(pickup, life.player);
 
 		foreach (var pickupEffect in pickup.GetEffects())
 		{
 			var alreadyHaveIt = currentEffects.FirstOrDefault(t => t == pickupEffect);
 			if (alreadyHaveIt != null) continue;
 
-			pickupEffect.StartEffect(stats);
+			pickupEffect.StartEffect(life);
 			pickupEffect.OnDone += EffectDone;
 			currentEffects.Add(pickupEffect);
 		}

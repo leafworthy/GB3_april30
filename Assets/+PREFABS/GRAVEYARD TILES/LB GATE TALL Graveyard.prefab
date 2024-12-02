@@ -12,6 +12,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: LB GATE TALL Graveyard
       objectReference: {fileID: 0}
+    - target: {fileID: 1821221124844362387, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
+      propertyPath: indicatorOffset.x
+      value: -5.314209
+      objectReference: {fileID: 0}
+    - target: {fileID: 1821221124844362387, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
+      propertyPath: indicatorOffset.y
+      value: 16.327248
+      objectReference: {fileID: 0}
+    - target: {fileID: 1821221124844362387, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
+      propertyPath: interactionPoint.x
+      value: -5.6506042
+      objectReference: {fileID: 0}
+    - target: {fileID: 1821221124844362387, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
+      propertyPath: interactionPoint.y
+      value: -1.4052887
+      objectReference: {fileID: 0}
     - target: {fileID: 1936577562664772795, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
       propertyPath: closedSorting
       value: 
@@ -147,9 +163,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1280572300847603772, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6219418244392398922}
     - targetCorrespondingSourceObject: {fileID: 6484305129628690056, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7067597522902061360}
@@ -186,21 +199,3 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 1646206617965166784}
   renderAboveAll: 0
---- !u!1 &6836992702245832302 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1280572300847603772, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
-  m_PrefabInstance: {fileID: 5702789794744297042}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6219418244392398922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6836992702245832302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d4ed621a62f2487ea97c62c0a909c05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  indicatorOffset: {x: -1.3869324, y: 17.652054, z: 0}

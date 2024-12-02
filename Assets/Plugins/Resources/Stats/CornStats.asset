@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d25c02a300f49909d760625ae805c64, type: 3}
   m_Name: CornStats
   m_EditorClassIdentifier: 
-  DebreeType: 0
+  debrisType: 0
   isObstacle: 0
   AttackHeight: 5
-  AttackDamage: 100
+  AttackDamage: 20
   AttackRange: 30
   AttackRate: 30
   HealthMax: 100
@@ -23,3 +23,4 @@ MonoBehaviour:
   DashSpeed: 0
   JumpSpeed: 2
   AggroRange: 80
+  ShowLifeBar: 1

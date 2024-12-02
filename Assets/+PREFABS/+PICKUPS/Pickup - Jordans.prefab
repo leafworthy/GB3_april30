@@ -26,11 +26,11 @@ Transform:
   m_GameObject: {fileID: 5594544996278753977}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.163, z: 0}
-  m_LocalScale: {x: 0.19992827, y: 0.14432324, z: 0.19992831}
+  m_LocalPosition: {x: 0, y: -0.013609752, z: 0}
+  m_LocalScale: {x: 3.7699475, y: 2.7214315, z: 0.25132987}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6729575578952286188}
+  m_Father: {fileID: 6386402070098967539}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2027867907896455967
 SpriteRenderer:
@@ -49,6 +49,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -115,8 +118,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.204, z: 0}
   m_LocalScale: {x: 1.2571001, y: 1.2571001, z: 1.2571}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2968530407423452843}
+  m_Children: []
   m_Father: {fileID: 4873985809539722515}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6729575578952286189
@@ -136,10 +138,13 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 89d91152eb4854eeaa6ae0ddc3c1cb19, type: 2}
+  - {fileID: 2100000, guid: 82d7cfd889da34bd7bfb5cd2cdad779a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -173,7 +178,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &6729575578952286178
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -187,6 +192,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -273,6 +279,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2968530407423452843}
   - {fileID: 4873985809539722515}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -284,6 +291,7 @@ CircleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7758255762084250802}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -307,9 +315,9 @@ CircleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 2.35}
-  serializedVersion: 2
   m_Radius: 7
 --- !u!114 &2485499202358430871
 MonoBehaviour:
@@ -337,12 +345,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMovable: 0
+  isMovable: 1
   renderBelowAll: 0
-  sortingBounds: {fileID: 0}
+  sortingBounds: {fileID: 1957353294348839587}
   renderBelowSortingOrder: 0
   sortType: 0
-  SorterPositionOffset: {x: -0.22986376, y: -6.2418537, z: 0}
+  SorterPositionOffset: {x: -0.2298609, y: -2.9106004, z: 0}
   SorterPositionOffset2: {x: 0, y: 0, z: 0}
   renderersToSort:
   - {fileID: 6729575578952286189}
@@ -408,6 +416,7 @@ MonoBehaviour:
   slowBarImage: {fileID: 0}
   fastBarImage: {fileID: 0}
   HideWhenFull: 0
+  DebreeTint: {r: 1, g: 1, b: 1, a: 1}
   colorMode: 0
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
   barGradient:
@@ -440,3 +449,4 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  healthBar: {fileID: 0}

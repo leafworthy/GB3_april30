@@ -9,7 +9,7 @@ public class NadeAbility_FX : MonoBehaviour
 	private List<GameObject> _trajectoryMarkersContainer = new List<GameObject>();
 	private const int _numberOfMarkers = 10;
 	private const float _throwHeight = 8f;
-	private void Start()
+	private void OnEnable()
 	{
 		nade = GetComponent<NadeAbility>();
 		nade.OnThrow += Nade_OnThrow;

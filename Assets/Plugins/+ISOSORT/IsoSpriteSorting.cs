@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
@@ -72,6 +73,10 @@ public class IsoSpriteSorting : MonoBehaviour
 			return;
 		}
 
+		if (renderersToSort[0] == null)
+		{
+			GetRenderers();
+		}
 		cachedBounds = new Bounds2D(renderersToSort[0].bounds);
 	}
 
@@ -158,16 +163,14 @@ public class IsoSpriteSorting : MonoBehaviour
 		
 		for (var i = 0; i < isoSorters.Length; i++) isoSorters[i].Unregister();
 
-		if (!Application.isPlaying)
-		{
-			// UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
-		}
 	}
 
 	public static IsoSpriteSorting[] UpdateSorters()
 	{
-		var isoSorters = FindObjectsOfType(typeof(IsoSpriteSorting)) as IsoSpriteSorting[];
-		for (var i = 0; i < isoSorters.Length; i++) isoSorters[i].Setup();
+		var isoSorters = FindObjectsByType<IsoSpriteSorting>( FindObjectsInactive.Include, FindObjectsSortMode.None); //changed this
+		foreach (var t1 in isoSorters)
+			t1.Setup();
+
 		IsoSpriteSortingManager.SetVisible(isoSorters.ToList());
 		IsoSpriteSortingManager.UpdateSorting();
 		return isoSorters;

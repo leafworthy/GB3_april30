@@ -8,13 +8,14 @@ public class FallToFloor : ThingWithHeight
 	protected MoveAbility mover;
 	protected float rotationRate = 100;
 	private float RotationRate;
-	private float PushSpeed = 25;
-	private float bounceSpeed = 1;
-	private float jumpSpeed = 1;
+	private float PushSpeed = 40;
+	private float bounceSpeed = .25f;
+	private float jumpSpeed = .5f;
 	private bool _freezeRotation;
 
-	public void Fire(Vector3 shootAngle, Color color, float height, bool freezeRotation = false)
+	public void FireForDrops(Vector3 shootAngle, Color color, float height, bool freezeRotation = false)
 	{
+		Debug.Log("fire for drops");
 		RotationRate = Random.Range(0, rotationRate);
 		jumper = GetComponent<JumpAbility>();
 		jumper.OnBounce += Jumper_OnBounce;
@@ -44,10 +45,14 @@ public class FallToFloor : ThingWithHeight
 	{
 		RotationRate = Random.Range(0, rotationRate);
 		jumper = GetComponent<JumpAbility>();
+		jumper.OnBounce += Jumper_OnBounce;
+		jumper.OnResting += Jumper_OnResting;
 		mover = GetComponent<MoveAbility>();
-		jumper.Jump(attack.OriginHeight, Random.Range(0, bounceSpeed));
+		var verticalSpeed = Random.Range(0, bounceSpeed);
+		Debug.Log("verticalSpeed " + verticalSpeed);
+		jumper.Jump(attack.OriginHeight, 0);
 		mover.SetDragging(false);
-		mover.Push(isFlipped ? attack.FlippedDirection : attack.Direction.normalized + new Vector2(Random.Range(-.5f, .5f), Random.Range(-.5f, 5f)),
+		mover.Push(isFlipped ? attack.FlippedDirection : attack.Direction.normalized + new Vector2(Random.Range(-.4f, .4f), Random.Range(-.4f, .4f)),
 			Random.Range(0, PushSpeed));
 	}
 
