@@ -10,6 +10,7 @@ public interface IEnemyState
 
 public class EnemyAI : MonoBehaviour
 {
+	public bool stopMovingOnAttack = true;
 	private IEnemyState currentState;
 	private Vector2 wanderPoint;
 
@@ -41,7 +42,7 @@ public class EnemyAI : MonoBehaviour
 
 	private void Pathmaker_Frozen()
 	{
-		Debug.Log("Pathmaker frozen");
+		//Debug.Log("Pathmaker frozen");
 		TransitionToState(new IdleState());
 	}
 
@@ -69,13 +70,14 @@ public class EnemyAI : MonoBehaviour
 
 	public void StopMoving()
 	{
+		if(!stopMovingOnAttack) return;
 		OnStopMoving?.Invoke();
 		Pathmaker.StopPathing();
 	}
 
 	public void Attack(Life targetsCurrentTarget)
 	{
-		Debug.Log("attacking" + targetsCurrentTarget, targetsCurrentTarget);
+		
 		Debug.DrawLine( transform.position, targetsCurrentTarget.transform.position, Color.red, 1);
 		StopMoving();
 		OnAttack?.Invoke(targetsCurrentTarget);

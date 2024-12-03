@@ -31,7 +31,6 @@ public class AnimationHierarchyEditor : EditorWindow {
 	void OnSelectionChange() {
 		if (Selection.objects.Length > 1 )
 		{
-			Debug.Log ("Length? " + Selection.objects.Length);
 			animationClips.Clear();
 			foreach ( Object o in Selection.objects )
 			{

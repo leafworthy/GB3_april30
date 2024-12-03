@@ -58,7 +58,6 @@ public class CharacterSelectButtons : MonoBehaviour
 
 	private void OnSelect(NewControlButton obj)
 	{
-		Debug.Log("select");
 		if (SelectButtonIsPressedFromJoining()) return;
 		if (hasSelected)
 		{
@@ -72,7 +71,6 @@ public class CharacterSelectButtons : MonoBehaviour
 	private bool SelectButtonIsPressedFromJoining()
 	{
 		if (hasJoined) return false;
-		Debug.Log("Joining");
 		hasJoined = true;
 		return true;
 
@@ -96,7 +94,6 @@ public class CharacterSelectButtons : MonoBehaviour
 		hasJoined = true;
 		currentlySelectedButton.Unhighlight();
 		currentlySelectedButton = currentlySelectedButton.buttonToRight;
-		Debug.Log(currentlySelectedButton.character.ToString());
 		currentlySelectedButton.Highlight();
 	}
 

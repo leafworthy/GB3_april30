@@ -52,7 +52,6 @@ public class SceneLoader : Singleton<SceneLoader>
 
 	private void StartFadingIn()
 	{
-		Debug.Log("fading in");
 		loadingScreen.SetActive(true);
 		faderAnimator.SetTrigger(FadeInTrigger);
 	}
@@ -60,7 +59,6 @@ public class SceneLoader : Singleton<SceneLoader>
 	public void SetDestinationScene(GameScene.Type newScene)
 	{
 		DestinationScene = newScene;
-		Debug.Log("destination set: " + DestinationScene);
 		StartFadingIn();
 	}
 

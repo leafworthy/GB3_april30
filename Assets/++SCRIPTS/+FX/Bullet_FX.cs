@@ -34,8 +34,6 @@ public class Bullet_FX : MonoBehaviour
 		sorting.SorterPositionOffset2 = attack.DestinationFloorPoint - (Vector2)transform.position;
 		sorting.Setup();
 		IsoSpriteSortingManager.UpdateSorting();
-		Debug.Log("bullet fx sort");
-		Debug.Log("sort complete");
 	}
 
 	private void FixedUpdate()

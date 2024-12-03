@@ -20,6 +20,6 @@ public class EnemyThoughts : MonoBehaviour
 
 	private void OnDisable()
 	{
-		Debug.Log(allThoughts);
+		
 	}
 }

@@ -40,7 +40,6 @@ public class PlayerSayer : MonoBehaviour
 	public void StopSaying()
 	{
 		if (!isSaying) return;
-		Debug.Log("stopping saying");
 		isSaying = false;
 		isHeld = false;
 		sayTime = 0;

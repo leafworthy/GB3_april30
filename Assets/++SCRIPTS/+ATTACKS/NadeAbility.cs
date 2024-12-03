@@ -1,8 +1,11 @@
 using System;
 using UnityEngine;
 
-public class NadeAbility : MonoBehaviour
+public class NadeAbility : IHaveInspectorColor
 {
+	public override Color GetBackgroundColor() => Colors.Green;
+
+	public override string GetIconPath() => "Assets/Nade_Icon.png";
 	private AnimationEvents animationEvents;
 	private Vector2 startPoint;
 	private Vector2 endPoint;

@@ -33,7 +33,7 @@ public class JumpAbility : MonoBehaviour
 
 	public void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
 	{
-		Debug.Log("starting height " + startingHeight);
+		
 		minBounceVelocity = minBounce;
 		IsJumping = true;
 		isResting = false;
@@ -65,7 +65,7 @@ public class JumpAbility : MonoBehaviour
 
 	public void FallFromHeight(float fallHeight)
 	{
-		Debug.Log("fall from height" + fallHeight);
+		
 		Init();
 	
 	
@@ -91,7 +91,6 @@ public class JumpAbility : MonoBehaviour
 		if (!isActive) return;
 		if (!IsJumping) return;
 
-		Debug.Log(gameObject.name + " is jumping", this);
 		Fly();
 		
 	}
@@ -111,7 +110,6 @@ public class JumpAbility : MonoBehaviour
 		{
 			thing.canLand = verticalVelocity < 0;
 			thing.SetDistanceToGround(thing.GetDistanceToGround() + verticalVelocity);
-			Debug.Log("set distance to ground  " + thing.GetDistanceToGround());
 		}
 	}
 

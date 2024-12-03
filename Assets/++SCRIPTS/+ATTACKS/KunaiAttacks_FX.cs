@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Brock_FX : MonoBehaviour
+public class KunaiAttacks_FX : MonoBehaviour
 {
 	private KunaiAttacks kunaiAttacks;
 

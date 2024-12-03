@@ -492,12 +492,13 @@ GameObject:
   - component: {fileID: -5828532643828389803}
   - component: {fileID: 5572898776388989025}
   - component: {fileID: 8075809293606952483}
+  - component: {fileID: 2381929228146834292}
   - component: {fileID: 2279997984956709696}
-  - component: {fileID: 4040534153244162535}
   - component: {fileID: 7033340165896196128}
   - component: {fileID: 2290509523864868912}
   - component: {fileID: 7588817595896598098}
   - component: {fileID: 5892735826027873934}
+  - component: {fileID: 4040534153244162535}
   - component: {fileID: 4284111403091859338}
   - component: {fileID: 5777560193688468641}
   - component: {fileID: 3508854899574188244}
@@ -514,7 +515,6 @@ GameObject:
   - component: {fileID: 3647936817641516148}
   - component: {fileID: 8019141755725131464}
   - component: {fileID: 2569835813408618068}
-  - component: {fileID: 2381929228146834292}
   m_Layer: 6
   m_Name: +GB - CHARACTER V2
   m_TagString: Player
@@ -653,7 +653,56 @@ MonoBehaviour:
   player: {fileID: 0}
   unitData: {fileID: 11400000, guid: 0439122f86d6249dd8673a13e7be1639, type: 2}
   cantDie: 0
+  isInvincible: 0
   Health: 100
+--- !u!114 &2381929228146834292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slowBarImage: {fileID: 0}
+  fastBarImage: {fileID: 0}
+  DebreeTint: {r: 1, g: 1, b: 1, a: 1}
+  colorMode: 0
+  slowBarColor: {r: 1, g: 1, b: 1, a: 1}
+  barGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  healthBar: {fileID: 0}
 --- !u!114 &2279997984956709696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -677,62 +726,18 @@ MonoBehaviour:
   - {fileID: 691157768838916811}
   - {fileID: 5712099988744022249}
   AimCenter: {fileID: 5712099988744022249}
+  AirThrowPoint: {fileID: 7693368971492032853}
+  ThrowPoint: {fileID: 7693368971492032853}
+  TopScaleObject: {fileID: 3833892834760878394}
+  BottomScaleObject: {fileID: 4273369171182288358}
   arms:
     currentActivity: 
     isActive: 0
   legs:
     currentActivity: 
     isActive: 0
-  BottomScaleObject: {fileID: 4273369171182288358}
-  AirThrowPoint: {fileID: 7693368971492032853}
-  ThrowPoint: {fileID: 7693368971492032853}
   BottomIsFacingRight: 1
   TopIsFacingRight: 1
-  TopScaleObject: {fileID: 3833892834760878394}
---- !u!114 &4040534153244162535
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65cfceb040584071a57fa4f00693909c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  primaryAmmo:
-    type: 0
-    reserveAmmo: 300
-    clipSize: 30
-    AmmoInClip: 20
-    maxReserveAmmo: 300
-    reloads: 1
-    unlimited: 0
-  secondaryAmmo:
-    type: 1
-    reserveAmmo: 6
-    clipSize: 0
-    AmmoInClip: 0
-    maxReserveAmmo: 6
-    reloads: 0
-    unlimited: 0
-  tertiaryAmmo:
-    type: 4
-    reserveAmmo: 100
-    clipSize: 0
-    AmmoInClip: 0
-    maxReserveAmmo: 100
-    reloads: 0
-    unlimited: 0
-  unlimitedAmmo:
-    type: 7
-    reserveAmmo: 9999
-    clipSize: 6
-    AmmoInClip: 0
-    maxReserveAmmo: 9999
-    reloads: 1
-    unlimited: 1
 --- !u!114 &7033340165896196128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -782,6 +787,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad635b0b5e546af9d9b4d8bf010af7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4040534153244162535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cfceb040584071a57fa4f00693909c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  primaryAmmo:
+    type: 0
+    reserveAmmo: 300
+    clipSize: 30
+    AmmoInClip: 20
+    maxReserveAmmo: 300
+    reloads: 1
+    unlimited: 0
+  secondaryAmmo:
+    type: 1
+    reserveAmmo: 6
+    clipSize: 0
+    AmmoInClip: 0
+    maxReserveAmmo: 6
+    reloads: 0
+    unlimited: 0
+  tertiaryAmmo:
+    type: 4
+    reserveAmmo: 100
+    clipSize: 0
+    AmmoInClip: 0
+    maxReserveAmmo: 100
+    reloads: 0
+    unlimited: 0
+  unlimitedAmmo:
+    type: 7
+    reserveAmmo: 9999
+    clipSize: 6
+    AmmoInClip: 0
+    maxReserveAmmo: 9999
+    reloads: 1
+    unlimited: 1
 --- !u!114 &4284111403091859338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -999,55 +1048,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02515278ca59420cb04ac10719e4ea33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2381929228146834292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slowBarImage: {fileID: 0}
-  fastBarImage: {fileID: 0}
-  HideWhenFull: 0
-  DebreeTint: {r: 1, g: 1, b: 1, a: 1}
-  colorMode: 0
-  slowBarColor: {r: 1, g: 1, b: 1, a: 1}
-  barGradient:
-    serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  healthBar: {fileID: 0}
 --- !u!1 &3833892834326608145
 GameObject:
   m_ObjectHideFlags: 0

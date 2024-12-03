@@ -85,77 +85,73 @@ namespace FunkyCode.SmartLighting2D.Scripts.Camera
 
 		public static void SetShaders(bool isSceneView, int id, UnityEngine.Camera camera, LightTexture lightTexture)
 		{
-			float ratio = (float)camera.pixelRect.width / camera.pixelRect.height;
+			var ratio = camera.pixelRect.width / camera.pixelRect.height;
 
-			float x = camera.transform.position.x;
-			float y = camera.transform.position.y;
+			var x = camera.transform.position.x;
+			var y = camera.transform.position.y;
 
 			// z = width ; w = height
-			float w = camera.orthographicSize * 2;
-			float z = w * ratio;
+			var w = camera.orthographicSize * 2;
+			var z = w * ratio;
 
-			float rotation = camera.transform.eulerAngles.z * Mathf.Deg2Rad;
+			var rotation = camera.transform.eulerAngles.z * Mathf.Deg2Rad;
 
-			Vector4 rect = new Vector4(x, y, z, w);
+			var rect = new Vector4(x, y, z, w);
 
-			if (lightTexture == null)
-			{
-				UnityEngine.Debug.Log("light texture null");
-				return;
-			}
+			if (lightTexture == null) return;
 
-			bool gameView = !isSceneView;
+			var gameView = !isSceneView;
 
 			if (gameView)
 			{
-				switch(id)
+				switch (id)
 				{
 					case 1:
 						Shader.SetGlobalTexture("_GameTexture1", lightTexture.renderTexture);
 						Shader.SetGlobalVector("_GameRect1", rect);
 						Shader.SetGlobalFloat("_GameRotation1", rotation);
-					break;
+						break;
 
 					case 2:
 						Shader.SetGlobalTexture("_GameTexture2", lightTexture.renderTexture);
 						Shader.SetGlobalVector("_GameRect2", rect);
 						Shader.SetGlobalFloat("_GameRotation2", rotation);
-					break;
+						break;
 
 					case 3:
 						Shader.SetGlobalTexture("_GameTexture3", lightTexture.renderTexture);
 						Shader.SetGlobalVector("_GameRect3", rect);
 						Shader.SetGlobalFloat("_GameRotation3", rotation);
-					break;
+						break;
 
 					case 4:
 						Shader.SetGlobalTexture("_GameTexture4", lightTexture.renderTexture);
 						Shader.SetGlobalVector("_GameRect4", rect);
 						Shader.SetGlobalFloat("_GameRotation4", rotation);
-					break;
+						break;
 				}
 			}
-				else
+			else
 			{
-				switch(id)
+				switch (id)
 				{
 					case 1:
 						Shader.SetGlobalTexture("_SceneTexture1", lightTexture.renderTexture);
 						Shader.SetGlobalVector("_SceneRect1", rect);
 						Shader.SetGlobalFloat("_SceneRotation1", rotation);
-					break;
+						break;
 
 					case 2:
 						Shader.SetGlobalTexture("_SceneTexture2", lightTexture.renderTexture);
 						Shader.SetGlobalVector("_SceneRect2", rect);
 						Shader.SetGlobalFloat("_SceneRotation2", rotation);
-					break;
+						break;
 
 					case 3:
 						Shader.SetGlobalTexture("_SceneTexture3", lightTexture.renderTexture);
 						Shader.SetGlobalVector("_SceneRect3", rect);
 						Shader.SetGlobalFloat("_SceneRotation3", rotation);
-					break;
+						break;
 
 					case 4:
 						Shader.SetGlobalTexture("_SceneTexture4", lightTexture.renderTexture);
@@ -163,64 +159,67 @@ namespace FunkyCode.SmartLighting2D.Scripts.Camera
 						Shader.SetGlobalFloat("_SceneRotation4", rotation);
 
 						UnityEngine.Debug.Log("do" + lightTexture.renderTexture);
-					break;
+						break;
 				}
 			}
 		}
 
 		public static void SetDayLight()
 		{
-			float direction = -(Lighting2D.DayLightingSettings.direction - 180) * Mathf.Deg2Rad;
-			float height = Lighting2D.DayLightingSettings.bumpMap.height;
+			var direction = -(Lighting2D.DayLightingSettings.direction - 180) * Mathf.Deg2Rad;
+			var height = Lighting2D.DayLightingSettings.bumpMap.height;
 
 			Shader.SetGlobalFloat("_Day_Direction", direction);
 			Shader.SetGlobalFloat("_Day_Height", height);
 		}
 
-		public static void SetMaterial(int id, UnityEngine.Material material, UnityEngine.Camera camera, LightTexture lightTexture) {
-			float ratio = (float)camera.pixelRect.width / camera.pixelRect.height;
+		public static void SetMaterial(int id, UnityEngine.Material material, UnityEngine.Camera camera, LightTexture lightTexture)
+		{
+			var ratio = camera.pixelRect.width / camera.pixelRect.height;
 
-			float x = camera.transform.position.x;
-			float y = camera.transform.position.y;
+			var x = camera.transform.position.x;
+			var y = camera.transform.position.y;
 
 			// z = size x ; w = size y
-			float w = camera.orthographicSize * 2;
-			float z = w * ratio;
+			var w = camera.orthographicSize * 2;
+			var z = w * ratio;
 
-			float rotation = camera.transform.eulerAngles.z * Mathf.Deg2Rad;
+			var rotation = camera.transform.eulerAngles.z * Mathf.Deg2Rad;
 
-			Vector4 rect = new Vector4(x, y, z, w);
+			var rect = new Vector4(x, y, z, w);
 
-			switch(id) {
+			switch (id)
+			{
 				case 1:
 					material.SetTexture("_GameTexture1", lightTexture.renderTexture);
 					material.SetVector("_GameRect1", rect);
 					material.SetFloat("_GameRotation1", rotation);
-				break;
+					break;
 
 				case 2:
 					material.SetTexture("_GameTexture2", lightTexture.renderTexture);
 					material.SetVector("_GameRect2", rect);
 					material.SetFloat("_GameRotation2", rotation);
-				break;
+					break;
 
 				// add 3 & 4
 			}
-
 		}
 
-		public void Add(UnityEngine.Material material) {
-			foreach(UnityEngine.Material m in  materials) {
-				if (m == material) {
+		public void Add(UnityEngine.Material material)
+		{
+			foreach (var m in materials)
+			{
+				if (m == material)
+				{
 					UnityEngine.Debug.Log("Lighting Manager 2D: Failed to add material (material already added!");
 					return;
 				}
 			}
 
-			for(int i = 0 ; i < materials.Length; i++) {
-				if (materials[i] != null) {
-					continue;
-				}
+			for (var i = 0; i < materials.Length; i++)
+			{
+				if (materials[i] != null) continue;
 				materials[i] = material;
 
 				return;
@@ -231,11 +230,11 @@ namespace FunkyCode.SmartLighting2D.Scripts.Camera
 			materials[materials.Length - 1] = material;
 		}
 
-		public void Remove(UnityEngine.Material material) {
-			for(int i = 0 ; i < materials.Length; i++) {
-				if (materials[i] != material) {
-					continue;
-				}
+		public void Remove(UnityEngine.Material material)
+		{
+			for (var i = 0; i < materials.Length; i++)
+			{
+				if (materials[i] != material) continue;
 				materials[i] = null;
 
 				return;
@@ -246,35 +245,35 @@ namespace FunkyCode.SmartLighting2D.Scripts.Camera
 	}
 }
 
-		/*
-		public static int GetFreeId() {
-			Vector4 rect;
+/*
+public static int GetFreeId() {
+	Vector4 rect;
 
-			rect = Shader.GetGlobalVector("_GameRect1");
+	rect = Shader.GetGlobalVector("_GameRect1");
 
-			if (rect.z <= 0) {
-				return(1);
-			}
+	if (rect.z <= 0) {
+		return(1);
+	}
 
-			rect = Shader.GetGlobalVector("_GameRect2");
+	rect = Shader.GetGlobalVector("_GameRect2");
 
-			if (rect.z <= 0) {
-				return(2);
-			}
+	if (rect.z <= 0) {
+		return(2);
+	}
 
-			rect = Shader.GetGlobalVector("_GameRect3");
+	rect = Shader.GetGlobalVector("_GameRect3");
 
-			if (rect.z <= 0) {
-				return(3);
-			}
+	if (rect.z <= 0) {
+		return(3);
+	}
 
-			rect = Shader.GetGlobalVector("_GameRect4");
+	rect = Shader.GetGlobalVector("_GameRect4");
 
-			if (rect.z <= 0) {
-				return(4);
-			}
+	if (rect.z <= 0) {
+		return(4);
+	}
 
-			Debug.Log("cant find");
+	Debug.Log("cant find");
 
-			return(0);
-		}*/
+	return(0);
+}*/

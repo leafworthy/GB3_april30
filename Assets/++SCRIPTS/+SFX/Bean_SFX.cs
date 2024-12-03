@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Bean_SFX : MonoBehaviour
 {
+	
 	private Animations anim;
 	private AnimationEvents animEvents;
 	private Life life;
@@ -89,4 +90,5 @@ public class Bean_SFX : MonoBehaviour
 	private void Anim_OnRoar() => SFX.sounds.cone_roar_sounds.PlayRandomAt(transform.position);
 	private void Anim_OnAttackHit(int attackType) => SFX.sounds.cone_attack_sounds.PlayRandomAt(transform.position);
 	private void Anim_OnStep() => SFX.sounds.player_walk_sounds_concrete.PlayRandomAt(transform.position);
+
 }

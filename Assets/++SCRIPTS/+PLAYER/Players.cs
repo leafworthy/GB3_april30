@@ -24,7 +24,6 @@ public class Players : Singleton<Players>
 	{
 		foreach (var player in AllJoinedPlayers)
 		{
-			Debug.Log("Setting Action Map to " + actionMap + " for player " + player.playerIndex);
 			SetActionMap(player, actionMap);
 		}
 		
@@ -61,7 +60,6 @@ public class Players : Singleton<Players>
 		}
 
 		AllJoinedPlayers.Clear();
-		Debug.Log("Main Menu - All Players Cleared");
 	}
 
 	private void Input_OnPlayerJoins(PlayerInput newPlayerInput)

@@ -151,7 +151,6 @@ public class IsoSpriteSorting : MonoBehaviour
 				return (SortingPoint1.y + SortingPoint2.y) / 2;
 			else
 			{
-				Debug.LogError("calling line center height on point type");
 				return SortingPoint1.y;
 			}
 		}
@@ -242,7 +241,6 @@ public class IsoSpriteSorting : MonoBehaviour
 	{
 		if (sprite1.sortType == SortType.Point && sprite2.sortType == SortType.Point)
 		{
-			//Debug.Log(sprite1.name + " - " + sprite1.SortingPoint1 + " sprite2: " + sprite2.name + " - " + sprite2.SortingPoint1);
 			return sprite2.SortingPoint1.y.CompareTo(sprite1.SortingPoint1.y);
 		}
 		else if (sprite1.sortType == SortType.Line && sprite2.sortType == SortType.Line)
@@ -381,7 +379,11 @@ public class IsoSpriteSorting : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		if (Application.isPlaying) Unregister();
+		if (Application.isPlaying)
+		{
+		
+			Unregister();
+		}
 	}
 
 	private void Unregister()

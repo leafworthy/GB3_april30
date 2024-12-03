@@ -1,23 +1,34 @@
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
-public class AimAbility : MonoBehaviour
+public class AimAbility : IHaveInspectorColor
 {
+	public override Color GetBackgroundColor() => Colors.Blue;
+	public override string GetIconPath() => "Assets/Bullet_Icon.png";
 	protected Life life;
 	protected Player owner;
 	protected Body body;
 	[HideInInspector] public Vector2 AimDir;
 	public const float aimDistanceFactor = 100;
-	private float minMagnitude = .3f; 
+	private float minMagnitude = .3f;
+	private bool hasInitiated;
 
 	public virtual void Start()
 	{
-		 
+		Init();
+		
+	}
+
+	private void Init()
+	{if(hasInitiated) return;
+		hasInitiated = true;
 		body = GetComponent<Body>();
 		life = GetComponent<Life>();
 		if (life == null) return;
 		owner = life.player;
 		if (owner == null) return;
 		if (owner.isUsingMouse) return;
+		if (!owner.IsPlayer()) return;
 		owner.Controller.AimAxis.OnChange += AimerOnAim;
 	}
 
@@ -25,6 +36,7 @@ public class AimAbility : MonoBehaviour
 	{
 		if (owner == null) return;
 		if (owner.isUsingMouse) return;
+		if (!owner.IsPlayer()) return;
 		owner.Controller.AimAxis.OnChange -= AimerOnAim;
 	
 	}
@@ -43,6 +55,7 @@ public class AimAbility : MonoBehaviour
 	protected virtual void Update()
 	{
 		if (GlobalManager.IsPaused) return;
+		if (!owner.IsPlayer()) return;
 		rotateAimObjects(GetAimDir());
 		DrawShootableLine();
 	}
@@ -80,6 +93,7 @@ public class AimAbility : MonoBehaviour
 	}
 	public Vector2 GetAimPoint(float multiplier = 1)
 	{
+		Init();
 		if (owner.isUsingMouse)
 		{
 			var mousePos = CursorManager.GetMousePosition();
@@ -98,6 +112,7 @@ public class AimAbility : MonoBehaviour
 
 	public virtual Vector3 GetAimDir()
 	{
+		Init();
 		if(owner.isUsingMouse)
 		{
 			return CursorManager.GetMousePosition() - body.AimCenter.transform.position;

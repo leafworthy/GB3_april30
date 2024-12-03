@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public class Attacks : MonoBehaviour
+public class Attacks : IHaveInspectorColor
 {
 	protected Life attacker;
+	public override Color GetBackgroundColor() => Colors.Blue;
 
+	public override string GetIconPath() => "Assets/Bullet_Icon.png";
 	private void OnEnable()
 	{
 		attacker = GetComponent<Life>();
@@ -12,6 +14,7 @@ public class Attacks : MonoBehaviour
 	protected void HitTarget(float attackDamage, Life targetLife, float extraPush = 0)
 	{
 		if (targetLife == null) return;
+		if(targetLife.isInvincible) return;
 	
 		var newAttack = new Attack(attacker, targetLife, attackDamage);
 		targetLife.TakeDamage(newAttack);

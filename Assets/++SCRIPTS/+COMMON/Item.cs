@@ -20,6 +20,6 @@ public class Item : MonoBehaviour
 
 	public void Use()
 	{
-		Debug.Log("Using " + itemName);
+		
 	}
 }

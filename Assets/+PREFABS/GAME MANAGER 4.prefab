@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 2097775054290542128}
   - component: {fileID: 471887300692803440}
   - component: {fileID: 5812046012263627858}
+  - component: {fileID: 4336959249200989705}
   m_Layer: 0
   m_Name: GAME MANAGER 4
   m_TagString: Untagged
@@ -196,6 +197,23 @@ MonoBehaviour:
   StartingScene: 0
   faderAnimator: {fileID: 6472466864413732121}
   autoLoadScene: 1
+--- !u!114 &4336959249200989705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365171486938599376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcea60a4c6174a729ca2da6ef3c3e063, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _red: {r: 1, g: 0.504717, b: 0.504717, a: 0}
+  _green: {r: 0.4198113, g: 1, b: 0.54267484, a: 0}
+  _blue: {r: 0.495283, g: 0.56551373, b: 1, a: 0}
+  _yellow: {r: 0.7169812, g: 0.6446983, b: 0, a: 0}
+  _cyan: {r: 0.23113209, g: 0.87325746, b: 1, a: 0}
 --- !u!1 &1372825247936302684
 GameObject:
   m_ObjectHideFlags: 0
@@ -1594,7 +1612,7 @@ AudioSource:
   Priority: 131
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 50
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0
@@ -1691,7 +1709,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 50
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0

@@ -3,8 +3,12 @@ using System.Linq;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class ThingWithHeight : MonoBehaviour
+public class ThingWithHeight : IHaveInspectorColor
 {
+
+	public override Color GetBackgroundColor() => Colors.Green;
+	public override string GetIconPath() => "Assets/Candy_Icon.png";
+
 	public bool isOverLandable;
 
 	private IsoSpriteSorting currentLandableSorting;

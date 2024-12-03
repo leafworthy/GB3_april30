@@ -25,7 +25,6 @@ public class GameSceneCharacterSelection : GameScene
 		Players.OnPlayerJoins += PlayerStartsSelecting;
 		foreach (var player in Players.AllJoinedPlayers)
 		{
-			Debug.Log("Start seletion");
 			PlayerStartsSelectingFromMainMenu(player);
 		}
 
@@ -102,7 +101,6 @@ public class GameSceneCharacterSelection : GameScene
 
 	private void ListenToPlayer(Player player)
 	{
-		Debug.Log("listening to player " + player.playerIndex);
 		player.Controller.Select.OnPress += PlayerPressSelect;
 		player.Controller.Cancel.OnPress += PlayerPressCancel;
 		player.Controller.UIAxis.OnRight += PlayerMoveRight;
@@ -112,7 +110,6 @@ public class GameSceneCharacterSelection : GameScene
 
 	private void StopListeningToPlayer(Player player)
 	{
-		Debug.Log("stop listening to player " + player.playerIndex);
 		player.Controller.Select.OnPress -= PlayerPressSelect;
 		player.Controller.Cancel.OnPress -= PlayerPressCancel;
 		player.Controller.UIAxis.OnRight -= PlayerMoveRight;
@@ -122,11 +119,9 @@ public class GameSceneCharacterSelection : GameScene
 
 	private void StopListeningToPlayers()
 	{
-		Debug.Log("character selection stop listening to players");
 		var tempList = playersBeingListenedTo.ToList();
 		foreach (var player in tempList)
 		{
-			Debug.Log(player.playerIndex + " has stopped being listened to");
 			StopListeningToPlayer(player);
 		}
 
@@ -147,7 +142,6 @@ public class GameSceneCharacterSelection : GameScene
 	{
 		if (!isActive)
 		{
-			Debug.Log("is inactive but trying anyways");
 			return;
 		}
 
@@ -181,12 +175,10 @@ public class GameSceneCharacterSelection : GameScene
 	{
 		if (!isActive)
 		{
-			Debug.Log("is inactive but trying anyways");
 			return;
 		}
 
 		var player = newControlButton.owner;
-		Debug.Log(player.PlayerName + " has pressed Select from the state:" + player.state);
 
 		switch (player.state)
 		{
@@ -204,7 +196,6 @@ public class GameSceneCharacterSelection : GameScene
 
 	private void TryToStartGame(Player player)
 	{
-		Debug.Log(player.PlayerName + player.playerIndex + " is trying to start the game");
 		CheckIfPlayersAllSelected();
 		if (!playersAllChosen) return;
 		OnTryToStartGame?.Invoke();
@@ -212,7 +203,7 @@ public class GameSceneCharacterSelection : GameScene
 		ClearAllPlayerButtons();
 		isActive = false;
 		Players.OnPlayerJoins -= PlayerStartsSelecting;
-		Debug.Log("Starting game, stopping listening to players");
+		Debug.Log("Starting game");
 		GoToScene(Type.InLevel);
 	}
 
@@ -250,7 +241,6 @@ public class GameSceneCharacterSelection : GameScene
 	private void SelectCharacter(Player player)
 	{
 		OnSelectCharacter?.Invoke();
-		Debug.Log("select character function");
 		player.CurrentButton.SelectCharacter(player);
 		player.CurrentCharacter = player.CurrentButton.character;
 		player.SetState(Player.State.Selected);
@@ -263,7 +253,6 @@ public class GameSceneCharacterSelection : GameScene
 		if (playersStillSelecting.Count > 0)
 		{
 			HideGoGoGo();
-			Debug.Log("PLAYERS JOINED BUT HAVEN'T SELECTED");
 			return;
 		}
 

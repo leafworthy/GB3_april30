@@ -4,6 +4,9 @@ using UnityEngine;
 [Serializable]
 public class GunAttacks : Attacks
 {
+	public override Color GetBackgroundColor() => Colors.Blue;
+
+	public override string GetIconPath() => "Assets/Bullet_Icon.png";
 	public event Action<Attack, Vector2> OnShotHitTarget;
 	public event Action<Attack, Vector2> OnShotMissed;
 	public event Action OnReload;
@@ -177,7 +180,6 @@ public class GunAttacks : Attacks
 	{
 		if (ammoInventory.HasAmmoInReserveOrClip(AmmoInventory.AmmoType.primaryAmmo))
 		{
-			Debug.Log("have ammo");
 			isGlocking = false;
 			anim.SetBool(Animations.IsGlocking, isGlocking);
 			return;
@@ -220,7 +222,6 @@ public class GunAttacks : Attacks
 		if (target == null) return;
 		var newAttack = new Attack(attacker, body.FootPoint.transform.position, hitObject.point, target, currentDamage);
 		OnShotHitTarget?.Invoke(newAttack, body.AttackStartPoint.transform.position);
-		Debug.Log("Shot hit target", this);
 		target.TakeDamage(newAttack);
 		
 	}
@@ -290,7 +291,6 @@ public class GunAttacks : Attacks
 		isReloading = false;
 		arms.Stop("Reload");
 		if (!isPressing) return;
-		Debug.Log("reloading stopped try shoot");
 		TryShooting();
 	}
 }

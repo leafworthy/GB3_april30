@@ -12,7 +12,6 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 	{
 		if (attack.DestinationLife.DebrisType == DebrisType.none) return;
 		SprayDebree(attack,hitLife);
-		Debug.Log("hit", this);
 		MakeHitMark(attack,hitLife);
 		DamageTint(attack, hitLife);
 		CreateDamageRisingText(attack);
@@ -55,7 +54,7 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 		var hitHeightScript = hitMarkObject.GetComponent<ThingWithHeight>();
 		hitHeightScript.SetDistanceToGround(attack.DestinationHeight- heightCorrectionForDepth.y, false);
 		Debug.DrawLine( attack.DestinationFloorPoint, attack.DestinationFloorPoint + new Vector2(0, attack.DestinationHeight), Color.magenta, 5);
-		Debug.Log("hit mark height:  " + attack.DestinationHeight);
+	
 		if (!(attack.Direction.x > 0))
 		{
 			
@@ -87,7 +86,6 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 			Maker.Unmake(backwardDebree, 3);
 			if (lifeFX != null)
 			{
-				Debug.Log("tint");
 				var sprite = forwardDebree.GetComponentInChildren<SpriteRenderer>();
 				if (sprite != null) sprite.color = lifeFX.DebreeTint;
 				sprite = backwardDebree.GetComponentInChildren<SpriteRenderer>();

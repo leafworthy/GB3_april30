@@ -22,7 +22,6 @@ public class PlayerIndicator : MonoBehaviour
     {
         Hide(gameObject);
         return;
-        Debug.Log("HIDING");
         switch (player.playerIndex +1)
         {
             case 1:

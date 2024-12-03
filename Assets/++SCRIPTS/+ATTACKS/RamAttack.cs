@@ -6,11 +6,12 @@ using UnityEngine;
 public class RamAttack : Attacks
 {
 	private float currentCooldown;
-	private float coolDown = 2;
+	private float coolDown = .5f;
 	private bool isCooledDown;
 	private Life life;
 	private MoveAbility mover;
 	private Player owner;
+	[SerializeField]private float pushBackAmount = 3;
 
 	private void Start()
 	{
@@ -24,26 +25,23 @@ public class RamAttack : Attacks
 	{
 		if (GlobalManager.IsPaused) return;
 		if (life.IsDead()) return;
-		TryAttackingClosestEnemy();
+		CheckForEnemiesInRange();
 		Cooldown();
 	}
 
-	private void TryAttackingClosestEnemy()
+	private void CheckForEnemiesInRange()
 	{
-		CheckForHit(FindClosestDoorHit());
+		var enemies = Physics2D.OverlapCircleAll(transform.position, life.AttackRange, ASSETS.LevelAssets.PlayerLayer)
+		                      .ToList();
+		enemies.AddRange(Physics2D.OverlapCircleAll(transform.position, life.AttackRange, ASSETS.LevelAssets.DoorLayer).ToList());
+		if (enemies.Count <= 0) return;
+		foreach (var enemy in enemies)
+		{
+			CheckForHit(enemy.gameObject);
+		}
 	}
 
-	private GameObject FindClosestDoorHit()
-	{
-		float hitRange = 5;
-		var circleCast = Physics2D.OverlapCircleAll(transform.position, hitRange, ASSETS.LevelAssets.DoorLayer)
-		                          .ToList();
-		if (circleCast.Count <= 0) return null;
 
-		var closest = circleCast[0];
-
-		return closest.gameObject;
-	}	
 	private void Cooldown()
 	{
 		if (!(currentCooldown > 0)) return;
@@ -54,17 +52,7 @@ public class RamAttack : Attacks
 		isCooledDown = true;
 	}
 
-	private void OnTriggerEnter2D(Collider2D other)
-	{
-		if (GlobalManager.IsPaused) return;
-		CheckForHit(other.gameObject);
-	}
-
-	private void OnTriggerStay2D(Collider2D other)
-	{
-		if (GlobalManager.IsPaused) return;
-		CheckForHit(other.gameObject);
-	}
+	
 
 	private void CheckForHit(GameObject other)
 	{
@@ -94,6 +82,6 @@ public class RamAttack : Attacks
 		var bouncebackAttack = new Attack(other, life, life.AttackDamage);
 		other.TakeDamage(otherAttack);
 		life.TakeDamage(bouncebackAttack);
-		mover.Push(bouncebackAttack.Direction, bouncebackAttack.DamageAmount * 2);
+		mover.Push(bouncebackAttack.Direction, pushBackAmount);
 	}
 }

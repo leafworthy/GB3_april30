@@ -33,7 +33,6 @@ public class IsoSpriteSortingManager : MonoBehaviour
     {
         if (I == null)
             I = this as IsoSpriteSortingManager;
-        //Debug.Log("SINGLETON ONLINE: " + typeof(T).Name, this);
     }
     public static void RegisterSprite(IsoSpriteSorting newSprite)
     {

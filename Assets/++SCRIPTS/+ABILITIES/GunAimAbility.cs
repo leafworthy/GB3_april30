@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class GunAimAbility : AimAbility
 {
-	
+	public override Color GetBackgroundColor() => Colors.Blue;
+	public override string GetIconPath() => "Assets/Bullet_Icon.png";
 	private Animations anim;
 	private bool isAttacking;
 

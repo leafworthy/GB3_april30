@@ -9,7 +9,6 @@ public class SceneStarter : MonoBehaviour
 	{
 		if(hasStarted) return;
 		hasStarted = true;
-		Debug.Log("awake");
 		CreateGameManager();
 	}
 
@@ -17,7 +16,5 @@ public class SceneStarter : MonoBehaviour
 	{
 		if(SceneLoader.hasLoaded) return;
 	SceneManager.LoadScene("GameManager", LoadSceneMode.Additive);
-		//display.SetActive(true);
-		Debug.Log("gamemanager created");
 	}
 }

@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NadeAbility_FX : MonoBehaviour
+public class NadeAbility_FX : IHaveInspectorColor
 {
+	public override Color GetBackgroundColor() => Colors.Green;
+
+	public override string GetIconPath() => "Assets/Nade_Icon.png";
 	private NadeAbility nade;
 	private Body body;
 	private GameObject currentArrowHead;

@@ -12,6 +12,7 @@ public class SlimeAttack : MonoBehaviour
 	private MoveAbility mover;
 	private Life currentTarget;
 	private Targetter targets;
+	private float shootDistance = 4;
 
 	private void Start()
 	{
@@ -65,7 +66,7 @@ public class SlimeAttack : MonoBehaviour
 			currentTarget.TakeDamage(newAttack);
 		}
 
-		var targetPos = (transform.position - currentTarget.transform.position).normalized * 2 + transform.position;
+		var targetPos = (transform.position - currentTarget.transform.position).normalized * shootDistance + transform.position;
 		CreateSlimePrefab(targetPos);
 	}
 

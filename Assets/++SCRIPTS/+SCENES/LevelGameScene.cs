@@ -30,7 +30,6 @@ public class LevelGameScene : GameScene
 
 	private void StartLevel()
 	{
-		Debug.Log("level start");
 		Players.OnAllPlayersDead += RestartLevel;
 		_levelDrops = gameObject.AddComponent<LevelDrops>();
 		CurrentLevelGameScene = this;
@@ -92,7 +91,6 @@ public class LevelGameScene : GameScene
 		{
 			var player = joiningPlayers[index];
 			SpawnPlayer(player);
-			Debug.Log("player spawned");
 			OnPlayerSpawned?.Invoke(player);
 		}
 	}

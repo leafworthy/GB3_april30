@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class GunAttacks_FX : MonoBehaviour
+public class GunAttacks_FX : IHaveInspectorColor
 {
+	public override Color GetBackgroundColor() => Colors.Blue;
+
+	public override string GetIconPath() => "Assets/Bullet_Icon.png";
 	private GunAttacks gunAttacks;
 	private void OnEnable()
 	{
@@ -21,7 +24,6 @@ public class GunAttacks_FX : MonoBehaviour
 	private void GunAttacksOnOnOnShotHitTarget(Attack attack, Vector2 attackStartPosition)
 	{
 
-		Debug.Log("gun attacks on shot fired");
 		CreateBullet(attack, attackStartPosition);
 
 		CreateBulletHitAnimation(attack);
@@ -48,7 +50,6 @@ public class GunAttacks_FX : MonoBehaviour
 
 	private void CreateBulletHitAnimation(Attack attack)
 	{
-		Debug.Log("bullet hit animation");
 		var heightCorrectionForDepth = new Vector2(0,-1.25f);
 		
 		var newBulletHitAnimation = Maker.Make(FX.Assets.bulletHitAnimPrefab, attack.DestinationFloorPoint + heightCorrectionForDepth);
@@ -56,8 +57,9 @@ public class GunAttacks_FX : MonoBehaviour
 		Debug.DrawLine( attack.DestinationFloorPoint, attack.DestinationFloorPoint + heightCorrectionForDepth, Color.magenta, 5);
 
 		var bulletHitHeight = newBulletHitAnimation.GetComponent<ThingWithHeight>();
-		Debug.Log("bullet hit destination height " + attack.DestinationHeight);
 		bulletHitHeight.SetDistanceToGround(attack.DestinationHeight - heightCorrectionForDepth.y);
 		Maker.Unmake(newBulletHitAnimation, 5);
 	}
+
+
 }

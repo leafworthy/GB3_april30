@@ -41,6 +41,7 @@ public class AnimationEvents : MonoBehaviour
     
     public event Action OnStep;
 
+
     public void MoveStart()
     {
         OnMoveStart?.Invoke();

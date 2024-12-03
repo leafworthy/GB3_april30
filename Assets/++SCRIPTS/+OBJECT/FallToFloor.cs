@@ -15,7 +15,6 @@ public class FallToFloor : ThingWithHeight
 
 	public void FireForDrops(Vector3 shootAngle, Color color, float height, bool freezeRotation = false)
 	{
-		Debug.Log("fire for drops");
 		RotationRate = Random.Range(0, rotationRate);
 		jumper = GetComponent<JumpAbility>();
 		jumper.OnBounce += Jumper_OnBounce;
@@ -49,7 +48,6 @@ public class FallToFloor : ThingWithHeight
 		jumper.OnResting += Jumper_OnResting;
 		mover = GetComponent<MoveAbility>();
 		var verticalSpeed = Random.Range(0, bounceSpeed);
-		Debug.Log("verticalSpeed " + verticalSpeed);
 		jumper.Jump(attack.OriginHeight, 0);
 		mover.SetDragging(false);
 		mover.Push(isFlipped ? attack.FlippedDirection : attack.Direction.normalized + new Vector2(Random.Range(-.4f, .4f), Random.Range(-.4f, .4f)),

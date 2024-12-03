@@ -52,7 +52,6 @@ public class Targetter : MonoBehaviour
 			if (!buildingIsInTheWay(point)) return point;
 		}
 
-		Debug.Log("wander point not found");
 		return wanderPoint;
 	}
 
@@ -72,36 +71,19 @@ public class Targetter : MonoBehaviour
 	private bool TargetIsValid(Life target)
 	{
 		if (target != null && !target.IsDead()) return true;
-		Debug.Log("target null or dead");
 		return false;
 	}
 
 	private bool ObstacleIsValid(Life target)
 	{
-		if (target == null || target.IsDead())
-		{
-			Debug.Log("target null or dead");
-			return false;
-		}
+		if (target == null || target.IsDead()) return false;
 
 		if (!target.IsObstacle) return false;
 		var door = target.GetComponentInParent<DoorInteraction>();
-		if (door == null)
-		{
-			Debug.Log("door null");
-			return false;
-		}
-		if (door.isBroken)
-		{
-			Debug.Log("isBroken");
-			return false;
-		}
+		if (door == null) return false;
+		if (door.isBroken) return false;
 
-		if (door.isOpen)
-		{
-			Debug.Log("isOpen");
-			return false;
-		}
+		if (door.isOpen) return false;
 
 		return true;
 	}

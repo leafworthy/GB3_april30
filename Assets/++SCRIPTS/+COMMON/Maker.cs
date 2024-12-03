@@ -17,7 +17,6 @@ public class Maker : MonoBehaviour
 	{
 		if(I != null)
 		{
-			Debug.Log("two managers");
 			Destroy(gameObject);
 			return;
 		}

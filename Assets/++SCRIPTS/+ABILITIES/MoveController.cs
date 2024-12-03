@@ -161,7 +161,6 @@ public class MoveController : MonoBehaviour
 		if (body.legs.isActive)
 		{
 			StopMoving();
-			Debug.Log("legs active");
 			return;
 		}
 
@@ -208,12 +207,10 @@ public class MoveController : MonoBehaviour
 		if (GlobalManager.IsPaused) return;
 		if (!CanMove)
 		{
-			Debug.Log("CANT MOVE");
 			return;
 		}
 		if (body.arms.isActive)
 		{
-			Debug.Log("ARMS ACTIVE");
 			return;
 		}
 		StartMoving(direction);

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class AmmoInventory : MonoBehaviour
+public class AmmoInventory : IHaveInspectorColor
 {
 	public enum AmmoType
 	{
@@ -33,18 +33,12 @@ public class AmmoInventory : MonoBehaviour
 		ammoList.Add(unlimitedAmmo);
 	}
 
-	private void AddAmmo(AmmoType type, int amount)
-	{
-		var ammo = ammoList.FirstOrDefault(t=>t.type == type);
-		ammo.AddAmmoToReserve(amount);
-	}
 
 
 	public void Reload(AmmoType ammoType)
 	{
 		if (!HasReserveAmmo(ammoType))
 		{
-			Debug.Log("Out of ammo");
 			return;
 		}
 		var ammo = ammoList.FirstOrDefault(t => t.type == ammoType);
@@ -102,4 +96,8 @@ public class AmmoInventory : MonoBehaviour
 		if (ammo is null) return;
 		ammo.Use(amount);
 	}
+
+	public override Color GetBackgroundColor() => Colors.Cyan;
+
+	public override string GetIconPath() => "Assets/Bullet_Icon.png";
 }

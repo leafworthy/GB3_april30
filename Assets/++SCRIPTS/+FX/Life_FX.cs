@@ -5,16 +5,18 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [ExecuteAlways]
-public class Life_FX : MonoBehaviour
+public class Life_FX : IHaveInspectorColor
 {
-	[Header("Color Options")] public Image slowBarImage;
+	public override Color GetBackgroundColor() => Colors.Red;
+	public override string GetIconPath() => "Assets/Skull_Icon.png";
+
+	public Image slowBarImage;
 	public Image fastBarImage;
-	public bool HideWhenFull;
+	public Color DebreeTint = Color.white;
 	private List<Renderer> renderersToTint = new();
 	private Color materialTintColor;
 	private const float tintFadeSpeed = 6f;
 	private static readonly int Tint = Shader.PropertyToID("_Tint");
-	public Color DebreeTint = Color.white;
 
 	public enum ColorMode
 	{

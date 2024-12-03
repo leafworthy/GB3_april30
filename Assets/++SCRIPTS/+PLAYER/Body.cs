@@ -1,29 +1,30 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [Serializable]
 public class Body : ThingWithHeight
 {
+	public override Color GetBackgroundColor() => Colors.Red;
+	public override string GetIconPath() => "Assets/Skull_Icon.png";
 	public GameObject AttackStartPoint;
 	public GameObject FootPoint;
 	public List<GameObject> RotateWithAim;
 	public GameObject AimCenter;
-	public Arms arms = new Arms();
-	public Legs legs = new Legs();
-	[FormerlySerializedAs("AnimScaleObject")] public GameObject BottomScaleObject;
 	public GameObject AirThrowPoint;
 	public GameObject ThrowPoint;
-	[FormerlySerializedAs("IsFacingRight")] public bool BottomIsFacingRight;
-	public bool TopIsFacingRight;
 	public GameObject TopScaleObject;
+	public GameObject BottomScaleObject;
 
+	[HideInInspector] public Arms arms = new();
+	[HideInInspector] public Legs legs = new();
+	[HideInInspector] public bool BottomIsFacingRight = true;
+	[HideInInspector] public bool TopIsFacingRight = true;
 
 	public void ChangeLayer(BodyLayer bodyLayer)
 	{
 		//Debug.Log("layer change" + bodyLayer.ToString());
-		int layerValue = 0;
+		var layerValue = 0;
 		switch (bodyLayer)
 		{
 			case BodyLayer.jumping:
@@ -36,6 +37,7 @@ public class Body : ThingWithHeight
 				layerValue = ASSETS.LevelAssets.GroundedLayer;
 				break;
 		}
+
 		FootPoint.layer = (int) Mathf.Log(layerValue, 2);
 	}
 
@@ -61,8 +63,6 @@ public class Body : ThingWithHeight
 		FlipTop(faceRight);
 	}
 
-
-
 	private void FlipBottom(bool toTheRight)
 	{
 		var localScale = BottomScaleObject.transform.localScale;
@@ -82,6 +82,4 @@ public class Body : ThingWithHeight
 		localScale = currentScale;
 		TopScaleObject.transform.localScale = localScale;
 	}
-
-	
 }

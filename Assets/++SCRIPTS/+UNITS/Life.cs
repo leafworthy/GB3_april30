@@ -2,8 +2,11 @@
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class Life : MonoBehaviour
+public class Life : IHaveInspectorColor
 {
+	public override Color GetBackgroundColor() => Colors.Red;
+	public override string GetIconPath() => "Assets/Skull_Icon.png";
+
 	[HideInInspector] public Player player;
 	public UnitStatsData unitData;
 
@@ -45,6 +48,7 @@ public class Life : MonoBehaviour
 		player = _player;
 	}
 	public bool cantDie;
+	public bool isInvincible;
 
 	public event Action<Attack, Life> OnAttackHit;
 	public event Action<Attack> OnDamaged;
@@ -61,6 +65,7 @@ public class Life : MonoBehaviour
 	private LayerMask originalLayer;
 
 	[HideInInspector]public float Health;
+	private Color backgroundColor;
 
 	public static event Action<Attack, Life> OnAnyAttackHit;
 	
@@ -79,11 +84,17 @@ public class Life : MonoBehaviour
 		if (anim != null)
 		{
 			anim.animEvents.OnDieStop += Die;
+			anim.animEvents.OnInvincible += SetInvincible;
 		}
 
 		originalLayer = gameObject.layer;
 		ResetHealthToMax();
 		OnFractionChanged?.Invoke(GetFraction());
+	}
+
+	private void SetInvincible(bool _isInvincible)
+	{
+		isInvincible = _isInvincible;
 	}
 
 	private void ResetHealthToMax()
@@ -94,6 +105,7 @@ public class Life : MonoBehaviour
 	public void TakeDamage(Attack attack)
 	{
 		if (IsDead()) return;
+		if (attack.DestinationLife.isInvincible) return;
 		//OnDamaged?.Invoke(attack);
 		ChangeHealth(attack);
 
@@ -105,6 +117,7 @@ public class Life : MonoBehaviour
 			anim.SetTrigger(Animations.HitTrigger);
 			if (attack.IsDamaging)
 			{
+				OnDamaged?.Invoke(attack);
 				//do damaging hit
 			}
 		}
@@ -185,7 +198,6 @@ public class Life : MonoBehaviour
 	private void DisableAllColliders()
 	{
 		if (cantDie) return;
-		//Debug.Log("HERE");
 		var colliders = GetComponents<Collider2D>();
 		foreach (var col in colliders) col.enabled = false;
 
@@ -222,4 +234,5 @@ public class Life : MonoBehaviour
 	{
 		DisableCollidersLayerAndHealth();
 	}
+
 }

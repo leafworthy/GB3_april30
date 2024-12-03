@@ -37,6 +37,11 @@ namespace FunkyCode
                 }
             }
 
+            if (!Application.isPlaying)
+            {
+                return(null);
+            }
+
             GameObject meshRendererMode = new GameObject("On Render");
             OnRenderMode onRenderMode = meshRendererMode.AddComponent<OnRenderMode>();
 
@@ -49,7 +54,7 @@ namespace FunkyCode
                 meshRendererMode.hideFlags = meshRendererMode.hideFlags | HideFlags.HideInHierarchy;
             }
 
-            onRenderMode.name = "On Render: " + buffer.name;
+            onRenderMode.name = "On Renduh: " + buffer.name;
 
             return(onRenderMode);
         }

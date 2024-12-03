@@ -43,7 +43,6 @@ public class AstarPathfinder : MonoBehaviour
 	{
 		if(!isPathing) return;
 		if (p.error) return;
-		Debug.Log("path completed");
 		currentPath = p;
 		currentWaypoint = 1;
 	}
@@ -74,7 +73,6 @@ public class AstarPathfinder : MonoBehaviour
 			frozenCounter++;
 			if (frozenCounter <= freezeLimit) return;
 			frozenCounter = 0;
-			Debug.Log("Freeze");
 			OnFreeze?.Invoke();
 		}
 		else
@@ -86,7 +84,6 @@ public class AstarPathfinder : MonoBehaviour
 	private void UpdateDirection()
 	{
 		currentDirection = (currentPath.vectorPath[currentWaypoint] - transform.position).normalized;
-		Debug.Log("new direction from pathfinder");
 		OnNewDirection?.Invoke(currentDirection);
 	}
 
@@ -111,7 +108,6 @@ public class AstarPathfinder : MonoBehaviour
 	public void StopPathing()
 	{
 		isPathing = false;
-		Debug.Log("stop pathing");
 		targetPosition = transform.position;
 	}
 

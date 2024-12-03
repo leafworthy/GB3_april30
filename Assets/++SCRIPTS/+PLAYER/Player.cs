@@ -77,7 +77,6 @@ public class Player : MonoBehaviour
 	{
 		if (interactables.Count == 0)
 		{
-			Debug.Log("interactable nulled");
 			selectedInteractable = null;
 			return;
 		}
@@ -98,7 +97,6 @@ public class Player : MonoBehaviour
 		}
 		if (selectedInteractable != null) selectedInteractable.Deselect(this);
 		selectedInteractable = closest;
-		Debug.Log("interactable assigned" + closest.name, closest);
 		selectedInteractable.Select(this);
 	}
 
@@ -114,7 +112,6 @@ public class Player : MonoBehaviour
 		if (interactable == selectedInteractable)
 		{
 			interactable.Deselect(this);
-			Debug.Log("interactable nulled");
 			selectedInteractable = null;
 		}
 		interactables.Remove(interactable);
@@ -174,7 +171,6 @@ public class Player : MonoBehaviour
 	public void Say(string message, float sayTimeInSeconds = 3)
 	{
 		if (sayer == null) sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
-		Debug.Log("attempting to say: " + message);
 		sayer.Say(message, sayTimeInSeconds);
 	}
 
@@ -228,7 +224,6 @@ public class Player : MonoBehaviour
 
 	public void GainKey()
 	{
-		Debug.Log("got key!");
 		hasKey = true;
 	}
 
