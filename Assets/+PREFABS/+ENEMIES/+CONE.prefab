@@ -349,6 +349,7 @@ GameObject:
   - component: {fileID: 8626103442844033684}
   - component: {fileID: 3461774669495696490}
   - component: {fileID: 2194203459170913656}
+  - component: {fileID: -5959914097894329155}
   m_Layer: 7
   m_Name: +CONE
   m_TagString: Untagged
@@ -436,7 +437,8 @@ MonoBehaviour:
   player: {fileID: 0}
   unitData: {fileID: 11400000, guid: c02aec4cc3eec40779caeffd1cb4e07c, type: 2}
   cantDie: 0
-  Health: 200
+  isInvincible: 0
+  Health: 125
 --- !u!114 &1868243376366810161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,8 +494,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41351132bc614e109d40a33d31ca2405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stopMovingOnAttack: 1
   idleCoolDownMax: 2
   WanderRadius: 20
+  BornOnAggro: 1
 --- !u!114 &7659033533810467042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -590,18 +594,18 @@ MonoBehaviour:
   FootPoint: {fileID: 3504955075435949902}
   RotateWithAim: []
   AimCenter: {fileID: 9136819711387657586}
+  AirThrowPoint: {fileID: 0}
+  ThrowPoint: {fileID: 3504955075435949902}
+  TopScaleObject: {fileID: 0}
+  BottomScaleObject: {fileID: 2734829698557367498}
   arms:
     currentActivity: 
     isActive: 0
   legs:
     currentActivity: 
     isActive: 0
-  BottomScaleObject: {fileID: 2734829698557367498}
-  AirThrowPoint: {fileID: 0}
-  ThrowPoint: {fileID: 3504955075435949902}
   BottomIsFacingRight: 1
   TopIsFacingRight: 1
-  TopScaleObject: {fileID: 0}
 --- !u!114 &-8310225930428712308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -672,7 +676,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9136819711188386144}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73c5ae5e07fd403294109a43339a7433, type: 3}
   m_Name: 
@@ -691,7 +695,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowBarImage: {fileID: 5719151973683410455}
   fastBarImage: {fileID: 5719151973426187630}
-  HideWhenFull: 1
   DebreeTint: {r: 1, g: 0.3529412, b: 0.5254902, a: 1}
   colorMode: 1
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
@@ -726,6 +729,19 @@ MonoBehaviour:
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
   healthBar: {fileID: 5719151974763172607}
+  BlockTint: 0
+--- !u!114 &-5959914097894329155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136819711188386144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 369b58c66d724fa6bccf56c8d634508e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9136819711387657586
 GameObject:
   m_ObjectHideFlags: 0
@@ -1236,6 +1252,10 @@ PrefabInstance:
     - target: {fileID: 4198285866544071878, guid: 8e30b9d6104f14bebbb8b08841203d12, type: 3}
       propertyPath: m_Name
       value: Thoughts
+      objectReference: {fileID: 0}
+    - target: {fileID: 4198285866544071878, guid: 8e30b9d6104f14bebbb8b08841203d12, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

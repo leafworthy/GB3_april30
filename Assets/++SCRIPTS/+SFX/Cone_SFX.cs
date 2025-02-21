@@ -4,6 +4,7 @@ public class Cone_SFX : MonoBehaviour
 {
 	private Animations anim;
 	private AnimationEvents animEvents;
+	
 
 	private void OnEnable()
 	{
@@ -14,6 +15,12 @@ public class Cone_SFX : MonoBehaviour
 		animEvents.OnRoar += Anim_OnRoar;
 		animEvents.OnHitStart += Anim_OnHit;
 		animEvents.OnDieStart += Anim_OnDie;
+		animEvents.OnRecovered += Anim_OnSplat;
+	}
+
+	private void Anim_OnSplat()
+	{ 
+		SFX.sounds.cone_splat_sounds.PlayRandomAt(transform.position);
 	}
 
 	private void OnDisable()
@@ -22,7 +29,9 @@ public class Cone_SFX : MonoBehaviour
 		animEvents.OnStep -= Anim_OnStep;
 		animEvents.OnRoar -= Anim_OnRoar;
 		animEvents.OnHitStart -= Anim_OnHit;
-		animEvents.OnDieStart -= Anim_OnDie;
+		animEvents.OnDieStart -= Anim_OnDie; 
+		animEvents.OnRecovered -= Anim_OnSplat;
+		 
 	}
 
 	private void Anim_OnDie()=> SFX.sounds.cone_die_sounds.PlayRandomAt(transform.position);

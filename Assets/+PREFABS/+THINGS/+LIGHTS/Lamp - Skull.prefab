@@ -48,6 +48,7 @@ MonoBehaviour:
   player: {fileID: 0}
   unitData: {fileID: 11400000, guid: 8296f938af6624daebb576bb18932947, type: 2}
   cantDie: 1
+  isInvincible: 0
   Health: 100
 --- !u!58 &2916263676244720658
 CircleCollider2D:
@@ -59,7 +60,7 @@ CircleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 8c34822b7022040fdb2f7864b7bc46f4, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -160,7 +161,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 629
   m_Sprite: {fileID: 102234232190963579, guid: 9d3a29bf1e78e4374ad677d806617c64, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -186,19 +187,19 @@ PrefabInstance:
       objectReference: {fileID: -5957509562098999703, guid: 9d3a29bf1e78e4374ad677d806617c64, type: 3}
     - target: {fileID: 827350551121471613, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_Color.b
-      value: 0.53019726
+      value: 0.3529412
       objectReference: {fileID: 0}
     - target: {fileID: 827350551121471613, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_Color.g
-      value: 0.735849
+      value: 0.24313726
       objectReference: {fileID: 0}
     - target: {fileID: 827350551121471613, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_Color.r
-      value: 0.36445352
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 827350551121471613, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_SortingOrder
-      value: 21
+      value: 628
       objectReference: {fileID: 0}
     - target: {fileID: 2016935784085512690, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: SorterPositionOffset.x
@@ -233,8 +234,12 @@ PrefabInstance:
       value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 2928959059287046559, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2928959059287046559, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.28
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5019062100462354449, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -270,11 +275,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9048459617251402012, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -122
+      value: -231.1
       objectReference: {fileID: 0}
     - target: {fileID: 9048459617251402012, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 30.4
+      value: -58.9
       objectReference: {fileID: 0}
     - target: {fileID: 9048459617251402012, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_LocalPosition.z
@@ -349,7 +354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be430b345dfe2431eaa880655ed6670d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tint: {r: 0.36445352, g: 0.735849, b: 0.53019726, a: 1}
+  Tint: {r: 1, g: 0.24313726, b: 0.3529412, a: 1}
   toTint:
   - {fileID: 5790637800384393726}
 --- !u!1 &1985304397636404373 stripped
@@ -387,7 +392,7 @@ CircleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 8c34822b7022040fdb2f7864b7bc46f4, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -411,8 +416,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -6.3}
-  m_Radius: 15
+  m_Offset: {x: 0.06253052, y: -5.487016}
+  m_Radius: 8.996557
 --- !u!114 &3796655647502776757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,4 +447,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indicatorOffset: {x: 0.3299713, y: 14.188324, z: 0}
-  interactionPoint: {x: 0, y: -7.58786, z: 0}
+  interactionPoint: {x: 0, y: -7.594597, z: 0}

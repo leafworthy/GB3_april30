@@ -7,9 +7,8 @@ public class CarAccessInteraction : TimedInteraction
 	private bool hasBeenOpened;
 	private bool hasGas;
 	public event Action<Player> OnCarAccessActionPressed;
-	public Player owner;
-	private bool gasFilled;
 
+	private bool gasFilled;
 
 	protected override void Start()
 	{
@@ -23,46 +22,57 @@ public class CarAccessInteraction : TimedInteraction
 	{
 		if (gasFilled)
 		{
-			if (HasKey(player))
+			if (HasKey())
 			{
 				OnCarAccessActionPressed?.Invoke(player);
 				FinishInteraction(player);
-				Debug.Log("Success!");
-				return;
 			}
 			else
-			{
 				player.Say("Needs a key...", 0);
-				return;
-			}
 		}
 		else
 		{
-			if (!HasEnoughGas(player))
-			{
+			if (!HasEnoughGas())
 				player.Say("Needs more gas...", 0);
-				return;
-			}
 			else
 			{
 				player.Say("Filling gas...", 0);
 				SFX.sounds.siphon_gas_sound.PlayRandomAt(transform.position);
 				base.InteractableOnActionPress(player);
-				return;
 			}
 		}
 	}
 
-	private bool HasKey(Player player) => player.hasKey;
+	private bool HasKey() => DoAnyPlayersHaveAKey();
 
-	private bool HasEnoughGas(Player player) => player.GetPlayerStatAmount(PlayerStat.StatType.Gas) >= GlobalManager.GasGoal;
+	private bool HasEnoughGas() => GetTotalGasFromAllJoinedPlayers() >= GlobalManager.GasGoal;
 
-	private bool HasSomeGas(Player player) => player.GetPlayerStatAmount(PlayerStat.StatType.Gas) > 0 &&
-	                                          player.GetPlayerStatAmount(PlayerStat.StatType.Gas) < GlobalManager.GasGoal;
+	private bool DoAnyPlayersHaveAKey()
+	{
+		foreach (var player in Players.AllJoinedPlayers)
+		{
+			if (player.hasKey) return true;
+		}
+
+		return false;
+	}
+
+	private int GetTotalGasFromAllJoinedPlayers()
+	{
+		var totalGas = 0;
+		foreach (var player in Players.AllJoinedPlayers)
+		{
+			totalGas += player.GetPlayerStatAmount(PlayerStat.StatType.Gas);
+		}
+
+		return totalGas;
+	}
+
+	private bool HasSomeGas() => GetTotalGasFromAllJoinedPlayers() > 0 && GetTotalGasFromAllJoinedPlayers() < GlobalManager.GasGoal;
 
 	private void Interactable_OnTimeComplete(Player player)
 	{
-		if (!HasEnoughGas(player) || gasFilled) return;
+		if (!HasEnoughGas() || gasFilled) return;
 		gasFilled = true;
 		player.ChangePlayerStat(PlayerStat.StatType.Gas, -GlobalManager.GasGoal);
 		occupied = false;
@@ -75,48 +85,27 @@ public class CarAccessInteraction : TimedInteraction
 		occupied = true;
 		if (gasFilled)
 		{
-			if (HasKey(player))
+			if (HasKey())
 			{
-
-
 				player.Say("Let's go!", 0);
 				Debug.Log("Success!");
-				return;
 			}
 			else
-			{
-
 				player.Say("Needs a key...", 0);
-				return;
-			}
 		}
 		else
 		{
-			if (HasEnoughGas(player))
+			if (HasEnoughGas())
 			{
 				player.Say("Hold to fill.", 0);
 				return;
 			}
-			if (HasSomeGas(player))
-			{
 
+			if (HasSomeGas())
 				player.Say("Needs more gas...", 0);
-				return;
-			}
 			else
-			{
 				player.Say("Needs gas...", 0);
-				return;
-			}
 		}
-
-		
-
-		
-
-		
-
-		
 	}
 
 	private void Interactable_OnPlayerExits(Player player)
@@ -125,6 +114,4 @@ public class CarAccessInteraction : TimedInteraction
 		occupied = false;
 		player.StopSaying();
 	}
-
-	
 }

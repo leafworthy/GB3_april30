@@ -15,6 +15,7 @@ public class CharacterSelectButtons : MonoBehaviour
 
 	public void Init(Player player)
 	{
+		//Debug.Log("buttons initialized");
 		hasSelected = false;
 		_player = player;
 		player.Controller.UIAxis.OnLeft += OnLeft;
@@ -52,6 +53,7 @@ public class CharacterSelectButtons : MonoBehaviour
 	{
 		if (!hasSelected) return;
 		hasSelected = false;
+		SFX.sounds.charSelect_deselect_sounds.PlayRandom();
 		currentlySelectedButton.Deselect();
 	}
 
@@ -85,12 +87,14 @@ public class CharacterSelectButtons : MonoBehaviour
 	private void ChooseCharacter()
 	{
 		currentlySelectedButton.Unhighlight();
+		SFX.sounds.charSelect_select_sounds.PlayRandom();
 		OnCharacterChosen?.Invoke(currentlySelectedButton.character);
 	}
 
 	private void OnRight(NewInputAxis obj)
 	{
 		if (hasSelected) return;
+		SFX.sounds.charSelect_move_sounds.PlayRandom();
 		hasJoined = true;
 		currentlySelectedButton.Unhighlight();
 		currentlySelectedButton = currentlySelectedButton.buttonToRight;
@@ -101,6 +105,7 @@ public class CharacterSelectButtons : MonoBehaviour
 	{
 		if (hasSelected) return;
 		hasJoined = true;
+		SFX.sounds.charSelect_move_sounds.PlayRandom();
 		currentlySelectedButton.Unhighlight();
 		currentlySelectedButton = currentlySelectedButton.buttonToLeft;
 		currentlySelectedButton.Highlight();

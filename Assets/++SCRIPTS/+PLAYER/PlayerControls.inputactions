@@ -42,46 +42,37 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack 1",
+                    "name": "Attack 1 - Right Trigger",
                     "type": "Button",
                     "id": "44d01f18-3e7a-477f-9531-622fc4828c66",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack 2",
+                    "name": "Attack 2 - Left Trigger",
                     "type": "Button",
                     "id": "81ee1dd4-36b4-4c0c-85e1-bf70effdf09a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack 3",
+                    "name": "Attack 3 - Circle",
                     "type": "Button",
                     "id": "d360da9e-81a2-4dad-b69e-850309fec709",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Reload 1",
+                    "name": "Reload - Triangle",
                     "type": "Button",
                     "id": "943bffb5-c952-472b-9a73-b1b754517f41",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Reload 2",
-                    "type": "Button",
-                    "id": "cdd87dbd-57d6-4317-a1b9-706dcf1d1b41",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -90,25 +81,34 @@
                     "name": "Pause",
                     "type": "Button",
                     "id": "faf1f019-f65e-437d-bdf4-c727bdc6a840",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Dash",
+                    "name": "Dash - Left Shoulder",
                     "type": "Button",
                     "id": "1ada0988-6767-4407-bde1-9ceb8771e80f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interact",
+                    "name": "Interact - Right Shoulder",
                     "type": "Button",
                     "id": "fba210e4-ebbb-4e5d-b0ad-993f2b65dd8e",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Swap Weapon - Square",
+                    "type": "Button",
+                    "id": "af479f5b-2ab1-4754-9b5a-0d9b33143503",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -144,7 +144,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Attack 2",
+                    "action": "Attack 2 - Left Trigger",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -155,7 +155,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
-                    "action": "Attack 2",
+                    "action": "Attack 2 - Left Trigger",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -166,18 +166,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
-                    "action": "Attack 3",
+                    "action": "Attack 3 - Circle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "1c782b04-8687-451a-9ef1-de6547f80fcd",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Attack 3",
+                    "action": "Attack 3 - Circle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -188,40 +188,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
-                    "action": "Reload 1",
+                    "action": "Reload - Triangle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "ff237dfd-16a6-4346-83fc-fabcd4decb5c",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Reload 1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c083ad60-1475-419b-a2b2-422a82f4664f",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard + Mouse",
-                    "action": "Reload 2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6ea00880-8b70-4796-9386-03226ad1abf5",
-                    "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Reload 2",
+                    "action": "Reload - Triangle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -232,17 +210,6 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
-                    "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0615998c-f818-4bec-aad2-008fecbca4b5",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -260,23 +227,45 @@
                 },
                 {
                     "name": "",
-                    "id": "6edecf42-17ac-4554-b43c-987a2a309111",
-                    "path": "<Keyboard>/shift",
+                    "id": "90d71a4c-afb4-43c6-81a0-8a8cf9aa8307",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard + Mouse",
-                    "action": "Dash",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "6cba6a88-2f29-4a68-857d-d8b9f94248fc",
-                    "path": "<Gamepad>/buttonNorth",
+                    "id": "429c0448-ceff-419d-9e2c-c2bb3ce6c15c",
+                    "path": "<DualShockGamepad>/touchpadButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Dash",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6edecf42-17ac-4554-b43c-987a2a309111",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard + Mouse",
+                    "action": "Dash - Left Shoulder",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "370a98f5-a161-4cf7-b32e-fec58fac78f5",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Dash - Left Shoulder",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -298,7 +287,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Attack 1",
+                    "action": "Attack 1 - Right Trigger",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -309,7 +298,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
-                    "action": "Attack 1",
+                    "action": "Attack 1 - Right Trigger",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -386,18 +375,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
-                    "action": "Interact",
+                    "action": "Interact - Right Shoulder",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "435c31a4-5297-4ae6-9bf8-3be791e20d19",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact - Right Shoulder",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2f3c38c8-a3b6-454f-b615-862c77ac8ca5",
                     "path": "",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Interact",
+                    "action": "Interact - Right Shoulder",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -409,6 +409,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "StickAiming",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ac774c44-adb1-468d-b390-862e78addc9b",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Swap Weapon - Square",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2f1264f6-e903-4fb4-b255-c9ffd32a81f5",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Swap Weapon - Square",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

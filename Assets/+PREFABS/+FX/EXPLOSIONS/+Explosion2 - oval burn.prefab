@@ -346,6 +346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1410023002579440923}
   - component: {fileID: 4913792243009222028}
+  - component: {fileID: -5164985059846971074}
   m_Layer: 0
   m_Name: +Explosion2 - oval burn
   m_TagString: Untagged
@@ -391,6 +392,18 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 3753526970929481598}
   renderAboveAll: 0
+--- !u!114 &-5164985059846971074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4857530249097659871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5443669984708303929
 GameObject:
   m_ObjectHideFlags: 0

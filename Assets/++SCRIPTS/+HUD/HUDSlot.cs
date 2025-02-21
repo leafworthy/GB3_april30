@@ -9,9 +9,11 @@ public class HUDSlot : MonoBehaviour
 	public HUD KarrotHUD;
 	public HUD TmatoHUD;
 	public PlayerSetupMenu charSelectMenu;
+	public UpgradeSetupMenu upgradeSetupMenu;
 
 	public void StartCharSelectMenu(Player player)
 	{
+		Debug.Log("here for player  " + player.playerIndex);
 		player.input.uiInputModule = charSelectMenu.GetComponentInChildren<InputSystemUIInputModule>();
 		DisableAllHUDS();
 		charSelectMenu.gameObject.SetActive(true);
@@ -19,6 +21,17 @@ public class HUDSlot : MonoBehaviour
 		charSelectMenu.OnCharacterChosen += SetCharacter;
 	}
 
+	public void StartUpgradeSelectMenu(Player player)
+	{
+		upgradeSetupMenu.gameObject.SetActive(true);
+		upgradeSetupMenu.Setup(player, this);
+		upgradeSetupMenu.OnUpgradePurchased += CloseUpgradeSelectMenu;
+	}
+
+	private void CloseUpgradeSelectMenu(Player player)
+	{
+		upgradeSetupMenu.gameObject.SetActive(false);
+	}
 
 	public void SetCharacter(Player player)
 	{
@@ -55,6 +68,7 @@ public class HUDSlot : MonoBehaviour
 		KarrotHUD.gameObject.SetActive(false);
 		TmatoHUD.gameObject.SetActive(false);
 	}
+
 
 	
 }

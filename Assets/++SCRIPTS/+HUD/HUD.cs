@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class HUD:MonoBehaviour
 {
@@ -12,7 +13,9 @@ public class HUD:MonoBehaviour
 	public AmmoDisplay tertiaryAmmoDisplay;
 	public HUDKillsDisplay hudKillsDisplay;
 	public HUDCashDisplay hudCashDisplay;
+	public HUDCashDisplay hudCashDisplayForUpgrades;
 	public HUDGasDisplay hudGasDisplay;
+	[FormerlySerializedAs("gangstaBeanAmmoChanger")] public HUDAmmoChanger hudAmmoChanger;
 
 	public  void SetPlayer(Player newPlayer)
 	{
@@ -20,7 +23,9 @@ public class HUD:MonoBehaviour
 		hudHealthDisplay.SetPlayer(currentPlayer);
 		hudKillsDisplay.SetPlayer(currentPlayer);
 		hudCashDisplay.SetPlayer(currentPlayer);
+		hudCashDisplayForUpgrades.SetPlayer(currentPlayer);
 		hudGasDisplay.SetPlayer(currentPlayer);
+		if(hudAmmoChanger != null)hudAmmoChanger.SetPlayer(currentPlayer);
 
 		_currentAmmoInventory = newPlayer.SpawnedPlayerGO.GetComponent<AmmoInventory>();
 		if (primaryAmmoDisplay != null) primaryAmmoDisplay.SetAmmo(_currentAmmoInventory.primaryAmmo);

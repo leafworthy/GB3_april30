@@ -18,7 +18,7 @@ public class ExplosionAttack : Attacks
 		anim.animEvents.OnAttackHit += AttackHit;
 		if (life.IsPlayer)
 		{
-			life.player.Controller.Attack1.OnPress += Player_Attack;
+			life.player.Controller.Attack1RightTrigger.OnPress += Player_Attack;
 			
 		}
 		else
@@ -32,7 +32,7 @@ public class ExplosionAttack : Attacks
 	{
 		if (life.IsPlayer)
 		{
-			life.player.Controller.Attack1.OnPress -= Player_Attack;
+			life.player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
 		}
 		else
 		{
@@ -48,7 +48,7 @@ public class ExplosionAttack : Attacks
 		if (currentTargetLife == null) return;
 
 		life = GetComponent<Life>();
-		ExplosionManager.Explode(transform.position, explosionRadius, life.AttackDamage, life.player);
+		Explosion_FX.Explode(transform.position, explosionRadius, life.AttackDamage, life.player);
 		life.DieNow();
 	}
 

@@ -5,7 +5,7 @@ public class AimAbility_FX : MonoBehaviour
 {
 	private AimAbility aimAbility;
 	private Body body;
-	private Light2D flashlightLight;
+	public Light2D flashlightLight;
 	private Life life;
 
 	private void Start()
@@ -14,19 +14,22 @@ public class AimAbility_FX : MonoBehaviour
 		if(life == null) return;
 		aimAbility = GetComponent<AimAbility>();
 		body = GetComponent<Body>();
-		flashlightLight = GetComponentInChildren<Light2D>();
 	}
 
 	private void Update()
 	{
 		if (GlobalManager.IsPaused) return;
-		AimFlashlight();
+		if(aimAbility.hasEnoughMagnitude())
+		{
+			AimFlashlight();
+		}
 		
 	}
 
 	private void AimFlashlight()
 	{
-		var hitPoint = aimAbility.CheckRaycastHit(aimAbility.GetAimDir());
+		
+		var hitPoint = aimAbility.CheckRaycastHit(aimAbility.AimDir);
 		if (hitPoint.collider != null)
 		{
 			Debug.DrawLine(body.FootPoint.transform.position, hitPoint.point, Color.white);

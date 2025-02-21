@@ -4,11 +4,12 @@ using UnityEngine;
 public class SFX : Singleton<SFX>
 {
 	private static List<AudioSource> AudioSources = new();
-	private static AudioSource specialAudioSource;
+	public AudioSource ongoingAudioSource;
 	public static AudioAssets sounds => _audio ? _audio : Resources.Load<AudioAssets>("Assets/Audio");
 	private static AudioAssets _audio;
 	public AudioSource UIaudioSource;
 	public AudioSource SFXaudioSource;
+	private static float maxDistance = 100;
 
 	private void OnEnable()
 	{
@@ -26,11 +27,15 @@ public class SFX : Singleton<SFX>
 		PlaySFXAt(clip, vector3);
 	}
 
-
-	public static void StopSpecialSound()
+	public  void StartOngoingSound()
 	{
-		if (specialAudioSource == null) return;
-		specialAudioSource.Stop();
+		if (ongoingAudioSource == null) return;
+		ongoingAudioSource.Play();
+	}
+	public  void StopOngoingSound()
+	{
+		if (ongoingAudioSource == null) return;
+		ongoingAudioSource.Stop();
 	}
 
 	public static void PlayUISound(AudioClip clip, float delay = 0)
@@ -41,7 +46,8 @@ public class SFX : Singleton<SFX>
 
 	private static void PlaySFXAt(AudioClip clip, Vector3 position, float delay = 0)
 	{
-		I.SFXaudioSource.transform.position = position;
+		if(Vector2.Distance( CursorManager.GetCamera().transform.position, position) > maxDistance) return;
+		//I.SFXaudioSource.gameObject.transform.position = position;
 		I.SFXaudioSource.PlayOneShot(clip);
 	}
 

@@ -334,6 +334,7 @@ MonoBehaviour:
   player: {fileID: 0}
   unitData: {fileID: 11400000, guid: 0aae0210f0dee4921a6e58b0c9008305, type: 2}
   cantDie: 1
+  isInvincible: 0
   Health: 100
 --- !u!114 &8846590420752494595
 MonoBehaviour:
@@ -349,7 +350,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowBarImage: {fileID: 0}
   fastBarImage: {fileID: 0}
-  HideWhenFull: 0
   DebreeTint: {r: 0.8745098, g: 0.44313726, b: 0.15294118, a: 1}
   colorMode: 0
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
@@ -384,3 +384,4 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   healthBar: {fileID: 0}
+  BlockTint: 0

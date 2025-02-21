@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,16 +11,16 @@ public class PlayerController : MonoBehaviour
     public NewControlButton Select;
     public NewControlButton Cancel;
     public NewControlButton Jump;
-    public NewControlButton Dash;
-    public NewControlButton Attack1;
-    public NewControlButton Attack2;
-    public NewControlButton Attack3;
-    public NewControlButton Reload1;
-    public NewControlButton ActionButton;
+    public NewControlButton DashRightShoulder;
+    public NewControlButton Attack1RightTrigger;
+    public NewControlButton Attack2LeftTrigger;
+    public NewControlButton Attack3Circle;
+    public NewControlButton ReloadTriangle;
+    public NewControlButton SwapWeaponSquare;
+    public NewControlButton InteractRightShoulder;
     public NewControlButton Pause;
     public NewControlButton Unpause;
 
-    public PlayerInput input;
 
     private bool initialized;
 
@@ -35,7 +34,6 @@ public class PlayerController : MonoBehaviour
     {
         if (initialized) return;
         initialized = true;
-        input = GetComponent<PlayerInput>();
         owner = player; 
         controls = new PlayerControls();
           
@@ -50,12 +48,13 @@ public class PlayerController : MonoBehaviour
             
         Pause = new NewInputButton(controls.PlayerMovement.Pause, owner);
         Jump = new NewInputButton(controls.PlayerMovement.Jump, owner);
-        Dash = new NewInputButton(controls.PlayerMovement.Dash, owner);
-        Attack1 = new NewInputButton(controls.PlayerMovement.Attack1, owner);
-        Attack2 = new NewInputButton(controls.PlayerMovement.Attack2, owner);
-        Attack3 = new NewInputButton(controls.PlayerMovement.Attack3, owner);
-        Reload1 = new NewInputButton(controls.PlayerMovement.Reload1, owner);
-        ActionButton = new NewInputButton(controls.PlayerMovement.Reload2, owner);
+        DashRightShoulder = new NewInputButton(controls.PlayerMovement.DashLeftShoulder, owner);
+        Attack1RightTrigger = new NewInputButton(controls.PlayerMovement.Attack1RightTrigger, owner);
+        Attack2LeftTrigger = new NewInputButton(controls.PlayerMovement.Attack2LeftTrigger, owner);
+        Attack3Circle = new NewInputButton(controls.PlayerMovement.Attack3Circle, owner);
+        ReloadTriangle = new NewInputButton(controls.PlayerMovement.ReloadTriangle, owner);
+        InteractRightShoulder = new NewInputButton(controls.PlayerMovement.InteractRightShoulder, owner);
+        SwapWeaponSquare = new NewInputButton(controls.PlayerMovement.SwapWeaponSquare, owner);
           
     }
 

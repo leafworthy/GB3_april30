@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public abstract class Pickup : MonoBehaviour
@@ -12,7 +13,7 @@ public abstract class Pickup : MonoBehaviour
 	private bool hasBeenPickedUp;
 	protected AudioClip Pickup_Sound;
 	private static readonly int PickupTrigger = Animator.StringToHash("PickupTrigger");
-	public Item item;
+	[FormerlySerializedAs("item")] public PickupItem pickupItem;
 		
 
 	

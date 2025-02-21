@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NaughtyAttributes;
 using UnityEngine;
 [ExecuteInEditMode]
 public class IsoSpriteSorting : MonoBehaviour
@@ -23,6 +21,8 @@ public class IsoSpriteSorting : MonoBehaviour
 
 	public int renderBelowSortingOrder = 0;
 	private int visibleStaticLastRefreshFrame = 0;
+	
+	private static IsoSpriteSorting[] isoSorters = new  IsoSpriteSorting[8];
 
 	
 	public List<IsoSpriteSorting> VisibleStaticDependencies
@@ -52,7 +52,10 @@ public class IsoSpriteSorting : MonoBehaviour
 	public Vector3 SorterPositionOffset = new();
 	public Vector3 SorterPositionOffset2 = new();
 	public List<Renderer> renderersToSort = new();
-
+	private Bounds2D cachedBounds;
+	private int lastBoundsCalculatedFrame = 0;
+	public bool renderAboveAll;
+	private bool hasRenderers;
 
 	private Transform t;
 
@@ -156,23 +159,13 @@ public class IsoSpriteSorting : MonoBehaviour
 		}
 	}
 
-	public static void SortScene()
+	public static void UpdateSorters()
 	{
-		var isoSorters = UpdateSorters();
-		
-		for (var i = 0; i < isoSorters.Length; i++) isoSorters[i].Unregister();
+		//isoSorters = FindObjectsByType<IsoSpriteSorting>( FindObjectsInactive.Include, FindObjectsSortMode.None); //changed this
+		//foreach (var t1 in isoSorters)
+		//	t1.Setup();
 
-	}
-
-	public static IsoSpriteSorting[] UpdateSorters()
-	{
-		var isoSorters = FindObjectsByType<IsoSpriteSorting>( FindObjectsInactive.Include, FindObjectsSortMode.None); //changed this
-		foreach (var t1 in isoSorters)
-			t1.Setup();
-
-		IsoSpriteSortingManager.SetVisible(isoSorters.ToList());
-		IsoSpriteSortingManager.UpdateSorting();
-		return isoSorters;
+		//IsoSpriteSortingManager.UpdateSorting();
 	}
 
 
@@ -205,16 +198,19 @@ public class IsoSpriteSorting : MonoBehaviour
 	}
 #endif
 
-	[Button()]
+	
 	public void GetRenderers()
 	{
+		if (hasRenderers) return;
+		hasRenderers = true;
 		RemoveNulls();
 		var tempRenderersToSort = GetComponentsInChildren<SpriteRenderer>(true);
 		foreach (var spriteRenderer in tempRenderersToSort)
 		{
+			if (spriteRenderer.CompareTag("DontSort")) continue;
 			if (!renderersToSort.Contains(spriteRenderer))
 			{
-				if(spriteRenderer.CompareTag("DontSort")) continue;
+				
 				
 				renderersToSort.Add(spriteRenderer);
 			}
@@ -355,9 +351,7 @@ public class IsoSpriteSorting : MonoBehaviour
 		}
 	}
 
-	private Bounds2D cachedBounds;
-	private int lastBoundsCalculatedFrame = 0;
-	public bool renderAboveAll;
+	
 
 	public Bounds2D TheBounds
 	{

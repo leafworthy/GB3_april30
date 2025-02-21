@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2962123226612387537}
   - component: {fileID: 7057719479559233906}
+  - component: {fileID: 2011923614503244355}
   m_Layer: 0
   m_Name: +Dust1 - Dash
   m_TagString: Untagged
@@ -88,6 +89,18 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 2582459004446341666}
   renderAboveAll: 0
+--- !u!114 &2011923614503244355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2962123226612387536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6201258430780000876
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,6 +152,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -176,7 +192,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &2372720816920015748
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -190,6 +206,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1

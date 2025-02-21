@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6252824684496673169}
   - component: {fileID: 972924970309542864}
   - component: {fileID: 3952245511725959318}
+  - component: {fileID: 9156004215329860467}
   m_Layer: 10
   m_Name: DEBREE METAL.000
   m_TagString: Untagged
@@ -105,6 +106,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDir: {x: 0, y: 0}
+--- !u!114 &9156004215329860467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97243714374872191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7000019270999446092
 GameObject:
   m_ObjectHideFlags: 0

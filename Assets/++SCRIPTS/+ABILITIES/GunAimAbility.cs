@@ -3,11 +3,14 @@ using UnityEngine;
 
 public class GunAimAbility : AimAbility
 {
-	public override Color GetBackgroundColor() => Colors.Blue;
-	public override string GetIconPath() => "Assets/Bullet_Icon.png";
+
 	private Animations anim;
 	private bool isAttacking;
+	public Vector2 CorrectForGlockOffset = new Vector2(-0.37f,0);
+	public Vector2 OriginalTopSpritePosition;
+	public GameObject TopSprite;
 
+	[Header("AK Clips")]
 	public AnimationClip E;
 	public AnimationClip EEN;
 	public AnimationClip EN;
@@ -22,35 +25,58 @@ public class GunAimAbility : AimAbility
 	public AnimationClip SE;
 	public AnimationClip ES;
 	public AnimationClip EES;
-	private List<AnimationClip> clipz = new();
-	private GunAttacks gunAttacks;
+
+	[Header("Glock Clips")]
+	public AnimationClip Glock_E;
+	public AnimationClip Glock_EEN;
+	public AnimationClip Glock_EN;
+	public AnimationClip Glock_NE;
+	public AnimationClip Glock_NW;
+	public AnimationClip Glock_WN;
+	public AnimationClip Glock_WWN;
+	public AnimationClip Glock_W;
+	public AnimationClip Glock_WWS;
+	public AnimationClip Glock_WS;
+	public AnimationClip Glock_SW;
+	public AnimationClip Glock_SE;
+	public AnimationClip Glock_ES;
+	public AnimationClip Glock_EES;
+	
+	private List<AnimationClip> akClips = new();
+	private List<AnimationClip> glockClips = new();
+	private GunAttack gunAttack;
+	private bool Reloading;
 
 	public override void Start()
 	{
 		base.Start();
-		gunAttacks = GetComponent<GunAttacks>();
-		gunAttacks.OnShotHitTarget += GunOnShoot;
-		gunAttacks.OnShotMissed += GunOnShoot;
+		gunAttack = GetComponent<GunAttack>();
+		gunAttack.OnShotHitTarget += GunOnShoot;
+		gunAttack.OnShotMissed += GunOnShoot;
 		anim = GetComponent<Animations>();
 		anim.animEvents.OnAnimationComplete += Anim_OnComplete;
-		clipz.AddMany(E, EEN, EN, NE, NW, WN, WWN, W, WWS, WS, SW, SE, ES, EES);
-		
-
+		akClips.AddMany(E, EEN, EN, NE, NW, WN, WWN, W, WWS, WS, SW, SE, ES, EES);
+		glockClips.AddMany(Glock_E, Glock_EEN, Glock_EN, Glock_NE, Glock_NW, Glock_WN, Glock_WWN, Glock_W, Glock_WWS, Glock_WS, Glock_SW, Glock_SE, Glock_ES, Glock_EES);
+		OriginalTopSpritePosition = TopSprite.transform.localPosition;
 	}
-	
+
 	private void OnDisable()
 	{
-		if (gunAttacks == null) return;
-		gunAttacks.OnShotHitTarget -= GunOnShoot;
-		gunAttacks.OnShotMissed -= GunOnShoot;
+		if (gunAttack == null) return;
+		gunAttack.OnShotHitTarget -= GunOnShoot;
+		gunAttack.OnShotMissed -= GunOnShoot;
 	}
-	public override Vector3 GetAimDir()
+
+	protected override Vector3 GetRealAimDir()
 	{
 		if (owner.isUsingMouse)
 		{
 			return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
 		}
-		return AimDir;
+		else
+		{
+			return owner.Controller.AimAxis.GetCurrentAngle();
+		}
 	}
 
 	private void Anim_OnComplete()
@@ -65,9 +91,12 @@ public class GunAimAbility : AimAbility
 		anim.animator.speed = 1;
 		anim.SetFloat(Animations.ShootSpeed, 1);
 		anim.Play(GetAnimationClipNameFromDegrees(GetDegrees()), 1, .25f);
-		
+		if (gunAttack.isGlocking)
+		{
+			if (!body.TopIsFacingRight) TopSprite.transform.localPosition = OriginalTopSpritePosition + CorrectForGlockOffset;
+			else TopSprite.transform.localPosition = OriginalTopSpritePosition;
+		}
 	}
-
 
 	private float GetDegrees()
 	{
@@ -77,41 +106,41 @@ public class GunAimAbility : AimAbility
 		return degrees;
 	}
 
-	
+
+
 	protected override void Update()
 	{
-		if(life.IsDead()) return;
 		base.Update();
-		if (GlobalManager.IsPaused) return;
 		body.TopFaceDirection(GetClampedAimDir().x >= 0);
-		if (owner.isUsingMouse)
+		if (gunAttack.isGlocking)
 		{
-			AimDir = CursorManager.GetMousePosition() - body.AimCenter.transform.position;
-			
-			if (!isAttacking && !body.arms.isActive) AimInDirection(GetDegrees());
-			return;
+			if (!body.TopIsFacingRight) TopSprite.transform.localPosition = OriginalTopSpritePosition + CorrectForGlockOffset;
+			else TopSprite.transform.localPosition = OriginalTopSpritePosition;
 		}
-			
-			
-
+		if (!isAttacking && !gunAttack.isReloading && !body.arms.isActive) AimInDirection(GetDegrees());
 	}
-
-	
-
-	
 
 	private string GetAnimationClipNameFromDegrees(float degrees)
 	{
+	
 		degrees = Mathf.Abs(degrees);
 		degrees += 12.85f; // (-12.85 - 347.15)
 
 		var angleDifference = 25.7f;
 		var whichOne = Mathf.FloorToInt(Mathf.Abs(degrees / angleDifference));
 
-		if (whichOne >= clipz.Count) whichOne = 0;
+		if (gunAttack.isGlocking)
+		{
+			if (whichOne >= glockClips.Count) whichOne = 0;
+			return glockClips[whichOne].name;
+		}
+		else
+		{
+			if (whichOne >= akClips.Count) whichOne = 0;
+			return akClips[whichOne].name;
+		}
 
-
-		return clipz[whichOne].name;
+		
 	}
 
 	private void AimInDirection(float degrees)
@@ -123,18 +152,23 @@ public class GunAimAbility : AimAbility
 		var angleDifference = 25.7f;
 		var whichOne = Mathf.FloorToInt(Mathf.Abs(degrees / angleDifference));
 
-		if (whichOne >= clipz.Count) whichOne = 0;
+		if (whichOne >= akClips.Count) whichOne = 0;
 
-		if (clipz[whichOne] != null) anim.Play(clipz[whichOne].name, 1, 0);
+		if(gunAttack.isGlocking)
+		{
+			if (glockClips[whichOne] != null) anim.Play(glockClips[whichOne].name, 1, 0);
+			if(!body.TopIsFacingRight) TopSprite.transform.localPosition = OriginalTopSpritePosition + CorrectForGlockOffset;
+			else TopSprite.transform.localPosition = OriginalTopSpritePosition;
+		}
+		else
+		{
+			TopSprite.transform.localPosition = OriginalTopSpritePosition;
+			if (akClips[whichOne] != null) anim.Play(akClips[whichOne].name, 1, 0);
+		}
+		
+		
 		anim.SetFloat(Animations.ShootSpeed, 0);
-
 	}
-
-
-
-
-
-	
 
 	private Vector2 GetClampedAimDir()
 	{
@@ -151,9 +185,4 @@ public class GunAimAbility : AimAbility
 		if (clampedDir.x < 0 && clampedDir.x > -.25) clampedDir.x = -.25f;
 		return clampedDir;
 	}
-
-	
-
-
-
 }

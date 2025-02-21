@@ -1,4 +1,4 @@
-using NaughtyAttributes;
+
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -13,14 +13,12 @@ public class DoorDefence:MonoBehaviour
 		Damage();
 	}
 
-	[Button()]
 	public void Repair()
 	{
 		defence += 2;
 		Refresh();
 	}
 
-	[Button()]
 	public void Damage()
 	{
 		defence--;
@@ -28,7 +26,7 @@ public class DoorDefence:MonoBehaviour
 		Refresh();
 	}
 
-	[Button()]
+	
 	private void Refresh()
 	{
 		defenceStates ??= GetComponent<HideRevealObjects>();

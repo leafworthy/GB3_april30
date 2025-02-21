@@ -2,15 +2,16 @@
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class Life : IHaveInspectorColor
+public class Life : MonoBehaviour
 {
-	public override Color GetBackgroundColor() => Colors.Red;
-	public override string GetIconPath() => "Assets/Skull_Icon.png";
-
+	
 	[HideInInspector] public Player player;
 	public UnitStatsData unitData;
 
 
+	private float ExtraMaxHealth;
+	private float ExtraMaxSpeed;
+	private float ExtraMaxDamage;
 	protected virtual void OnValidate()
 	{
 		if (unitData != null) return;
@@ -19,17 +20,17 @@ public class Life : IHaveInspectorColor
 
 
 	public float AttackHeight => unitData.AttackHeight;
-	public float AttackDamage => unitData.AttackDamage;
+	public float AttackDamage => unitData.AttackDamage+ ExtraMaxDamage;
 	public float AttackRange => unitData.AttackRange;
 	public float AttackRate => unitData.AttackRate;
 
-	public float Attack2Damage => unitData.AttackDamage;
-	public float Attack2Rate => unitData.AttackRate;
+	public float Attack2Damage => unitData.Attack2Damage+ ExtraMaxDamage;
+	public float Attack2Rate => unitData.Attack2Rate;
 
 
-	public float HealthMax => unitData.HealthMax;
-	public float MoveSpeed => unitData.MoveSpeed;
-	public float DashSpeed => unitData.DashSpeed;
+	public float HealthMax => unitData.HealthMax+ExtraMaxHealth;
+	public float MoveSpeed => unitData.MoveSpeed + ExtraMaxSpeed;
+	public float DashSpeed => unitData.DashSpeed + ExtraMaxSpeed;
 
 	public bool IsPlayer => IsThisAPlayer();
 
@@ -38,6 +39,7 @@ public class Life : IHaveInspectorColor
 	private bool IsThisAPlayer() => player != null && player.IsPlayer();
 
 	public bool IsObstacle => unitData.isObstacle;
+	public bool IsPlayerAttackable => unitData.isPlayerAttackable;
 
 	public DebrisType DebrisType => unitData.debrisType;
 	public float JumpSpeed => unitData.JumpSpeed;
@@ -111,7 +113,7 @@ public class Life : IHaveInspectorColor
 
 		MyDebugUtilities.DrawAttack(attack);
 
-		CameraShaker.ShakeCamera(transform.position, CameraShaker.ShakeIntensityType.normal);
+		CameraShaker_FX.ShakeCamera(transform.position, CameraShaker_FX.ShakeIntensityType.normal);
 		if (anim != null)
 		{
 			anim.SetTrigger(Animations.HitTrigger);
@@ -186,7 +188,7 @@ public class Life : IHaveInspectorColor
 	{
 		if (cantDie) return;
 		OnDead?.Invoke(player);
-		Maker.Unmake(gameObject);
+		ObjectMaker.Unmake(gameObject);
 	}
 
 	private void SetHealth(float newHealth)
@@ -235,4 +237,20 @@ public class Life : IHaveInspectorColor
 		DisableCollidersLayerAndHealth();
 	}
 
+	public void SetExtraMaxHealth(float newExtraMaxHealth)
+	{
+		Debug.Log("extra max health set to: " + newExtraMaxHealth);
+		ExtraMaxHealth = newExtraMaxHealth;
+		OnFractionChanged?.Invoke(GetFraction());
+	}
+
+	public void SetExtraMaxDamage(float newIncreaseMaxDamage)
+	{
+		ExtraMaxDamage = newIncreaseMaxDamage;
+	}
+
+	public void SetExtraMaxSpeed(float newExtraMaxSpeed)
+	{
+		ExtraMaxSpeed = newExtraMaxSpeed;
+	}
 }

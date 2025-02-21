@@ -284,6 +284,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2974191435372230884}
   - component: {fileID: 3750312196540721137}
+  - component: {fileID: -494843434496705267}
   m_Layer: 0
   m_Name: +Explosion3 - huge popper
   m_TagString: Untagged
@@ -329,6 +330,18 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 3883639131198702722}
   renderAboveAll: 0
+--- !u!114 &-494843434496705267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5296165292360782326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8509691991150135127
 GameObject:
   m_ObjectHideFlags: 0

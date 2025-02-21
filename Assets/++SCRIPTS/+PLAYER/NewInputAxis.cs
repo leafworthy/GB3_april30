@@ -9,7 +9,7 @@ public class NewInputAxis : IControlAxis
 	private bool IsActive;
 	private Vector2 lastDir;
 	private bool hasDirection;
-	
+
 	public NewInputAxis(InputAction _action, Player _owner)
 	{
 		action = _action;
@@ -20,10 +20,7 @@ public class NewInputAxis : IControlAxis
 	private void owner_onAction(InputAction.CallbackContext obj)
 	{
 		if (obj.action.name != action.name) return;
-		if (obj.action.actionMap.name != action.actionMap.name)
-		{
-			return;
-		}
+		if (obj.action.actionMap.name != action.actionMap.name) return;
 		hasDirection = true;
 		var dir = obj.action.ReadValue<Vector2>();
 		UpdateDir(dir);
@@ -34,8 +31,7 @@ public class NewInputAxis : IControlAxis
 	{
 		currentDir = newDir;
 		OnChange?.Invoke(this, currentDir);
-		
-		
+
 		if (currentMagnitudeIsTooSmall())
 		{
 			if (IsActive)
@@ -43,6 +39,7 @@ public class NewInputAxis : IControlAxis
 				IsActive = false;
 				OnInactive?.Invoke(this);
 			}
+
 			RightPressed = false;
 			LeftPressed = false;
 			DownPressed = false;
@@ -56,6 +53,7 @@ public class NewInputAxis : IControlAxis
 			OnActive?.Invoke(this);
 			return;
 		}
+
 		if (currentDir.x > 0)
 		{
 			LeftPressed = false;
@@ -78,7 +76,7 @@ public class NewInputAxis : IControlAxis
 			UpPressed = true;
 			OnUp?.Invoke(this);
 		}
-		else if(currentDir.y < 0)
+		else if (currentDir.y < 0)
 		{
 			UpPressed = false;
 			if (DownPressed) return;
@@ -87,10 +85,7 @@ public class NewInputAxis : IControlAxis
 		}
 	}
 
-	private bool currentMagnitudeIsTooSmall()
-	{
-		return !(currentDir.magnitude > .5f);
-	}
+	private bool currentMagnitudeIsTooSmall() => !(currentDir.magnitude > .5f);
 
 	private bool UpPressed;
 	private bool DownPressed;
@@ -104,10 +99,7 @@ public class NewInputAxis : IControlAxis
 	public event Action<NewInputAxis> OnLeft;
 	public event Action<NewInputAxis> OnUp;
 	public event Action<NewInputAxis> OnDown;
-	public Vector3 GetCurrentAngle()
-	{
-		return currentDir;
-	}
+	public Vector3 GetCurrentAngle() => currentDir;
 
 	public void update()
 	{

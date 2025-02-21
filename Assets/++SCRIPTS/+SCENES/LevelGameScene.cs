@@ -1,24 +1,22 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class LevelGameScene : GameScene
 {
-	private static bool isPlaying;
-	private static LevelDrops _levelDrops;
 	public static LevelGameScene CurrentLevelGameScene;
-	
-	[SerializeField] private List<GameObject> spawnPoints = new();
+
+	[SerializeField] private List<GameObject> playerSpawnPoints = new();
 	[SerializeField] private CinemachineTargetGroup cameraFollowTargetGroup;
-	[SerializeField] private Camera mainCamera;
 	private int currentSpawnPointNumber;
 
 	public static event Action<Type> OnStop;
 	public static event Action OnStart;
 	public static event Action<Player> OnPlayerSpawned;
+	
+	public static bool DefenceStyle = true;
 
 
 	protected void Start()
@@ -27,11 +25,19 @@ public class LevelGameScene : GameScene
 		StartLevel();
 	}
 
+	public static void WinGame()
+	{
+		CurrentLevelGameScene.StopLevel(Type.Endscreen);
+	}
+
 
 	private void StartLevel()
 	{
-		Players.OnAllPlayersDead += RestartLevel;
-		_levelDrops = gameObject.AddComponent<LevelDrops>();
+		Debug.Log("start level");
+		Players.OnAllJoinedPlayersDead += RestartLevel;
+		Player.OnPlayerDies += Player_PlayerDies;
+		
+
 		CurrentLevelGameScene = this;
 		GlobalManager.IsInLevel = true;
 		OnStart?.Invoke();
@@ -39,87 +45,88 @@ public class LevelGameScene : GameScene
 		Players.SetActionMaps(Players.PlayerActionMap);
 	}
 
-	private void StopLevel()
+	private void Player_PlayerDies(Player deadPlayer)
 	{
-		
-		Players.OnAllPlayersDead -= RestartLevel;
-
-		var tempTargetsGroup = cameraFollowTargetGroup.m_Targets.ToList();
-		foreach (var t in tempTargetsGroup) cameraFollowTargetGroup.RemoveMember(t.target);
-		Maker.DestroyAllUnits();
-		OnStop?.Invoke(GameScene.Type.Endscreen);
-		CurrentLevelGameScene = null;
-		GlobalManager.IsInLevel = false;
-
+		var tempTargetsGroup = cameraFollowTargetGroup.Targets.ToList();
+		foreach (var t in tempTargetsGroup)
+		{
+			var life = t.Object.GetComponent<Life>();
+			if (life == null) continue;
+			if (life.player == deadPlayer) cameraFollowTargetGroup.RemoveMember(t.Object);
+		}
 	}
+
+	private void StopLevel(Type sceneType)
+	{
+		Players.OnAllJoinedPlayersDead -= RestartLevel;
+
+		var tempTargetsGroup = cameraFollowTargetGroup.Targets.ToList();
+		foreach (var t in tempTargetsGroup) cameraFollowTargetGroup.RemoveMember(t.Object);
+		
+		OnStop?.Invoke(Type.Endscreen);
+		GlobalManager.IsInLevel = false;
+		CurrentLevelGameScene.GoToScene(sceneType);
+		CurrentLevelGameScene = null;
+	}
+
 	public void RestartLevel()
 	{
-		isPlaying = false;
 		StopAndPlayLevel();
 	}
 
-	public void SpawnPlayer(Player player)
+	public void SpawnPlayer(Player player, bool firstTime = false)
 	{
-		currentSpawnPointNumber++;
-		player.Spawn(spawnPoints[currentSpawnPointNumber].transform.position);
+		Debug.Log("spawn player");
+		var point = playerSpawnPoints[currentSpawnPointNumber];
+		if (firstTime)
+		{
+			currentSpawnPointNumber++;
+			player.Spawn(point.transform.position);
+		}
+		else
+			player.Spawn(CursorManager.GetCamera().transform.position);
+
 		AddMembersToCameraFollowTargetGroup(player);
 		Players.SetActionMaps(Players.PlayerActionMap);
-	}
-
-	private IEnumerator RestartLevelAfterSeconds(float seconds)
-	{
-		yield return new WaitForSeconds(seconds);
-		StopAndPlayLevel();
+		OnPlayerSpawned?.Invoke(player);
 	}
 
 	private void StopAndPlayLevel()
 	{
-		//StopLevel();
 		GoToScene(Type.RestartLevel);
 	}
 
 	private void ActivateLevelAndSpawnPlayers()
 	{
-	
+		foreach (var player in Players.AllJoinedPlayers)
+		{
+			Debug.Log("player being spawned " + player.name, player);
+		}
+
+		Debug.Log("players spawned");
 		gameObject.SetActive(true);
-		SpawnPlayers(Players.AllJoinedPlayers);
+		SpawnPlayers(Players.AllJoinedPlayers, true);
 	}
 
-	private void SpawnPlayers(List<Player> joiningPlayers)
+	private void SpawnPlayers(List<Player> joiningPlayers, bool firstTime = false)
 	{
-		for (var index = 0; index < joiningPlayers.Count; index++)
+		foreach (var player in joiningPlayers)
 		{
-			var player = joiningPlayers[index];
-			SpawnPlayer(player);
-			OnPlayerSpawned?.Invoke(player);
+			Debug.Log("player spawned:" + player.name, player);
+			if(player.state != Player.State.Unjoined) SpawnPlayer(player, firstTime);
 		}
 	}
 
 	private void AddMembersToCameraFollowTargetGroup(Player player)
 	{
 		cameraFollowTargetGroup.AddMember(player.SpawnedPlayerGO.transform, 1, 0);
-		if (!player.isUsingMouse)
-		{
-			var stickTarget = Maker.Make(ASSETS.Players.followStickPrefab).GetComponent<FollowStick>();
-			stickTarget.Init(player);
-			cameraFollowTargetGroup.AddMember(stickTarget.transform, 1, 0);
-			return;
-		}
-		var mouseTarget = Maker.Make(ASSETS.Players.followMousePrefab).transform;
-		cameraFollowTargetGroup.AddMember(mouseTarget, 1, 0);
+		var stickTarget = ObjectMaker.Make(ASSETS.Players.followStickPrefab).GetComponent<FollowCursor>();
+		stickTarget.Init(player);
 	}
-
-
-	public void WaitThenRestartLevel()
-	{
-		isPlaying = false;
-		StartCoroutine(RestartLevelAfterSeconds(1f));
-	}
-
 
 	public void ExitToMainMenu()
 	{
-		OnStop?.Invoke(GameScene.Type.MainMenu);
-		GoToScene(GameScene.Type.MainMenu);
+		OnStop?.Invoke(Type.MainMenu);
+		GoToScene(Type.MainMenu);
 	}
 }

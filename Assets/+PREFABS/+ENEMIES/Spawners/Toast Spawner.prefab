@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3717642730740150474
 Transform:
   m_ObjectHideFlags: 0
@@ -96,7 +96,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1754422188118698081}
-  - component: {fileID: 8868458527902208340}
+  - component: {fileID: 4382778967458282906}
   m_Layer: 0
   m_Name: Toast Spawner
   m_TagString: Untagged
@@ -120,7 +120,7 @@ Transform:
   - {fileID: 3717642730740150474}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8868458527902208340
+--- !u!114 &4382778967458282906
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,4 +132,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 420875647df843f893cd1a46bf13ff5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ZombiePrefab: {fileID: 7431454428826219940, guid: cb879157170f74c019dcfb56c1da9382, type: 3}
+  isComplete: 0

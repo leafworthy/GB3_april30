@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 1471593508094857430}
   - component: {fileID: 8646528788848859544}
   - component: {fileID: 5733381583793910357}
+  - component: {fileID: 1993503771487713632}
   m_Layer: 10
   m_Name: DebreeBase
   m_TagString: Untagged
@@ -224,6 +225,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDir: {x: 0, y: 0}
+--- !u!114 &1993503771487713632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4896294812757534008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8462793058464853995
 GameObject:
   m_ObjectHideFlags: 0

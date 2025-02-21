@@ -25,6 +25,8 @@ public class HUDS : Singleton<HUDS>
 		DisableAllHUDSlots();
 	}
 
+	
+
 	private void LevelScene_OnPlayerSpawned(Player player)
 	{
 		SetHUDSlotCharacter(player);
@@ -33,12 +35,19 @@ public class HUDS : Singleton<HUDS>
 	private void LevelScene_OnStart()
 	{
 		//CreateHUDForPlayers(Players.AllJoinedPlayers);
-		Players.OnPlayerJoinsInGame += JoinInGame;
+		Players.OnPlayerJoins += JoinInGame;
+		Players.OnPlayerGetUpgrades += OpenUpgradePanel;
 		Vignette.SetActive(true);
 	}
 
-	
-	  
+	private void OpenUpgradePanel(Player player)
+	{
+		var slot = I.currentHUD.HUDSlots[(int)player.input.playerIndex];
+		slot.gameObject.SetActive(true);
+		slot.StartUpgradeSelectMenu(player);
+	}
+
+
 	private void CreateHUDForPlayers(List<Player> players)
 	{
 		foreach (var player in players)
@@ -49,8 +58,8 @@ public class HUDS : Singleton<HUDS>
 
 	private static void JoinInGame(Player player)
 	{
-		if (!GlobalManager.IsInLevel) return;
-		var slot = I.currentHUD.HUDSlots[(int)player.input.playerIndex];
+		Debug.Log("join in game");
+		var slot = I.currentHUD.HUDSlots[(int) player.input.playerIndex];
 		slot.gameObject.SetActive(true);
 		slot.StartCharSelectMenu(player);
 	}

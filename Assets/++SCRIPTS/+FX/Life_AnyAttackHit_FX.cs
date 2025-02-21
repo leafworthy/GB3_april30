@@ -29,7 +29,8 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 	{
 		if (attack.DamageAmount <= 0) return;
 		if(attack.DestinationLife.cantDie) return;
-		RisingTextCreator.CreateRisingText("-" + attack.DamageAmount.ToString(), attack.DestinationWithHeight, Color.red);
+		var roundedDamage = (Mathf.Round(attack.DamageAmount * 100)) / 100.0f;
+		RisingTextCreator.CreateRisingText("-" + roundedDamage, attack.DestinationWithHeight, Color.red);
 	}
 
 	private void SprayDebree(Attack attack, Life hitLife)
@@ -49,7 +50,7 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 		if (hitList == null) return;
 
 		var heightCorrectionForDepth = new Vector2(0, -1f);
-		var hitMarkObject = Maker.Make(hitList.GetRandom(), (Vector2) attack.DestinationFloorPoint + heightCorrectionForDepth);
+		var hitMarkObject = ObjectMaker.Make(hitList.GetRandom(), (Vector2) attack.DestinationFloorPoint + heightCorrectionForDepth);
 		
 		var hitHeightScript = hitMarkObject.GetComponent<ThingWithHeight>();
 		hitHeightScript.SetDistanceToGround(attack.DestinationHeight- heightCorrectionForDepth.y, false);
@@ -61,7 +62,7 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 			var localScale = hitMarkObject.transform.localScale;
 		hitMarkObject.transform.localScale = new Vector3(-Mathf.Abs(localScale.x), localScale.y, 0);
 		}
-		Maker.Unmake(hitMarkObject, 5);
+		ObjectMaker.Unmake(hitMarkObject, 5);
 		Debug.DrawLine(attack.DestinationFloorPoint, attack.DestinationFloorPoint + heightCorrectionForDepth, Color.black, 1f);
 	
 	}
@@ -74,16 +75,16 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 		for (var j = 0; j < randAmount; j++)
 		{
 			//----->
-			var forwardDebree = Maker.Make(FX.Assets.GetDebree(attack.DestinationLife.DebrisType), attack.DestinationFloorPoint);
+			var forwardDebree = ObjectMaker.Make(FX.Assets.GetDebree(attack.DestinationLife.DebrisType), attack.DestinationFloorPoint);
 		
 			forwardDebree.GetComponent<FallToFloor>().Fire(attack);
-			Maker.Unmake(forwardDebree, 3);
+			ObjectMaker.Unmake(forwardDebree, 3);
 
 			//<-----
 			var flippedAttack = new Attack(hitLife, attack.OriginLife, attack.DamageAmount);
-			var backwardDebree = Maker.Make(FX.Assets.GetDebree(attack.DestinationLife.DebrisType), attack.DestinationFloorPoint);
+			var backwardDebree = ObjectMaker.Make(FX.Assets.GetDebree(attack.DestinationLife.DebrisType), attack.DestinationFloorPoint);
 			backwardDebree.GetComponent<FallToFloor>().Fire(flippedAttack);
-			Maker.Unmake(backwardDebree, 3);
+			ObjectMaker.Unmake(backwardDebree, 3);
 			if (lifeFX != null)
 			{
 				var sprite = forwardDebree.GetComponentInChildren<SpriteRenderer>();
@@ -97,7 +98,7 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 
 	private void CreateBloodSpray(Attack attack)
 	{
-		var blood = Maker.Make(FX.Assets.bloodspray.GetRandom(), attack.DestinationFloorPoint);
+		var blood = ObjectMaker.Make(FX.Assets.bloodspray.GetRandom(), attack.DestinationFloorPoint);
 		if (attack.Direction.x < 0)
 		{
 			blood.transform.localScale =

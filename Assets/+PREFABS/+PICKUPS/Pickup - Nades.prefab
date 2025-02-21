@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 7248183334856831225}
   - component: {fileID: 7597295679497754206}
   - component: {fileID: -7919856784607389145}
+  - component: {fileID: -6271058270954999992}
   m_Layer: 23
   m_Name: Pickup - Nades
   m_TagString: Untagged
@@ -326,7 +327,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowBarImage: {fileID: 0}
   fastBarImage: {fileID: 0}
-  HideWhenFull: 0
   DebreeTint: {r: 1, g: 1, b: 1, a: 1}
   colorMode: 0
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
@@ -361,6 +361,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   healthBar: {fileID: 0}
+  BlockTint: 0
 --- !u!114 &-7919856784607389145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,6 +372,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f6ae26fd7b2e440e83ff0ab25e71f4df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-6271058270954999992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7925052256559260962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8186633916263952688

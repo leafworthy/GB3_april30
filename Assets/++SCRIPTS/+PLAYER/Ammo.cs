@@ -20,10 +20,10 @@ public class Ammo
 		return AmmoInClip > 0;
 	}
 
-	public bool hasReserveAmmo()
+	public bool hasReserveAmmo(int min = 0)
 	{
 		if (unlimited) return true;
-		return reserveAmmo > 0;
+		return reserveAmmo > min;
 	}
 
 	public bool hasAmmoInReserveOrClip()
@@ -62,6 +62,7 @@ public class Ammo
 		if (unlimited)
 		{
 			AmmoInClip = clipSize;
+			OnAmmoGained?.Invoke();
 			return;
 		}
 		if (!reloads) return;

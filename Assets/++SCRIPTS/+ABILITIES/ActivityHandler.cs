@@ -29,7 +29,7 @@ public class ActivityHandler
 	}
 
 
-	public bool Stop(string Verb)
+	public bool Stop(string Verb = "")
 	{
 		if (!isActive)
 		{

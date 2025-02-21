@@ -43,15 +43,24 @@ public class MoveController : MonoBehaviour
 			var _controller = owner.Controller;
 			_controller.MoveAxis.OnChange += Player_MoveInDirection;
 			_controller.MoveAxis.OnInactive += Player_StopMoving;
+			canMove = true;
 		}
 		else
 		{
 			ai = GetComponent<EnemyAI>();
 			ai.OnMoveInDirection += AI_MoveInDirection;
 			ai.OnStopMoving += AI_StopMoving;
+			if (ai.BornOnAggro)
+			{
+				canMove = false;
+			}
+			else
+			{
+				canMove = true;
+			}
 		}
 
-		canMove = true;
+	
 		moveSpeed = life.MoveSpeed;
 
 		anim.animEvents.OnStep += Anim_OnStep;
@@ -84,6 +93,7 @@ public class MoveController : MonoBehaviour
 		anim.animEvents.OnStopUsingLegs -= Anim_StopUsingLegs;
 		anim.animEvents.OnDashStop -= Anim_DashStop;
 		anim.animEvents.OnRecovered -= Anim_Recovered;
+		  
 		 
 	
 	}
@@ -108,18 +118,20 @@ public class MoveController : MonoBehaviour
 
 	private void Anim_StopUsingLegs()
 	{
+		 canMove = true;
 		body.legs.Stop("On use legs");
 	}
 
 	private void Anim_UseLegs()
 	{
+		canMove = false;
 		body.legs.Do("On use legs");
 	}
 
 	private void Anim_OnStep()
 	{
 		
-		var dust = Maker.Make(FX.Assets.dust1_ground, body.FootPoint.transform.position);
+		var dust = ObjectMaker.Make(FX.Assets.dust1_ground, body.FootPoint.transform.position);
 		if (mover.moveDir.x > 0)
 		{
 			dust.transform.localScale = new Vector3(-Mathf.Abs(dust.transform.localScale.x),
@@ -177,7 +189,7 @@ public class MoveController : MonoBehaviour
 	{
 		
 		moveDir = direction;
-		body.BottomFaceDirection(direction.x > 0);
+		if(direction.x != 0) body.BottomFaceDirection(direction.x > 0);
 		mover.MoveInDirection(direction, moveSpeed);
 		anim.SetBool(Animations.IsMoving, true);
 	}

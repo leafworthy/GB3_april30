@@ -15,7 +15,7 @@ public class RamAttack : Attacks
 
 	private void Start()
 	{
-		life = GetComponent<Life>();
+		life = GetComponentInChildren<Life>();
 		mover = GetComponent<MoveAbility>();
 		owner = Players.EnemyPlayer;
 		isCooledDown = true;
@@ -56,7 +56,6 @@ public class RamAttack : Attacks
 
 	private void CheckForHit(GameObject other)
 	{
-		if (life == null) life = GetComponentInChildren<Life>();
 		if (life.IsDead()) return;
 		if (!isCooledDown) return;
 		if (other == null) return;
@@ -68,10 +67,18 @@ public class RamAttack : Attacks
 			if(!otherJump.isResting) return;
 		}
 		if (otherDefence == null) return;
-		if (otherDefence.IsObstacle || otherDefence.IsPlayer)
+		if (otherDefence.IsObstacle)
 		{
-			AttackHit(otherDefence);
+			var door = other.GetComponentInChildren<DoorInteraction>();
+			if(door == null || door.isOpen || door.isBroken) return;
+			
 		}
+		else
+		{
+			if (otherDefence.IsDead()) return;
+		}
+
+		AttackHit(otherDefence);
 
 	}
 

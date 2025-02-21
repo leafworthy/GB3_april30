@@ -10,16 +10,13 @@ public class SceneLoader : Singleton<SceneLoader>
 	public TextMeshProUGUI percentLoadedText;
 	public GameObject loadingScreen;
 	private bool isLoading;
-	
+
 	private GameScene.Type DestinationScene;
-	[SerializeField]private GameScene.Type StartingScene;
-	
+	[SerializeField] private GameScene.Type StartingScene;
+
 	public Animator faderAnimator;
-	private static readonly int FadeOutTrigger = Animator.StringToHash("FadeOutTrigger");
-	private static readonly int FadeInTrigger = Animator.StringToHash("FadeInTrigger");
-	private bool isFadingIn;
-	public bool autoLoadScene;
 	public static bool hasLoaded;
+	private static readonly int IsFadedIn = Animator.StringToHash("IsFadedIn");
 
 	private void FixedUpdate()
 	{
@@ -34,40 +31,42 @@ public class SceneLoader : Singleton<SceneLoader>
 	public void FadeInComplete()
 	{
 		LoadScene(DestinationScene);
+		Debug.Log("load scene");
 	}
 
-	
 
 	protected override void Awake()
 	{
 		base.Awake();
 		DontDestroyOnLoad(this);
+		SceneManager.sceneLoaded += FirstFade;
 		SceneManager.LoadScene(StartingScene.ToString());
+	}
+
+	private void FirstFade(Scene arg0, LoadSceneMode arg1)
+	{
 		FadeOut();
 		hasLoaded = true;
-		
-		//SetDestinationScene(StartingScene);
-
+		SceneManager.sceneLoaded -= FirstFade;
 	}
 
 	private void StartFadingIn()
 	{
 		loadingScreen.SetActive(true);
-		faderAnimator.SetTrigger(FadeInTrigger);
+		faderAnimator.SetBool(IsFadedIn, true);
 	}
 
 	public void SetDestinationScene(GameScene.Type newScene)
 	{
 		DestinationScene = newScene;
+		Debug.Log("destination scene set to " + DestinationScene);
 		StartFadingIn();
 	}
 
 	private void LoadScene(GameScene.Type newScene)
 	{
-		
-		loadingOperation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(newScene.ToString());
+		loadingOperation = SceneManager.LoadSceneAsync(newScene.ToString());
 		isLoading = true;
-
 	}
 
 	private void Update()
@@ -76,7 +75,6 @@ public class SceneLoader : Singleton<SceneLoader>
 		var progressValue = ShowLoadingProgress();
 		if (progressValue < 1) return;
 		isLoading = false;
-		isFadingIn = false;
 		FadeOut();
 	}
 
@@ -90,8 +88,6 @@ public class SceneLoader : Singleton<SceneLoader>
 
 	private void FadeOut()
 	{
-		faderAnimator.SetTrigger(FadeOutTrigger);
+		faderAnimator.SetBool(IsFadedIn, false);
 	}
-
-	
 }

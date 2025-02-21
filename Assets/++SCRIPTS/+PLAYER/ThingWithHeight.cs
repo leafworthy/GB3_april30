@@ -3,11 +3,9 @@ using System.Linq;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class ThingWithHeight : IHaveInspectorColor
+public class ThingWithHeight : MonoBehaviour
 {
 
-	public override Color GetBackgroundColor() => Colors.Green;
-	public override string GetIconPath() => "Assets/Candy_Icon.png";
 
 	public bool isOverLandable;
 

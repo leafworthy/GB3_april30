@@ -6,7 +6,7 @@ public class ChargeAttack : Attacks
 	private AnimationEvents animEvents;
 	private Animations anim;
 	private Body body;
-	private GunAimAbility aim;
+	private MoveAbility aim;
 
 	private bool isCharging;
 
@@ -23,6 +23,7 @@ public class ChargeAttack : Attacks
 	public event Action OnAttackHit;
 	public event Action OnSpecialAttackHit;
 	public event Action OnChargePress;
+	public event Action OnChargeStop;
 
 	private void Start()
 	{
@@ -31,7 +32,7 @@ public class ChargeAttack : Attacks
 
 	private void Init()
 	{
-		aim = GetComponent<GunAimAbility>();
+		aim = GetComponent<MoveAbility>();
 		body = GetComponent<Body>();
 		anim = GetComponent<Animations>();
 		life = GetComponent<Life>();
@@ -39,8 +40,8 @@ public class ChargeAttack : Attacks
 
 		if (attacker != null)
 		{
-			attacker.player.Controller.Reload1.OnPress += Player_ChargePress;
-			attacker.player.Controller.Reload1.OnRelease += Player_ChargeRelease;
+			attacker.player.Controller.ReloadTriangle.OnPress += Player_ChargePress;
+			attacker.player.Controller.ReloadTriangle.OnRelease += Player_ChargeRelease;
 		}
 
 		animEvents = anim.animEvents;
@@ -53,8 +54,8 @@ public class ChargeAttack : Attacks
 	{
 		if (attacker != null)
 		{
-			attacker.player.Controller.Reload1.OnPress -= Player_ChargePress;
-			attacker.player.Controller.Reload1.OnRelease -= Player_ChargeRelease;
+			attacker.player.Controller.ReloadTriangle.OnPress -= Player_ChargePress;
+			attacker.player.Controller.ReloadTriangle.OnRelease -= Player_ChargeRelease;
 		}
 	}
 
@@ -63,7 +64,7 @@ public class ChargeAttack : Attacks
 		if (isCharging)
 		{
 			ShowAiming();
-			body.BottomFaceDirection(aim.AimDir.x > 0);
+			body.BottomFaceDirection(aim.MoveAimDir.x > 0);
 		}
 		else
 			HideAiming();
@@ -71,7 +72,7 @@ public class ChargeAttack : Attacks
 
 	private void SpawnFX()
 	{
-		currentArrowHead = Maker.Make(FX.Assets.nadeTargetPrefab);
+		currentArrowHead = ObjectMaker.Make(FX.Assets.nadeTargetPrefab);
 		currentArrowHead.SetActive(false);
 	}
 
@@ -104,7 +105,8 @@ public class ChargeAttack : Attacks
 	{
 		if (GlobalManager.IsPaused) return;
 		if (!isCharging) return;
-
+		OnChargeStop?.Invoke();
+	
 		isCharging = false;
 		anim.SetBool(Animations.IsCharging, false);
 		if (isFullyCharged)
@@ -149,16 +151,17 @@ public class ChargeAttack : Attacks
 			ammo.AddAmmoToReserve(AmmoInventory.AmmoType.primaryAmmo, attackKillSpecialAmount);
 		}
 
-		var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position + aim.AimDir * SpecialAttackDistance, GetHitRange(attackType));
+		var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position + aim.MoveAimDir * SpecialAttackDistance, GetHitRange(attackType));
 
 		foreach (var hit2D in circleCast)
 		{
 			var life = hit2D.gameObject.GetComponent<Life>();
+			if(life == null) continue;
 			if (!life.isEnemyOf(attacker) || life.cantDie || life.IsObstacle) return;
 			HitTarget(life.Attack2Damage, life, .4f);
 			connect = true;
 			ammo.AddAmmoToReserve(AmmoInventory.AmmoType.primaryAmmo, attackKillSpecialAmount);
-			Maker.Make(FX.Assets.hits.GetRandom(), hit2D.transform.position);
+			ObjectMaker.Make(FX.Assets.hits.GetRandom(), hit2D.transform.position);
 		}
 
 		if (!connect) return;
@@ -170,8 +173,8 @@ public class ChargeAttack : Attacks
 		var hitObstacle = Physics2D.Linecast(position, targetPoint, ASSETS.LevelAssets.BuildingLayer);
 		if (hitObstacle) targetPoint = hitObstacle.point;
 
-		raycast = Physics2D.CircleCastAll(position, SpecialAttackWidth, aim.AimDir, SpecialAttackDistance, ASSETS.LevelAssets.EnemyLayer);
-		Debug.DrawRay((Vector2) position, aim.AimDir * SpecialAttackDistance, Color.red);
+		raycast = Physics2D.CircleCastAll(position, SpecialAttackWidth, aim.MoveAimDir, SpecialAttackDistance, ASSETS.LevelAssets.EnemyLayer);
+		Debug.DrawRay((Vector2) position, aim.MoveAimDir * SpecialAttackDistance, Color.red);
 		transform.position = targetPoint;
 		return raycast.Length > 0;
 	}

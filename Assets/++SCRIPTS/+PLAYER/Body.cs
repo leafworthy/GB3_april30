@@ -5,8 +5,6 @@ using UnityEngine;
 [Serializable]
 public class Body : ThingWithHeight
 {
-	public override Color GetBackgroundColor() => Colors.Red;
-	public override string GetIconPath() => "Assets/Skull_Icon.png";
 	public GameObject AttackStartPoint;
 	public GameObject FootPoint;
 	public List<GameObject> RotateWithAim;
@@ -16,8 +14,8 @@ public class Body : ThingWithHeight
 	public GameObject TopScaleObject;
 	public GameObject BottomScaleObject;
 
-	[HideInInspector] public Arms arms = new();
-	[HideInInspector] public Legs legs = new();
+	public Arms arms = new();
+	public Legs legs = new();
 	[HideInInspector] public bool BottomIsFacingRight = true;
 	[HideInInspector] public bool TopIsFacingRight = true;
 
@@ -50,6 +48,7 @@ public class Body : ThingWithHeight
 
 	public void BottomFaceDirection(bool faceRight)
 	{
+		//Debug.Log("Bottom is facing right: " + BottomIsFacingRight + " faceRight: " + faceRight + "");
 		if (BottomIsFacingRight == faceRight) return;
 		BottomIsFacingRight = faceRight;
 		FlipBottom(faceRight);

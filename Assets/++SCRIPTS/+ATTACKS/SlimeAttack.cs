@@ -12,7 +12,6 @@ public class SlimeAttack : MonoBehaviour
 	private MoveAbility mover;
 	private Life currentTarget;
 	private Targetter targets;
-	private float shootDistance = 4;
 
 	private void Start()
 	{
@@ -66,14 +65,14 @@ public class SlimeAttack : MonoBehaviour
 			currentTarget.TakeDamage(newAttack);
 		}
 
-		var targetPos = (transform.position - currentTarget.transform.position).normalized * shootDistance + transform.position;
+		var targetPos = (currentTarget.transform.position -transform.position).normalized * life.AttackRange + transform.position;
 		CreateSlimePrefab(targetPos);
 	}
 
 
 	private void CreateSlimePrefab(Vector2 pos)
 	{
-		var newProjectile = Maker.Make(ProjectilePrefab, pos);
+		var newProjectile = ObjectMaker.Make(ProjectilePrefab, pos);
 		var projectileScript = newProjectile.GetComponent<SlimePool>();
 		var directionMult = body.BottomIsFacingRight ? 1 : -1;
 		projectileScript.Fire(directionMult, life);

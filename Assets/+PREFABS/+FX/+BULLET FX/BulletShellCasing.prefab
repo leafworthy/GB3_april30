@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 2103119385715250231}
   - component: {fileID: 353183104628318499}
   - component: {fileID: 7958320092317868226}
+  - component: {fileID: -7652709974649102739}
   m_Layer: 0
   m_Name: BulletShellCasing
   m_TagString: Untagged
@@ -137,6 +138,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDir: {x: 0, y: 0}
+--- !u!114 &-7652709974649102739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3905781446934895332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6453900561546185262
 GameObject:
   m_ObjectHideFlags: 0

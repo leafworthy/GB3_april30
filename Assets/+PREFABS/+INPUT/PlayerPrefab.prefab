@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3698094019892413940}
   - component: {fileID: 2725784496144234028}
   - component: {fileID: 382554149637454532}
+  - component: {fileID: 4735646346067322319}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Untagged
@@ -74,11 +75,11 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 822c120e-aa06-476b-8b24-3f46fb2e2cc6
-    m_ActionName: PlayerMovement/Movement[/XInputControllerWindows/leftStick,/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+    m_ActionName: 'PlayerMovement/Movement[/XInputControllerWindows/leftStick,/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 4eb5ce68-1e6e-4023-af30-4f54a99c111b
-    m_ActionName: PlayerMovement/Select[/XInputControllerWindows/buttonSouth,/XInputControllerWindows/buttonSouth]
+    m_ActionName: 'PlayerMovement/Select[/XInputControllerWindows/buttonSouth,/XInputControllerWindows/buttonSouth]'
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: faffd6bb-e720-4a62-ac68-51f6169afba5
@@ -128,7 +129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96e95b22fde8ef0489b0533b256975e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input: {fileID: 3698094019892413940}
 --- !u!114 &382554149637454532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,3 +155,16 @@ MonoBehaviour:
   playerIndex: 0
   hasKey: 0
   interactables: []
+--- !u!114 &4735646346067322319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3698094019892413943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73f04187f7024012b6aba3d9de5bc631, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgrades: []

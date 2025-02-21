@@ -14,10 +14,10 @@ public class Players : Singleton<Players>
 	public static readonly List<Player> AllJoinedPlayers = new();
 	public static string UIActionMap = "UI";
 	public static string PlayerActionMap = "PlayerMovement";
+	public static event Action<Player> OnPlayerGetUpgrades;
 
-	public static event Action OnAllPlayersDead;
+	public static event Action OnAllJoinedPlayersDead;
 	public static event Action<Player> OnPlayerJoins;
-	public static event Action<Player> OnPlayerJoinsInGame;
 
 
 	public static void SetActionMaps(string actionMap)
@@ -28,8 +28,8 @@ public class Players : Singleton<Players>
 		}
 		
 	}
-	
-	private static void SetActionMap(Player player, string actionMap)
+
+	public static void SetActionMap(Player player, string actionMap)
 	{
 		player.input.SwitchCurrentActionMap(actionMap);
 	}
@@ -39,21 +39,28 @@ public class Players : Singleton<Players>
 		_inputManager.onPlayerJoined += Input_OnPlayerJoins;
 		
 		Player.OnPlayerDies += Player_PlayerDies;
+		ZombieWaveManager.OnWaveEnd += PlayersGetUpgrades;
 
-		
-		
-		_enemyPlayer = gameObject.AddComponent<Player>();
+
+		var enemy = new GameObject("EnemyPlayer");
+		_enemyPlayer = enemy.AddComponent<Player>();
 		_enemyPlayer.Join(null, EnemyPlayerData, 5);
 		SetActionMaps(UIActionMap);
 	}
 
-	private void GameEvents_OnReturnToMainMenu()
+	private void PlayersGetUpgrades()
 	{
-		ClearAllPlayers();
+		foreach (var player in AllJoinedPlayers)
+		{
+			OnPlayerGetUpgrades?.Invoke(player);
+			Debug.Log("players get upgrades!");
+		}
 	}
 
-	public static void ClearAllPlayers()
+
+	public static void ClearAllJoinedPlayers()
 	{
+		Debug.Log("cleared all players");
 		foreach (var player in AllJoinedPlayers)
 		{
 			player.gameObject.SetActive(false);
@@ -75,25 +82,26 @@ public class Players : Singleton<Players>
 		AllJoinedPlayers.Add(joiningPlayer);
 		joiningPlayer.Join(newPlayerInput, playerPresets[newPlayerInput.playerIndex], newPlayerInput.playerIndex);
 		OnPlayerJoins?.Invoke(joiningPlayer);
-		Debug.Log("PLAYER" + newPlayerInput.name + newPlayerInput.playerIndex + " JOINS FROM INPUT MANAGER");
+		//Debug.Log("PLAYER" + newPlayerInput.name + newPlayerInput.playerIndex + " JOINS FROM INPUT MANAGER");
 	}
 
 	private static void Player_PlayerDies(Player deadPlayer)
 	{
-		Debug.Log("PLAYER" + deadPlayer.name + deadPlayer.playerIndex+" has died");
-		if (AllPlayersAreDead()) OnAllPlayersDead?.Invoke();
+		//Debug.Log("PLAYER" + deadPlayer.name + deadPlayer.playerIndex+" has died");
+		
+		if (AllJoinedPlayersAreDead()) OnAllJoinedPlayersDead?.Invoke();
 	}
 
-	private static bool AllPlayersAreDead()
+	private static bool AllJoinedPlayersAreDead()
 	{
 		var playersAlive = AllJoinedPlayers.Where(t => t.state == Player.State.Alive).ToList();
 		if (playersAlive.Count > 0)
 		{
-			Debug.Log("players still alive: " + playersAlive);
+			//Debug.Log("players still alive: " + playersAlive);
 			return false;
 		}
 
-		Debug.Log("all players are dead");
+		//Debug.Log("all players are dead");
 		return true;
 	}
 

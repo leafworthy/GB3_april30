@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+#if UNITY_2017_3_OR_NEWER && !UNITY_WEBGL
 using System.Threading;
+#endif
 using UnityEngine;
-#if UNITY_5_5_OR_NEWER
 using UnityEngine.Profiling;
+#if UNITY_5_5_OR_NEWER
 #endif
 
 namespace Pathfinding {
@@ -11,7 +13,6 @@ namespace Pathfinding {
 #if NETFX_CORE
 	using Thread = Pathfinding.WindowsStore.Thread;
 #else
-	using Thread = System.Threading.Thread;
 #endif
 
 	class GraphUpdateProcessor {

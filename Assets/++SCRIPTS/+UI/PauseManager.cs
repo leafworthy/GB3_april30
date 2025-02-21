@@ -77,7 +77,8 @@ public class PauseManager : Singleton<PauseManager>
 	private void PlayerPressedDown(IControlAxis controlAxis)
 	{
 		if (controlAxis.owner != pausingPlayer) return;
-		menuButtons.Down();
+		menuButtons.Down(); 
+		OnPlayerPressedDown?.Invoke();
 	}
 
 	private void PlayerPressedSelect(NewControlButton newControlButton)
@@ -114,6 +115,7 @@ public class PauseManager : Singleton<PauseManager>
 		OnPlayerPressedUp?.Invoke();
 	}
 
+	
 	private void PlayerPressedCancel(NewControlButton newControlButton)
 	{
 		if (newControlButton.owner != pausingPlayer) return;

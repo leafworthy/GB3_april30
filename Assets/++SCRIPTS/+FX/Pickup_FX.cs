@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class Pickup_FX : MonoBehaviour
 {
-	[SerializeField] private CameraShaker.ShakeIntensityType shakeIntensity;
-	[SerializeField] private CameraStunner.StunLength stunLength;
+	[SerializeField] private CameraShaker_FX.ShakeIntensityType shakeIntensity;
+	[SerializeField] private CameraStunner_FX.StunLength stunLength;
 	private Pickup pickup;
 	private Life_FX lifeFX;
-	private Item item;
+	private PickupItem pickupItem;
 
 	private void Start()
 	{
-		item = GetComponent<Item>();
+		pickupItem = GetComponent<PickupItem>();
 		lifeFX = GetComponentInChildren<Life_FX>();
 		pickup = GetComponent<Pickup>();
 		if (pickup == null) return;
@@ -24,12 +24,12 @@ public class Pickup_FX : MonoBehaviour
 		var otherTintHandler = col.gameObject.GetComponentInChildren<Life_FX>(true);
 		otherTintHandler.StartTint(pickupTintColor);
 		var position = transform.position;
-		Maker.Make(FX.Assets.pickupEffectPrefab, position);
-		CameraShaker.ShakeCamera(position,shakeIntensity);
-		CameraStunner.StartStun(stunLength);
-		if(item.itemType == Item.ItemType.cash)
-			RisingTextCreator.CreateRisingText("+$" + item.itemAmount, position, Color.white);
+		ObjectMaker.Make(FX.Assets.pickupEffectPrefab, position);
+		CameraShaker_FX.ShakeCamera(position,shakeIntensity);
+		CameraStunner_FX.StartStun(stunLength);
+		if(pickupItem.itemType == PickupItem.ItemType.cash)
+			RisingTextCreator.CreateRisingText("+$" + pickupItem.itemAmount, position, Color.white);
 		else
-			RisingTextCreator.CreateRisingText("+" + item.itemAmount + " " +item.itemName, position, Color.white);
+			RisingTextCreator.CreateRisingText("+" + pickupItem.itemAmount + " " +pickupItem.itemName, position, Color.white);
 	}
 }

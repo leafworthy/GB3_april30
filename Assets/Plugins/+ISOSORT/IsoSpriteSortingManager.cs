@@ -4,36 +4,15 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class IsoSpriteSortingManager : MonoBehaviour
 {
-    private static readonly List<IsoSpriteSorting> fgSpriteList = new List<IsoSpriteSorting>();
-    private static readonly List<IsoSpriteSorting> floorSpriteList = new List<IsoSpriteSorting>();
-    private static readonly List<IsoSpriteSorting> staticSpriteList = new List<IsoSpriteSorting>();
-   private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new List<IsoSpriteSorting>();
+    private static readonly List<IsoSpriteSorting> fgSpriteList = new List<IsoSpriteSorting>(128);
+    private static readonly List<IsoSpriteSorting> floorSpriteList = new List<IsoSpriteSorting>(128);
+    private static readonly List<IsoSpriteSorting> staticSpriteList = new List<IsoSpriteSorting>(128);
+   private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new List<IsoSpriteSorting>(128);
 
-   public List<IsoSpriteSorting> currentlyVisible = new List<IsoSpriteSorting>();
-    private static readonly List<IsoSpriteSorting> moveableSpriteList = new List<IsoSpriteSorting>();
-    private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new List<IsoSpriteSorting>();
+    private static readonly List<IsoSpriteSorting> moveableSpriteList = new List<IsoSpriteSorting>(128);
+    private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new List<IsoSpriteSorting>(128);
+    private static readonly List<IsoSpriteSorting> sortedSprites = new List<IsoSpriteSorting>(256);
 
-
-    public static IsoSpriteSortingManager _instance;
-
-    public static IsoSpriteSortingManager I
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<IsoSpriteSortingManager>();
-            }
-            return _instance;
-        }
-       private set => _instance = value;
-    }
-
-    protected virtual void Awake()
-    {
-        if (I == null)
-            I = this as IsoSpriteSortingManager;
-    }
     public static void RegisterSprite(IsoSpriteSorting newSprite)
     {
         if (newSprite.registered) return;
@@ -129,11 +108,11 @@ public class IsoSpriteSortingManager : MonoBehaviour
     void Update() 
     {
         IsoSpriteSorting.UpdateSorters();
-        
+       UpdateSorting();
         
     }
 
-    private static readonly List<IsoSpriteSorting> sortedSprites = new List<IsoSpriteSorting>(256);
+   
     public static void UpdateSorting()
     {
         FilterListByVisibility(staticSpriteList, currentlyVisibleStaticSpriteList);
@@ -234,21 +213,13 @@ public class IsoSpriteSortingManager : MonoBehaviour
         }
     }
 
-    private static void SetSortOrderPositive(List<IsoSpriteSorting> spriteList)
-    {
-        int startOrder = -spriteList.Count - 1;
-        for (int i = 0; i < spriteList.Count; ++i)
-        {
-            spriteList[i].RendererSortingOrder = startOrder + i;
-        }
-    }
     public static void FilterListByVisibility(List<IsoSpriteSorting> fullList, List<IsoSpriteSorting> destinationList)
     {
         destinationList.Clear();
         int count = fullList.Count;
         for (int i = 0; i < count; i++)
         {
-            IsoSpriteSorting sprite = fullList[i];
+            var sprite = fullList[i];
             if (sprite.forceSort)
             {
                 destinationList.Add(sprite);
@@ -299,8 +270,5 @@ public class IsoSpriteSortingManager : MonoBehaviour
         });
     }
 
-    public static void SetVisible(List<IsoSpriteSorting> toList)
-    {
-        I.currentlyVisible = toList;
-    }
+   
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3078182492140518297}
   - component: {fileID: 3078182492140518300}
   - component: {fileID: 6569350876974382177}
+  - component: {fileID: 7486689071115476701}
   m_Layer: 0
   m_Name: BULLETHIT.000
   m_TagString: Untagged
@@ -74,6 +75,18 @@ MonoBehaviour:
   JumpObject: {fileID: 5199577035477914735}
   Sorting: {fileID: 3078182492140518300}
   canLand: 0
+--- !u!114 &7486689071115476701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3078182492140518301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4083456689875707176
 GameObject:
   m_ObjectHideFlags: 0

@@ -73,7 +73,17 @@ public class ClawAttack : Attacks
 				return;
 			}
 		}
+		else
+		{
+			HitTarget(attacker.AttackDamage, currentTargetLife, extraPush);
+			return;
+		}
 
-		HitTarget(attacker.AttackDamage, currentTargetLife, extraPush);
+		if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= attacker.AttackRange*1.25f)
+		{
+			HitTarget(attacker.AttackDamage, currentTargetLife, extraPush);
+		}
+			
+		
 	}
 }

@@ -1,11 +1,8 @@
 using UnityEngine;
 
-public class Attacks : IHaveInspectorColor
+public class Attacks : MonoBehaviour
 {
 	protected Life attacker;
-	public override Color GetBackgroundColor() => Colors.Blue;
-
-	public override string GetIconPath() => "Assets/Bullet_Icon.png";
 	private void OnEnable()
 	{
 		attacker = GetComponent<Life>();

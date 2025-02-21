@@ -82,13 +82,13 @@ public class JumpController : MonoBehaviour
 	private void Jump_OnFall(Vector2 obj)
 	{
 		anim.SetBool(Animations.IsFalling, true);
-		anim.SetTrigger(Animations.FallTrigger);
 	}
 
 	private void Jump_OnResting(Vector2 obj)
 	{
 		body.arms.Stop("Land");
 		body.legs.Stop("Land");
+		anim.SetBool(Animations.IsFalling, false);
 	}
 
 	private void Jump(float modifier = 1)
@@ -110,8 +110,8 @@ public class JumpController : MonoBehaviour
 
 	private void Land(Vector2 pos)
 	{
+		anim.ResetTrigger(Animations.JumpTrigger);
 		anim.SetTrigger(Animations.LandTrigger);
-		anim.ResetTrigger(Animations.FallTrigger);
 		anim.SetBool(Animations.IsFalling, false);
 		
 		body.arms.Stop(VerbName);

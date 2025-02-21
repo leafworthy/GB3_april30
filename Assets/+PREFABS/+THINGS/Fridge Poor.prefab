@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &323508276797626836
 Transform:
   m_ObjectHideFlags: 0
@@ -251,8 +251,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 8296f938af6624daebb576bb18932947, type: 2}
+  unitData: {fileID: 11400000, guid: a8023e047b8804ca18e4f07415dce4eb, type: 2}
   cantDie: 1
+  isInvincible: 0
   Health: 100
 --- !u!1 &4784119788746926769
 GameObject:
@@ -330,7 +331,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 480
-  m_Sprite: {fileID: 1097000511689547080, guid: aabdedead8e674563beda12a93c91723, type: 3}
+  m_Sprite: {fileID: 6879387346762120027, guid: aabdedead8e674563beda12a93c91723, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -357,7 +358,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6652726786205671868
 Transform:
   m_ObjectHideFlags: 0
@@ -505,7 +506,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 482
-  m_Sprite: {fileID: 6879387346762120027, guid: aabdedead8e674563beda12a93c91723, type: 3}
+  m_Sprite: {fileID: 241829907, guid: aabdedead8e674563beda12a93c91723, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -758,5 +759,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4ed621a62f2487ea97c62c0a909c05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  indicatorOffset: {x: -3.3821716, y: 15.236633, z: 0.00217247}
+  indicatorOffset: {x: -3.3821716, y: 15.2366295, z: 0.00217247}
   interactionPoint: {x: 1.4473877, y: -5.103874, z: 0}

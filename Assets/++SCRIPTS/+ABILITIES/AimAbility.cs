@@ -1,27 +1,32 @@
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
-public class AimAbility : IHaveInspectorColor
+public class AimAbility : MonoBehaviour
 {
-	public override Color GetBackgroundColor() => Colors.Blue;
-	public override string GetIconPath() => "Assets/Bullet_Icon.png";
-	protected Life life;
+	
+
+	private Life life;
 	protected Player owner;
 	protected Body body;
 	[HideInInspector] public Vector2 AimDir;
 	public const float aimDistanceFactor = 100;
-	private float minMagnitude = .3f;
+	private float minMagnitude = .4f;
 	private bool hasInitiated;
+	private float maxAimDistance = 60;
+
+
+	private MoveAbility moveAbility;
 
 	public virtual void Start()
 	{
 		Init();
-		
 	}
 
 	private void Init()
-	{if(hasInitiated) return;
+	{
+		if (hasInitiated) return;
 		hasInitiated = true;
+		moveAbility = GetComponent<MoveAbility>();
 		body = GetComponent<Body>();
 		life = GetComponent<Life>();
 		if (life == null) return;
@@ -30,6 +35,7 @@ public class AimAbility : IHaveInspectorColor
 		if (owner.isUsingMouse) return;
 		if (!owner.IsPlayer()) return;
 		owner.Controller.AimAxis.OnChange += AimerOnAim;
+		AimDir = Vector2.right;
 	}
 
 	private void OnDisable()
@@ -38,37 +44,42 @@ public class AimAbility : IHaveInspectorColor
 		if (owner.isUsingMouse) return;
 		if (!owner.IsPlayer()) return;
 		owner.Controller.AimAxis.OnChange -= AimerOnAim;
-	
 	}
 
-	private void AimerOnAim(IControlAxis controlAxis, Vector2 aimDir)
+	private void AimerOnAim(IControlAxis controlAxis, Vector2 newAimDir)
 	{
 		if (GlobalManager.IsPaused) return;
 		if (owner.isDead()) return;
-			
-		if (aimDir.magnitude > minMagnitude)
-			AimDir = aimDir;
-		
-	
+		if (hasEnoughMagnitude()) AimDir = newAimDir;
 	}
 
 	protected virtual void Update()
 	{
 		if (GlobalManager.IsPaused) return;
 		if (!owner.IsPlayer()) return;
-		rotateAimObjects(GetAimDir());
-		DrawShootableLine();
+		if (owner.isDead()) return;
+		if (owner.isUsingMouse) AimDir = GetRealAimDir();
+		RotateAimObjects(AimDir);
+		FaceAimDir();
+	}
+
+	private void FaceAimDir()
+	{
+		if (moveAbility.IsMoving()) return;
+		if (body.legs.isActive) return;
+		body.BottomFaceDirection(AimDir.x >= 0);
 	}
 
 	public RaycastHit2D CheckRaycastHit(Vector3 targetDirection)
 	{
-		var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, life.AttackRange,
+		var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
+			life.AttackRange,
 			ASSETS.LevelAssets.BuildingLayer);
 
 		return raycastHit;
 	}
 
-	private void rotateAimObjects(Vector2 direction)
+	private void RotateAimObjects(Vector2 direction)
 	{
 		var rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 		foreach (var obj in body.RotateWithAim)
@@ -78,45 +89,29 @@ public class AimAbility : IHaveInspectorColor
 		}
 	}
 
-	private void DrawShootableLine()
-	{
-		var hitPoint = CheckRaycastHit(AimDir);
-		if (hitPoint.collider != null)
-		{
-			Debug.DrawLine(body.FootPoint.transform.position, hitPoint.point, Color.white);
-		}
-		else
-		{
-			Debug.DrawLine(body.FootPoint.transform.position, GetAimPoint(), Color.green);
-
-		}
-	}
 	public Vector2 GetAimPoint(float multiplier = 1)
 	{
 		Init();
-		if (owner.isUsingMouse)
-		{
-			var mousePos = CursorManager.GetMousePosition();
-			if (Vector2.Distance(body.AimCenter.transform.position, mousePos) < life.AttackRange * multiplier)
-			{
-				return CursorManager.GetMousePosition();
-			}
-			else
-			{
-				return (Vector2) body.AimCenter.transform.position + AimDir.normalized * life.AttackRange;
-			}
-		}
-
-		return (Vector2) body.AimCenter.transform.position + AimDir * aimDistanceFactor;
+		if (!owner.isUsingMouse)
+			return (Vector2)body.AimCenter.transform.position + (Vector2)GetRealAimDir() * maxAimDistance;
+		else
+			return CursorManager.GetMousePosition();
 	}
 
-	public virtual Vector3 GetAimDir()
+
+	protected virtual Vector3 GetRealAimDir()
 	{
 		Init();
-		if(owner.isUsingMouse)
-		{
+
+		if (owner.isUsingMouse)
 			return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
-		}
-		return AimDir;
+
+		return owner.Controller.AimAxis.GetCurrentAngle();
+	}
+
+	public bool hasEnoughMagnitude()
+	{
+		if (owner.isUsingMouse) return true;
+		return GetRealAimDir().magnitude > minMagnitude;
 	}
 }

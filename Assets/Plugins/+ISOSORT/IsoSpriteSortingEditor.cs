@@ -62,12 +62,12 @@ public class IsoSpriteSortingEditor : Editor
 
         if (GUILayout.Button("Sort Visible Scene"))
         {
-            IsoSpriteSorting.SortScene();
+           // IsoSpriteSorting.SortScene();
         }
 
         if (GUILayout.Button("Get Renderers"))
         {
-            myScript.GetRenderers();
+           // myScript.GetRenderers();
         }
     }
 }

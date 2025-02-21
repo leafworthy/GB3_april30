@@ -17,7 +17,7 @@ public class GameSceneEndGameScene : GameScene
 		menuButtons = GetComponent<MenuButtons>();
 		foreach (var p in Players.AllJoinedPlayers)
 		{
-			var newDisplay = Maker.Make(ASSETS.ui.PlayerStatsDisplayPrefab);
+			var newDisplay = ObjectMaker.Make(ASSETS.ui.PlayerStatsDisplayPrefab);
 			newDisplay.transform.SetParent(horizontalLayoutGroup.transform);
 			var statsDisplay = newDisplay.GetComponent<PlayerStatsDisplay>();
 			statsDisplay.SetPlayer(p);
@@ -36,7 +36,7 @@ public class GameSceneEndGameScene : GameScene
 
 		children.ForEach(child =>
 		{
-			Maker.Unmake(child);
+			ObjectMaker.Unmake(child);
 			child.transform.SetParent(null);
 		});
 	}

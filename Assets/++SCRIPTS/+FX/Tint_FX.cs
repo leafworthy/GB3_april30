@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using NaughtyAttributes;
 using UnityEngine;
 
 [ExecuteAlways]
@@ -27,7 +26,6 @@ public class Tint_FX : MonoBehaviour
 		}
 	}
 
-	[Button]
 	public void TintIt()
 	{
 		renderersToTint = GetComponentsInChildren<Renderer>(true).ToList();

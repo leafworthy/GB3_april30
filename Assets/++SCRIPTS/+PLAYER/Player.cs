@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
+
+
+
 public enum Character
 {
 	None,
@@ -34,6 +37,7 @@ public class Player : MonoBehaviour
 	public Life spawnedPlayerDefence;
 
 	public int buttonIndex;
+
 	[FormerlySerializedAs("currentCharacter")]
 	public Character CurrentCharacter;
 
@@ -51,11 +55,18 @@ public class Player : MonoBehaviour
 	public List<PlayerInteractable> interactables = new();
 	private PlayerInteractable selectedInteractable;
 	public static event Action<Player> OnPlayerSpawned;
+	
+	private PlayerUpgrades playerUpgrades;
 
-	public bool IsPlayer() => data.isPlayer;
+
+	public bool IsPlayer()
+	{
+		return data.isPlayer;
+	}
 
 	private void Start()
 	{
+		playerUpgrades = GetComponent<PlayerUpgrades>();
 		DontDestroyOnLoad(gameObject);
 	}
 
@@ -80,6 +91,7 @@ public class Player : MonoBehaviour
 			selectedInteractable = null;
 			return;
 		}
+
 		var closest = interactables[0];
 		var closestDistance = Vector2.Distance(closest.GetInteractionPosition(), GetAimPosition());
 		foreach (var interactable in interactables)
@@ -91,10 +103,9 @@ public class Player : MonoBehaviour
 			closestDistance = distance;
 		}
 
-		if(closest == selectedInteractable)
-		{
-			if(selectedInteractable.isSelected) return;
-		}
+		if (closest == selectedInteractable)
+			if (selectedInteractable.isSelected)
+				return;
 		if (selectedInteractable != null) selectedInteractable.Deselect(this);
 		selectedInteractable = closest;
 		selectedInteractable.Select(this);
@@ -114,6 +125,7 @@ public class Player : MonoBehaviour
 			interactable.Deselect(this);
 			selectedInteractable = null;
 		}
+
 		interactables.Remove(interactable);
 		SelectClosestInteractable();
 	}
@@ -135,10 +147,15 @@ public class Player : MonoBehaviour
 
 	public void Spawn(Vector2 SpawnPoint)
 	{
+		Debug.Log("here");
 		state = State.Alive;
 		var spawnedPlayerGO = Instantiate(GetPrefabFromCharacter(this));
 		spawnedPlayerGO.transform.position = SpawnPoint;
+		
+		
+		
 		SetSpawnedPlayerGO(spawnedPlayerGO);
+		playerUpgrades.ApplyUpgrades(this);
 		OnPlayerSpawned?.Invoke(this);
 	}
 
@@ -211,11 +228,20 @@ public class Player : MonoBehaviour
 		sayer.StopSaying();
 	}
 
-	public int GetStartingCash() => data.startingCash;
+	public int GetStartingCash()
+	{
+		return data.startingCash;
+	}
 
-	public int GetStartingGas() => data.startingGas;
+	public int GetStartingGas()
+	{
+		return data.startingGas;
+	}
 
-	public int GetPlayerStatAmount(PlayerStat.StatType statType) => (int) playerStats.GetStatValue(statType);
+	public int GetPlayerStatAmount(PlayerStat.StatType statType)
+	{
+		return (int)playerStats.GetStatValue(statType);
+	}
 
 	public void ChangePlayerStat(PlayerStat.StatType type, float change)
 	{
@@ -227,12 +253,18 @@ public class Player : MonoBehaviour
 		hasKey = true;
 	}
 
-	public bool HasMoreMoneyThan(int amount) => playerStats.GetStatValue(PlayerStat.StatType.TotalCash) >= amount;
+	public bool HasMoreMoneyThan(int amount)
+	{
+		return playerStats.GetStatValue(PlayerStat.StatType.TotalCash) >= amount;
+	}
 
 	public void SpendMoney(int amount)
 	{
 		playerStats.ChangeStat(PlayerStat.StatType.TotalCash, -amount);
 	}
 
-	public bool isDead() => spawnedPlayerDefence.IsDead();
+	public bool isDead()
+	{
+		return spawnedPlayerDefence.IsDead();
+	}
 }

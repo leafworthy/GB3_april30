@@ -230,6 +230,7 @@ GameObject:
   - component: {fileID: 3792166359372497063}
   - component: {fileID: 7540074022439218632}
   - component: {fileID: -7243091662481773707}
+  - component: {fileID: 53241861281674788}
   m_Layer: 23
   m_Name: Pickup - Ammo
   m_TagString: Untagged
@@ -418,7 +419,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowBarImage: {fileID: 0}
   fastBarImage: {fileID: 0}
-  HideWhenFull: 0
   DebreeTint: {r: 1, g: 1, b: 1, a: 1}
   colorMode: 0
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
@@ -453,6 +453,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   healthBar: {fileID: 0}
+  BlockTint: 0
 --- !u!114 &-7243091662481773707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -463,6 +464,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f6ae26fd7b2e440e83ff0ab25e71f4df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &53241861281674788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8411723760554169224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9184234644893955306

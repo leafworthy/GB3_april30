@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using NaughtyAttributes;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -15,31 +14,6 @@ public class HideRevealObjects : MonoBehaviour
 		Set(revealedObjectIndex);
 	}
 
-	[Button]
-	private void Refresh()
-	{
-		GatherTransforms();
-		Set(revealedObjectIndex);
-	}
-
-	[Button]
-	public void SetToCurrent()
-	{
-		Set(revealedObjectIndex);
-	}
-
-	private void GatherTransforms()
-	{
-		objectsToReveal.Clear();
-
-		foreach (Transform child in transform)
-		{
-			if (child.parent != this.transform) continue;
-			objectsToReveal.Add(child.gameObject);
-		}
-	}
-
-	
 
 	public void Set(int objectIndex)
 	{

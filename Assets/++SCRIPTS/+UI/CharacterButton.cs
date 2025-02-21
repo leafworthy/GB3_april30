@@ -85,19 +85,19 @@ public class CharacterButton : MonoBehaviour
 
 	private void UpdateIndicator()
 	{
-		Debug.Log("update indicator function called by " + name, this);
+		//Debug.Log("update indicator function called by " + name, this);
 		characterSelectIndicators = GetComponentInChildren<CharacterSelectIndicators>();
 		characterSelectIndicators.SetAllUnhighlighted();
 		foreach (var player in playersWhoHighlightedThisCharacter)
 		{
 			characterSelectIndicators.Set(player.input.playerIndex, 1);
-			Debug.Log("Button " + character + " is highlighted for player " + player.input.playerIndex);
+			//Debug.Log("Button " + character + " is highlighted for player " + player.input.playerIndex);
 		}
 
 		foreach (var player in playersWhoSelectedThisCharacter)		
 		{
 			characterSelectIndicators.Set(player.input.playerIndex, 2);
-			Debug.Log("Button " + character + " is selected for player " + player.input.playerIndex, this);
+			//Debug.Log("Button " + character + " is selected for player " + player.input.playerIndex, this);
 		}
 
 	}

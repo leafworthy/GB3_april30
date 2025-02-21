@@ -7,7 +7,7 @@ using FunkyCode.SmartLighting2D.Scripts.Settings;
 using UnityEngine;
 
 #if UNITY_EDITOR
-	using UnityEditor;
+using UnityEditor;
 #endif
 
 namespace FunkyCode
@@ -17,8 +17,7 @@ namespace FunkyCode
 	{
 		private static LightingManager2D instance;
 
-		[SerializeField]
-		public LightingCameras cameras = new LightingCameras();
+		[SerializeField] public LightingCameras cameras = new();
 
 		public int version = 0;
 		public string version_string = "";
@@ -37,19 +36,17 @@ namespace FunkyCode
 
 		public Camera GetCamera(int id)
 		{
-			if (cameras.Length <= id)
-			{
-				return(null);
-			}
+			if (cameras.Length <= id) return null;
 
-			return(cameras.Get(id).GetCamera());
+			return cameras.Get(id).GetCamera();
 		}
 
-		public static void ForceUpdate() {}
-
-		static public LightingManager2D Get()
+		public static void ForceUpdate()
 		{
-			
+		}
+
+		public static LightingManager2D Get()
+		{
 			if (instance != null)
 			{
 				/*if (!instance.isActiveAndEnabled)
@@ -60,15 +57,15 @@ namespace FunkyCode
 				return instance;
 			}
 
-			foreach(LightingManager2D manager in Resources.FindObjectsOfTypeAll<LightingManager2D>())
+			foreach (var manager in Resources.FindObjectsOfTypeAll<LightingManager2D>())
 			{
 				instance = manager;
 
-				return(instance);
+				return instance;
 			}
 
 			// create new light manager
-			GameObject gameObject = new GameObject("Remade Lighting Manager 2D");
+			var gameObject = new GameObject("Remade Lighting Manager 2D");
 
 			instance = gameObject.AddComponent<LightingManager2D>();
 
@@ -78,34 +75,28 @@ namespace FunkyCode
 
 			instance.version_string = Lighting2D.VERSION_STRING;
 
-			return(instance);
+			return instance;
 		}
 
-		
 
 		public void Awake()
 		{
-			if (cameras == null)
-			{
-				cameras = new LightingCameras();
-			}
+			if (cameras == null) cameras = new LightingCameras();
 
 			if (instance != null && instance != this)
 			{
-				switch(Lighting2D.ProjectSettings.managerInstance)
+				switch (Lighting2D.ProjectSettings.managerInstance)
 				{
 					case ManagerInstance.Static:
 					case ManagerInstance.DontDestroyOnLoad:
 
-						Debug.LogWarning("Smart Lighting2D: Lighting Manager duplicate was found, new instance destroyed.", gameObject);
+						Debug.LogWarning(
+							"Smart Lighting2D: Lighting Manager duplicate was found, new instance destroyed.",
+							gameObject);
 
-						foreach(LightingManager2D manager in UnityEngine.Object.FindObjectsOfType(typeof(LightingManager2D)))
-						{
+						foreach (var manager in FindObjectsByType<LightingManager2D>(FindObjectsSortMode.None))
 							if (manager != instance)
-							{
 								manager.DestroySelf();
-							}
-						}
 
 						return; // Cancel Initialization
 
@@ -113,76 +104,58 @@ namespace FunkyCode
 
 						instance = this;
 
-						Debug.LogWarning("Smart Lighting2D: Lighting Manager duplicate was found, old instance destroyed.", gameObject);
+						Debug.LogWarning(
+							"Smart Lighting2D: Lighting Manager duplicate was found, old instance destroyed.",
+							gameObject);
 
-						foreach(LightingManager2D manager in UnityEngine.Object.FindObjectsOfType(typeof(LightingManager2D)))
-						{
+						foreach (var manager in FindObjectsByType<LightingManager2D>(FindObjectsSortMode.None))
 							if (manager != instance)
-							{
 								manager.DestroySelf();
-							}
-						}
 
-					break;
+						break;
 				}
 			}
 
-			LightingManager2D.initialized = false;
+			initialized = false;
 
 			SetupProfile();
 
 			if (Application.isPlaying)
 			{
 				if (Lighting2D.ProjectSettings.managerInstance == ManagerInstance.DontDestroyOnLoad)
-				{
-					if(instance != null)DontDestroyOnLoad(instance.gameObject);
-				}
+					if (instance != null)
+						DontDestroyOnLoad(instance.gameObject);
 			}
 		}
 
 		private void Update()
 		{
-			if (Lighting2D.disable)
-			{
-				return;
-			}
+			if (Lighting2D.disable) return;
 
 			ForceUpdate(); // for late update method?
 
 			if (profile != null)
 			{
-				if (Lighting2D.Profile != profile)
-				{
-					Lighting2D.UpdateByProfile(profile);
-				}
+				if (Lighting2D.Profile != profile) Lighting2D.UpdateByProfile(profile);
 			}
 		}
 
 		private void LateUpdate()
 		{
-			if (Lighting2D.disable)
-			{
-				return;
-			}
+			if (Lighting2D.disable) return;
 
 			UpdateInternal();
 
-			if (Lighting2D.Profile.qualitySettings.updateMethod == UpdateMethod.LateUpdate)
-			{
-				Main.Render();
-			}
+			if (Lighting2D.Profile.qualitySettings.updateMethod == UpdateMethod.LateUpdate) Main.Render();
 		}
 
 		public void SetupProfile()
 		{
-			if (LightingManager2D.initialized)
-			{
-				return;
-			}
+			if (initialized) return;
 
-			LightingManager2D.initialized = true;
+			initialized = true;
 
-			Profile profile = Lighting2D.Profile;
+			profile = Lighting2D.Profile;
 
 			Lighting2D.UpdateByProfile(profile);
 
@@ -191,15 +164,9 @@ namespace FunkyCode
 
 		public void UpdateInternal()
 		{
-			if (Lighting2D.disable)
-			{
-				return;
-			}
+			if (Lighting2D.disable) return;
 
-			for(int id = 0; id < CameraTransform.List.Count; id++)
-			{
-				CameraTransform.List[id].Update();
-			}
+			for (var id = 0; id < CameraTransform.List.Count; id++) CameraTransform.List[id].Update();
 
 			SetupProfile();
 
@@ -208,25 +175,22 @@ namespace FunkyCode
 
 		public bool IsSceneView() // overlay
 		{
-			for(int i = 0; i < cameras.Length; i++)
+			for (var i = 0; i < cameras.Length; i++)
 			{
-				CameraSettings cameraSetting = cameras.Get(i);
+				var cameraSetting = cameras.Get(i);
 
 				if (cameraSetting.cameraType == CameraSettings.CameraType.SceneView)
 				{
-					for(int b = 0; b < cameraSetting.Lightmaps.Length; b++)
+					for (var b = 0; b < cameraSetting.Lightmaps.Length; b++)
 					{
-						CameraLightmap bufferPreset = cameraSetting.GetLightmap(b);
+						var bufferPreset = cameraSetting.GetLightmap(b);
 
-						if (bufferPreset.overlay == CameraLightmap.Overlay.Enabled)
-						{
-							return(true);
-						}
+						if (bufferPreset.overlay == CameraLightmap.Overlay.Enabled) return true;
 					}
 				}
 			}
 
-			return(false);
+			return false;
 		}
 
 		private void OnDisable()
@@ -237,80 +201,61 @@ namespace FunkyCode
 				{
 					if (setProfile != profile)
 					{
-						if (Lighting2D.Profile == profile)
-						{
-							Lighting2D.RemoveProfile();
-						}
+						if (Lighting2D.Profile == profile) Lighting2D.RemoveProfile();
 					}
 				}
 			}
 
-			#if UNITY_EDITOR
+#if UNITY_EDITOR
 
-				#if UNITY_2019_1_OR_NEWER
+#if UNITY_2019_1_OR_NEWER
 
-					SceneView.beforeSceneGui -= OnSceneView;
-					//SceneView.duringSceneGui -= OnSceneView;
+			SceneView.beforeSceneGui -= OnSceneView;
+			//SceneView.duringSceneGui -= OnSceneView;
 
-				#else
-
+#else
 					SceneView.onSceneGUIDelegate -= OnSceneView;
 
-				#endif
+#endif
 
-			#endif
+#endif
 		}
 
 		public void UpdateProfile()
 		{
-			if (setProfile == null)
-			{
-				setProfile = Lighting2D.ProjectSettings.Profile;
-			}
+			if (setProfile == null) setProfile = Lighting2D.ProjectSettings.Profile;
 
 			if (Application.isPlaying)
-			{
-				profile = UnityEngine.Object.Instantiate(setProfile);
-			}
-				else
-			{
+				profile = Instantiate(setProfile);
+			else
 				profile = setProfile;
-			}
 		}
 
 		private void OnEnable()
 		{
-			foreach(OnRenderMode onRenderMode in UnityEngine.Object.FindObjectsOfType(typeof(OnRenderMode)))
-			{
-				onRenderMode.DestroySelf();
-			}
+			foreach (OnRenderMode onRenderMode in FindObjectsOfType(typeof(OnRenderMode))) onRenderMode.DestroySelf();
 
 			SmartLighting2D.Scripts.Scriptable.LightSprite2D.List.Clear();
 
 			UpdateProfile();
 			Main.UpdateMaterials();
 
-			for(int i = 0; i < cameras.Length; i++)
+			for (var i = 0; i < cameras.Length; i++)
 			{
-				CameraSettings cameraSetting = cameras.Get(i);
+				var cameraSetting = cameras.Get(i);
 
-				for(int b = 0; b < cameraSetting.Lightmaps.Length; b++)
+				for (var b = 0; b < cameraSetting.Lightmaps.Length; b++)
 				{
-					CameraLightmap bufferPreset = cameraSetting.GetLightmap(b);
+					var bufferPreset = cameraSetting.GetLightmap(b);
 
-					foreach(Material material in bufferPreset.GetMaterials().materials)
+					foreach (var material in bufferPreset.GetMaterials().materials)
 					{
-						if (material == null)
-						{
-							continue;
-						}
+						if (material == null) continue;
 
-						Camera camera = cameraSetting.GetCamera();
+						var camera = cameraSetting.GetCamera();
 
 						if (cameraSetting.cameraType == CameraSettings.CameraType.SceneView)
-						{
 							LightmapMaterials.ClearMaterial(material);
-						}
 					}
 				}
 			}
@@ -318,70 +263,58 @@ namespace FunkyCode
 			Update();
 			LateUpdate();
 
-			#if UNITY_EDITOR
-				#if UNITY_2019_1_OR_NEWER
-					SceneView.beforeSceneGui += OnSceneView;
-					//SceneView.duringSceneGui += OnSceneView;
-				#else
+#if UNITY_EDITOR
+#if UNITY_2019_1_OR_NEWER
+			SceneView.beforeSceneGui += OnSceneView;
+			//SceneView.duringSceneGui += OnSceneView;
+#else
 					SceneView.onSceneGUIDelegate += OnSceneView;
-				#endif
-			#endif
+#endif
+#endif
 		}
 
 		private void OnRenderObject()
 		{
-			if (Lighting2D.RenderingMode != RenderingMode.OnPostRender)
-			{
-				return;
-			}
+			if (Lighting2D.RenderingMode != RenderingMode.OnPostRender) return;
 
-			foreach(LightMainBuffer2D buffer in LightMainBuffer2D.List)
-			{
-				LightMainBuffer.DrawPost(buffer);
-			}
+			foreach (var buffer in LightMainBuffer2D.List) LightMainBuffer.DrawPost(buffer);
 		}
 
 		private void OnDrawGizmos()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Always)
-			{
-				return;
-			}
+			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Always) return;
 
 			DrawGizmos();
 		}
 
 		private void DrawGizmos()
 		{
-			if (!isActiveAndEnabled)
-			{
-				return;
-			}
+			if (!isActiveAndEnabled) return;
 
 			Gizmos.color = new Color(0, 1f, 1f);
 
 			if (Lighting2D.ProjectSettings.editorView.drawGizmosBounds == EditorGizmosBounds.Enabled)
 			{
-				for(int i = 0; i < cameras.Length; i++)
+				for (var i = 0; i < cameras.Length; i++)
 				{
-					CameraSettings cameraSetting = cameras.Get(i);
+					var cameraSetting = cameras.Get(i);
 
-					Camera camera = cameraSetting.GetCamera();
+					var camera = cameraSetting.GetCamera();
 
 					if (camera != null)
 					{
-						Rect cameraRect = CameraTransform.GetWorldRect(camera);
+						var cameraRect = CameraTransform.GetWorldRect(camera);
 
 						GizmosHelper.DrawRect(transform.position, cameraRect);
 					}
 				}
 			}
 
-			for(int i = 0; i < SmartLighting2D.Scripts.Scriptable.LightSprite2D.List.Count; i++)
+			for (var i = 0; i < SmartLighting2D.Scripts.Scriptable.LightSprite2D.List.Count; i++)
 			{
-				SmartLighting2D.Scripts.Scriptable.LightSprite2D light = SmartLighting2D.Scripts.Scriptable.LightSprite2D.List[i];
+				var light = SmartLighting2D.Scripts.Scriptable.LightSprite2D.List[i];
 
-				Rect rect = light.lightSpriteShape.GetWorldRect();
+				var rect = light.lightSpriteShape.GetWorldRect();
 
 				Gizmos.color = new Color(1f, 0.5f, 0.25f);
 
@@ -392,25 +325,19 @@ namespace FunkyCode
 			}
 		}
 
-		#if UNITY_EDITOR
-			static private void OnSceneView(SceneView sceneView)
-			{
-				LightingManager2D manager = LightingManager2D.Get();
+#if UNITY_EDITOR
+		private static void OnSceneView(SceneView sceneView)
+		{
+			var manager = Get();
 
-				if (!manager.IsSceneView())
-				{
-					return;
-				}
+			if (!manager.IsSceneView()) return;
 
-				if (Application.isPlaying)
-				{
-					return;
-				}
+			if (Application.isPlaying) return;
 
-				ForceUpdate();
+			ForceUpdate();
 
-				Main.Render();
-			}
-		#endif
+			Main.Render();
+		}
+#endif
 	}
 }

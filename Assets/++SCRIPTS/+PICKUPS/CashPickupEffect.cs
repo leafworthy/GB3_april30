@@ -1,5 +1,3 @@
-using System;
-
 public class CashPickupEffect : PickupEffect
 {
 	private int amount;

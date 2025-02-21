@@ -357,7 +357,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowBarImage: {fileID: 2100917603199056869}
   fastBarImage: {fileID: 2100917603422568604}
-  HideWhenFull: 1
   DebreeTint: {r: 1, g: 1, b: 1, a: 1}
   colorMode: 1
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
@@ -392,6 +391,7 @@ MonoBehaviour:
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
   healthBar: {fileID: 2100917602089918221}
+  BlockTint: 0
 --- !u!114 &8136410034752600102 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1690507369906298073, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}

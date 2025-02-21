@@ -81,6 +81,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -129,6 +132,7 @@ GameObject:
   - component: {fileID: 3301150222098907369}
   - component: {fileID: 7958320092317868226}
   - component: {fileID: 353183104628318499}
+  - component: {fileID: 2003369682408042821}
   m_Layer: 10
   m_Name: Blood1
   m_TagString: Untagged
@@ -182,7 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMovable: 0
+  isMovable: 1
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
   renderBelowSortingOrder: 0
@@ -219,3 +223,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isResting: 0
   IsJumping: 0
+--- !u!114 &2003369682408042821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3905781446934895332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

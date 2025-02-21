@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Playables;
 using UnityEngine;
-using UnityEngine.Diagnostics;
 
 public class PlayerInteractable : MonoBehaviour
 {
@@ -56,8 +54,8 @@ public class PlayerInteractable : MonoBehaviour
 		playersListening.Add(player);
 
 
-		player.Controller.ActionButton.OnPress += Player_OnActionButton;
-		player.Controller.ActionButton.OnRelease += Player_OnRelease;
+		player.Controller.InteractRightShoulder.OnPress += PlayerOnInteractButton;
+		player.Controller.InteractRightShoulder.OnRelease += Player_OnRelease;
 
 		OnPlayerEnters?.Invoke(player);
 	}
@@ -77,8 +75,6 @@ public class PlayerInteractable : MonoBehaviour
 		var hits = Physics2D.LinecastAll(playerPosition, interactionPosition, ASSETS.LevelAssets.BuildingLayer);
 		Debug.DrawLine( playerPosition, interactionPosition, Color.blue, 1f);
 		
-	
-		var hasHit = false;
 		if(hits.Length == 0)
 		{
 			MyDebugUtilities.DrawX(interactionPosition, 1, Color.magenta);
@@ -107,7 +103,7 @@ public class PlayerInteractable : MonoBehaviour
 
 
 	}
-	private void Player_OnActionButton(NewControlButton newControlButton)
+	private void PlayerOnInteractButton(NewControlButton newControlButton)
 	{
 		if (isFinished) return;
 		if (!isSelected) return;
@@ -122,8 +118,11 @@ public class PlayerInteractable : MonoBehaviour
 	private void OnTriggerStay2D(Collider2D other)
 	{
 		if (isFinished) return;
+		
 		if (other.gameObject == gameObject) return;
+		if (other == null) return;
 		var life = other.GetComponentInChildren<Life>();
+		if (life == null) return;
 		if (!life.IsPlayer) return;
 		if (!buildingIsInTheWay(life.transform.position))
 		{
@@ -144,8 +143,8 @@ public class PlayerInteractable : MonoBehaviour
 	{
 		if (!playersListening.Contains(player)) return;
 		playersListening.Remove(player);
-		player.Controller.ActionButton.OnPress -= Player_OnActionButton;
-		player.Controller.ActionButton.OnRelease -= Player_OnRelease;
+		player.Controller.InteractRightShoulder.OnPress -= PlayerOnInteractButton;
+		player.Controller.InteractRightShoulder.OnRelease -= Player_OnRelease;
 		OnPlayerExits?.Invoke(player);
 	}
 

@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4763226748766150353}
   - component: {fileID: 6749160795014652197}
+  - component: {fileID: 5718979419384238319}
   m_Layer: 0
   m_Name: +Fire1 - small
   m_TagString: Untagged
@@ -88,6 +89,18 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 5967089074813000100}
   renderAboveAll: 0
+--- !u!114 &5718979419384238319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2207006132302788756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5801701079560718968
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,12 +10,12 @@ public class DashAbility : MonoBehaviour
 	private Body body;
 	private Animations anim;
 	private string DashVerbName = "dashing";
-	private GunAimAbility aim;
+	private AimAbility aim;
 	public bool teleport;
 
 	private void Start()
 	{
-		aim = GetComponent<GunAimAbility>();
+		aim = GetComponent<AimAbility>();
 		anim = GetComponent<Animations>();
 		body = GetComponent<Body>();
 		jumps = GetComponent<JumpAbility>();
@@ -23,7 +23,7 @@ public class DashAbility : MonoBehaviour
 
 		life = GetComponent<Life>();
 		owner = life.player;
-		owner.Controller.Dash.OnPress += ControllerDashPress;
+		owner.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
 
 		animEvents = anim.animEvents;
 		animEvents.OnDashStop += Anim_DashStop;
@@ -33,20 +33,20 @@ public class DashAbility : MonoBehaviour
 	private void OnDisable()
 	{
 		if (owner == null) return;
-		if(owner != null)owner.Controller.Dash.OnPress -= ControllerDashPress;
+		if(owner != null)owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 		animEvents.OnDashStop -= Anim_DashStop;
 		animEvents.OnTeleport -= Anim_Teleport;
-		owner.Controller.Dash.OnPress -= ControllerDashPress;
+		owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 	
 	}
 
 	private void Anim_Teleport()
 	{
 		
-		var landable = body.GetLandableAtPosition(aim.GetAimPoint(3));
+		var landable = body.GetLandableAtPosition(aim.GetAimPoint());
 		body.ChangeLayer(landable != null ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
 		if (landable != null)body.SetDistanceToGround(landable.height);
-		transform.position = aim.GetAimPoint(3);
+		transform.position = aim.GetAimPoint();
 	}
 
 	private void Anim_DashStop()
@@ -58,13 +58,15 @@ public class DashAbility : MonoBehaviour
 
 	
 
-	private void ControllerDashPress(NewControlButton newControlButton)
+	private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 	{
 		if (!moveController.CanMove) return;
 		if (GlobalManager.IsPaused) return;
 		if (!jumps.isResting) return;
-		if (!body.legs.Do(DashVerbName)) return;
+		body.arms.Stop();
 		if (!body.arms.Do(DashVerbName)) return;
+		//if (!body.legs.Do(DashVerbName)) return;
+		body.legs.Stop();
 		anim.SetTrigger(Animations.DashTrigger);
 		if (!teleport)
 		{

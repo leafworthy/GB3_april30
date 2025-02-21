@@ -47,7 +47,7 @@ public class Bullet_FX : MonoBehaviour
 		}
 		else
 		{
-			Maker.Unmake(gameObject);
+			ObjectMaker.Unmake(gameObject);
 			isOn = false;
 		}
 	}

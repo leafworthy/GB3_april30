@@ -25,6 +25,8 @@ public class JumpAbility : MonoBehaviour
 	private bool initiated;
 	private float minBounceVelocity = 1000;
 	private float bounceVelocityDragFactor = .2f;
+	private float landTimer;
+	private float maxFlyTime = 2.5f;
 
 	public void SetActive(bool active)
 	{
@@ -33,7 +35,7 @@ public class JumpAbility : MonoBehaviour
 
 	public void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
 	{
-		
+		landTimer = 0;
 		minBounceVelocity = minBounce;
 		IsJumping = true;
 		isResting = false;
@@ -65,7 +67,6 @@ public class JumpAbility : MonoBehaviour
 
 	public void FallFromHeight(float fallHeight)
 	{
-		
 		Init();
 	
 	
@@ -79,6 +80,7 @@ public class JumpAbility : MonoBehaviour
 		IsJumping = true;
 		isResting = false;
 		OnFall?.Invoke(transform.position);
+		landTimer = 0;
 		
 	}
 	
@@ -99,7 +101,14 @@ public class JumpAbility : MonoBehaviour
 
 	private void Fly()
 	{
-		
+		landTimer += Time.fixedDeltaTime;
+		if(landTimer> maxFlyTime)
+		{
+			//Debug.Log("time out");
+			Debug.Break();
+			Land();
+			return;
+		}
 		currentLandableHeight = thing.GetCurrentLandableHeight();
 		verticalVelocity -= (GlobalManager.Gravity.y) * Time.fixedDeltaTime;
 		if ((thing.GetDistanceToGround() + verticalVelocity <= currentLandableHeight) && (verticalVelocity < 0))

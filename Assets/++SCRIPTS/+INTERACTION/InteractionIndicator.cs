@@ -41,14 +41,14 @@ public class InteractionIndicator : MonoBehaviour
 	private void OnDeselect(Player player)
 	{
 		if (isFinished) return;
-		indicator.HideIndicator(player);
+		indicator.HideIndicator();
 
 	}
 
 	private void OnSelected(Player player)
 	{
 		if (isFinished) return;
-		indicator.ShowIndicator(player);
+		indicator.ShowIndicator();
 	}
 
 	private void PlayerExits(Player player)
@@ -69,12 +69,13 @@ public class InteractionIndicator : MonoBehaviour
 
 	private void SetIndicatorColor(Player player)
 	{
-		indicator.SetColor(player, player.color);
+		indicator.SetColor(player.color);
+		Debug.Log("color change");
 	}
 
 	private PlayerIndicator MakeIndicator()
 	{
-		var indicatorObj = Maker.Make(FX.Assets.indicatorPrefab, transform.position+ indicatorOffset);
+		var indicatorObj = ObjectMaker.Make(FX.Assets.indicatorPrefab, transform.position+ indicatorOffset);
 		indicatorObj.transform.SetParent(transform);
 		return indicatorObj.GetComponentInChildren<PlayerIndicator>();
 	}

@@ -23,7 +23,7 @@ public class TimedInteraction : PlayerInteractable
 	{
 		if (loadingBar == null)
 		{
-			loadingBar = Maker.Make(FX.Assets.loadingBarPrefab, transform.position);
+			loadingBar = ObjectMaker.Make(FX.Assets.loadingBarPrefab, transform.position);
 			loadingBar.transform.SetParent(transform);
 			loadingBarImage = loadingBar.GetComponentInChildren<Image>();
 			loadingBarImage.enabled = true;

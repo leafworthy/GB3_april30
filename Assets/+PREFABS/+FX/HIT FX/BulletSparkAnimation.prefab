@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: 6079620941959968896}
   - component: {fileID: 7878566088285154812}
   - component: {fileID: 3086758013666110371}
+  - component: {fileID: -4440365889786924269}
   m_Layer: 0
   m_Name: BulletSparkAnimation
   m_TagString: Untagged
@@ -269,7 +270,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMovable: 1
   renderBelowAll: 0
-  sortingBounds: {fileID: 0}
+  sortingBounds: {fileID: 3489288044545072347}
   renderBelowSortingOrder: 0
   sortType: 0
   SorterPositionOffset: {x: -0.0011934005, y: -0.024320751, z: 0}
@@ -294,3 +295,15 @@ MonoBehaviour:
   JumpObject: {fileID: 2797153298132178596}
   Sorting: {fileID: 7878566088285154812}
   canLand: 0
+--- !u!114 &-4440365889786924269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8197703787509694218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

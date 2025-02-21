@@ -1,14 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
 [ExecuteAlways]
-public class Life_FX : IHaveInspectorColor
+public class Life_FX : MonoBehaviour
 {
-	public override Color GetBackgroundColor() => Colors.Red;
-	public override string GetIconPath() => "Assets/Skull_Icon.png";
+
 
 	public Image slowBarImage;
 	public Image fastBarImage;
@@ -33,6 +31,7 @@ public class Life_FX : IHaveInspectorColor
 	private Life _life;
 	private Color PlayerColor;
 	public GameObject healthBar;
+	public bool BlockTint;
 
 	public void OnEnable()
 	{
@@ -58,7 +57,7 @@ public class Life_FX : IHaveInspectorColor
 
 	public void StartTint(Color tintColor)
 	{
-		Debug.Log("tint started ", this);
+		if (BlockTint) return;
 		materialTintColor = new Color();
 		materialTintColor = tintColor;
 		foreach (var r in renderersToTint)
@@ -67,16 +66,7 @@ public class Life_FX : IHaveInspectorColor
 		}
 	}
 
-	[Button]
-	public void StartTintRed()
-	{
-		Debug.Log("tint started ", this);
-		materialTintColor = Color.red;
-		foreach (var r in renderersToTint)
-		{
-			r.material.SetColor(Tint, materialTintColor);
-		}
-	}
+	
 
 	private void Life_Damaged(Attack attack)
 	{
@@ -119,7 +109,7 @@ public class Life_FX : IHaveInspectorColor
 
 		if (!_life.unitData.ShowLifeBar) return;
 		targetFill = _life.GetFraction();
-		if (targetFill > .9f)
+		if (targetFill > .9f || targetFill <= 0)
 			healthBar.SetActive(false);
 		else
 		{

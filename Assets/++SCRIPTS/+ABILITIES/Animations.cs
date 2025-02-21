@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -36,6 +37,22 @@ public class Animations : MonoBehaviour
 
 	public static readonly int GlockTrigger = Animator.StringToHash("GlockTrigger");
 
+	private HashSet<int> parameterHashes;
+
+	private void Awake()
+	{
+		animator = GetComponentInChildren<Animator>();
+		CacheParameterHashes();
+	}
+
+	private void CacheParameterHashes()
+	{
+		parameterHashes = new HashSet<int>();
+		foreach (var param in animator.parameters)
+		{
+			parameterHashes.Add(param.nameHash);
+		}
+	}
 	private void OnValidate()
 	{
 		if (animator == null) animator = GetComponentInChildren<Animator>();
@@ -51,34 +68,47 @@ public class Animations : MonoBehaviour
 	public void SetFloat(int trigger, float amount)
 	{
 		if (animator == null) animator = GetComponentInChildren<Animator>();
-		if (HasParameter(trigger, animator)) animator.SetFloat(trigger, amount);
+		if (HasParameter(trigger)) animator.SetFloat(trigger, amount);
 	}
 
 	public void ResetTrigger(int trigger)
 	{
 		if (animator == null) animator = GetComponentInChildren<Animator>();
-		if (HasParameter(trigger, animator)) animator.ResetTrigger(trigger);
+		if (HasParameter(trigger)) animator.ResetTrigger(trigger);
 	}
 
 	public void SetTrigger(int trigger)
 	{
 		if (animator == null) animator = GetComponentInChildren<Animator>();
-		if (HasParameter(trigger, animator))
+		if (HasParameter(trigger))
 		{
 			animator.SetTrigger(trigger);
 		}
 	}
 
-	public void SetBool(int trigger, bool isTrue)
-	{
-		if (animator == null) animator = GetComponentInChildren<Animator>();
-		if (HasParameter(trigger, animator)) animator.SetBool(trigger, isTrue);
+	public void SetBool(int parameterHash, bool value)
+    {
+        if (animator == null)
+        {
+            Debug.LogWarning("Animator not found.");
+            return;
+        }
 
-	}
+        if (HasParameter(parameterHash))
+        {
+            if (animator.GetBool(parameterHash) != value)
+            {
+                animator.SetBool(parameterHash, value);
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Parameter with hash {parameterHash} does not exist.");
+        }
+    }
 
-	private static bool HasParameter(int paramName, Animator animator)
+	private  bool HasParameter(int parameterHash)
 	{
-		if (animator == null) return false;
-		return animator.parameters.Any(param => param.nameHash == paramName);
+		return animator != null && parameterHashes.Contains(parameterHash);
 	}
 }

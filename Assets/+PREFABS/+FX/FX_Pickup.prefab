@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 2068471115492813615}
   - component: {fileID: 3944582645881784879}
   - component: {fileID: 3018917621588851000}
+  - component: {fileID: 6345245722476297202}
   m_Layer: 0
   m_Name: FX_Pickup
   m_TagString: Untagged
@@ -135,6 +136,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 16.666008, y: 29.058792}
   m_EdgeRadius: 0
+--- !u!114 &6345245722476297202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3030070670593196035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4161970824946086892
 GameObject:
   m_ObjectHideFlags: 0

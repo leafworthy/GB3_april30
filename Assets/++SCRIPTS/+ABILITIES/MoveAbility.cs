@@ -22,8 +22,52 @@ public class MoveAbility : MonoBehaviour
 	private bool IsActive = true;
 	private bool IsPushed;
 	private Life life;
+	private Vector2 moveAimDir;
+	private Body body;
+	private float maxAimDistance = 30;
+	public Vector2 MoveAimDir
+	{
+		get { return moveAimDir; }
+		set { moveAimDir = value; }
+	}
+	
+	public Vector2 GetAimPoint(float multiplier = 1)
+	{
+		
+		MoveAimDir = GetMoveAimDir();
+		if (!life.player.isUsingMouse)
+		{
+			return (Vector2) body.AimCenter.transform.position + MoveAimDir * maxAimDistance;
+		}
+		var mousePos = CursorManager.GetMousePosition();
+		if (Vector2.Distance(body.AimCenter.transform.position, mousePos) < maxAimDistance)
+		{
+			return mousePos;
+		}
+		else
+		{
+			return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
+		}
+
+	}
+
+	public  Vector3 GetMoveAimDir()
+	{
+		if(life.player.isUsingMouse)
+		{
+			return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
+		}
+		else
+		{
+			return life.player.Controller.MoveAxis.GetCurrentAngle();
+		}
+	}
+	
+	
+
 	private void Start()
 	{
+		body = GetComponent<Body>();
 		life = GetComponent<Life>();
 		if (life == null) return;
 		life.OnDying += Life_OnDying;
@@ -38,7 +82,7 @@ public class MoveAbility : MonoBehaviour
 		pushVelocity = Vector2.zero;
 	}
 
-	private void Update()
+	private void FixedUpdate()
 	{
 		if (GlobalManager.IsPaused) return;
 		
@@ -65,6 +109,10 @@ public class MoveAbility : MonoBehaviour
 		moveVelocity = tempVel;
 		tempVel = pushVelocity * velocityDecayFactor;
 		pushVelocity = tempVel;
+		if(pushVelocity.magnitude < .1f)
+		{
+			pushVelocity = Vector2.zero;
+		}
 	}
 
 	private Vector2 GetMoveVelocityWithDeltaTime()
@@ -134,5 +182,5 @@ public class MoveAbility : MonoBehaviour
 		pushVelocity = Vector2.zero;
 	}
 
-
+	public bool IsMoving() => isMoving;
 }

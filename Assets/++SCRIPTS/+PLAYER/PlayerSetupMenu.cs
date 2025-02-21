@@ -17,9 +17,29 @@ public class PlayerSetupMenu : MonoBehaviour
 	private float ignoreInputTime = .5f;
 	private bool inputEnabled;
 
+	private void OnEnable()
+	{
+		LevelGameScene.OnStop += LevelGameScene_OnStop;
+	}
+
+	private void LevelGameScene_OnStop(GameScene.Type obj)
+	{
+		Unsetup();
+	}
+
+	private void Unsetup()
+	{
+		owner = null;
+		gameObject.SetActive(false);
+		readyText.SetActive(false);
+		readyPanel.SetActive(false);
+		menuPanel.SetActive(true);
+	}
+
 	public event Action<Player> OnCharacterChosen;
 	public void Setup(Player player, HUDSlot hudSlot)
 	{
+		Debug.Log("made it in menu", this);
 		owner = player;
 		gameObject.SetActive(true);
 		readyText.SetActive(false);
