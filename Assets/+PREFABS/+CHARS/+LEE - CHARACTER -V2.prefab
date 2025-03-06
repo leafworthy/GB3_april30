@@ -1237,7 +1237,6 @@ GameObject:
   - component: {fileID: 906974855738869996}
   - component: {fileID: 4296806838304676772}
   - component: {fileID: 7156676400399751533}
-  - component: {fileID: 3324240973142628907}
   - component: {fileID: 8599869547717981097}
   m_Layer: 6
   m_Name: +LEE - CHARACTER -V2
@@ -1606,8 +1605,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashlightLight: {fileID: 1185514298450181501}
-  groundlight: {fileID: 0}
-  facelight: {fileID: 1185514298824458685}
 --- !u!114 &5823719441899236335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1720,18 +1717,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25f4f3610d5a4c5abb9d2561e2396ff4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3324240973142628907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3924160363998699687}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69e6087212465c44592cbe7fef3760ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &8599869547717981097

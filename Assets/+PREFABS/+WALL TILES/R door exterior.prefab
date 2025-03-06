@@ -507,7 +507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2313491215681737862, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: Health
-      value: 100
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 2313491215681737862, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: cantDie
@@ -595,11 +595,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4555309262593145997, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4555309262593145999, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: HideWhenFull
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4555309263925830428, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4555309263925830428, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4555309263925830428, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_Color.r
+      value: 0.19127488
       objectReference: {fileID: 0}
     - target: {fileID: 5096250583384262381, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: renderersToSort.Array.size
@@ -699,9 +711,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6806070673501800903, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5055054319351310850}
-    - targetCorrespondingSourceObject: {fileID: 308669690191741601, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1679628160573128468}
   m_SourcePrefab: {fileID: 100100000, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
 --- !u!212 &359072328796171202 stripped
 SpriteRenderer:
@@ -718,7 +727,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2313491215681737862, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
   m_PrefabInstance: {fileID: 4368909489246218530}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4101056853399939971}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
@@ -777,7 +786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4ed621a62f2487ea97c62c0a909c05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  indicatorOffset: {x: 4.970886, y: 15.906811, z: 0}
+  indicatorOffset: {x: 4.970886, y: 15.906809, z: 0}
   interactionPoint: {x: 7.1034546, y: -2.7321014, z: 0}
 --- !u!114 &7952065115464331908
 MonoBehaviour:
@@ -799,23 +808,6 @@ MonoBehaviour:
   ShadowCollider: {fileID: 409785356654422746}
   life: {fileID: 2070054976837189028}
   closedSorting: {fileID: 1287688945080067726}
---- !u!1 &4101056853399939971 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 308669690191741601, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
-  m_PrefabInstance: {fileID: 4368909489246218530}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1679628160573128468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4101056853399939971}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69e6087212465c44592cbe7fef3760ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7121731700872044773 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6806070673501800903, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
