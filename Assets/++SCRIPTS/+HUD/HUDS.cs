@@ -6,10 +6,12 @@ public class HUDS : Singleton<HUDS>
 	private bool isOn;
 	public HUDHandler currentHUD;
 	public GameObject Vignette;
+	public GameObject Clock;
 
 	private void Start()
 	{
 		Vignette.SetActive(false);
+		Clock.SetActive(false);
 		
 		LevelGameScene.OnStart += LevelScene_OnStart;
 		LevelGameScene.OnStop += LevelScene_OnStop;
@@ -21,6 +23,7 @@ public class HUDS : Singleton<HUDS>
 	private void LevelScene_OnStop(GameScene.Type obj)
 	{
 		Vignette.SetActive(false);
+		Clock.SetActive(false);
 		Players.OnPlayerJoins -= JoinInGame;
 		DisableAllHUDSlots();
 	}
@@ -38,12 +41,14 @@ public class HUDS : Singleton<HUDS>
 		Players.OnPlayerJoins += JoinInGame;
 		Players.OnPlayerGetUpgrades += OpenUpgradePanel;
 		Vignette.SetActive(true);
+		Clock.SetActive(true);
 	}
 
 	private void OpenUpgradePanel(Player player)
 	{
 		var slot = I.currentHUD.HUDSlots[(int)player.input.playerIndex];
 		slot.gameObject.SetActive(true);
+		Clock.SetActive(true);
 		slot.StartUpgradeSelectMenu(player);
 	}
 

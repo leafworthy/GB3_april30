@@ -109,8 +109,7 @@ public class DoorInteraction : TimedInteraction
 		isBroken = true;
 		DoorAnimator.SetBool(IsBroken, true);
 
-		var attractor = GetComponentInChildren<ZombieAttractor>();
-		if (attractor != null) attractor.gameObject.SetActive(false);
+
 		
 		 SFX.sounds.door_break_sound.PlayRandomAt(life1.transform.position);
 		 SFX.sounds.door_break_sound.PlayRandomAt(life1.transform.position);

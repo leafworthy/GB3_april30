@@ -15,9 +15,11 @@ public class ZombieWaveManager : MonoBehaviour
 
 	public List<ZombieWave> Waves = new();
 
+	public bool isActive;
 	//what?
 	private void Start()
 	{
+		if(!isActive) return;
 		isComplete = false;
 		
 		currentWaveIndex = 0;
@@ -37,6 +39,7 @@ public class ZombieWaveManager : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		if (!isActive) return;
 		if(isComplete) return;
 		if (!BetweenWaves)
 		{
@@ -70,6 +73,7 @@ public class ZombieWaveManager : MonoBehaviour
 
 	public void SpawnNextWave()
 	{
+		if (!isActive) return;
 		if(isComplete) return;
 		
 		//Debug.Log("Spawn next wave");

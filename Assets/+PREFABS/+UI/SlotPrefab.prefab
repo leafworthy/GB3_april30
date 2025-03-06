@@ -295,7 +295,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5943005165314201533}
-  - component: {fileID: 889785411809479335}
   m_Layer: 5
   m_Name: SlotPrefab
   m_TagString: Untagged
@@ -325,22 +324,3 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 1}
---- !u!114 &889785411809479335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6189769536520361038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 057f74e32159c40909132f5a95302b2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fullGraphic: {fileID: 2069954842, guid: 980c4bbe0371f4e56ac9b64735e48dd0, type: 3}
-  emptyGraphic: {fileID: -408711359, guid: 980c4bbe0371f4e56ac9b64735e48dd0, type: 3}
-  slotGraphic: {fileID: 344008029200729060}
-  itemGraphic: {fileID: 8936082724028384273}
-  isFull: 0
-  currentItem: {fileID: 0}
-  itemAmountText: {fileID: 7960787510641262266}
