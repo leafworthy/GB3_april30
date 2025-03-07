@@ -1,13 +1,33 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [ExecuteInEditMode]
 public class IsoSpriteSortingManager : MonoBehaviour
 {
+    // Singleton instance
+    private static IsoSpriteSortingManager _instance;
+    public static IsoSpriteSortingManager I => _instance;
+    
+    private void Awake()
+    {
+        _instance = this;
+    }
+    
+    private void OnDestroy()
+    {
+        if (_instance == this)
+        {
+            _instance = null;
+        }
+    }
+    
     private static readonly List<IsoSpriteSorting> fgSpriteList = new List<IsoSpriteSorting>(128);
     private static readonly List<IsoSpriteSorting> floorSpriteList = new List<IsoSpriteSorting>(128);
     private static readonly List<IsoSpriteSorting> staticSpriteList = new List<IsoSpriteSorting>(128);
-   private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new List<IsoSpriteSorting>(128);
+    private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new List<IsoSpriteSorting>(128);
 
     private static readonly List<IsoSpriteSorting> moveableSpriteList = new List<IsoSpriteSorting>(128);
     private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new List<IsoSpriteSorting>(128);
@@ -32,13 +52,13 @@ public class IsoSpriteSortingManager : MonoBehaviour
         }
         else
         {
-            if (newSprite.isMovable)
+            // In editor mode, treat all sprites as movable for dynamic sorting
+            if (newSprite.isMovable || !Application.isPlaying)
             {
                 moveableSpriteList.Add(newSprite);
             }
             else
             {
-
                 staticSpriteList.Add(newSprite);
                 newSprite.SetupStaticCache();
                 SetupStaticDependencies(newSprite);
@@ -104,12 +124,19 @@ public class IsoSpriteSortingManager : MonoBehaviour
         spriteToRemove.inverseStaticDependencies.Clear();
         spriteToRemove.staticDependencies.Clear();
     }
-
+//work now
     void Update() 
     {
         IsoSpriteSorting.UpdateSorters();
-       UpdateSorting();
+        UpdateSorting();
         
+        #if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            // This line helps with editor refreshing
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+        #endif
     }
 
    

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 [ExecuteInEditMode]
 public class IsoSpriteSorting : MonoBehaviour
 {
@@ -85,12 +88,40 @@ public class IsoSpriteSorting : MonoBehaviour
 
 	private void RefreshPoint1()
 	{
-		cachedPoint1 = SorterPositionOffset + t.position;
+		if (t == null)
+		{
+			t = transform;
+		}
+		
+		if (t != null)
+		{
+			cachedPoint1 = SorterPositionOffset + t.position;
+		}
+		else
+		{
+			// Fallback if transform is still null
+			cachedPoint1 = SorterPositionOffset;
+			Debug.LogWarning("IsoSpriteSorting: Transform reference is null in " + gameObject.name, this);
+		}
 	}
 
 	private void RefreshPoint2()
 	{
-		cachedPoint2 = SorterPositionOffset2 + t.position;
+		if (t == null)
+		{
+			t = transform;
+		}
+		
+		if (t != null)
+		{
+			cachedPoint2 = SorterPositionOffset2 + t.position;
+		}
+		else
+		{
+			// Fallback if transform is still null
+			cachedPoint2 = SorterPositionOffset2;
+			Debug.LogWarning("IsoSpriteSorting: Transform reference is null in " + gameObject.name, this);
+		}
 	}
 
 	private int lastPoint1CalculatedFrame;
@@ -100,7 +131,7 @@ public class IsoSpriteSorting : MonoBehaviour
 	{
 		get
 		{
-			if (isMovable)
+			if (isMovable || !Application.isPlaying)
 			{
 				var frameCount = Time.frameCount;
 				if (frameCount != lastPoint1CalculatedFrame)
@@ -121,7 +152,7 @@ public class IsoSpriteSorting : MonoBehaviour
 	{
 		get
 		{
-			if (isMovable)
+			if (isMovable || !Application.isPlaying)
 			{
 				var frameCount = Time.frameCount;
 				if (frameCount != lastPoint2CalculatedFrame)
@@ -161,11 +192,20 @@ public class IsoSpriteSorting : MonoBehaviour
 
 	public static void UpdateSorters()
 	{
-		//isoSorters = FindObjectsByType<IsoSpriteSorting>( FindObjectsInactive.Include, FindObjectsSortMode.None); //changed this
-		//foreach (var t1 in isoSorters)
-		//	t1.Setup();
+		#if UNITY_EDITOR
+		if (!Application.isPlaying)
+		{
+			isoSorters = UnityEngine.Object.FindObjectsOfType<IsoSpriteSorting>(true);
+			foreach (var t1 in isoSorters)
+			{
+				t1.Setup();
+				t1.forceSort = true; // Force sorting update for all sprites
+			}
 
-		//IsoSpriteSortingManager.UpdateSorting();
+			IsoSpriteSortingManager.UpdateSorting();
+			SceneView.RepaintAll();
+		}
+		#endif
 	}
 
 
@@ -177,7 +217,7 @@ public class IsoSpriteSorting : MonoBehaviour
 
 	private void OnEnable()
 	{
-		if (Application.isPlaying) Setup();
+		Setup();
 	}
 
 	private void OnDisable()
@@ -194,7 +234,87 @@ public class IsoSpriteSorting : MonoBehaviour
 #if UNITY_EDITOR
 	private void OnValidate()
 	{
+		// Make sure transform reference is set
+		if (t == null)
+		{
+			t = transform;
+		}
+		
+		// Only proceed if we have a valid transform
+		if (t != null)
+		{
+			GetRenderers();
+			forceSort = true;
+			
+			// Only register if IsoSpriteSortingManager exists
+			if (IsoSpriteSortingManager.I != null)
+			{
+				IsoSpriteSortingManager.RegisterSprite(this);
+			}
+		}
+	}
+
+	private void OnTransformChildrenChanged()
+	{
+		if (t == null)
+		{
+			t = transform;
+		}
+		
 		GetRenderers();
+		forceSort = true;
+	}
+	
+	private void OnDrawGizmosSelected()
+	{
+		// Force refresh in Scene view when object is selected
+		if (!Application.isPlaying)
+		{
+			if (t == null)
+			{
+				t = transform;
+			}
+			
+			forceSort = true;
+			RefreshPoint1();
+			RefreshPoint2();
+			RefreshBounds();
+			
+			if (IsoSpriteSortingManager.I != null)
+			{
+				IsoSpriteSortingManager.UpdateSorting();
+			}
+		}
+	}
+	
+	private Vector3 lastPosition;
+	private Quaternion lastRotation;
+	private Vector3 lastScale;
+	
+	private void OnDrawGizmos()
+	{
+		// Check if transform has changed
+		if (!Application.isPlaying && t != null)
+		{
+			bool hasChanged = 
+				t.position != lastPosition || 
+				t.rotation != lastRotation || 
+				t.localScale != lastScale;
+				
+			if (hasChanged)
+			{
+				lastPosition = t.position;
+				lastRotation = t.rotation;
+				lastScale = t.localScale;
+				
+				forceSort = true;
+				RefreshPoint1();
+				RefreshPoint2();
+				RefreshBounds();
+				IsoSpriteSortingManager.UpdateSorting();
+				SceneView.RepaintAll();
+			}
+		}
 	}
 #endif
 
@@ -357,7 +477,7 @@ public class IsoSpriteSorting : MonoBehaviour
 	{
 		get
 		{
-			if (isMovable)
+			if (isMovable || !Application.isPlaying)
 			{
 				var frameCount = Time.frameCount;
 				if (frameCount != lastBoundsCalculatedFrame)

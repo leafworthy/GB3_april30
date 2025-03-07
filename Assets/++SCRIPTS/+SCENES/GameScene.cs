@@ -11,15 +11,23 @@ public abstract class GameScene : MonoBehaviour
 		Paused,
 		Endscreen,
 		None,
-		RestartLevel
+		RestartLevel,
+		GasStation
 	}
 	protected bool isActive;
+	
+	// Virtual property that derived classes can override to specify their scene type
+	public virtual Type SceneType => Type.None;
 
 
-
-	protected void GoToScene(Type sceneType)
+	/// <summary>
+	/// Navigate to a different scene
+	/// </summary>
+	/// <param name="sceneType">The type of scene to load</param>
+	/// <param name="useLevelTransition">Whether to use the special level transition screen</param>
+	protected void GoToScene(Type sceneType, bool useLevelTransition = false)
 	{
 		//Debug.Log("goto scene: " + sceneType);
-		SceneLoader.I.SetDestinationScene(sceneType);
+		SceneLoader.I.SetDestinationScene(sceneType, useLevelTransition);
 	}
 }

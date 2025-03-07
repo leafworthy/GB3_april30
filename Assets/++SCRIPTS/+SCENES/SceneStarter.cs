@@ -3,7 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneStarter : MonoBehaviour
 {
-	public static bool hasStarted;
+	private static bool hasStarted;
+	
 	private void Awake()
 	{
 		if(hasStarted) return;
@@ -13,7 +14,21 @@ public class SceneStarter : MonoBehaviour
 
 	private void CreateGameManager()
 	{
+		// Check if GameManager already exists in any form
 		if(SceneLoader.hasLoaded) return;
-	SceneManager.LoadScene("GameManager", LoadSceneMode.Additive);
+		
+		// Check if GameManager scene is already loaded
+		for (int i = 0; i < SceneManager.sceneCount; i++)
+		{
+			if (SceneManager.GetSceneAt(i).name == "GameManager")
+			{
+				Debug.Log("GameManager scene already loaded");
+				return;
+			}
+		}
+		
+		// Load GameManager scene additively
+		SceneManager.LoadScene("GameManager", LoadSceneMode.Additive);
+		Debug.Log("Create game manager");
 	}
 }

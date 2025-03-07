@@ -130,7 +130,8 @@ public class Player : MonoBehaviour
 		SelectClosestInteractable();
 	}
 
-	private void SpawnedPlayer_Dead(Player player)
+	// Method to handle player death
+	public void OnPlayerDied(Player player)
 	{
 		state = State.Dead;
 		OnPlayerDies?.Invoke(this);
@@ -138,24 +139,50 @@ public class Player : MonoBehaviour
 
 	private void OnLevelStop_CleanUp(GameScene.Type type)
 	{
+		// If player manager is handling character persistence, don't clean up
+		if (PlayerManager.ShouldPersistCharacters && PlayerManager.I != null && 
+		    PlayerManager.I.HasPersistentCharacter(this))
+		{
+			// Just unsubscribe from event, but don't destroy character or change state
+			LevelGameScene.OnStop -= OnLevelStop_CleanUp;
+			return;
+		}
+	
+		// Otherwise clean up normally
 		state = State.SelectingCharacter;
 		CurrentButton = null;
 		SpawnedPlayerGO = null;
 		LevelGameScene.OnStop -= OnLevelStop_CleanUp;
-		if (spawnedPlayerDefence != null) spawnedPlayerDefence.OnDead -= SpawnedPlayer_Dead;
+		if (spawnedPlayerDefence != null) spawnedPlayerDefence.OnDead -= OnPlayerDied;
 	}
 
 	public void Spawn(Vector2 SpawnPoint)
 	{
-		Debug.Log("here");
+		Debug.Log("Spawning player at " + SpawnPoint);
 		state = State.Alive;
+		
+		// Create the character instance
 		var spawnedPlayerGO = Instantiate(GetPrefabFromCharacter(this));
 		spawnedPlayerGO.transform.position = SpawnPoint;
 		
-		
-		
 		SetSpawnedPlayerGO(spawnedPlayerGO);
-		playerUpgrades.ApplyUpgrades(this);
+		
+		// Apply any upgrades
+		if (playerUpgrades != null)
+		{
+			playerUpgrades.ApplyUpgrades(this);
+		}
+		
+		// Register with PlayerManager for persistence if needed
+		if (PlayerManager.I != null && PlayerManager.ShouldPersistCharacters)
+		{
+			PlayerManager.I.RegisterPersistentCharacter(this, spawnedPlayerGO);
+		}
+		
+		// Subscribe to level stop event for cleanup
+		LevelGameScene.OnStop += OnLevelStop_CleanUp;
+		
+		// Notify that player has spawned
 		OnPlayerSpawned?.Invoke(this);
 	}
 
@@ -163,7 +190,7 @@ public class Player : MonoBehaviour
 	{
 		SpawnedPlayerGO = newGO;
 		spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
-		spawnedPlayerDefence.OnDead += SpawnedPlayer_Dead;
+		spawnedPlayerDefence.OnDead += OnPlayerDied;  // Updated to use new method name
 		spawnedPlayerDefence.SetPlayer(this);
 		sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
 	}
