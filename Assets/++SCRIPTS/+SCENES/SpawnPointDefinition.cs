@@ -15,10 +15,10 @@ public class SpawnPointDefinition : ScriptableObject
 
     [Header("Connection")]
     [Tooltip("Scene this spawn point is in")]
-    public GameScene.Type sourceScene;
+    [SerializeField] private SceneDefinition sourceScene;
     
     [Tooltip("Scene this spawn point leads to")]
-    public GameScene.Type destinationScene;
+    [SerializeField] private SceneDefinition destinationScene;
     
     [Tooltip("Connected spawn point ID in the destination scene")]
     public string connectedSpawnPointId;
@@ -34,28 +34,66 @@ public class SpawnPointDefinition : ScriptableObject
     [Tooltip("Color to use when visualizing this spawn point")]
     public Color gizmoColor = new Color(0, 0.5f, 1f, 0.5f);
     
-    [TextArea(3, 5)]
-    public string notes;
+    /// <summary>
+    /// The source scene this spawn point belongs to
+    /// </summary>
+    public SceneDefinition SourceScene => sourceScene;
     
-    public override string ToString()
+    /// <summary>
+    /// The destination scene this spawn point leads to
+    /// </summary>
+    public SceneDefinition DestinationScene => destinationScene;
+    
+    /// <summary>
+    /// Set the source scene for this spawn point
+    /// </summary>
+    public void SetSourceScene(SceneDefinition scene)
     {
-        return !string.IsNullOrEmpty(displayName) 
-            ? displayName 
-            : id;
+        if (scene != null)
+        {
+            sourceScene = scene;
+        }
     }
     
-    // Create a SpawnPointData object from this definition (for runtime use)
-    public SpawnPointData CreateRuntimeData(Vector2 position)
+    /// <summary>
+    /// Set the destination scene for this spawn point
+    /// </summary>
+    public void SetDestinationScene(SceneDefinition scene)
     {
-        return new SpawnPointData
+        if (scene != null)
         {
-            id = id,
-            sourceScene = sourceScene,
-            destinationScene = destinationScene,
-            connectedId = connectedSpawnPointId,
-            position = position,
-            pointType = pointType,
-            capacity = capacity
-        };
+            destinationScene = scene;
+        }
+    }
+    
+    /// <summary>
+    /// String representation for display in the inspector 
+    /// </summary>
+    public override string ToString()
+    {
+        if (!string.IsNullOrEmpty(displayName))
+            return displayName;
+            
+        if (!string.IsNullOrEmpty(id))
+            return id;
+            
+        return name;
+    }
+    
+    /// <summary>
+    /// Helper method to create a spawn point definition from source data
+    /// </summary>
+    public static SpawnPointDefinition Create(string id, SceneDefinition sourceScene, SceneDefinition destScene, 
+        string connectedId = "", SpawnPointType type = SpawnPointType.Both)
+    {
+        var definition = CreateInstance<SpawnPointDefinition>();
+        definition.id = id;
+        definition.displayName = id;
+        definition.SetSourceScene(sourceScene);
+        definition.SetDestinationScene(destScene);
+        definition.connectedSpawnPointId = connectedId;
+        definition.pointType = type;
+        
+        return definition;
     }
 }

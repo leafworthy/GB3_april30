@@ -45,7 +45,7 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 	private void MakeHitMark(Attack attack, Life hitLife)
 	{
 		
-		var hitList = FX.Assets.GetBulletHits(attack.DestinationLife.DebrisType);
+		var hitList = ASSETS.FX.GetBulletHits(attack.DestinationLife.DebrisType);
 
 		if (hitList == null) return;
 
@@ -75,14 +75,14 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 		for (var j = 0; j < randAmount; j++)
 		{
 			//----->
-			var forwardDebree = ObjectMaker.Make(FX.Assets.GetDebree(attack.DestinationLife.DebrisType), attack.DestinationFloorPoint);
+			var forwardDebree = ObjectMaker.Make(ASSETS.FX.GetDebree(attack.DestinationLife.DebrisType), attack.DestinationFloorPoint);
 		
 			forwardDebree.GetComponent<FallToFloor>().Fire(attack);
 			ObjectMaker.Unmake(forwardDebree, 3);
 
 			//<-----
 			var flippedAttack = new Attack(hitLife, attack.OriginLife, attack.DamageAmount);
-			var backwardDebree = ObjectMaker.Make(FX.Assets.GetDebree(attack.DestinationLife.DebrisType), attack.DestinationFloorPoint);
+			var backwardDebree = ObjectMaker.Make(ASSETS.FX.GetDebree(attack.DestinationLife.DebrisType), attack.DestinationFloorPoint);
 			backwardDebree.GetComponent<FallToFloor>().Fire(flippedAttack);
 			ObjectMaker.Unmake(backwardDebree, 3);
 			if (lifeFX != null)
@@ -98,7 +98,7 @@ public class Life_AnyAttackHit_FX : MonoBehaviour
 
 	private void CreateBloodSpray(Attack attack)
 	{
-		var blood = ObjectMaker.Make(FX.Assets.bloodspray.GetRandom(), attack.DestinationFloorPoint);
+		var blood = ObjectMaker.Make(ASSETS.FX.bloodspray.GetRandom(), attack.DestinationFloorPoint);
 		if (attack.Direction.x < 0)
 		{
 			blood.transform.localScale =

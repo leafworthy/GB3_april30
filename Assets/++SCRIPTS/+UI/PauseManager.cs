@@ -41,7 +41,7 @@ public class PauseManager : Singleton<PauseManager>
 		newPlayer.Controller.UIAxis.OnDown += PlayerPressedDown;
 	}
 
-	private void OnLevelStop(GameScene.Type type)
+	private void OnLevelStop(SceneDefinition sceneReference)
 	{
 		StopListeningToJoinedPlayers();
 		LevelGameScene.OnStop -= OnLevelStop;

@@ -13,7 +13,7 @@ public class GameSceneMainMenu : GameScene
 		//Debug.Log("Player " + player.playerIndex + " has Joined");
 		Players.OnPlayerJoins -= PlayerOnJoins;
 		SFX.sounds.press_start_sounds.PlayRandom();
-		GoToScene(Type.CharacterSelect);
+		SceneLoader.I.GoToScene(ASSETS.Scenes.characterSelect);
 	}
 
 }

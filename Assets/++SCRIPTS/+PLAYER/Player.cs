@@ -137,11 +137,10 @@ public class Player : MonoBehaviour
 		OnPlayerDies?.Invoke(this);
 	}
 
-	private void OnLevelStop_CleanUp(GameScene.Type type)
+	private void OnLevelStop_CleanUp(SceneDefinition sceneDefinition)
 	{
 		// If player manager is handling character persistence, don't clean up
-		if (PlayerManager.ShouldPersistCharacters && PlayerManager.I != null && 
-		    PlayerManager.I.HasPersistentCharacter(this))
+		if (Players.ShouldPersistCharacters && Players.I != null && Players.I.HasPersistentCharacter(this))
 		{
 			// Just unsubscribe from event, but don't destroy character or change state
 			LevelGameScene.OnStop -= OnLevelStop_CleanUp;
@@ -173,10 +172,10 @@ public class Player : MonoBehaviour
 			playerUpgrades.ApplyUpgrades(this);
 		}
 		
-		// Register with PlayerManager for persistence if needed
-		if (PlayerManager.I != null && PlayerManager.ShouldPersistCharacters)
+		// Register with Players for persistence if needed
+		if (Players.I != null && Players.ShouldPersistCharacters)
 		{
-			PlayerManager.I.RegisterPersistentCharacter(this, spawnedPlayerGO);
+			Players.I.RegisterPersistentCharacter(this, spawnedPlayerGO);
 		}
 		
 		// Subscribe to level stop event for cleanup

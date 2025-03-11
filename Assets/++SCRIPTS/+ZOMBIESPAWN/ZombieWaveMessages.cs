@@ -18,13 +18,13 @@ public class ZombieWaveMessages : MonoBehaviour
 		visible.SetActive(isOn);
 	}
 
-	private void LevelGameScene_OnStop(GameScene.Type obj)
+	private void LevelGameScene_OnStop(SceneDefinition sceneDefinition)
 	{
 		isOn = false;
 		visible.SetActive(isOn);
 	}
 
-	private void LevelGameScene_OnStart()
+	private void LevelGameScene_OnStart(SceneDefinition sceneDefinition)
 	{
 		isOn = true;
 		visible.SetActive(isOn);

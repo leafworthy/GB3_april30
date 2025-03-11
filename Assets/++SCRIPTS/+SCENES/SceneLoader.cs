@@ -1,235 +1,505 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Data for spawn points that can be used for level transitions
+/// </summary>
 [Serializable]
-public class LevelTransitionData
+public class SpawnPointData
 {
-    public string sceneName;
-    public string locationTitle;
-    public Sprite locationImage;
+    public string id;
+    public string sourceSceneName;
+    public string destinationSceneName;
+    public string connectedId; // ID of connected spawn point in destination scene
+    public Vector2 position;
+    public SpawnPointType pointType = SpawnPointType.Both;
+    public int capacity = 4;
+
+    // Helper to get the source scene definition
+    public SceneDefinition GetSourceSceneDefinition() =>
+        ASSETS.GetSceneByName(sourceSceneName);
+
+    // Helper to get the destination scene definition
+    public SceneDefinition GetDestinationSceneDefinition() =>
+        ASSETS.GetSceneByName(destinationSceneName);
 }
 
+/// <summary>
+/// Integrated scene transition system that handles both scene loading and player spawn positions
+/// </summary>
 public class SceneLoader : Singleton<SceneLoader>
 {
+    // UI References
+    [Header("UI References")]
+    [SerializeField] private Animator faderAnimator;
+    [SerializeField] private GameObject loadingScreen;
+    [SerializeField] private GameObject levelTransitionScreen;
+    [SerializeField] private Image progressBarImage;
+    [SerializeField] private TextMeshProUGUI percentLoadedText;
+    [SerializeField] private TextMeshProUGUI locationTitleText;
+    [SerializeField] private Image locationImage;
+    [SerializeField] private GameObject pressAnyButtonText;
+    
+    // Configuration
+    [Header("Configuration")]
+    [SerializeField] private SceneDefinition startingScene;
+    
+    // Spawn point system (merged from LevelTransition)
+    [Header("Spawn Points")]
+    [SerializeField] private List<SpawnPointData> spawnPoints = new List<SpawnPointData>();
+    
+    // State tracking
     private AsyncOperation loadingOperation;
-    
-    // Progress indicator references
-    public Image progressBarImage; // This will be used for both regular progress and radial progress
-    public TextMeshProUGUI percentLoadedText;
-    
-    // Scene transition UI elements
-    public TextMeshProUGUI locationTitleText;
-    public Image locationImage;
-    public GameObject pressAnyButtonText;
-    
-    // Screen GameObjects
-    public GameObject loadingScreen;
-    public GameObject levelTransitionScreen;
-    
     private bool isLoading;
     private bool loadingComplete;
     private bool waitingForInput;
-
-    private GameScene.Type DestinationScene;
-    [SerializeField] private GameScene.Type StartingScene;
-    [SerializeField] private LevelTransitionData[] levelTransitions;
-
-    public Animator faderAnimator;
-    public static bool hasLoaded;
     private static readonly int IsFadedIn = Animator.StringToHash("IsFadedIn");
-
-    // Dictionary to quickly look up level transition data
-    private System.Collections.Generic.Dictionary<string, LevelTransitionData> transitionDataDict;
     
-    // Reference to the SceneDefinitionManager
-    private SceneDefinitionManager sceneDefinitionManager;
+    // Scene transition state tracking
+    private SceneDefinition currentScene;
+    private SceneDefinition destinationScene;
+    private bool isLevelTransition;
+    private string lastConnectedId;
+    private bool isFirstLevelLoad = true;
     
-    // Input management
+    // Dictionaries for spawn point lookups
+    private Dictionary<string, SpawnPointData> spawnPointsById = new Dictionary<string, SpawnPointData>();
+    private Dictionary<string, List<SpawnPointData>> spawnPointsByScene = new Dictionary<string, List<SpawnPointData>>();
+    
+    // Static properties
+    public static bool hasLoaded; // Made public for SceneStarter
+    
+    // Input handling
     private PlayerControls playerControls;
     private InputAction anyButtonAction;
-
+    
+    #region Lifecycle Methods
+    
+    protected override void Awake()
+    {
+        base.Awake();
+        
+        // Only once when in play mode
+        if (Application.isPlaying)
+        {
+            // Set up as a persistent manager
+            DontDestroyOnLoad(gameObject);
+            
+            // Initialize dictionaries for spawn points
+            InitializeSpawnPointDictionaries();
+            
+            // Subscribe to scene loaded events
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            
+            // Load the starting scene
+            if (startingScene != null && startingScene.IsValid())
+            {
+                SceneManager.LoadScene(startingScene.SceneName);
+                
+                // Set as current scene
+                currentScene = startingScene;
+            }
+            else if (ASSETS.Scenes != null && ASSETS.Scenes.mainMenu != null)
+            {
+                // Fallback to main menu
+                SceneManager.LoadScene(ASSETS.Scenes.mainMenu.SceneName);
+                
+                // Set as current scene
+                currentScene = ASSETS.Scenes.mainMenu;
+            }
+        }
+    }
+    
+    private void Start()
+    {
+        // Hide the press any button text initially
+        if (pressAnyButtonText != null)
+            pressAnyButtonText.gameObject.SetActive(false);
+    }
+    
     private void OnEnable()
     {
-        // Initialize input
+        // Set up input for button press detection
         if (playerControls == null)
         {
             playerControls = new PlayerControls();
-            SetupInputActions();
+            anyButtonAction = new InputAction(binding: "/*/<button>", type: InputActionType.Button);
+            anyButtonAction.performed += OnAnyButtonPressed;
+            anyButtonAction.Enable();
         }
         
         playerControls.Enable();
     }
-
+    
     private void OnDisable()
     {
+        // Clean up input
         if (playerControls != null)
-        {
             playerControls.Disable();
-        }
+            
+        if (anyButtonAction != null)
+            anyButtonAction.Disable();
+            
+        // Unsubscribe from events
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
-
-    private void SetupInputActions()
+    
+    private void Update()
     {
-        // Create an action that will trigger on any button/key press
-        anyButtonAction = new InputAction(binding: "/*/<button>", type: InputActionType.Button);
-        anyButtonAction.performed += OnAnyButtonPressed;
-        anyButtonAction.Enable();
-    }
+        if (!isLoading) return;
 
-    private void OnAnyButtonPressed(InputAction.CallbackContext context)
-    {
-        if (waitingForInput && loadingComplete)
+        var progressValue = UpdateLoadingProgress();
+        
+        // For scenes that don't require button press
+        if (loadingOperation.allowSceneActivation && progressValue >= 1.0f)
         {
-            // Allow scene activation and complete the loading process
-            loadingOperation.allowSceneActivation = true;
-            waitingForInput = false;
             isLoading = false;
             FadeOut();
+            return;
+        }
+        
+        // For scenes that require "press any button"
+        if (!loadingComplete && !loadingOperation.allowSceneActivation && progressValue >= 0.9f)
+        {
+            loadingComplete = true;
+            if (percentLoadedText != null)
+                percentLoadedText.text = "100";
+            // Show press any button message
+            if (pressAnyButtonText != null)
+            {
+                pressAnyButtonText.gameObject.SetActive(true);
+                waitingForInput = true;
+            }
+            else
+            {
+                waitingForInput = false;
+                StopWaitingForInput();
+            }
+
+          
+           
         }
     }
-
-    private void Start()
+    
+    #endregion
+    
+    #region Public Scene Loading Methods
+    
+    /// <summary>
+    /// Set the destination scene using a SceneDefinition
+    /// </summary>
+    public void GoToScene(SceneDefinition sceneDefinition, bool useLevelTransition = false)
     {
-        // Initialize the dictionary
-        transitionDataDict = new System.Collections.Generic.Dictionary<string, LevelTransitionData>();
-        if (levelTransitions != null)
+        if (sceneDefinition == null || !sceneDefinition.IsValid())
         {
-            foreach (var transition in levelTransitions)
+            Debug.LogError("Invalid scene definition");
+            return;
+        }
+        
+        // Store the destination
+        destinationScene = sceneDefinition;
+        isLevelTransition = useLevelTransition;
+        
+        Debug.Log($"Loading scene: {sceneDefinition.DisplayName}");
+        
+        // Update internal tracking 
+        SetCurrentScene(sceneDefinition);
+        
+        // Start the transition
+        StartFadingIn();
+    }
+    
+   
+    
+    
+    #endregion
+    
+    #region Spawn Point System (from LevelTransition)
+    
+    /// <summary>
+    /// Update the current scene reference (called when a new scene is loaded)
+    /// </summary>
+    public void SetCurrentScene(SceneDefinition scene)
+    {
+        if (scene != null)
+        {
+            currentScene = scene;
+            Debug.Log($"Current scene set to {scene.DisplayName} ({scene.SceneName})");
+        }
+    }
+    
+    /// <summary>
+    /// Set a transition ID when moving between levels via spawn points
+    /// </summary>
+    public void SetTransitionId(string transitionId)
+    {
+         isFirstLevelLoad = false;
+
+        // Store the connected ID for the destination scene
+        if (spawnPointsById.TryGetValue(transitionId, out var spawnData))
+        {
+            lastConnectedId = spawnData.connectedId;
+
+            // Get and log destination info
+            var destinationName = spawnData.destinationSceneName;
+            Debug.Log($"Scene Transition: From {transitionId} to {spawnData.connectedId} in {destinationName}");
+        }
+    }
+    
+    /// <summary>
+    /// Get spawn positions for multiple players in the current scene
+    /// </summary>
+    public List<Vector2> GetSpawnPositions(SceneDefinition currentScene, int playerCount)
+    {
+        if (currentScene != null && !string.IsNullOrEmpty(currentScene.SceneName))
+            return GetSpawnPositions(currentScene.SceneName, playerCount);
+
+        // Fallback to empty positions
+        var defaultPositions = new List<Vector2>();
+        for (var i = 0; i < playerCount; i++) defaultPositions.Add(Vector2.zero);
+        return defaultPositions;
+    }
+    
+    /// <summary>
+    /// Get spawn positions using the current scene name
+    /// </summary>
+    public List<Vector2> GetSpawnPositions(string sceneName, int playerCount)
+    {
+        // Default positions in case we don't find suitable spawn points
+        var positions = new List<Vector2>();
+        for (var i = 0; i < playerCount; i++) positions.Add(Vector2.zero);
+
+        // If this is the first level load, use default spawn points
+        if (isFirstLevelLoad) return positions;
+
+        // Try to find the connected spawn point in the destination scene
+        if (!string.IsNullOrEmpty(lastConnectedId))
+        {
+            SpawnPointData destinationPoint = null;
+
+            // Look for exact spawn point by ID
+            foreach (var point in spawnPoints)
             {
-                transitionDataDict[transition.sceneName] = transition;
+                if (point.id == lastConnectedId && (point.sourceSceneName == sceneName) &&
+                    (point.pointType == SpawnPointType.Entry || point.pointType == SpawnPointType.Both))
+                {
+                    destinationPoint = point;
+                    break;
+                }
+            }
+
+            if (destinationPoint != null)
+            {
+                // Calculate spawn positions around this point
+                return CalculatePositionsAroundPoint(destinationPoint.position, playerCount, destinationPoint.capacity);
             }
         }
 
-        // Hide the "press any button" text initially
-        if (pressAnyButtonText != null)
-            pressAnyButtonText.gameObject.SetActive(false);
-    }
+        // If connected ID not found, look for any entry points in this scene
+        if (spawnPointsByScene.TryGetValue(sceneName, out var scenePoints))
+        {
+            var entryPoints = scenePoints.Where(p => p.pointType == SpawnPointType.Entry || p.pointType == SpawnPointType.Both).ToList();
 
-    private void FixedUpdate()
+            if (entryPoints.Count > 0)
+            {
+                // Use the first available entry point
+                return CalculatePositionsAroundPoint(entryPoints[0].position, playerCount, entryPoints[0].capacity);
+            }
+        }
+        
+        // Return default positions if no suitable spawn points found
+        return positions;
+    }
+    
+    /// <summary>
+    /// Register a new spawn point
+    /// </summary>
+    public void RegisterSpawnPoint(SpawnPointData newSpawnPoint)
     {
-        Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.ScriptOnly);
-    }
+        if (string.IsNullOrEmpty(newSpawnPoint.id))
+        {
+            Debug.LogError("Spawn point ID cannot be empty");
+            return;
+        }
+        
+        // Check if ID already exists
+        for (var i = 0; i < spawnPoints.Count; i++)
+        {
+            if (spawnPoints[i].id == newSpawnPoint.id && 
+                (spawnPoints[i].sourceSceneName == newSpawnPoint.sourceSceneName))
+            {
+                // Update existing spawn point
+                spawnPoints[i] = newSpawnPoint;
+                spawnPointsById[newSpawnPoint.id] = newSpawnPoint;
 
+                // Update string-based dictionary
+                if (!string.IsNullOrEmpty(newSpawnPoint.sourceSceneName) &&
+                    spawnPointsByScene.TryGetValue(newSpawnPoint.sourceSceneName, out var scenePoints))
+                {
+                    for (var j = 0; j < scenePoints.Count; j++)
+                    {
+                        if (scenePoints[j].id == newSpawnPoint.id)
+                        {
+                            scenePoints[j] = newSpawnPoint;
+                            break;
+                        }
+                    }
+                }
+                
+                return;
+            }
+        }
+
+        // Add new spawn point
+        spawnPoints.Add(newSpawnPoint);
+        spawnPointsById[newSpawnPoint.id] = newSpawnPoint;
+
+        // Add to scene dictionaries
+        if (!string.IsNullOrEmpty(newSpawnPoint.sourceSceneName))
+        {
+            if (!spawnPointsByScene.ContainsKey(newSpawnPoint.sourceSceneName))
+                spawnPointsByScene[newSpawnPoint.sourceSceneName] = new List<SpawnPointData>();
+                
+            spawnPointsByScene[newSpawnPoint.sourceSceneName].Add(newSpawnPoint);
+        }
+    }
+    
+    /// <summary>
+    /// Check if this is a new game or continuing between levels
+    /// </summary>
+    public bool IsFirstLoad() => isFirstLevelLoad;
+    
+
+    
+    /// <summary>
+    /// Get the last connected spawn point ID
+    /// </summary>
+    public string GetLastConnectedId() => lastConnectedId;
+    
+    /// <summary>
+    /// Find all entry points in a scene
+    /// </summary>
+    public List<SpawnPointData> GetEntryPoints(SceneDefinition scene)
+    {
+        if (scene != null && !string.IsNullOrEmpty(scene.SceneName) && 
+            spawnPointsByScene.TryGetValue(scene.SceneName, out var scenePoints))
+        {
+            return scenePoints.Where(p => p.pointType == SpawnPointType.Entry || 
+                                          p.pointType == SpawnPointType.Both).ToList();
+        }
+
+        return new List<SpawnPointData>();
+    }
+    
+    /// <summary>
+    /// Find all exit points in a scene
+    /// </summary>
+    public List<SpawnPointData> GetExitPoints(SceneDefinition scene)
+    {
+        if (scene != null && !string.IsNullOrEmpty(scene.SceneName) && 
+            spawnPointsByScene.TryGetValue(scene.SceneName, out var scenePoints))
+        {
+            return scenePoints.Where(p => p.pointType == SpawnPointType.Exit || 
+                                          p.pointType == SpawnPointType.Both).ToList();
+        }
+
+        return new List<SpawnPointData>();
+    }
+    
+    #endregion
+    
+    #region Animation Callbacks
+    
+    /// <summary>
+    /// Called by the fade-in animation when complete
+    /// </summary>
+    public void FadeInComplete()
+    {
+        LoadScene();
+    }
+    
+    /// <summary>
+    /// Called by the fade-out animation when complete
+    /// </summary>
     public void FadeOutComplete()
     {
         loadingScreen.SetActive(false);
         if (levelTransitionScreen != null)
             levelTransitionScreen.SetActive(false);
     }
-
-    public void FadeInComplete()
+    
+    #endregion
+    
+    #region Private Methods
+    
+    /// <summary>
+    /// Initialize dictionaries for spawn point lookups
+    /// </summary>
+    private void InitializeSpawnPointDictionaries()
     {
-        LoadScene(DestinationScene);
-        Debug.Log("load scene");
-    }
-
-    protected override void Awake()
-    {
-        base.Awake();
-        DontDestroyOnLoad(gameObject); // Changed to use gameObject instead of this
-        SceneManager.sceneLoaded += FirstFade;
+        spawnPointsById.Clear();
+        spawnPointsByScene.Clear();
         
-        // Ensure SceneDefinitionManager is initialized
-        if (SceneDefinitionManager.Instance == null)
+        // Initialize dictionaries
+        foreach (var spawnPoint in spawnPoints)
         {
-            var go = new GameObject("SceneDefinitionManager");
-            go.transform.SetParent(transform);
-            sceneDefinitionManager = go.AddComponent<SceneDefinitionManager>();
+            if (!string.IsNullOrEmpty(spawnPoint.id))
+            {
+                // Store by ID for direct lookup
+                spawnPointsById[spawnPoint.id] = spawnPoint;
+
+                // Store by scene name
+                if (!string.IsNullOrEmpty(spawnPoint.sourceSceneName))
+                {
+                    if (!spawnPointsByScene.ContainsKey(spawnPoint.sourceSceneName))
+                        spawnPointsByScene[spawnPoint.sourceSceneName] = new List<SpawnPointData>();
+                        
+                    spawnPointsByScene[spawnPoint.sourceSceneName].Add(spawnPoint);
+                }
+            }
         }
-        else
+    }
+    
+    /// <summary>
+    /// Called when a scene is loaded
+    /// </summary>
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // First scene load needs a fade out
+        if (!hasLoaded)
         {
-            sceneDefinitionManager = SceneDefinitionManager.Instance;
+            FadeOut();
+            hasLoaded = true;
+            return;
         }
         
-        // Don't load the scene if we're already in a scene other than GameManager
-        SceneManager.LoadScene(StartingScene.ToString());
+        currentScene = ASSETS.GetSceneByName(scene.name);
+        
+        // Notify any listeners that need to know the scene changed
+        Debug.Log($"Scene loaded: {scene.name}");
     }
-
-    private void FirstFade(Scene arg0, LoadSceneMode arg1)
+    
+    /// <summary>
+    /// Start the transition with fading animation
+    /// </summary>
+    private void StartFadingIn()
     {
-        FadeOut();
-        hasLoaded = true;
-        SceneManager.sceneLoaded -= FirstFade;
-    }
-
-    private void StartFadingIn(bool isLevelTransition = false)
-    {
+        Debug.Log("start fading in");
+        // Setup the appropriate screen
         if (isLevelTransition && levelTransitionScreen != null)
         {
-            // Setup level transition UI with location details
-            levelTransitionScreen.SetActive(true);
-            loadingScreen.SetActive(false);
-            
-            // First try to get data from SceneDefinitionManager
-            SceneDefinition sceneDefinition = null;
-            if (sceneDefinitionManager != null)
-            {
-                sceneDefinition = sceneDefinitionManager.GetDefinitionByType(DestinationScene);
-            }
-            
-            if (sceneDefinition != null)
-            {
-                // Use scene definition data if available
-                if (locationTitleText != null)
-                    locationTitleText.text = sceneDefinition.displayName;
-                
-                if (locationImage != null && sceneDefinition.sceneImage != null)
-                {
-                    locationImage.sprite = sceneDefinition.sceneImage;
-                    locationImage.gameObject.SetActive(true);
-                }
-                else if (locationImage != null)
-                {
-                    // Fall back to the old transition data if no image in definition
-                    bool foundImage = false;
-                    
-                    if (transitionDataDict != null && transitionDataDict.TryGetValue(DestinationScene.ToString(), out LevelTransitionData data) && data.locationImage != null)
-                    {
-                        locationImage.sprite = data.locationImage;
-                        locationImage.gameObject.SetActive(true);
-                        foundImage = true;
-                    }
-                    
-                    if (!foundImage)
-                        locationImage.gameObject.SetActive(false);
-                }
-            }
-            else
-            {
-                // Fall back to old transition data if no scene definition
-                if (transitionDataDict != null && transitionDataDict.TryGetValue(DestinationScene.ToString(), out LevelTransitionData data))
-                {
-                    if (locationTitleText != null)
-                        locationTitleText.text = data.locationTitle;
-                    
-                    if (locationImage != null && data.locationImage != null)
-                    {
-                        locationImage.sprite = data.locationImage;
-                        locationImage.gameObject.SetActive(true);
-                    }
-                    else if (locationImage != null)
-                    {
-                        locationImage.gameObject.SetActive(false);
-                    }
-                }
-                else
-                {
-                    // Default values if no specific data is found
-                    if (locationTitleText != null)
-                        locationTitleText.text = DestinationScene.ToString();
-                    
-                    if (locationImage != null)
-                        locationImage.gameObject.SetActive(false);
-                }
-            }
+            SetupLevelTransitionScreen();
         }
         else
         {
-            // Regular loading screen
+            // Use regular loading screen
             loadingScreen.SetActive(true);
             if (levelTransitionScreen != null)
                 levelTransitionScreen.SetActive(false);
@@ -241,6 +511,7 @@ public class SceneLoader : Singleton<SceneLoader>
         // Reset states
         loadingComplete = false;
         waitingForInput = false;
+        
         if (pressAnyButtonText != null)
             pressAnyButtonText.gameObject.SetActive(false);
             
@@ -257,99 +528,149 @@ public class SceneLoader : Singleton<SceneLoader>
             percentLoadedText.gameObject.SetActive(true);
         }
     }
-
-    public void SetDestinationScene(GameScene.Type newScene, bool isLevelTransition = false)
+    
+    /// <summary>
+    /// Set up the level transition screen
+    /// </summary>
+    private void SetupLevelTransitionScreen()
     {
-        DestinationScene = newScene;
-        Debug.Log("destination scene set to " + DestinationScene);
-        StartFadingIn(isLevelTransition);
-    }
-
-    private void LoadScene(GameScene.Type newScene)
-    {
-        loadingOperation = SceneManager.LoadSceneAsync(newScene.ToString());
+        levelTransitionScreen.SetActive(true);
+        loadingScreen.SetActive(false);
         
-        // Determine if this is a level transition or a menu transition
-        bool isLevel = newScene == GameScene.Type.InLevel;
-        bool isLevelToLevel = DestinationScene == GameScene.Type.InLevel && 
-                             SceneManager.GetActiveScene().name.Contains("Level");
+        // Set title
+        if (locationTitleText != null)
+            locationTitleText.text = destinationScene.DisplayName;
         
-        // Only wait for input if going to or between levels
-        if (isLevel || isLevelToLevel)
+        // Set image
+        if (locationImage != null)
         {
-            // Prevent automatic activation to allow "press any button to continue"
-            loadingOperation.allowSceneActivation = false;
-        }
-        else
-        {
-            // For menu transitions, don't wait for user input
-            loadingOperation.allowSceneActivation = true;
-        }
-        
-        isLoading = true;
-    }
-
-    private void Update()
-    {
-        if (!isLoading) return;
-
-        var progressValue = ShowLoadingProgress();
-        
-        // For scenes that don't require button press, we complete when loading is done
-        if (loadingOperation.allowSceneActivation && progressValue >= 1.0f)
-        {
-            isLoading = false;
-            FadeOut();
-            return;
-        }
-        
-        // For scenes that require button press
-        if (!loadingComplete && !loadingOperation.allowSceneActivation)
-        {
-            // When progress reaches 0.9 (90%), loading is essentially complete
-            // Unity keeps the last 10% for activation
-            if (progressValue >= 0.9f)
+            if (destinationScene.sceneImage != null)
             {
-                loadingComplete = true;
-                
-                // Show "press any button to continue" message
-                if (pressAnyButtonText != null)
-                {
-                    pressAnyButtonText.gameObject.SetActive(true);
-                    
-                    // Update the percentage to show 100% when ready
-                    if (percentLoadedText != null)
-                        percentLoadedText.text = "100";
-                }
-                
-                waitingForInput = true;
+                locationImage.sprite = destinationScene.sceneImage;
+                locationImage.gameObject.SetActive(true);
+            }
+            else
+            {
+                locationImage.gameObject.SetActive(false);
             }
         }
-        // Note: Input handling for "press any button" is done by the Input System
     }
-
-    private float ShowLoadingProgress()
+    
+    /// <summary>
+    /// Load the scene asynchronously
+    /// </summary>
+    private void LoadScene()
+    {
+        Debug.Log("loading scene");
+        // Get scene name from the destination
+        string sceneName = destinationScene.SceneName;
+        
+        // Start async loading
+        loadingOperation = SceneManager.LoadSceneAsync(sceneName);
+        
+        // Check if this scene requires player input before continuing
+        // Use explicit setting from SceneDefinition first
+        bool requiresButtonPress = destinationScene.requiresButtonPressToLoad;
+        
+        // If not explicitly set, determine based on gameplay level status 
+        if (!requiresButtonPress)
+        {
+            // Check if this is a level-to-level transition which should pause
+            bool isCurrentLevelGameplay = currentScene != null && currentScene.isGameplayLevel;
+            
+            // Require button press for level-to-level transitions
+            if (destinationScene.isGameplayLevel && isCurrentLevelGameplay)
+            {
+                requiresButtonPress = true;
+            }
+        }
+        
+        // Set whether to wait for user input
+        loadingOperation.allowSceneActivation = !requiresButtonPress;
+        isLoading = true;
+    }
+    
+    /// <summary>
+    /// Update the loading progress indicators
+    /// </summary>
+    private float UpdateLoadingProgress()
     {
         // Progress is clamped at 0.9 until allowSceneActivation is true
         var progressValue = Mathf.Clamp01(loadingOperation.progress / 0.9f);
         
-        // Update the progress bar (works for both regular and radial progress bars)
+        // Update UI elements
         if (progressBarImage != null)
             progressBarImage.fillAmount = progressValue;
             
-        // Update percentage text
         if (percentLoadedText != null)
             percentLoadedText.text = Mathf.Round(progressValue * 100).ToString();
             
         return progressValue;
     }
+    
+    /// <summary>
+    /// Handle button press during loading
+    /// </summary>
+    private void OnAnyButtonPressed(InputAction.CallbackContext context)
+    {
+        if (waitingForInput && loadingComplete)
+        {
+            StopWaitingForInput();
+        }
+    }
 
+    private void StopWaitingForInput()
+    {
+        loadingOperation.allowSceneActivation = true;
+        waitingForInput = false;
+        isLoading = false;
+        FadeOut();
+    }
+
+    /// <summary>
+    /// Start the fade out animation
+    /// </summary>
     private void FadeOut()
     {
         faderAnimator.SetBool(IsFadedIn, false);
         
-        // Hide "press any button" message when fading out
         if (pressAnyButtonText != null)
             pressAnyButtonText.gameObject.SetActive(false);
     }
+    
+    /// <summary>
+    /// Calculate spawn positions around a central point
+    /// </summary>
+    private List<Vector2> CalculatePositionsAroundPoint(Vector2 center, int count, int capacity)
+    {
+        var positions = new List<Vector2>();
+
+        // Calculate positions in a small circle/cluster around this point
+        var actualCount = Mathf.Min(count, capacity);
+        var radius = 1.0f; // Base radius for positioning
+
+        for (var i = 0; i < actualCount; i++)
+        {
+            if (i == 0)
+            {
+                // First player goes at the exact position
+                positions.Add(center);
+            }
+            else
+            {
+                // Calculate positions in a circle
+                var angle = i * (360f / actualCount) * Mathf.Deg2Rad;
+                var offset = new Vector2(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius);
+                positions.Add(center + offset);
+            }
+        }
+
+        // Fill remaining positions with center position if more players than capacity
+        for (var i = positions.Count; i < count; i++) 
+            positions.Add(center);
+
+        return positions;
+    }
+    
+    #endregion
 }

@@ -5,8 +5,8 @@ public class Explosion_FX: MonoBehaviour
 	public static void Explode(Vector3 explosionPosition, float explosionRadius, float explosionDamage, Player _owner)
 	{
 		var pushFactor = 10;
-		ObjectMaker.Make(FX.Assets.explosions.GetRandom(), explosionPosition);
-		ObjectMaker.Make(FX.Assets.fires.GetRandom(), explosionPosition);
+		ObjectMaker.Make(ASSETS.FX.explosions.GetRandom(), explosionPosition);
+		ObjectMaker.Make(ASSETS.FX.fires.GetRandom(), explosionPosition);
 
 		var layer = _owner.IsPlayer() ? ASSETS.LevelAssets.EnemyLayer : ASSETS.LevelAssets.PlayerLayer;
 		var hits = Physics2D.OverlapCircleAll(explosionPosition, explosionRadius, layer);

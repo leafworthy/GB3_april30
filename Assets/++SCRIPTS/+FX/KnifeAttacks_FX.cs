@@ -19,7 +19,7 @@ public class KnifeAttacks_FX : MonoBehaviour
 
 	private void KnifeAttackOnHit(Vector2 pos)
 	{
-		ObjectMaker.Make(FX.Assets.hit5_xstrike, pos);
+		ObjectMaker.Make(ASSETS.FX.hit5_xstrike, pos);
 		CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);
 	}
 

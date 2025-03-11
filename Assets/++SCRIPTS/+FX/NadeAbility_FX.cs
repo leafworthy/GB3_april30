@@ -80,18 +80,18 @@ public class NadeAbility_FX : MonoBehaviour
 
 	private void SpawnTrajectoryMarkers()
 	{
-		currentArrowHead = ObjectMaker.Make(FX.Assets.nadeTargetPrefab);
+		currentArrowHead = ObjectMaker.Make(ASSETS.FX.nadeTargetPrefab);
 		currentArrowHead.SetActive(false);
 		for (var i = 0; i < _numberOfMarkers; i++)
 		{
-			_trajectoryMarkersContainer.Add(ObjectMaker.Make(FX.Assets.trajectoryMarkerPrefab));
+			_trajectoryMarkersContainer.Add(ObjectMaker.Make(ASSETS.FX.trajectoryMarkerPrefab));
 		}
 	}
 
 	
 	private void Nade_OnThrow(Vector2 startPoint, Vector2 velocity, float time, Player player)
 	{
-		var newProjectile = ObjectMaker.Make(FX.Assets.nadePrefab, body.AimCenter.transform.position);
+		var newProjectile = ObjectMaker.Make(ASSETS.FX.nadePrefab, body.AimCenter.transform.position);
 		var nadeThrower = newProjectile.GetComponent<Nade>();
 		nadeThrower.Launch(startPoint, velocity, time, player);
 	}

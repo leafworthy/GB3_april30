@@ -56,7 +56,7 @@ public class CarAnimations : MonoBehaviour
 
     public void OnCarSkirtOff()
     {
-        LevelGameScene.WinGame();
+        //LevelGameScene.WinGame();
         Debug.Log("win");
     }
 }

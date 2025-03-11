@@ -24,7 +24,7 @@ public class CursorManager : MonoBehaviour
 		LevelGameScene.OnPlayerSpawned += InitCursor;
 	}
 
-	private void LevelStarts()
+	private void LevelStarts(SceneDefinition sceneDefinition)
 	{
 		isActive = true;
 		foreach (var player in Players.AllJoinedPlayers)
@@ -65,7 +65,7 @@ public class CursorManager : MonoBehaviour
 		//DontDestroyOnLoad(currentCursor);
 		var image = currentCursor.GetComponentInChildren<Image>();
 		if (image != null) image.color = player.color;
-		LevelGameScene.OnStart += () => { SetCursorsActive(true); };
+		LevelGameScene.OnStart += (t) => { SetCursorsActive(true); };
 		PauseManager.OnPause += x =>
 		{
 			SetCursorsActive(false);

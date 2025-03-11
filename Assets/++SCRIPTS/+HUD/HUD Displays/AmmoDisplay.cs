@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -86,7 +87,7 @@ public class AmmoDisplay : MonoBehaviour
 
 
 
-	private void CleanUp(GameScene.Type type)
+	private void CleanUp(SceneDefinition sceneDefinition)
 	{
 		if (!init) return;
 		init = false;

@@ -12,7 +12,7 @@ public class GameSceneWinScreen : GameScene
 
 	private void GoToMainMenu(VideoPlayer source)
 	{ 
-		GoToScene(Type.MainMenu);
+		SceneLoader.I.GoToScene(ASSETS.Scenes.mainMenu);
 	}
 
 

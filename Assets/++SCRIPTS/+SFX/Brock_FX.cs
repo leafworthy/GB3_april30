@@ -15,14 +15,14 @@ public class Brock_FX : MonoBehaviour
 
 	private void MeleeAttackOnHit(Vector2 vector2)
 	{ 
-		ObjectMaker.Make(FX.Assets.hits.GetRandom(), vector2);
+		ObjectMaker.Make(ASSETS.FX.hits.GetRandom(), vector2);
 		CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);
 	}
 
 	private void ChargeAttack_OnSpecialAttackHit()
 	{
-		ObjectMaker.Make(FX.Assets.hit2_biglongflash, transform.position);
-		ObjectMaker.Make(FX.Assets.hit5_line_burst, transform.position);
+		ObjectMaker.Make(ASSETS.FX.hit2_biglongflash, transform.position);
+		ObjectMaker.Make(ASSETS.FX.hit5_line_burst, transform.position);
 		CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Long);
 	}
 }

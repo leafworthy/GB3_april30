@@ -103,8 +103,8 @@ public class SpawnPointManager : MonoBehaviour
         return _cachedDefinitions;
     }
     
-    // Get definitions for a specific scene
-    public List<SpawnPointDefinition> GetDefinitionsForScene(GameScene.Type sceneType)
+    // Get definitions for a specific scene using SceneDefinition
+    public List<SpawnPointDefinition> GetDefinitionsForScene(SceneDefinition scene)
     {
         if (_cachedDefinitions == null)
         {
@@ -112,7 +112,32 @@ public class SpawnPointManager : MonoBehaviour
         }
         
         return _cachedDefinitions
-            .Where(d => d.sourceScene == sceneType)
+            .Where(d => d.SourceScene != null && d.SourceScene.Equals(scene))
+            .ToList();
+    }
+    
+
+    
+    // Get definitions for a specific scene using scene name
+    public List<SpawnPointDefinition> GetDefinitionsForScene(string sceneName)
+    {
+        if (_cachedDefinitions == null)
+        {
+            InitializeCache();
+        }
+        
+        // Try to get scene definition first
+        SceneDefinition scene = ASSETS.GetSceneByName(sceneName);
+        if (scene != null)
+        {
+            // Use the SceneDefinition version
+            return GetDefinitionsForScene(scene);
+        }
+        
+        // Fallback to checking scene names or legacy
+        return _cachedDefinitions
+            .Where(d => 
+                (d.SourceScene != null && d.SourceScene.SceneName == sceneName))
             .ToList();
     }
     
@@ -142,21 +167,5 @@ public class SpawnPointManager : MonoBehaviour
         
         return GetDefinitionById(source.connectedSpawnPointId);
     }
-    
-#if UNITY_EDITOR
-    // Editor-only method to create a new definition asset
-    public static SpawnPointDefinition CreateDefinitionAsset(string id, string displayName, GameScene.Type sourceScene)
-    {
-        var definition = ScriptableObject.CreateInstance<SpawnPointDefinition>();
-        definition.id = id;
-        definition.displayName = displayName;
-        definition.sourceScene = sourceScene;
-        
-        string path = $"Assets/Resources/SpawnPoints/{id}.asset";
-        UnityEditor.AssetDatabase.CreateAsset(definition, path);
-        UnityEditor.AssetDatabase.SaveAssets();
-        
-        return definition;
-    }
-#endif
+ 
 }

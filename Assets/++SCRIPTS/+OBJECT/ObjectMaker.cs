@@ -29,7 +29,7 @@ public class ObjectMaker : MonoBehaviour
 		LevelGameScene.OnStop += DestroyAllUnits;
 	}
 
-	private void PoolObjects()
+	private void PoolObjects(SceneDefinition sceneDefinition)
 	{
 		foreach (var obj in ObjectsToPool)
 		{
@@ -52,7 +52,7 @@ public class ObjectMaker : MonoBehaviour
 		for (var b = 0; b < currentPool.Count; b++) Unmake(currentPool[b]);
 	}
 
-	public static void DestroyAllUnits(GameScene.Type type)
+	public static void DestroyAllUnits(SceneDefinition sceneDefinition)
 	{
 		var tempList = allActiveUnits.ToList();
 		foreach (var t in tempList)

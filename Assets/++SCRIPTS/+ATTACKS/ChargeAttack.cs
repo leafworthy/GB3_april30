@@ -72,7 +72,7 @@ public class ChargeAttack : Attacks
 
 	private void SpawnFX()
 	{
-		currentArrowHead = ObjectMaker.Make(FX.Assets.nadeTargetPrefab);
+		currentArrowHead = ObjectMaker.Make(ASSETS.FX.nadeTargetPrefab);
 		currentArrowHead.SetActive(false);
 	}
 
@@ -161,7 +161,7 @@ public class ChargeAttack : Attacks
 			HitTarget(life.Attack2Damage, life, .4f);
 			connect = true;
 			ammo.AddAmmoToReserve(AmmoInventory.AmmoType.primaryAmmo, attackKillSpecialAmount);
-			ObjectMaker.Make(FX.Assets.hits.GetRandom(), hit2D.transform.position);
+			ObjectMaker.Make(ASSETS.FX.hits.GetRandom(), hit2D.transform.position);
 		}
 
 		if (!connect) return;

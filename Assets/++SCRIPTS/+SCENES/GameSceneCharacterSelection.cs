@@ -205,7 +205,7 @@ public class GameSceneCharacterSelection : GameScene
 		isActive = false;
 		Players.OnPlayerJoins -= PlayerStartsSelecting;
 		//Debug.Log("Starting game");
-		GoToScene(Type.InLevel);
+		SceneLoader.I.GoToScene(ASSETS.Scenes.gangstaBeanHouse, true);
 	}
 
 	private void ClearAllPlayerButtons()

@@ -16,7 +16,7 @@ public class RestartLevelGameScene : GameScene
         Debug.Log("waiting");
         yield return new WaitForSeconds(1);
         Debug.Log("going");
-        GoToScene(Type.InLevel);
+        LevelManager.I.RestartCurrentLevel();
     }
 
    

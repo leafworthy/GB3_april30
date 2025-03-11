@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Defines whether a spawn point is an entry, exit or both
+/// </summary>
 public enum SpawnPointType
 {
     Entry,    // Where players appear when entering this scene
@@ -8,6 +11,9 @@ public enum SpawnPointType
     Both      // Functions as both entry and exit
 }
 
+/// <summary>
+/// Defines a spawn point in a scene, used for level transitions and player positioning
+/// </summary>
 [ExecuteInEditMode]
 public class SpawnPoint : MonoBehaviour
 {
@@ -16,13 +22,13 @@ public class SpawnPoint : MonoBehaviour
     public string id;
     
     [Tooltip("Scene this spawn point is in")]
-    public GameScene.Type currentScene;
+    [SerializeField] private SceneDefinition currentScene;
     
     [Tooltip("Defines if this is an entry point, exit point, or both")]
     public SpawnPointType pointType = SpawnPointType.Both;
     
     [Tooltip("Scene this spawn point leads to (for Exit points)")]
-    public GameScene.Type destinationScene;
+    [SerializeField] private SceneDefinition destinationScene;
     
     [Tooltip("Connected spawn point ID in the destination scene (for Exit points)")]
     public string connectedSpawnPointId;
@@ -34,12 +40,54 @@ public class SpawnPoint : MonoBehaviour
     public Color gizmoColor = new Color(0, 0.5f, 1f, 0.5f); // Blue for default
     public float gizmoSize = 1.0f;
     
-    // Reference to the definition this spawn point is based on (only used in editor)
+    // Reference to the definition this spawn point is based on (used in editor)
     [HideInInspector]
     public SpawnPointDefinition definition;
     
+    // Properties for scene access
+    public SceneDefinition CurrentScene => 
+        currentScene != null && currentScene.IsValid() ? 
+            currentScene : 
+            GetCurrentSceneDefinition();
+    
+    public SceneDefinition DestinationScene => 
+        destinationScene != null && destinationScene.IsValid() ? 
+            destinationScene : 
+            null;
+    
     // Cache nearby SpawnPoints to visualize connections in editor
     private List<SpawnPoint> cachedConnections = new List<SpawnPoint>();
+    
+    /// <summary>
+    /// Set the current scene for this spawn point
+    /// </summary>
+    public void SetCurrentScene(SceneDefinition scene)
+    {
+        if (scene != null)
+        {
+            currentScene = scene;
+        }
+    }
+    
+    /// <summary>
+    /// Set the destination scene for this spawn point
+    /// </summary>
+    public void SetDestinationScene(SceneDefinition scene)
+    {
+        if (scene != null)
+        {
+            destinationScene = scene;
+        }
+    }
+    
+    /// <summary>
+    /// Get the current scene definition (from active scene if not set)
+    /// </summary>
+    private SceneDefinition GetCurrentSceneDefinition()
+    {
+        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        return ASSETS.GetSceneByName(sceneName);
+    }
     
     void OnDrawGizmos()
     {
@@ -82,7 +130,12 @@ public class SpawnPoint : MonoBehaviour
         
         if (pointType == SpawnPointType.Exit || pointType == SpawnPointType.Both)
         {
-            labelText += " → " + destinationScene.ToString();
+            string destSceneName = 
+                destinationScene != null && destinationScene.IsValid() ? 
+                destinationScene.DisplayName : 
+                "Unknown";
+                
+            labelText += " → " + destSceneName;
             if (!string.IsNullOrEmpty(connectedSpawnPointId))
             {
                 labelText += " (" + connectedSpawnPointId + ")";
@@ -99,11 +152,9 @@ public class SpawnPoint : MonoBehaviour
     #if UNITY_EDITOR
     private void DrawConnections()
     {
-        // Draw connections to other spawn points in the same scene
+        // Don't draw in play mode for performance
         if (Application.isPlaying)
-        {
-            return; // Don't draw in play mode for performance
-        }
+            return;
         
         // Handle connections within the same scene
         if (cachedConnections.Count == 0)
@@ -115,11 +166,19 @@ public class SpawnPoint : MonoBehaviour
         // Draw connections for exit points
         if (pointType == SpawnPointType.Exit || pointType == SpawnPointType.Both)
         {
+            var destination = DestinationScene;
+            if (destination == null)
+                return;
+                
             foreach (var otherPoint in cachedConnections)
             {
-                if (otherPoint != this && 
-                    otherPoint.currentScene == destinationScene && 
-                    otherPoint.id == connectedSpawnPointId)
+                var otherScene = otherPoint.CurrentScene;
+                if (otherScene == null) 
+                    continue;
+                    
+                // Check if scenes match
+                bool scenesMatch = destination.Equals(otherScene);
+                if (otherPoint != this && scenesMatch && otherPoint.id == connectedSpawnPointId)
                 {
                     // Connected point found in editor, draw connection
                     Gizmos.color = Color.yellow;
@@ -140,62 +199,12 @@ public class SpawnPoint : MonoBehaviour
         var allSpawnPoints = UnityEngine.Object.FindObjectsOfType<SpawnPoint>(true);
         cachedConnections.AddRange(allSpawnPoints);
     }
-    
-    void OnValidate()
-    {
-        // Clear the connection cache to force a refresh
-        cachedConnections.Clear();
-        
-        // Check if a definition exists for this ID (edit mode only)
-        if (!string.IsNullOrEmpty(id) && !Application.isPlaying)
-        {
-            TryLoadDefinition();
-        }
-        
-        // Auto-register when properties change in play mode
-        if (Application.isPlaying)
-        {
-            // Only call RegisterSpawnPoint if we're in play mode
-            RegisterSpawnPoint();
-        }
-    }
-    
-    // Try to load a definition based on the current ID
-    private void TryLoadDefinition()
-    {
-        // Try to load the definition from Resources
-        definition = Resources.Load<SpawnPointDefinition>($"SpawnPoints/{id}");
-    }
+
     #endif
     
-    private void Awake()
-    {
-        // If in editor, try to load definition
-        #if UNITY_EDITOR
-        if (!Application.isPlaying && !string.IsNullOrEmpty(id))
-        {
-            TryLoadDefinition();
-        }
-        #endif
-        
-        // Match scene type to current scene
-        if (string.IsNullOrEmpty(gameObject.scene.name))
-        {
-            return; // Skip for prefabs
-        }
-        
-        // Auto-detect scene type if in a known scene
-        foreach (GameScene.Type sceneType in System.Enum.GetValues(typeof(GameScene.Type)))
-        {
-            if (gameObject.scene.name.Contains(sceneType.ToString()))
-            {
-                currentScene = sceneType;
-                break;
-            }
-        }
-    }
-    
-    // Register this spawn point with the LevelTransition manager
+    /// <summary>
+    /// Register this spawn point with the SceneLoader manager
+    /// </summary>
     public void RegisterSpawnPoint()
     {
         if (string.IsNullOrEmpty(id))
@@ -206,26 +215,36 @@ public class SpawnPoint : MonoBehaviour
         
         // Only register in play mode
         if (!Application.isPlaying)
+            return;
+        
+        // Get source scene
+        var sourceScene = CurrentScene;
+        if (sourceScene == null)
         {
+            Debug.LogError($"Spawn point {id} has no source scene defined", this);
             return;
         }
+        
+        // Get destination scene
+        var destScene = DestinationScene; 
+        string destSceneName = destScene != null ? destScene.SceneName : string.Empty;
         
         // Create spawn point data
         SpawnPointData spawnData = new SpawnPointData
         {
             id = id,
-            sourceScene = currentScene,
-            destinationScene = destinationScene,
+            sourceSceneName = sourceScene.SceneName,
+            destinationSceneName = destSceneName,
             connectedId = connectedSpawnPointId,
             position = transform.position,
             pointType = pointType,
             capacity = capacity
         };
         
-        // Register with LevelTransition singleton
-        if (LevelTransition.I != null)
+        // Register with SceneLoader
+        if (SceneLoader.I != null)
         {
-            LevelTransition.I.RegisterSpawnPoint(spawnData);
+            SceneLoader.I.RegisterSpawnPoint(spawnData);
         }
     }
     
@@ -243,7 +262,9 @@ public class SpawnPoint : MonoBehaviour
         }
     }
     
-    // Get spawn positions for multiple players
+    /// <summary>
+    /// Get spawn positions for multiple players
+    /// </summary>
     public List<Vector2> GetSpawnPositionsForPlayers(int playerCount)
     {
         List<Vector2> positions = new List<Vector2>();
@@ -275,18 +296,25 @@ public class SpawnPoint : MonoBehaviour
         return positions;
     }
     
-    // Apply a definition to this spawn point
+    /// <summary>
+    /// Apply a definition to this spawn point
+    /// </summary>
     public void ApplyDefinition(SpawnPointDefinition def)
     {
-        if (def == null) return;
+        if (def == null) 
+            return;
         
         // Store reference
         definition = def;
         
         // Apply properties
         id = def.id;
-        currentScene = def.sourceScene;
-        destinationScene = def.destinationScene;
+        
+        // Set scenes from definition
+        SetCurrentScene(def.SourceScene);
+        SetDestinationScene(def.DestinationScene);
+        
+        // Apply other properties
         connectedSpawnPointId = def.connectedSpawnPointId;
         pointType = def.pointType;
         capacity = def.capacity;

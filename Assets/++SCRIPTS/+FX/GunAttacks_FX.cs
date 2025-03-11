@@ -31,7 +31,7 @@ public class GunAttacks_FX : MonoBehaviour
 
 	private static void CreateBullet(Attack attack, Vector2 attackStartPosition)
 	{
-		var newBullet = ObjectMaker.Make(FX.Assets.BulletPrefab, attack.OriginFloorPoint);
+		var newBullet = ObjectMaker.Make(ASSETS.FX.BulletPrefab, attack.OriginFloorPoint);
 	
 		var bulletScript = newBullet.GetComponent<Bullet_FX>();
 		bulletScript.Fire(attack, attackStartPosition);
@@ -40,7 +40,7 @@ public class GunAttacks_FX : MonoBehaviour
 
 	private static void MakeBulletShell(Attack attack)
 	{
-		var newBulletShell = ObjectMaker.Make(FX.Assets.bulletShellPrefab, (Vector2) attack.OriginFloorPoint);
+		var newBulletShell = ObjectMaker.Make(ASSETS.FX.bulletShellPrefab, (Vector2) attack.OriginFloorPoint);
 		newBulletShell.GetComponent<FallToFloor>()
 		              .Fire(attack, true);
 		
@@ -51,7 +51,7 @@ public class GunAttacks_FX : MonoBehaviour
 	{
 		var heightCorrectionForDepth = new Vector2(0,-1.25f);
 		
-		var newBulletHitAnimation = ObjectMaker.Make(FX.Assets.bulletHitAnimPrefab, attack.DestinationFloorPoint + heightCorrectionForDepth);
+		var newBulletHitAnimation = ObjectMaker.Make(ASSETS.FX.bulletHitAnimPrefab, attack.DestinationFloorPoint + heightCorrectionForDepth);
 		
 		Debug.DrawLine( attack.DestinationFloorPoint, attack.DestinationFloorPoint + heightCorrectionForDepth, Color.magenta, 5);
 

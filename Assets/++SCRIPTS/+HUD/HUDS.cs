@@ -20,7 +20,7 @@ public class HUDS : Singleton<HUDS>
 		
 	}
 
-	private void LevelScene_OnStop(GameScene.Type obj)
+	private void LevelScene_OnStop(SceneDefinition sceneDefinition)
 	{
 		Vignette.SetActive(false);
 		Clock.SetActive(false);
@@ -35,7 +35,7 @@ public class HUDS : Singleton<HUDS>
 		SetHUDSlotCharacter(player);
 	}
 
-	private void LevelScene_OnStart()
+	private void LevelScene_OnStart(SceneDefinition sceneDefinition)
 	{
 		//CreateHUDForPlayers(Players.AllJoinedPlayers);
 		Players.OnPlayerJoins += JoinInGame;

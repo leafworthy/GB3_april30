@@ -24,7 +24,7 @@ public class Pickup_FX : MonoBehaviour
 		var otherTintHandler = col.gameObject.GetComponentInChildren<Life_FX>(true);
 		otherTintHandler.StartTint(pickupTintColor);
 		var position = transform.position;
-		ObjectMaker.Make(FX.Assets.pickupEffectPrefab, position);
+		ObjectMaker.Make(ASSETS.FX.pickupEffectPrefab, position);
 		CameraShaker_FX.ShakeCamera(position,shakeIntensity);
 		CameraStunner_FX.StartStun(stunLength);
 		if(pickupItem.itemType == PickupItem.ItemType.cash)

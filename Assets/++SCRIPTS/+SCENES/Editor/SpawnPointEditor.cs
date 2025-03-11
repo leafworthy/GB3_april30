@@ -81,16 +81,7 @@ public class SpawnPointEditor : Editor
         definitionsLoaded = true;
     }
     
-    private void RefreshSceneDefinitions()
-    {
-        // Get the current scene from the SpawnPoint
-        GameScene.Type currentScene = (GameScene.Type)currentSceneProperty.enumValueIndex;
-        
-        // Filter definitions by scene
-        sceneDefinitions = allDefinitions
-            .Where(d => d.sourceScene == currentScene)
-            .ToList();
-    }
+  
     
     public override void OnInspectorGUI()
     {
@@ -133,26 +124,7 @@ public class SpawnPointEditor : Editor
                 var selectedDefinition = allDefinitions[selectedDefinitionIndex - 1];
                 
                 idProperty.stringValue = selectedDefinition.id;
-                
-                // Find the index of the source scene enum value
-                for (int i = 0; i < System.Enum.GetValues(typeof(GameScene.Type)).Length; i++)
-                {
-                    if ((GameScene.Type)i == selectedDefinition.sourceScene)
-                    {
-                        currentSceneProperty.enumValueIndex = i;
-                        break;
-                    }
-                }
-                
-                // Find the index of the destination scene enum value
-                for (int i = 0; i < System.Enum.GetValues(typeof(GameScene.Type)).Length; i++)
-                {
-                    if ((GameScene.Type)i == selectedDefinition.destinationScene)
-                    {
-                        destinationSceneProperty.enumValueIndex = i;
-                        break;
-                    }
-                }
+           
                 
                 // Find the index of the point type enum value
                 for (int i = 0; i < System.Enum.GetValues(typeof(SpawnPointType)).Length; i++)
@@ -191,64 +163,8 @@ public class SpawnPointEditor : Editor
             EditorGUI.BeginChangeCheck();
             
             // Get available destination scene spawn points
-            GameScene.Type destinationScene = (GameScene.Type)destinationSceneProperty.enumValueIndex;
-            List<SpawnPointDefinition> destinationPoints = allDefinitions
-                .Where(d => d.sourceScene == destinationScene && 
-                           (d.pointType == SpawnPointType.Entry || d.pointType == SpawnPointType.Both))
-                .ToList();
-                
-            // Create dropdown for destination points
-            if (destinationPoints.Count > 0)
-            {
-                // Create array of names for dropdown
-                string[] destPointNames = new string[destinationPoints.Count + 1];
-                destPointNames[0] = "None";
-                
-                int selectedDestIndex = 0;
-                for (int i = 0; i < destinationPoints.Count; i++)
-                {
-                    var def = destinationPoints[i];
-                    string name = !string.IsNullOrEmpty(def.displayName) 
-                        ? $"{def.displayName} ({def.id})" 
-                        : def.id;
-                        
-                    destPointNames[i + 1] = name;
-                    
-                    // Check if this is the currently selected connected point
-                    if (def.id == connectedSpawnPointIdProperty.stringValue)
-                    {
-                        selectedDestIndex = i + 1;
-                    }
-                }
-                
-                // Display dropdown
-                int newDestIndex = EditorGUILayout.Popup("Connected Entry Point", selectedDestIndex, destPointNames);
-                
-                // Handle selection change
-                if (newDestIndex != selectedDestIndex)
-                {
-                    if (newDestIndex == 0)
-                    {
-                        // None selected
-                        connectedSpawnPointIdProperty.stringValue = "";
-                    }
-                    else
-                    {
-                        // Set the connected ID
-                        connectedSpawnPointIdProperty.stringValue = destinationPoints[newDestIndex - 1].id;
-                    }
-                }
-            }
-            else
-            {
-                // No destination points available, show regular field
-                EditorGUILayout.PropertyField(connectedSpawnPointIdProperty);
-            }
-            
-            if (EditorGUI.EndChangeCheck())
-            {
-                serializedObject.ApplyModifiedProperties();
-            }
+          
+             
         }
         
         // Advanced settings
@@ -330,8 +246,6 @@ public class SpawnPointEditor : Editor
         // Update the definition properties
         definition.id = spawnPoint.id;
         definition.displayName = spawnPoint.id; // Use ID as display name initially
-        definition.sourceScene = spawnPoint.currentScene;
-        definition.destinationScene = spawnPoint.destinationScene;
         definition.connectedSpawnPointId = spawnPoint.connectedSpawnPointId;
         definition.pointType = spawnPoint.pointType;
         definition.capacity = spawnPoint.capacity;

@@ -22,7 +22,7 @@ public class PlayerSetupMenu : MonoBehaviour
 		LevelGameScene.OnStop += LevelGameScene_OnStop;
 	}
 
-	private void LevelGameScene_OnStop(GameScene.Type obj)
+	private void LevelGameScene_OnStop(SceneDefinition sceneDefinition)
 	{
 		Unsetup();
 	}

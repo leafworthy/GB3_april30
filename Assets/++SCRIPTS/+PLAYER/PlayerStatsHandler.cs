@@ -16,7 +16,7 @@ public class PlayerStatsHandler
 		EnemyManager.OnPlayerDamagesEnemy += EnemiesOnPlayerDamagesEnemy;
 		EnemyManager.OnPlayerKillsEnemy += EnemiesOnPlayerKillsEnemy;
 		Attack.OnAnyAttack += PlayerAttacksOnAttack;
-		LevelGameScene.OnStart += () => ResetStats(owner);
+		LevelGameScene.OnStart += (t) => ResetStats(owner);
 		ResetStats(owner);
 	}
 

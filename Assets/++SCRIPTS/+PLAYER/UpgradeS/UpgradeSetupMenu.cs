@@ -17,7 +17,7 @@ public class UpgradeSetupMenu : MonoBehaviour
 		anim = GetComponent<Animator>();
 	}
 
-	private void LevelGameScene_OnStop(GameScene.Type obj)
+	private void LevelGameScene_OnStop(SceneDefinition sceneDefinition)
 	{
 		Unsetup();
 	}

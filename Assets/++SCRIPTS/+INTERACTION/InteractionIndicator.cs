@@ -75,7 +75,7 @@ public class InteractionIndicator : MonoBehaviour
 
 	private PlayerIndicator MakeIndicator()
 	{
-		var indicatorObj = ObjectMaker.Make(FX.Assets.indicatorPrefab, transform.position+ indicatorOffset);
+		var indicatorObj = ObjectMaker.Make(ASSETS.FX.indicatorPrefab, transform.position+ indicatorOffset);
 		indicatorObj.transform.SetParent(transform);
 		return indicatorObj.GetComponentInChildren<PlayerIndicator>();
 	}

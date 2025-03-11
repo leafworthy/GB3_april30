@@ -13,7 +13,7 @@ public class KunaiAttacks_FX : MonoBehaviour
 	private void KunaiAttackOnThrow(Vector3 aimDir, Vector3 pos, float throwHeight, Life life, bool isAirThrow)
 	{
 		
-		var newProjectile = ObjectMaker.Make(FX.Assets.kunaiPrefab, transform.position);
+		var newProjectile = ObjectMaker.Make(ASSETS.FX.kunaiPrefab, transform.position);
 		var kunaiScript = newProjectile.GetComponent<Kunai>();
 		kunaiScript.Throw(aimDir, pos, throwHeight, life, isAirThrow);
 	}

@@ -131,7 +131,7 @@ public class MoveController : MonoBehaviour
 	private void Anim_OnStep()
 	{
 		
-		var dust = ObjectMaker.Make(FX.Assets.dust1_ground, body.FootPoint.transform.position);
+		var dust = ObjectMaker.Make(ASSETS.FX.dust1_ground, body.FootPoint.transform.position);
 		if (mover.moveDir.x > 0)
 		{
 			dust.transform.localScale = new Vector3(-Mathf.Abs(dust.transform.localScale.x),
