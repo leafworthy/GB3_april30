@@ -11,17 +11,17 @@ public class HUDCashDisplay : MonoBehaviour
 
 	public void SetPlayer(Player player)
 	{
-		totalCash = (int) player.GetPlayerStatAmount(PlayerStat.StatType.TotalCash);
+		totalCash = (int) PlayerStatsManager.I.GetStatAmount(player, PlayerStat.StatType.TotalCash);
 		owner = player;
-		PlayerStatsHandler.OnPlayerStatChange += PlayerStatChange;
+		PlayerStatsManager.I.OnPlayerStatChange += PlayerStatChange;
 		UpdateDisplay();
 	}
 
-	private void PlayerStatChange(Player player, PlayerStat unitStat)
+	private void PlayerStatChange(Player player, PlayerStat.StatType statType, float newAmount)
 	{
 		if (player != owner) return;
-		if (unitStat.type is not PlayerStat.StatType.TotalCash) return;
-		totalCash = (int) unitStat.value;
+		if (statType is not PlayerStat.StatType.TotalCash) return;
+		totalCash = (int) newAmount;
 		UpdateDisplay();
 	}
 

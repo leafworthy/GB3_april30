@@ -12,7 +12,7 @@ public class PlayerInteractable : MonoBehaviour
 
 	private List<Player> playersListening = new();
 	public bool isSelected;
-	private bool isFinished;
+	protected bool isFinished;
 	public event Action<Player> OnSelected;
 	public event Action<Player> OnDeselected;
 	public InteractionIndicator interactionIndicator=> GetComponentInChildren<InteractionIndicator>();
@@ -73,11 +73,11 @@ public class PlayerInteractable : MonoBehaviour
 		if (interactionIndicator == null) return true;
 
 		var hits = Physics2D.LinecastAll(playerPosition, interactionPosition, ASSETS.LevelAssets.BuildingLayer);
-		Debug.DrawLine( playerPosition, interactionPosition, Color.blue, 1f);
+		//Debug.DrawLine( playerPosition, interactionPosition, Color.blue, 1f);
 		
 		if(hits.Length == 0)
 		{
-			MyDebugUtilities.DrawX(interactionPosition, 1, Color.magenta);
+			//MyDebugUtilities.DrawX(interactionPosition, 1, Color.magenta);
 			return false;
 		}
 		foreach (var h in hits)
@@ -85,13 +85,13 @@ public class PlayerInteractable : MonoBehaviour
 			var playerInteraction = h.collider.GetComponentInParent<PlayerInteractable>();
 			if (playerInteraction == null)
 			{
-				MyDebugUtilities.DrawX(h.point, 1, Color.red);
+				//MyDebugUtilities.DrawX(h.point, 1, Color.red);
 				return true;
 
 			}
 			else
 			{
-				MyDebugUtilities.DrawX(interactionPosition, 1, Color.green);
+				//MyDebugUtilities.DrawX(interactionPosition, 1, Color.green);
 				
 			}
 
@@ -150,7 +150,11 @@ public class PlayerInteractable : MonoBehaviour
 
 	protected virtual bool canInteract(Player player) => !isFinished;
 
-	protected virtual bool canEnter(Player player) => !buildingIsInTheWay(player.SpawnedPlayerGO.transform.position);
+	protected virtual bool canEnter(Player player)  {
+		if(isFinished) return false;
+		if(player == null || player.SpawnedPlayerGO == null) return false;
+		return !buildingIsInTheWay(player.SpawnedPlayerGO.transform.position);
+	}
 
 	public void Select(Player player)
 	{

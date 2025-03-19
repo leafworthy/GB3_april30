@@ -83,7 +83,7 @@ public class EnemyAI : MonoBehaviour
     private void FixedUpdate()
     {
         // Early-out if paused or dead.
-        if (GlobalManager.IsPaused || Life.IsDead())
+        if (PauseManager.IsPaused || Life.IsDead())
             return;
 
         currentState?.UpdateState();

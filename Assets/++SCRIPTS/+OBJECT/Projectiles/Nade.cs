@@ -18,7 +18,7 @@ public class Nade:MonoBehaviour  {
 		owner = _owner;
 		currentRotationSpeed = rotationSpeed;
 		timeLeft = _throwTime*Time.fixedDeltaTime;
-		jumpVel.y = timeLeft * GlobalManager.Gravity.y/2;
+		jumpVel.y = timeLeft * ASSETS.Vars.Gravity.y/2;
 		jumpObject.transform.localPosition = new Vector3(0, 1.24f,0);
 		transform.position = _start;
 		velocity = startingVelocity;
@@ -41,7 +41,7 @@ public class Nade:MonoBehaviour  {
 		jumpObject.transform.localEulerAngles += new Vector3(0, 0, currentRotationSpeed * Time.fixedDeltaTime);
 		currentRotationSpeed *= .99f;
 		jumpObject.transform.localPosition = jumpObject.transform.localPosition + jumpVel;
-		jumpVel.y -= GlobalManager.Gravity.y * Time.fixedDeltaTime;
+		jumpVel.y -= ASSETS.Vars.Gravity.y * Time.fixedDeltaTime;
 		if (jumpObject.transform.localPosition.y < 0)
 		{
 			jumpObject.transform.localPosition = new Vector3(0, 1, 0);

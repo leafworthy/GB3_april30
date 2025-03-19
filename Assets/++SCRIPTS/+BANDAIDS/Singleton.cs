@@ -17,16 +17,8 @@ public abstract class Singleton<T> : MonoBehaviour where T : Component
     public static void AddToScene(GameObject go = null)
     {
         if (_instance != null) return;
-        _instance = FindObjectOfType<T>(true);
-        if (_instance != null) return;
-        if (go == null)
-        {
-            go = new GameObject();
-            go.name = typeof(T).Name;
-        }
-
-
-        _instance = go.AddComponent<T>();
+        _instance = FindFirstObjectByType<T>(FindObjectsInactive.Include);
+ 
     }
 
 
@@ -36,5 +28,11 @@ public abstract class Singleton<T> : MonoBehaviour where T : Component
         if (_instance == null)
             _instance = this as T;
         Debug.Log("SINGLETON ONLINE: " + typeof(T).Name, this);
+    }
+
+    private void OnDestroy()
+    {
+        Debug.Log("this happens to " + typeof(T).Name, this);
+        Debug.Log("SINGLETON OFFLINE: " + typeof(T).Name, this);
     }
 }

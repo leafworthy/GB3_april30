@@ -45,7 +45,7 @@ public class CarAccessInteraction : TimedInteraction
 
 	private bool HasKey() => DoAnyPlayersHaveAKey();
 
-	private bool HasEnoughGas() => GetTotalGasFromAllJoinedPlayers() >= GlobalManager.GasGoal;
+	private bool HasEnoughGas() => GetTotalGasFromAllJoinedPlayers() >= ASSETS.Vars.GasGoal;
 
 	private bool DoAnyPlayersHaveAKey()
 	{
@@ -62,19 +62,19 @@ public class CarAccessInteraction : TimedInteraction
 		var totalGas = 0;
 		foreach (var player in Players.AllJoinedPlayers)
 		{
-			totalGas += player.GetPlayerStatAmount(PlayerStat.StatType.Gas);
+			totalGas += (int)PlayerStatsManager.I.GetStatAmount(player,PlayerStat.StatType.Gas);
 		}
 
 		return totalGas;
 	}
 
-	private bool HasSomeGas() => GetTotalGasFromAllJoinedPlayers() > 0 && GetTotalGasFromAllJoinedPlayers() < GlobalManager.GasGoal;
+	private bool HasSomeGas() => GetTotalGasFromAllJoinedPlayers() > 0 && GetTotalGasFromAllJoinedPlayers() < ASSETS.Vars.GasGoal;
 
 	private void Interactable_OnTimeComplete(Player player)
 	{
 		if (!HasEnoughGas() || gasFilled) return;
 		gasFilled = true;
-		player.ChangePlayerStat(PlayerStat.StatType.Gas, -GlobalManager.GasGoal);
+		PlayerStatsManager.I.ChangeStat(player,PlayerStat.StatType.Gas, -ASSETS.Vars.GasGoal);
 		occupied = false;
 		Interactable_OnPlayerEnters(player);
 	}

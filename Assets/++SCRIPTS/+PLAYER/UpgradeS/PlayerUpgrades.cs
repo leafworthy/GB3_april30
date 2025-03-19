@@ -10,7 +10,7 @@ public class PlayerUpgrades : MonoBehaviour
 
 	public bool BuyUpgrade(Upgrade upgrade)
 	{
-		if(upgrade.GetCost() > player.GetPlayerStatAmount(PlayerStat.StatType.TotalCash))
+		if(upgrade.GetCost() > PlayerStatsManager.I.GetStatAmount(player,PlayerStat.StatType.TotalCash))
 		{
 			Debug.Log("not enough cash for " + upgrade.GetName());
 			return false;
@@ -26,7 +26,7 @@ public class PlayerUpgrades : MonoBehaviour
 			upgrades.Add(upgrade);
 		}
 
-		player.ChangePlayerStat(PlayerStat.StatType.TotalCash, -upgrade.GetCost());
+		PlayerStatsManager.I.ChangeStat(player,PlayerStat.StatType.TotalCash, -upgrade.GetCost());
 		ApplyUpgrades(player);
 		return true;
 	}

@@ -20,20 +20,18 @@ public class CursorManager : MonoBehaviour
 	private void Start()
 	{
 		Cursor.visible = false;
-		LevelGameScene.OnStart += LevelStarts;
-		LevelGameScene.OnPlayerSpawned += InitCursor;
+		LevelManager.OnStartLevel += LevelStartsLevel;
+		LevelManager.OnPlayerSpawned += InitCursor;
 	}
 
-	private void LevelStarts(SceneDefinition sceneDefinition)
+	private void LevelStartsLevel(GameLevel level)
 	{
 		isActive = true;
 		foreach (var player in Players.AllJoinedPlayers)
 		{
-			//Debug.Log("initializing cursor for player " + player.playerIndex);
 			InitCursor(player);
 		}
 
-		
 }
 
 	private void InitCursor(Player player)
@@ -64,14 +62,14 @@ public class CursorManager : MonoBehaviour
 		currentCursor.transform.localScale = inGameCursorScale;
 		//DontDestroyOnLoad(currentCursor);
 		var image = currentCursor.GetComponentInChildren<Image>();
-		if (image != null) image.color = player.color;
-		LevelGameScene.OnStart += (t) => { SetCursorsActive(true); };
+		if (image != null) image.color = player.playerColor;
+		LevelManager.OnStartLevel += (t) => { SetCursorsActive(true); };
 		PauseManager.OnPause += x =>
 		{
 			SetCursorsActive(false);
 		};
 		PauseManager.OnUnpause += x => { SetCursorsActive(true); };
-		LevelGameScene.OnStop += t => { SetCursorsActive(false); };
+		LevelManager.OnStopLevel += t => { SetCursorsActive(false); };
 		currentCursor.gameObject.SetActive(true);
 		currentCursors.Add(currentCursor);
 		SetCursorsActive(true);

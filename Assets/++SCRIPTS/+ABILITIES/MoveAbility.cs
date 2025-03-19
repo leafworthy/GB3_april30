@@ -84,7 +84,7 @@ public class MoveAbility : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		
 		if (isMoving && IsActive)
 		{
@@ -151,7 +151,7 @@ public class MoveAbility : MonoBehaviour
 	private void MoveObjectTo(Vector2 destination, bool teleport = false)
 	{
 		rb = GetComponent<Rigidbody2D>();
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (rb != null)
 			rb.MovePosition(destination);
 		else 

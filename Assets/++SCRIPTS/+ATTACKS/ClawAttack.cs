@@ -38,7 +38,7 @@ public class ClawAttack : Attacks
 
 	private void AI_Attack(Life newTarget)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (TargetIsInvalid(newTarget)) return;
 		currentTargetLife = newTarget;
 		StartAttack();
@@ -63,7 +63,7 @@ public class ClawAttack : Attacks
 
 	private void OnAttackHit(int attackType)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (currentTargetLife == null) return;
 		if (attacker.IsDead() || currentTargetLife.IsDead()) return;
 		if (!currentTargetLife.IsObstacle)

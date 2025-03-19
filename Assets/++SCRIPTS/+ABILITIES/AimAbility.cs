@@ -48,14 +48,14 @@ public class AimAbility : MonoBehaviour
 
 	private void AimerOnAim(IControlAxis controlAxis, Vector2 newAimDir)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (owner.isDead()) return;
 		if (hasEnoughMagnitude()) AimDir = newAimDir;
 	}
 
 	protected virtual void Update()
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (!owner.IsPlayer()) return;
 		if (owner.isDead()) return;
 		if (owner.isUsingMouse) AimDir = GetRealAimDir();

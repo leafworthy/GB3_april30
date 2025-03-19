@@ -4,8 +4,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [ExecuteInEditMode]
-public class HUDHealthDisplay : MonoBehaviour
-{
+public class HUDHealthDisplay : MonoBehaviour, INeedPlayer {
 
 	[FormerlySerializedAs("bar")] public Bar_FX barFX;
 	public TMP_Text healthText;
@@ -13,6 +12,7 @@ public class HUDHealthDisplay : MonoBehaviour
 	private Life playerDefence;
 	public GameObject shakeIcon;
 	public Image capSpriteRenderer;
+
 
 	public void SetPlayer(Player player)
 	{
@@ -23,15 +23,16 @@ public class HUDHealthDisplay : MonoBehaviour
 		playerDefence = player.SpawnedPlayerGO.GetComponentInChildren<Life>();
 		if (barFX.slowBarImage != null)
 		{
-			barFX.slowBarImage.color = player.color;
+			barFX.slowBarImage.color = player.playerColor;
 		}
 
 		if (capSpriteRenderer != null)
 		{
-			capSpriteRenderer.color = player.color;
+			capSpriteRenderer.color = player.playerColor;
 		}
 
 		playerDefence.OnFractionChanged += UpdateDisplay;
+		barFX = GetComponentInChildren<Bar_FX>();
 		UpdateDisplay(0);
 	}
 

@@ -10,6 +10,18 @@ public class HUDSlot : MonoBehaviour
 	public HUD TmatoHUD;
 	public PlayerSetupMenu charSelectMenu;
 	public UpgradeSetupMenu upgradeSetupMenu;
+	private Player currentPlayer;
+	
+
+	public void SetPlayer(Player player)
+	{
+		currentPlayer = player;
+		foreach (var needPlayer in GetComponentsInChildren<INeedPlayer>(true))
+		{
+			needPlayer.SetPlayer(currentPlayer);
+		}
+		if(currentPlayer.CurrentCharacter != Character.None) SetCharacterHudVisible(currentPlayer.CurrentCharacter);
+	}
 
 	public void StartCharSelectMenu(Player player)
 	{
@@ -17,14 +29,15 @@ public class HUDSlot : MonoBehaviour
 		player.input.uiInputModule = charSelectMenu.GetComponentInChildren<InputSystemUIInputModule>();
 		DisableAllHUDS();
 		charSelectMenu.gameObject.SetActive(true);
-		charSelectMenu.Setup(player,this);
-		charSelectMenu.OnCharacterChosen += SetCharacter;
+		charSelectMenu.StartSetupMenu(player);
+		
+		charSelectMenu.OnCharacterChosen += SetCharacterHudVisible;
 	}
 
 	public void StartUpgradeSelectMenu(Player player)
 	{
 		upgradeSetupMenu.gameObject.SetActive(true);
-		upgradeSetupMenu.Setup(player, this);
+		upgradeSetupMenu.StartUpgradeSelectMenu(player);
 		upgradeSetupMenu.OnUpgradePurchased += CloseUpgradeSelectMenu;
 	}
 
@@ -33,29 +46,30 @@ public class HUDSlot : MonoBehaviour
 		upgradeSetupMenu.gameObject.SetActive(false);
 	}
 
-	public void SetCharacter(Player player)
+	public void SetCharacterHudVisible(Character currentCharacter)
 	{
+		if(currentPlayer == null) return;
 		DisableAllHUDS();
-		switch (player.CurrentCharacter)
+		switch (currentCharacter)
 		{
 			case Character.Karrot:
 				KarrotHUD.gameObject.SetActive(true);
-				KarrotHUD.gameObject.GetComponent<HUD>().SetPlayer(player);
+				KarrotHUD.gameObject.GetComponent<HUD>().SetPlayer(currentPlayer);
 				break;
 			case Character.Bean:
 				BeanHUD.gameObject.SetActive(true);
-				BeanHUD.gameObject.GetComponent<HUD>().SetPlayer(player);
+				BeanHUD.gameObject.GetComponent<HUD>().SetPlayer(currentPlayer);
 				break;
 			case Character.Brock:
 				BrockHUD.gameObject.SetActive(true);
-				BrockHUD.gameObject.GetComponent<HUD>().SetPlayer(player);
+				BrockHUD.gameObject.GetComponent<HUD>().SetPlayer(currentPlayer);
 				break;
 			case Character.Tmato:
 				TmatoHUD.gameObject.SetActive(true);
-				TmatoHUD.gameObject.GetComponent<HUD>().SetPlayer(player);
+				TmatoHUD.gameObject.GetComponent<HUD>().SetPlayer(currentPlayer);
 				break;
 			default:
-				throw new ArgumentOutOfRangeException(nameof(player.CurrentCharacter), player.CurrentCharacter, null);
+				throw new ArgumentOutOfRangeException(nameof(currentPlayer.CurrentCharacter), currentPlayer.CurrentCharacter, null);
 		}
 
 	}

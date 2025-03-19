@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class HUDAmmoChanger : MonoBehaviour
+public class HUDAmmoChanger : MonoBehaviour, INeedPlayer
 {
 	public AmmoDisplay ammoDisplay;
 	public Image AKIcon;
@@ -12,14 +12,16 @@ public class HUDAmmoChanger : MonoBehaviour
 	
 	public void SetPlayer(Player player)
 	{
-		if (player.CurrentCharacter != Character.Bean) return;
 		_player = player;
+		if (player.CurrentCharacter != Character.Bean) return;
 		gunAttack = player.SpawnedPlayerGO.GetComponent<GunAttack>();
 	}
 
 	private void Update()
 	{
+		if(_player == null) return;
 		if (_player.CurrentCharacter != Character.Bean) return;
+		gunAttack = _player.SpawnedPlayerGO.GetComponent<GunAttack>();
 		if(isGlocking == gunAttack.isGlocking) return;
 		isGlocking = gunAttack.isGlocking;
 		ChangeAmmo(isGlocking);

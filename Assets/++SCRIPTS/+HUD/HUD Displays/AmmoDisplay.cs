@@ -17,7 +17,8 @@ public class AmmoDisplay : MonoBehaviour
 
 	private void Start()
 	{
-		LevelGameScene.OnStop += CleanUp;
+		LevelManager.OnStopLevel += CleanUp;
+		barFX = GetComponentInChildren<Bar_FX>();
 	}
 
 	
@@ -87,7 +88,7 @@ public class AmmoDisplay : MonoBehaviour
 
 
 
-	private void CleanUp(SceneDefinition sceneDefinition)
+	private void CleanUp(GameLevel gameLevel)
 	{
 		if (!init) return;
 		init = false;

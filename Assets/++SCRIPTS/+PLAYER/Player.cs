@@ -2,10 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
-
-
-
 
 public enum Character
 {
@@ -30,39 +26,33 @@ public class Player : MonoBehaviour
 	public State state;
 	private PlayerData data;
 
-	public CharacterButton CurrentButton;
 	public GameObject SpawnedPlayerGO;
-	public PlayerController Controller;
-
 	public Life spawnedPlayerDefence;
 
-	public int buttonIndex;
-
-	[FormerlySerializedAs("currentCharacter")]
-	public Character CurrentCharacter;
-
-	private PlayerSayer sayer;
+	public PlayerController Controller;
 	public PlayerInput input;
 	public bool isUsingMouse;
-	public Color color;
-	public string PlayerName = "unnamed";
-	public static event Action<Player> OnPlayerDies;
 	private AimAbility aimAbility;
 
-	public PlayerStatsHandler playerStats;
+	public CharacterButton CurrentButton;
+	public int buttonIndex;
+
+	//SET DURING CHARACTER SELECT
+	public Character CurrentCharacter;
+	public Color playerColor;
+
+	private PlayerSayer sayer;
+
 	public int playerIndex;
 	public bool hasKey;
 	public List<PlayerInteractable> interactables = new();
 	private PlayerInteractable selectedInteractable;
 	public static event Action<Player> OnPlayerSpawned;
-	
+	public static event Action<Player> OnPlayerDies;
+
 	private PlayerUpgrades playerUpgrades;
 
-
-	public bool IsPlayer()
-	{
-		return data.isPlayer;
-	}
+	public bool IsPlayer() => data.isPlayer;
 
 	private void Start()
 	{
@@ -104,8 +94,11 @@ public class Player : MonoBehaviour
 		}
 
 		if (closest == selectedInteractable)
+		{
 			if (selectedInteractable.isSelected)
 				return;
+		}
+
 		if (selectedInteractable != null) selectedInteractable.Deselect(this);
 		selectedInteractable = closest;
 		selectedInteractable.Select(this);
@@ -137,59 +130,54 @@ public class Player : MonoBehaviour
 		OnPlayerDies?.Invoke(this);
 	}
 
-	private void OnLevelStop_CleanUp(SceneDefinition sceneDefinition)
+	private void LevelStopLevelCleanUp(GameLevel gameLevel)
 	{
-		// If player manager is handling character persistence, don't clean up
-		if (Players.ShouldPersistCharacters && Players.I != null && Players.I.HasPersistentCharacter(this))
-		{
-			// Just unsubscribe from event, but don't destroy character or change state
-			LevelGameScene.OnStop -= OnLevelStop_CleanUp;
-			return;
-		}
-	
 		// Otherwise clean up normally
 		state = State.SelectingCharacter;
 		CurrentButton = null;
 		SpawnedPlayerGO = null;
-		LevelGameScene.OnStop -= OnLevelStop_CleanUp;
+		LevelManager.OnStopLevel -= LevelStopLevelCleanUp;
 		if (spawnedPlayerDefence != null) spawnedPlayerDefence.OnDead -= OnPlayerDied;
 	}
 
-	public void Spawn(Vector2 SpawnPoint)
+	public GameObject Spawn(TravelPoint travelPoint, bool fallFromSky)
 	{
-		Debug.Log("Spawning player at " + SpawnPoint);
+		Debug.Log("Spawning player at " + travelPoint);
 		state = State.Alive;
-		
+
 		// Create the character instance
 		var spawnedPlayerGO = Instantiate(GetPrefabFromCharacter(this));
-		spawnedPlayerGO.transform.position = SpawnPoint;
-		
+		spawnedPlayerGO.transform.position = travelPoint.transform.position;
+
 		SetSpawnedPlayerGO(spawnedPlayerGO);
 		
+		var animations = spawnedPlayerGO.GetComponentInChildren<Animations>();
+		if (animations != null)
+		{
+			animations.SetBool(Animations.IsFallingFromSky, fallFromSky);
+		}
+		var jumpController = spawnedPlayerGO.GetComponentInChildren<JumpController>();
+		if (jumpController != null)
+		{
+			jumpController.Init(fallFromSky);
+		}
+
 		// Apply any upgrades
-		if (playerUpgrades != null)
-		{
-			playerUpgrades.ApplyUpgrades(this);
-		}
-		
-		// Register with Players for persistence if needed
-		if (Players.I != null && Players.ShouldPersistCharacters)
-		{
-			Players.I.RegisterPersistentCharacter(this, spawnedPlayerGO);
-		}
+		if (playerUpgrades != null) playerUpgrades.ApplyUpgrades(this);
 		
 		// Subscribe to level stop event for cleanup
-		LevelGameScene.OnStop += OnLevelStop_CleanUp;
-		
+		LevelManager.OnStopLevel += LevelStopLevelCleanUp;
+
 		// Notify that player has spawned
 		OnPlayerSpawned?.Invoke(this);
+		return spawnedPlayerGO;
 	}
 
 	private void SetSpawnedPlayerGO(GameObject newGO)
 	{
 		SpawnedPlayerGO = newGO;
 		spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
-		spawnedPlayerDefence.OnDead += OnPlayerDied;  // Updated to use new method name
+		spawnedPlayerDefence.OnDead += OnPlayerDied; // Updated to use new method name
 		spawnedPlayerDefence.SetPlayer(this);
 		sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
 	}
@@ -222,25 +210,17 @@ public class Player : MonoBehaviour
 		data = playerData;
 		if (playerInput == null)
 		{
-			if (!data.isPlayer)
-			{
-				PlayerName = "Enemy Player" + index;
-				return;
-			}
+			if (!data.isPlayer) return;
 		}
 		else
 			playerIndex = playerInput != null ? playerInput.playerIndex : 5;
 
-		color = data.playerColor;
+		playerColor = data.playerColor;
 
-		PlayerName = "Player " + index;
 		input = playerInput;
 		Controller = GetComponent<PlayerController>();
 		Controller.InitializeAndLinkToPlayer(this);
 		isUsingMouse = input.GetDevice<Mouse>() != null || input.GetDevice<Keyboard>() != null;
-		playerStats = new PlayerStatsHandler(this);
-
-		LevelGameScene.OnStop += OnLevelStop_CleanUp;
 		SetState(State.SelectingCharacter);
 	}
 
@@ -254,43 +234,21 @@ public class Player : MonoBehaviour
 		sayer.StopSaying();
 	}
 
-	public int GetStartingCash()
-	{
-		return data.startingCash;
-	}
+	public int GetStartingCash() => data.startingCash;
 
-	public int GetStartingGas()
-	{
-		return data.startingGas;
-	}
-
-	public int GetPlayerStatAmount(PlayerStat.StatType statType)
-	{
-		return (int)playerStats.GetStatValue(statType);
-	}
-
-	public void ChangePlayerStat(PlayerStat.StatType type, float change)
-	{
-		playerStats.ChangeStat(type, change);
-	}
+	public int GetStartingGas() => data.startingGas;
 
 	public void GainKey()
 	{
 		hasKey = true;
 	}
 
-	public bool HasMoreMoneyThan(int amount)
-	{
-		return playerStats.GetStatValue(PlayerStat.StatType.TotalCash) >= amount;
-	}
+	public bool HasMoreMoneyThan(int amount) => PlayerStatsManager.I.GetStatAmount(this, PlayerStat.StatType.TotalCash) >= amount;
 
 	public void SpendMoney(int amount)
 	{
-		playerStats.ChangeStat(PlayerStat.StatType.TotalCash, -amount);
+		PlayerStatsManager.I.ChangeStat(this, PlayerStat.StatType.TotalCash, -amount);
 	}
 
-	public bool isDead()
-	{
-		return spawnedPlayerDefence.IsDead();
-	}
+	public bool isDead() => spawnedPlayerDefence.IsDead();
 }

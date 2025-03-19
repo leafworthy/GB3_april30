@@ -562,9 +562,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3607269298020951701}
   - component: {fileID: 6761565315033498195}
-  - component: {fileID: 8507812880030317505}
-  - component: {fileID: 1427122686013173538}
-  - component: {fileID: 5643697685589035627}
+  - component: {fileID: 4731453128279925056}
+  - component: {fileID: 5617443299220345597}
+  - component: {fileID: 122178943498236749}
   m_Layer: 5
   m_Name: Cash Kills Gas Display
   m_TagString: Untagged
@@ -612,7 +612,7 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &8507812880030317505
+--- !u!114 &4731453128279925056
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -621,12 +621,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6590638570803808229}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dafbdf22244504ed6ade9cfc03dfb9f9, type: 3}
+  m_Script: {fileID: 11500000, guid: c76f2d0fdb88491fa38651ebfb8f050d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  killText: {fileID: 568261026621526004}
-  shakeIcon: {fileID: 4559798707013522689}
---- !u!114 &1427122686013173538
+  displayText: {fileID: 568261026621526004}
+  statIcon: {fileID: 3724063208995984608}
+--- !u!114 &5617443299220345597
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -635,12 +635,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6590638570803808229}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff7e02566a944235b352a8342557a381, type: 3}
+  m_Script: {fileID: 11500000, guid: c76f2d0fdb88491fa38651ebfb8f050d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cashText: {fileID: 3076788093811118742}
-  shakeIcon: {fileID: 4559798707013522689}
---- !u!114 &5643697685589035627
+  displayText: {fileID: 3076788093811118742}
+  statIcon: {fileID: 4549065852889372458}
+--- !u!114 &122178943498236749
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -649,11 +649,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6590638570803808229}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 892f6b8d32c64bfa9591ee1171a3413d, type: 3}
+  m_Script: {fileID: 11500000, guid: c76f2d0fdb88491fa38651ebfb8f050d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gasText: {fileID: 3106413362301269248}
-  shakeIcon: {fileID: 4559798707013522689}
+  displayText: {fileID: 3106413362301269248}
+  statIcon: {fileID: 3159996421682195580}
 --- !u!1 &8596531251402308715
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,6 +17,7 @@ public class ObjectMaker : MonoBehaviour
 
 	private void Awake()
 	{
+		DontDestroyOnLoad(gameObject);
 		if(I != null)
 		{
 			Destroy(gameObject);
@@ -25,11 +26,11 @@ public class ObjectMaker : MonoBehaviour
 		I = this;
 		containerContainer = new GameObject("Object Pools");
 		containerContainer.transform.SetParent(I.transform);
-		LevelGameScene.OnStart += PoolObjects;
-		LevelGameScene.OnStop += DestroyAllUnits;
+		LevelManager.OnStartLevel += PoolObjects;
+		LevelManager.OnStopLevel += DestroyAllUnits;
 	}
 
-	private void PoolObjects(SceneDefinition sceneDefinition)
+	private void PoolObjects(GameLevel gameLevel)
 	{
 		foreach (var obj in ObjectsToPool)
 		{
@@ -52,7 +53,7 @@ public class ObjectMaker : MonoBehaviour
 		for (var b = 0; b < currentPool.Count; b++) Unmake(currentPool[b]);
 	}
 
-	public static void DestroyAllUnits(SceneDefinition sceneDefinition)
+	public static void DestroyAllUnits(GameLevel gameLevel)
 	{
 		var tempList = allActiveUnits.ToList();
 		foreach (var t in tempList)

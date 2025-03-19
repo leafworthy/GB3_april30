@@ -38,7 +38,7 @@ public class Bullet_FX : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (!isOn) return;
 		if (shotCounter > 0)
 		{
@@ -54,7 +54,7 @@ public class Bullet_FX : MonoBehaviour
 
 	private void line(Vector2 start, Vector2 end)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (start == end) return;
 		if (sprite == null) sprite = GetComponent<SpriteRenderer>();
 

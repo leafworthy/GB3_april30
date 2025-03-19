@@ -251,7 +251,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8734450042221535076}
-  - component: {fileID: 2441350441941298060}
   m_Layer: 5
   m_Name: EndscreenMenu_DIsplay
   m_TagString: Untagged
@@ -275,24 +274,6 @@ Transform:
   - {fileID: 8173996776971288684}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2441350441941298060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2441350441941298062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 913f0c91506845128809e3521b1ee3e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  menuButtons:
-  - {fileID: 8169463889302127435}
-  - {fileID: 2441350442839271376}
-  - {fileID: 2441350442808499815}
-  menuType: 6
-  horizontalLayoutGroup: {fileID: 2441350441333038569}
 --- !u!1 &2441350441997448128
 GameObject:
   m_ObjectHideFlags: 0

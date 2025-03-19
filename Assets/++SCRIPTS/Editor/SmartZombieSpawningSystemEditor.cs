@@ -24,10 +24,7 @@ public class SmartZombieSpawningSystemEditor : Editor
             CreateNewSpawnPoint(spawner);
         }
         
-        if (GUILayout.Button("Find Enemies in Scene"))
-        {
-            FindEnemiesInScene();
-        }
+       
         EditorGUILayout.EndHorizontal();
         
         EditorGUILayout.Space();
@@ -116,9 +113,9 @@ public class SmartZombieSpawningSystemEditor : Editor
             }
             
             // Draw current time marker if day/night cycle is available
-            if (Application.isPlaying && spawner.dayNightCycle != null)
+            if (Application.isPlaying)
             {
-                float timeOfDay = spawner.dayNightCycle.GetCurrentDayFraction();
+                float timeOfDay = DayNightCycle.I.GetCurrentDayFraction();
                 float currentRate = spawner.spawnRateCurve.Evaluate(timeOfDay);
                 
                 float markerX = curveRect.x + timeOfDay * curveRect.width;
@@ -208,91 +205,6 @@ public class SmartZombieSpawningSystemEditor : Editor
         Undo.RegisterCreatedObjectUndo(newPoint, "Create Spawn Point");
     }
     
-    private void FindEnemiesInScene()
-    {
-        GameObject[] objects = FindObjectsOfType<GameObject>();
-        List<GameObject> enemies = new List<GameObject>();
-        
-        foreach (GameObject obj in objects)
-        {
-            if (obj.layer == LayerMask.NameToLayer("EnemyLayer"))
-            {
-                enemies.Add(obj);
-            }
-        }
-        
-        if (enemies.Count > 0)
-        {
-            Debug.Log($"Found {enemies.Count} enemies in the scene:");
-            foreach (GameObject enemy in enemies)
-            {
-                Debug.Log($"- {enemy.name}");
-            }
-        }
-        else
-        {
-            Debug.Log("No enemies found in the scene.");
-        }
-    }
+
     
-    private void OnSceneGUI()
-    {
-        SmartZombieSpawningSystem spawner = (SmartZombieSpawningSystem)target;
-        
-        if (!spawner.showDebugVisuals) return;
-        
-        // Draw spawn area boundary
-        Handles.color = spawner.debugColor;
-        BoxCollider2D boxCollider = spawner.GetComponent<BoxCollider2D>();
-        if (boxCollider != null)
-        {
-            Vector3 center = boxCollider.bounds.center;
-            Vector3 size = boxCollider.bounds.size;
-            Handles.DrawWireCube(center, size);
-        }
-        
-        // If in play mode and camera exists, visualize camera bounds
-        if (Application.isPlaying && Camera.main != null)
-        {
-            Camera cam = Camera.main;
-            float height = 2f * cam.orthographicSize;
-            float width = height * cam.aspect;
-            
-            Vector3 center = cam.transform.position;
-            
-            // Draw camera frustum
-            Vector3[] points = new Vector3[4];
-            points[0] = cam.ViewportToWorldPoint(new Vector3(0, 0, cam.nearClipPlane));
-            points[1] = cam.ViewportToWorldPoint(new Vector3(1, 0, cam.nearClipPlane));
-            points[2] = cam.ViewportToWorldPoint(new Vector3(1, 1, cam.nearClipPlane));
-            points[3] = cam.ViewportToWorldPoint(new Vector3(0, 1, cam.nearClipPlane));
-            
-            Handles.color = Color.blue;
-            Handles.DrawLine(points[0], points[1]);
-            Handles.DrawLine(points[1], points[2]);
-            Handles.DrawLine(points[2], points[3]);
-            Handles.DrawLine(points[3], points[0]);
-            
-            // Draw expanded camera bounds for off-screen spawning
-            float margin = spawner.offCameraMargin;
-            Vector3[] expandedPoints = new Vector3[4];
-            expandedPoints[0] = cam.ViewportToWorldPoint(new Vector3(-margin, -margin, cam.nearClipPlane));
-            expandedPoints[1] = cam.ViewportToWorldPoint(new Vector3(1 + margin, -margin, cam.nearClipPlane));
-            expandedPoints[2] = cam.ViewportToWorldPoint(new Vector3(1 + margin, 1 + margin, cam.nearClipPlane));
-            expandedPoints[3] = cam.ViewportToWorldPoint(new Vector3(-margin, 1 + margin, cam.nearClipPlane));
-            
-            Handles.color = new Color(0, 0, 1, 0.5f);
-            Handles.DrawLine(expandedPoints[0], expandedPoints[1]);
-            Handles.DrawLine(expandedPoints[1], expandedPoints[2]);
-            Handles.DrawLine(expandedPoints[2], expandedPoints[3]);
-            Handles.DrawLine(expandedPoints[3], expandedPoints[0]);
-            
-            // Draw lines connecting inner and outer bounds
-            Handles.color = new Color(0, 0, 1, 0.2f);
-            Handles.DrawLine(points[0], expandedPoints[0]);
-            Handles.DrawLine(points[1], expandedPoints[1]);
-            Handles.DrawLine(points[2], expandedPoints[2]);
-            Handles.DrawLine(points[3], expandedPoints[3]);
-        }
-    }
 }

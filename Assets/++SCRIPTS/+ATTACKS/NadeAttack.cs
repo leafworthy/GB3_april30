@@ -95,7 +95,7 @@ public class NadeAttack : MonoBehaviour
 
 	private void Player_NadePress(NewControlButton newControlButton)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 
 		if (!arms.Do(AimVerbName)) return;
 
@@ -106,7 +106,7 @@ public class NadeAttack : MonoBehaviour
 
 	private void Player_NadeRelease(NewControlButton newControlButton)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (!IsAiming) return;
 
 		arms.Stop(AimVerbName);

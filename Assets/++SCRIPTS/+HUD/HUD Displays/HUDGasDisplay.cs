@@ -1,27 +1,28 @@
 using TMPro;
 using UnityEngine;
 
-public class HUDGasDisplay : MonoBehaviour
+public class HUDGasDisplay : HUDStatDisplay
 {
 	public TMP_Text gasText;
 	public GameObject shakeIcon;
 	private Player owner;
 	private float totalGas;
+	private PlayerStat.StatType statType1;
 
 	public void SetPlayer(Player player)
 	{
-		totalGas = player.GetPlayerStatAmount(PlayerStat.StatType.Gas);
+		totalGas = PlayerStatsManager.I.GetStatAmount(player,PlayerStat.StatType.Gas);
 		owner = player;
-		PlayerStatsHandler.OnPlayerStatChange += Players_PlayerStatChange;
+		PlayerStatsManager.I.OnPlayerStatChange += Players_PlayerStatChange;
 		UpdateDisplay();
 	}
 
 
-	private void Players_PlayerStatChange(Player player, PlayerStat stat)
+	private void Players_PlayerStatChange(Player player, PlayerStat.StatType statType, float newAmount)
 	{
 		if (player != owner) return;
-		if (stat.type != PlayerStat.StatType.Gas) return;
-		totalGas = stat.value;
+		if (statType != PlayerStat.StatType.Gas) return;
+		totalGas = newAmount;
 		
 		UpdateDisplay();
 	}

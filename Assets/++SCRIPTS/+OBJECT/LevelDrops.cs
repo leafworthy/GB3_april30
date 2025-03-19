@@ -91,13 +91,6 @@ public class LevelDrops : MonoBehaviour
 	}
 	private static void MakeDropList()
 	{
-		// Ensure ASSETS and FX are initialized
-		if (ASSETS.I == null || ASSETS.FX == null)
-		{
-			// We can't make the drop list now, it will be tried again later
-			return;
-		}
-		
 		_dropsToSpawn.Clear();
 		_dropsToSpawn.Add(ASSETS.FX.ammoPickupPrefab);
 		_dropsToSpawn.Add(ASSETS.FX.ammoPickupPrefab);

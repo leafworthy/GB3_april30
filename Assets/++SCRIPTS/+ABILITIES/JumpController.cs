@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class JumpController : MonoBehaviour
 {
@@ -10,28 +11,25 @@ public class JumpController : MonoBehaviour
 	private string VerbName = "Jumping";
 	private float FallInDistance = 80;
 
-	private void Start()
+	public void Init(bool fallFromSky)
 	{
 		life = GetComponent<Life>();
 		life.player.Controller.Jump.OnPress += Controller_Jump;
-		
-		body = GetComponent<Body>();
-		jump = GetComponent<JumpAbility>();
-		jump.OnLand += Land;
-		jump.OnResting += Jump_OnResting;
-		jump.FallFromHeight(FallInDistance);
-		jump.OnFall += Jump_OnFall;
-
-		life.OnDamaged += Life_Damaged;
-		
-		
 
 		anim = GetComponent<Animations>();
 		animEvents = anim.animEvents;
 		animEvents.OnRoar += AnimEvents_OnRoar;
 		animEvents.OnLandingStop += AnimEvents_OnLandingStop;
-		
-		
+		body = GetComponent<Body>();
+		jump = GetComponent<JumpAbility>();
+		jump.OnLand += Land;
+		jump.OnResting += Jump_OnResting;
+		jump.OnFall += Jump_OnFall;
+		jump.FallFromHeight(fallFromSky ? FallInDistance : 0);
+		life.OnDamaged += Life_Damaged;
+
+
+
 	}
 
 	private void AnimEvents_OnLandingStop()
@@ -63,7 +61,7 @@ public class JumpController : MonoBehaviour
 
 	private void Controller_Jump(NewControlButton newControlButton)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 
 		Debug.Log("controller jump start");
 		Jump();
@@ -93,7 +91,7 @@ public class JumpController : MonoBehaviour
 
 	private void Jump(float modifier = 1)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 
 
 		if (!body.arms.Do(VerbName)) return;
@@ -120,5 +118,5 @@ public class JumpController : MonoBehaviour
 		
 	}
 
-		
+
 }

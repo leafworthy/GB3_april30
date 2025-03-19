@@ -33,6 +33,7 @@ public class CharacterSelectButtons : MonoBehaviour
 	{
 		hasSelected = false;
 		hasJoined = false;
+		if(_player == null) return;
 		_player.Controller.UIAxis.OnLeft -= OnLeft;
 		_player.Controller.UIAxis.OnRight -= OnRight;
 		_player.Controller.Select.OnPress -= OnSelect;

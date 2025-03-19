@@ -18,7 +18,7 @@ public class AimAbility_FX : MonoBehaviour
 
 	private void Update()
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if(aimAbility.hasEnoughMagnitude())
 		{
 			AimFlashlight();

@@ -43,7 +43,7 @@ public class ExplosionAttack : Attacks
 
 	private void AttackHit(int attackType)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (attacker.IsDead()) return;
 		if (currentTargetLife == null) return;
 
@@ -55,7 +55,7 @@ public class ExplosionAttack : Attacks
 	private void AI_Attack(Life newTarget)
 	{
 		if (newTarget == null) return;
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (attacker.IsDead()) return;
 		var move = GetComponent<MoveAbility>();
 		currentTargetLife = newTarget;
@@ -65,7 +65,7 @@ public class ExplosionAttack : Attacks
 
 	private void Player_Attack(NewControlButton newControlButton)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (attacker.IsDead()) return;
 
 		var hitObject = RaycastToObject(currentTargetLife);

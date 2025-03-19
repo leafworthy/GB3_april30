@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HUDS : Singleton<HUDS>
 {
 	private bool isOn;
-	public HUDHandler currentHUD;
+	private List<HUDSlot> currentHUDSlots = new List<HUDSlot>();
+
 	public GameObject Vignette;
 	public GameObject Clock;
 
@@ -12,15 +14,15 @@ public class HUDS : Singleton<HUDS>
 	{
 		Vignette.SetActive(false);
 		Clock.SetActive(false);
-		
-		LevelGameScene.OnStart += LevelScene_OnStart;
-		LevelGameScene.OnStop += LevelScene_OnStop;
-		LevelGameScene.OnPlayerSpawned += LevelScene_OnPlayerSpawned;
+		Debug.Log("huds starts");
+		LevelManager.OnStartLevel += LevelSceneOnStartLevel;
+		LevelManager.OnStopLevel += LevelSceneOnStopLevel;
+		LevelManager.OnPlayerSpawned += LevelScene_OnPlayerSpawned;
 		DisableAllHUDSlots();
 		
 	}
 
-	private void LevelScene_OnStop(SceneDefinition sceneDefinition)
+	private void LevelSceneOnStopLevel(GameLevel gameLevel)
 	{
 		Vignette.SetActive(false);
 		Clock.SetActive(false);
@@ -32,12 +34,13 @@ public class HUDS : Singleton<HUDS>
 
 	private void LevelScene_OnPlayerSpawned(Player player)
 	{
-		SetHUDSlotCharacter(player);
+		SetHUDSlotPlayer(player);
 	}
 
-	private void LevelScene_OnStart(SceneDefinition sceneDefinition)
+	private void LevelSceneOnStartLevel(GameLevel gameLevel)
 	{
-		//CreateHUDForPlayers(Players.AllJoinedPlayers);
+		Debug.Log("made it here");
+		CreateHUDForPlayers(Players.AllJoinedPlayers);
 		Players.OnPlayerJoins += JoinInGame;
 		Players.OnPlayerGetUpgrades += OpenUpgradePanel;
 		Vignette.SetActive(true);
@@ -46,7 +49,7 @@ public class HUDS : Singleton<HUDS>
 
 	private void OpenUpgradePanel(Player player)
 	{
-		var slot = I.currentHUD.HUDSlots[(int)player.input.playerIndex];
+		var slot = I.currentHUDSlots[(int)player.input.playerIndex];
 		slot.gameObject.SetActive(true);
 		Clock.SetActive(true);
 		slot.StartUpgradeSelectMenu(player);
@@ -57,26 +60,28 @@ public class HUDS : Singleton<HUDS>
 	{
 		foreach (var player in players)
 		{
-			SetHUDSlotCharacter(player);
+			Debug.Log("set hud slot");
+			SetHUDSlotPlayer(player);
 		}
 	}
 
 	private static void JoinInGame(Player player)
 	{
 		Debug.Log("join in game");
-		var slot = I.currentHUD.HUDSlots[(int) player.input.playerIndex];
+		var slot = I.currentHUDSlots[(int) player.input.playerIndex];
 		slot.gameObject.SetActive(true);
 		slot.StartCharSelectMenu(player);
 	}
 
-	private static void SetHUDSlotCharacter(Player player)
+	private static void SetHUDSlotPlayer(Player player)
 	{
-		var slot = I.currentHUD.HUDSlots[(int)player.input.playerIndex];
+		var slot = I.currentHUDSlots[(int)player.input.playerIndex];
 		slot.gameObject.SetActive(true);
-		slot.SetCharacter(player);
+		slot.SetPlayer(player);
 	}
 	private void DisableAllHUDSlots()
 	{
-		foreach (var hudSlot in currentHUD.HUDSlots) hudSlot.gameObject.SetActive(false);
+		currentHUDSlots = GetComponentsInChildren<HUDSlot>(true).ToList();
+		foreach (var hudSlot in currentHUDSlots) hudSlot.gameObject.SetActive(false);
 	}
 }

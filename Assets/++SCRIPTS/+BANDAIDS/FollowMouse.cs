@@ -7,18 +7,11 @@ public class FollowMouse : MonoBehaviour
 
     void Update()
     {
-        if (GlobalManager.IsPaused)
+        if (PauseManager.IsPaused)
         {
             return;
         }
         transform.position = aim.GetAimPoint();
        
-    }
-
-    public void Init(Player player)
-    {
-        aim = player.SpawnedPlayerGO.GetComponent<AimAbility>();
-        if (aim == null) return;
-        transform.position = aim.GetAimPoint();
     }
 }

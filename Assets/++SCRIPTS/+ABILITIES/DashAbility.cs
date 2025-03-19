@@ -61,7 +61,7 @@ public class DashAbility : MonoBehaviour
 	private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 	{
 		if (!moveController.CanMove) return;
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (!jumps.isResting) return;
 		body.arms.Stop();
 		if (!body.arms.Do(DashVerbName)) return;

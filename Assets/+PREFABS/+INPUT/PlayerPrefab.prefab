@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2725784496144234028}
   - component: {fileID: 382554149637454532}
   - component: {fileID: 4735646346067322319}
+  - component: {fileID: 7825840780220022476}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Untagged
@@ -142,16 +143,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  CurrentButton: {fileID: 0}
   SpawnedPlayerGO: {fileID: 0}
-  Controller: {fileID: 0}
   spawnedPlayerDefence: {fileID: 0}
-  buttonIndex: 0
-  CurrentCharacter: 2
+  Controller: {fileID: 0}
   input: {fileID: 0}
   isUsingMouse: 0
-  color: {r: 0, g: 0, b: 0, a: 0}
-  PlayerName: unnamed
+  CurrentButton: {fileID: 0}
+  buttonIndex: 0
+  CurrentCharacter: 2
+  playerColor: {r: 0, g: 0, b: 0, a: 0}
   playerIndex: 0
   hasKey: 0
   interactables: []
@@ -168,3 +168,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgrades: []
+--- !u!114 &7825840780220022476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3698094019892413943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e486774955f94e868d8eb77b9e45f867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

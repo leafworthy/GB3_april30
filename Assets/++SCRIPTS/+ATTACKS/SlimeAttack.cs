@@ -41,7 +41,7 @@ public class SlimeAttack : MonoBehaviour
 
 	private void AI_Attack(Life _life)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (life.IsDead()) return;
 		AttackTarget(_life);
 	}

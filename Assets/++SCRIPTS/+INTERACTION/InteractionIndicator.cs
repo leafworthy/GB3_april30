@@ -69,7 +69,7 @@ public class InteractionIndicator : MonoBehaviour
 
 	private void SetIndicatorColor(Player player)
 	{
-		indicator.SetColor(player.color);
+		indicator.SetColor(player.playerColor);
 		Debug.Log("color change");
 	}
 

@@ -7,7 +7,6 @@ public abstract class GameScene : MonoBehaviour
 {
    
     protected bool isActive;
-	public SceneDefinition sceneDefinition;
    
     
 }

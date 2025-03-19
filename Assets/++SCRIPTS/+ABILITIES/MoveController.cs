@@ -166,7 +166,7 @@ public class MoveController : MonoBehaviour
 
 	private void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (isDamaged) return;
 		if (!canMove) return;
 
@@ -196,7 +196,7 @@ public class MoveController : MonoBehaviour
 
 	private void StopMoving()
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		anim.SetBool(Animations.IsMoving, false);
 		mover.StopMoving();
 	}
@@ -216,7 +216,7 @@ public class MoveController : MonoBehaviour
 
 	private void AI_MoveInDirection(Vector2 direction)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (!CanMove)
 		{
 			return;

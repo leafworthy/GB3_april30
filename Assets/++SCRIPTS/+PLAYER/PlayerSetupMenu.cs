@@ -2,14 +2,12 @@
 using TMPro;
 using UnityEngine;
 
-public class PlayerSetupMenu : MonoBehaviour
+public class PlayerSetupMenu : MonoBehaviour, INeedPlayer
 {
-	[SerializeField] private TextMeshProUGUI titleText;
 	[SerializeField] private GameObject readyPanel;
 	[SerializeField] private GameObject menuPanel;
-
+	public GameObject Visible;
 	[SerializeField] private GameObject readyText;
-		
 
 	public CharacterSelectButtons buttons;
 
@@ -17,12 +15,22 @@ public class PlayerSetupMenu : MonoBehaviour
 	private float ignoreInputTime = .5f;
 	private bool inputEnabled;
 
-	private void OnEnable()
+	private void Start()
 	{
-		LevelGameScene.OnStop += LevelGameScene_OnStop;
+		Visible.SetActive(false);
 	}
 
-	private void LevelGameScene_OnStop(SceneDefinition sceneDefinition)
+	private void OnEnable()
+	{
+		LevelManager.OnStopLevel += LevelGameSceneOnStopLevel;
+	}
+
+	private void OnDisable()
+	{
+		LevelManager.OnStopLevel -= LevelGameSceneOnStopLevel;
+	}
+
+	private void LevelGameSceneOnStopLevel(GameLevel gameLevel)
 	{
 		Unsetup();
 	}
@@ -30,18 +38,21 @@ public class PlayerSetupMenu : MonoBehaviour
 	private void Unsetup()
 	{
 		owner = null;
-		gameObject.SetActive(false);
-		readyText.SetActive(false);
-		readyPanel.SetActive(false);
-		menuPanel.SetActive(true);
+		Visible.SetActive(false);
 	}
 
-	public event Action<Player> OnCharacterChosen;
-	public void Setup(Player player, HUDSlot hudSlot)
+	public event Action<Character> OnCharacterChosen;
+
+	public void SetPlayer(Player player)
 	{
-		Debug.Log("made it in menu", this);
 		owner = player;
-		gameObject.SetActive(true);
+	}
+
+	public void StartSetupMenu(Player player)
+	{
+		SetPlayer(player);
+		Debug.Log(  player.name + " is setting up");
+		Visible.SetActive(true);
 		readyText.SetActive(false);
 		ignoreInputTime = Time.time + ignoreInputTime;
 		buttons.OnCharacterChosen += Buttons_OnCharacterChosen;
@@ -56,10 +67,10 @@ public class PlayerSetupMenu : MonoBehaviour
 		readyText.SetActive(true);
 		readyPanel.SetActive(true);
 		menuPanel.SetActive(false);
-		LevelGameScene.CurrentLevelGameScene.SpawnPlayer(owner);
-		OnCharacterChosen?.Invoke(owner);
+		LevelManager.I.SpawnPlayerFromCharacterSelectScreen(owner);
+		OnCharacterChosen?.Invoke(character);
 		inputEnabled = false;
-		gameObject.SetActive(false);
+		Visible.SetActive(false);
 		buttons.OnCharacterChosen -= Buttons_OnCharacterChosen;
 	}
 
@@ -67,5 +78,4 @@ public class PlayerSetupMenu : MonoBehaviour
 	{
 		if (Time.time > ignoreInputTime) inputEnabled = true;
 	}
-
 }

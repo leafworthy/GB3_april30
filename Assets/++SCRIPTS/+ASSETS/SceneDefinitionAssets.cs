@@ -137,6 +137,33 @@ public class SceneDefinitionAssets : ScriptableObject
     }
     
     /// <summary>
+    /// Find the best starting level from available scenes
+    /// </summary>
+    public SceneDefinition FindStartingLevel()
+    {
+        // First look for scenes with "First" or "Start" in the name
+        foreach (var scene in GetAllGameplayScenes())
+        {
+            if (scene.name.Contains("First") || scene.name.Contains("Start"))
+                return scene;
+        }
+        
+        // Then use explicitly referenced scenes in priority order
+        if (gangstaBeanHouse != null) return gangstaBeanHouse;
+        if (baseballField != null) return baseballField;
+        if (fancyHouse != null) return fancyHouse;
+        if (gasStation != null) return gasStation;
+        
+        // Last resort: return the first gameplay scene found
+        var gameplayScenes = GetAllGameplayScenes();
+        if (gameplayScenes.Count > 0)
+            return gameplayScenes[0];
+            
+        // If no gameplay scenes found, return null
+        return null;
+    }
+    
+    /// <summary>
     /// Add a scene definition to this container (useful for runtime-created definitions)
     /// </summary>
     public void AddScene(SceneDefinition scene)

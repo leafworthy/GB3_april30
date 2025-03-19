@@ -765,7 +765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b52fd38032439eb5337e7532e96c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bar: {fileID: 3031532682410909565}
+  barFX: {fileID: 0}
   ammoText: {fileID: 1696179606627349385}
   totalText: {fileID: 616857056520206766}
   shakeObject: {fileID: 3691946201337302763}
@@ -868,7 +868,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b52fd38032439eb5337e7532e96c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bar: {fileID: 3978608812107054650}
+  barFX: {fileID: 0}
   ammoText: {fileID: 3706101430977294264}
   totalText: {fileID: 3706101430977294264}
   shakeObject: {fileID: 1718352241509733082}
@@ -957,15 +957,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c284df316f28457ca489b617935431d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hudHealthDisplay: {fileID: 442116885072063418}
   primaryAmmoDisplay: {fileID: 3137095573686344654}
   secondaryAmmoDisplay: {fileID: 1111700872447477759}
   tertiaryAmmoDisplay: {fileID: 0}
-  hudKillsDisplay: {fileID: 3970298013956698396}
-  hudCashDisplay: {fileID: 5964647426204083711}
-  hudCashDisplayForUpgrades: {fileID: 0}
-  hudGasDisplay: {fileID: 1106467801349636278}
-  gangstaBeanAmmoChanger: {fileID: 6795694035941784214}
 --- !u!1001 &495299016674702454
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1115,17 +1109,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1469386055c104dc789686631054a579, type: 3}
---- !u!114 &442116885072063418 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 71232007666065356, guid: 1469386055c104dc789686631054a579, type: 3}
-  m_PrefabInstance: {fileID: 495299016674702454}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b453e10804084966a8ea8044540fc812, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &4713543645249733860 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5167450852509085842, guid: 1469386055c104dc789686631054a579, type: 3}
@@ -1286,10 +1269,6 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3607269298020951701, guid: 894b55bcfaf6b4768941b3b5fd13f825, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3607269298020951701, guid: 894b55bcfaf6b4768941b3b5fd13f825, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
@@ -1370,39 +1349,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 894b55bcfaf6b4768941b3b5fd13f825, type: 3}
---- !u!114 &1106467801349636278 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5643697685589035627, guid: 894b55bcfaf6b4768941b3b5fd13f825, type: 3}
-  m_PrefabInstance: {fileID: 4686144666282805981}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 892f6b8d32c64bfa9591ee1171a3413d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3970298013956698396 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8507812880030317505, guid: 894b55bcfaf6b4768941b3b5fd13f825, type: 3}
-  m_PrefabInstance: {fileID: 4686144666282805981}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dafbdf22244504ed6ade9cfc03dfb9f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5964647426204083711 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1427122686013173538, guid: 894b55bcfaf6b4768941b3b5fd13f825, type: 3}
-  m_PrefabInstance: {fileID: 4686144666282805981}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff7e02566a944235b352a8342557a381, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &8288628748850752584 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3607269298020951701, guid: 894b55bcfaf6b4768941b3b5fd13f825, type: 3}

@@ -195,6 +195,9 @@ public class GameSceneCharacterSelection : GameScene
 		}
 	}
 
+	// Add a new event for character selection completion
+	public static event Action OnCharacterSelectionComplete;
+
 	private void TryToStartGame(Player player)
 	{
 		CheckIfPlayersAllSelected();
@@ -204,8 +207,13 @@ public class GameSceneCharacterSelection : GameScene
 		ClearAllPlayerButtons();
 		isActive = false;
 		Players.OnPlayerJoins -= PlayerStartsSelecting;
-		//Debug.Log("Starting game");
-		SceneLoader.I.GoToScene(ASSETS.Scenes.gangstaBeanHouse, true);
+		
+		// Trigger character selection complete event
+		OnCharacterSelectionComplete?.Invoke();
+		LevelManager.I.StartGame();
+
+
+
 	}
 
 	private void ClearAllPlayerButtons()

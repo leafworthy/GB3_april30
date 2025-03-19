@@ -5,7 +5,7 @@ public class CashPickupEffect : PickupEffect
 	public override void StartEffect(Life life)
 	{
 		effectDuration = 0;
-		life.player.ChangePlayerStat(PlayerStat.StatType.TotalCash,amount);
+		PlayerStatsManager.I.ChangeStat(life.player, PlayerStat.StatType.TotalCash,amount);
 		base.StartEffect(life);
 	}
 

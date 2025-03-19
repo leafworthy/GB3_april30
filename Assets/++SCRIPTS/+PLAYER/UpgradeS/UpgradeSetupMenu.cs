@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-public class UpgradeSetupMenu : MonoBehaviour
+public class UpgradeSetupMenu : MonoBehaviour, INeedPlayer
 {
 	public UpgradeSelectButtons buttons;
-
+	public GameObject Visible;
 	private Player owner;
 	private bool inputEnabled;
 	private PlayerUpgrades playerUpgrades;
@@ -13,11 +13,17 @@ public class UpgradeSetupMenu : MonoBehaviour
 
 	private void OnEnable()
 	{
-		LevelGameScene.OnStop += LevelGameScene_OnStop;
+		LevelManager.OnStopLevel += LevelGameSceneOnStopLevel;
 		anim = GetComponent<Animator>();
 	}
 
-	private void LevelGameScene_OnStop(SceneDefinition sceneDefinition)
+	private void Start()
+	{
+		Visible.SetActive(false);
+		Debug.Log("set active start");
+	}
+
+	private void LevelGameSceneOnStopLevel(GameLevel gameLevel)
 	{
 		Unsetup();
 	}
@@ -25,22 +31,23 @@ public class UpgradeSetupMenu : MonoBehaviour
 	private void Unsetup()
 	{
 		owner = null;
-		gameObject.SetActive(false);
+		Visible.SetActive(false);
+	}
+
+	private void OnDisable()
+	{
+		LevelManager.OnStopLevel -= LevelGameSceneOnStopLevel;
 	}
 
 	public event Action<Player> OnUpgradePurchased;
 
-	public void Setup(Player player, HUDSlot hudSlot)
+	public void SetPlayer(Player player)
 	{
 		Debug.Log("made it in menu", this);
 		owner = player;
-		playerUpgrades = player.GetComponent<PlayerUpgrades>();
-		gameObject.SetActive(true);
-		buttons.OnUpgradeChosen += Buttons_OnUpgradeChosen;
-		buttons.OnExit += Buttons_OnExit;
-		buttons.Init(player);
-		Players.SetActionMap(player, Players.UIActionMap);
-		anim.SetBool(IsClosed, false);
+
+		Debug.Log("set player");
+		Visible.SetActive(false);
 	}
 
 	private void Buttons_OnExit()
@@ -65,6 +72,16 @@ public class UpgradeSetupMenu : MonoBehaviour
 		Buttons_OnExit();
 	}
 
-
-
+	public void StartUpgradeSelectMenu(Player player)
+	{
+		Debug.Log("started upgrade menu");
+		SetPlayer(player);
+		playerUpgrades = player.GetComponent<PlayerUpgrades>();
+		Visible.SetActive(true);
+		buttons.OnUpgradeChosen += Buttons_OnUpgradeChosen;
+		buttons.OnExit += Buttons_OnExit;
+		buttons.Init(player);
+		Players.SetActionMap(player, Players.UIActionMap);
+		anim.SetBool(IsClosed, false);
+	}
 }

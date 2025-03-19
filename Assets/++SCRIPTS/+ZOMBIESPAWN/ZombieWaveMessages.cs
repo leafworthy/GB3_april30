@@ -13,18 +13,18 @@ public class ZombieWaveMessages : MonoBehaviour
 	private void Start()
 	{
 		zombieWaveManager = FindFirstObjectByType<ZombieWaveManager>();
-		LevelGameScene.OnStart += LevelGameScene_OnStart;
-		LevelGameScene.OnStop += LevelGameScene_OnStop;
+		LevelManager.OnStartLevel += LevelGameSceneOnStartLevel;
+		LevelManager.OnStopLevel += LevelGameSceneOnStopLevel;
 		visible.SetActive(isOn);
 	}
 
-	private void LevelGameScene_OnStop(SceneDefinition sceneDefinition)
+	private void LevelGameSceneOnStopLevel(GameLevel gameLevel)
 	{
 		isOn = false;
 		visible.SetActive(isOn);
 	}
 
-	private void LevelGameScene_OnStart(SceneDefinition sceneDefinition)
+	private void LevelGameSceneOnStartLevel(GameLevel gameLevel)
 	{
 		isOn = true;
 		visible.SetActive(isOn);

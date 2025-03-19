@@ -20,7 +20,9 @@ public class ASSETS : Singleton<ASSETS>
     // Level Assets
     private LevelAssets _levels;
     public static LevelAssets LevelAssets => I._levels ? I._levels : Resources.Load<LevelAssets>("Assets/Levels");
-    
+    private GlobalVars _vars;
+    public static GlobalVars Vars => I._vars ? I._vars : Resources.Load<GlobalVars>("Assets/GlobalVars");
+
     // Character/Player Assets
     private CharacterPrefabAssets _players;
     public static CharacterPrefabAssets Players => I._players ? I._players : Resources.Load<CharacterPrefabAssets>("Assets/Players");
@@ -62,7 +64,7 @@ public class ASSETS : Singleton<ASSETS>
     protected override void Awake()
     {
         base.Awake();
-        
+        Debug.Log("ASSETS AWAKE");
         // Ensure we run in edit mode if needed
         if (Application.isEditor && !Application.isPlaying)
         {
@@ -147,22 +149,6 @@ public class ASSETS : Singleton<ASSETS>
     }
     
     
-    /// <summary>
-    /// Navigate to a scene with a direct SceneDefinition reference
-    /// </summary>
-    public static void GoToScene(SceneDefinition sceneDefinition, bool useLevelTransition = false)
-    {
-        if (SceneLoader.I != null && sceneDefinition != null && sceneDefinition.IsValid())
-        {
-            SceneLoader.I.GoToScene(sceneDefinition, useLevelTransition);
-        }
-        else
-        {
-            Debug.LogError("Cannot navigate to scene: SceneLoader or SceneDefinition is invalid");
-        }
-    }
-
- 
     
     #endregion
 }

@@ -6,7 +6,7 @@ public class GasPickupEffect : PickupEffect
 	public override void StartEffect(Life life)
 	{
 		effectDuration = 0;
-		life.player.ChangePlayerStat(PlayerStat.StatType.Gas, amount);
+		PlayerStatsManager.I.ChangeStat(life.player,PlayerStat.StatType.Gas, amount);
 	}
 
 	public GasPickupEffect(float _effectDuration, int _amount) : base(

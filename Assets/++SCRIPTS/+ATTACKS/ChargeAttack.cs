@@ -89,7 +89,7 @@ public class ChargeAttack : Attacks
 
 	private void Player_ChargePress(NewControlButton newControlButton)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		// if (!ammo.HasFullAmmo(AmmoInventory.AmmoType.primaryAmmo)) return;
 		if (!body.arms.Do(verbName)) return;
 
@@ -103,7 +103,7 @@ public class ChargeAttack : Attacks
 
 	private void Player_ChargeRelease(NewControlButton newControlButton)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (!isCharging) return;
 		OnChargeStop?.Invoke();
 	

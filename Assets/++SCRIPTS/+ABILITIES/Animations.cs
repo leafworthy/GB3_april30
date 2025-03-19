@@ -27,6 +27,7 @@ public class Animations : MonoBehaviour
 	public static readonly int ThrowTrigger = Animator.StringToHash("ThrowTrigger");
 	public static readonly int DashTrigger = Animator.StringToHash("DashTrigger");
 
+	public static readonly int IsFallingFromSky = Animator.StringToHash("FallFromSky");
 	public static readonly int IsBobbing = Animator.StringToHash("IsBobbing");
 	public static readonly int IsFalling = Animator.StringToHash("IsFalling");
 	public static readonly int IsGlocking = Animator.StringToHash("IsGlocking");

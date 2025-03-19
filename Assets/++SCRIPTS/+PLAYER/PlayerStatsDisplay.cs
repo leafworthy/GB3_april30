@@ -15,13 +15,13 @@ public class PlayerStatsDisplay : MonoBehaviour
 	private float attacksTotal;
 	private float attacksHit;
 
-	
+	private PlayerStats playerStats;
 
-	private PlayerStatsHandler playerStatsHandler;
 	public void SetPlayer(Player player)
 	{
 		owner = player;
-		playerStatsHandler = owner.playerStats;
+		playerStats = owner.GetComponent<PlayerStats>();
+		if (playerStats == null) return;
 		DisplayStats();
 		DisplayCharacter();
 	}
@@ -50,20 +50,18 @@ public class PlayerStatsDisplay : MonoBehaviour
 
 	private void DisplayStats()
 	{
-		Stat_Kills.text = playerStatsHandler.GetStatValue(PlayerStat.StatType.Kills).ToString();
-		Stat_AttacksHit.text = playerStatsHandler.GetStatValue(PlayerStat.StatType.AttacksHit).ToString();
-		Stat_AttacksTotal.text = playerStatsHandler.GetStatValue(PlayerStat.StatType.AttacksTotal).ToString();
-		Stat_CashGained.text = playerStatsHandler.GetStatValue(PlayerStat.StatType.TotalCash).ToString();
-		Stat_Accuracy.text = GetAccuracy().ToString();
+		Stat_Kills.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.Kills).ToString();
+		Stat_AttacksHit.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.AttacksHit).ToString();
+		Stat_AttacksTotal.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.AttacksTotal).ToString();
+		Stat_CashGained.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.TotalCash).ToString();
+		Stat_Accuracy.text = GetAccuracy();
 	}
 
 	private string GetAccuracy()
 	{
-		attacksTotal = playerStatsHandler.GetStatValue(PlayerStat.StatType.AttacksTotal);
+		attacksTotal = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.AttacksTotal);
 		if (attacksTotal <= 0) return "%" + 0;
-		attacksHit = playerStatsHandler.GetStatValue(PlayerStat.StatType.AttacksHit);
-		return "%" + (attacksHit*100 / attacksTotal).ToString();
+		attacksHit = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.AttacksHit);
+		return "%" + (attacksHit * 100 / attacksTotal);
 	}
-
-
 }

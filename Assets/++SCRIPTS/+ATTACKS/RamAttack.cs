@@ -23,7 +23,7 @@ public class RamAttack : Attacks
 
 	private void FixedUpdate()
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (life.IsDead()) return;
 		CheckForEnemiesInRange();
 		Cooldown();

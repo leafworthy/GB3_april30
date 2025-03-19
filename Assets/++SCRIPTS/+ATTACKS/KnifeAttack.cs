@@ -63,7 +63,7 @@ public class KnifeAttack : Attacks
 
 	private void PlayerKnifePress(NewControlButton newControlButton)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (!ammo.HasFullReserve(AmmoInventory.AmmoType.meleeCooldown)) return;
 		if (!body.arms.Do(KnifeAttackVerbName)) return;
 		if (hasPressed) return;

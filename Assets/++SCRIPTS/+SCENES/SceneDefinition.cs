@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -38,6 +39,7 @@ public class SceneDefinition : ScriptableObject
 
     // Scene path is derived from the asset (valid in editor only)
     public string scenePath;
+    private List<TravelPoint> spawnPoints;
 
     /// <summary>
     /// Get the scene name
@@ -64,16 +66,8 @@ public class SceneDefinition : ScriptableObject
     /// </summary>
     public bool IsGameplayLevel => isGameplayLevel;
 
-    /// <summary>
-    /// Load this scene
-    /// </summary>
-    public void Load(bool useLevelTransition = false)
-    {
-        if (IsValid() && SceneLoader.I != null)
-        {
-            SceneLoader.I.GoToScene(this, useLevelTransition);
-        }
-    }
+  
+   
 
     // Implicit conversion to string
     public static implicit operator string(SceneDefinition definition) =>
@@ -196,4 +190,5 @@ public class SceneDefinition : ScriptableObject
         return null;
     }
 #endif
+ 
 }

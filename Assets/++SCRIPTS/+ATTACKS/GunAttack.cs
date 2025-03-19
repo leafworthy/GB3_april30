@@ -109,7 +109,7 @@ public class GunAttack : Attacks
 
 	private void FixedUpdate()
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (arms.currentActivity != VerbName)
 		{
 			isShooting = false;
@@ -122,7 +122,7 @@ public class GunAttack : Attacks
 
 	private void PlayerControllerShootPress(NewControlButton newControlButton)
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		isPressing = true;
 		TryShooting();
 	}

@@ -88,7 +88,7 @@ public class JumpAbility : MonoBehaviour
 
 	protected void FixedUpdate()
 	{
-		if (GlobalManager.IsPaused) return;
+		if (PauseManager.IsPaused) return;
 		if (isResting) return;
 		if (!isActive) return;
 		if (!IsJumping) return;
@@ -110,7 +110,7 @@ public class JumpAbility : MonoBehaviour
 			return;
 		}
 		currentLandableHeight = thing.GetCurrentLandableHeight();
-		verticalVelocity -= (GlobalManager.Gravity.y) * Time.fixedDeltaTime;
+		verticalVelocity -= (ASSETS.Vars.Gravity.y) * Time.fixedDeltaTime;
 		if ((thing.GetDistanceToGround() + verticalVelocity <= currentLandableHeight) && (verticalVelocity < 0))
 		{
 			Land();
