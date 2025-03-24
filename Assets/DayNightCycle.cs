@@ -7,7 +7,6 @@ public class DayNightCycle : Singleton<DayNightCycle>
 {
 	[Header("References"), Tooltip("The Light2D component to control")]
 	public Light2D targetLight;
-	[HideInInspector] public float previousTimeOfDay;
 	[Header("Time Settings"), Tooltip("Duration of a full day-night cycle in seconds")]
 	public float cycleDuration = 240f;
 	[Tooltip("Starting time of day (0-1 where 0 is midnight, 0.25 is sunrise, 0.5 is noon, 0.75 is sunset)"), Range(0f, 1f)]

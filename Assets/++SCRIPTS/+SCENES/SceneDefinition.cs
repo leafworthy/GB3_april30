@@ -31,8 +31,6 @@ public class SceneDefinition : ScriptableObject
     [Tooltip("Should this scene wait for player input before completing the transition")]
     public bool requiresButtonPressToLoad = false;
 
-    [Tooltip("True if this is a gameplay level (affects spawn point behavior)")]
-    public bool isGameplayLevel = false;
     
     [Header("Audio"), Tooltip("Music track to play in this scene")]
     public AudioClip backgroundMusic;
@@ -61,10 +59,7 @@ public class SceneDefinition : ScriptableObject
     /// </summary>
     public bool IsValid() => !string.IsNullOrEmpty(sceneName);
 
-    /// <summary>
-    /// Returns true if this scene is a gameplay level (house, level, etc.)
-    /// </summary>
-    public bool IsGameplayLevel => isGameplayLevel;
+
 
   
    
@@ -105,10 +100,6 @@ public class SceneDefinition : ScriptableObject
         definition.displayName = FormatForDisplay(sceneName);
         definition.description = $"Scene: {sceneName}";
         
-        // Automatically set gameplay level flag based on name patterns
-        definition.isGameplayLevel = sceneName.Contains("House") || 
-                                     sceneName.Contains("Level") || 
-                                     sceneName.Contains("Field");
                                      
         return definition;
     }
@@ -165,15 +156,7 @@ public class SceneDefinition : ScriptableObject
             // Set default display name if empty
             if (string.IsNullOrEmpty(displayName))
                 displayName = FormatForDisplay(sceneName);
-                
-            // Auto-detect if this is a gameplay level based on name
-            if (sceneName.Contains("House") || 
-                sceneName.Contains("Level") || 
-                sceneName.Contains("Field"))
-            {
-                // Only auto-set this if it hasn't been explicitly set before
-                isGameplayLevel = true;
-            }
+
         }
     }
 

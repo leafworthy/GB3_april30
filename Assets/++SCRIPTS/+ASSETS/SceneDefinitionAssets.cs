@@ -18,7 +18,8 @@ public class SceneDefinitionAssets : ScriptableObject
     public SceneDefinition restartLevel;
     public SceneDefinition endScreen;
     
-    [Header("Gameplay Scenes")]
+    [Header("Gameplay Scenes")] 
+    public SceneDefinition startingScene;
     public SceneDefinition gangstaBeanHouse;
     public SceneDefinition fancyHouse;
     public SceneDefinition baseballField;
@@ -118,14 +119,7 @@ public class SceneDefinitionAssets : ScriptableObject
 
         return result;
     }
-    
-    /// <summary>
-    /// Get all gameplay level scenes
-    /// </summary>
-    public List<SceneDefinition> GetAllGameplayScenes()
-    {
-        return GetAllScenes().FindAll(scene => scene.IsGameplayLevel);
-    }
+  
 
     /// <summary>
     /// Find a scene definition that matches the given name
@@ -135,34 +129,7 @@ public class SceneDefinitionAssets : ScriptableObject
         // Simply use the dictionary lookup
         return GetByName(sceneName);
     }
-    
-    /// <summary>
-    /// Find the best starting level from available scenes
-    /// </summary>
-    public SceneDefinition FindStartingLevel()
-    {
-        // First look for scenes with "First" or "Start" in the name
-        foreach (var scene in GetAllGameplayScenes())
-        {
-            if (scene.name.Contains("First") || scene.name.Contains("Start"))
-                return scene;
-        }
-        
-        // Then use explicitly referenced scenes in priority order
-        if (gangstaBeanHouse != null) return gangstaBeanHouse;
-        if (baseballField != null) return baseballField;
-        if (fancyHouse != null) return fancyHouse;
-        if (gasStation != null) return gasStation;
-        
-        // Last resort: return the first gameplay scene found
-        var gameplayScenes = GetAllGameplayScenes();
-        if (gameplayScenes.Count > 0)
-            return gameplayScenes[0];
-            
-        // If no gameplay scenes found, return null
-        return null;
-    }
-    
+ 
     /// <summary>
     /// Add a scene definition to this container (useful for runtime-created definitions)
     /// </summary>

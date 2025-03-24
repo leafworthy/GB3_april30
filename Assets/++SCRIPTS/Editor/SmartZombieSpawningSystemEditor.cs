@@ -177,9 +177,7 @@ public class SmartZombieSpawningSystemEditor : Editor
             
             // Display spawn point properties
             EditorGUI.indentLevel++;
-            spawnPoints[i].isProximityBased = EditorGUILayout.Toggle("Proximity Based", spawnPoints[i].isProximityBased);
             spawnPoints[i].spawnAreaSize = EditorGUILayout.Vector2Field("Spawn Area Size", spawnPoints[i].spawnAreaSize);
-            spawnPoints[i].showDebugVisuals = EditorGUILayout.Toggle("Show Debug Visuals", spawnPoints[i].showDebugVisuals);
             EditorGUI.indentLevel--;
             
             EditorGUILayout.EndVertical();

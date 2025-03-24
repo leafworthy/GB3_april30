@@ -19,7 +19,7 @@ public class GasBuyingInteraction : TimedInteraction
 
 	private void Interactable_OnTimeComplete(Player player)
 	{
-		LevelDrops.DropLoot(dropPoint.transform.position, LootType.Gas);
+		LootTable.DropLoot(dropPoint.transform.position, LootType.Gas);
 		player.SpendMoney(price);
 		gasAmount--;
 		if (gasAmount <= 0)

@@ -11,45 +11,12 @@ public class SmartZombieSpawnPoint : MonoBehaviour
 	[Header("Spawn Settings"), Tooltip("Local spawn area size")]
 	public Vector2 spawnAreaSize = new(3, 3);
 
-	[Tooltip("Whether this spawn point uses object pooling")]
-	public bool useObjectPooling = true;
-
-	[Header("Proximity Settings"), Tooltip("Whether this spawn point only activates when players are nearby")]
-	public bool isProximityBased;
-
-	[Header("Spawn Customization"), Tooltip("Override global enemy type distribution")]
-	public bool overrideEnemyDistribution;
-
-	[Header("Spawn Effects"), Tooltip("Show spawn effects")]
-	public bool showSpawnEffects = true;
-
-	[Tooltip("Spawn effect type")]
-	public enum SpawnEffectType
-	{
-		None,
-		Dust,
-		Blood
-	}
-
-	public SpawnEffectType spawnEffect = SpawnEffectType.Dust;
-
-	[Header("Debug")] public bool showDebugVisuals;
-	public Color debugColor = Color.cyan;
-
-	/// <summary>
-	/// Attempts to spawn an enemy at this spawn point
-	/// </summary>
-	/// <param name="enemyPrefabs">Array of possible enemy prefabs to spawn</param>
-	/// <param name="ensureOffCamera">Whether to ensure spawn occurs outside camera view</param>
-	/// <param name="_camera">Camera to check visibility against</param>
-	/// <param name="cameraMargin">Margin beyond camera bounds</param>
-	/// <returns>The spawned enemy GameObject, or null if spawn failed</returns>
 	public GameObject TrySpawn(GameObject enemyPrefabs, bool ensureOffCamera, Camera _camera, float cameraMargin)
 	{
 		if (enemyPrefabs == null) return null;
 
 		// Try to find a valid spawn position
-		var spawnPosition = GetValidSpawnPosition(ensureOffCamera, _camera, cameraMargin);
+		var spawnPosition = GetValidSpawnPosition();
 
 		if (spawnPosition == Vector2.zero)
 		{
@@ -59,74 +26,12 @@ public class SmartZombieSpawnPoint : MonoBehaviour
 
 		MyDebugUtilities.DrawX(spawnPosition, 1, Color.blue);
 
-
-		// Spawn the enemy using object pooling or instantiation
-		GameObject enemy;
-		if (useObjectPooling)
-		{
-			Debug.Log("made");
-			enemy = ObjectMaker.Make(enemyPrefabs, spawnPosition);
-		}
-		else
-		{
-			Debug.Log("instantiated");
-			enemy = Instantiate(enemyPrefabs, spawnPosition, Quaternion.identity);
-		}
-
-		// Create spawn effect if enabled
-		if (showSpawnEffects && enemy != null) CreateSpawnEffect(spawnPosition);
-
 		// Return the spawned enemy
-		return enemy;
+		return ObjectMaker.Make(enemyPrefabs, spawnPosition);
+		
 	}
 
-	/// <summary>
-	/// Creates a visual effect at the spawn position
-	/// </summary>
-	private void CreateSpawnEffect(Vector2 position)
-	{
-		if (spawnEffect == SpawnEffectType.None) return;
-
-		GameObject effect = null;
-
-		switch (spawnEffect)
-		{
-			case SpawnEffectType.Dust:
-				// Using both formats intentionally as a compatibility test
-				if (ASSETS.FX != null && ASSETS.FX.dust1_ground != null)
-				{
-					// Old way still works
-					effect = ObjectMaker.Make(ASSETS.FX.dust1_ground, position);
-				}
-				else if (ASSETS.FX != null && ASSETS.FX.dust1_ground != null)
-				{
-					// New way also works
-					effect = ObjectMaker.Make(ASSETS.FX.dust1_ground, position);
-				}
-
-				break;
-			case SpawnEffectType.Blood:
-				// Use a random blood spray
-				if (ASSETS.FX != null && ASSETS.FX.bloodspray != null && ASSETS.FX.bloodspray.Count > 0)
-				{
-					var randomBlood = ASSETS.FX.bloodspray[Random.Range(0, ASSETS.FX.bloodspray.Count)];
-					effect = ObjectMaker.Make(randomBlood, position);
-				}
-
-				break;
-		}
-
-		// Auto-destroy the effect after a short time if it doesn't destroy itself
-		if (effect != null && effect.GetComponent<DestroyMeEvent>() == null) Destroy(effect, 2f);
-	}
-
-	/// <summary>
-	/// Finds a valid spawn position that meets all criteria:
-	/// - Within the spawn area
-	/// - Not colliding with obstacles
-	/// - Outside camera view (if required)
-	/// </summary>
-	private Vector2 GetValidSpawnPosition(bool ensureOffCamera, Camera camera, float cameraMargin)
+	private Vector2 GetValidSpawnPosition()
 	{
 		// Try up to 10 positions before giving up
 		for (var i = 0; i < 10; i++)
@@ -143,32 +48,6 @@ public class SmartZombieSpawnPoint : MonoBehaviour
 				continue; // Position has an obstacle, try another
 			}
 
-			// Check if position is visible in camera (if required)
-			if (ensureOffCamera && camera != null)
-			{
-
-				// Check if point is within viewport plus margin
-				var isInView = false;
-
-				foreach (var player in Players.AllJoinedPlayers)
-				{
-					if (player.spawnedPlayerDefence == null) continue;
-					if (!(Vector2.Distance(player.spawnedPlayerDefence.transform.position, potentialPosition) < 10f))
-					{
-						Debug.DrawLine( player.spawnedPlayerDefence.transform.position, potentialPosition, Color.red);
-						continue;
-					}
-					isInView = true;
-					break;
-				}
-
-				if (isInView)
-				{
-					MyDebugUtilities.DrawX(potentialPosition, 10, Color.red);
-					Debug.Log("Position is visible, try another");
-					continue; // Position is visible, try another
-				}
-			}
 
 			MyDebugUtilities.DrawX(potentialPosition, 1, Color.green);
 			// All checks passed, return this position
@@ -177,28 +56,5 @@ public class SmartZombieSpawnPoint : MonoBehaviour
 
 		// Failed to find a valid position after 10 attempts
 		return Vector2.zero;
-	}
-
-	private void OnDrawGizmos()
-	{
-		if (!showDebugVisuals) return;
-
-		// Draw spawn area
-		Gizmos.color = debugColor;
-		Gizmos.DrawWireCube(transform.position, new Vector3(spawnAreaSize.x, spawnAreaSize.y, 0.1f));
-
-		// Draw icon for proximity-based spawns
-		if (isProximityBased)
-		{
-			Gizmos.color = Color.yellow;
-			Gizmos.DrawIcon(transform.position + Vector3.up * 0.5f, "AimTarget", true);
-		}
-
-		// Draw custom enemy distribution if overridden
-		if (overrideEnemyDistribution)
-		{
-			Gizmos.color = Color.green;
-			Gizmos.DrawSphere(transform.position, 0.3f);
-		}
 	}
 }

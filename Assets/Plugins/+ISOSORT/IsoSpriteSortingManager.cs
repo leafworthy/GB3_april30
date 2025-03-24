@@ -162,6 +162,7 @@ public class IsoSpriteSortingManager : MonoBehaviour
         for (int i = 0; i < moveableCount; i++)
         {
             IsoSpriteSorting moveSprite1 = moveableList[i];
+            if (moveSprite1 == null) return;
             //Add Moving Dependencies to static sprites
             for (int j = 0; j < staticCount; j++)
             {
@@ -183,6 +184,7 @@ public class IsoSpriteSortingManager : MonoBehaviour
             for (int j = 0; j < moveableCount; j++)
             {
                 IsoSpriteSorting moveSprite2 = moveableList[j];
+                if (moveSprite2 == null) return;
                 if (CalculateBoundsIntersection(moveSprite1, moveSprite2))
                 {
                     int compareResult = IsoSpriteSorting.CompareIsoSorters(moveSprite1, moveSprite2);

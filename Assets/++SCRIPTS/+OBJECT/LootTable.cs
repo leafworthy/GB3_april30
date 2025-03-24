@@ -13,7 +13,7 @@ public enum LootType
 	Damage,
 	Gas
 }
-public class LevelDrops : MonoBehaviour
+public class LootTable : MonoBehaviour
 {
 	private static List<GameObject> _dropsToSpawn = new();
 	private static bool _isInitialized;

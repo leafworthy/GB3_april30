@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-
 
 public class GameLevel : MonoBehaviour
 {
 	public TravelPoint defaultTravelPoint;
 	public SceneDefinition scene;
+	public event Action OnLevelRestart;
 	private List<TravelPoint> getSpawnPoints() => FindObjectsByType<TravelPoint>(FindObjectsSortMode.None).ToList();
 
 	public event Action<TravelPoint> OnLevelFinished;
@@ -35,34 +34,25 @@ public class GameLevel : MonoBehaviour
 
 	private void LoseLevel()
 	{
-		OnLevelFinished?.Invoke(null);
+		OnLevelRestart?.Invoke();
 		StopLevel();
 	}
 
-	public void StartLevel(SceneDefinition originScene)
+	public void StartLevel()
 	{
-		var allSpawnPoints = getSpawnPoints();
-		
-		var spawnPoint = allSpawnPoints.Find(x => x.destinationScene == originScene);
-		if (spawnPoint == null)
-		{
-			Debug.Log("No spawn point found that returns to: " + originScene.sceneName);
-			spawnPoint = defaultTravelPoint;
-			
-			
-		}
-
-		SpawnPlayers(spawnPoint);
-		
+		SpawnPlayers(LevelManager.I.RespawnTravelPoint != null ? LevelManager.I.RespawnTravelPoint : defaultTravelPoint);
 	}
 
 	private void SpawnPlayers(TravelPoint travelPoint)
 	{
-		if (travelPoint == null) travelPoint = defaultTravelPoint;
-		Debug.Log("fall from sky " + travelPoint.fallFromSky);
-		for (var i = 0; i < Players.AllJoinedPlayers.Count; i++)
+		if (travelPoint == null)
 		{
-			var player = Players.AllJoinedPlayers[i];
+			Debug.LogError("No travel point found");
+			return;
+		}
+		Debug.Log("fall from sky " + travelPoint.fallFromSky);
+		foreach (var player in Players.AllJoinedPlayers)
+		{
 			if (player == null) continue;
 			if (player.SpawnedPlayerGO != null) continue;
 			SpawnPlayer(player, travelPoint, travelPoint.fallFromSky);

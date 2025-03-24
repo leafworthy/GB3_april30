@@ -36,7 +36,7 @@ public class SiphonGasInteraction : TimedInteraction
 			player.Say("No more gas", 0);
 			return;
 		}
-		LevelDrops.DropLoot(dropPoint.transform.position, LootType.Gas);
+		LootTable.DropLoot(dropPoint.transform.position, LootType.Gas);
 		gasAmount--;
 		if (gasAmount <= 0)
 		{

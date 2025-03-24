@@ -13,14 +13,7 @@ public class TintSprites : MonoBehaviour
 	    Refresh();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-		foreach (var spriteRenderer in toTint)
-		{
-			spriteRenderer.color = Tint;
-		}
-    }
+  
 
     public void Refresh()
     {

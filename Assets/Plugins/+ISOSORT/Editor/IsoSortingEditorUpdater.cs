@@ -36,14 +36,14 @@ public static class IsoSortingEditorUpdater
             Event.current.type == EventType.MouseUp)
         {
             // Delay the update slightly to allow transform changes to complete
-            EditorApplication.delayCall += UpdateSorting;
+           // EditorApplication.delayCall += UpdateSorting;
         }
     }
 
     private static void OnSceneOpened(UnityEngine.SceneManagement.Scene scene, OpenSceneMode mode)
     {
         // Force update when a scene is opened
-        EditorApplication.delayCall += UpdateSorting;
+        //EditorApplication.delayCall += UpdateSorting;
     }
 
     private static void OnSceneSaved(UnityEngine.SceneManagement.Scene scene)
@@ -56,7 +56,7 @@ public static class IsoSortingEditorUpdater
     {
         if (!Application.isPlaying)
         {
-            IsoSpriteSorting.UpdateSorters();
+           // IsoSpriteSorting.UpdateSorters();
         }
     }
 }

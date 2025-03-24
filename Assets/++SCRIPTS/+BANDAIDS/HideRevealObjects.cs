@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using VInspector;
 
 [ExecuteInEditMode]
 public class HideRevealObjects : MonoBehaviour
@@ -10,6 +11,12 @@ public class HideRevealObjects : MonoBehaviour
 	private Color playerColor;
 
 	private void Awake()
+	{
+		Set(revealedObjectIndex);
+	}
+
+	[Button()]
+	public void Set()
 	{
 		Set(revealedObjectIndex);
 	}

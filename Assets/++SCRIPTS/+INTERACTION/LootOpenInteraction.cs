@@ -53,7 +53,7 @@ public class LootOpenInteraction : PlayerInteractable
 	{
 		PlayLootOpenSound();
 		hideRevealObjects.Set(1);
-		LevelDrops.DropLoot(dropPosition + transform.position, lootType);
+		LootTable.DropLoot(dropPosition + transform.position, lootType);
 		howMuchLoot--;
 		if (howMuchLoot >= 0) return;
 		hideRevealObjects.Set(2);

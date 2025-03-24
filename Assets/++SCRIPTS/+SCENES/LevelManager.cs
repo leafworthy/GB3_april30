@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : Singleton<LevelManager>
 {
-	private SceneDefinition _originPoint;
+	public TravelPoint RespawnTravelPoint;
 	private static string originSpawnPointID;
 	private static string destinationSpawnPointID;
 	private static SceneDefinition restartedLevelScene;
@@ -19,17 +19,6 @@ public class LevelManager : Singleton<LevelManager>
 	private static TravelPoint _currentTravelPoint;
 	private static Dictionary<Character,GameObject> persistentCharacters;
 
-
-	private void CleanUpPersistentCharacters()
-	{
-		foreach (var character in persistentCharacters)
-		{
-			Destroy(character.Value);
-		}
-
-		persistentCharacters.Clear();
-	}
-	
 	private void RegisterPersistentCharacter(Character character, GameObject characterPrefab)
 	{
 		if (persistentCharacters == null)
@@ -47,7 +36,7 @@ public class LevelManager : Singleton<LevelManager>
 
 	public void StartGame()
 	{
-		SceneLoader.I.GoToScene(ASSETS.Scenes.gangstaBeanHouse);
+		SceneLoader.I.GoToScene(ASSETS.Scenes.startingScene);
 		SceneLoader.OnSceneLoaded += SceneLoader_SceneLoaded;
 		_currentTravelPoint = null;
 	}
@@ -57,17 +46,22 @@ public class LevelManager : Singleton<LevelManager>
 		Debug.Log("start level" + newLevel.name);
 		Players.SetActionMaps(Players.PlayerActionMap);
 		currentLevel = newLevel;
-		currentLevel.StartLevel(_originPoint);
+		currentLevel.StartLevel();
 		
 		currentLevel.OnLevelFinished += newLevel_OnLevelFinished;
+		currentLevel.OnLevelRestart += newLevel_OnLevelRestart;
 		OnStartLevel?.Invoke(currentLevel);
+	}
+
+	private void newLevel_OnLevelRestart()
+	{
+		RestartLevel();
 	}
 
 	private void newLevel_OnLevelFinished(TravelPoint travelPoint)
 	{
 		if (travelPoint == null)
 		{
-			//death, restart
 			RestartLevel();
 		}
 		StartNextLevel(travelPoint);
@@ -76,13 +70,12 @@ public class LevelManager : Singleton<LevelManager>
 	public void StartNextLevel(TravelPoint travelPoint)
 	{
 		_currentTravelPoint = travelPoint;
-		LoadLevel(SceneLoader.I.GetCurrentSceneDefinition(), travelPoint.destinationScene);
+		LoadLevel(SceneLoader.I.GetCurrentSceneDefinition(), null);
 	}
 
 	private void LoadLevel(SceneDefinition originScene, SceneDefinition destinationScene)
 	{
 		StopLevel();
-		_originPoint = originScene;
 		SceneLoader.I.GoToScene(destinationScene);
 	}
 
@@ -91,7 +84,12 @@ public class LevelManager : Singleton<LevelManager>
 	{
 		Debug.Log(newScene.sceneName + " scene loaded, starting level");
 		var gameLevel = FindFirstObjectByType<GameLevel>();
-		if(gameLevel == null) Debug.LogError("no game level in scene");
+		if(gameLevel == null)
+		{
+			
+			Debug.Log("no game level in scene");
+			return;
+		}
 		
 		StartLevel(gameLevel);
 	}
@@ -100,6 +98,7 @@ public class LevelManager : Singleton<LevelManager>
 	public void StopLevel()
 	{
 		if (currentLevel == null) return;
+		restartedLevelScene = currentLevel.scene;
 		currentLevel.StopLevel();
 		OnStopLevel?.Invoke(currentLevel);
 		currentLevel.OnLevelFinished -= newLevel_OnLevelFinished;
@@ -115,7 +114,6 @@ public class LevelManager : Singleton<LevelManager>
 	public void RestartLevel()
 	{
 		StopLevel();
-		restartedLevelScene = currentLevel.scene;
 		SceneLoader.I.GoToScene(ASSETS.Scenes.restartLevel);
 	}
 

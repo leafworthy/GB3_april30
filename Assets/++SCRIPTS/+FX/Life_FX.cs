@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteAlways]
 public class Life_FX : MonoBehaviour
 {
 

@@ -104,7 +104,7 @@ public class Animations : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Parameter with hash {parameterHash} does not exist.");
+            Debug.LogWarning($"Parameter with hash {parameterHash} does not exist.", this);
         }
     }
 

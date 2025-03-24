@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &41946286 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1171909596720789590, guid: 4c1954ce42f7c4b98bea6994a67c54d0, type: 3}
+  m_PrefabInstance: {fileID: 1173927016}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d753e18207ec4f048384bfd89cf8119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1173927016
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -127,26 +138,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1242839884144928304, guid: 4c1954ce42f7c4b98bea6994a67c54d0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1242839884434364518, guid: 4c1954ce42f7c4b98bea6994a67c54d0, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1242839884880630984, guid: 4c1954ce42f7c4b98bea6994a67c54d0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1242839885180090170, guid: 4c1954ce42f7c4b98bea6994a67c54d0, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6703447172351311374, guid: 4c1954ce42f7c4b98bea6994a67c54d0, type: 3}
       propertyPath: m_Name
       value: CharacterSelectMenu_Display
       objectReference: {fileID: 0}
+    - target: {fileID: 6930594979278892637, guid: 4c1954ce42f7c4b98bea6994a67c54d0, type: 3}
+      propertyPath: titlePressStart
+      value: 
+      objectReference: {fileID: 41946286}
     - target: {fileID: 8977357491607874677, guid: 4c1954ce42f7c4b98bea6994a67c54d0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.3
@@ -493,5 +492,5 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 2111498811}
-  - {fileID: 1173927016}
   - {fileID: 2145526186}
+  - {fileID: 1173927016}

@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameSceneCharacterSelection : GameScene
 {
 	[SerializeField] private List<CharacterButton> Buttons = new();
-	[SerializeField] private GameObject GoGoGoIndicator;
+	[SerializeField] private HideRevealObjects titlePressStart;
 
 	private bool playersAllChosen;
 	private bool isListening;
@@ -203,6 +203,7 @@ public class GameSceneCharacterSelection : GameScene
 		CheckIfPlayersAllSelected();
 		if (!playersAllChosen) return;
 		OnTryToStartGame?.Invoke();
+		titlePressStart.gameObject.SetActive(false);
 		StopListeningToPlayers();
 		ClearAllPlayerButtons();
 		isActive = false;
@@ -258,7 +259,7 @@ public class GameSceneCharacterSelection : GameScene
 
 	private void CheckIfPlayersAllSelected()
 	{
-		var playersStillSelecting = playersBeingListenedTo.Where(t => t.state == Player.State.SelectingCharacter).ToList();
+		var playersStillSelecting = Players.AllJoinedPlayers.Where(t => t.state == Player.State.SelectingCharacter).ToList();
 		if (playersStillSelecting.Count > 0)
 		{
 			HideGoGoGo();
@@ -270,13 +271,13 @@ public class GameSceneCharacterSelection : GameScene
 
 	private void ShowGoGoGo()
 	{
-		GoGoGoIndicator.SetActive(true);
+		titlePressStart.Set(1);
 		playersAllChosen = true;
 	}
 
 	private void HideGoGoGo()
 	{
 		playersAllChosen = false;
-		GoGoGoIndicator.SetActive(false);
+		titlePressStart.Set(0);
 	}
 }

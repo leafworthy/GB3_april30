@@ -5,7 +5,6 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-[ExecuteInEditMode]
 public class IsoSpriteSorting : MonoBehaviour
 {
 	public bool isMovable;
@@ -83,6 +82,8 @@ public class IsoSpriteSorting : MonoBehaviour
 		{
 			GetRenderers();
 		}
+
+		if (renderersToSort[0] == null) return;
 		cachedBounds = new Bounds2D(renderersToSort[0].bounds);
 	}
 
@@ -90,6 +91,7 @@ public class IsoSpriteSorting : MonoBehaviour
 	{
 		if (t == null)
 		{
+			if (transform == null) return;
 			t = transform;
 		}
 		

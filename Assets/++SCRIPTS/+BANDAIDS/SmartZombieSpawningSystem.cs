@@ -117,7 +117,6 @@ public class SmartZombieSpawningSystem : MonoBehaviour
 
 	#endregion
 
-	
 	// Private variables
 	private List<SmartZombieSpawnPoint> spawnPoints = new();
 	private List<GameObject> spawnedEnemies = new();
@@ -129,12 +128,10 @@ public class SmartZombieSpawningSystem : MonoBehaviour
 	private PolygonCollider2D spawnArea;
 	private Camera mainCamera;
 
-
-
 	private void Start()
 	{
 		spawnArea = GetComponent<PolygonCollider2D>();
-		spawnArea.isTrigger = true; 
+		spawnArea.isTrigger = true;
 		spawnPoints.AddRange(GetComponentsInChildren<SmartZombieSpawnPoint>());
 		gameStartTime = Time.time;
 		mainCamera = CursorManager.GetCamera();
@@ -142,25 +139,21 @@ public class SmartZombieSpawningSystem : MonoBehaviour
 
 	private void Update()
 	{
-
 		CleanupDeadEnemies();
 		UpdateDifficulty();
 		UpdateSpawnPoints();
-		UpdateWanderingZombies();
 		UpdateBossZombies();
 	}
 
 	private void UpdateSpawnPoints()
 	{
 		var spawnRate = GetCurrentSpawnRate();
-		float currentTime = Time.time;
+		var currentTime = Time.time;
 		var actualSpawnInterval = Mathf.Lerp(baseSpawnInterval, minSpawnInterval, spawnRate);
 		// Regular spawn points
-		if (currentTime >= nextSpawnTime)
-		{
-			TrySpawnFromSpawnPoints();
-			nextSpawnTime = currentTime + actualSpawnInterval;
-		}
+		if (!(currentTime >= nextSpawnTime)) return;
+		TrySpawnFromSpawnPoints();
+		nextSpawnTime = currentTime + actualSpawnInterval;
 	}
 
 	private void UpdateBossZombies()
@@ -171,17 +164,6 @@ public class SmartZombieSpawningSystem : MonoBehaviour
 		{
 			TryTriggerSpecialEvent();
 			nextSpecialEventTime = currentTime + bossEventInterval;
-		}
-	}
-
-	private void UpdateWanderingZombies()
-	{
-		var currentTime = Time.time;
-		// Wandering zombies
-		if (enableWanderingZombies && currentTime >= nextWanderingSpawnTime)
-		{
-			TrySpawnWanderingZombie();
-			nextWanderingSpawnTime = currentTime + wanderingSpawnInterval;
 		}
 	}
 
@@ -196,25 +178,15 @@ public class SmartZombieSpawningSystem : MonoBehaviour
 
 	private float GetCurrentSpawnRate() => spawnRateCurve.Evaluate(DayNightCycle.I.GetCurrentDayFraction());
 
-
-
 	private void TrySpawnFromSpawnPoints()
 	{
-		// Get active spawn points based on their criteria (proximity, etc.)
-		var activePoints = GetActiveSpawnPoints();
-
-		if (activePoints.Count == 0)
+		if (spawnPoints.Count == 0)
 		{
 			Debug.Log("No active spawn points available!");
 			return;
 		}
-
-		// Select a random spawn point from active ones
-		var selectedPoint = activePoints[Random.Range(0, activePoints.Count)];
-
-		// Get an appropriate enemy prefab
+		var selectedPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
 		var enemyPrefab = GetRandomEnemyPrefab();
-
 		if (enemyPrefab == null)
 		{
 			Debug.LogWarning("No valid enemy prefab available!");
@@ -224,103 +196,9 @@ public class SmartZombieSpawningSystem : MonoBehaviour
 		// Try to spawn at that point
 		var enemy = selectedPoint.TrySpawn(enemyPrefab, ensureOffCameraSpawning, mainCamera, offCameraMargin);
 
-		if (enemy != null)
-		{
-			ConfigureNewEnemy(enemy);
-			spawnedEnemies.Add(enemy);
-		}
-	}
-
-	private List<SmartZombieSpawnPoint> GetActiveSpawnPoints()
-	{
-		var activePoints = new List<SmartZombieSpawnPoint>();
-
-		foreach (var point in spawnPoints)
-		{
-			// Skip disabled spawn points
-			if (!point.gameObject.activeInHierarchy || !point.enabled) continue;
-
-			// Check if proximity-based and if so, check player distance
-			if (point.isProximityBased && enableProximitySpawning)
-			{
-				if (Players.I != null && Players.AllJoinedPlayers.Count > 0)
-				{
-					var isPlayerNearby = false;
-
-					foreach (var player in Players.AllJoinedPlayers)
-					{
-						if (player == null || !player.gameObject.activeInHierarchy) continue;
-
-						var distance = Vector2.Distance(point.transform.position, player.transform.position);
-						if (distance <= proximityActivationDistance)
-						{
-							isPlayerNearby = true;
-							break;
-						}
-					}
-
-					if (!isPlayerNearby) continue; // Skip this point if it's proximity-based but no player is nearby
-				}
-			}
-
-			activePoints.Add(point);
-		}
-
-		return activePoints;
-	}
-
-	private void TrySpawnWanderingZombie()
-	{
-
-		Debug.Log("trying to spawn wander style");
-		// Get a random player to use as a reference point
-		var randomPlayer = Players.AllJoinedPlayers[Random.Range(0, Players.AllJoinedPlayers.Count)];
-		if (randomPlayer == null) return;
-
-		// Determine the group size for this spawn
-		var groupSize = Random.Range(1, wanderingGroupSize + 1);
-
-		if (groupSize <= 0) return;
-
-		// For groups, find a single valid position first
-		var spawnPosition = GetValidWanderingSpawnPosition(randomPlayer.transform.position);
-
-		if (spawnPosition != Vector2.zero)
-		{
-			// Get an appropriate enemy prefab (same type for the whole group)
-			var enemyPrefab = GetRandomEnemyPrefab();
-
-			if (enemyPrefab == null) return;
-
-			// Spawn the group
-			for (var i = 0; i < groupSize; i++)
-			{
-				// Add some variation to positions for groups
-				var offsetPosition = spawnPosition;
-				if (i > 0)
-				{
-					offsetPosition += new Vector2(Random.Range(-2f, 2f), Random.Range(-2f, 2f));
-
-					// Verify it's still valid
-					if (!IsPositionValid(offsetPosition)) continue;
-				}
-
-				// Spawn the enemy
-				GameObject enemy;
-				if (useObjectPooling)
-					enemy = ObjectMaker.Make(enemyPrefab, offsetPosition);
-				else
-					enemy = Instantiate(enemyPrefab, offsetPosition, Quaternion.identity);
-
-				if (enemy != null)
-				{
-					ConfigureNewEnemy(enemy);
-					spawnedEnemies.Add(enemy);
-				}
-			}
-
-			
-		}
+		if (enemy == null) return;
+		ConfigureNewEnemy(enemy);
+		spawnedEnemies.Add(enemy);
 	}
 
 	private void TryTriggerSpecialEvent()
@@ -328,38 +206,20 @@ public class SmartZombieSpawningSystem : MonoBehaviour
 		if (!enableBossZombies) return;
 		if (Random.value > bossZombieChance) return;
 
-
 		if (Players.I == null || Players.AllJoinedPlayers.Count == 0) return;
 
-		// Get a random player to use as a reference point
-		var randomPlayer = Players.AllJoinedPlayers[Random.Range(0, Players.AllJoinedPlayers.Count)];
-		if (randomPlayer == null) return;
-
 		// Get a valid spawn position
-		var spawnPosition = GetValidWanderingSpawnPosition(randomPlayer.transform.position);
+		var spawnPosition = spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position;
 
-		if (spawnPosition != Vector2.zero)
-		{
-			// Prefer Donut or Corn as a "boss" - they're bigger enemies
-			var bossEnemyPrefab = Random.value > 0.5f ? ASSETS.Players.DonutEnemyPrefab : ASSETS.Players.CornEnemyPrefab;
+		// Prefer Donut or Corn as a "boss" - they're bigger enemies
+		var bossEnemyPrefab = Random.value > 0.5f ? ASSETS.Players.DonutEnemyPrefab : ASSETS.Players.CornEnemyPrefab;
+		if (bossEnemyPrefab == null) return;
 
-			if (bossEnemyPrefab == null) return;
+		var enemy = ObjectMaker.Make(bossEnemyPrefab, spawnPosition);
 
-			// Spawn the boss enemy
-			GameObject enemy;
-			if (useObjectPooling)
-				enemy = ObjectMaker.Make(bossEnemyPrefab, spawnPosition);
-			else
-				enemy = Instantiate(bossEnemyPrefab, spawnPosition, Quaternion.identity);
-
-			if (enemy != null)
-			{
-				// Configure as a boss (extra health, damage, etc.)
-				ConfigureNewEnemy(enemy, true);
-				spawnedEnemies.Add(enemy);
-
-			}
-		}
+		if (enemy == null) return;
+		ConfigureNewEnemy(enemy, true);
+		spawnedEnemies.Add(enemy);
 	}
 
 	private void ConfigureNewEnemy(GameObject enemy, bool isBoss = false)
@@ -384,9 +244,9 @@ public class SmartZombieSpawningSystem : MonoBehaviour
 
 				// Apply a slight tint
 				var renderers = enemy.GetComponentsInChildren<SpriteRenderer>();
-				foreach (var renderer in renderers)
+				foreach (var _renderer in renderers)
 				{
-					renderer.color = new Color(1.0f, 0.8f, 0.8f);
+					_renderer.color = new Color(1.0f, 0.8f, 0.8f);
 				}
 			}
 
@@ -406,78 +266,9 @@ public class SmartZombieSpawningSystem : MonoBehaviour
 			life.SetPlayer(Players.EnemyPlayer);
 		}
 
+		if(isBoss) Debug.Log("Boss spawned!");
 		// Register with EnemyManager using the static method
 		EnemyManager.CollectEnemy(enemy);
-	}
-
-	private Vector2 GetValidWanderingSpawnPosition(Vector3 playerPosition)
-	{
-		Debug.Log("trying to spawn wandering zombie");
-		// Try to find a valid spawn position up to 10 times
-		for (var i = 0; i < 10; i++)
-		{
-			Debug.Log( "trying point");
-			var potentialPosition = GetRandomPointInPolygon();
-
-			if (IsPositionValid(potentialPosition)) return potentialPosition;
-		}
-
-		Debug.Log("no valid point");
-		// No valid position found after 10 attempts
-		return Vector2.zero;
-	}
-
-	Vector2 GetRandomPointInPolygon()
-	{
-		// Get polygon bounds
-		Bounds bounds = spawnArea.bounds;
-
-		// Keep trying until we find a point inside
-		while (true)
-		{
-			// Generate random point within bounds
-			Vector2 randomPoint = new Vector2(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y));
-
-			// Check if point is inside polygon
-			if (IsPositionValid(randomPoint))
-			{
-				return randomPoint;
-			}
-		}
-	}
-	private bool IsPositionValid(Vector2 position)
-	{
-		if (!spawnArea.OverlapPoint(position))
-		{
-			Debug.Log("Position is outside spawn area");
-			return false;
-		}
-
-		// Check if position is not too close to any player
-		foreach (var player in Players.AllJoinedPlayers)
-		{
-			if (player == null) continue;
-
-			var playerDist = Vector2.Distance(position, player.transform.position);
-			if (playerDist < minPlayerDistance) return false;
-		}
-
-		// Check for obstacles at the potential spawn position
-		if (Physics2D.OverlapCircle(position, 0.5f, ASSETS.LevelAssets.BuildingLayer)) return false;
-
-		// Check for landable layer to ensure enemy is on walkable surface
-		if (!Physics2D.OverlapCircle(position, 0.5f, ASSETS.LevelAssets.LandableLayer)) return false;
-
-		// Check if position is visible in camera (if required)
-		if (ensureOffCameraSpawning && mainCamera != null)
-		{
-			var viewportPoint = mainCamera.WorldToViewportPoint(position);
-			if (viewportPoint.x >= 0 && viewportPoint.x <= 1 && viewportPoint.y >= 0 && viewportPoint.y <= 1 && viewportPoint.z > 0) // In camera view
-				return false;
-		}
-
-		// All checks passed
-		return true;
 	}
 
 	private void CleanupDeadEnemies()
@@ -527,5 +318,4 @@ public class SmartZombieSpawningSystem : MonoBehaviour
 		// If we get here, it's Corn (or if all else fails)
 		return ASSETS.Players.CornEnemyPrefab;
 	}
-
 }

@@ -56,8 +56,8 @@ public class SceneLoader : Singleton<SceneLoader>
 	{
 		currentScene = sceneDefinition;
 		SceneManager.LoadScene(currentScene.sceneName);
-		if (sceneDefinition.isGameplayLevel)
-			pressAnyButtonText.gameObject.SetActive(false);
+		pressAnyButtonText.gameObject.SetActive(false);
+			
 	}
 
 	public void QuitGame()
@@ -116,16 +116,17 @@ public class SceneLoader : Singleton<SceneLoader>
 		}
 
 		// For scenes that require "press any button"
-		if (!loadingComplete && !loadingOperation.allowSceneActivation && progressValue >= 0.9f) LoadingComplete();
+		if (!loadingComplete && !loadingOperation.allowSceneActivation && progressValue >= 0.95f) LoadingComplete();
 	}
 
 	private void LoadingComplete()
 	{
 		loadingComplete = true;
-		if (percentLoadedText != null)
-			percentLoadedText.text = "100";
-		// Show press any button message
-		if (pressAnyButtonText != null)
+		if (percentLoadedText != null) percentLoadedText.text = "100";
+
+		pressAnyButtonText.gameObject.SetActive(currentScene.requiresButtonPressToLoad);
+		
+		if (currentScene.requiresButtonPressToLoad)
 		{
 			pressAnyButtonText.gameObject.SetActive(true);
 			waitingForInput = true;
@@ -160,12 +161,11 @@ public class SceneLoader : Singleton<SceneLoader>
 
 		// Store the destination
 		destinationScene = sceneDefinition;
-		showImageAndTitleTransition = sceneDefinition.isGameplayLevel;
+		showImageAndTitleTransition = sceneDefinition.requiresButtonPressToLoad;
 
 		Debug.Log($"Loading scene: {sceneDefinition.DisplayName}");
 
-		// Update internal tracking 
-		SetCurrentScene(sceneDefinition);
+		
 
 		// Start the transition
 		StartFadingIn();
@@ -220,8 +220,8 @@ public class SceneLoader : Singleton<SceneLoader>
 			return;
 		}
 
-		currentScene = ASSETS.GetSceneByName(scene.name);
-
+		// Update internal tracking 
+		SetCurrentScene(ASSETS.GetSceneByName(scene.name));
 		// Notify any listeners that need to know the scene changed
 		Debug.Log($"Scene loaded: {scene.name}");
 		OnSceneLoaded?.Invoke(currentScene);
@@ -308,16 +308,6 @@ public class SceneLoader : Singleton<SceneLoader>
 		// Check if this scene requires player input before continuing
 		// Use explicit setting from SceneDefinition first
 		var requiresButtonPress = destinationScene.requiresButtonPressToLoad;
-
-		// If not explicitly set, determine based on gameplay level status 
-		if (!requiresButtonPress)
-		{
-			// Check if this is a level-to-level transition which should pause
-			var isCurrentLevelGameplay = currentScene != null && currentScene.isGameplayLevel;
-
-			// Require button press for level-to-level transitions
-			if (destinationScene.isGameplayLevel && isCurrentLevelGameplay) requiresButtonPress = true;
-		}
 
 		// Set whether to wait for user input
 		loadingOperation.allowSceneActivation = !requiresButtonPress;

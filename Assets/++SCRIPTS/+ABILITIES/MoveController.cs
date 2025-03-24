@@ -191,6 +191,7 @@ public class MoveController : MonoBehaviour
 		moveDir = direction;
 		if(direction.x != 0) body.BottomFaceDirection(direction.x > 0);
 		mover.MoveInDirection(direction, moveSpeed);
+		
 		anim.SetBool(Animations.IsMoving, true);
 	}
 
