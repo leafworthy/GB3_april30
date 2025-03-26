@@ -51,7 +51,6 @@ public class HUDS : Singleton<HUDS>
 	{
 		var slot = I.currentHUDSlots[(int)player.input.playerIndex];
 		slot.gameObject.SetActive(true);
-		Clock.SetActive(true);
 		slot.StartUpgradeSelectMenu(player);
 	}
 

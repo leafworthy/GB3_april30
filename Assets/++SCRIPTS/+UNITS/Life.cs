@@ -9,9 +9,9 @@ public class Life : MonoBehaviour
 	public UnitStatsData unitData;
 
 
-	private float ExtraMaxHealth;
-	private float ExtraMaxSpeed;
-	private float ExtraMaxDamage;
+	private float ExtraMaxHealthFactor;
+	private float ExtraMaxSpeedFactor;
+	private float ExtraMaxDamageFactor;
 	protected virtual void OnValidate()
 	{
 		if (unitData != null) return;
@@ -20,17 +20,17 @@ public class Life : MonoBehaviour
 
 
 	public float AttackHeight => unitData.AttackHeight;
-	public float AttackDamage => unitData.AttackDamage+ ExtraMaxDamage;
+	public float AttackDamage => unitData.AttackDamage+ ExtraMaxDamageFactor* unitData.AttackDamage;
 	public float AttackRange => unitData.AttackRange;
 	public float AttackRate => unitData.AttackRate;
 
-	public float Attack2Damage => unitData.Attack2Damage+ ExtraMaxDamage;
+	public float Attack2Damage => unitData.Attack2Damage+ ExtraMaxDamageFactor* unitData.Attack2Damage;
 	public float Attack2Rate => unitData.Attack2Rate;
 
 
-	public float HealthMax => unitData.HealthMax+ExtraMaxHealth;
-	public float MoveSpeed => unitData.MoveSpeed + ExtraMaxSpeed;
-	public float DashSpeed => unitData.DashSpeed + ExtraMaxSpeed;
+	public float HealthMax => unitData.HealthMax+ExtraMaxHealthFactor* unitData.HealthMax;
+	public float MoveSpeed => unitData.MoveSpeed + ExtraMaxSpeedFactor* unitData.MoveSpeed;
+	public float DashSpeed => unitData.DashSpeed + ExtraMaxSpeedFactor* unitData.DashSpeed;
 
 	public bool IsPlayer => IsThisAPlayer();
 
@@ -237,20 +237,20 @@ public class Life : MonoBehaviour
 		DisableCollidersLayerAndHealth();
 	}
 
-	public void SetExtraMaxHealth(float newExtraMaxHealth)
+	public void SetExtraMaxHealthFactor(float newExtraMaxHealth)
 	{
 		Debug.Log("extra max health set to: " + newExtraMaxHealth);
-		ExtraMaxHealth = newExtraMaxHealth;
+		ExtraMaxHealthFactor = newExtraMaxHealth;
 		OnFractionChanged?.Invoke(GetFraction());
 	}
 
-	public void SetExtraMaxDamage(float newIncreaseMaxDamage)
+	public void SetExtraMaxDamageFactor(float newIncreaseMaxDamage)
 	{
-		ExtraMaxDamage = newIncreaseMaxDamage;
+		ExtraMaxDamageFactor = newIncreaseMaxDamage;
 	}
 
-	public void SetExtraMaxSpeed(float newExtraMaxSpeed)
+	public void SetExtraMaxSpeedFactor(float newExtraMaxSpeed)
 	{
-		ExtraMaxSpeed = newExtraMaxSpeed;
+		ExtraMaxSpeedFactor = newExtraMaxSpeed;
 	}
 }

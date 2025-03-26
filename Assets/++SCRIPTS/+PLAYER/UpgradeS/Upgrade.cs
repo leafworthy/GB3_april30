@@ -1,38 +1,32 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
-public class Upgrade:MonoBehaviour
+namespace UpgradeS
 {
-	protected int level = 1;
-	protected int cost;
+	[Serializable]
+	public class Upgrade : MonoBehaviour
+	{
+		protected int level = 1;
+		public virtual string GetDescription => "No description";
 
-	public virtual void CauseEffect(Player player)
-	{
-	}
-	
-	public virtual void UpgradeLevel()
-	{
-		level++;
-	}
+		public virtual void CauseEffect(Player player)
+		{
+		}
 
-	public virtual int GetCost()
-	{
-		return cost* level;
-	}
+		public virtual void UpgradeLevel()
+		{
+			level++;
+		}
 
-	public int GetLevel()
-	{
-		return level;
-	}
+		public virtual int GetCost() => 0;
 
-	public virtual string GetName()
-	{
-		return "";
-	}
-	
-	public virtual void ResetLevel()
-	{
-		level = 1;
+		public int GetLevel() => level;
+
+		public virtual string GetName() => "";
+
+		public virtual void ResetLevel()
+		{
+			level = 1;
+		}
 	}
 }

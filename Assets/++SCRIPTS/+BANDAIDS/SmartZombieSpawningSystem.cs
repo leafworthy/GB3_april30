@@ -251,13 +251,13 @@ public class SmartZombieSpawningSystem : MonoBehaviour
 			}
 
 			// Apply the multipliers - need to use appropriate methods since the Life properties are read-only
-			life.SetExtraMaxHealth(life.HealthMax * (healthMultiplier - 1.0f));
+			life.SetExtraMaxHealthFactor(life.HealthMax * (healthMultiplier - 1.0f));
 
 			// Apply damage multiplier
-			life.SetExtraMaxDamage(life.AttackDamage * (damageMultiplier - 1.0f));
+			life.SetExtraMaxDamageFactor(life.AttackDamage * (damageMultiplier - 1.0f));
 
 			// Apply speed multiplier
-			life.SetExtraMaxSpeed(life.MoveSpeed * (speedMultiplier - 1.0f));
+			life.SetExtraMaxSpeedFactor(life.MoveSpeed * (speedMultiplier - 1.0f));
 
 			// Reset health to full after modifying max
 			life.AddHealth(life.HealthMax);

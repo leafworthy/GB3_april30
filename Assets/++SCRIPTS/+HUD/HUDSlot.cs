@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
+using UpgradeS;
 
 public class HUDSlot : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class HUDSlot : MonoBehaviour
 	{
 		upgradeSetupMenu.gameObject.SetActive(true);
 		upgradeSetupMenu.StartUpgradeSelectMenu(player);
-		upgradeSetupMenu.OnUpgradePurchased += CloseUpgradeSelectMenu;
+		upgradeSetupMenu.OnUpgradeExit += CloseUpgradeSelectMenu;
 	}
 
 	private void CloseUpgradeSelectMenu(Player player)

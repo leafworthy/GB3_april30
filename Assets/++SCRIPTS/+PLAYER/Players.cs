@@ -61,6 +61,12 @@ public class Players : Singleton<Players>
 		}
 	}
 
+	public static void PlayerOpensShoppe(Player player)
+	{
+			OnPlayerGetUpgrades?.Invoke(player);
+			Debug.Log("player upgrading");
+	}
+
 	// Clear joined players (typically used when starting a new game)
 	public static void ClearAllJoinedPlayers()
 	{

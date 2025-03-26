@@ -1,17 +1,17 @@
-﻿public class HealthUpgrade : Upgrade
+﻿namespace UpgradeS
 {
-	public override int GetCost()
+	public class HealthUpgrade : Upgrade
 	{
-		return 200;
-	}
-	public override void CauseEffect(Player player)
-	{
-		base.CauseEffect(player);
-		player.spawnedPlayerDefence.SetExtraMaxHealth(100*level);
-	}
+		public override string GetDescription => "Max health +10%";
+		public override string GetName() => "Health Upgrade";
+		public override int GetCost() => 500 * level;
 
-	public override string GetName()
-	{
-		return "Health Upgrade";
+		public override void CauseEffect(Player player)
+		{
+			base.CauseEffect(player);
+			player.spawnedPlayerDefence.SetExtraMaxHealthFactor(.1f*level);
+		}
+
+		
 	}
 }

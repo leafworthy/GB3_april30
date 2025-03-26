@@ -2,18 +2,9 @@ using UnityEngine;
 
 public class MoveController : MonoBehaviour
 {
-	private bool canMove;
+	public bool CanMove { get; set; }
 
-	public bool CanMove
-	{
-		get => canMove;
-		set => canMove = value;
-	}
-
-
-	private Vector2 moveDir;
-
-	public Vector2 MoveDir => moveDir;
+	public Vector2 MoveDir { get; private set; }
 
 	private Vector2 targetPosition;
 	private Life life;
@@ -21,7 +12,6 @@ public class MoveController : MonoBehaviour
 	private MoveAbility mover;
 	private Player owner;
 	private float damagePushMultiplier = 1;
-	private float moveSpeed;
 	private Animations anim;
 	private bool isDamaged;
 	private EnemyAI ai;
@@ -43,7 +33,7 @@ public class MoveController : MonoBehaviour
 			var _controller = owner.Controller;
 			_controller.MoveAxis.OnChange += Player_MoveInDirection;
 			_controller.MoveAxis.OnInactive += Player_StopMoving;
-			canMove = true;
+			CanMove = true;
 		}
 		else
 		{
@@ -51,17 +41,10 @@ public class MoveController : MonoBehaviour
 			ai.OnMoveInDirection += AI_MoveInDirection;
 			ai.OnStopMoving += AI_StopMoving;
 			if (ai.BornOnAggro)
-			{
-				canMove = false;
-			}
+				CanMove = false;
 			else
-			{
-				canMove = true;
-			}
+				CanMove = true;
 		}
-
-	
-		moveSpeed = life.MoveSpeed;
 
 		anim.animEvents.OnStep += Anim_OnStep;
 		anim.animEvents.OnUseLegs += Anim_UseLegs;
@@ -70,11 +53,9 @@ public class MoveController : MonoBehaviour
 		anim.animEvents.OnRecovered += Anim_Recovered;
 	}
 
-
-
 	private void OnDisable()
 	{
-		if(life == null) return;
+		if (life == null) return;
 		if (life.IsPlayer)
 		{
 			owner.Controller.MoveAxis.OnChange -= Player_MoveInDirection;
@@ -86,6 +67,7 @@ public class MoveController : MonoBehaviour
 			ai.OnMoveInDirection -= AI_MoveInDirection;
 			ai.OnStopMoving -= AI_StopMoving;
 		}
+
 		life.OnDamaged -= Life_OnDamaged;
 		life.OnDead -= Life_OnDead;
 		anim.animEvents.OnStep -= Anim_OnStep;
@@ -93,9 +75,6 @@ public class MoveController : MonoBehaviour
 		anim.animEvents.OnStopUsingLegs -= Anim_StopUsingLegs;
 		anim.animEvents.OnDashStop -= Anim_DashStop;
 		anim.animEvents.OnRecovered -= Anim_Recovered;
-		  
-		 
-	
 	}
 
 	private void Anim_Recovered()
@@ -103,47 +82,38 @@ public class MoveController : MonoBehaviour
 		isDamaged = false;
 	}
 
-	
-
 	private void Anim_DashStop()
 	{
 		mover.StopPush();
 	}
 
-
 	private void Reset()
 	{
-		canMove = true;
+		CanMove = true;
 	}
 
 	private void Anim_StopUsingLegs()
 	{
-		 canMove = true;
+		CanMove = true;
 		body.legs.Stop("On use legs");
 	}
 
 	private void Anim_UseLegs()
 	{
-		canMove = false;
+		CanMove = false;
 		body.legs.Do("On use legs");
 	}
 
 	private void Anim_OnStep()
 	{
-		
 		var dust = ObjectMaker.Make(ASSETS.FX.dust1_ground, body.FootPoint.transform.position);
 		if (mover.moveDir.x > 0)
 		{
 			dust.transform.localScale = new Vector3(-Mathf.Abs(dust.transform.localScale.x),
-				dust.transform.localScale.y,
-				dust.transform.localScale.z);
+				dust.transform.localScale.y, dust.transform.localScale.z);
 		}
 		else
-		{
-			dust.transform.localScale = new Vector3(Mathf.Abs(dust.transform.localScale.x),
-				dust.transform.localScale.y,
-				dust.transform.localScale.z);
-		}
+			dust.transform.localScale = new Vector3(Mathf.Abs(dust.transform.localScale.x), dust.transform.localScale.y, dust.transform.localScale.z);
 	}
 
 	public Vector2 GetMovePoint()
@@ -161,14 +131,14 @@ public class MoveController : MonoBehaviour
 
 	private void Life_OnDead(Player player)
 	{
-		canMove = false;
+		CanMove = false;
 	}
 
 	private void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction)
 	{
 		if (PauseManager.IsPaused) return;
 		if (isDamaged) return;
-		if (!canMove) return;
+		if (!CanMove) return;
 
 		if (body.legs.isActive)
 		{
@@ -187,11 +157,10 @@ public class MoveController : MonoBehaviour
 
 	private void StartMoving(Vector2 direction)
 	{
-		
-		moveDir = direction;
-		if(direction.x != 0) body.BottomFaceDirection(direction.x > 0);
-		mover.MoveInDirection(direction, moveSpeed);
-		
+		MoveDir = direction;
+		if (direction.x != 0) body.BottomFaceDirection(direction.x > 0);
+		mover.MoveInDirection(direction, life.MoveSpeed);
+
 		anim.SetBool(Animations.IsMoving, true);
 	}
 
@@ -202,8 +171,6 @@ public class MoveController : MonoBehaviour
 		mover.StopMoving();
 	}
 
-	
-
 	private void Player_StopMoving(IControlAxis controlAxis)
 	{
 		StopMoving();
@@ -211,24 +178,16 @@ public class MoveController : MonoBehaviour
 
 	private void AI_StopMoving()
 	{
-		
 		StopMoving();
 	}
 
 	private void AI_MoveInDirection(Vector2 direction)
 	{
 		if (PauseManager.IsPaused) return;
-		if (!CanMove)
-		{
-			return;
-		}
-		if (body.arms.isActive)
-		{
-			return;
-		}
+		if (!CanMove) return;
+		if (body.arms.isActive) return;
 		StartMoving(direction);
 	}
-
 
 	public void Push(Vector2 moveMoveDir, float statsDashSpeed)
 	{

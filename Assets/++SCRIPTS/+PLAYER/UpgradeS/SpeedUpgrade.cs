@@ -1,18 +1,16 @@
-﻿public class SpeedUpgrade : Upgrade
+﻿namespace UpgradeS
 {
-	public override int GetCost()
+	public class SpeedUpgrade : Upgrade
 	{
-		return 150;
-	}
+		public override string GetDescription => "Walk speed +10%";
+		public override int GetCost() => 250 * level;
 
-	public override string GetName()
-	{
-		return "Speed Upgrade";
-	}
+		public override string GetName() => "Speed Upgrade";
 
-	public override void CauseEffect(Player player)
-	{
-		base.CauseEffect(player);
-		player.spawnedPlayerDefence.SetExtraMaxSpeed(50 * level);
+		public override void CauseEffect(Player player)
+		{
+			base.CauseEffect(player);
+			player.spawnedPlayerDefence.SetExtraMaxSpeedFactor(.1f * level);
+		}
 	}
 }

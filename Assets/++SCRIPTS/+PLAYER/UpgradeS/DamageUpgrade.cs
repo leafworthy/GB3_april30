@@ -1,17 +1,16 @@
-﻿public class DamageUpgrade : Upgrade
+﻿namespace UpgradeS
 {
-	public override int GetCost()
+	public class DamageUpgrade : Upgrade
 	{
-		return 250;
-	}
-	public override void CauseEffect(Player player)
-	{
-		base.CauseEffect(player);
-		player.spawnedPlayerDefence.SetExtraMaxDamage(10 * level);
-	}
+		public override string GetName() => "Damage Upgrade";
+		public override string GetDescription => "Attack damage +10%";
+		public override int GetCost() => 250 * level;
 
-	public override string GetName()
-	{
-		return "Damage Upgrade";
+		public override void CauseEffect(Player player)
+		{
+			base.CauseEffect(player);
+			player.spawnedPlayerDefence.SetExtraMaxDamageFactor(.10f * level);
+		}
+
 	}
 }
