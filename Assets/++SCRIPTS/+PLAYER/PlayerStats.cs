@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerStats: MonoBehaviour 
 {
 	private Player owner;
-	private List<PlayerStat> playerStats = new();
+	public List<PlayerStat> playerStats = new();
 	private PlayerStat stat;
 	private bool hasReset;
 	public static event Action<Player,PlayerStat> OnPlayerStatChange;
@@ -30,6 +30,7 @@ public class PlayerStats: MonoBehaviour
 	{
 		if (hasReset) return;
 		hasReset = true;
+		playerStats.Clear();
 		playerStats.Add(new PlayerStat(PlayerStat.StatType.Kills, 0));
 		playerStats.Add(new PlayerStat(PlayerStat.StatType.Accuracy, 0));
 		playerStats.Add(new PlayerStat(PlayerStat.StatType.AttacksHit, 0));
@@ -63,7 +64,17 @@ public class PlayerStats: MonoBehaviour
 	public float GetStatValue(PlayerStat.StatType statType)
 	{
 		ResetStats();
-		return GetStat(statType).value;
+		var _stat = GetStat(statType);
+		if(_stat != null)
+		{
+			Debug.Log("found stat");
+			return _stat.GetStatAmount();
+		}
+		else
+		{
+			Debug.Log("didn't find stat");
+			return 0;
+		}
 	}
 
 
@@ -73,6 +84,7 @@ public class PlayerStats: MonoBehaviour
 		ResetStats();
 		var changingStat = GetStat(type);
 		changingStat.ChangeStat(change);
+		Debug.Log("change stat here");
 		OnPlayerStatChange?.Invoke(owner, changingStat);
 		
 	}
@@ -81,7 +93,15 @@ public class PlayerStats: MonoBehaviour
 	{
 		ResetStats();
 		stat = playerStats.FirstOrDefault(t => t.type == type);
+		if(stat != null) Debug.Log("not null stat");
 		return stat;
 	}
-	
+
+	public void SetStatValue(PlayerStat.StatType statType, float value)
+	{
+		ResetStats();
+		var changingStat = GetStat(statType);
+		changingStat.SetStat(value); 
+		OnPlayerStatChange?.Invoke(owner, changingStat);
+	}
 }

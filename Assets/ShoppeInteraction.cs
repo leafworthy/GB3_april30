@@ -1,12 +1,15 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ShoppeInteraction : PlayerInteractable
 {
+	private static readonly int IsOpen = Animator.StringToHash("IsOpen");
 	private List<Player> playersInShoppe = new();
+	private Animator animator;
 
-	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	private void Start()
 	{
+		animator = GetComponentInChildren<Animator>();
 		OnPlayerEnters += PlayerEnters;
 		OnPlayerExits += PlayerExits;
 		OnActionPress += ActionPress;
@@ -14,29 +17,32 @@ public class ShoppeInteraction : PlayerInteractable
 
 	private void ActionPress(Player player)
 	{
-		var playerCash = PlayerStatsManager.I.GetStatAmount(player, PlayerStat.StatType.TotalCash);
 		OpenShoppeWindow(player);
 	}
 
 	private void OpenShoppeWindow(Player player)
 	{
-		if (playersInShoppe.Contains(player)) return;
-		playersInShoppe.Add(player);
+		if (!playersInShoppe.Contains(player)) playersInShoppe.Add(player);
+		animator.SetBool(IsOpen, true);
 		Players.PlayerOpensShoppe(player);
+	}
+
+	private void PlayerClosesShoppe(Player player)
+	{
+		if (playersInShoppe.Contains(player)) playersInShoppe.Remove(player);
+		if (playersInShoppe.Count == 0) animator.SetBool(IsOpen, false);
 	}
 
 	private void PlayerEnters(Player player)
 	{
+		Player.OnPlayerLeavesUpgradeSetupMenu += PlayerClosesShoppe;
 		player.Say("Buy?");
 	}
 
 	private void PlayerExits(Player player)
 	{
+		Player.OnPlayerLeavesUpgradeSetupMenu -= PlayerClosesShoppe;
 		player.StopSaying();
-	}
-
-	// Update is called once per frame
-	private void Update()
-	{
+		PlayerClosesShoppe(player);
 	}
 }

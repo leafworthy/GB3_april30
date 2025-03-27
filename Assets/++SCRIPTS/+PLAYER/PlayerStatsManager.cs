@@ -43,6 +43,7 @@ public class PlayerStatsManager : Singleton<PlayerStatsManager>
 		var match = playerStats.TryGetValue(player, out var stats);
 		if (match)
 		{
+			Debug.Log("Player was found in PlayerStatsManager");
 			stats.ChangeStat(statType, change);
 			OnPlayerStatChange?.Invoke(player, statType, stats.GetStatValue(statType));
 		}
@@ -76,4 +77,16 @@ public class PlayerStatsManager : Singleton<PlayerStatsManager>
 		
 	}
 
+	public void SetStatAmount(Player owner, PlayerStat.StatType statType, float value)
+	{
+		if (playerStats.TryGetValue(owner, out var stats))
+		{
+			stats.SetStatValue(statType, value);
+			OnPlayerStatChange?.Invoke(owner, statType, stats.GetStatValue(statType));
+		}
+		else
+		{
+			Debug.LogError("Player not found in PlayerStatsManager");
+		}
+	}
 }

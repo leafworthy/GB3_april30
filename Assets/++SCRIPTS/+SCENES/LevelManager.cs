@@ -37,7 +37,7 @@ public class LevelManager : Singleton<LevelManager>
 	public void StartGame()
 	{
 		SceneLoader.I.GoToScene(ASSETS.Scenes.startingScene);
-		SceneLoader.OnSceneLoaded += SceneLoader_SceneLoaded;
+		SceneLoader.OnSceneReadyToStartLevel += SceneLoaderSceneReadyToStartLevel;
 		_currentTravelPoint = null;
 	}
 
@@ -80,7 +80,7 @@ public class LevelManager : Singleton<LevelManager>
 	}
 
 	
-	private void SceneLoader_SceneLoaded(SceneDefinition newScene)
+	private void SceneLoaderSceneReadyToStartLevel(SceneDefinition newScene)
 	{
 		Debug.Log(newScene.sceneName + " scene loaded, starting level");
 		var gameLevel = FindFirstObjectByType<GameLevel>();
@@ -108,7 +108,7 @@ public class LevelManager : Singleton<LevelManager>
 	private void StopGame()
 	{
 		StopLevel();
-		SceneLoader.OnSceneLoaded -= SceneLoader_SceneLoaded;
+		SceneLoader.OnSceneReadyToStartLevel -= SceneLoaderSceneReadyToStartLevel;
 	}
 
 	public void RestartLevel()

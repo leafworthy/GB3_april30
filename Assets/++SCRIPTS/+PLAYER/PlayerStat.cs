@@ -1,4 +1,8 @@
-﻿public class PlayerStat
+﻿using System;
+using UnityEngine;
+
+[Serializable]
+public class PlayerStat
 {
 	public PlayerStat(StatType statType, float startingValue)
 	{
@@ -13,14 +17,23 @@
 		Accuracy,
 		TotalCash,
 		Gas,
-		Key
+		Key,
+		None
 	}
 
-	public readonly StatType type;
-	public float value;
+	public  StatType type;
+	[SerializeField]private float value;
+	
+	public void SetStat(float newValue)
+	{
+		value = newValue;
+	}
+	
+	public float GetStatAmount() => value;
 
 	public void ChangeStat(float change)
 	{
+		Debug.Log("chaging stat " + type + " by " + change);
 		value += change;
 	}
 }

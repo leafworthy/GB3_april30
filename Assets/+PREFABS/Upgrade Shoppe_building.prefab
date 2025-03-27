@@ -31,7 +31,8 @@ Transform:
   m_LocalPosition: {x: -10.8, y: -16.2, z: 0.50000006}
   m_LocalScale: {x: 1.01, y: 1.01, z: 1.01}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 588957983533092935}
   m_Father: {fileID: 5136865558866812811}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &2935433223623743708
@@ -130,7 +131,6 @@ Transform:
   m_Children:
   - {fileID: 5264564266253353933}
   - {fileID: 6122151082244331713}
-  - {fileID: 588957983533092935}
   - {fileID: 1007541901489258811}
   - {fileID: 1203090976709707289}
   - {fileID: 5189457530136196049}
@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 1612791607703535216}
   - component: {fileID: 8219164223161121981}
   m_Layer: 0
-  m_Name: Upgrade Shoppe_door_0
+  m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -242,11 +242,11 @@ Transform:
   m_GameObject: {fileID: 1318455387852326269}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -14.2, y: -12.54, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -3.3663373, y: 3.6237624, z: -0.4950496}
+  m_LocalScale: {x: 0.9900991, y: 0.9900991, z: 0.9900991}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5136865558866812811}
+  m_Father: {fileID: 5264564266253353933}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1612791607703535216
 SpriteRenderer:

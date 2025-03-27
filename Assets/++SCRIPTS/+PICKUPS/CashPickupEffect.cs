@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class CashPickupEffect : PickupEffect
 {
 	private int amount;
@@ -5,6 +7,7 @@ public class CashPickupEffect : PickupEffect
 	public override void StartEffect(Life life)
 	{
 		effectDuration = 0;
+		Debug.Log("cash pickup effect");
 		PlayerStatsManager.I.ChangeStat(life.player, PlayerStat.StatType.TotalCash,amount);
 		base.StartEffect(life);
 	}

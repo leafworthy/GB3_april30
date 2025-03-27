@@ -45,6 +45,7 @@ public class HUDSlot : MonoBehaviour
 	private void CloseUpgradeSelectMenu(Player player)
 	{
 		upgradeSetupMenu.gameObject.SetActive(false);
+		player.LeaveUpgradeSetupMenu();
 	}
 
 	public void SetCharacterHudVisible(Character currentCharacter)

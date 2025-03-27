@@ -50,6 +50,7 @@ public class Player : MonoBehaviour
 	private PlayerInteractable selectedInteractable;
 	public static event Action<Player> OnPlayerSpawned;
 	public static event Action<Player> OnPlayerDies;
+	public static event Action<Player> OnPlayerLeavesUpgradeSetupMenu;
 
 	private PlayerUpgrades playerUpgrades;
 
@@ -252,4 +253,9 @@ public class Player : MonoBehaviour
 	}
 
 	public bool isDead() => spawnedPlayerDefence.IsDead();
+
+	public void LeaveUpgradeSetupMenu()
+	{
+		OnPlayerLeavesUpgradeSetupMenu?.Invoke(this);
+	}
 }

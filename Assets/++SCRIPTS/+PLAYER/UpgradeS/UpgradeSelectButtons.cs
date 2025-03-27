@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -11,40 +12,26 @@ namespace UpgradeS
 		public event Action<Upgrade> OnUpgradeChosen;
 
 		private UpgradeSelectButton currentlySelectedButton;
-		private bool hasSelected;
 
 		[SerializeField] private UpgradeSelectButton[] buttons;
 		private Player _player;
 		private bool hasInit;
 		public TextMeshProUGUI upgradeDescription;
-	
-	
 
 		public void Init(Player player)
 		{
-			if (hasInit) return;
 			_player = player;
-			ResetButton();
+			hasInit = true;
+			ResetButtons();
 			Debug.Log("buttons initialized");
-			player.Controller.Attack3Circle.OnPress += OnCircleButton;
 			player.Controller.UIAxis.OnLeft += OnLeft;
 			player.Controller.UIAxis.OnRight += OnRight;
 			player.Controller.Select.OnPress += OnSelect;
 			player.Controller.Cancel.OnPress += OnCancel;
-		
-
 		}
 
-		private void OnCircleButton(NewControlButton obj)
+		private void ResetButtons()
 		{
-			OnExit?.Invoke();
-		}
-
-		private void ResetButton()
-		{
-			hasSelected = false;
-			
-			hasInit = true;
 			buttons[0] = DefaultButton;
 			DeselectAllButtons();
 			SetCurrentButton(DefaultButton);
@@ -53,20 +40,26 @@ namespace UpgradeS
 		private void SetCurrentButton(UpgradeSelectButton defaultButton)
 		{
 			currentlySelectedButton = defaultButton;
-			currentlySelectedButton.Highlight();
+			if(defaultButton.upgrade.GetCost() > _player.GetComponent<PlayerStats>().GetStatValue(PlayerStat.StatType.TotalCash))
+			{
+				currentlySelectedButton.RedHighlight();
+			}
+			else
+			{
+				currentlySelectedButton.Highlight();
+			}
+			
 			upgradeDescription.text = currentlySelectedButton.upgrade.GetDescription;
 		}
 
 		private void OnDisable()
 		{
-			if(!hasInit) return;
+			if (!hasInit) return;
 			hasInit = false;
-			hasSelected = false;
 			_player.Controller.UIAxis.OnLeft -= OnLeft;
 			_player.Controller.UIAxis.OnRight -= OnRight;
 			_player.Controller.Select.OnPress -= OnSelect;
 			_player.Controller.Cancel.OnPress -= OnCancel;
-	
 		}
 
 		private void DeselectAllButtons()
@@ -80,33 +73,27 @@ namespace UpgradeS
 
 		private void OnCancel(NewControlButton obj)
 		{
-			if (!hasSelected) return;
-			hasSelected = false;
 			SFX.sounds.charSelect_deselect_sounds.PlayRandom();
 			currentlySelectedButton.Deselect();
+			Debug.Log("Exit button pressed");
+			OnExit?.Invoke();
 		}
-
 
 		private void OnSelect(NewControlButton obj)
 		{
 			ChooseUpgrade();
 		}
 
-	
-
 		private void ChooseUpgrade()
 		{
-		
 			currentlySelectedButton.Select();
-			currentlySelectedButton.Unhighlight();
 			SFX.sounds.charSelect_select_sounds.PlayRandom();
 			OnUpgradeChosen?.Invoke(currentlySelectedButton.upgrade);
+			currentlySelectedButton.transform.DOPunchScale(Vector3.one * .1f, 0.5f, 1, 0.2f);
 		}
-
 
 		private void OnRight(NewInputAxis obj)
 		{
-			if (hasSelected) return;
 			Debug.Log("on right");
 			SFX.sounds.charSelect_move_sounds.PlayRandom();
 			currentlySelectedButton.Unhighlight();
@@ -117,7 +104,6 @@ namespace UpgradeS
 
 		private void OnLeft(NewInputAxis obj)
 		{
-			if (hasSelected) return;
 			Debug.Log("on left");
 			SFX.sounds.charSelect_move_sounds.PlayRandom();
 			currentlySelectedButton.Unhighlight();

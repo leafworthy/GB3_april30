@@ -29,36 +29,27 @@ public class SceneLoader : Singleton<SceneLoader>
 	private static readonly int IsFadedIn = Animator.StringToHash("IsFadedIn");
 
 	// Scene transition state tracking
-	private SceneDefinition previoustScene;
-	private SceneDefinition currentScene;
-	private SceneDefinition destinationScene;
-
-	private bool showImageAndTitleTransition;
-	private string lastConnectedId;
+	private SceneDefinition currentlyLoadedScene;
+	private SceneDefinition loadingScene;
 
 	// Static properties
-	public bool hasLoaded; // Made public for SceneStarter
-	public bool gameHasStarted;
+	public bool hasLoadedForTheFirstTime; // Made public for SceneStarter
+
 	// Input handling
 	private PlayerControls playerControls;
 	private InputAction anyButtonAction;
 
-	public static event Action<SceneDefinition> OnSceneLoaded;
+	public static event Action<SceneDefinition> OnSceneReadyToStartLevel;
 
 	#region Lifecycle Methods
 
 	protected void Start()
 	{
-		SetScene(ASSETS.Scenes.mainMenu);
+		currentlyLoadedScene = ASSETS.Scenes.mainMenu;
+		SceneManager.LoadScene(currentlyLoadedScene.sceneName);
+		pressAnyButtonText.gameObject.SetActive(false);
 	}
 
-	private void SetScene(SceneDefinition sceneDefinition)
-	{
-		currentScene = sceneDefinition;
-		SceneManager.LoadScene(currentScene.sceneName);
-		pressAnyButtonText.gameObject.SetActive(false);
-			
-	}
 
 	public void QuitGame()
 	{
@@ -72,8 +63,6 @@ public class SceneLoader : Singleton<SceneLoader>
 	private void OnEnable()
 	{
 		DontDestroyOnLoad(gameObject);
-		gameHasStarted = true;
-		Debug.Log("dont destroy");
 		// Set up input for button press detection
 		if (playerControls == null)
 		{
@@ -109,7 +98,7 @@ public class SceneLoader : Singleton<SceneLoader>
 		// For scenes that don't require button press
 		if (loadingOperation.allowSceneActivation && progressValue >= 1.0f)
 		{
-			Debug.Log("scene loaded, time to fade out");
+			Debug.Log(loadingScene.displayName +"scene loaded, time to fade out");
 			isLoading = false;
 			FadeOut();
 			return;
@@ -121,18 +110,19 @@ public class SceneLoader : Singleton<SceneLoader>
 
 	private void LoadingComplete()
 	{
+		Debug.Log("loading complete for scene: " + loadingScene.DisplayName);
 		loadingComplete = true;
 		if (percentLoadedText != null) percentLoadedText.text = "100";
+		pressAnyButtonText.gameObject.SetActive(loadingScene.requiresButtonPressToLoad);
 
-		pressAnyButtonText.gameObject.SetActive(currentScene.requiresButtonPressToLoad);
-		
-		if (currentScene.requiresButtonPressToLoad)
+		if (loadingScene.requiresButtonPressToLoad)
 		{
-			pressAnyButtonText.gameObject.SetActive(true);
+			Debug.Log("waiting");
 			waitingForInput = true;
 		}
 		else
 		{
+			Debug.Log("no requirement");
 			waitingForInput = false;
 			StopWaitingForInput();
 		}
@@ -143,7 +133,7 @@ public class SceneLoader : Singleton<SceneLoader>
 	public SceneDefinition GetCurrentSceneDefinition()
 	{
 		var sceneName = SceneManager.GetActiveScene().name;
-		return ASSETS.GetSceneByName(sceneName);
+		return ASSETS.Scenes.GetByName(sceneName);
 	}
 
 	#region Public Scene Loading Methods
@@ -153,6 +143,7 @@ public class SceneLoader : Singleton<SceneLoader>
 	/// </summary>
 	public void GoToScene(SceneDefinition sceneDefinition)
 	{
+		//FROM LEVEL MANAGER
 		if (sceneDefinition == null || !sceneDefinition.IsValid())
 		{
 			Debug.LogError("Invalid scene definition");
@@ -160,12 +151,8 @@ public class SceneLoader : Singleton<SceneLoader>
 		}
 
 		// Store the destination
-		destinationScene = sceneDefinition;
-		showImageAndTitleTransition = sceneDefinition.requiresButtonPressToLoad;
-
+		loadingScene = sceneDefinition;
 		Debug.Log($"Loading scene: {sceneDefinition.DisplayName}");
-
-		
 
 		// Start the transition
 		StartFadingIn();
@@ -178,9 +165,17 @@ public class SceneLoader : Singleton<SceneLoader>
 	/// </summary>
 	private void SetCurrentScene(SceneDefinition scene)
 	{
-		if (scene == null) return;
-		currentScene = scene;
-		Debug.Log($"Current scene set to {scene.DisplayName} ({scene.SceneName})");
+		if (scene == null)
+		{
+			Debug.Log("scene is null");
+			return;
+		}
+
+		currentlyLoadedScene = scene;
+		Debug.Log($"Current scene set to {currentlyLoadedScene.DisplayName} ({currentlyLoadedScene.SceneName})");
+		OnSceneReadyToStartLevel?.Invoke(currentlyLoadedScene);
+		loadingScene = null;
+		isLoading = false;
 	}
 
 	#region Animation Callbacks
@@ -190,12 +185,9 @@ public class SceneLoader : Singleton<SceneLoader>
 	/// </summary>
 	public void FadeInComplete()
 	{
-		LoadScene();
+		StartLoadingSceneAsync();
 	}
 
-	/// <summary>
-	/// Called by the fade-out animation when complete
-	/// </summary>
 	public void FadeOutComplete()
 	{
 		loadingScreen.SetActive(false);
@@ -207,24 +199,27 @@ public class SceneLoader : Singleton<SceneLoader>
 
 	#region Private Methods
 
-	/// <summary>
-	/// Called when a scene is loaded
-	/// </summary>
 	private void SceneManager_OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
 		// First scene load needs a fade out
-		if (!hasLoaded)
+		if (HandleFirstLoad()) return;
+		isLoading = false;
+		Debug.Log($"Scene manager load finished: {scene.name}");
+		// Update internal tracking 
+		SetCurrentScene(ASSETS.Scenes.GetByName(scene.name));
+		//START LEVEL
+	}
+
+	private bool HandleFirstLoad()
+	{
+		if (!hasLoadedForTheFirstTime)
 		{
 			FadeOut();
-			hasLoaded = true;
-			return;
+			hasLoadedForTheFirstTime = true;
+			return true;
 		}
 
-		// Update internal tracking 
-		SetCurrentScene(ASSETS.GetSceneByName(scene.name));
-		// Notify any listeners that need to know the scene changed
-		Debug.Log($"Scene loaded: {scene.name}");
-		OnSceneLoaded?.Invoke(currentScene);
+		return false;
 	}
 
 	/// <summary>
@@ -234,15 +229,7 @@ public class SceneLoader : Singleton<SceneLoader>
 	{
 		Debug.Log("start fading in");
 		// Setup the appropriate screen
-		if (showImageAndTitleTransition && levelTransitionScreen != null)
-			SetupLevelTransitionScreen();
-		else
-		{
-			// Use regular loading screen
-			loadingScreen.SetActive(true);
-			if (levelTransitionScreen != null)
-				levelTransitionScreen.SetActive(false);
-		}
+		HandleTransitionScreen();
 
 		// Start fade animation
 		faderAnimator.SetBool(IsFadedIn, true);
@@ -254,6 +241,11 @@ public class SceneLoader : Singleton<SceneLoader>
 		if (pressAnyButtonText != null)
 			pressAnyButtonText.gameObject.SetActive(false);
 
+		ResetProgressIndicators();
+	}
+
+	private void ResetProgressIndicators()
+	{
 		// Reset progress indicators
 		if (progressBarImage != null)
 		{
@@ -268,9 +260,19 @@ public class SceneLoader : Singleton<SceneLoader>
 		}
 	}
 
-	/// <summary>
-	/// Set up the level transition screen
-	/// </summary>
+	private void HandleTransitionScreen()
+	{
+		if (loadingScene.requiresButtonPressToLoad && levelTransitionScreen != null)
+			SetupLevelTransitionScreen();
+		else
+		{
+			// Use regular loading screen
+			loadingScreen.SetActive(true);
+			if (levelTransitionScreen != null)
+				levelTransitionScreen.SetActive(false);
+		}
+	}
+
 	private void SetupLevelTransitionScreen()
 	{
 		levelTransitionScreen.SetActive(true);
@@ -278,49 +280,32 @@ public class SceneLoader : Singleton<SceneLoader>
 
 		// Set title
 		if (locationTitleText != null)
-			locationTitleText.text = destinationScene.DisplayName;
+			locationTitleText.text = loadingScene.DisplayName;
 
 		// Set image
-		if (locationImage != null)
+		if (locationImage == null) return;
+		if (loadingScene.sceneImage != null)
 		{
-			if (destinationScene.sceneImage != null)
-			{
-				locationImage.sprite = destinationScene.sceneImage;
-				locationImage.gameObject.SetActive(true);
-			}
-			else
-				locationImage.gameObject.SetActive(false);
+			locationImage.sprite = loadingScene.sceneImage;
+			locationImage.gameObject.SetActive(true);
 		}
+		else
+			locationImage.gameObject.SetActive(false);
 	}
 
-	/// <summary>
-	/// Load the scene asynchronously
-	/// </summary>
-	private void LoadScene()
+	private void StartLoadingSceneAsync()
 	{
-		Debug.Log("loading scene");
-		// Get scene name from the destination
-		var sceneName = destinationScene.SceneName;
-
-		// Start async loading
-		loadingOperation = SceneManager.LoadSceneAsync(sceneName);
-
-		// Check if this scene requires player input before continuing
-		// Use explicit setting from SceneDefinition first
-		var requiresButtonPress = destinationScene.requiresButtonPressToLoad;
-
-		// Set whether to wait for user input
-		loadingOperation.allowSceneActivation = !requiresButtonPress;
 		isLoading = true;
+		loadingOperation = SceneManager.LoadSceneAsync(loadingScene.SceneName);
+		loadingOperation.allowSceneActivation = !loadingScene.requiresButtonPressToLoad;
+		Debug.Log("loading scene async starting: " + loadingScene.SceneName + " it requires button press: " + loadingScene.requiresButtonPressToLoad);
 	}
 
-	/// <summary>
-	/// Update the loading progress indicators
-	/// </summary>
 	private float UpdateLoadingProgress()
 	{
 		// Progress is clamped at 0.9 until allowSceneActivation is true
 		var progressValue = Mathf.Clamp01(loadingOperation.progress / 0.9f);
+		Debug.Log(progressValue + "progress");
 
 		// Update UI elements
 		if (progressBarImage != null)
@@ -342,9 +327,9 @@ public class SceneLoader : Singleton<SceneLoader>
 
 	private void StopWaitingForInput()
 	{
-		loadingOperation.allowSceneActivation = true;
+		
 		waitingForInput = false;
-		isLoading = false;
+		loadingOperation.allowSceneActivation = true;
 		FadeOut();
 	}
 

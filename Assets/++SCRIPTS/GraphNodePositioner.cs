@@ -64,6 +64,7 @@ public class GraphNodePositioner : MonoBehaviour
             return;
         }
 
+        potentialCenters.Clear();
         // Populate potential centers by tag if list is empty
         if (potentialCenters.Count == 0 && !string.IsNullOrEmpty(centerObjectsTag))
         {
@@ -102,7 +103,7 @@ public class GraphNodePositioner : MonoBehaviour
             
         // Find closest center to player
         Transform closestCenter = FindClosestCenter();
-        
+        if (closestCenter == null) return;
         // Only update if the closest center has changed
         if (closestCenter != currentCenter)
         {
@@ -118,7 +119,9 @@ public class GraphNodePositioner : MonoBehaviour
     
     private Transform FindClosestCenter()
     {
+        if (potentialCenters.Count == 0) return null;
         Transform closest = potentialCenters[0];
+        if (closest == null) return null;
         float closestDist = Vector3.Distance(player.position, closest.position);
         
         for (int i = 1; i < potentialCenters.Count; i++)

@@ -9,6 +9,8 @@ public class HUDS : Singleton<HUDS>
 
 	public GameObject Vignette;
 	public GameObject Clock;
+	public Canvas UICanvas;
+	public CanvasGroup UICanvasGroup;
 
 	private void Start()
 	{
@@ -83,4 +85,7 @@ public class HUDS : Singleton<HUDS>
 		currentHUDSlots = GetComponentsInChildren<HUDSlot>(true).ToList();
 		foreach (var hudSlot in currentHUDSlots) hudSlot.gameObject.SetActive(false);
 	}
+
+	public Canvas GetUICanvas() => UICanvas;
+	public CanvasGroup GetUICanvasGroup() => UICanvasGroup;
 }

@@ -252,5 +252,6 @@ public class Life : MonoBehaviour
 	public void SetExtraMaxSpeedFactor(float newExtraMaxSpeed)
 	{
 		ExtraMaxSpeedFactor = newExtraMaxSpeed;
+		Debug.Log("extra max speed set to: " + newExtraMaxSpeed);
 	}
 }

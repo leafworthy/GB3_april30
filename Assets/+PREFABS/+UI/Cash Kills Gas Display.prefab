@@ -218,8 +218,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 20
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 005169c6657864bd8b40551ec2feb908, type: 2}
-  m_sharedMaterial: {fileID: 861203872275894078, guid: 005169c6657864bd8b40551ec2feb908, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 91709fda2eb464cee9b235efa3eff961, type: 2}
+  m_sharedMaterial: {fileID: 4119848815261452806, guid: 91709fda2eb464cee9b235efa3eff961, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -411,7 +411,6 @@ GameObject:
   - component: {fileID: 1476688586782867410}
   - component: {fileID: 8204991440520691811}
   - component: {fileID: 3076788093811118742}
-  - component: {fileID: 7385482615155023111}
   m_Layer: 0
   m_Name: CashText
   m_TagString: Untagged
@@ -469,8 +468,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 399
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 005169c6657864bd8b40551ec2feb908, type: 2}
-  m_sharedMaterial: {fileID: 861203872275894078, guid: 005169c6657864bd8b40551ec2feb908, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 91709fda2eb464cee9b235efa3eff961, type: 2}
+  m_sharedMaterial: {fileID: 4119848815261452806, guid: 91709fda2eb464cee9b235efa3eff961, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -494,7 +493,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 7.75
+  m_fontSize: 8.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -532,26 +531,12 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 2.5203285, y: 1.306516, z: -10.589752, w: 0.7757335}
+  m_margin: {x: 2.5203285, y: 0.7590511, z: 1.0874386, w: 0.68240273}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &7385482615155023111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4810747000371701174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff7e02566a944235b352a8342557a381, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cashText: {fileID: 3076788093811118742}
-  shakeIcon: {fileID: 4810747000371701174}
 --- !u!1 &6590638570803808229
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,7 +574,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.9, y: 5}
+  m_AnchoredPosition: {x: 0.9000244, y: 5}
   m_SizeDelta: {x: 87.2259, y: 26.1678}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6761565315033498195
@@ -722,8 +707,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 20
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 005169c6657864bd8b40551ec2feb908, type: 2}
-  m_sharedMaterial: {fileID: 861203872275894078, guid: 005169c6657864bd8b40551ec2feb908, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 91709fda2eb464cee9b235efa3eff961, type: 2}
+  m_sharedMaterial: {fileID: 4119848815261452806, guid: 91709fda2eb464cee9b235efa3eff961, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -77,6 +77,7 @@ public class FXAssets : ScriptableObject
     public GameObject loadingBarPrefab;
 
     public GameObject indicatorPrefab;
+    public GameObject directionArrowPrefab;
     [FormerlySerializedAs("RisingTextPrefab")] public GameObject risingTextPrefab;
 
     public List<GameObject> GetBulletHits(DebrisType debrisType)

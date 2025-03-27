@@ -49,6 +49,7 @@ public class SceneDefinitionAssets : ScriptableObject
         AddToNameDictionary(gasStation);
         AddToNameDictionary(restartLevel);
         AddToNameDictionary(gameManager);
+        AddToNameDictionary(startingScene);
         
         // Add all additional scenes
         if (additionalScenes != null)
@@ -79,12 +80,22 @@ public class SceneDefinitionAssets : ScriptableObject
     public SceneDefinition GetByName(string sceneName)
     {
         if (string.IsNullOrEmpty(sceneName))
+        {
+            Debug.Log(   "Scene name is null or empty");
             return null;
+        }
 
         if (_nameMap == null)
             Initialize();
 
-        return _nameMap.TryGetValue(sceneName, out var scene) ? scene : null;
+        var scene = _nameMap[sceneName];
+        if (scene == null)
+        {
+            Debug.Log("can't find scene");
+        }
+
+        Debug.Log("got scene by name: " + sceneName);
+        return scene ;
     }
 
     /// <summary>

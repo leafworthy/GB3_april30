@@ -6,7 +6,7 @@ namespace UpgradeS
 	[Serializable]
 	public class Upgrade : MonoBehaviour
 	{
-		protected int level = 1;
+		protected int level = 0;
 		public virtual string GetDescription => "No description";
 
 		public virtual void CauseEffect(Player player)
@@ -15,6 +15,7 @@ namespace UpgradeS
 
 		public virtual void UpgradeLevel()
 		{
+			Debug.Log("upgraded level of " + GetName());
 			level++;
 		}
 
@@ -26,7 +27,7 @@ namespace UpgradeS
 
 		public virtual void ResetLevel()
 		{
-			level = 1;
+			level = 0;
 		}
 	}
 }

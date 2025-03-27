@@ -21,10 +21,12 @@ namespace UpgradeS
 			Debug.Log("upgrade purchased: " + upgrade.GetName());
 			if(upgrades.Contains(upgrade))
 			{
+				Debug.Log("upgrade level up");
 				upgrade.UpgradeLevel();
 			}
 			else
 			{
+				Debug.Log("add new upgrade " + upgrade.GetName());
 				upgrades.Add(upgrade);
 			}
 

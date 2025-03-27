@@ -19,13 +19,12 @@ namespace UpgradeS
 		private void OnEnable()
 		{
 			LevelManager.OnStopLevel += LevelGameSceneOnStopLevel;
-			anim = GetComponentInChildren<Animator>();
+			
 		}
 
 		private void Start()
 		{
 			Visible.SetActive(false);
-			Debug.Log("set active start");
 		}
 
 		private void LevelGameSceneOnStopLevel(GameLevel gameLevel)
@@ -84,7 +83,7 @@ namespace UpgradeS
 			}
 
 			SFX.sounds.charSelect_select_sounds.PlayRandom();
-			transform.DOPunchScale(Vector3.one*.1f, 0.5f, 1, 0.2f);
+			
 			RisingTextCreator.CreateRisingText(upgrade.GetDescription, owner.SpawnedPlayerGO.transform.position, Color.white);
 			OnUpgradePurchased?.Invoke(owner);
 			
@@ -96,11 +95,12 @@ namespace UpgradeS
 			SetPlayer(player);
 			playerUpgrades = player.GetComponent<PlayerUpgrades>();
 			Visible.SetActive(true);
-			
+
 			buttons.OnUpgradeChosen += Buttons_OnUpgradeChosen;
 			buttons.OnExit += Buttons_OnExit;
 			buttons.Init(player);
 			Players.SetActionMap(player, Players.UIActionMap);
+			anim = GetComponentInChildren<Animator>();
 			anim.SetBool(IsClosed, false);
 		
 			

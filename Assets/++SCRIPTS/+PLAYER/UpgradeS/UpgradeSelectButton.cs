@@ -6,7 +6,8 @@ namespace UpgradeS
 	public class UpgradeSelectButton : MonoBehaviour
 	{
 		public Upgrade upgrade;
-		[SerializeField] private GameObject highlight;
+		public GameObject highlight;
+		public GameObject redHighlight;
 		//[SerializeField] private GameObject selectionGraphic;
 
 		public UpgradeSelectButton buttonToRight;
@@ -35,11 +36,19 @@ namespace UpgradeS
 		public void Highlight()
 		{
 			highlight.SetActive(true);
+			redHighlight.SetActive(false);
 		}
 
 		public void Unhighlight()
 		{
 			highlight.SetActive(false);
+			redHighlight.SetActive(false);
+		}
+
+		public void RedHighlight()
+		{
+			highlight.SetActive(false);
+			redHighlight.SetActive(true);
 		}
 
 		public void Select()

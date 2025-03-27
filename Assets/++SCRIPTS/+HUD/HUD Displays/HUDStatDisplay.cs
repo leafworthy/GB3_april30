@@ -7,15 +7,16 @@ public interface INeedPlayer
 }
 public class HUDStatDisplay : MonoBehaviour, INeedPlayer
 {
-	public PlayerStat.StatType statType {  get; set; }
+	public PlayerStat.StatType statType;
 	public TMP_Text displayText;
 	public GameObject statIcon;
 	private Player owner;
-	private float currentAmount;
 
-	public void SetPlayer(Player player)
+	private float CurrentAmount => PlayerStatsManager.I.GetStatAmount(owner, statType);
+
+	public virtual void SetPlayer(Player player)
 	{
-		currentAmount = PlayerStatsManager.I.GetStatAmount(player, statType);
+		Debug.Log("player assigned correctly");
 		owner = player;
 		PlayerStatsManager.I.OnPlayerStatChange += Players_PlayerStatChange;
 		UpdateDisplay();
@@ -25,14 +26,12 @@ public class HUDStatDisplay : MonoBehaviour, INeedPlayer
 	{
 		if (player != owner) return;
 		if (_statType != statType) return;
-		currentAmount = newAmount;
-
 		UpdateDisplay();
 	}
 
 	private void UpdateDisplay()
 	{
-		displayText.text = currentAmount.ToString();
+		displayText.text = CurrentAmount.ToString();
 		var shaker = statIcon.gameObject.AddComponent<ObjectShaker>();
 		shaker.Shake(ObjectShaker.ShakeIntensityType.medium);
 	}

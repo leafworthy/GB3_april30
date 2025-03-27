@@ -125,28 +125,7 @@ public class ASSETS : Singleton<ASSETS>
     #endregion
     
     #region Scene Utility Methods
-    
-    /// <summary>
-    /// Get a scene definition by scene name
-    /// </summary>
-    public static SceneDefinition GetSceneByName(string sceneName)
-    {
-        if (string.IsNullOrEmpty(sceneName))
-            return null;
-            
-        // Use ASSETS.Scenes to find the definition
-        if (Scenes == null)
-        {
-            Debug.LogWarning("ASSETS.Scenes is not initialized yet. Loading from resources...");
-            return Resources.Load<SceneDefinition>($"Scenes/{sceneName}_SceneDefinition");
-        }
-            
-        // Try to get the scene from the Scenes container
-        var scene = Scenes.GetByName(sceneName);
-        
-        // Return the scene or null
-        return scene;
-    }
+ 
     
     
     

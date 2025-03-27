@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteInEditMode, RequireComponent(typeof(DayNightCycle))]
+[RequireComponent(typeof(DayNightCycle))]
 public class DayNightClock : MonoBehaviour
 {
 	[Header("UI References"), Tooltip("Reference to the Text UI element that displays the time")]

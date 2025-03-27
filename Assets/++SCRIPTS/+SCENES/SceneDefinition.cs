@@ -113,12 +113,8 @@ public class SceneDefinition : ScriptableObject
             return null;
             
         // Try to find an existing definition
-        var definition = ASSETS.GetSceneByName(sceneName);
+        var definition = ASSETS.Scenes.GetByName(sceneName);
         
-        // Create a temporary definition if not found
-        if (definition == null)
-            definition = SceneDefinition.CreateDefault(sceneName);
-            
         return definition;
     }
 

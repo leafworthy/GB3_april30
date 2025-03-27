@@ -1,4 +1,6 @@
-﻿namespace UpgradeS
+﻿using UnityEngine;
+
+namespace UpgradeS
 {
 	public class SpeedUpgrade : Upgrade
 	{
@@ -10,7 +12,8 @@
 		public override void CauseEffect(Player player)
 		{
 			base.CauseEffect(player);
-			player.spawnedPlayerDefence.SetExtraMaxSpeedFactor(.1f * level);
+			Debug.Log("speed upgrade  caused effect " + 2 * level);
+			player.spawnedPlayerDefence.SetExtraMaxSpeedFactor(2 * level);
 		}
 	}
 }
