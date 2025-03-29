@@ -1,84 +1,87 @@
 using System;
 using UnityEngine;
 
-public class LootOpenInteraction : PlayerInteractable
+namespace __SCRIPTS
 {
-	public int howMuchLoot;
-	public LootType lootType;
-	public string MessageToDisplay;
-	private HideRevealObjects hideRevealObjects;
-	public Vector3 dropPosition;
-	public LootContainerType lootContainerType;
-
-	public enum LootContainerType
+	public class LootOpenInteraction : PlayerInteractable
 	{
-		chest,
-		drawer,
-		trash,
-		fridge
-	}
-	protected void Start()
-	{
-		hideRevealObjects = GetComponentInChildren<HideRevealObjects>();
-		hideRevealObjects.Set(0);
-		OnActionPress += interactable_OnInteract;
-		OnPlayerEnters += interactable_PlayerEnters;
-		OnPlayerExits += interactable_PlayerExits;
-	}
+		public int howMuchLoot;
+		public LootType lootType;
+		public string MessageToDisplay;
+		private HideRevealObjects hideRevealObjects;
+		public Vector3 dropPosition;
+		public LootContainerType lootContainerType;
 
-
-	protected override bool canInteract(Player player)
-	{
-		if (!base.canInteract(player)) return false;
-
-		return howMuchLoot > 0;
-	}
-
-	protected override bool canEnter(Player player) {
-		if(!base.canEnter(player)) return false;
-		return howMuchLoot > 0;
-	}
-
-	private void interactable_PlayerExits(Player player)
-	{
-		//player.StopSaying();
-	}
-
-	private void interactable_PlayerEnters(Player player)
-	{
-		//player.Say(MessageToDisplay, 2);
-	}
-
-	private void interactable_OnInteract(Player player)
-	{
-		PlayLootOpenSound();
-		hideRevealObjects.Set(1);
-		LootTable.DropLoot(dropPosition + transform.position, lootType);
-		howMuchLoot--;
-		if (howMuchLoot >= 0) return;
-		hideRevealObjects.Set(2);
-		FinishInteraction(player);
-		player.RemoveInteractable(this);
-	}
-
-	private void PlayLootOpenSound()
-	{
-		switch (lootContainerType)
+		public enum LootContainerType
 		{
-			case LootContainerType.chest:
-				SFX.sounds.chest_open_sound.PlayRandomAt(transform.position);
-				break;
-			case LootContainerType.drawer:
-				SFX.sounds.drawer_open_sound.PlayRandomAt(transform.position);
-				break;
-			case LootContainerType.trash:
-				SFX.sounds.trash_open_sound.PlayRandomAt(transform.position);
-				break;
-			case LootContainerType.fridge:
-				SFX.sounds.fridge_open_sound.PlayRandomAt(transform.position);
-				break;
-			default:
-				throw new ArgumentOutOfRangeException();
+			chest,
+			drawer,
+			trash,
+			fridge
+		}
+		protected void Start()
+		{
+			hideRevealObjects = GetComponentInChildren<HideRevealObjects>();
+			hideRevealObjects.Set(0);
+			OnActionPress += interactable_OnInteract;
+			OnPlayerEnters += interactable_PlayerEnters;
+			OnPlayerExits += interactable_PlayerExits;
+		}
+
+
+		protected override bool canInteract(Player player)
+		{
+			if (!base.canInteract(player)) return false;
+
+			return howMuchLoot > 0;
+		}
+
+		protected override bool canEnter(Player player) {
+			if(!base.canEnter(player)) return false;
+			return howMuchLoot > 0;
+		}
+
+		private void interactable_PlayerExits(Player player)
+		{
+			//player.StopSaying();
+		}
+
+		private void interactable_PlayerEnters(Player player)
+		{
+			//player.Say(MessageToDisplay, 2);
+		}
+
+		private void interactable_OnInteract(Player player)
+		{
+			PlayLootOpenSound();
+			hideRevealObjects.Set(1);
+			LootTable.DropLoot(dropPosition + transform.position, lootType);
+			howMuchLoot--;
+			if (howMuchLoot >= 0) return;
+			hideRevealObjects.Set(2);
+			FinishInteraction(player);
+			player.RemoveInteractable(this);
+		}
+
+		private void PlayLootOpenSound()
+		{
+			switch (lootContainerType)
+			{
+				case LootContainerType.chest:
+					SFX.sounds.chest_open_sound.PlayRandomAt(transform.position);
+					break;
+				case LootContainerType.drawer:
+					SFX.sounds.drawer_open_sound.PlayRandomAt(transform.position);
+					break;
+				case LootContainerType.trash:
+					SFX.sounds.trash_open_sound.PlayRandomAt(transform.position);
+					break;
+				case LootContainerType.fridge:
+					SFX.sounds.fridge_open_sound.PlayRandomAt(transform.position);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
 		}
 	}
 }

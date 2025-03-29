@@ -1,20 +1,23 @@
 using UnityEngine;
 
-public class ZombieAttractor : MonoBehaviour
+namespace __SCRIPTS._ZOMBIESPAWN
 {
-    // Start is called before the first frame update
-    void Start()
+    public class ZombieAttractor : MonoBehaviour
     {
+        // Start is called before the first frame update
+        void Start()
+        {
         
-    }
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
+        // Update is called once per frame
+        void Update()
+        {
         
-    }
+        }
 
-    private void OnDisable()
-    {
+        private void OnDisable()
+        {
+        }
     }
 }

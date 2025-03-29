@@ -1,45 +1,49 @@
+using __SCRIPTS.Cursor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class AimAbility_FX : MonoBehaviour
+namespace __SCRIPTS
 {
-	private AimAbility aimAbility;
-	private Body body;
-	public Light2D flashlightLight;
-	private Life life;
-
-	private void Start()
+	public class AimAbility_FX : MonoBehaviour
 	{
-		life = GetComponent<Life>();
-		if(life == null) return;
-		aimAbility = GetComponent<AimAbility>();
-		body = GetComponent<Body>();
-	}
+		private AimAbility aimAbility;
+		private Body body;
+		public Light2D flashlightLight;
+		private Life life;
 
-	private void Update()
-	{
-		if (PauseManager.IsPaused) return;
-		if(aimAbility.hasEnoughMagnitude())
+		private void Start()
 		{
-			AimFlashlight();
+			life = GetComponent<Life>();
+			if(life == null) return;
+			aimAbility = GetComponent<AimAbility>();
+			body = GetComponent<Body>();
 		}
-		
-	}
 
-	private void AimFlashlight()
-	{
+		private void Update()
+		{
+			if (PauseManager.IsPaused) return;
+			if(aimAbility.hasEnoughMagnitude())
+			{
+				AimFlashlight();
+			}
 		
-		var hitPoint = aimAbility.CheckRaycastHit(aimAbility.AimDir);
-		if (hitPoint.collider != null)
-		{
-			Debug.DrawLine(body.FootPoint.transform.position, hitPoint.point, Color.white);
-			var length = Vector2.Distance(body.FootPoint.transform.position, hitPoint.point);
-			flashlightLight.pointLightOuterRadius = 60 * length / life.AttackRange + 10;
 		}
-		else
+
+		private void AimFlashlight()
 		{
-			Debug.DrawLine(body.FootPoint.transform.position, CursorManager.GetMousePosition(), Color.green);
-			flashlightLight.pointLightOuterRadius = 60;
+		
+			var hitPoint = aimAbility.CheckRaycastHit(aimAbility.AimDir);
+			if (hitPoint.collider != null)
+			{
+				Debug.DrawLine(body.FootPoint.transform.position, hitPoint.point, Color.white);
+				var length = Vector2.Distance(body.FootPoint.transform.position, hitPoint.point);
+				flashlightLight.pointLightOuterRadius = 60 * length / life.PrimaryAttackRange + 10;
+			}
+			else
+			{
+				Debug.DrawLine(body.FootPoint.transform.position, CursorManager.GetMousePosition(), Color.green);
+				flashlightLight.pointLightOuterRadius = 60;
+			}
 		}
 	}
 }

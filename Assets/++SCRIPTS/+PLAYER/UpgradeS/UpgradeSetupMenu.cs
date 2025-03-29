@@ -1,10 +1,9 @@
 ﻿using System;
-using TMPro;
+using __SCRIPTS.HUD_Displays;
+using __SCRIPTS.RisingText;
 using UnityEngine;
-using DG.Tweening;
-using RisingText;
 
-namespace UpgradeS
+namespace __SCRIPTS.UpgradeS
 {
 	public class UpgradeSetupMenu : MonoBehaviour, INeedPlayer
 	{
@@ -16,16 +15,29 @@ namespace UpgradeS
 		private static readonly int IsClosed = Animator.StringToHash("IsClosed");
 		public event Action<Player> OnUpgradePurchased;
 		public event Action<Player> OnUpgradeExit;
-		private void OnEnable()
-		{
-			LevelManager.OnStopLevel += LevelGameSceneOnStopLevel;
-			
-		}
-
+		private bool inMenu;
 		private void Start()
 		{
+			LevelManager.OnStopLevel += LevelGameSceneOnStopLevel;
+			PauseManager.OnPause += PauseWhileInMenu;
 			Visible.SetActive(false);
 		}
+
+		private void PauseWhileInMenu(Player player)
+		{
+			if (!inMenu) return;
+			if (player == owner)
+			{
+				Players.SetActionMap(owner, Players.UIActionMap);
+				anim.SetBool(IsClosed, false);
+			}
+			else
+			{
+				Players.SetActionMap(player, Players.PlayerActionMap);
+				anim.SetBool(IsClosed, true);
+			}
+		}
+
 
 		private void LevelGameSceneOnStopLevel(GameLevel gameLevel)
 		{
@@ -34,8 +46,7 @@ namespace UpgradeS
 
 		private void Unsetup()
 		{
-			owner = null;
-			Visible.SetActive(false);
+			CloseUpgradeSelectMenu();
 		}
 
 		private void OnDisable()
@@ -60,15 +71,18 @@ namespace UpgradeS
 			anim.SetBool(IsClosed, true);
 			//gameObject.SetActive(false);
 			CloseUpgradeSelectMenu();
+			
 			buttons.OnUpgradeChosen -= Buttons_OnUpgradeChosen;
 		}
 
 		private void CloseUpgradeSelectMenu()
 		{
+			inMenu = false;
 			Visible.SetActive(false);
 			buttons.OnExit -= Buttons_OnExit;
 			buttons.OnUpgradeChosen -= Buttons_OnUpgradeChosen;
 			OnUpgradeExit?.Invoke(owner);
+			owner = null;
 			//gameObject.SetActive(false);
 		}
 
@@ -92,6 +106,7 @@ namespace UpgradeS
 		public void StartUpgradeSelectMenu(Player player)
 		{
 			Debug.Log("started upgrade menu");
+			inMenu = true;
 			SetPlayer(player);
 			playerUpgrades = player.GetComponent<PlayerUpgrades>();
 			Visible.SetActive(true);

@@ -1,14 +1,17 @@
 using System.Collections.Generic;
 
-public class AmmoPickup : Pickup
+namespace __SCRIPTS
 {
-	public int amount;
-	public AmmoInventory.AmmoType ammoType;
-
-	public override List<PickupEffect> GetEffects()
+	public class AmmoPickup : Pickup
 	{
-		var newList = new List<PickupEffect>();
-		newList.Add(new AmmoPickupEffect(0, amount, ammoType));
-		return newList;
+		public int amount;
+		public AmmoInventory.AmmoType ammoType;
+
+		public override List<PickupEffect> GetEffects()
+		{
+			var newList = new List<PickupEffect>();
+			newList.Add(new AmmoPickupEffect(0, amount, ammoType));
+			return newList;
+		}
 	}
 }

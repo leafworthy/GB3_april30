@@ -1,23 +1,26 @@
 using UnityEngine;
 
-public class RoarFromTimeToTime : MonoBehaviour
+namespace __SCRIPTS
 {
-	private float roarRate;
-	private float currentRoarTime;
-
-	private void Start()
+	public class RoarFromTimeToTime : MonoBehaviour
 	{
-		roarRate = Random.Range(15, 25);
-	}
+		private float roarRate;
+		private float currentRoarTime;
 
-	private void Update()
-	{
-		currentRoarTime += Time.deltaTime;
-		if (currentRoarTime >= roarRate)
+		private void Start()
 		{
-			currentRoarTime = 0;
 			roarRate = Random.Range(15, 25);
-			SFX.sounds.cone_roar_sounds.PlayRandomAt(transform.position);
+		}
+
+		private void Update()
+		{
+			currentRoarTime += Time.deltaTime;
+			if (currentRoarTime >= roarRate)
+			{
+				currentRoarTime = 0;
+				roarRate = Random.Range(15, 25);
+				SFX.sounds.cone_roar_sounds.PlayRandomAt(transform.position);
+			}
 		}
 	}
 }

@@ -3,97 +3,100 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ZombieWaveManager : MonoBehaviour
+namespace __SCRIPTS._ZOMBIESPAWN
 {
-	private  int currentWaveIndex;
-	private  bool isComplete;
-	public static  Action OnWaveEnd;
-	private  float timeTillNextWave;
-
-	public  bool BetweenWaves;
-	private  ZombieSpawnPoint[] ZombieSpawnPoints;
-
-	public List<ZombieWave> Waves = new();
-
-	public bool isActive;
-	//what?
-	private void Start()
+	public class ZombieWaveManager : MonoBehaviour
 	{
-		if(!isActive) return;
-		isComplete = false;
-		
-		currentWaveIndex = 0;
-		ZombieSpawnPoints = FindObjectsByType<ZombieSpawnPoint>(FindObjectsSortMode.None);
-		SpawnNextWave();
-	}
-	
-	public  float GetTimeTillNextWave()
-	{
-		return timeTillNextWave;
-	}
+		private  int currentWaveIndex;
+		private  bool isComplete;
+		public static  Action OnWaveEnd;
+		private  float timeTillNextWave;
 
-	public  int GetCurrentWaveIndex()
-	{
-		return currentWaveIndex;
-	}
+		public  bool BetweenWaves;
+		private  ZombieSpawnPoint[] ZombieSpawnPoints;
 
-	private void FixedUpdate()
-	{
-		if (!isActive) return;
-		if(isComplete) return;
-		if (!BetweenWaves)
+		public List<ZombieWave> Waves = new();
+
+		public bool isActive;
+		//what?
+		private void Start()
 		{
-			var incompleteSpawnPoints = ZombieSpawnPoints.Where(x => x.isComplete == false).ToList();
-			if (incompleteSpawnPoints.Count == 0)
+			if(!isActive) return;
+			isComplete = false;
+		
+			currentWaveIndex = 0;
+			ZombieSpawnPoints = FindObjectsByType<ZombieSpawnPoint>(FindObjectsSortMode.None);
+			SpawnNextWave();
+		}
+	
+		public  float GetTimeTillNextWave()
+		{
+			return timeTillNextWave;
+		}
+
+		public  int GetCurrentWaveIndex()
+		{
+			return currentWaveIndex;
+		}
+
+		private void FixedUpdate()
+		{
+			if (!isActive) return;
+			if(isComplete) return;
+			if (!BetweenWaves)
 			{
-				//Debug.Log("all spawn points complete");
-				if (EnemyManager.GetNumberOfLivingZombies() <= 0)
+				var incompleteSpawnPoints = ZombieSpawnPoints.Where(x => x.isComplete == false).ToList();
+				if (incompleteSpawnPoints.Count == 0)
 				{
-					//Debug.Log("wave end");
-					OnWaveEnd?.Invoke();
-					BetweenWaves = true;
-					timeTillNextWave = 10f;
+					//Debug.Log("all spawn points complete");
+					if (EnemyManager.GetNumberOfLivingZombies() <= 0)
+					{
+						//Debug.Log("wave end");
+						OnWaveEnd?.Invoke();
+						BetweenWaves = true;
+						timeTillNextWave = 10f;
+					}
+				}
+			}
+			else
+			{
+
+				if (timeTillNextWave > 0) timeTillNextWave -= Time.fixedDeltaTime;
+				if (timeTillNextWave < 0)
+				{
+					//Debug.Log("Time's up");
+					SpawnNextWave();
+					timeTillNextWave = 0;
+					BetweenWaves = false;
 				}
 			}
 		}
-		else
-		{
 
-			if (timeTillNextWave > 0) timeTillNextWave -= Time.fixedDeltaTime;
-			if (timeTillNextWave < 0)
+
+		public void SpawnNextWave()
+		{
+			if (!isActive) return;
+			if(isComplete) return;
+		
+			//Debug.Log("Spawn next wave");
+			BetweenWaves = false;
+			currentWaveIndex++;
+			foreach (var spawnPoint in ZombieSpawnPoints)
 			{
-				//Debug.Log("Time's up");
-				SpawnNextWave();
-				timeTillNextWave = 0;
-				BetweenWaves = false;
+				//Debug.Log("starting wave" + currentWaveIndex + " at spawnpoint " + spawnPoint.name);
+
+				spawnPoint.StartWave(Waves[currentWaveIndex - 1]);
 			}
-		}
-	}
 
-
-	public void SpawnNextWave()
-	{
-		if (!isActive) return;
-		if(isComplete) return;
 		
-		//Debug.Log("Spawn next wave");
-		BetweenWaves = false;
-		currentWaveIndex++;
-		foreach (var spawnPoint in ZombieSpawnPoints)
+		
+
+			return;
+		}
+
+		public  int GetWavesRemaining()
 		{
-			//Debug.Log("starting wave" + currentWaveIndex + " at spawnpoint " + spawnPoint.name);
-
-			spawnPoint.StartWave(Waves[currentWaveIndex - 1]);
+			return  Waves.Count - currentWaveIndex;
 		}
-
-		
-		
-
-		return;
-	}
-
-	public  int GetWavesRemaining()
-	{
-		return  Waves.Count - currentWaveIndex;
 	}
 }

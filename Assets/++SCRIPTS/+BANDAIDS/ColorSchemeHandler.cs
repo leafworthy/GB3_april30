@@ -1,12 +1,15 @@
 using UnityEngine;
 
-public class ColorSchemeHandler: MonoBehaviour
+namespace __SCRIPTS
 {
-	public HouseColorScheme houseColors;
-
-
-	public Color GetColor(HouseColorScheme.ColorType type)
+	public class ColorSchemeHandler: MonoBehaviour
 	{
-		return houseColors.GetColor(type);
+		public HouseColorScheme houseColors;
+
+
+		public Color GetColor(HouseColorScheme.ColorType type)
+		{
+			return houseColors.GetColor(type);
+		}
 	}
 }

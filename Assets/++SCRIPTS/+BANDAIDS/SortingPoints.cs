@@ -1,9 +1,12 @@
 using UnityEngine;
 
-[ExecuteInEditMode]
-public class SortingPoints : MonoBehaviour
+namespace __SCRIPTS
 {
-	public Vector3 openSortingPoint1;
-	public Vector3 openSortingPoint2;
+	[ExecuteInEditMode]
+	public class SortingPoints : MonoBehaviour
+	{
+		public Vector3 openSortingPoint1;
+		public Vector3 openSortingPoint2;
 
+	}
 }

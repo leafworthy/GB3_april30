@@ -1,25 +1,28 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[ExecuteInEditMode]
-public class DoorAnimEvents : MonoBehaviour
+namespace __SCRIPTS
 {
-    [FormerlySerializedAs("door")] public DoorInteraction doorInteraction;
-
-    private void OnEnable()
+    [ExecuteInEditMode]
+    public class DoorAnimEvents : MonoBehaviour
     {
-        doorInteraction = GetComponentInParent<DoorInteraction>();
-    }
+        [FormerlySerializedAs("door")] public DoorInteraction doorInteraction;
+
+        private void OnEnable()
+        {
+            doorInteraction = GetComponentInParent<DoorInteraction>();
+        }
 
   
 
-    public void DoorOpenFinish()
-    {
-        doorInteraction.Animation_OnOpenDoor(true);
-    }
+        public void DoorOpenFinish()
+        {
+            doorInteraction.Animation_OnOpenDoor(true);
+        }
 
-    public void DoorCloseFinish()
-    {
-        doorInteraction.Animation_OnOpenDoor(false);
+        public void DoorCloseFinish()
+        {
+            doorInteraction.Animation_OnOpenDoor(false);
+        }
     }
 }

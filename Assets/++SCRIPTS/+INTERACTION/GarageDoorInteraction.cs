@@ -1,22 +1,25 @@
 using UnityEngine;
 
-public class GarageDoorInteraction : PlayerInteractable
+namespace __SCRIPTS
 {
-  private bool isOpen;
-  private Animator animator;
-  private static readonly int IsOpen = Animator.StringToHash("IsOpen");
-  public Life life;
-
-  protected  void Start()
+  public class GarageDoorInteraction : PlayerInteractable
   {
-    animator = GetComponentInChildren<Animator>();
-    OnActionPress += ActionPress;
-  }
+    private bool isOpen;
+    private Animator animator;
+    private static readonly int IsOpen = Animator.StringToHash("IsOpen");
+    public Life life;
 
-  private void ActionPress(Player obj)
-  {
-    isOpen = !isOpen;
-    animator.SetBool(IsOpen, isOpen);
-    life.gameObject.SetActive(!isOpen);
+    protected  void Start()
+    {
+      animator = GetComponentInChildren<Animator>();
+      OnActionPress += ActionPress;
+    }
+
+    private void ActionPress(Player obj)
+    {
+      isOpen = !isOpen;
+      animator.SetBool(IsOpen, isOpen);
+      life.gameObject.SetActive(!isOpen);
+    }
   }
 }

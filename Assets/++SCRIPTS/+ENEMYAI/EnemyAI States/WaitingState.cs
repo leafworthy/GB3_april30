@@ -1,22 +1,25 @@
-public class WaitingState : IEnemyState
+namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 {
-	private EnemyAI ai;
-	public void OnEnterState(EnemyAI _ai)
+	public class WaitingState : IEnemyState
 	{
-		ai = _ai;
-	}
-
-	public void OnExitState()
-	{
-	}
-
-	public void UpdateState()
-	{
-		if (ai.FoundTargetInAggroRange())
+		private EnemyAI ai;
+		public void OnEnterState(EnemyAI _ai)
 		{
-			ai.Thoughts.Think("Found target in aggro range, going aggro.");
-			ai.TransitionToState(new AggroState());
-			return;
+			ai = _ai;
+		}
+
+		public void OnExitState()
+		{
+		}
+
+		public void UpdateState()
+		{
+			if (ai.FoundTargetInAggroRange())
+			{
+				ai.Thoughts.Think("Found target in aggro range, going aggro.");
+				ai.TransitionToState(new AggroState());
+				return;
+			}
 		}
 	}
 }

@@ -1,17 +1,20 @@
 using UnityEngine;
 
-public class FollowMouse : MonoBehaviour
+namespace __SCRIPTS
 {
-    private AimAbility aim;
+    public class FollowMouse : MonoBehaviour
+    {
+        private AimAbility aim;
   
 
-    void Update()
-    {
-        if (PauseManager.IsPaused)
+        void Update()
         {
-            return;
-        }
-        transform.position = aim.GetAimPoint();
+            if (PauseManager.IsPaused)
+            {
+                return;
+            }
+            transform.position = aim.GetAimPoint();
        
+        }
     }
 }

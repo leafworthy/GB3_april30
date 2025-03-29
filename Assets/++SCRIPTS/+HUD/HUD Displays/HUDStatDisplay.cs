@@ -1,38 +1,57 @@
 using TMPro;
 using UnityEngine;
 
-public interface INeedPlayer
+namespace __SCRIPTS.HUD_Displays
 {
-	void SetPlayer(Player player);
-}
-public class HUDStatDisplay : MonoBehaviour, INeedPlayer
-{
-	public PlayerStat.StatType statType;
-	public TMP_Text displayText;
-	public GameObject statIcon;
-	private Player owner;
-
-	private float CurrentAmount => PlayerStatsManager.I.GetStatAmount(owner, statType);
-
-	public virtual void SetPlayer(Player player)
+	public interface INeedPlayer
 	{
-		Debug.Log("player assigned correctly");
-		owner = player;
-		PlayerStatsManager.I.OnPlayerStatChange += Players_PlayerStatChange;
-		UpdateDisplay();
+		void SetPlayer(Player player);
 	}
-
-	private void Players_PlayerStatChange(Player player, PlayerStat.StatType _statType, float newAmount)
+	public class HUDStatDisplay : MonoBehaviour, INeedPlayer
 	{
-		if (player != owner) return;
-		if (_statType != statType) return;
-		UpdateDisplay();
-	}
+		public PlayerStat.StatType statType;
+		public TMP_Text displayText;
+		public GameObject statIcon;
+		private Player owner;
+		public bool hasMax;
 
-	private void UpdateDisplay()
-	{
-		displayText.text = CurrentAmount.ToString();
-		var shaker = statIcon.gameObject.AddComponent<ObjectShaker>();
-		shaker.Shake(ObjectShaker.ShakeIntensityType.medium);
+		private float CurrentAmount => PlayerStatsManager.I.GetStatAmount(owner, statType);
+
+		private void Start()
+		{
+			LevelManager.OnStartLevel += (t) => UpdateDisplay();
+			LevelManager.OnPlayerSpawned += (t) => UpdateDisplay();
+		}
+
+	
+		public virtual void SetPlayer(Player player)
+		{
+			owner = player;
+			PlayerStats.OnPlayerStatChange += Players_PlayerStatChange;
+			PlayerStats.OnStatsReset += UpdateDisplay;
+			UpdateDisplay();
+		}
+
+		private void Players_PlayerStatChange(Player player, PlayerStat playerStat)
+		{
+			UpdateDisplay();
+		}
+
+		private void UpdateDisplay()
+		{
+			if (owner == null) return;
+			if(hasMax)
+			{
+				displayText.text = CurrentAmount.ToString() +"/" + PlayerStatsManager.I.MaxGas.ToString();
+			}
+			else
+			{
+				displayText.text = CurrentAmount.ToString();
+			}
+			Debug.Log("display updated for " + statType + " to " + CurrentAmount);
+			var shaker = statIcon.gameObject.GetComponent<ObjectShaker>();
+			if(shaker == null) shaker = statIcon.gameObject.AddComponent<ObjectShaker>();
+			shaker.Shake(ObjectShaker.ShakeIntensityType.medium);
+		}
 	}
 }

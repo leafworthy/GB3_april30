@@ -1,25 +1,28 @@
 using TMPro;
 using UnityEngine;
 
-public class EnemyThoughts : MonoBehaviour
+namespace __SCRIPTS._ENEMYAI
 {
-	private string allThoughts;
-	private TextMeshProUGUI text => GetComponentInChildren<TextMeshProUGUI>();
-
-	private void Start()
+	public class EnemyThoughts : MonoBehaviour
 	{
-		allThoughts = "Thoughts for " + name + ": \n";
-	}
+		private string allThoughts;
+		private TextMeshProUGUI text => GetComponentInChildren<TextMeshProUGUI>();
 
-	public void Think(string thought)
-	{
-		if (text == null) return;
-		text.text = thought;
-		allThoughts += thought + "\n";
-	}
+		private void Start()
+		{
+			allThoughts = "Thoughts for " + name + ": \n";
+		}
 
-	private void OnDisable()
-	{
+		public void Think(string thought)
+		{
+			if (text == null) return;
+			text.text = thought;
+			allThoughts += thought + "\n";
+		}
+
+		private void OnDisable()
+		{
 		
+		}
 	}
 }

@@ -1,78 +1,81 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteAlways]
-public class Bar_FX : MonoBehaviour
+namespace __SCRIPTS
 {
-	public Image slowBarImage;
-	public Image fastBarImage;
-
-	public enum ColorMode
+	[ExecuteAlways]
+	public class Bar_FX : MonoBehaviour
 	{
-		Single,
-		Gradient
-	}
+		public Image slowBarImage;
+		public Image fastBarImage;
 
-	public ColorMode colorMode;
-	public Color slowBarColor = Color.white;
-	public Gradient barGradient = new();
+		public enum ColorMode
+		{
+			Single,
+			Gradient
+		}
 
-	public float targetFill;
-	private float smoothingFactor = .25f;
-	private Life _life;
+		public ColorMode colorMode;
+		public Color slowBarColor = Color.white;
+		public Gradient barGradient = new();
 
-	private void UpdateGradient()
-	{
-		var time = _life == null ? targetFill : _life.GetFraction();
-		if (colorMode == ColorMode.Gradient)
-			fastBarImage.color = barGradient.Evaluate(time);
-	}
+		public float targetFill;
+		private float smoothingFactor = .25f;
+		private Life _life;
 
-	#region PUBLIC FUNCTIONS
+		private void UpdateGradient()
+		{
+			var time = _life == null ? targetFill : _life.GetFraction();
+			if (colorMode == ColorMode.Gradient)
+				fastBarImage.color = barGradient.Evaluate(time);
+		}
 
-	public void UpdateBar(float currentValue, float maxValue)
-	{
-		if (slowBarImage == null)
-			return;
-		targetFill = currentValue / maxValue;
-		UpdateGradient();
-		UpdateBarFill();
-	}
+		#region PUBLIC FUNCTIONS
 
-	private void UpdateBarFill()
-	{
+		public void UpdateBar(float currentValue, float maxValue)
+		{
+			if (slowBarImage == null)
+				return;
+			targetFill = currentValue / maxValue;
+			UpdateGradient();
+			UpdateBarFill();
+		}
+
+		private void UpdateBarFill()
+		{
 		
 		
 			if (slowBarImage != null) slowBarImage.fillAmount = Mathf.Lerp(slowBarImage.fillAmount, targetFill, smoothingFactor);
 			if (fastBarImage != null) fastBarImage.fillAmount = targetFill;
 		
-	}
+		}
 
-	private void Update()
-	{
-		UpdateColor(slowBarColor);
-		UpdateColor(barGradient);
-		UpdateBarFill();
-	}
+		private void Update()
+		{
+			UpdateColor(slowBarColor);
+			UpdateColor(barGradient);
+			UpdateBarFill();
+		}
 
 	
 
-	private void UpdateColor(Color targetColor)
-	{
-		if (colorMode != ColorMode.Single || slowBarImage == null)
-			return;
-		slowBarColor = targetColor;
-		slowBarImage.color = slowBarColor;
+		private void UpdateColor(Color targetColor)
+		{
+			if (colorMode != ColorMode.Single || slowBarImage == null)
+				return;
+			slowBarColor = targetColor;
+			slowBarImage.color = slowBarColor;
+		}
+
+		private void UpdateColor(Gradient targetGradient)
+		{
+			if (colorMode != ColorMode.Gradient || slowBarImage == null)
+				return;
+
+			barGradient = targetGradient;
+			UpdateGradient();
+		}
+
+		#endregion
 	}
-
-	private void UpdateColor(Gradient targetGradient)
-	{
-		if (colorMode != ColorMode.Gradient || slowBarImage == null)
-			return;
-
-		barGradient = targetGradient;
-		UpdateGradient();
-	}
-
-	#endregion
 }

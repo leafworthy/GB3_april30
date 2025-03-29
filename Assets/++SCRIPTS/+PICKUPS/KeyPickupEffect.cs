@@ -1,17 +1,20 @@
-public class KeyPickupEffect : PickupEffect
+namespace __SCRIPTS
 {
-	private int amount = 1;
-	private AmmoInventory.AmmoType ammoType;
-
-	public override void StartEffect(Life life)
+	public class KeyPickupEffect : PickupEffect
 	{
-		effectDuration = 0;
-		life.player.GainKey();
-	}
+		private int amount = 1;
+		private AmmoInventory.AmmoType ammoType;
 
-	public KeyPickupEffect(float _effectDuration, int _amount) : base(
-		_effectDuration)
-	{
-		amount = _amount;
+		public override void StartEffect(Life life)
+		{
+			effectDuration = 0;
+			life.player.GainKey();
+		}
+
+		public KeyPickupEffect(float _effectDuration, int _amount) : base(
+			_effectDuration)
+		{
+			amount = _amount;
+		}
 	}
 }

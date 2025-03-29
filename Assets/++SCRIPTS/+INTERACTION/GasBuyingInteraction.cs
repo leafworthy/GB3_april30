@@ -1,48 +1,51 @@
 using UnityEngine;
 
-public class GasBuyingInteraction : TimedInteraction
+namespace __SCRIPTS
 {
-	public int price = 50;
-	private bool occupied;
-	public int gasAmount = 3;
-	private HideRevealObjects hideRevealObjects;
-	public GameObject dropPoint;
-
-	protected override void Start()
+	public class GasBuyingInteraction : TimedInteraction
 	{
-		base.Start();
-		OnSelected += Interactable_OnPlayerEnters;
-		OnDeselected += Interactable_OnPlayerExits;
-		OnTimeComplete += Interactable_OnTimeComplete;
-		hideRevealObjects = GetComponentInChildren<HideRevealObjects>();
-	}
+		public int price = 50;
+		private bool occupied;
+		public int gasAmount = 3;
+		private HideRevealObjects hideRevealObjects;
+		public GameObject dropPoint;
 
-	private void Interactable_OnTimeComplete(Player player)
-	{
-		LootTable.DropLoot(dropPoint.transform.position, LootType.Gas);
-		player.SpendMoney(price);
-		gasAmount--;
-		if (gasAmount <= 0)
+		protected override void Start()
 		{
-			gasAmount = 0;
-			hideRevealObjects.Set(1);
+			base.Start();
+			OnSelected += Interactable_OnPlayerEnters;
+			OnDeselected += Interactable_OnPlayerExits;
+			OnTimeComplete += Interactable_OnTimeComplete;
+			hideRevealObjects = GetComponentInChildren<HideRevealObjects>();
 		}
-	}
 
-	private void Interactable_OnPlayerEnters(Player player)
-	{
-		if (!canInteract(player)) return;
-		player.Say("$"+ price+" for gas", 0);
-	}
-	private void Interactable_OnPlayerExits(Player player)
-	{
-		player.StopSaying();
-	}
+		private void Interactable_OnTimeComplete(Player player)
+		{
+			LootTable.DropLoot(dropPoint.transform.position, LootType.Gas);
+			player.SpendMoney(price);
+			gasAmount--;
+			if (gasAmount <= 0)
+			{
+				gasAmount = 0;
+				hideRevealObjects.Set(1);
+			}
+		}
 
-	protected override bool canInteract(Player player)
-	{
-		if (!base.canInteract(player)) return false;
+		private void Interactable_OnPlayerEnters(Player player)
+		{
+			if (!canInteract(player)) return;
+			player.Say("$"+ price+" for gas", 0);
+		}
+		private void Interactable_OnPlayerExits(Player player)
+		{
+			player.StopSaying();
+		}
+
+		protected override bool canInteract(Player player)
+		{
+			if (!base.canInteract(player)) return false;
 		
-		return player.HasMoreMoneyThan(price) && gasAmount > 0;
+			return player.HasMoreMoneyThan(price) && gasAmount > 0;
+		}
 	}
 }

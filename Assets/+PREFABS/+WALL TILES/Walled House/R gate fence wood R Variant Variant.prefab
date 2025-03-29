@@ -81,7 +81,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 777
   m_Sprite: {fileID: -1813658078, guid: 1e8d73d5b12974304a7f5103c0770cdc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -288,8 +288,24 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 3c423261f2f554b69979c5ffc07c1975, type: 3}
     - target: {fileID: 2510372473898905666, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
       propertyPath: m_SortingOrder
-      value: 12
+      value: 776
       objectReference: {fileID: 0}
+    - target: {fileID: 2718984212677611052, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 2718984212677611055, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3150120706377430670, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
+      propertyPath: cantDie
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3150120706377430670, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
+      propertyPath: unitData
+      value: 
+      objectReference: {fileID: 11400000, guid: 41c0a17ca3cc845a989dec51c251029b, type: 2}
     - target: {fileID: 4194314794864941966, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -345,6 +361,10 @@ PrefabInstance:
     - target: {fileID: 5036818134156741359, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 5198558965830104875, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6644486173267686479, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
       propertyPath: SorterPositionOffset.y
@@ -420,14 +440,25 @@ MonoBehaviour:
   sortingBounds: {fileID: 0}
   renderBelowSortingOrder: 0
   sortType: 0
-  SorterPositionOffset: {x: -11.450317, y: -11.009884, z: 0}
+  SorterPositionOffset: {x: -11.450317, y: -11.009888, z: 0}
   SorterPositionOffset2: {x: 0, y: 0, z: 0}
   renderersToSort:
   - {fileID: 5745287650752254288}
   renderAboveAll: 0
---- !u!60 &3552599053902570058 stripped
+--- !u!114 &5105539143515363228 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3150120706377430670, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
+  m_PrefabInstance: {fileID: 7885238740676731154}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!60 &5208611863129713521 stripped
 PolygonCollider2D:
-  m_CorrespondingSourceObject: {fileID: 6638482730490200920, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2676627192172251747, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
   m_PrefabInstance: {fileID: 7885238740676731154}
   m_PrefabAsset: {fileID: 0}
 --- !u!212 &5745287650752254288 stripped
@@ -440,17 +471,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4194314794864941966, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
   m_PrefabInstance: {fileID: 7885238740676731154}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6339558390238234422 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4221944464464160292, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
-  m_PrefabInstance: {fileID: 7885238740676731154}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8893265522668249239 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1587174740986020229, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
@@ -472,9 +492,9 @@ MonoBehaviour:
   DoorAnimator: {fileID: 411430355}
   isOpen: 0
   isBroken: 0
-  ColliderDisabledOnOpen: {fileID: 3552599053902570058}
+  ColliderDisabledOnOpen: {fileID: 5208611863129713521}
   ShadowCollider: {fileID: 2283019148945936789}
-  life: {fileID: 6339558390238234422}
+  life: {fileID: 5105539143515363228}
   closedSorting: {fileID: 8749497380813973688}
 --- !u!114 &4061500537375723487
 MonoBehaviour:

@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class DestroyMeEvent : MonoBehaviour
+namespace __SCRIPTS
 {
-	public GameObject transformToDestroy;
-	public void DestroyMe()
+	public class DestroyMeEvent : MonoBehaviour
 	{
-		if (transformToDestroy == null) return;
-		ObjectMaker.Unmake(transformToDestroy.gameObject);
+		public GameObject transformToDestroy;
+		public void DestroyMe()
+		{
+			if (transformToDestroy == null) return;
+			ObjectMaker.I.Unmake(transformToDestroy.gameObject);
+		}
 	}
 }

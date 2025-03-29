@@ -2,120 +2,127 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Targetter : MonoBehaviour
+namespace __SCRIPTS._ENEMYAI
 {
-	private Life targetterLife => GetComponent<Life>();
-	private Life specialTarget;
-
-	#region private functions
-
-	private Life GetClosest(List<Life> targets)
+	public class Targetter : MonoBehaviour
 	{
-		Life closest = null;
-		float minDistance = float.MaxValue;
-		// Cache transform.position
-		Vector2 pos = transform.position;
+		private Life targetterLife => GetComponent<Life>();
+		private Life specialTarget;
 
-		for (int i = 0; i < targets.Count; i++)
+		#region private functions
+
+		private Life GetClosest(List<Life> targets)
 		{
-			Life target = targets[i];
-			// Use SqrMagnitude to avoid the square root cost
-			float distance = Vector2.SqrMagnitude(target.transform.position - (Vector3)pos);
-			if (distance < minDistance)
+			Life closest = null;
+			float minDistance = float.MaxValue;
+			// Cache transform.position
+			Vector2 pos = transform.position;
+
+			for (int i = 0; i < targets.Count; i++)
 			{
-				minDistance = distance;
-				closest = target;
+				Life target = targets[i];
+				// Use SqrMagnitude to avoid the square root cost
+				float distance = Vector2.SqrMagnitude(target.transform.position - (Vector3)pos);
+				if (distance < minDistance)
+				{
+					minDistance = distance;
+					closest = target;
+				}
 			}
+
+			return closest;
 		}
 
-		return closest;
-	}
+		//private Life GetClosest(List<Life> targets) => targets.OrderBy(t => Vector2.Distance(t.transform.position, transform.position)).FirstOrDefault();
+		public Life GetClosestAttackableObstacle() => GetClosest(GetValidObstaclesInRange(ASSETS.LevelAssets.DoorLayer, targetterLife.PrimaryAttackRange));
+		public Life GetClosestAttackablePlayer() => GetClosest(GetAttackableTargetsInRange(ASSETS.LevelAssets.PlayerLayer, targetterLife.PrimaryAttackRange));
+		public Life GetClosestPlayerInAggroRange() => GetClosest(GetAggroTargets(ASSETS.LevelAssets.PlayerLayer));
+		public Life GetClosestPlayer() => GetClosest(GetPlayers());
 
-	//private Life GetClosest(List<Life> targets) => targets.OrderBy(t => Vector2.Distance(t.transform.position, transform.position)).FirstOrDefault();
-	public Life GetClosestAttackableObstacle() => GetClosest(GetValidObstaclesInRange(ASSETS.LevelAssets.DoorLayer, targetterLife.AttackRange));
-	public Life GetClosestAttackablePlayer() => GetClosest(GetAttackableTargetsInRange(ASSETS.LevelAssets.PlayerLayer, targetterLife.AttackRange));
-	public Life GetClosestPlayerInAggroRange() => GetClosest(GetAggroTargets(ASSETS.LevelAssets.PlayerLayer));
-	public Life GetClosestPlayer() => GetClosest(GetPlayers());
+		private List<Life> GetPlayers()
+		{
+			var playersWithGOs = Players.AllJoinedPlayers.Where(x => (x.spawnedPlayerDefence != null)).ToList();
+			return playersWithGOs.Select(x => x.spawnedPlayerDefence).Where(x => !x.IsDead()).ToList();
+		}
 
-	private List<Life> GetPlayers()
-	{
-		var playersWithGOs = Players.AllJoinedPlayers.Where(x => (x.spawnedPlayerDefence != null)).ToList();
-		return playersWithGOs.Select(x => x.spawnedPlayerDefence.GetComponentInChildren<Life>()).ToList();
-	}
-
-	private List<Life> GetValidTargetsInRange(LayerMask layer, float range) =>
-		Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
-		         .Where(life => life != null && TargetIsValid(life)).ToList();
+		private List<Life> GetValidTargetsInRange(LayerMask layer, float range) =>
+			Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
+			         .Where(life => life != null && TargetIsValid(life)).ToList();
 
 	
-	private List<Life> GetValidObstaclesInRange(LayerMask layer, float range)
-	{
-		return Physics2D.OverlapCircleAll(transform.position, range)
-		                .Select(x => x.GetComponentInChildren<Life>())
-		                .Where(life => life != null && ObstacleIsValid(life)).ToList();
-	}
-	private List<Life> GetAttackableTargetsInRange(LayerMask layer, float range) =>
-		Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
-		         .Where(life => life != null && TargetIsValid(life) && HasLineOfSightWith(life.transform.position)).ToList();
-
-	private List<Life> GetAggroTargets(LayerMask layer) => GetValidTargetsInRange(layer, targetterLife.AggroRange);
-
-	private bool buildingIsInTheWay(Vector2 position)
-	{
-		var hit = Physics2D.Linecast(transform.position, position, ASSETS.LevelAssets.EnemyUnwalkableLayers);
-		if (!hit) return false;
-		return hit.collider != null;
-	}
-
-	private bool isWithinAttackRange(Vector3 target) => Vector3.Distance(transform.position, target) < targetterLife.AttackRange;
-
-	#endregion
-
-	#region public functions
-
-	public Vector2 GetWanderPosition(Vector2 wanderPoint, float wanderDistance)
-	{
-		var maxTries = 30;
-		for (var i = 0; i < maxTries; i++)
+		private List<Life> GetValidObstaclesInRange(LayerMask layer, float range)
 		{
-			var point = wanderPoint + Random.insideUnitCircle * wanderDistance;
-			if (!buildingIsInTheWay(point)) return point;
+			return Physics2D.OverlapCircleAll(transform.position, range)
+			                .Select(x => x.GetComponentInChildren<Life>())
+			                .Where(life => life != null && ObstacleIsValid(life)).ToList();
+		}
+		private List<Life> GetAttackableTargetsInRange(LayerMask layer, float range) =>
+			Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
+			         .Where(life => life != null && TargetIsValid(life) && HasLineOfSightWith(life.transform.position)).ToList();
+
+		private List<Life> GetAggroTargets(LayerMask layer) => GetValidTargetsInRange(layer, targetterLife.AggroRange);
+
+		private bool buildingIsInTheWay(Vector2 position)
+		{
+			var hit = Physics2D.Linecast(transform.position, position, ASSETS.LevelAssets.EnemyUnwalkableLayers);
+			if (!hit) return false;
+			return hit.collider != null;
 		}
 
-		return wanderPoint;
-	}
+		private bool isWithinAttackRange(Vector3 target) => Vector3.Distance(transform.position, target) < targetterLife.PrimaryAttackRange;
 
-	#endregion
+		#endregion
 
-	public bool HasLineOfSightWith(Vector3 transformPosition) => !buildingIsInTheWay(transformPosition);
+		#region public functions
 
-	private bool CanAttack(Life target)
-	{
-		if (!TargetIsValid(target)) return false;
+		public Vector2 GetWanderPosition(Vector2 wanderPoint, float wanderDistance)
+		{
+			var maxTries = 30;
+			for (var i = 0; i < maxTries; i++)
+			{
+				var point = wanderPoint + Random.insideUnitCircle * wanderDistance;
+				if (!buildingIsInTheWay(point)) return point;
+			}
 
-		if (!isWithinAttackRange(target.transform.position)) return false;
+			return wanderPoint;
+		}
 
-		return HasLineOfSightWith(target.transform.position);
-	}
+		#endregion
 
-	private bool TargetIsValid(Life target)
-	{
-		if (target != null && !target.IsDead()) return true;
-		return false;
-	}
+		public bool HasLineOfSightWith(Vector3 transformPosition) => !buildingIsInTheWay(transformPosition);
 
-	private bool ObstacleIsValid(Life target)
-	{
-		if (target == null || target.IsDead()) return false;
+		private bool CanAttack(Life target)
+		{
+			if (!TargetIsValid(target)) return false;
 
-		if (!target.IsObstacle) return false;
-		var door = target.GetComponentInParent<DoorInteraction>();
-		if (door == null) return false;
-		if (door.isBroken) return false;
+			if (!isWithinAttackRange(target.transform.position)) return false;
 
-		if (door.isOpen) return false;
+			return HasLineOfSightWith(target.transform.position);
+		}
 
-		return true;
+		private bool TargetIsValid(Life target)
+		{
+			if (target != null && !target.IsDead()) return true;
+			return false;
+		}
+
+		private bool ObstacleIsValid(Life target)
+		{
+			if (target == null || target.IsDead()) return false;
+			if (!HasLineOfSightWith(target.transform.position))
+			{
+				Debug.Log("no line of sight");
+				return false;
+			}
+			if (!target.IsObstacle) return false;
+			var door = target.GetComponentInParent<DoorInteraction>();
+			if (door == null) return false;
+			if (door.isBroken) return false;
+
+			if (door.isOpen) return false;
+
+			return true;
+		}
 	}
 }
 

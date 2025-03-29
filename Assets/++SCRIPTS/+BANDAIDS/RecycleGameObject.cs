@@ -1,7 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-
+namespace __SCRIPTS
+{
 	public class RecycleGameObject : MonoBehaviour
 	{
 		public void ActivateGameObject()
@@ -16,6 +16,7 @@ using UnityEngine;
 
 
 	}
+}
 
 
 

@@ -1,11 +1,15 @@
+using __SCRIPTS.Cursor;
 using UnityEngine;
 
-public class CameraForWorldspaceCanvas : MonoBehaviour
+namespace __SCRIPTS
 {
-    void Start()
+    public class CameraForWorldspaceCanvas : MonoBehaviour
     {
-        var canvas = GetComponentInChildren<Canvas>();
-        canvas.worldCamera = CursorManager.GetCamera();
-    }
+        void Start()
+        {
+            var canvas = GetComponentInChildren<Canvas>();
+            canvas.worldCamera = CursorManager.GetCamera();
+        }
 
+    }
 }

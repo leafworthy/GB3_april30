@@ -1,49 +1,52 @@
 ﻿using System;
 using UnityEngine.InputSystem;
 
-public class NewInputButton : NewControlButton
+namespace __SCRIPTS
 {
-	private InputAction action;
-	public Player owner { get; set; }
-	public event Action<NewControlButton> OnPress;
-	public event Action<NewControlButton> OnHold;
-	public event Action<NewControlButton> OnRelease;
-	public bool IsPressed { get; set; }
-
-	public NewInputButton(InputAction _action, Player _owner)
+	public class NewInputButton : NewControlButton
 	{
-		action = _action;
-		owner = _owner;
-		owner.input.onActionTriggered += owner_onAction;
-	}
+		private InputAction action;
+		public Player owner { get; set; }
+		public event Action<NewControlButton> OnPress;
+		public event Action<NewControlButton> OnHold;
+		public event Action<NewControlButton> OnRelease;
+		public bool IsPressed { get; set; }
 
-	private void owner_onAction(InputAction.CallbackContext obj)
-	{
-		if (obj.action.name != action.name) return;
-		if (obj.phase == InputActionPhase.Performed)
+		public NewInputButton(InputAction _action, Player _owner)
 		{
+			action = _action;
+			owner = _owner;
+			owner.input.onActionTriggered += owner_onAction;
+		}
 
-			if (!IsPressed)
+		private void owner_onAction(InputAction.CallbackContext obj)
+		{
+			if (obj.action.name != action.name) return;
+			if (obj.phase == InputActionPhase.Performed)
 			{
-				IsPressed = true;
-				OnPress?.Invoke(this);
+
+				if (!IsPressed)
+				{
+					IsPressed = true;
+					OnPress?.Invoke(this);
+				}
+				else
+				{
+					OnHold?.Invoke(this);
+				}
 			}
-			else
+			else if (obj.phase == InputActionPhase.Canceled)
 			{
-				OnHold?.Invoke(this);
+				if (!IsPressed) return;
+				IsPressed = false;
+				OnRelease?.Invoke(this);
 			}
 		}
-		else if (obj.phase == InputActionPhase.Canceled)
+
+
+		public void update()
 		{
-			if (!IsPressed) return;
-			IsPressed = false;
-			OnRelease?.Invoke(this);
+
 		}
-	}
-
-
-	public void update()
-	{
-
 	}
 }

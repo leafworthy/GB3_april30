@@ -1,35 +1,38 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Ensures the GameManager scene is loaded additively when a game scene is loaded
-/// </summary>
-public class LoadGameManager : MonoBehaviour
+namespace __SCRIPTS
 {
-    public SceneDefinition gameManagerScene;
-    private void Awake()
+    /// <summary>
+    /// Ensures the GameManager scene is loaded additively when a game scene is loaded
+    /// </summary>
+    public class LoadGameManager : MonoBehaviour
     {
-        if (GameManager.gameManagerLoaded)
+        public SceneDefinition gameManagerScene;
+        private void Awake()
         {
-            Debug.Log("game manager already created");
-            return;
+            if (GameManager.I.gameManagerLoaded)
+            {
+                Debug.Log("game manager already created");
+                return;
+            }
+            CreateGameManager();
         }
-        CreateGameManager();
-    }
 
-    private void CreateGameManager()
-    {
-        // Check if GameManager scene is already loaded
-        for (int i = 0; i < SceneManager.sceneCount; i++)
+        private void CreateGameManager()
         {
-            string sceneName = SceneManager.GetSceneAt(i).name;
-            if (sceneName != "GameManagerScene" && sceneName != "GameManager") continue;
-            Debug.Log("GameManager scene already loaded");
-            return;
-        }
+            // Check if GameManager scene is already loaded
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                string sceneName = SceneManager.GetSceneAt(i).name;
+                if (sceneName != "GameManagerScene" && sceneName != "GameManager") continue;
+                Debug.Log("GameManager scene already loaded");
+                return;
+            }
         
-        // Load GameManager scene additively
-        SceneManager.LoadScene(gameManagerScene.sceneName, LoadSceneMode.Additive);
-        Debug.Log($"Loading GameManager scene");
+            // Load GameManager scene additively
+           
+            Debug.Log($"Loading GameManager scene");
+        }
     }
 }

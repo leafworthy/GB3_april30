@@ -1,17 +1,20 @@
 using UnityEngine;
 
-public class DisableImmediately : MonoBehaviour
+namespace __SCRIPTS
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
+    public class DisableImmediately : MonoBehaviour
     {
-        gameObject.SetActive(false);
-        Debug.Log("disable here");
-    }
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void Awake()
+        {
+            gameObject.SetActive(false);
+            Debug.Log("disable here");
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
+        // Update is called once per frame
+        void Update()
+        {
         
+        }
     }
 }

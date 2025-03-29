@@ -1,25 +1,28 @@
 using UnityEngine;
 
-public class PickupItem : MonoBehaviour
+namespace __SCRIPTS
 {
-	public string itemName;
-	public Sprite itemGraphic;
-	public ItemType itemType;
-	public int itemAmount;
-
-	public enum ItemType
+	public class PickupItem : MonoBehaviour
 	{
-		health,
-		gas,
-		cash,
-		key,
-		book,
-		ammo,
-		nades
-	}
+		public string itemName;
+		public Sprite itemGraphic;
+		public ItemType itemType;
+		public int itemAmount;
 
-	public void Use()
-	{
+		public enum ItemType
+		{
+			health,
+			gas,
+			cash,
+			key,
+			book,
+			ammo,
+			nades
+		}
+
+		public void Use()
+		{
 		
+		}
 	}
 }

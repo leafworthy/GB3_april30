@@ -18,7 +18,8 @@ AnimationClip:
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves:
-  - curve:
+  - serializedVersion: 2
+    curve:
     - time: 0
       value: {fileID: -3406940239795072195, guid: 1985a0f46e9f147078d6b30a7422c80c, type: 3}
     - time: 0.06666667
@@ -37,6 +38,7 @@ AnimationClip:
     path: BottomSprite/Sprite
     classID: 212
     script: {fileID: 0}
+    flags: 2
   m_SampleRate: 15
   m_WrapMode: 0
   m_Bounds:
@@ -52,6 +54,7 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
       isIntCurve: 0
+      isSerializeReferenceCurve: 0
     pptrCurveMapping:
     - {fileID: -3406940239795072195, guid: 1985a0f46e9f147078d6b30a7422c80c, type: 3}
     - {fileID: 7783103284845452199, guid: 1985a0f46e9f147078d6b30a7422c80c, type: 3}
@@ -106,17 +109,17 @@ AnimationClip:
     floatParameter: 0
     intParameter: 4
     messageOptions: 0
+  - time: 0.33333334
+    functionName: LandingStop
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.4
     functionName: AttackStop
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 4
-    messageOptions: 0
-  - time: 0.4
-    functionName: LandingStop
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
     messageOptions: 0

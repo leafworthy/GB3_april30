@@ -1,40 +1,43 @@
 using UnityEngine;
 
-public class MoveAbility_FX : MonoBehaviour
+namespace __SCRIPTS
 {
-	private Body body;
-	private AnimationEvents animEvents;
-	private Animations anim;
-	private MoveAbility mover;
-
-	private void OnEnable()
+	public class MoveAbility_FX : MonoBehaviour
 	{
-		mover = GetComponent<MoveAbility>();
-		anim = GetComponent<Animations>();
-		animEvents = anim.animEvents;
-		animEvents.OnStep += Anim_OnStep;
-		body = GetComponent<Body>();
-	}
+		private Body body;
+		private AnimationEvents animEvents;
+		private Animations anim;
+		private MoveAbility mover;
 
-	private void OnDisable()
-	{
-		animEvents.OnStep -= Anim_OnStep;
-	}
-
-
-	private void Anim_OnStep()
-	{
-		var dust = ObjectMaker.Make(ASSETS.FX.dust1_ground, body.FootPoint.transform.position);
-		if (mover.moveDir.x > 0)
+		private void OnEnable()
 		{
-			dust.transform.localScale = new Vector3(-Mathf.Abs(dust.transform.localScale.x), dust.transform.localScale.y,
-				dust.transform.localScale.z);
+			mover = GetComponent<MoveAbility>();
+			anim = GetComponent<Animations>();
+			animEvents = anim.animEvents;
+			animEvents.OnStep += Anim_OnStep;
+			body = GetComponent<Body>();
 		}
-		else
+
+		private void OnDisable()
 		{
-			dust.transform.localScale = new Vector3(Mathf.Abs(dust.transform.localScale.x),
-				dust.transform.localScale.y,
-				dust.transform.localScale.z);
+			animEvents.OnStep -= Anim_OnStep;
+		}
+
+
+		private void Anim_OnStep()
+		{
+			var dust = ObjectMaker.I.Make(ASSETS.FX.dust1_ground, body.FootPoint.transform.position);
+			if (mover.moveDir.x > 0)
+			{
+				dust.transform.localScale = new Vector3(-Mathf.Abs(dust.transform.localScale.x), dust.transform.localScale.y,
+					dust.transform.localScale.z);
+			}
+			else
+			{
+				dust.transform.localScale = new Vector3(Mathf.Abs(dust.transform.localScale.x),
+					dust.transform.localScale.y,
+					dust.transform.localScale.z);
+			}
 		}
 	}
 }

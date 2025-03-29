@@ -1,8 +1,12 @@
+using __SCRIPTS.Plugins._ISOSORT;
 using UnityEngine;
 
-public class Landable : MonoBehaviour
+namespace __SCRIPTS
 {
-    public IsoSpriteSorting sorting;
-    public float height = 10;
+    public class Landable : MonoBehaviour
+    {
+        public IsoSpriteSorting sorting;
+        public float height = 10;
 
+    }
 }

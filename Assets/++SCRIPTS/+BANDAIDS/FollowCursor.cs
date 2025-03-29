@@ -1,19 +1,22 @@
 ﻿using UnityEngine;
 
-public class FollowCursor : MonoBehaviour
+namespace __SCRIPTS
 {
-	private AimAbility aim;
-
-	// Start is called before the first frame update
-	public void Init(Player player)
+	public class FollowCursor : MonoBehaviour
 	{
-		aim = player.SpawnedPlayerGO.GetComponent<AimAbility>();
-		if (aim == null) return;
-		transform.position = aim.GetAimPoint();
-	}
+		private AimAbility aim;
 
-	private void Update()
-	{
-		transform.position = aim.GetAimPoint();
+		// Start is called before the first frame update
+		public void Init(Player player)
+		{
+			aim = player.SpawnedPlayerGO.GetComponent<AimAbility>();
+			if (aim == null) return;
+			transform.position = aim.GetAimPoint();
+		}
+
+		private void Update()
+		{
+			transform.position = aim.GetAimPoint();
+		}
 	}
 }

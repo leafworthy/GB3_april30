@@ -1,142 +1,149 @@
-using UnityEngine;
-using Pathfinding;
 using System.Collections.Generic;
+using __SCRIPTS.Plugins.AstarPathfindingProject.Core;
+using __SCRIPTS.Plugins.AstarPathfindingProject.Generators;
+using UnityEngine;
+using VInspector;
 
-public class GraphNodePositioner : MonoBehaviour
+namespace __SCRIPTS
 {
-    [Header("References")]
-    public Transform player;
-    public List<Transform> potentialCenters = new List<Transform>();
-    
-    [Header("Settings")]
-    public string centerObjectsTag = "GraphCenter"; // Optional: find centers by tag
-    public float checkInterval = 0.5f; // How often to check for closest node
-    
-    private AstarPath pathfinder;
-    private GridGraph grid;
-    private Transform currentCenter;
-    private float timeSinceCheck;
-    
-    private void Start()
+    public class GraphNodePositioner : MonoBehaviour
     {
-        LevelManager.OnStartLevel += OnStartLevel;
-        // Find player if not assigned
+        [Header("References")]
+        public Transform player;
+        public List<Transform> potentialCenters = new List<Transform>();
+    
+        [Header("Settings")]
+        public string centerObjectsTag = "GraphCenter"; // Optional: find centers by tag
+        public float checkInterval = 0.5f; // How often to check for closest node
+    
+        private AstarPath pathfinder;
+        private GridGraph grid;
+        private Transform currentCenter;
+        private float timeSinceCheck;
+    
+        private void Start()
+        {
+            LevelManager.OnStartLevel += OnStartLevel;
+            // Find player if not assigned
         
-    }
-
-    private void OnStartLevel(GameLevel obj)
-    {
-        if (player == null)
-            player = Players.AllJoinedPlayers[0].SpawnedPlayerGO.transform;
-        if (player == null)
-        {
-            Debug.LogError("No player found in scene!");
-            enabled = false;
-            return;
         }
 
-        // Find AstarPath
-        pathfinder = AstarPath.active;
-        if (pathfinder == null)
+        private void OnStartLevel(GameLevel obj)
         {
-            Debug.LogError("No AstarPath found in the scene!");
-            enabled = false;
-            return;
-        }
-
-        // Get the active grid graph without changing any settings
-        if (pathfinder.data.graphs.Length > 0)
-        {
-            foreach (NavGraph graph in pathfinder.data.graphs)
+            if (player == null)
+                player = Players.AllJoinedPlayers[0].SpawnedPlayerGO.transform;
+            if (player == null)
             {
-                if (graph is GridGraph)
+                Debug.LogError("No player found in scene!");
+                enabled = false;
+                return;
+            }
+
+            MyDebugUtilities.DrawX(player.position, 3, Color.blue);
+            // Find AstarPath
+            pathfinder = AstarPath.active;
+            if (pathfinder == null)
+            {
+                Debug.LogError("No AstarPath found in the scene!");
+                enabled = false;
+                return;
+            }
+
+            // Get the active grid graph without changing any settings
+            if (pathfinder.data.graphs.Length > 0)
+            {
+                foreach (NavGraph graph in pathfinder.data.graphs)
                 {
-                    grid = graph as GridGraph;
-                    break;
+                    if (graph is GridGraph)
+                    {
+                        grid = graph as GridGraph;
+                        break;
+                    }
                 }
             }
+
+            if (grid == null)
+            {
+                Debug.LogError("No GridGraph found in scene!");
+                enabled = false;
+                return;
+            }
+
+            FindCenters();
+
+            // Initial center update
+
         }
 
-        if (grid == null)
+        [Button()]
+        public void FindCenters()
         {
-            Debug.LogError("No GridGraph found in scene!");
-            enabled = false;
-            return;
-        }
-
-        potentialCenters.Clear();
-        // Populate potential centers by tag if list is empty
-        if (potentialCenters.Count == 0 && !string.IsNullOrEmpty(centerObjectsTag))
-        {
-            Debug.Log("finding centers");
+            potentialCenters.Clear();
             GameObject[] taggedCenters = GameObject.FindGameObjectsWithTag(centerObjectsTag);
             foreach (GameObject go in taggedCenters)
             {
                 potentialCenters.Add(go.transform);
+                Debug.DrawLine(player.transform.position, go.transform.position, Color.red);
             }
 
-            if (potentialCenters.Count == 0)
-            {
-                Debug.LogWarning("No potential graph centers found with tag: " + centerObjectsTag);
-            }
-        }
-
-        // Initial center update
-        UpdateGraphCenter();
-    }
-
-    private void Update()
-    {
-        timeSinceCheck += Time.deltaTime;
-        
-        if (timeSinceCheck >= checkInterval)
-        {
-            timeSinceCheck = 0f;
             UpdateGraphCenter();
         }
-    }
-    
-    private void UpdateGraphCenter()
-    {
-        if (potentialCenters.Count == 0 || player == null)
-            return;
-            
-        // Find closest center to player
-        Transform closestCenter = FindClosestCenter();
-        if (closestCenter == null) return;
-        // Only update if the closest center has changed
-        if (closestCenter != currentCenter)
+
+        private void Update()
         {
-            currentCenter = closestCenter;
-            
-            // Move grid center to this position
-            grid.center = closestCenter.position;
-            
-            // Update the graph
-            pathfinder.Scan();
-        }
-    }
-    
-    private Transform FindClosestCenter()
-    {
-        if (potentialCenters.Count == 0) return null;
-        Transform closest = potentialCenters[0];
-        if (closest == null) return null;
-        float closestDist = Vector3.Distance(player.position, closest.position);
+            timeSinceCheck += Time.deltaTime;
         
-        for (int i = 1; i < potentialCenters.Count; i++)
-        {
-            if (potentialCenters[i] == null)
-                continue;
-                
-            float dist = Vector3.Distance(player.position, potentialCenters[i].position);
-            if (dist < closestDist)
+            if (timeSinceCheck >= checkInterval)
             {
-                closestDist = dist;
-                closest = potentialCenters[i];
+                timeSinceCheck = 0f;
+                UpdateGraphCenter();
             }
         }
+    
+        private void UpdateGraphCenter()
+        {
+            if (potentialCenters.Count == 0 || player == null)
+                return;
+            
+            // Find closest center to player
+            Transform closestCenter = FindClosestCenter();
+            if (closestCenter == null) return;
+            Debug.Log("this is cthe closest now: ", closestCenter);
+            // Only update if the closest center has changed
+            if (closestCenter != currentCenter)
+            {
+                currentCenter = closestCenter;
+                Debug.Log("changing closest", currentCenter);
+            
+                // Move grid center to this position
+                grid.center = closestCenter.position;
+                Debug.DrawLine(player.transform.position, closestCenter.position, Color.green);
+                // Update the graph
+                pathfinder.Scan();
+            }
+        }
+    
+        private Transform FindClosestCenter()
+        {
+            if (potentialCenters.Count == 0) return null;
+            Transform closest = potentialCenters[0];
+            if (closest == null) return null;
+            float closestDist = Vector3.Distance(player.position, closest.position);
         
-        return closest;
+            for (int i = 1; i < potentialCenters.Count; i++)
+            {
+                if (potentialCenters[i] == null)
+                    continue;
+                
+                float dist = Vector3.Distance(player.position, potentialCenters[i].position);
+                if (dist < closestDist)
+                {
+                    closestDist = dist;
+                    closest = potentialCenters[i];
+                }
+            }
+        
+            return closest;
+        }
     }
 }

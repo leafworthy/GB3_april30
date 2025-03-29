@@ -3,7 +3,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-namespace UpgradeS
+namespace __SCRIPTS.UpgradeS
 {
 	public class UpgradeSelectButtons : MonoBehaviour
 	{
@@ -35,12 +35,21 @@ namespace UpgradeS
 			buttons[0] = DefaultButton;
 			DeselectAllButtons();
 			SetCurrentButton(DefaultButton);
+			UpdateAllButtons();
 		}
+
+		private void UpdateAllButtons()
+		{ 
+			foreach (var button in buttons)
+			{
+				button.RefreshText();
+			}
+		}	
 
 		private void SetCurrentButton(UpgradeSelectButton defaultButton)
 		{
 			currentlySelectedButton = defaultButton;
-			if(defaultButton.upgrade.GetCost() > _player.GetComponent<PlayerStats>().GetStatValue(PlayerStat.StatType.TotalCash))
+			if (CanAfford(defaultButton))
 			{
 				currentlySelectedButton.RedHighlight();
 			}
@@ -51,6 +60,10 @@ namespace UpgradeS
 			
 			upgradeDescription.text = currentlySelectedButton.upgrade.GetDescription;
 		}
+
+		
+
+		private bool CanAfford(UpgradeSelectButton defaultButton) => defaultButton.upgrade.Cost > _player.GetComponent<PlayerStats>().GetStatValue(PlayerStat.StatType.TotalCash);
 
 		private void OnDisable()
 		{
@@ -86,10 +99,9 @@ namespace UpgradeS
 
 		private void ChooseUpgrade()
 		{
-			currentlySelectedButton.Select();
-			SFX.sounds.charSelect_select_sounds.PlayRandom();
 			OnUpgradeChosen?.Invoke(currentlySelectedButton.upgrade);
 			currentlySelectedButton.transform.DOPunchScale(Vector3.one * .1f, 0.5f, 1, 0.2f);
+			SetCurrentButton(currentlySelectedButton);
 		}
 
 		private void OnRight(NewInputAxis obj)
@@ -97,9 +109,8 @@ namespace UpgradeS
 			Debug.Log("on right");
 			SFX.sounds.charSelect_move_sounds.PlayRandom();
 			currentlySelectedButton.Unhighlight();
-			currentlySelectedButton = currentlySelectedButton.buttonToRight;
-			currentlySelectedButton.Highlight();
-			upgradeDescription.text = currentlySelectedButton.upgrade.GetDescription;
+			SetCurrentButton(currentlySelectedButton.buttonToRight);
+			currentlySelectedButton.transform.DOPunchScale(Vector3.one * .1f, 0.5f, 1, 0.1f);
 		}
 
 		private void OnLeft(NewInputAxis obj)
@@ -107,9 +118,7 @@ namespace UpgradeS
 			Debug.Log("on left");
 			SFX.sounds.charSelect_move_sounds.PlayRandom();
 			currentlySelectedButton.Unhighlight();
-			currentlySelectedButton = currentlySelectedButton.buttonToLeft;
-			currentlySelectedButton.Highlight();
-			upgradeDescription.text = currentlySelectedButton.upgrade.GetDescription;
+			SetCurrentButton(currentlySelectedButton.buttonToLeft);
 		}
 	}
 }

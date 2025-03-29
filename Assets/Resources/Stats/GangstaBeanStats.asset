@@ -15,15 +15,24 @@ MonoBehaviour:
   debrisType: 0
   isObstacle: 0
   isPlayerAttackable: 0
-  AttackHeight: 7
-  AttackDamage: 30
+  AttackHeight: 5
+  AttackDamage: 40
   AttackRate: 0.15
-  Attack2Damage: 45
-  Attack2Rate: 0.4
+  Attack2Damage: 0
+  Attack2Rate: 0
   AttackRange: 100
+  PrimaryAttackDamage: 40
+  PrimaryAttackRate: 0.15
+  PrimaryAttackRange: 100
+  SecondaryAttackDamage: 300
+  SecondaryAttackRate: 1
+  SecondaryAttackRange: 50
+  TertiaryAttackDamage: 75
+  TertiaryAttackRate: 1
+  TertiaryAttackRange: 20
   HealthMax: 350
   MoveSpeed: 45
-  DashSpeed: 150
+  DashSpeed: 300
   JumpSpeed: 2
   AggroRange: 80
   ShowLifeBar: 1

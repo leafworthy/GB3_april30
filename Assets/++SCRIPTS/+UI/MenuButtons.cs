@@ -1,70 +1,73 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuButtons: MonoBehaviour
+namespace __SCRIPTS
 {
-	[SerializeField] protected List<MenuButton> menuButtons = new();
-	public int CurrentButtonIndex;
-	protected MenuButton CurrentlySelectedButton;
-
-	public void InitButtons()
+	public class MenuButtons: MonoBehaviour
 	{
-		UnhighlightButtons();
-		CurrentButtonIndex = 0;
-		CurrentlySelectedButton = menuButtons[CurrentButtonIndex];
-		CurrentlySelectedButton.Highlight();
-	}
+		[SerializeField] protected List<MenuButton> menuButtons = new();
+		public int CurrentButtonIndex;
+		protected MenuButton CurrentlySelectedButton;
 
-	public void UnhighlightButtons()
-	{
-		foreach (var button in menuButtons)
+		public void InitButtons()
 		{
-			button.UnHighlight();
-		}
-	}
-
-	protected void IncreaseButtonIndex()
-	{
-		if (CurrentButtonIndex >= menuButtons.Count - 1)
+			UnhighlightButtons();
 			CurrentButtonIndex = 0;
-		else
-			CurrentButtonIndex++;
+			CurrentlySelectedButton = menuButtons[CurrentButtonIndex];
+			CurrentlySelectedButton.Highlight();
+		}
+
+		public void UnhighlightButtons()
+		{
+			foreach (var button in menuButtons)
+			{
+				button.UnHighlight();
+			}
+		}
+
+		protected void IncreaseButtonIndex()
+		{
+			if (CurrentButtonIndex >= menuButtons.Count - 1)
+				CurrentButtonIndex = 0;
+			else
+				CurrentButtonIndex++;
+		}
+
+
+		protected void DecreaseButtonIndex()
+		{
+			if (CurrentButtonIndex <= 0)
+				CurrentButtonIndex = menuButtons.Count - 1;
+			else
+				CurrentButtonIndex--;
+		}
+
+		protected void HighlightButton(int buttonIndex)
+		{
+			if (menuButtons[buttonIndex] is null) return;
+			menuButtons[buttonIndex].Highlight();
+		}
+
+		protected void UnHighlightButton(int buttonIndex)
+		{
+			if (menuButtons[buttonIndex] is null) return;
+			menuButtons[buttonIndex].UnHighlight();
+		}
+
+		public void Up()
+		{
+			UnHighlightButton(CurrentButtonIndex);
+			IncreaseButtonIndex();
+			HighlightButton(CurrentButtonIndex);
+		}
+
+		public void Down()
+		{
+			UnHighlightButton(CurrentButtonIndex);
+			DecreaseButtonIndex();
+			HighlightButton(CurrentButtonIndex);
+		}
+
+		public MenuButton GetCurrentButton() => menuButtons[CurrentButtonIndex];
 	}
-
-
-	protected void DecreaseButtonIndex()
-	{
-		if (CurrentButtonIndex <= 0)
-			CurrentButtonIndex = menuButtons.Count - 1;
-		else
-			CurrentButtonIndex--;
-	}
-
-	protected void HighlightButton(int buttonIndex)
-	{
-		if (menuButtons[buttonIndex] is null) return;
-		menuButtons[buttonIndex].Highlight();
-	}
-
-	protected void UnHighlightButton(int buttonIndex)
-	{
-		if (menuButtons[buttonIndex] is null) return;
-		menuButtons[buttonIndex].UnHighlight();
-	}
-
-	public void Up()
-	{
-		UnHighlightButton(CurrentButtonIndex);
-		IncreaseButtonIndex();
-		HighlightButton(CurrentButtonIndex);
-	}
-
-	public void Down()
-	{
-		UnHighlightButton(CurrentButtonIndex);
-		DecreaseButtonIndex();
-		HighlightButton(CurrentButtonIndex);
-	}
-
-	public MenuButton GetCurrentButton() => menuButtons[CurrentButtonIndex];
 }

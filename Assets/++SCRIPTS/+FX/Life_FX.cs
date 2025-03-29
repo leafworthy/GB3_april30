@@ -3,155 +3,158 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Life_FX : MonoBehaviour
+namespace __SCRIPTS
 {
-
-
-	public Image slowBarImage;
-	public Image fastBarImage;
-	public Color DebreeTint = Color.white;
-	private List<Renderer> renderersToTint = new();
-	private Color materialTintColor;
-	private const float tintFadeSpeed = 6f;
-	private static readonly int Tint = Shader.PropertyToID("_Tint");
-
-	public enum ColorMode
+	public class Life_FX : MonoBehaviour
 	{
-		Single,
-		Gradient
-	}
-
-	public ColorMode colorMode;
-	public Color slowBarColor = Color.white;
-	public Gradient barGradient = new();
-
-	private float targetFill;
-	private float smoothingFactor = .25f;
-	private Life _life;
-	private Color PlayerColor;
-	public GameObject healthBar;
-	public bool BlockTint;
-
-	public void OnEnable()
-	{
-		renderersToTint = GetComponentsInChildren<Renderer>().ToList();
-		_life = GetComponentInParent<Life>();
-		if (_life == null) return;
-		_life.OnDamaged += Life_Damaged;
-		_life.OnFractionChanged += DefenceOnDefenceChanged;
-		_life.OnDying += DefenceOnDead;
-		if (_life.unitData.ShowLifeBar) return;
-		if (healthBar != null) healthBar.SetActive(false);
-	}
 
 
+		public Image slowBarImage;
+		public Image fastBarImage;
+		public Color DebreeTint = Color.white;
+		private List<Renderer> renderersToTint = new();
+		private Color materialTintColor;
+		private const float tintFadeSpeed = 6f;
+		private static readonly int Tint = Shader.PropertyToID("_Tint");
 
-	public void OnDisable()
-	{
-		if (_life == null) return;
-		_life.OnDamaged -= Life_Damaged;
-		_life.OnFractionChanged -= DefenceOnDefenceChanged;
-		_life.OnDying -= DefenceOnDead;
-	}
-
-	public void StartTint(Color tintColor)
-	{
-		if (BlockTint) return;
-		materialTintColor = new Color();
-		materialTintColor = tintColor;
-		foreach (var r in renderersToTint)
+		public enum ColorMode
 		{
-			r.material.SetColor(Tint, materialTintColor);
+			Single,
+			Gradient
 		}
-	}
+
+		public ColorMode colorMode;
+		public Color slowBarColor = Color.white;
+		public Gradient barGradient = new();
+
+		private float targetFill;
+		private float smoothingFactor = .25f;
+		private Life _life;
+		private Color PlayerColor;
+		public GameObject healthBar;
+		public bool BlockTint;
+
+		public void OnEnable()
+		{
+			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
+			_life = GetComponentInParent<Life>();
+			if (_life == null) return;
+			_life.OnDamaged += Life_Damaged;
+			_life.OnFractionChanged += DefenceOnDefenceChanged;
+			_life.OnDying += DefenceOnDead;
+			if (_life.unitData.ShowLifeBar) return;
+			if (healthBar != null) healthBar.SetActive(false);
+		}
+
+
+
+		public void OnDisable()
+		{
+			if (_life == null) return;
+			_life.OnDamaged -= Life_Damaged;
+			_life.OnFractionChanged -= DefenceOnDefenceChanged;
+			_life.OnDying -= DefenceOnDead;
+		}
+
+		public void StartTint(Color tintColor)
+		{
+			if (BlockTint) return;
+			materialTintColor = new Color();
+			materialTintColor = tintColor;
+			foreach (var r in renderersToTint)
+			{
+				r.material.SetColor(Tint, materialTintColor);
+			}
+		}
 
 	
 
-	private void Life_Damaged(Attack attack)
-	{
-		StartTint(attack.color);
-	}
-
-	private void DefenceOnDefenceChanged(float newAmount)
-	{
-		UpdateBarFill();
-	}
-
-	private void DefenceOnDead(Player player, Life life)
-	{
-		_life.OnFractionChanged -= DefenceOnDefenceChanged;
-		_life.OnDying -= DefenceOnDead;
-	}
-
-	private void UpdateGradient()
-	{
-		var time = _life == null ? targetFill : _life.GetFraction();
-		if (colorMode == ColorMode.Gradient)
-			fastBarImage.color = barGradient.Evaluate(time);
-	}
-
-	#region PUBLIC FUNCTIONS
-
-	public void UpdateBar(float currentValue, float maxValue)
-	{
-		if (slowBarImage == null)
-			return;
-		targetFill = currentValue / maxValue;
-		UpdateGradient();
-		UpdateBarFill();
-	}
-
-	private void UpdateBarFill()
-	{
-		if (_life == null) return;
-		if (healthBar == null) return;
-
-		if (!_life.unitData.ShowLifeBar) return;
-		targetFill = _life.GetFraction();
-		if (targetFill > .9f || targetFill <= 0)
-			healthBar.SetActive(false);
-		else
+		private void Life_Damaged(Attack attack)
 		{
-			healthBar.SetActive(true);
-			if (slowBarImage != null) slowBarImage.fillAmount = Mathf.Lerp(slowBarImage.fillAmount, targetFill, smoothingFactor);
-			if (fastBarImage != null) fastBarImage.fillAmount = targetFill;
+			StartTint(attack.color);
 		}
-	}
 
-	private void Update()
-	{
-		UpdateColor(slowBarColor);
-		UpdateColor(barGradient);
-		UpdateBarFill();
-		FadeOutTintAlpha();
-	}
-
-	private void FadeOutTintAlpha()
-	{
-		if (!(materialTintColor.a > 0)) return;
-		materialTintColor.a = Mathf.Clamp01(materialTintColor.a - tintFadeSpeed * Time.deltaTime);
-		foreach (var r in renderersToTint)
+		private void DefenceOnDefenceChanged(float newAmount)
 		{
-			r.material.SetColor(Tint, materialTintColor);
+			UpdateBarFill();
 		}
+
+		private void DefenceOnDead(Player player, Life life)
+		{
+			_life.OnFractionChanged -= DefenceOnDefenceChanged;
+			_life.OnDying -= DefenceOnDead;
+		}
+
+		private void UpdateGradient()
+		{
+			var time = _life == null ? targetFill : _life.GetFraction();
+			if (colorMode == ColorMode.Gradient)
+				fastBarImage.color = barGradient.Evaluate(time);
+		}
+
+		#region PUBLIC FUNCTIONS
+
+		public void UpdateBar(float currentValue, float maxValue)
+		{
+			if (slowBarImage == null)
+				return;
+			targetFill = currentValue / maxValue;
+			UpdateGradient();
+			UpdateBarFill();
+		}
+
+		private void UpdateBarFill()
+		{
+			if (_life == null) return;
+			if (healthBar == null) return;
+
+			if (!_life.unitData.ShowLifeBar) return;
+			targetFill = _life.GetFraction();
+			if (targetFill > .9f || targetFill <= 0)
+				healthBar.SetActive(false);
+			else
+			{
+				healthBar.SetActive(true);
+				if (slowBarImage != null) slowBarImage.fillAmount = Mathf.Lerp(slowBarImage.fillAmount, targetFill, smoothingFactor);
+				if (fastBarImage != null) fastBarImage.fillAmount = targetFill;
+			}
+		}
+
+		private void Update()
+		{
+			UpdateColor(slowBarColor);
+			UpdateColor(barGradient);
+			UpdateBarFill();
+			FadeOutTintAlpha();
+		}
+
+		private void FadeOutTintAlpha()
+		{
+			if (!(materialTintColor.a > 0)) return;
+			materialTintColor.a = Mathf.Clamp01(materialTintColor.a - tintFadeSpeed * Time.deltaTime);
+			foreach (var r in renderersToTint)
+			{
+				r.material.SetColor(Tint, materialTintColor);
+			}
+		}
+
+		private void UpdateColor(Color targetColor)
+		{
+			if (colorMode != ColorMode.Single || slowBarImage == null)
+				return;
+			slowBarColor = targetColor;
+			slowBarImage.color = slowBarColor;
+		}
+
+		private void UpdateColor(Gradient targetGradient)
+		{
+			if (colorMode != ColorMode.Gradient || slowBarImage == null)
+				return;
+
+			barGradient = targetGradient;
+			UpdateGradient();
+		}
+
+		#endregion
 	}
-
-	private void UpdateColor(Color targetColor)
-	{
-		if (colorMode != ColorMode.Single || slowBarImage == null)
-			return;
-		slowBarColor = targetColor;
-		slowBarImage.color = slowBarColor;
-	}
-
-	private void UpdateColor(Gradient targetGradient)
-	{
-		if (colorMode != ColorMode.Gradient || slowBarImage == null)
-			return;
-
-		barGradient = targetGradient;
-		UpdateGradient();
-	}
-
-	#endregion
 }

@@ -1,33 +1,39 @@
 ﻿using System;
 using UnityEngine;
 
-namespace UpgradeS
+namespace __SCRIPTS.UpgradeS
 {
 	[Serializable]
 	public class Upgrade : MonoBehaviour
 	{
-		protected int level = 0;
+		public int level = 0;
+		public int cost = 0;
 		public virtual string GetDescription => "No description";
 
 		public virtual void CauseEffect(Player player)
 		{
 		}
 
-		public virtual void UpgradeLevel()
+		public void UpgradeLevel()
 		{
-			Debug.Log("upgraded level of " + GetName());
 			level++;
+			Debug.Log("upgraded level of " + GetName() + " to " + level);
 		}
 
-		public virtual int GetCost() => 0;
+		public int Cost => (int)Mathf.Round(cost* (level*.25f+1));
 
-		public int GetLevel() => level;
+		public int Level => level;
 
 		public virtual string GetName() => "";
 
 		public virtual void ResetLevel()
 		{
 			level = 0;
+		}
+
+		public void ResetUpgrade()
+		{
+			ResetLevel();
 		}
 	}
 }

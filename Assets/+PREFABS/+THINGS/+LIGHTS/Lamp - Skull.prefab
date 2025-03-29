@@ -80,7 +80,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -161,7 +161,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 629
+  m_SortingOrder: 692
   m_Sprite: {fileID: 102234232190963579, guid: 9d3a29bf1e78e4374ad677d806617c64, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -199,7 +199,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 827350551121471613, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_SortingOrder
-      value: 628
+      value: 691
       objectReference: {fileID: 0}
     - target: {fileID: 2016935784085512690, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: SorterPositionOffset.x
@@ -257,17 +257,25 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
       value: -5.9572406
       objectReference: {fileID: 0}
+    - target: {fileID: 5301175819122452343, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5301175819122452343, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5994490605341882432, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_Name
       value: Lamp - Skull
       objectReference: {fileID: 0}
     - target: {fileID: 7727795828427747401, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -12.14
+      value: -7.7
       objectReference: {fileID: 0}
     - target: {fileID: 7727795828427747401, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.08
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9048459617251402012, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_RootOrder
@@ -412,7 +420,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -447,4 +455,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indicatorOffset: {x: 0.3299713, y: 14.188324, z: 0}
-  interactionPoint: {x: 0, y: -7.594597, z: 0}
+  interactionPoint: {x: 0, y: -7.5946045, z: 0}

@@ -1,42 +1,45 @@
 using System;
 
-[Serializable]
-public class Arms : ActivityHandler
+namespace __SCRIPTS
 {
-}
-
-[Serializable]
-public class Legs : ActivityHandler
-{
-}
-
-[Serializable]
-public class ActivityHandler
-{
-	public string currentActivity;
-	public bool isActive;
-
-
-	public bool Do(string Verb)
+	[Serializable]
+	public class Arms : ActivityHandler
 	{
-		if (isActive)
-		{
-			return false;
-		}
-		isActive = true;
-		currentActivity = Verb;
-		return true;
 	}
 
-
-	public bool Stop(string Verb = "")
+	[Serializable]
+	public class Legs : ActivityHandler
 	{
-		if (!isActive)
+	}
+
+	[Serializable]
+	public class ActivityHandler
+	{
+		public string currentActivity;
+		public bool isActive;
+
+
+		public bool Do(string Verb)
 		{
-			return false;
+			if (isActive)
+			{
+				return false;
+			}
+			isActive = true;
+			currentActivity = Verb;
+			return true;
 		}
-		isActive = false;
-		currentActivity = null;
-		return true;
+
+
+		public bool Stop(string Verb = "")
+		{
+			if (!isActive)
+			{
+				return false;
+			}
+			isActive = false;
+			currentActivity = null;
+			return true;
+		}
 	}
 }

@@ -1,25 +1,29 @@
+using __SCRIPTS.Projectiles;
 using UnityEngine;
 
-public class KunaiAttacks_FX : MonoBehaviour
+namespace __SCRIPTS
 {
-	private KunaiAttack kunaiAttack;
-
-	public void OnEnable()
+	public class KunaiAttacks_FX : MonoBehaviour
 	{
-		kunaiAttack = GetComponent<KunaiAttack>();
-		kunaiAttack.OnThrow += KunaiAttackOnThrow;
-	}
+		private PrimaryAttack_Kunai primaryAttackKunai;
 
-	private void KunaiAttackOnThrow(Vector3 aimDir, Vector3 pos, float throwHeight, Life life, bool isAirThrow)
-	{
+		public void OnEnable()
+		{
+			primaryAttackKunai = GetComponent<PrimaryAttack_Kunai>();
+			primaryAttackKunai.OnThrow += PrimaryAttackKunaiOnThrow;
+		}
+
+		private void PrimaryAttackKunaiOnThrow(Vector3 aimDir, Vector3 pos, float throwHeight, Life life, bool isAirThrow)
+		{
 		
-		var newProjectile = ObjectMaker.Make(ASSETS.FX.kunaiPrefab, transform.position);
-		var kunaiScript = newProjectile.GetComponent<Kunai>();
-		kunaiScript.Throw(aimDir, pos, throwHeight, life, isAirThrow);
-	}
+			var newProjectile = ObjectMaker.I.Make(ASSETS.FX.kunaiPrefab, transform.position);
+			var kunaiScript = newProjectile.GetComponent<Kunai>();
+			kunaiScript.Throw(aimDir, pos, throwHeight, life, isAirThrow);
+		}
 
-	private void OnDisable()
-	{
-		kunaiAttack.OnThrow -= KunaiAttackOnThrow;
+		private void OnDisable()
+		{
+			primaryAttackKunai.OnThrow -= PrimaryAttackKunaiOnThrow;
+		}
 	}
 }

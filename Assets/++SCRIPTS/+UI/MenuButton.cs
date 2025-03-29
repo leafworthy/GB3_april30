@@ -1,39 +1,42 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuButton : MonoBehaviour
+namespace __SCRIPTS
 {
-	public enum ButtonType
+	public class MenuButton : MonoBehaviour
 	{
-		Restart,
-		Resume,
-		MainMenu,
-		Quit,
-		Health,
-		Ammo,
-		Damage,
-		Speed,
-		Nades,
-		Gas
-	}
-	public Sprite OnSprite;
-	public Sprite OffSprite;
-	public Image sprite;
-	public ButtonType type;
+		public enum ButtonType
+		{
+			Restart,
+			Resume,
+			MainMenu,
+			Quit,
+			Health,
+			Ammo,
+			Damage,
+			Speed,
+			Nades,
+			Gas
+		}
+		public Sprite OnSprite;
+		public Sprite OffSprite;
+		public Image sprite;
+		public ButtonType type;
 
-	private void Awake()
-	{
-		if(sprite == null) sprite = GetComponentInChildren<Image>();
-		UnHighlight();
-	}
+		private void Awake()
+		{
+			if(sprite == null) sprite = GetComponentInChildren<Image>();
+			UnHighlight();
+		}
 
-	public virtual void Highlight()
-	{
-		sprite.sprite = OnSprite;
-	}
+		public virtual void Highlight()
+		{
+			sprite.sprite = OnSprite;
+		}
 
-	public virtual void UnHighlight()
-	{
-		sprite.sprite = OffSprite;
+		public virtual void UnHighlight()
+		{
+			sprite.sprite = OffSprite;
+		}
 	}
 }

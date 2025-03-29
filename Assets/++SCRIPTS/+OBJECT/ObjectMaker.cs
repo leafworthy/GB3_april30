@@ -3,131 +3,136 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ObjectMaker : MonoBehaviour
+namespace __SCRIPTS
 {
-	//CREATOR DESTROYER
-	private static ObjectMaker I;
-	private static List<GameObject> allActiveUnits = new();
-
-	private static Dictionary<RecycleGameObject, ObjectPool> pools = new();
-
-	private GameObject containerContainer;
-	public List<GameObject> ObjectsToPool = new();
-	private int defaultPoolSize = 20;
-
-	private void Awake()
+	public class ObjectMaker : Singleton<ObjectMaker>
 	{
-		DontDestroyOnLoad(gameObject);
-		if(I != null)
+		//CREATOR DESTROYER
+		private  List<GameObject> allActiveUnits = new();
+
+		private  Dictionary<RecycleGameObject, ObjectPool> pools = new();
+
+		private GameObject containerContainer;
+		public List<GameObject> ObjectsToPool = new();
+		private int defaultPoolSize = 20;
+
+		public void OnDisable()
 		{
-			Destroy(gameObject);
-			return;
-		}
-		I = this;
-		containerContainer = new GameObject("Object Pools");
-		containerContainer.transform.SetParent(I.transform);
-		LevelManager.OnStartLevel += PoolObjects;
-		LevelManager.OnStopLevel += DestroyAllUnits;
-	}
-
-	private void PoolObjects(GameLevel gameLevel)
-	{
-		foreach (var obj in ObjectsToPool)
-		{
-
-			Pool(obj, defaultPoolSize);
-
-		}
-	}
-
-	public static void Pool(GameObject obj, int clones)
-	{
-		Debug.Log("pooling: " + obj.name + " with " + clones + " clones.");
-		var currentPool = new List<GameObject>();
-		for (var i = 0; i < clones; i++)
-		{
-			var newObj = Make(obj, Vector2.zero);
-			currentPool.Add(newObj);
+			Debug.Log("object maker disabled");
+			LevelManager.OnStartLevel -= PoolObjects;
+			LevelManager.OnStopLevel -= DestroyAllUnits;
+			pools.Clear();
+			allActiveUnits.Clear();
 		}
 
-		for (var b = 0; b < currentPool.Count; b++) Unmake(currentPool[b]);
-	}
-
-	public static void DestroyAllUnits(GameLevel gameLevel)
-	{
-		var tempList = allActiveUnits.ToList();
-		foreach (var t in tempList)
+		private void Start()
 		{
-			Unmake(t);
+			Debug.Log("i start again");
+			containerContainer = new GameObject("Object Pools");
+			containerContainer.transform.SetParent(I.transform);
+			LevelManager.OnStartLevel += PoolObjects;
+			LevelManager.OnStopLevel += DestroyAllUnits;
 		}
 
-		allActiveUnits.Clear();
-	}
-
-	public static GameObject Make(GameObject prefab, Vector2 pos)
-	{
-		if (prefab == null) return null;
-		GameObject instance;
-		var recycledScript = prefab.GetComponent<RecycleGameObject>();
-		if (recycledScript != null)
+		private void PoolObjects(GameLevel gameLevel)
 		{
-			var pool = I.GetObjectPool(recycledScript);
-			instance = pool.NextObject(pos).gameObject;
-			instance.transform.SetParent(pool.transform);
-		}
-		else
-		{
-			instance = Instantiate(prefab);
-			instance.transform.position = pos;
-		}
-
-		allActiveUnits.Add(instance);
-		return instance;
-	}
-
-	public static void Unmake(GameObject gameObject, float deathTime = 0)
-	{
-		if (gameObject == null) return;
-		if (I == null) return;
-		var recyleGameObject = gameObject.GetComponent<RecycleGameObject>();
-		if (deathTime != 0)
-			I.StartCoroutine(I.WaitAndDestroy(gameObject, deathTime));
-		else
-		{
-			if (recyleGameObject != null)
-				recyleGameObject.DeactivateGameObject();
-			else
+			foreach (var obj in ObjectsToPool)
 			{
-				allActiveUnits.Remove(gameObject);
-				var comp = gameObject.AddComponent<RecycleGameObject>();
-				comp.DeactivateGameObject();
+
+				Pool(obj, defaultPoolSize);
+
 			}
 		}
-	}
 
-	private IEnumerator WaitAndDestroy(GameObject go, float waitTime)
-	{
-		yield return new WaitForSeconds(waitTime);
-		Unmake(go);
-	}
-
-	private ObjectPool GetObjectPool(RecycleGameObject reference)
-	{
-		ObjectPool pool;
-
-		if (pools.TryGetValue(reference, out var pool1))
-			pool = pool1;
-		else
+		public  void Pool(GameObject obj, int clones)
 		{
-			var poolContainer = new GameObject(reference.gameObject.name + "_ObjectPool");
-			poolContainer.transform.SetParent(I.containerContainer.transform);
-			pool = poolContainer.AddComponent<ObjectPool>();
-			pool.prefab = reference;
-			pools.Add(reference, pool);
+			Debug.Log("pooling: " + obj.name + " with " + clones + " clones.");
+			var currentPool = new List<GameObject>();
+			for (var i = 0; i < clones; i++)
+			{
+				var newObj = Make(obj, Vector2.zero);
+				currentPool.Add(newObj);
+			}
+
+			for (var b = 0; b < currentPool.Count; b++) Unmake(currentPool[b]);
 		}
 
-		return pool;
-	}
+		public  void DestroyAllUnits(GameLevel gameLevel)
+		{
+			var tempList = allActiveUnits.ToList();
+			foreach (var t in tempList)
+			{
+				Unmake(t);
+			}
 
-	public static GameObject Make(GameObject prefab) => Make(prefab, Vector2.zero);
+			allActiveUnits.Clear();
+		}
+
+		public GameObject Make(GameObject prefab, Vector2 pos)
+		{
+			if (prefab == null) return null;
+			GameObject instance;
+			var recycledScript = prefab.GetComponent<RecycleGameObject>();
+			if (recycledScript != null)
+			{
+				var pool = I.GetObjectPool(recycledScript);
+				instance = pool.NextObject(pos).gameObject;
+				instance.transform.SetParent(pool.transform);
+			}
+			else
+			{
+				instance = Instantiate(prefab);
+				instance.transform.position = pos;
+			}
+
+			allActiveUnits.Add(instance);
+			return instance;
+		}
+
+		public void Unmake(GameObject _gameObject, float deathTime = 0)
+		{
+			if (_gameObject == null) return;
+			if (I == null) return;
+			var recyleGameObject = _gameObject.GetComponent<RecycleGameObject>();
+			if (deathTime != 0)
+				I.StartCoroutine(I.WaitAndDestroy(_gameObject, deathTime));
+			else
+			{
+				if (recyleGameObject != null)
+					recyleGameObject.DeactivateGameObject();
+				else
+				{
+					allActiveUnits.Remove(_gameObject);
+					var comp = _gameObject.AddComponent<RecycleGameObject>();
+					comp.DeactivateGameObject();
+				}
+			}
+		}
+
+		private IEnumerator WaitAndDestroy(GameObject go, float waitTime)
+		{
+			yield return new WaitForSeconds(waitTime);
+			Unmake(go);
+		}
+
+		private ObjectPool GetObjectPool(RecycleGameObject reference)
+		{
+			ObjectPool pool;
+
+			if (pools.TryGetValue(reference, out var pool1))
+				pool = pool1;
+			else
+			{
+				var poolContainer = new GameObject(reference.gameObject.name + "_ObjectPool");
+				poolContainer.transform.SetParent(I.containerContainer.transform);
+				pool = poolContainer.AddComponent<ObjectPool>();
+				pool.prefab = reference;
+				pools.Add(reference, pool);
+			}
+
+			return pool;
+		}
+
+		public GameObject Make(GameObject prefab) => I.Make(prefab, Vector2.zero);
+	}
 }

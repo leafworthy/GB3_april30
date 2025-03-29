@@ -3,149 +3,159 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class CursorManager : MonoBehaviour
+namespace __SCRIPTS.Cursor
 {
-	[SerializeField] private GameObject player1cursor;
-	[SerializeField] private GameObject player2cursor;
-	[SerializeField] private GameObject player3cursor;
-	[SerializeField] private GameObject player4cursor;
-	private Vector2 inGameCursorScale = new(5, 5);
-	private Vector2 inMenuCursorScale = new(0, 0);
-	private PlayerCursor currentCursor;
-	[SerializeField] private List<PlayerCursor> currentCursors = new();
-
-	private bool isActive;
-	private static Camera cam;
-
-	private void Start()
+	public class CursorManager : MonoBehaviour
 	{
-		Cursor.visible = false;
-		LevelManager.OnStartLevel += LevelStartsLevel;
-		LevelManager.OnPlayerSpawned += InitCursor;
-	}
+		[SerializeField] private GameObject player1cursor;
+		[SerializeField] private GameObject player2cursor;
+		[SerializeField] private GameObject player3cursor;
+		[SerializeField] private GameObject player4cursor;
+		private Vector2 inGameCursorScale = new(5, 5);
+		private Vector2 inMenuCursorScale = new(0, 0);
+		private PlayerCursor currentCursor;
+		[SerializeField] private List<PlayerCursor> currentCursors = new();
 
-	private void LevelStartsLevel(GameLevel level)
-	{
-		isActive = true;
-		foreach (var player in Players.AllJoinedPlayers)
+		private bool isActive;
+		private static Camera cam;
+
+		private void Start()
 		{
-			InitCursor(player);
+			UnityEngine.Cursor.visible = false;
+			LevelManager.OnStartLevel += LevelStartsLevel;
+			LevelManager.OnPlayerSpawned += InitCursor;
 		}
 
-}
+		private void LevelStartsLevel(GameLevel level)
+		{
+			isActive = true;
+			foreach (var player in Players.AllJoinedPlayers)
+			{
+				InitCursor(player);
+			}
 
-	private void InitCursor(Player player)
-	{
-		//if (!player.isUsingMouse) return;
+		}
+
+		private void OnDisable()
+		{
+			LevelManager.OnStartLevel -= LevelStartsLevel;
+			LevelManager.OnPlayerSpawned -= InitCursor;
+			currentCursors.Clear();
+		}
+
+		private void InitCursor(Player player)
+		{
+			//if (!player.isUsingMouse) return;
 		
-		switch (player.playerIndex)
-		{
-			case 0:
-				currentCursor = player1cursor.GetComponent<PlayerCursor>();
-				break;
-			case 1:
-				currentCursor = player2cursor.GetComponent<PlayerCursor>();
-				break;
-			case 2:
-				currentCursor = player3cursor.GetComponent<PlayerCursor>();
-				break;
-			case 3:
-				currentCursor = player4cursor.GetComponent<PlayerCursor>();
-				break;
-		}
+			switch (player.playerIndex)
+			{
+				case 0:
+					currentCursor = player1cursor.GetComponent<PlayerCursor>();
+					break;
+				case 1:
+					currentCursor = player2cursor.GetComponent<PlayerCursor>();
+					break;
+				case 2:
+					currentCursor = player3cursor.GetComponent<PlayerCursor>();
+					break;
+				case 3:
+					currentCursor = player4cursor.GetComponent<PlayerCursor>();
+					break;
+			}
 
-		if (currentCursor == null)
-		{
-			return;
-		}
-		currentCursor.owner = player;
-		currentCursor.transform.localScale = inGameCursorScale;
-		//DontDestroyOnLoad(currentCursor);
-		var image = currentCursor.GetComponentInChildren<Image>();
-		if (image != null) image.color = player.playerColor;
-		LevelManager.OnStartLevel += (t) => { SetCursorsActive(true); };
-		PauseManager.OnPause += x =>
-		{
-			SetCursorsActive(false);
-		};
-		PauseManager.OnUnpause += x => { SetCursorsActive(true); };
-		LevelManager.OnStopLevel += t => { SetCursorsActive(false); };
-		currentCursor.gameObject.SetActive(true);
-		currentCursors.Add(currentCursor);
-		SetCursorsActive(true);
-		if (Players.AllJoinedPlayers.Count < 4)
-		{
-			player4cursor.SetActive(false);
-		}
+			if (currentCursor == null)
+			{
+				return;
+			}
+			currentCursor.owner = player;
+			currentCursor.transform.localScale = inGameCursorScale;
+			//DontDestroyOnLoad(currentCursor);
+			var image = currentCursor.GetComponentInChildren<Image>();
+			if (image != null) image.color = player.playerColor;
+			LevelManager.OnStartLevel += (t) => { SetCursorsActive(true); };
+			PauseManager.OnPause += x =>
+			{
+				SetCursorsActive(false);
+			};
+			PauseManager.OnUnpause += x => { SetCursorsActive(true); };
+			LevelManager.OnStopLevel += t => { SetCursorsActive(false); };
+			currentCursor.gameObject.SetActive(true);
+			currentCursors.Add(currentCursor);
+			SetCursorsActive(true);
+			if (Players.AllJoinedPlayers.Count < 4)
+			{
+				player4cursor.SetActive(false);
+			}
 
-		if (Players.AllJoinedPlayers.Count < 3)
-		{
-			player3cursor.SetActive(false);
-		}
+			if (Players.AllJoinedPlayers.Count < 3)
+			{
+				player3cursor.SetActive(false);
+			}
 
-		if (Players.AllJoinedPlayers.Count < 2)
-		{
-			player2cursor.SetActive(false);
+			if (Players.AllJoinedPlayers.Count < 2)
+			{
+				player2cursor.SetActive(false);
+			}
 		}
-	}
 
 	
 
-	private void SetCursorsActive(bool active)
-	{
-		foreach (var cursor in currentCursors)
+		private void SetCursorsActive(bool active)
 		{
-			if (cursor == null) continue;
-			if (cursor.owner == null) continue;
-			cursor.gameObject.SetActive(active);
+			foreach (var cursor in currentCursors)
+			{
+				if (cursor == null) continue;
+				if (cursor.owner == null) continue;
+				cursor.gameObject.SetActive(active);
+			}
+
+			isActive = active;
 		}
 
-		isActive = active;
-	}
-
-	private void Update()
-	{
-		Cursor.visible = false;
-		if (!isActive) return;
-		foreach (var cursor in currentCursors)
+		private void Update()
 		{
-			UpdateCursor(cursor);
+			UnityEngine.Cursor.visible = false;
+			if (!isActive) return;
+			foreach (var cursor in currentCursors)
+			{
+				UpdateCursor(cursor);
+			}
 		}
-	}
 
-	private void UpdateCursor(PlayerCursor cursor)
-	{
-		if(cursor == null) return;
-		if (cursor.owner == null) return;
-		if (cursor.owner.SpawnedPlayerGO == null) return;
-		var aim = cursor.aimAbility;
-		if (aim == null) return;
-		if(cursor.aimAbility.hasEnoughMagnitude() )
+		private void UpdateCursor(PlayerCursor cursor)
 		{
-			cursor.gameObject.SetActive(true);
-			cursor.gameObject.transform.position = cursor.aimAbility.GetAimPoint();
+			if(cursor == null) return;
+			if (cursor.owner == null) return;
+			if (cursor.owner.SpawnedPlayerGO == null) return;
+			var aim = cursor.aimAbility;
+			if (aim == null) return;
+			if(cursor.aimAbility.hasEnoughMagnitude() )
+			{
+				cursor.gameObject.SetActive(true);
+				cursor.gameObject.transform.position = cursor.aimAbility.GetAimPoint();
+			}
+			else
+			{
+				cursor.gameObject.SetActive(false);
+			}
 		}
-		else
+
+		public static Vector3 GetMousePosition()
 		{
-			cursor.gameObject.SetActive(false);
+			var cam = GetCamera();
+			if (cam == null) return Vector3.zero;
+			var vec = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+			vec.z = 0;
+			return vec;
 		}
-	}
 
-	public static Vector3 GetMousePosition()
-	{
-		var cam = GetCamera();
-		if (cam == null) return Vector3.zero;
-		var vec = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-		vec.z = 0;
-		return vec;
-	}
+		public static Camera GetCamera()
+		{
+			if(cam != null) return cam;
+			cam = Camera.main;
+			if (cam == null) cam = FindFirstObjectByType<Camera>();
 
-	public static Camera GetCamera()
-	{
-		if(cam != null) return cam;
-		cam = Camera.main;
-		if (cam == null) cam = FindFirstObjectByType<Camera>();
-
-		return cam;
+			return cam;
+		}
 	}
 }

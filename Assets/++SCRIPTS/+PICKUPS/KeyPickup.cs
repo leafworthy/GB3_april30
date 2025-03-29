@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 
-public class KeyPickup : Pickup
+namespace __SCRIPTS
 {
-	public int amount;
-
-	public override List<PickupEffect> GetEffects()
+	public class KeyPickup : Pickup
 	{
-		var newList = new List<PickupEffect> {new KeyPickupEffect(0, amount)};
-		return newList;
+		public int amount;
+
+		public override List<PickupEffect> GetEffects()
+		{
+			var newList = new List<PickupEffect> {new KeyPickupEffect(0, amount)};
+			return newList;
+		}
 	}
 }

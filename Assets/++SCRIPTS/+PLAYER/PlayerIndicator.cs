@@ -1,28 +1,31 @@
 using UnityEngine;
 
-public class PlayerIndicator : MonoBehaviour
+namespace __SCRIPTS
 {
-	public SpriteRenderer indicator;
-	public SpriteRenderer indicatorB;
-
-	private void Start()
+	public class PlayerIndicator : MonoBehaviour
 	{
-		HideIndicator();
-	}
+		public SpriteRenderer indicator;
+		public SpriteRenderer indicatorB;
 
-	public void ShowIndicator()
-	{
-		gameObject.SetActive(true);
-	}
+		private void Start()
+		{
+			HideIndicator();
+		}
 
-	public void SetColor(Color newColor)
-	{
-		indicator.color = newColor;
-		indicatorB.color = newColor;
-	}
+		public void ShowIndicator()
+		{
+			gameObject.SetActive(true);
+		}
 
-	public void HideIndicator()
-	{
-		gameObject.SetActive(false);
+		public void SetColor(Color newColor)
+		{
+			indicator.color = newColor;
+			indicatorB.color = newColor;
+		}
+
+		public void HideIndicator()
+		{
+			gameObject.SetActive(false);
+		}
 	}
 }

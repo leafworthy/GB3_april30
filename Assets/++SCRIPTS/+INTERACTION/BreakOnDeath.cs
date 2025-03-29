@@ -1,19 +1,22 @@
 using UnityEngine;
 
-public class BreakOnDeath : MonoBehaviour
+namespace __SCRIPTS
 {
-	private HideRevealObjects breakList;
-	[SerializeField]private Life life;
-
-	private void Start()
+	public class BreakOnDeath : MonoBehaviour
 	{
-		breakList = GetComponent<HideRevealObjects>();
-		life.OnDying += Life_Dead;
-		breakList.Set(0);
-	}
+		private HideRevealObjects breakList;
+		[SerializeField]private Life life;
 
-	private void Life_Dead(Player player, Life life1)
-	{
-		breakList.Set(1);
+		private void Start()
+		{
+			breakList = GetComponent<HideRevealObjects>();
+			life.OnDying += Life_Dead;
+			breakList.Set(0);
+		}
+
+		private void Life_Dead(Player player, Life life1)
+		{
+			breakList.Set(1);
+		}
 	}
 }

@@ -1,37 +1,41 @@
+using __SCRIPTS._ENEMYAI;
 using UnityEngine;
 
-[ExecuteInEditMode]
-public class EnemyAIDebugVisualizer : MonoBehaviour
+namespace __SCRIPTS
 {
-	public Color aggroRangeColor = new Color(1f, 0f, 0f, 0.3f); // Red
-	public Color attackRangeColor = new Color(1f, 1f, 0f, 0.3f); // Yellow
-	public Color wanderRangeColor = new Color(0f, 0f, 1f, 0.3f); // Blue
-
-
-	private EnemyAI enemyAI;
-
-	private void Awake()
+	[ExecuteInEditMode]
+	public class EnemyAIDebugVisualizer : MonoBehaviour
 	{
-		enemyAI = GetComponent<EnemyAI>();
-	}
+		public Color aggroRangeColor = new Color(1f, 0f, 0f, 0.3f); // Red
+		public Color attackRangeColor = new Color(1f, 1f, 0f, 0.3f); // Yellow
+		public Color wanderRangeColor = new Color(0f, 0f, 1f, 0.3f); // Blue
 
-	private void OnDrawGizmos()
-	{
-		if (enemyAI == null)
+
+		private EnemyAI enemyAI;
+
+		private void Awake()
 		{
-			return;
+			enemyAI = GetComponent<EnemyAI>();
 		}
 
-		// Draw Aggro Range
-		Gizmos.color = aggroRangeColor;
-		Gizmos.DrawSphere(enemyAI.transform.position, enemyAI.Life.AggroRange);
+		private void OnDrawGizmos()
+		{
+			if (enemyAI == null)
+			{
+				return;
+			}
 
-		// Draw Attack Range
-		Gizmos.color = attackRangeColor;
-		Gizmos.DrawSphere(enemyAI.transform.position, enemyAI.Life.AttackRange);
+			// Draw Aggro Range
+			Gizmos.color = aggroRangeColor;
+			Gizmos.DrawSphere(enemyAI.transform.position, enemyAI.Life.AggroRange);
 
-		// Draw Wander Range
-		Gizmos.color = wanderRangeColor;
-		Gizmos.DrawSphere(enemyAI.WanderPoint, enemyAI.WanderRadius);
+			// Draw Attack Range
+			Gizmos.color = attackRangeColor;
+			Gizmos.DrawSphere(enemyAI.transform.position, enemyAI.Life.PrimaryAttackRange);
+
+			// Draw Wander Range
+			Gizmos.color = wanderRangeColor;
+			Gizmos.DrawSphere(enemyAI.WanderPoint, enemyAI.WanderRadius);
+		}
 	}
 }

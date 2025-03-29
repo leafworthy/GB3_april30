@@ -3,59 +3,69 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GameLevel : MonoBehaviour
+namespace __SCRIPTS
 {
-	public TravelPoint defaultTravelPoint;
-	public SceneDefinition scene;
-	public event Action OnLevelRestart;
-	private List<TravelPoint> getSpawnPoints() => FindObjectsByType<TravelPoint>(FindObjectsSortMode.None).ToList();
-
-	public event Action<TravelPoint> OnLevelFinished;
-
-	private bool hasSpawnPoint(TravelPoint travelPoint) => getSpawnPoints().Contains(travelPoint);
-
-	private void Start()
+	public class GameLevel : MonoBehaviour
 	{
-		Players.OnAllJoinedPlayersDead += LoseLevel;
-	}
+		public TravelPoint defaultTravelPoint;
+		public SceneDefinition scene;
+		public event Action OnLevelRestart;
+		public event Action OnGameOver;
+		private List<TravelPoint> getSpawnPoints() => FindObjectsByType<TravelPoint>(FindObjectsSortMode.None).ToList();
 
-	public GameObject SpawnPlayer(Player player, TravelPoint travelPoint, bool fallFromSky)
-	{
-		if (!hasSpawnPoint(travelPoint)) travelPoint = defaultTravelPoint;
-		Debug.Log($"Spawning player {player.playerIndex}");
-		Players.SetActionMaps(Players.PlayerActionMap);
-		return player.Spawn(travelPoint, fallFromSky);
-	}
 
-	public void StopLevel()
-	{
-		Players.OnAllJoinedPlayersDead -= LoseLevel;
-	}
+		private bool hasSpawnPoint(TravelPoint travelPoint) => getSpawnPoints().Contains(travelPoint);
 
-	private void LoseLevel()
-	{
-		OnLevelRestart?.Invoke();
-		StopLevel();
-	}
-
-	public void StartLevel()
-	{
-		SpawnPlayers(LevelManager.I.RespawnTravelPoint != null ? LevelManager.I.RespawnTravelPoint : defaultTravelPoint);
-	}
-
-	private void SpawnPlayers(TravelPoint travelPoint)
-	{
-		if (travelPoint == null)
+		private void Start()
 		{
-			Debug.LogError("No travel point found");
-			return;
+			Players.OnAllJoinedPlayersDead += LoseLevel;
 		}
-		Debug.Log("fall from sky " + travelPoint.fallFromSky);
-		foreach (var player in Players.AllJoinedPlayers)
+
+		public GameObject SpawnPlayer(Player player, TravelPoint travelPoint, bool fallFromSky)
 		{
-			if (player == null) continue;
-			if (player.SpawnedPlayerGO != null) continue;
-			SpawnPlayer(player, travelPoint, travelPoint.fallFromSky);
+			if (!hasSpawnPoint(travelPoint)) travelPoint = defaultTravelPoint;
+			Debug.Log($"Spawning player {player.playerIndex}");
+			Players.SetActionMaps(Players.PlayerActionMap);
+			return player.Spawn(travelPoint.transform.position, fallFromSky);
+		}
+
+		public GameObject SpawnPlayerAt(Player player, Vector2 position, bool fallFromSky)
+		{
+			Debug.Log($"Spawning player {player.playerIndex}");
+			Players.SetActionMaps(Players.PlayerActionMap);
+			return player.Spawn(position, fallFromSky);
+		}
+
+		public void StopLevel()
+		{
+			Players.OnAllJoinedPlayersDead -= LoseLevel;
+		}
+
+		private void LoseLevel()
+		{
+			OnGameOver?.Invoke();
+			StopLevel();
+		}
+
+		public void StartLevel()
+		{
+			SpawnPlayers(LevelManager.I.RespawnTravelPoint != null ? LevelManager.I.RespawnTravelPoint : defaultTravelPoint);
+		}
+
+		private void SpawnPlayers(TravelPoint travelPoint)
+		{
+			if (travelPoint == null)
+			{
+				Debug.LogError("No travel point found");
+				return;
+			}
+			Debug.Log("fall from sky " + travelPoint.fallFromSky);
+			foreach (var player in Players.AllJoinedPlayers)
+			{
+				if (player == null) continue;
+				if (player.SpawnedPlayerGO != null) continue;
+				SpawnPlayer(player, travelPoint, travelPoint.fallFromSky);
+			}
 		}
 	}
 }

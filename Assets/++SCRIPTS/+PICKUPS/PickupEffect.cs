@@ -1,40 +1,43 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public class PickupEffect
+namespace __SCRIPTS
 {
-	[SerializeField] public float effectDuration;
-	private float timeLeft;
-	protected bool isRunning;
-	public event Action<PickupEffect> OnDone;
+	[Serializable]
+	public class PickupEffect
+	{
+		[SerializeField] public float effectDuration;
+		private float timeLeft;
+		protected bool isRunning;
+		public event Action<PickupEffect> OnDone;
 
-	protected PickupEffect(float _effectDuration)
-	{
-		effectDuration = _effectDuration;
-	}
-	public virtual void StartEffect(Life life)
-	{
-		timeLeft = effectDuration;
-		isRunning = true;
-	}
-
-	public virtual void UpdateEffect()
-	{
-		if (timeLeft <= 0 && isRunning)
+		protected PickupEffect(float _effectDuration)
 		{
-			StopEffect();
+			effectDuration = _effectDuration;
 		}
-		else
+		public virtual void StartEffect(Life life)
 		{
-			timeLeft -= Time.deltaTime;
+			timeLeft = effectDuration;
+			isRunning = true;
 		}
-	}
 
-	protected virtual void StopEffect()
-	{
-		OnDone?.Invoke(this);
-		timeLeft = 0;
-		isRunning = false;
+		public virtual void UpdateEffect()
+		{
+			if (timeLeft <= 0 && isRunning)
+			{
+				StopEffect();
+			}
+			else
+			{
+				timeLeft -= Time.deltaTime;
+			}
+		}
+
+		protected virtual void StopEffect()
+		{
+			OnDone?.Invoke(this);
+			timeLeft = 0;
+			isRunning = false;
+		}
 	}
 }

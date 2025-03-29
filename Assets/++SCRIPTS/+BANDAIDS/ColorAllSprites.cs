@@ -3,42 +3,45 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.U2D;
 
-public class ColorAllSprites : MonoBehaviour
+namespace __SCRIPTS
 {
-	public HouseColorScheme.ColorType color;
-	private List<SpriteRenderer> spriteRenderer;
-	private HouseColorScheme houseColorScheme;
-	private SpriteShapeRenderer shapeRenderer;
-
-	public void Update()
+	public class ColorAllSprites : MonoBehaviour
 	{
-		if (!Application.isPlaying) TintAll();
-	}
+		public HouseColorScheme.ColorType color;
+		private List<SpriteRenderer> spriteRenderer;
+		private HouseColorScheme houseColorScheme;
+		private SpriteShapeRenderer shapeRenderer;
 
-	private void OnEnable()
-	{
-		
-		TintAll();
-	}
-
-	private void GetAllSprites()
-	{
-		spriteRenderer = GetComponentsInChildren<SpriteRenderer>().ToList();
-		houseColorScheme = GetComponentInParent<ColorSchemeHandler>().houseColors;
-	}
-
-
-	private void TintAll()
-	{
-		GetAllSprites();
-		shapeRenderer = GetComponent<SpriteShapeRenderer>();
-		if (shapeRenderer != null) shapeRenderer.color = houseColorScheme.GetColor(color);
-		
-		foreach (var sr in spriteRenderer)
+		public void Update()
 		{
-			if (sr.gameObject.CompareTag("dontcolor")) continue;
-			sr.color = houseColorScheme.GetColor(color);
+			if (!Application.isPlaying) TintAll();
 		}
 
+		private void OnEnable()
+		{
+		
+			TintAll();
+		}
+
+		private void GetAllSprites()
+		{
+			spriteRenderer = GetComponentsInChildren<SpriteRenderer>().ToList();
+			houseColorScheme = GetComponentInParent<ColorSchemeHandler>().houseColors;
+		}
+
+
+		private void TintAll()
+		{
+			GetAllSprites();
+			shapeRenderer = GetComponent<SpriteShapeRenderer>();
+			if (shapeRenderer != null) shapeRenderer.color = houseColorScheme.GetColor(color);
+		
+			foreach (var sr in spriteRenderer)
+			{
+				if (sr.gameObject.CompareTag("dontcolor")) continue;
+				sr.color = houseColorScheme.GetColor(color);
+			}
+
+		}
 	}
 }

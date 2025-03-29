@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class ZombieWave
+namespace __SCRIPTS._ZOMBIESPAWN
 {
-	public List<GameObject> ZombiesToSpawn = new List<GameObject>();
-	public float TimeBetweenSpawns;
+	[Serializable]
+	public class ZombieWave
+	{
+		public List<GameObject> ZombiesToSpawn = new List<GameObject>();
+		public float TimeBetweenSpawns;
 	
-	//public ZombieWave(List<GameObject> zombiesToSpawn, float timeBetweenSpawns)
-	//{
-	//	ZombiesToSpawn = zombiesToSpawn;
-	//	TimeBetweenSpawns = timeBetweenSpawns;
-	//}
+		//public ZombieWave(List<GameObject> zombiesToSpawn, float timeBetweenSpawns)
+		//{
+		//	ZombiesToSpawn = zombiesToSpawn;
+		//	TimeBetweenSpawns = timeBetweenSpawns;
+		//}
+	}
 }

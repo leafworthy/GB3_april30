@@ -2,55 +2,58 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[ExecuteAlways]
-public class Tint_FX : MonoBehaviour
+namespace __SCRIPTS
 {
-	[Header("Color Options")] public float TintFadeSpeed = 6f;
-
-	private List<Renderer> renderersToTint = new();
-	private Color materialTintColor;
-	private static readonly int Tint = Shader.PropertyToID("_Tint");
-
-	public void OnEnable()
+	[ExecuteAlways]
+	public class Tint_FX : MonoBehaviour
 	{
-		renderersToTint = GetComponentsInChildren<Renderer>(true).ToList();
-	}
+		[Header("Color Options")] public float TintFadeSpeed = 6f;
 
-	public void StartTint(Color tintColor)
-	{
-		materialTintColor = new Color();
-		materialTintColor = tintColor;
-		foreach (var r in renderersToTint)
+		private List<Renderer> renderersToTint = new();
+		private Color materialTintColor;
+		private static readonly int Tint = Shader.PropertyToID("_Tint");
+
+		public void OnEnable()
 		{
-			r.material.SetColor(Tint, materialTintColor);
+			renderersToTint = GetComponentsInChildren<Renderer>(true).ToList();
 		}
-	}
 
-	public void TintIt()
-	{
-		renderersToTint = GetComponentsInChildren<Renderer>(true).ToList();
-		Color tintColor = new Color(1, 0, 0, 1);
-		materialTintColor = new Color();
-		materialTintColor = tintColor;
-		foreach (var r in renderersToTint)
+		public void StartTint(Color tintColor)
 		{
-			r.material.SetColor(Tint, materialTintColor);
+			materialTintColor = new Color();
+			materialTintColor = tintColor;
+			foreach (var r in renderersToTint)
+			{
+				r.material.SetColor(Tint, materialTintColor);
+			}
 		}
-	}
 
-	private void Update()
-	{
-		FadeOutTintAlpha();
-	}
-
-	private void FadeOutTintAlpha()
-	{
-		if (materialTintColor.a < 0) return;
-		materialTintColor.a = Mathf.Clamp01(materialTintColor.a - TintFadeSpeed * Time.deltaTime);
-		foreach (var r in renderersToTint)
+		public void TintIt()
 		{
-			r.material.SetColor(Tint, materialTintColor);
+			renderersToTint = GetComponentsInChildren<Renderer>(true).ToList();
+			Color tintColor = new Color(1, 0, 0, 1);
+			materialTintColor = new Color();
+			materialTintColor = tintColor;
+			foreach (var r in renderersToTint)
+			{
+				r.material.SetColor(Tint, materialTintColor);
+			}
 		}
-	}
 
+		private void Update()
+		{
+			FadeOutTintAlpha();
+		}
+
+		private void FadeOutTintAlpha()
+		{
+			if (materialTintColor.a < 0) return;
+			materialTintColor.a = Mathf.Clamp01(materialTintColor.a - TintFadeSpeed * Time.deltaTime);
+			foreach (var r in renderersToTint)
+			{
+				r.material.SetColor(Tint, materialTintColor);
+			}
+		}
+
+	}
 }

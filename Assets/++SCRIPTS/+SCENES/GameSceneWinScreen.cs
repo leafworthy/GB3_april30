@@ -1,27 +1,29 @@
-using System;
 using UnityEngine.Video;
 
-/// <summary>
-/// Handles the victory screen with video playback
-/// </summary>
-public class GameSceneWinScreen : GameScene
+namespace __SCRIPTS
 {
-	public VideoPlayer vid;
-	
-	protected void Start()
+	/// <summary>
+	/// Handles the victory screen with video playback
+	/// </summary>
+	public class GameSceneWinScreen : GameScene
 	{
-		vid = GetComponent<VideoPlayer>();
-		vid.loopPointReached += GoToMainMenu;
-	}
+		public VideoPlayer vid;
 	
-	private void OnDestroy()
-	{
-		if (vid != null)
-			vid.loopPointReached -= GoToMainMenu;
-	}
+		protected void Start()
+		{
+			vid = GetComponent<VideoPlayer>();
+			vid.loopPointReached += GoToMainMenu;
+		}
+	
+		private void OnDestroy()
+		{
+			if (vid != null)
+				vid.loopPointReached -= GoToMainMenu;
+		}
 
-	private void GoToMainMenu(VideoPlayer source)
-	{ 
-		SceneLoader.I.GoToScene( ASSETS.Scenes.mainMenu );
+		private void GoToMainMenu(VideoPlayer source)
+		{ 
+			SceneLoader.I.GoToScene( ASSETS.Scenes.mainMenu );
+		}
 	}
 }

@@ -1,12 +1,13 @@
-
 using System;
 using UnityEngine.UI;
 
-
-[Serializable]
+namespace __SCRIPTS
+{
+	[Serializable]
 	public class AmmoLifeFX : Life_FX
 	{
 		public Image capSpriteRenderer;
 		
 	}
+}
 

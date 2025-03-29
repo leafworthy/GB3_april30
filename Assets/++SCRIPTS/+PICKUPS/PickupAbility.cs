@@ -3,45 +3,48 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PickupAbility : MonoBehaviour
+namespace __SCRIPTS
 {
-	private List<PickupEffect> currentEffects = new List<PickupEffect>();
-	private List<PickupEffect> effectsToRemove = new List<PickupEffect>();
-	public static event Action<Pickup, Player> OnPickup;
-
-	private void Update()
+	public class PickupAbility : MonoBehaviour
 	{
-		foreach (var currentEffect in currentEffects)
+		private List<PickupEffect> currentEffects = new List<PickupEffect>();
+		private List<PickupEffect> effectsToRemove = new List<PickupEffect>();
+		public static event Action<Pickup, Player> OnPickup;
+
+		private void Update()
 		{
-			currentEffect.UpdateEffect();
+			foreach (var currentEffect in currentEffects)
+			{
+				currentEffect.UpdateEffect();
+			}
+
+			foreach (var currentEffect in effectsToRemove)
+			{
+				currentEffects.Remove(currentEffect);
+			}
+			effectsToRemove.Clear();
 		}
 
-		foreach (var currentEffect in effectsToRemove)
+		public void PickUp(Pickup pickup)
 		{
-			currentEffects.Remove(currentEffect);
+			var life = GetComponent<Life>();
+			if (life is null) return;
+			OnPickup?.Invoke(pickup, life.player);
+
+			foreach (var pickupEffect in pickup.GetEffects())
+			{
+				var alreadyHaveIt = currentEffects.FirstOrDefault(t => t == pickupEffect);
+				if (alreadyHaveIt != null && pickup.pickupItem.itemType != PickupItem.ItemType.cash) continue;
+
+				pickupEffect.StartEffect(life);
+				pickupEffect.OnDone += EffectDone;
+				currentEffects.Add(pickupEffect);
+			}
 		}
-		effectsToRemove.Clear();
-	}
 
-	public void PickUp(Pickup pickup)
-	{
-		var life = GetComponent<Life>();
-		if (life is null) return;
-		OnPickup?.Invoke(pickup, life.player);
-
-		foreach (var pickupEffect in pickup.GetEffects())
+		private void EffectDone(PickupEffect effect)
 		{
-			var alreadyHaveIt = currentEffects.FirstOrDefault(t => t == pickupEffect);
-			if (alreadyHaveIt != null) continue;
-
-			pickupEffect.StartEffect(life);
-			pickupEffect.OnDone += EffectDone;
-			currentEffects.Add(pickupEffect);
+			effectsToRemove.Add(effect);
 		}
-	}
-
-	private void EffectDone(PickupEffect effect)
-	{
-		effectsToRemove.Add(effect);
 	}
 }

@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 635
   m_Sprite: {fileID: 21300000, guid: 133fed2f6fe5b48dd958117fc64164b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -402,7 +402,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 16
+  m_SortingOrder: 633
   m_Sprite: {fileID: -1832002758, guid: ed8316dd017d34f84bc5cd76357a012d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -453,8 +453,8 @@ MonoBehaviour:
   sortingBounds: {fileID: 0}
   renderBelowSortingOrder: 0
   sortType: 1
-  SorterPositionOffset: {x: -4.5284424, y: -5.9042473, z: 0}
-  SorterPositionOffset2: {x: 4.9348755, y: -1.3786697, z: 0}
+  SorterPositionOffset: {x: -4.5284424, y: -5.904251, z: 0}
+  SorterPositionOffset2: {x: 4.9348755, y: -1.3786621, z: 0}
   renderersToSort:
   - {fileID: 7599226733927065709}
   renderAboveAll: 0
@@ -470,8 +470,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d97d7adab58b4ca89762ea648acacd8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openSortingPoint1: {x: -3.9494553, y: -5.734066, z: 0}
-  openSortingPoint2: {x: -4.029373, y: -12.758747, z: 0}
+  openSortingPoint1: {x: -3.949463, y: -5.73407, z: 0}
+  openSortingPoint2: {x: -4.029358, y: -12.758743, z: 0}
 --- !u!114 &5290067728388085103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -565,6 +565,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3547440162358740012, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: Health
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 3547440162358740012, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: cantDie
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3547440162358740012, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: unitData
+      value: 
+      objectReference: {fileID: 11400000, guid: 2abeee37e415d47d490673c7975dbd4d, type: 2}
     - target: {fileID: 3616615119562681714, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: mainShape.spriteShape.WorldRect.x
       value: -1.999999
@@ -591,7 +603,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: dbfcad0e4ce234b33ac9c6bc4c684c99, type: 3}
     - target: {fileID: 4060789362924438240, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: m_SortingOrder
-      value: 18
+      value: 637
       objectReference: {fileID: 0}
     - target: {fileID: 4555309262593145997, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: m_IsActive
@@ -625,6 +637,10 @@ PrefabInstance:
       propertyPath: 'renderersToSort.Array.data[2]'
       value: 
       objectReference: {fileID: 1403131798044607136}
+    - target: {fileID: 5956166405423089033, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 6806070673501800903, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: m_Name
       value: Front Wall
@@ -712,19 +728,19 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5055054319351310850}
   m_SourcePrefab: {fileID: 100100000, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+--- !u!60 &218501721682137571 stripped
+PolygonCollider2D:
+  m_CorrespondingSourceObject: {fileID: 4587261604801181889, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+  m_PrefabInstance: {fileID: 4368909489246218530}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &359072328796171202 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 4060789362924438240, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
   m_PrefabInstance: {fileID: 4368909489246218530}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2024437314187411470 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2357989592624621868, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
-  m_PrefabInstance: {fileID: 4368909489246218530}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2070054976837189028 stripped
+--- !u!114 &980225611832388878 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2313491215681737862, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3547440162358740012, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
   m_PrefabInstance: {fileID: 4368909489246218530}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -733,6 +749,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &2024437314187411470 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2357989592624621868, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+  m_PrefabInstance: {fileID: 4368909489246218530}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3471091220531976709 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 903736003923260199, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
@@ -786,8 +807,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4ed621a62f2487ea97c62c0a909c05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  indicatorOffset: {x: 4.970886, y: 15.906809, z: 0}
-  interactionPoint: {x: 7.1034546, y: -2.7321014, z: 0}
+  indicatorOffset: {x: 4.970886, y: 15.906799, z: 0}
+  interactionPoint: {x: 7.1034546, y: -2.7321167, z: 0}
 --- !u!114 &7952065115464331908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -804,9 +825,9 @@ MonoBehaviour:
   DoorAnimator: {fileID: 574974462745048103}
   isOpen: 0
   isBroken: 0
-  ColliderDisabledOnOpen: {fileID: 8794875624471124184}
+  ColliderDisabledOnOpen: {fileID: 218501721682137571}
   ShadowCollider: {fileID: 409785356654422746}
-  life: {fileID: 2070054976837189028}
+  life: {fileID: 980225611832388878}
   closedSorting: {fileID: 1287688945080067726}
 --- !u!1 &7121731700872044773 stripped
 GameObject:
@@ -838,10 +859,5 @@ MonoBehaviour:
 --- !u!4 &8507358240378161013 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5382163528459300439, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
-  m_PrefabInstance: {fileID: 4368909489246218530}
-  m_PrefabAsset: {fileID: 0}
---- !u!60 &8794875624471124184 stripped
-PolygonCollider2D:
-  m_CorrespondingSourceObject: {fileID: 5092674805762454010, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
   m_PrefabInstance: {fileID: 4368909489246218530}
   m_PrefabAsset: {fileID: 0}

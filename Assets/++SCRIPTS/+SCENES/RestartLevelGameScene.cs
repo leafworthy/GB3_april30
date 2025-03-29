@@ -1,23 +1,26 @@
 using System.Collections;
 using UnityEngine;
 
-public class RestartLevelGameScene : GameScene
+namespace __SCRIPTS
 {
-   
-    // Start is called before the first frame update
-    void Start()
+    public class RestartLevelGameScene : GameScene
     {
-        Debug.Log("restarting soon");  
-        StartCoroutine(WaitOneSecondThenGoToScene());
-    }
+   
+        // Start is called before the first frame update
+        void Start()
+        {
+            Debug.Log("restarting soon");  
+            StartCoroutine(WaitOneSecondThenGoToScene());
+        }
 
-    private IEnumerator WaitOneSecondThenGoToScene()
-    {
-        Debug.Log("waiting");
-        yield return new WaitForSeconds(1);
-        Debug.Log("going");
-        LevelManager.I.GoBackFromRestart();
-    }
+        private IEnumerator WaitOneSecondThenGoToScene()
+        {
+            Debug.Log("waiting");
+            yield return new WaitForSeconds(1);
+            Debug.Log("going");
+            LevelManager.I.GoBackFromRestart();
+        }
 
    
+    }
 }

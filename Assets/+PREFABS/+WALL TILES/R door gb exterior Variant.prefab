@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: -2039715745, guid: e75c2d2cf1e354ee589f6067a0644221, type: 3}
     - target: {fileID: 1178652393901442608, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_SortingOrder
-      value: 493
+      value: 426
       objectReference: {fileID: 0}
     - target: {fileID: 1178652393901442608, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_WasSpriteAssigned
@@ -174,7 +174,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: fb00336ecd0e743418906dc2bb5163f2, type: 3}
     - target: {fileID: 7662424548523257085, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_SortingOrder
-      value: 479
+      value: 420
       objectReference: {fileID: 0}
     - target: {fileID: 7811873326184247868, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_Offset.y
@@ -230,7 +230,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: c323ae94a805d4bf3bb5a2e32a75641c, type: 3}
     - target: {fileID: 9067193047227712927, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_SortingOrder
-      value: 615
+      value: 428
       objectReference: {fileID: 0}
     - target: {fileID: 9138984871637670522, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       propertyPath: m_Controller
@@ -248,9 +248,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2016472817048669880, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4179736471012140856}
-    - targetCorrespondingSourceObject: {fileID: 4739874861808256478, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4274415179839627181}
     - targetCorrespondingSourceObject: {fileID: 8026351016165178176, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5721216386528386251}
@@ -311,87 +308,6 @@ PolygonCollider2D:
       - {x: 10.959367, y: -1.0739503}
       - {x: 11.80856, y: -0.6593466}
   m_UseDelaunayMesh: 0
---- !u!1 &2100917602089918221 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8842892377095191538, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
-  m_PrefabInstance: {fileID: 7466887567341511935}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2100917603199056869 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8842892376161689370, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
-  m_PrefabInstance: {fileID: 7466887567341511935}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2100917603422568604 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8842892376284718179, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
-  m_PrefabInstance: {fileID: 7466887567341511935}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &2763202173277397281 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4739874861808256478, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}
-  m_PrefabInstance: {fileID: 7466887567341511935}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4274415179839627181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2763202173277397281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slowBarImage: {fileID: 2100917603199056869}
-  fastBarImage: {fileID: 2100917603422568604}
-  DebreeTint: {r: 1, g: 1, b: 1, a: 1}
-  colorMode: 1
-  slowBarColor: {r: 1, g: 1, b: 1, a: 1}
-  barGradient:
-    serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 1}
-    key1: {r: 1, g: 0.95496154, b: 0, a: 1}
-    key2: {r: 0.19127488, g: 1, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 16577
-    ctime2: 65535
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 3
-    m_NumAlphaKeys: 2
-  healthBar: {fileID: 2100917602089918221}
-  BlockTint: 0
 --- !u!114 &8136410034752600102 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1690507369906298073, guid: b204637a45ffc4c9d9a208ebbd8b4627, type: 3}

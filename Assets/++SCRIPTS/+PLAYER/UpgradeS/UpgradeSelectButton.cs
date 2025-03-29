@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace UpgradeS
+namespace __SCRIPTS.UpgradeS
 {
 	public class UpgradeSelectButton : MonoBehaviour
 	{
@@ -16,21 +16,15 @@ namespace UpgradeS
 		public TextMeshProUGUI CostText;
 		public TextMeshProUGUI LevelText;
 
-		private void Start()
+		private void Update()
 		{
-			if(upgrade == null)
-			{
-				CostText.text = "EXIT";
-				return;
-			}
-
 			RefreshText();
 		}
 
-		private void RefreshText()
+		public void RefreshText()
 		{
-			CostText.text = upgrade.GetCost().ToString();
-			LevelText.text = upgrade.GetLevel().ToString();
+			CostText.text = upgrade.Cost.ToString();
+			LevelText.text = upgrade.Level.ToString();
 		}
 
 		public void Highlight()

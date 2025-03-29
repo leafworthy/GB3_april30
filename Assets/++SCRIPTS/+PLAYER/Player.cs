@@ -1,261 +1,265 @@
 using System;
 using System.Collections.Generic;
+using __SCRIPTS.UpgradeS;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UpgradeS;
 
-public enum Character
+namespace __SCRIPTS
 {
-	None,
-	Karrot,
-	Bean,
-	Brock,
-	Tmato
-}
-
-public class Player : MonoBehaviour
-{
-	public enum State
+	public enum Character
 	{
-		Unjoined,
-		SelectingCharacter,
-		Selected,
-		Alive,
-		Dead
+		None,
+		Karrot,
+		Bean,
+		Brock,
+		Tmato
 	}
 
-	public State state;
-	private PlayerData data;
-
-	public GameObject SpawnedPlayerGO;
-	public Life spawnedPlayerDefence;
-
-	public PlayerController Controller;
-	public PlayerInput input;
-	public bool isUsingMouse;
-	private AimAbility aimAbility;
-
-	public CharacterButton CurrentButton;
-	public int buttonIndex;
-
-	//SET DURING CHARACTER SELECT
-	public Character CurrentCharacter;
-	public Color playerColor;
-
-	private PlayerSayer sayer;
-
-	public int playerIndex;
-	public bool hasKey;
-	public List<PlayerInteractable> interactables = new();
-	private PlayerInteractable selectedInteractable;
-	public static event Action<Player> OnPlayerSpawned;
-	public static event Action<Player> OnPlayerDies;
-	public static event Action<Player> OnPlayerLeavesUpgradeSetupMenu;
-
-	private PlayerUpgrades playerUpgrades;
-
-	public bool IsPlayer() => data.isPlayer;
-
-	private void Start()
+	public class Player : MonoBehaviour
 	{
-		playerUpgrades = GetComponent<PlayerUpgrades>();
-		DontDestroyOnLoad(gameObject);
-	}
+		public enum State
+		{
+			Unjoined,
+			SelectingCharacter,
+			Selected,
+			Alive,
+			Dead
+		}
 
-	private void FixedUpdate()
-	{
-		if (SpawnedPlayerGO != null)
+		public State state;
+		private PlayerData data;
+
+		public GameObject SpawnedPlayerGO;
+		public Life spawnedPlayerDefence;
+
+		public PlayerController Controller;
+		public PlayerInput input;
+		public bool isUsingMouse;
+		private AimAbility aimAbility;
+
+		public CharacterButton CurrentButton;
+		public int buttonIndex;
+
+		//SET DURING CHARACTER SELECT
+		public Character CurrentCharacter;
+		public Color playerColor;
+
+		private PlayerSayer sayer;
+
+		public int playerIndex;
+		public bool hasKey;
+		public List<PlayerInteractable> interactables = new();
+		private PlayerInteractable selectedInteractable;
+		public static event Action<Player> OnPlayerSpawned;
+		public static event Action<Player> OnPlayerDies;
+		public static event Action<Player> OnPlayerLeavesUpgradeSetupMenu;
+
+		private PlayerUpgrades playerUpgrades;
+
+		public bool IsPlayer() => data.isPlayer;
+
+		private void Start()
+		{
+			playerUpgrades = GetComponent<PlayerUpgrades>();
+			DontDestroyOnLoad(gameObject);
+		}
+
+		private void FixedUpdate()
+		{
+			if (SpawnedPlayerGO != null)
+				SelectClosestInteractable();
+		}
+
+		public void AddInteractable(PlayerInteractable interactable)
+		{
+			if (interactable == null) return;
+			if (interactables.Contains(interactable)) return;
+			interactables.Add(interactable);
 			SelectClosestInteractable();
-	}
-
-	public void AddInteractable(PlayerInteractable interactable)
-	{
-		if (interactable == null) return;
-		if (interactables.Contains(interactable)) return;
-		interactables.Add(interactable);
-		SelectClosestInteractable();
-	}
-
-	private void SelectClosestInteractable()
-	{
-		if (interactables.Count == 0)
-		{
-			selectedInteractable = null;
-			return;
 		}
 
-		var closest = interactables[0];
-		var closestDistance = Vector2.Distance(closest.GetInteractionPosition(), GetAimPosition());
-		foreach (var interactable in interactables)
+		private void SelectClosestInteractable()
 		{
-			var distance = Vector2.Distance(interactable.GetInteractionPosition(), GetAimPosition());
-
-			if (!(distance < closestDistance)) continue;
-			closest = interactable;
-			closestDistance = distance;
-		}
-
-		if (closest == selectedInteractable)
-		{
-			if (selectedInteractable.isSelected)
+			if (interactables.Count == 0)
+			{
+				selectedInteractable = null;
 				return;
+			}
+
+			var closest = interactables[0];
+			if (closest == null) return;
+			var closestDistance = Vector2.Distance(closest.GetInteractionPosition(), GetAimPosition());
+			foreach (var interactable in interactables)
+			{
+				var distance = Vector2.Distance(interactable.GetInteractionPosition(), GetAimPosition());
+
+				if (!(distance < closestDistance)) continue;
+				closest = interactable;
+				closestDistance = distance;
+			}
+
+			if (closest == selectedInteractable)
+			{
+				if (selectedInteractable.isSelected)
+					return;
+			}
+
+			if (selectedInteractable != null) selectedInteractable.Deselect(this);
+			selectedInteractable = closest;
+			selectedInteractable.Select(this);
 		}
 
-		if (selectedInteractable != null) selectedInteractable.Deselect(this);
-		selectedInteractable = closest;
-		selectedInteractable.Select(this);
-	}
-
-	private Vector2 GetAimPosition()
-	{
-		if (aimAbility == null) aimAbility = SpawnedPlayerGO.GetComponentInChildren<AimAbility>();
-		return aimAbility.GetAimPoint();
-	}
-
-	public void RemoveInteractable(PlayerInteractable interactable)
-	{
-		if (interactable == null) return;
-		if (interactable == selectedInteractable)
+		private Vector2 GetAimPosition()
 		{
-			interactable.Deselect(this);
-			selectedInteractable = null;
+			if (aimAbility == null) aimAbility = SpawnedPlayerGO.GetComponentInChildren<AimAbility>();
+			return aimAbility.GetAimPoint();
 		}
 
-		interactables.Remove(interactable);
-		SelectClosestInteractable();
-	}
+		public void RemoveInteractable(PlayerInteractable interactable)
+		{
+			if (interactable == null) return;
+			if (interactable == selectedInteractable)
+			{
+				interactable.Deselect(this);
+				selectedInteractable = null;
+			}
 
-	// Method to handle player death
-	public void OnPlayerDied(Player player)
-	{
-		state = State.Dead;
-		OnPlayerDies?.Invoke(this);
-	}
+			interactables.Remove(interactable);
+			SelectClosestInteractable();
+		}
 
-	private void LevelStopLevelCleanUp(GameLevel gameLevel)
-	{
-		// Otherwise clean up normally
-		state = State.SelectingCharacter;
-		CurrentButton = null;
-		SpawnedPlayerGO = null;
-		LevelManager.OnStopLevel -= LevelStopLevelCleanUp;
-		if (spawnedPlayerDefence != null) spawnedPlayerDefence.OnDead -= OnPlayerDied;
-	}
+		// Method to handle player death
+		public void OnPlayerDied(Player player)
+		{
+			state = State.Dead;
+			OnPlayerDies?.Invoke(this);
+		}
 
-	public GameObject Spawn(TravelPoint travelPoint, bool fallFromSky)
-	{
-		Debug.Log("Spawning player at " + travelPoint);
-		state = State.Alive;
+		private void LevelStopLevelCleanUp(GameLevel gameLevel)
+		{
+			// Otherwise clean up normally
+			state = State.SelectingCharacter;
+			CurrentButton = null;
+			SpawnedPlayerGO = null;
+			LevelManager.OnStopLevel -= LevelStopLevelCleanUp;
+			if (spawnedPlayerDefence != null) spawnedPlayerDefence.OnDead -= OnPlayerDied;
+		}
 
-		// Create the character instance
-		var spawnedPlayerGO = Instantiate(GetPrefabFromCharacter(this));
-		spawnedPlayerGO.transform.position = travelPoint.transform.position;
+		public GameObject Spawn(Vector2 travelPoint, bool fallFromSky)
+		{
+			Debug.Log("Spawning player at " + travelPoint);
+			state = State.Alive;
 
-		SetSpawnedPlayerGO(spawnedPlayerGO);
+			// Create the character instance
+			var spawnedPlayerGO = Instantiate(GetPrefabFromCharacter(this));
+			spawnedPlayerGO.transform.position = travelPoint;
+
+			SetSpawnedPlayerGO(spawnedPlayerGO);
 		
-		var animations = spawnedPlayerGO.GetComponentInChildren<Animations>();
-		if (animations != null)
-		{
-			animations.SetBool(Animations.IsFallingFromSky, fallFromSky);
-		}
-		var jumpController = spawnedPlayerGO.GetComponentInChildren<JumpController>();
-		if (jumpController != null)
-		{
-			jumpController.Init(fallFromSky);
-		}
+			var animations = spawnedPlayerGO.GetComponentInChildren<Animations>();
+			if (animations != null)
+			{
+				animations.SetBool(Animations.IsFallingFromSky, fallFromSky);
+			}
+			var jumpController = spawnedPlayerGO.GetComponentInChildren<JumpController>();
+			if (jumpController != null)
+			{
+				jumpController.Init(fallFromSky);
+			}
 
-		// Apply any upgrades
-		if (playerUpgrades != null) playerUpgrades.ApplyUpgrades(this);
+			// Apply any upgrades
+			if (playerUpgrades != null) playerUpgrades.ApplyUpgrades(this);
 		
-		// Subscribe to level stop event for cleanup
-		LevelManager.OnStopLevel += LevelStopLevelCleanUp;
+			// Subscribe to level stop event for cleanup
+			LevelManager.OnStopLevel += LevelStopLevelCleanUp;
 
-		// Notify that player has spawned
-		OnPlayerSpawned?.Invoke(this);
-		return spawnedPlayerGO;
-	}
-
-	private void SetSpawnedPlayerGO(GameObject newGO)
-	{
-		SpawnedPlayerGO = newGO;
-		spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
-		spawnedPlayerDefence.OnDead += OnPlayerDied; // Updated to use new method name
-		spawnedPlayerDefence.SetPlayer(this);
-		sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
-	}
-
-	private static GameObject GetPrefabFromCharacter(Player player)
-	{
-		switch (player.CurrentCharacter)
-		{
-			case Character.Karrot:
-				return ASSETS.Players.GangstaBeanPlayerPrefab;
-			case Character.Bean:
-				return ASSETS.Players.GangstaBeanPlayerPrefab;
-			case Character.Brock:
-				return ASSETS.Players.BrockLeePlayerPrefab;
-			case Character.Tmato:
-				return ASSETS.Players.BrockLeePlayerPrefab;
+			// Notify that player has spawned
+			OnPlayerSpawned?.Invoke(this);
+			return spawnedPlayerGO;
 		}
 
-		return null;
-	}
-
-	public void Say(string message, float sayTimeInSeconds = 3)
-	{
-		if (sayer == null) sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
-		sayer.Say(message, sayTimeInSeconds);
-	}
-
-	public void Join(PlayerInput playerInput, PlayerData playerData, int index)
-	{
-		data = playerData;
-		if (playerInput == null)
+		private void SetSpawnedPlayerGO(GameObject newGO)
 		{
-			if (!data.isPlayer) return;
+			SpawnedPlayerGO = newGO;
+			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
+			spawnedPlayerDefence.OnDead += OnPlayerDied; // Updated to use new method name
+			spawnedPlayerDefence.SetPlayer(this);
+			sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
 		}
-		else
-			playerIndex = playerInput != null ? playerInput.playerIndex : 5;
 
-		playerColor = data.playerColor;
+		private static GameObject GetPrefabFromCharacter(Player player)
+		{
+			switch (player.CurrentCharacter)
+			{
+				case Character.Karrot:
+					return ASSETS.Players.GangstaBeanPlayerPrefab;
+				case Character.Bean:
+					return ASSETS.Players.GangstaBeanPlayerPrefab;
+				case Character.Brock:
+					return ASSETS.Players.BrockLeePlayerPrefab;
+				case Character.Tmato:
+					return ASSETS.Players.BrockLeePlayerPrefab;
+			}
 
-		input = playerInput;
-		Controller = GetComponent<PlayerController>();
-		Controller.InitializeAndLinkToPlayer(this);
-		isUsingMouse = input.GetDevice<Mouse>() != null || input.GetDevice<Keyboard>() != null;
-		SetState(State.SelectingCharacter);
-	}
+			return null;
+		}
 
-	public void SetState(State newState)
-	{
-		state = newState;
-	}
+		public void Say(string message, float sayTimeInSeconds = 3)
+		{
+			if (sayer == null) sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
+			sayer.Say(message, sayTimeInSeconds);
+		}
 
-	public void StopSaying()
-	{
-		sayer.StopSaying();
-	}
+		public void Join(PlayerInput playerInput, PlayerData playerData, int index)
+		{
+			data = playerData;
+			if (playerInput == null)
+			{
+				if (!data.isPlayer) return;
+			}
+			else
+				playerIndex = playerInput != null ? playerInput.playerIndex : 5;
 
-	public int GetStartingCash() => data.startingCash;
+			playerColor = data.playerColor;
 
-	public int GetStartingGas() => data.startingGas;
+			input = playerInput;
+			Controller = GetComponent<PlayerController>();
+			Controller.InitializeAndLinkToPlayer(this);
+			isUsingMouse = input.GetDevice<Mouse>() != null || input.GetDevice<Keyboard>() != null;
+			SetState(State.SelectingCharacter);
+		}
 
-	public void GainKey()
-	{
-		hasKey = true;
-	}
+		public void SetState(State newState)
+		{
+			state = newState;
+		}
 
-	public bool HasMoreMoneyThan(int amount) => PlayerStatsManager.I.GetStatAmount(this, PlayerStat.StatType.TotalCash) >= amount;
+		public void StopSaying()
+		{
+			sayer.StopSaying();
+		}
 
-	public void SpendMoney(int amount)
-	{
-		PlayerStatsManager.I.ChangeStat(this, PlayerStat.StatType.TotalCash, -amount);
-	}
+		public int GetStartingCash() => data.startingCash;
 
-	public bool isDead() => spawnedPlayerDefence.IsDead();
+		public int GetStartingGas() => data.startingGas;
 
-	public void LeaveUpgradeSetupMenu()
-	{
-		OnPlayerLeavesUpgradeSetupMenu?.Invoke(this);
+		public void GainKey()
+		{
+			hasKey = true;
+		}
+
+		public bool HasMoreMoneyThan(int amount) => PlayerStatsManager.I.GetStatAmount(this, PlayerStat.StatType.TotalCash) >= amount;
+
+		public void SpendMoney(int amount)
+		{
+			PlayerStatsManager.I.ChangeStat(this, PlayerStat.StatType.TotalCash, -amount);
+		}
+
+		public bool isDead() => spawnedPlayerDefence.IsDead();
+
+		public void LeaveUpgradeSetupMenu()
+		{
+			OnPlayerLeavesUpgradeSetupMenu?.Invoke(this);
+		}
 	}
 }

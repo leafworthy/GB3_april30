@@ -1,32 +1,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteAlways]
-public class TintSprites : MonoBehaviour
+namespace __SCRIPTS
 {
+	[ExecuteAlways]
+	public class TintSprites : MonoBehaviour
+	{
     
-    public Color Tint = Color.white;
-     public List< SpriteRenderer > toTint = new();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void OnEnable()
-    {
-	    Refresh();
-    }
+		public Color Tint = Color.white;
+		public List< SpriteRenderer > toTint = new();
+		// Start is called once before the first execution of Update after the MonoBehaviour is created
+		void OnEnable()
+		{
+			Refresh();
+		}
 
   
 
-    public void Refresh()
-    {
-	   		toTint.Clear();
-		var spriteRenderers = GetComponentsInChildren<SpriteRenderer>( true );
-		foreach (var spriteRenderer in spriteRenderers)
+		public void Refresh()
 		{
-			if (spriteRenderer.CompareTag("dontcolor"))
+			toTint.Clear();
+			var spriteRenderers = GetComponentsInChildren<SpriteRenderer>( true );
+			foreach (var spriteRenderer in spriteRenderers)
 			{
-				spriteRenderer.color = Color.white;
-				continue;
+				if (spriteRenderer.CompareTag("dontcolor"))
+				{
+					spriteRenderer.color = Color.white;
+					continue;
+				}
+				toTint.Add(spriteRenderer);
 			}
-			toTint.Add(spriteRenderer);
 		}
-    }
+	}
 }

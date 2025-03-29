@@ -2,91 +2,90 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStatsManager : Singleton<PlayerStatsManager>
+namespace __SCRIPTS
 {
-	private Dictionary<Player, PlayerStats> playerStats = new();
-
-	public event Action <Player, PlayerStat.StatType , float> OnPlayerStatChange;
-	private bool hasStarted;
-	private void OnEnable()
+	public class PlayerStatsManager : Singleton<PlayerStatsManager>
 	{
-		Players.OnPlayerJoins += Players_OnPlayerJoins;
-		Player.OnPlayerDies += Player_PlayerDies;
-	}
+		private Dictionary<Player, PlayerStats> playerStats = new();
 
-	public float GetStatAmount(Player player,PlayerStat.StatType statType)
-	{
-		UpdatePlayerStats();
-		var match = playerStats.TryGetValue(player, out var stats);
-		if (match)
+		public event Action <Player, PlayerStat.StatType , float> OnPlayerStatChange;
+		private bool hasStarted;
+		private int maxGas = 20;
+		public int MaxGas
 		{
-			return stats.GetStatValue(statType);
+			get { return maxGas; }
 		}
 
-		return -999;
-	}
-
-	private void UpdatePlayerStats()
-	{
-		if (hasStarted) return;
-		playerStats.Clear();
-		hasStarted = true;
-		foreach (var player in Players.AllJoinedPlayers)
+		private void Start()
 		{
-			playerStats.Add(player, player.GetComponent<PlayerStats>());
+			LevelManager.OnPlayerSpawned += Players_OnPlayerJoins;
 		}
-	}
+
+		public float GetStatAmount(Player player,PlayerStat.StatType statType)
+		{
+			GatherPlayerStats();
+			var match = playerStats.TryGetValue(player, out var stats);
+			if (match)
+			{
+				Debug.Log(statType.ToString() +" stat value  " + stats.GetStatValue(statType));
+				return stats.GetStatValue(statType);
+			}
+
+			return -999;
+		}
+
+		private void GatherPlayerStats()
+		{
+			if (hasStarted) return;
+			playerStats.Clear();
+			hasStarted = true;
+			foreach (var player in Players.AllJoinedPlayers)
+			{
+				playerStats.Add(player, player.GetComponent<PlayerStats>());
+			}
+		}
 
 	
-	public void ChangeStat(Player player, PlayerStat.StatType statType, float change)
-	{
-		var match = playerStats.TryGetValue(player, out var stats);
-		if (match)
+		public void ChangeStat(Player player, PlayerStat.StatType statType, float change)
 		{
-			Debug.Log("Player was found in PlayerStatsManager");
-			stats.ChangeStat(statType, change);
-			OnPlayerStatChange?.Invoke(player, statType, stats.GetStatValue(statType));
+			var match = playerStats.TryGetValue(player, out var stats);
+			if (match)
+			{
+				Debug.Log("Player was found in PlayerStatsManager");
+				stats.ChangeStat(statType, change);
+				OnPlayerStatChange?.Invoke(player, statType, stats.GetStatValue(statType));
+			}
+			else
+			{
+				Debug.Log("Player not found in PlayerStatsManager");
+			}
 		}
-		else
-		{
-			Debug.Log("Player not found in PlayerStatsManager");
-		}
-	}
-	private void Player_PlayerDies(Player player)
-	{
-		if (playerStats.TryGetValue(player, out var stats))
-		{
-			stats.ResetStats();
-		}
-		else
-		{
-			Debug.LogError("Player not found in PlayerStatsManager");
-		}
-	}
-
-	private void Players_OnPlayerJoins(Player player)
-	{
-		var stats = player.GetComponent<PlayerStats>();
-		if(stats == null)
-		{
-			Debug.LogError("Player does not have PlayerStats component");
-			return;
-		}
-
-		playerStats.TryAdd(player, stats);
 		
-	}
 
-	public void SetStatAmount(Player owner, PlayerStat.StatType statType, float value)
-	{
-		if (playerStats.TryGetValue(owner, out var stats))
+		private void Players_OnPlayerJoins(Player player)
 		{
-			stats.SetStatValue(statType, value);
-			OnPlayerStatChange?.Invoke(owner, statType, stats.GetStatValue(statType));
+			var stats = player.GetComponent<PlayerStats>();
+			if(stats == null)
+			{
+				Debug.LogError("Player does not have PlayerStats component");
+				return;
+			}
+
+			playerStats.TryAdd(player, stats);
+		
 		}
-		else
+
+		public void SetStatAmount(Player owner, PlayerStat.StatType statType, float value)
 		{
-			Debug.LogError("Player not found in PlayerStatsManager");
+			if (playerStats.TryGetValue(owner, out var stats))
+			{
+				stats.SetStatValue(statType, value);
+				OnPlayerStatChange?.Invoke(owner, statType, stats.GetStatValue(statType));
+			}
+			else
+			{
+				Debug.LogError("Player not found in PlayerStatsManager");
+			}
 		}
 	}
 }

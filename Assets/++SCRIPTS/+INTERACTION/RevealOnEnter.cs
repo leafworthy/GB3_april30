@@ -1,74 +1,77 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RevealOnEnter : MonoBehaviour
+namespace __SCRIPTS
 {
-	// Start is called before the first frame update
-	private HideRevealObjects hideRevealObjects;
-	
-	private List<Player> playersInside = new();
-
-	protected void OnTriggerEnter2D(Collider2D other)
+	public class RevealOnEnter : MonoBehaviour
 	{
-		if (other.gameObject == gameObject) return;
+		// Start is called before the first frame update
+		private HideRevealObjects hideRevealObjects;
+	
+		private List<Player> playersInside = new();
 
-		var life = other.GetComponent<Life>();
-		if (life == null)
+		protected void OnTriggerEnter2D(Collider2D other)
 		{
-			life = other.GetComponentInParent<Life>();
-			if (life == null) return;
+			if (other.gameObject == gameObject) return;
+
+			var life = other.GetComponent<Life>();
+			if (life == null)
+			{
+				life = other.GetComponentInParent<Life>();
+				if (life == null) return;
+			}
+
+			var player = life.player;
+			if (player == null)
+			{
+				Hide();
+				return;
+			}
+			if(playersInside.Contains(player)) return;
+			playersInside.Add(player);
+			Reveal();
 		}
 
-		var player = life.player;
-		if (player == null)
+		private void OnTriggerExit2D(Collider2D other)
 		{
-			Hide();
-			return;
-		}
-		if(playersInside.Contains(player)) return;
-		playersInside.Add(player);
-		Reveal();
-	}
-
-	private void OnTriggerExit2D(Collider2D other)
-	{
 	
 
-		var life = other.GetComponent<Life>();
-		if (life == null)
-		{
-			life = other.GetComponentInParent<Life>();
-			if (life == null) return;
-		}
+			var life = other.GetComponent<Life>();
+			if (life == null)
+			{
+				life = other.GetComponentInParent<Life>();
+				if (life == null) return;
+			}
 
-		var player = life.player;
-		if (player == null)
-		{
-			return;
+			var player = life.player;
+			if (player == null)
+			{
+				return;
 			
+			}
+
+			if (!player.IsPlayer()) return;
+			if (playersInside.Contains(player)) playersInside.Remove(player);
+			if (playersInside.Count == 0) Hide();
 		}
 
-		if (!player.IsPlayer()) return;
-		if (playersInside.Contains(player)) playersInside.Remove(player);
-		if (playersInside.Count == 0) Hide();
-	}
+		protected void Start()
+		{
+			hideRevealObjects = GetComponent<HideRevealObjects>();
+			hideRevealObjects.Set(1);
+		}
 
-	protected void Start()
-	{
-		hideRevealObjects = GetComponent<HideRevealObjects>();
-		hideRevealObjects.Set(1);
-	}
+		private void Hide()
+		{
+			Debug.Log("hide");
+			hideRevealObjects.Set(1);
+		}
 
-	private void Hide()
-	{
-		Debug.Log("hide");
-		hideRevealObjects.Set(1);
-	}
+		private void Reveal()
+		{
+			Debug.Log("reveal");
+			hideRevealObjects.Set(0);
+		}
 
-	private void Reveal()
-	{
-		Debug.Log("reveal");
-		hideRevealObjects.Set(0);
 	}
-
 }

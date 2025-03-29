@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class PlayerCursor : MonoBehaviour
+namespace __SCRIPTS.Cursor
 {
-	public Player owner;
-	public AimAbility aimAbility => owner.SpawnedPlayerGO?.GetComponent<AimAbility>();
+	public class PlayerCursor : MonoBehaviour
+	{
+		public Player owner;
+		public AimAbility aimAbility => owner.SpawnedPlayerGO?.GetComponent<AimAbility>();
+	}
 }

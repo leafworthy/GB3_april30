@@ -1,51 +1,54 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool : MonoBehaviour
+namespace __SCRIPTS
 {
-
-	public RecycleGameObject prefab;
-	static int entities = 0;
-
-	public List<RecycleGameObject> poolInstances = new List<RecycleGameObject> ();
-
-	private RecycleGameObject CreateInstance (Vector3 pos)
+	public class ObjectPool : MonoBehaviour
 	{
-		entities++;
 
-		var clone = Instantiate (prefab);
-		clone.transform.position = pos;
-		clone.name = prefab.name + entities;
+		public RecycleGameObject prefab;
+		static int entities = 0;
 
-		poolInstances.Add (clone);
+		public List<RecycleGameObject> poolInstances = new List<RecycleGameObject> ();
 
-		return clone;
-	}
-
-	public RecycleGameObject NextObject (Vector3 pos)
-	{
-		RecycleGameObject instance = null;
-		for (int i = 0; i < poolInstances.Count; i++)
+		private RecycleGameObject CreateInstance (Vector3 pos)
 		{
-			if (poolInstances[i] == null) continue;
-			if (poolInstances[i].gameObject == null) continue;
-			if (poolInstances[i].gameObject.activeSelf) continue;
-			instance = poolInstances[i];
-			instance.transform.position = pos;
+			entities++;
 
+			var clone = Instantiate (prefab);
+			clone.transform.position = pos;
+			clone.name = prefab.name + entities;
+
+			poolInstances.Add (clone);
+
+			return clone;
 		}
 
-		if (instance != null) {
+		public RecycleGameObject NextObject (Vector3 pos)
+		{
+			RecycleGameObject instance = null;
+			for (int i = 0; i < poolInstances.Count; i++)
+			{
+				if (poolInstances[i] == null) continue;
+				if (poolInstances[i].gameObject == null) continue;
+				if (poolInstances[i].gameObject.activeSelf) continue;
+				instance = poolInstances[i];
+				instance.transform.position = pos;
+
+			}
+
+			if (instance != null) {
+				instance.ActivateGameObject ();
+				return instance;
+			}
+
+			instance = CreateInstance (pos);
 			instance.ActivateGameObject ();
+
+
 			return instance;
+
 		}
-
-		instance = CreateInstance (pos);
-		instance.ActivateGameObject ();
-
-
-		return instance;
 
 	}
-
 }
