@@ -35,13 +35,13 @@ namespace __SCRIPTS
 
 		private void Anim_AttackStop(int obj)
 		{
+			Debug.Log("knife stop");
 			anim.SetBool(Animations.IsBobbing, true);
-			body.arms.Stop(VerbName);
+			body.arms.StopSafely(VerbName);
 			isAttacking = false;
-			if(isPressing) 
-			{
-				PlayerKnifePress(null);
-			}
+			if (!isPressing) return;
+			Debug.Log("knife start again");
+			PlayerKnifePress(null);
 		}
 
 		private void OnDisable()
@@ -67,9 +67,18 @@ namespace __SCRIPTS
 
 		private void StartAttack()
 		{
-			if(isAttacking) return;
-			if (!body.arms.Do(VerbName)) return;
+			if(isAttacking)
+			{
+				Debug.Log("can't knife, still knifing");
+				return;
+			}
+			if (!body.arms.Do(VerbName))
+			{
+				Debug.Log("can't knife, still busy " + body.arms.currentActivity);
+				return;
+			}
 			isAttacking = true;
+			Debug.Log("knife start");
 			anim.Play(AnimationClipName, 1, 0);
 			anim.SetTrigger(Animations.KnifeTrigger);
 			anim.SetBool(Animations.IsBobbing, false);

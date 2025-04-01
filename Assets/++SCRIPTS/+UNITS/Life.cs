@@ -58,7 +58,11 @@ namespace __SCRIPTS
 		public void SetPlayer(Player _player)
 		{
 			player = _player;
+			OnPlayerSet?.Invoke(player);
 		}
+
+		
+
 		public bool cantDie;
 		public bool isInvincible;
 
@@ -79,6 +83,7 @@ namespace __SCRIPTS
 
 		[HideInInspector]public float Health;
 		private Color backgroundColor;
+		public event Action<Player> OnPlayerSet;
 
 		public static event Action<Attack, Life> OnAnyAttackHit;
 	

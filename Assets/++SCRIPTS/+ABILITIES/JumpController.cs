@@ -81,8 +81,8 @@ namespace __SCRIPTS
 
 		private void Jump_OnResting(Vector2 obj)
 		{
-			body.arms.Stop("Land");
-			body.legs.Stop("Land");
+			body.arms.StopSafely("Land");
+			body.legs.StopSafely("Land");
 			anim.SetBool(Animations.IsFalling, false);
 		}
 

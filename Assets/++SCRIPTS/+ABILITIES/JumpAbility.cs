@@ -156,8 +156,8 @@ namespace __SCRIPTS
 			isResting = true;
 			OnResting?.Invoke(transform.position);
 			if (body == null) return;
-			body.legs.Stop("Landing");
-			body.arms.Stop(VerbName);
+			body.legs.StopSafely("Landing");
+			body.arms.StopSafely(VerbName);
 			thing.canLand = false;
 		}
 

@@ -16,6 +16,7 @@ namespace __SCRIPTS
 		private List<Renderer> renderersToTint = new();
 		private Color materialTintColor;
 		private const float tintFadeSpeed = 6f;
+		private static readonly int PlayerColor = Shader.PropertyToID("_PlayerColor");
 		private static readonly int Tint = Shader.PropertyToID("_Tint");
 
 		public enum ColorMode
@@ -31,9 +32,9 @@ namespace __SCRIPTS
 		private float targetFill;
 		private float smoothingFactor = .25f;
 		private Life _life;
-		private Color PlayerColor;
 		public GameObject healthBar;
 		public bool BlockTint;
+		private string playerColor = "_PlayerColor";
 
 		public void OnEnable()
 		{
@@ -43,11 +44,20 @@ namespace __SCRIPTS
 			_life.OnDamaged += Life_Damaged;
 			_life.OnFractionChanged += DefenceOnDefenceChanged;
 			_life.OnDying += DefenceOnDead;
+			_life.OnPlayerSet += OnPlayerSet;
 			if (_life.unitData.ShowLifeBar) return;
 			if (healthBar != null) healthBar.SetActive(false);
 		}
 
-
+		private void OnPlayerSet(Player player)
+		{
+			if (!player.IsPlayer()) return;
+			Debug.Log("on player set" + player.playerColor);
+			foreach (var r in renderersToTint)
+			{
+				r.material.SetColor(playerColor, player.playerColor);
+			}
+		}
 
 		public void OnDisable()
 		{
@@ -55,6 +65,7 @@ namespace __SCRIPTS
 			_life.OnDamaged -= Life_Damaged;
 			_life.OnFractionChanged -= DefenceOnDefenceChanged;
 			_life.OnDying -= DefenceOnDead;
+			_life.OnPlayerSet -= OnPlayerSet;
 		}
 
 		public void StartTint(Color tintColor)

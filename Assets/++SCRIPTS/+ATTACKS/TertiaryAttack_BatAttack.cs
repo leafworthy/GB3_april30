@@ -69,8 +69,8 @@ namespace __SCRIPTS
 		private void Anim_AttackStop(int attackType)
 		{
 			isAttacking = false;
-			body.arms.Stop();
-			body.legs.Stop();
+			body.arms.StopSafely();
+			body.legs.StopSafely();
 
 			if (attackType == 0)
 			{

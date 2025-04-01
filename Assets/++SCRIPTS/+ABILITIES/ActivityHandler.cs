@@ -41,5 +41,18 @@ namespace __SCRIPTS
 			currentActivity = null;
 			return true;
 		}
+
+		public bool StopSafely(string Verb = "")
+		{
+			if (currentActivity != Verb) return false;
+			if (!isActive)
+			{
+				return false;
+			}
+
+			isActive = false;
+			currentActivity = null;
+			return true;
+		}
 	}
 }

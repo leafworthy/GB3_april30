@@ -59,8 +59,8 @@ namespace __SCRIPTS
 		private void Anim_DashStop()
 		{
 			body.ChangeLayer(body.isOverLandable ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
-			body.legs.Stop(DashVerbName);
-			body.arms.Stop(DashVerbName);
+			body.legs.StopSafely(DashVerbName);
+			body.arms.StopSafely(DashVerbName);
 		}
 
 	

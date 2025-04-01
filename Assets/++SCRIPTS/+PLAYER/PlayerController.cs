@@ -18,7 +18,7 @@ namespace __SCRIPTS
         public NewControlButton Attack2LeftTrigger;
         public NewControlButton Attack3Circle;
         public NewControlButton ReloadTriangle;
-        //public NewControlButton SwapWeaponSquare;
+        public NewControlButton SwapWeaponSquare;
         public NewControlButton InteractRightShoulder;
         public NewControlButton Pause;
         public NewControlButton Unpause;
@@ -56,7 +56,7 @@ namespace __SCRIPTS
             Attack3Circle = new NewInputButton(controls.PlayerMovement.Attack3Circle, owner);
             ReloadTriangle = new NewInputButton(controls.PlayerMovement.ReloadTriangle, owner);
             InteractRightShoulder = new NewInputButton(controls.PlayerMovement.InteractRightShoulder, owner);
-            //SwapWeaponSquare = new NewInputButton(controls.PlayerMovement.SwapWeaponSquare, owner);
+            SwapWeaponSquare = new NewInputButton(controls.PlayerMovement.SwapWeaponSquare, owner);
           
         }
 

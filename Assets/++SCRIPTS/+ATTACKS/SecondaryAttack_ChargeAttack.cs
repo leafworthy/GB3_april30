@@ -100,7 +100,7 @@ namespace __SCRIPTS
 
 			if (!body.legs.Do(verbName))
 			{
-				body.arms.Stop(verbName);
+				body.arms.StopSafely(verbName);
 				return;
 			}
 			isCharging = true;

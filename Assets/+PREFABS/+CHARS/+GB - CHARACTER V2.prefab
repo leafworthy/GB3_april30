@@ -863,6 +863,7 @@ MonoBehaviour:
   isShooting: 0
   ReloadAKAnimationClip: {fileID: 7400000, guid: c282e12111bd1461a9470c82ea4f48bc, type: 2}
   ReloadGlockAnimationClip: {fileID: 7400000, guid: d390762771f9949fab1938be26f2c783, type: 2}
+  ReloadGlockAnimationLeftClip: {fileID: 7400000, guid: 9dbfd4e662ae54b3bada9cc02ef733ec, type: 2}
   isReloading: 0
 --- !u!114 &3508854899574188244
 MonoBehaviour:
@@ -1202,7 +1203,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 427a1a51f8a764c8b962b80fd22b0897, type: 3}
+  - {fileID: 2100000, guid: 0c155a0f527d0441db3a444ac5d4813f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1515,7 +1516,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 89d91152eb4854eeaa6ae0ddc3c1cb19, type: 2}
+  - {fileID: 2100000, guid: 0c155a0f527d0441db3a444ac5d4813f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1718,7 +1719,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 427a1a51f8a764c8b962b80fd22b0897, type: 3}
+  - {fileID: 2100000, guid: 0c155a0f527d0441db3a444ac5d4813f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

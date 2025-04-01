@@ -80,7 +80,8 @@ namespace __SCRIPTS
 
 		private void Anim_ThrowStop()
 		{
-			arms.Stop("NadeThrowing");
+			arms.StopSafely(VerbName);
+			Debug.Log("nade stop");
 		}
 
 
@@ -102,10 +103,19 @@ namespace __SCRIPTS
 		private void Player_NadePress(NewControlButton newControlButton)
 		{
 			if (PauseManager.IsPaused) return;
+			if (!ammo.HasReserveAmmo(AmmoInventory.AmmoType.nades))
+			{
+				Debug.Log("no nades");
+				return;
+			}
+			if (!arms.Do(AimVerbName))
+			{
+				Debug.Log("can't nade " + arms.currentActivity);
+				return;
+			}
 
-			if (!arms.Do(AimVerbName)) return;
-
-			if (!ammo.HasReserveAmmo(AmmoInventory.AmmoType.nades)) return;
+			Debug.Log("nade aiming start");
+			
 			IsAiming = true;
 			OnShowAiming?.Invoke();
 		}
@@ -113,32 +123,27 @@ namespace __SCRIPTS
 		private void Player_NadeRelease(NewControlButton newControlButton)
 		{
 			if (PauseManager.IsPaused) return;
-			if (!IsAiming) return;
-
-			arms.Stop(AimVerbName);
+			
 			IsAiming = false;
-			NadeWithCooldown(aim.AimDir);
+			if (!ammo.HasReserveAmmo(AmmoInventory.AmmoType.nades))
+			{
+				Debug.Log("no nades");
+				return;
+			}
+
+
+			anim.Play(AnimationName, 1, 0);
 			OnHideAiming?.Invoke();
 		}
 
-		private void NadeWithCooldown(Vector3 target)
-		{
-			if (!(Time.time >= currentCooldownTime)) return;
-
-			if (!ammo.HasReserveAmmo(AmmoInventory.AmmoType.nades)) return;
-
-			if (!arms.Do(VerbName)) return;
-			ammo.UseAmmo(AmmoInventory.AmmoType.nades, 1);
-			anim.Play(AnimationName, 1, 0);
-			currentCooldownTime = Time.time + cooldownRate;
-		}
+	
 
 		private void Anim_Throw()
 		{
-			
+			ammo.UseAmmo(AmmoInventory.AmmoType.nades, 1);
 			startPoint = body.AimCenter.transform.position;
 			var velocity = new Vector3((endPoint.x - startPoint.x) / throwTime, (endPoint.y - startPoint.y) / throwTime);
-
+			Debug.Log("nade throw");
 			OnThrow?.Invoke(startPoint, velocity, throwTime, life.player);
 		}
 

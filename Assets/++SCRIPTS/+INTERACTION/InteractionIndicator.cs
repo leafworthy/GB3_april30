@@ -16,8 +16,7 @@ namespace __SCRIPTS
 
 		private void OnEnable()
 		{
-			indicator = MakeIndicator();
-			animator = indicator.GetComponentInChildren<Animator>();
+			
 			interactable = GetComponentInChildren<PlayerInteractable>(true);
 			interactable.OnPlayerEnters += PlayerEnters;
 			interactable.OnPlayerExits += PlayerExits;
@@ -25,6 +24,12 @@ namespace __SCRIPTS
 			interactable.OnDeselected += OnDeselect;
 			interactable.OnActionPress += OnActionPress;
 			interactable.OnPlayerFinishes += OnPlayerFinishes;
+		}
+
+		private void Start()
+		{
+			indicator = MakeIndicator();
+			animator = indicator.GetComponentInChildren<Animator>();
 		}
 
 		private void OnDisable()
