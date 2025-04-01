@@ -48,7 +48,6 @@ namespace __SCRIPTS.HUD_Displays
 			{
 				displayText.text = CurrentAmount.ToString();
 			}
-			Debug.Log("display updated for " + statType + " to " + CurrentAmount);
 			var shaker = statIcon.gameObject.GetComponent<ObjectShaker>();
 			if(shaker == null) shaker = statIcon.gameObject.AddComponent<ObjectShaker>();
 			shaker.Shake(ObjectShaker.ShakeIntensityType.medium);

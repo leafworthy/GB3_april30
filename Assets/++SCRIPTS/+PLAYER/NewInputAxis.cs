@@ -11,6 +11,8 @@ namespace __SCRIPTS
 		private bool IsActive;
 		private Vector2 lastDir;
 		private bool hasDirection;
+		
+		public bool isActive => IsActive;
 
 		public NewInputAxis(InputAction _action, Player _owner)
 		{
@@ -40,12 +42,13 @@ namespace __SCRIPTS
 				{
 					IsActive = false;
 					OnInactive?.Invoke(this);
+					RightPressed = false;
+					LeftPressed = false;
+					DownPressed = false;
+					UpPressed = false;
 				}
 
-				RightPressed = false;
-				LeftPressed = false;
-				DownPressed = false;
-				UpPressed = false;
+			
 				return;
 			}
 
@@ -87,7 +90,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private bool currentMagnitudeIsTooSmall() => !(currentDir.magnitude > .5f);
+		public bool currentMagnitudeIsTooSmall() => !(currentDir.magnitude > .3f);
 
 		private bool UpPressed;
 		private bool DownPressed;

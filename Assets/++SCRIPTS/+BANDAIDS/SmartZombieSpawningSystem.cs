@@ -254,13 +254,13 @@ namespace __SCRIPTS
 				}
 
 				// Apply the multipliers - need to use appropriate methods since the Life properties are read-only
-				life.SetExtraMaxHealthFactor(life.HealthMax * (healthMultiplier - 1.0f));
+				life.SetExtraMaxHealthFactor(healthMultiplier);
 
 				// Apply damage multiplier
-				life.SetExtraMaxDamageFactor(life.PrimaryAttackDamageWithExtra * (damageMultiplier - 1.0f));
+				life.SetExtraMaxDamageFactor(damageMultiplier);
 
 				// Apply speed multiplier
-				life.SetExtraMaxSpeedFactor(life.MoveSpeed * (speedMultiplier - 1.0f));
+				life.SetExtraMaxSpeedFactor(speedMultiplier);
 
 				// Reset health to full after modifying max
 				life.AddHealth(life.HealthMax);

@@ -27,27 +27,17 @@ namespace __SCRIPTS
 		private bool IsActive = true;
 		private bool IsPushed;
 		private Life life;
-		private Vector2 moveAimDir;
 		private Body body;
 		private float maxAimDistance = 30;
 		private float minDirectionMagnitude = .2f;
-		public Vector2 MoveAimDir
-		{
-			get { return moveAimDir; }
-			set { moveAimDir = value; }
-		}
-	
+		public Vector2 MoveAimDir { get; set; }
+
 		public Vector2 GetMoveAimPoint(float multiplier = 1)
 		{
-		
-			if(life == null || !life.IsPlayer) return Vector2.zero;
+			if (life == null || !life.IsPlayer) return Vector2.zero;
 			MoveAimDir = GetMoveAimDir();
 			lastAimDirOffset = MoveAimDir * maxAimDistance;
-			Debug.Log("new aim dir:  " + MoveAimDir);
-			if (!life.player.isUsingMouse)
-			{
-				return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
-			}
+			if (!life.player.isUsingMouse) return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
 			var mousePos = CursorManager.GetMousePosition();
 			//if (Vector2.Distance(body.AimCenter.transform.position, mousePos) < maxAimDistance)
 			//{
@@ -55,27 +45,19 @@ namespace __SCRIPTS
 			//}
 			//else
 			//{
-				return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
+			return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
 			//}
-
 		}
 
 		public Vector2 GetLastMoveAimPoint() => lastAimMovePoint;
 		public Vector2 GetLastMoveAimDirOffset() => lastAimDirOffset;
 
-		public  Vector3 GetMoveAimDir()
+		public Vector3 GetMoveAimDir()
 		{
-			if(life.player.isUsingMouse)
-			{
-				return moveDir;
-			}
-			else
-			{
-				return life.player.Controller.MoveAxis.GetCurrentAngle();
-			}
+			if (life.player.isUsingMouse) return moveDir;
+
+			return life.player.Controller.MoveAxis.GetCurrentAngle();
 		}
-	
-	
 
 		private void Start()
 		{
@@ -84,8 +66,6 @@ namespace __SCRIPTS
 			if (life == null) return;
 			life.OnDying += Life_OnDying;
 		}
-
-
 
 		private void Life_OnDying(Player arg1, Life arg2)
 		{
@@ -97,12 +77,8 @@ namespace __SCRIPTS
 		private void FixedUpdate()
 		{
 			if (PauseManager.IsPaused) return;
-		
-			if (isMoving && IsActive)
-			{
-				AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
-			
-			}
+
+			if (isMoving && IsActive) AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
 
 			ApplyVelocity();
 			DecayVelocity();
@@ -110,8 +86,8 @@ namespace __SCRIPTS
 
 		private void ApplyVelocity()
 		{
-			var totalVelocity =  moveVelocity + pushVelocity;
-			MoveObjectTo((Vector2) transform.position+ totalVelocity * Time.deltaTime);
+			var totalVelocity = moveVelocity + pushVelocity;
+			MoveObjectTo((Vector2) transform.position + totalVelocity * Time.deltaTime);
 		}
 
 		private void DecayVelocity()
@@ -121,16 +97,10 @@ namespace __SCRIPTS
 			moveVelocity = tempVel;
 			tempVel = pushVelocity * velocityDecayFactor;
 			pushVelocity = tempVel;
-			if(pushVelocity.magnitude < .1f)
-			{
-				pushVelocity = Vector2.zero;
-			}
+			if (pushVelocity.magnitude < .1f) pushVelocity = Vector2.zero;
 		}
 
-		private Vector2 GetMoveVelocityWithDeltaTime()
-		{
-			return GetVelocity() * Time.fixedDeltaTime;
-		}
+		private Vector2 GetMoveVelocityWithDeltaTime() => GetVelocity() * Time.fixedDeltaTime;
 
 		private Vector2 GetVelocity()
 		{
@@ -146,8 +116,6 @@ namespace __SCRIPTS
 			isMoving = true;
 			lastAimMovePoint = GetMoveAimPoint();
 		}
-
-	
 
 		private void AddMoveVelocity(Vector2 tempVel)
 		{
@@ -167,7 +135,7 @@ namespace __SCRIPTS
 			if (PauseManager.IsPaused) return;
 			if (rb != null)
 				rb.MovePosition(destination);
-			else 
+			else
 				transform.position = destination;
 		}
 
@@ -175,6 +143,7 @@ namespace __SCRIPTS
 		{
 			isDragging = isNowDragging;
 		}
+
 		public void Push(Vector2 direction, float speed)
 		{
 			direction = direction.normalized * pushMultiplier;
@@ -189,12 +158,15 @@ namespace __SCRIPTS
 			moveVelocity = Vector2.zero;
 		}
 
-
 		public void StopPush()
 		{
 			pushVelocity = Vector2.zero;
 		}
 
 		public bool IsMoving() => isMoving;
+
+		public bool IsIdle() => life.player.Controller.MoveAxis.currentMagnitudeIsTooSmall();
+
+		public Vector2 GetRealMagnitude() => life.player.Controller.MoveAxis.GetCurrentAngle();
 	}
 }

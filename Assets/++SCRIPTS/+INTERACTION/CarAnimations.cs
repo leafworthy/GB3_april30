@@ -28,7 +28,7 @@ namespace __SCRIPTS
         private void OnEnable()
         {
             carAccessInteraction.OnCarAccessActionPressed += OnCarAccessActionPressed;
-            animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>();
         }
 
         private void OnCarAccessActionPressed(Player player)
@@ -48,6 +48,7 @@ namespace __SCRIPTS
         public void OnCarEnter()
         {
             SFX.sounds.car_start_sound.PlayRandomAt(transform.position);
+            LevelManager.I.StartWinningGame();
             Debug.Log("heyo");
         }
 
@@ -58,7 +59,7 @@ namespace __SCRIPTS
 
         public void OnCarSkirtOff()
         {
-            //LevelGameScene.WinGame();
+            LevelManager.I.WinGame();
             Debug.Log("win");
         }
     }

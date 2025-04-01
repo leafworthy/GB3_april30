@@ -38,6 +38,11 @@ namespace __SCRIPTS
 			charSelectMenu.OnCharacterChosen += SetCharacterHudVisible;
 		}
 
+		void OnDisable()
+		{
+			charSelectMenu.OnCharacterChosen -= SetCharacterHudVisible;
+		}
+
 		public void StartUpgradeSelectMenu(Player player)
 		{
 			upgradeSetupMenu.gameObject.SetActive(true);

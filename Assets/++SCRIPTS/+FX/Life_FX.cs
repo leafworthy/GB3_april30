@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using __SCRIPTS.RisingText;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -71,9 +72,89 @@ namespace __SCRIPTS
 
 		private void Life_Damaged(Attack attack)
 		{
+			
+			CreateDamageRisingText(attack);
+			if (attack.DestinationLife.DebrisType == DebrisType.none) return;
 			StartTint(attack.color);
+			SprayDebree(attack);
+			MakeHitMark(attack);
 		}
 
+		private void MakeHitMark(Attack attack)
+		{
+
+			var hitList = ASSETS.FX.GetBulletHits(_life.DebrisType);
+
+			if (hitList == null) return;
+
+			var heightCorrectionForDepth = new Vector2(0, -1f);
+			var hitMarkObject = ObjectMaker.I.Make(hitList.GetRandom(), (Vector2) attack.DestinationFloorPoint + heightCorrectionForDepth);
+
+			var hitHeightScript = hitMarkObject.GetComponent<ThingWithHeight>();
+			hitHeightScript.SetDistanceToGround(attack.DestinationHeight - heightCorrectionForDepth.y, false);
+			Debug.DrawLine(attack.DestinationFloorPoint, attack.DestinationFloorPoint + new Vector2(0, attack.DestinationHeight), Color.magenta, 5);
+
+			if (!(attack.Direction.x > 0))
+			{
+
+				var localScale = hitMarkObject.transform.localScale;
+				hitMarkObject.transform.localScale = new Vector3(-Mathf.Abs(localScale.x), localScale.y, 0);
+			}
+
+			ObjectMaker.I.Unmake(hitMarkObject, 5);
+			Debug.DrawLine(attack.DestinationFloorPoint, attack.DestinationFloorPoint + heightCorrectionForDepth, Color.black, 1f);
+
+		}
+		private void SprayDebree(Attack attack)
+		{
+			if (attack.IsPoison) return;
+			MakeDebree(attack);
+			if (_life.DebrisType != DebrisType.blood) return;
+			CreateBloodSpray(attack);
+		}
+
+		private void CreateBloodSpray(Attack attack)
+		{
+			var blood = ObjectMaker.I.Make(ASSETS.FX.bloodspray.GetRandom(), attack.DestinationFloorPoint);
+			if (attack.Direction.x < 0)
+			{
+				blood.transform.localScale = new Vector3(-blood.transform.localScale.x, blood.transform.localScale.y, 0);
+			}
+		}
+		private void MakeDebree(Attack attack)
+		{
+			if (_life.DebrisType == DebrisType.none) return;
+			var randAmount = Random.Range(2, 4);
+			for (var j = 0; j < randAmount; j++)
+			{
+				//----->
+				var forwardDebree = ObjectMaker.I.Make(ASSETS.FX.GetDebree(_life.DebrisType), attack.DestinationFloorPoint);
+
+				forwardDebree.GetComponent<FallToFloor>().Fire(attack);
+				ObjectMaker.I.Unmake(forwardDebree, 3);
+
+				//<-----
+				var flippedAttack = new Attack(_life, attack.OriginLife, attack.DamageAmount);
+				var backwardDebree = ObjectMaker.I.Make(ASSETS.FX.GetDebree(_life.DebrisType), attack.DestinationFloorPoint);
+				backwardDebree.GetComponent<FallToFloor>().Fire(flippedAttack);
+				ObjectMaker.I.Unmake(backwardDebree, 3);
+				
+					var sprite = forwardDebree.GetComponentInChildren<SpriteRenderer>();
+					if (sprite != null) sprite.color = DebreeTint;
+					sprite = backwardDebree.GetComponentInChildren<SpriteRenderer>();
+					if (sprite != null) sprite.color = DebreeTint;
+			
+			}
+
+		}
+
+		private void CreateDamageRisingText(Attack attack)
+		{
+			if (attack.DamageAmount <= 0) return;
+			if (_life.cantDie) return;
+			var roundedDamage = Mathf.Round(attack.DamageAmount);
+			RisingTextCreator.CreateRisingText("-" + roundedDamage, attack.DestinationWithHeight, Color.red);
+		}
 		private void DefenceOnDefenceChanged(float newAmount)
 		{
 			UpdateBarFill();

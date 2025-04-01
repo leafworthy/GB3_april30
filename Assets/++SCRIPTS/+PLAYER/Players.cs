@@ -126,6 +126,7 @@ namespace __SCRIPTS
 		// Set action map for a specific player
 		public static void SetActionMap(Player player, string actionMap)
 		{
+			if(player == null) return;
 			player.input.SwitchCurrentActionMap(actionMap);
 		}
 	}

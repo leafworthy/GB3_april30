@@ -15,7 +15,8 @@ namespace __SCRIPTS
 			meleeCooldown,
 			cash,
 			glock,
-			nothing
+			nothing,
+			unlimited
 		}
 
 		private List<Ammo> ammoList = new List<Ammo>();

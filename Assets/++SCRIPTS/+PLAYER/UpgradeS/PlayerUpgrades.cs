@@ -34,7 +34,7 @@ namespace __SCRIPTS.UpgradeS
 			}
 
 			Debug.Log("upgrade purchased: " + upgrade.GetName());
-		
+			PlayerStatsManager.I.ChangeStat(player, PlayerStat.StatType.TotalCash, -upgrade.Cost);
 				Debug.Log("upgrade level up");
 				upgrade.UpgradeLevel();
 			
@@ -45,7 +45,7 @@ namespace __SCRIPTS.UpgradeS
 				upgrades.Add(upgrade);
 			}
 
-			PlayerStatsManager.I.ChangeStat(player,PlayerStat.StatType.TotalCash, -upgrade.Cost);
+			
 			ApplyUpgrades(player);
 			return true;
 		}

@@ -5,9 +5,13 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 258615768465511855, guid: ea404c409600447a39a9279346c7a70c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 359072328796171202, guid: ea404c409600447a39a9279346c7a70c, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -141,7 +145,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7662424548523257085}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea404c409600447a39a9279346c7a70c, type: 3}
 --- !u!212 &1178652393901442608 stripped
 SpriteRenderer:

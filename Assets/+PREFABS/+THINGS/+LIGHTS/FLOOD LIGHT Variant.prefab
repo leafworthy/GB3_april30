@@ -1,98 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2754610879693780356
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8153929518558274762}
-  - component: {fileID: 7616226017467278162}
-  m_Layer: 0
-  m_Name: Light Gunflash
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8153929518558274762
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2754610879693780356}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.0029874886, y: -0.0006352827, z: 0.20799606, w: 0.9781249}
-  m_LocalPosition: {x: 0, y: -31.2, z: -0.2}
-  m_LocalScale: {x: 0.91722, y: 0.58278, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6742099587283550911}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7616226017467278162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2754610879693780356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85a34663ca705a54eac3205e225a6d45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lightType: 0
-  lightPresetId: 0
-  eventPresetId: 1
-  lightLayer: 0
-  occlusionLayer: 3
-  translucentLayer: 0
-  translucentPresetId: 0
-  color: {r: 0.7578583, g: 0.7578583, b: 0.7578583, a: 1}
-  size: 103
-  spotAngleInner: 360
-  spotAngleOuter: 360
-  coreSize: 0.1
-  falloff: 5.85
-  lightStrength: 0
-  outerAngle: 18.9
-  lightRadius: 1
-  shadowDistanceClose: 0
-  shadowDistanceFar: 5
-  maskTranslucencyQuality: 1
-  maskTranslucencyStrength: 0
-  applyRotation: 1
-  textureSize: 2
-  meshMode:
-    enable: 1
-    alpha: 0.014
-    shader: 1
-    materials:
-    - {fileID: 0}
-    sortingLayer:
-      name: Default
-      Order: 0
-  bumpMap:
-    intensity: 1.042
-    depth: 1
-  whenInsideCollider: 0
-  lightSprite: 1
-  sprite: {fileID: 21300000, guid: 4b8f7314cdf26b148af1b178e90065d5, type: 3}
-  spriteFlipX: 0
-  spriteFlipY: 0
-  freeFormFalloff: 1
-  freeFormPoint: 1
-  freeFormFalloffStrength: 1
-  freeFormPoints:
-    points:
-    - {x: 1, y: 0}
-    - {x: -0.50000006, y: 0.8660254}
-    - {x: -0.4999999, y: -0.86602545}
-  drawingEnabled: 1
-  drawingTranslucencyEnabled: 0
 --- !u!1 &7758002577460171391
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,11 +102,11 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: fab52f553f2ba451195f2122430c3d4a, type: 3}
     - target: {fileID: 827350551121471613, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_SortingOrder
-      value: 652
+      value: 1235
       objectReference: {fileID: 0}
     - target: {fileID: 2016935784085512690, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: SorterPositionOffset.x
-      value: 0.2783718
+      value: 0.27838135
       objectReference: {fileID: 0}
     - target: {fileID: 2016935784085512690, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: SorterPositionOffset.y
@@ -247,7 +154,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2425570373714790816, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_Intensity
-      value: 0.59
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 2425570373714790816, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_PointLightInnerAngle
@@ -539,15 +446,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6934507688657832408, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: color.b
-      value: 9.232048
+      value: 1.154006
       objectReference: {fileID: 0}
     - target: {fileID: 6934507688657832408, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: color.g
-      value: 13.428434
+      value: 1.6785543
       objectReference: {fileID: 0}
     - target: {fileID: 6934507688657832408, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: color.r
-      value: 17.811325
+      value: 2.2264156
       objectReference: {fileID: 0}
     - target: {fileID: 6934507688657832408, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: lightStrength
@@ -619,11 +526,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9048459617251402012, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 396.61743
+      value: -255
       objectReference: {fileID: 0}
     - target: {fileID: 9048459617251402012, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 753.8993
+      value: 414
       objectReference: {fileID: 0}
     - target: {fileID: 9048459617251402012, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       propertyPath: m_LocalPosition.z
@@ -660,9 +567,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7954354790006712549, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 8153929518558274762}
     - targetCorrespondingSourceObject: {fileID: 7954354790006712549, guid: 09aa5db3c80f946d39394aa61555f6ae, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4535121535592238271}

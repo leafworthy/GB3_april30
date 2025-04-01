@@ -363,6 +363,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   unitData: {fileID: 11400000, guid: 03b241913a1b948df8b5ab5d17e40694, type: 2}
+  ExtraMaxHealthFactor: 0
+  ExtraMaxSpeedFactor: 0
+  ExtraMaxDamageFactor: 0
   cantDie: 0
   isInvincible: 0
   Health: 10
@@ -464,6 +467,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   unitData: {fileID: 11400000, guid: 03b241913a1b948df8b5ab5d17e40694, type: 2}
+  ExtraMaxHealthFactor: 0
+  ExtraMaxSpeedFactor: 0
+  ExtraMaxDamageFactor: 0
   cantDie: 0
   isInvincible: 0
   Health: 0
@@ -535,6 +541,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3997171348560539955, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3997171348560539955, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: fastBarImage
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3997171348560539955, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: slowBarImage
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4060789362924438240, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -546,6 +564,22 @@ PrefabInstance:
     - target: {fileID: 4555309262593145997, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4587261604801181889, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
+      value: 23.903519
+      objectReference: {fileID: 0}
+    - target: {fileID: 4587261604801181889, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
+      value: 11.798443
+      objectReference: {fileID: 0}
+    - target: {fileID: 4587261604801181889, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
+      value: 22.85987
+      objectReference: {fileID: 0}
+    - target: {fileID: 4587261604801181889, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
+      value: 12.274166
       objectReference: {fileID: 0}
     - target: {fileID: 5096250583384262381, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: SorterPositionOffset.x

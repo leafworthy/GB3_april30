@@ -14,6 +14,7 @@ namespace __SCRIPTS
 		private const float throwDistanceMultiplier = 60;
 
 		private GunAimAbility aim;
+		private MoveAbility move;
 		private AmmoInventory ammo;
 		private Arms arms=>body.arms;
 		private Player player;
@@ -43,6 +44,7 @@ namespace __SCRIPTS
 			body = GetComponent<Body>();
 			life = GetComponent<Life>();
 			player = life.player;
+			move = GetComponent<MoveAbility>();
 
 			ammo = GetComponent<AmmoInventory>();
 			aim = GetComponent<GunAimAbility>();
@@ -133,7 +135,7 @@ namespace __SCRIPTS
 
 		private void Anim_Throw()
 		{
-			endPoint = aim.GetAimPoint();
+			
 			startPoint = body.AimCenter.transform.position;
 			var velocity = new Vector3((endPoint.x - startPoint.x) / throwTime, (endPoint.y - startPoint.y) / throwTime);
 
@@ -148,8 +150,16 @@ namespace __SCRIPTS
 		private void Aim(Vector2 aimDir)
 		{
 			if (body == null) return;
+			
 			startPoint = body.AimCenter.transform.position;
-			endPoint = (Vector2) body.AimCenter.transform.position + aimDir * throwDistanceMultiplier;
+			if (!player.Controller.AimAxis.isActive)
+			{
+				endPoint =  move.GetMoveAimPoint();
+			}
+			else
+			{
+				endPoint = aim.GetAimPoint();
+			}
 
 			OnAimInDirection?.Invoke(startPoint, endPoint);
 		}

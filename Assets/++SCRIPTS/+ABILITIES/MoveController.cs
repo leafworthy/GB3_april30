@@ -17,7 +17,7 @@ namespace __SCRIPTS
 		private Player owner;
 		private float damagePushMultiplier = 1;
 		private Animations anim;
-		private bool isDamaged;
+		private bool isWounded;
 		private EnemyAI ai;
 
 		private void Start()
@@ -29,7 +29,7 @@ namespace __SCRIPTS
 			body = GetComponent<Body>();
 			owner = life.player;
 
-			life.OnDamaged += Life_OnDamaged;
+			life.OnWounded += Life_OnWounded;
 			life.OnDying += Life_OnDead;
 			if (life.IsPlayer)
 			{
@@ -72,7 +72,7 @@ namespace __SCRIPTS
 				ai.OnStopMoving -= AI_StopMoving;
 			}
 
-			life.OnDamaged -= Life_OnDamaged;
+			life.OnDamaged -= Life_OnWounded;
 			life.OnDying -= Life_OnDead;
 			anim.animEvents.OnStep -= Anim_OnStep;
 			anim.animEvents.OnUseLegs -= Anim_UseLegs;
@@ -83,7 +83,7 @@ namespace __SCRIPTS
 
 		private void Anim_Recovered()
 		{
-			isDamaged = false;
+			isWounded = false;
 		}
 
 		private void Anim_DashStop()
@@ -126,11 +126,11 @@ namespace __SCRIPTS
 			return (Vector2) body.AimCenter.transform.position + MoveDir * AimAbility.aimDistanceFactor;
 		}
 
-		private void Life_OnDamaged(Attack attack)
+		private void Life_OnWounded(Attack attack)
 		{
 			mover.Push(attack.Direction, attack.DamageAmount * damagePushMultiplier);
 			body.BottomFaceDirection(attack.Direction.x < 0);
-			isDamaged = true;
+			isWounded = true;
 		}
 
 		private void Life_OnDead(Player player, Life life1)
@@ -141,7 +141,7 @@ namespace __SCRIPTS
 		private void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction)
 		{
 			if (PauseManager.IsPaused) return;
-			if (isDamaged) return;
+			if (isWounded) return;
 			if (!CanMove) return;
 
 			if (body.legs.isActive)

@@ -210,6 +210,22 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4587261604801181889, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
+      value: 23.606476
+      objectReference: {fileID: 0}
+    - target: {fileID: 4587261604801181889, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
+      value: 11.897976
+      objectReference: {fileID: 0}
+    - target: {fileID: 4587261604801181889, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
+      value: 22.66204
+      objectReference: {fileID: 0}
+    - target: {fileID: 4587261604801181889, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
+      value: 12.076046
+      objectReference: {fileID: 0}
     - target: {fileID: 5092674805762454010, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
       value: -20.70039
@@ -248,7 +264,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5096250583384262381, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: SorterPositionOffset.y
-      value: 6.118782
+      value: 6.1187744
       objectReference: {fileID: 0}
     - target: {fileID: 5096250583384262381, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: renderersToSort.Array.size
@@ -335,11 +351,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5442834472990972345}
   m_SourcePrefab: {fileID: 100100000, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
---- !u!60 &3338435755710468366 stripped
-PolygonCollider2D:
-  m_CorrespondingSourceObject: {fileID: 5092674805762454010, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
-  m_PrefabInstance: {fileID: 7563885052272615668}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3930609305629223219 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6806070673501800903, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
@@ -385,9 +396,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2357989592624621868, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
   m_PrefabInstance: {fileID: 7563885052272615668}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5252179449954890866 stripped
+--- !u!60 &6291928082193242165 stripped
+PolygonCollider2D:
+  m_CorrespondingSourceObject: {fileID: 4587261604801181889, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+  m_PrefabInstance: {fileID: 7563885052272615668}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6468113998205183192 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2313491215681737862, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3547440162358740012, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
   m_PrefabInstance: {fileID: 7563885052272615668}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -467,7 +483,7 @@ MonoBehaviour:
   DoorAnimator: {fileID: 1645751120}
   isOpen: 0
   isBroken: 0
-  ColliderDisabledOnOpen: {fileID: 3338435755710468366}
+  ColliderDisabledOnOpen: {fileID: 6291928082193242165}
   ShadowCollider: {fileID: 7277668274263924108}
-  life: {fileID: 5252179449954890866}
+  life: {fileID: 6468113998205183192}
   closedSorting: {fileID: 0}

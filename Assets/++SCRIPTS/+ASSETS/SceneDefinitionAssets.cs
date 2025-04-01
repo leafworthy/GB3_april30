@@ -30,6 +30,7 @@ namespace __SCRIPTS
 		// Quick lookups
 		private Dictionary<string, SceneDefinition> _nameMap;
 		public SceneDefinition GameOverScene;
+		public SceneDefinition WinScene;
 
 		/// <summary>
 		/// Initialize lookup dictionaries with all scene references

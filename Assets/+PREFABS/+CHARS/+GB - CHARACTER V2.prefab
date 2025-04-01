@@ -658,7 +658,7 @@ MonoBehaviour:
   ExtraMaxDamageFactor: 0
   cantDie: 0
   isInvincible: 0
-  Health: 350
+  Health: 300
 --- !u!114 &2381929228146834292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -822,14 +822,14 @@ MonoBehaviour:
     unlimited: 0
   tertiaryAmmo:
     type: 4
-    reserveAmmo: 100
-    clipSize: 0
-    AmmoInClip: 0
-    maxReserveAmmo: 100
+    reserveAmmo: 999
+    clipSize: 6
+    AmmoInClip: 6
+    maxReserveAmmo: 999
     reloads: 0
-    unlimited: 0
+    unlimited: 1
   unlimitedAmmo:
-    type: 6
+    type: 8
     reserveAmmo: 999
     clipSize: 6
     AmmoInClip: 6
@@ -1135,7 +1135,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1404
+  m_SortingOrder: 547
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.79607844}
   m_FlipX: 0
@@ -1202,7 +1202,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 89d91152eb4854eeaa6ae0ddc3c1cb19, type: 2}
+  - {fileID: -876546973899608171, guid: 427a1a51f8a764c8b962b80fd22b0897, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1222,7 +1222,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1406
+  m_SortingOrder: 549
   m_Sprite: {fileID: 6030953102041393858, guid: 3bc1e2c9ed3c74d0584fb619f2af827b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1535,7 +1535,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1407
+  m_SortingOrder: 550
   m_Sprite: {fileID: 6030953102041393858, guid: 3bc1e2c9ed3c74d0584fb619f2af827b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1718,7 +1718,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 89d91152eb4854eeaa6ae0ddc3c1cb19, type: 2}
+  - {fileID: -876546973899608171, guid: 427a1a51f8a764c8b962b80fd22b0897, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1738,7 +1738,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1405
+  m_SortingOrder: 548
   m_Sprite: {fileID: -3232186448459339446, guid: 3bc1e2c9ed3c74d0584fb619f2af827b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

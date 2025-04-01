@@ -29,15 +29,27 @@ namespace __SCRIPTS
 		private Vector3 closedSortingSorterPositionOffset;
 		private Vector3 closedSortingSorterPositionOffset2;
 
-		protected override void Start()
+		protected override void OnEnable()
 		{
-			base.Start();
+			base.OnEnable();
 			if(life == null) life = GetComponentInChildren<Life>();
 			life.OnDying += BreakDoor;
 			OnPlayerExits += PlayerExits;
 			OnTimeComplete += Repair;
 			Init();
 		}
+
+		protected override void OnDisable()
+		{
+			if (life == null) return;
+			life.OnDying += BreakDoor;
+			OnPlayerExits += PlayerExits;
+			OnTimeComplete += Repair;
+			base.OnDisable();
+				 
+			 
+		}
+
 		private void Init()
 		{
 			bounds = GetComponent<Collider2D>().bounds;

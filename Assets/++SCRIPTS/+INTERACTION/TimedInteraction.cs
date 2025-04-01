@@ -14,11 +14,23 @@ namespace __SCRIPTS
 		private Player currentPlayer;
 		private GameObject loadingBar;
 
-		protected virtual void Start()
+		private void Start()
+		{
+			Init();
+		}
+
+		protected virtual void OnEnable()
 		{
 			OnActionPress += InteractableOnActionPress;
 			OnActionRelease += InteractableOnActionRelease;
-			Init();
+			
+		}
+
+		protected virtual void OnDisable()
+		{
+			OnActionPress -= InteractableOnActionPress;
+			 OnActionRelease -= InteractableOnActionRelease;
+			  
 		}
 
 		private void Init()

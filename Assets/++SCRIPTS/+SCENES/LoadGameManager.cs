@@ -11,7 +11,7 @@ namespace __SCRIPTS
         public SceneDefinition gameManagerScene;
         private void Awake()
         {
-            if (GameManager.I.gameManagerLoaded)
+            if (GameManager.gameManagerLoaded)
             {
                 Debug.Log("game manager already created");
                 return;
@@ -31,7 +31,7 @@ namespace __SCRIPTS
             }
         
             // Load GameManager scene additively
-           
+            SceneManager.LoadScene(gameManagerScene.sceneName, LoadSceneMode.Additive);
             Debug.Log($"Loading GameManager scene");
         }
     }

@@ -109,11 +109,7 @@ namespace __SCRIPTS._ENEMYAI
 		private bool ObstacleIsValid(Life target)
 		{
 			if (target == null || target.IsDead()) return false;
-			if (!HasLineOfSightWith(target.transform.position))
-			{
-				Debug.Log("no line of sight");
-				return false;
-			}
+		
 			if (!target.IsObstacle) return false;
 			var door = target.GetComponentInParent<DoorInteraction>();
 			if (door == null) return false;

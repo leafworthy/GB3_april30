@@ -8,15 +8,24 @@ namespace __SCRIPTS
 		public int gasAmount = 3;
 		public GameObject dropPoint;
 
-		protected override void Start()
+		protected override void OnEnable()
 		{
-			base.Start();
+			base.OnEnable();
 			totalTime = timeToSiphon;
 
 			OnSelected += Interactable_OnPlayerEnters;
 			OnDeselected += Interactable_OnPlayerExits;
 			OnTimeComplete += Interactable_OnTimeComplete;
 			OnActionPress += Interactable_OnActionPress;
+		}
+
+		protected override void OnDisable()
+		{
+			base.OnDisable();
+			 OnSelected -= Interactable_OnPlayerEnters;
+			  OnDeselected -= Interactable_OnPlayerExits;
+			   OnTimeComplete -= Interactable_OnTimeComplete;
+			    OnActionPress -= Interactable_OnActionPress;
 		}
 
 		private void Interactable_OnActionPress(Player player)

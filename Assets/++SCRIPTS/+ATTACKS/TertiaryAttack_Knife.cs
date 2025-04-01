@@ -8,7 +8,6 @@ namespace __SCRIPTS
 	{
 		private int knifeCoolDown = 4;
 
-		private AmmoInventory ammo;
 		private Life life;
 		private Player player;
 		private Body body;
@@ -28,7 +27,6 @@ namespace __SCRIPTS
 			body = GetComponent<Body>();
 			life = GetComponent<Life>();
 			player = life.player;
-			ammo = GetComponent<AmmoInventory>();
 			player.Controller.Attack3Circle.OnPress += PlayerKnifePress;
 			player.Controller.Attack3Circle.OnRelease += PlayerKnifeRelease;
 			anim.animEvents.OnAttackHit += Anim_AttackHit;
@@ -48,6 +46,8 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
+			if(player == null) return;
+			if(anim == null) return;
 			player.Controller.Attack3Circle.OnPress -= PlayerKnifePress;
 			player.Controller.Attack3Circle.OnRelease -= PlayerKnifeRelease;
 			anim.animEvents.OnAttackHit -= Anim_AttackHit;

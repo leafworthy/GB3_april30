@@ -14,7 +14,7 @@ namespace __SCRIPTS
 		public Vector3 interactionPoint;
 		private Animator animator;
 
-		private void Start()
+		private void OnEnable()
 		{
 			indicator = MakeIndicator();
 			animator = indicator.GetComponentInChildren<Animator>();
@@ -25,6 +25,17 @@ namespace __SCRIPTS
 			interactable.OnDeselected += OnDeselect;
 			interactable.OnActionPress += OnActionPress;
 			interactable.OnPlayerFinishes += OnPlayerFinishes;
+		}
+
+		private void OnDisable()
+		{
+			if(interactable == null) return;
+			interactable.OnPlayerEnters -= PlayerEnters;
+			interactable.OnPlayerExits -= PlayerExits;
+			interactable.OnSelected -= OnSelected;
+			interactable.OnDeselected -= OnDeselect;
+			interactable.OnActionPress -= OnActionPress;
+			interactable.OnPlayerFinishes -= OnPlayerFinishes;
 		}
 
 		private void OnPlayerFinishes(Player player)

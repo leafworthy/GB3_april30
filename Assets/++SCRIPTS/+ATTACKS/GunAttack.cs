@@ -21,11 +21,11 @@ namespace __SCRIPTS
 		private Animations anim;
 		private AmmoInventory ammoInventory;
 		private string VerbName = "shooting";
-		private float attackRate => isGlocking ? attacker.TertiaryAttackRate : attacker.PrimaryAttackRate;
-		private float currentDamage => isGlocking ? attacker.TertiaryAttackDamageWithExtra : attacker.PrimaryAttackDamageWithExtra;
+		private float attackRate => isGlocking ? attacker.UnlimitedAttackRate : attacker.PrimaryAttackRate;
+		private float currentDamage => isGlocking ? attacker.UnlimitedAttackDamageWithExtra : attacker.PrimaryAttackDamageWithExtra;
 
 		private AmmoInventory.AmmoType ammoType =>
-			isGlocking ? AmmoInventory.AmmoType.glock : AmmoInventory.AmmoType.primaryAmmo;
+			isGlocking ? AmmoInventory.AmmoType.unlimited : AmmoInventory.AmmoType.primaryAmmo;
 
 		public AnimationClip ReloadAKAnimationClip;
 		public AnimationClip ReloadGlockAnimationClip;
@@ -94,7 +94,7 @@ namespace __SCRIPTS
 			player.Controller.Attack1RightTrigger.OnPress += PlayerControllerShootPress;
 			player.Controller.Attack1RightTrigger.OnRelease += PlayerControllerShootRelease;
 			player.Controller.ReloadTriangle.OnPress += Player_Reload;
-			player.Controller.SwapWeaponSquare.OnPress += Player_SwapWeapon;
+			//player.Controller.SwapWeaponSquare.OnPress += Player_SwapWeapon;
 		}
 
 		private void StopListeningToPlayer()
@@ -133,7 +133,7 @@ namespace __SCRIPTS
 		{
 	
 			if(isReloading) return;
-			//UseCorrectWeapon();
+			UseCorrectWeapon();
 			if (!ammoInventory.HasAmmoInClip(ammoType))
 			{
 				if (!ammoInventory.HasAmmoInReserveOrClip(ammoType))
@@ -188,7 +188,7 @@ namespace __SCRIPTS
 		{
 			if (ammoInventory.HasAmmoInReserveOrClip(AmmoInventory.AmmoType.primaryAmmo))
 			{
-				//isGlocking = false;
+				isGlocking = false;
 				return;
 			}
 

@@ -5,7 +5,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1510028294402174037, guid: 831c8fc5ca6984cd5a7681e00ce3b5ba, type: 3}
@@ -160,6 +160,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: L wall gb exterior 3 Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 7879532955638745172, guid: 831c8fc5ca6984cd5a7681e00ce3b5ba, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 8406407668183996528, guid: 831c8fc5ca6984cd5a7681e00ce3b5ba, type: 3}
       propertyPath: m_LocalScale.x
       value: -1
@@ -169,5 +173,7 @@ PrefabInstance:
       value: -6.03
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 831c8fc5ca6984cd5a7681e00ce3b5ba, type: 3}

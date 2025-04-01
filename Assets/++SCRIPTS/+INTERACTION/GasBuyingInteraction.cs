@@ -10,13 +10,23 @@ namespace __SCRIPTS
 		private HideRevealObjects hideRevealObjects;
 		public GameObject dropPoint;
 
-		protected override void Start()
+		protected override void OnEnable()
 		{
-			base.Start();
+			base.OnEnable();
 			OnSelected += Interactable_OnPlayerEnters;
 			OnDeselected += Interactable_OnPlayerExits;
 			OnTimeComplete += Interactable_OnTimeComplete;
 			hideRevealObjects = GetComponentInChildren<HideRevealObjects>();
+		}
+
+		protected override void OnDisable()
+		{
+			if(hideRevealObjects == null) return;
+			base.OnDisable();
+			 OnSelected -= Interactable_OnPlayerEnters;
+			  OnDeselected -= Interactable_OnPlayerExits;
+			   OnTimeComplete -= Interactable_OnTimeComplete;
+			    
 		}
 
 		private void Interactable_OnTimeComplete(Player player)

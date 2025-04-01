@@ -7,6 +7,7 @@ namespace __SCRIPTS
 	public class LevelManager : Singleton<LevelManager>
 	{
 		public TravelPoint RespawnTravelPoint;
+		public bool IsInGame;
 		private static string originSpawnPointID;
 		private static string destinationSpawnPointID;
 		private static SceneDefinition restartedLevelScene;
@@ -39,6 +40,7 @@ namespace __SCRIPTS
 		{
 			SceneLoader.I.GoToScene(ASSETS.Scenes.startingScene);
 			SceneLoader.OnSceneReadyToStartLevel += SceneLoaderSceneReadyToStartLevel;
+			
 			_currentTravelPoint = null;
 		}
 
@@ -48,11 +50,13 @@ namespace __SCRIPTS
 			Players.SetActionMaps(Players.PlayerActionMap);
 			currentLevel = newLevel;
 			currentLevel.StartLevel();
-		
+			IsInGame = true;
 			currentLevel.OnGameOver += newLevel_GameOver;
 			currentLevel.OnLevelRestart += newLevel_OnLevelRestart;
 			OnStartLevel?.Invoke(currentLevel);
 		}
+
+	
 
 		private void newLevel_OnLevelRestart()
 		{
@@ -98,10 +102,11 @@ namespace __SCRIPTS
 			if (currentLevel == null) return;
 			restartedLevelScene = currentLevel.scene;
 			currentLevel.StopLevel();
-			OnStopLevel?.Invoke(currentLevel);
 			currentLevel.OnGameOver -= newLevel_GameOver;
 			currentLevel.OnLevelRestart -= newLevel_OnLevelRestart;
 			currentLevel = null;
+			IsInGame = false;
+			OnStopLevel?.Invoke(currentLevel);
 		}
 
 		private void StopGame()
@@ -109,6 +114,7 @@ namespace __SCRIPTS
 			StopLevel();
 			SceneLoader.OnSceneReadyToStartLevel -= SceneLoaderSceneReadyToStartLevel;
 		}
+		
 
 		public void RestartLevel()
 		{
@@ -130,7 +136,6 @@ namespace __SCRIPTS
 				Debug.LogError("no restart scene");
 			}
 			LoadLevel(restartedLevelScene);
-			SceneLoader.I.GoToScene(restartedLevelScene);
 		}
 
 	
@@ -152,5 +157,19 @@ namespace __SCRIPTS
 		{
 			SceneLoader.I.QuitGame();
 		}
+
+		public void WinGame()
+		{
+			OnWinGame?.Invoke();
+			LoadLevel(ASSETS.Scenes.WinScene);
+		}
+
+		public void StartWinningGame()
+		{
+			var graphNodePositioner = FindFirstObjectByType<GridCulling>();
+			graphNodePositioner.StopCulling();
+		}
+
+		public static event Action OnWinGame;
 	}
 }

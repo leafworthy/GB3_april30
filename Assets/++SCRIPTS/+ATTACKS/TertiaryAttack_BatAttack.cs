@@ -105,8 +105,8 @@ namespace __SCRIPTS
 		private float GetHitRange(int attackType)
 		{
 			if (attackType == 5)
-				return life.PrimaryAttackRange * 3;
-			return life.PrimaryAttackRange;
+				return life.TertiaryAttackRange * 3;
+			return life.TertiaryAttackRange;
 		}
 
 		private float GetAttackDamage(int attackType)

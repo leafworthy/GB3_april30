@@ -12,30 +12,39 @@ namespace __SCRIPTS
 
 		private bool gasFilled;
 
-		protected override void Start()
+		protected override void OnEnable()
 		{
-			base.Start();
+			base.OnEnable();
 			OnPlayerEnters += Interactable_OnPlayerEnters;
 			OnPlayerExits += Interactable_OnPlayerExits;
 			OnTimeComplete += Interactable_OnTimeComplete;
+		}
+
+		void OnDisable()
+		{
+			base.OnDisable();
+			OnPlayerEnters -= Interactable_OnPlayerEnters;
+			 OnPlayerExits -= Interactable_OnPlayerExits;
+			  OnTimeComplete -= Interactable_OnTimeComplete;
+			   
 		}
 
 		protected override void InteractableOnActionPress(Player player)
 		{
 			if (gasFilled)
 			{
-				if (HasKey())
-				{
+				//if (HasKey())
+				//{
 					OnCarAccessActionPressed?.Invoke(player);
 					FinishInteraction(player);
-				}
-				else
-					player.Say("Needs a key...", 0);
+				//}
+				//else
+					//player.Say("Need a key...", 0);
 			}
 			else
 			{
 				if (!HasEnoughGas())
-					player.Say("Needs more gas...", 0);
+					player.Say("Need more gas...", 0);
 				else
 				{
 					player.Say("Filling gas...", 0);
@@ -67,6 +76,7 @@ namespace __SCRIPTS
 				totalGas += (int)PlayerStatsManager.I.GetStatAmount(player,PlayerStat.StatType.Gas);
 			}
 
+			Debug.Log("total gas  " + totalGas);
 			return totalGas;
 		}
 
@@ -83,17 +93,16 @@ namespace __SCRIPTS
 
 		private void Interactable_OnPlayerEnters(Player player)
 		{
-			if (occupied) return;
-			occupied = true;
+			Debug.Log("player enters");
 			if (gasFilled)
 			{
-				if (HasKey())
-				{
+				//if (HasKey())
+				//{
 					player.Say("Let's go!", 0);
 					Debug.Log("Success!");
-				}
-				else
-					player.Say("Needs a key...", 0);
+				//}
+				//else
+				//	player.Say("Needs a key...", 0);
 			}
 			else
 			{

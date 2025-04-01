@@ -16,10 +16,15 @@ namespace __SCRIPTS.UpgradeS
 		public event Action<Player> OnUpgradePurchased;
 		public event Action<Player> OnUpgradeExit;
 		private bool inMenu;
-		private void Start()
+		private void OnEnable()
 		{
 			LevelManager.OnStopLevel += LevelGameSceneOnStopLevel;
 			PauseManager.OnPause += PauseWhileInMenu;
+			
+		}
+
+		private void Start()
+		{
 			Visible.SetActive(false);
 		}
 
@@ -52,6 +57,7 @@ namespace __SCRIPTS.UpgradeS
 		private void OnDisable()
 		{
 			LevelManager.OnStopLevel -= LevelGameSceneOnStopLevel;
+			PauseManager.OnPause -= PauseWhileInMenu;
 		}
 
 	

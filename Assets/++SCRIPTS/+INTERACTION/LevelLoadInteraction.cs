@@ -11,17 +11,19 @@ namespace __SCRIPTS
 		[SerializeField] private TravelPoint travelPoint;
 
 
-		protected override void Start()
+		protected override void OnEnable()
 		{
-			base.Start();
+			base.OnEnable();
 			OnTimeComplete += OnInteractionComplete;
 			OnSelected += PlayerEnters;
 			OnDeselected += PlayerExits;
 			travelPoint = GetComponent<TravelPoint>();
 		}
 
-		private void OnDestroy()
+		protected override void OnDisable()
 		{
+			if(travelPoint == null) return;
+			base.OnDisable();
 			OnTimeComplete -= OnInteractionComplete;
 			OnSelected -= PlayerEnters;
 			OnDeselected -= PlayerExits;

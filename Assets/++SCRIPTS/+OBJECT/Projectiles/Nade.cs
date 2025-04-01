@@ -11,8 +11,6 @@ namespace __SCRIPTS.Projectiles
 		private float rotationSpeed = 330;
 		private float currentRotationSpeed = 130;
 		private Player owner;
-		private const float explosionRadius = 30;
-		private const float explosionDamage = 30;
 
 
 		public void Launch(Vector2 _start, Vector2 startingVelocity, float _throwTime, Player _owner)
@@ -33,7 +31,7 @@ namespace __SCRIPTS.Projectiles
 			Move();
 			timeLeft -= Time.fixedDeltaTime;
 			if (!(timeLeft <= 0)) return;
-			Explosion_FX.Explode(transform.position, explosionRadius, explosionDamage,owner);
+			Explosion_FX.Explode(transform.position, owner.spawnedPlayerDefence.SecondaryAttackRange, owner.spawnedPlayerDefence.SecondaryAttackDamageWithExtra,owner);
 			ObjectMaker.I.Unmake(transform.gameObject);
 		}
 

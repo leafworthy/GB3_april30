@@ -6,12 +6,20 @@ namespace __SCRIPTS
 	{
 		private DoorInteraction doorInteraction;
 		private Life life;
-		protected override void Start()
+		protected override void OnEnable()
 		{
-			base.Start();
+			base.OnEnable();
 			doorInteraction = GetComponent<DoorInteraction>();
 			doorInteraction.OnBreak += BreakDoorInteraction;
 			OnTimeComplete += RepairDoor;
+		}
+
+		protected override void OnDisable()
+		{
+			if(doorInteraction == null) return;
+			base.OnDisable();
+			 doorInteraction.OnBreak -= BreakDoorInteraction;
+			 OnTimeComplete -= RepairDoor;
 		}
 
 		private void BreakDoorInteraction(Player player)

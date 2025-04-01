@@ -194,6 +194,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4440070050219592005, guid: ee720886deeef495395e2377ced8f0fb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4445343217332905627, guid: ee720886deeef495395e2377ced8f0fb, type: 3}
       propertyPath: SorterPositionOffset.x
       value: 5.6040344
@@ -225,6 +229,14 @@ PrefabInstance:
     - target: {fileID: 5090155090738807094, guid: ee720886deeef495395e2377ced8f0fb, type: 3}
       propertyPath: toTint.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5922540687310110353, guid: ee720886deeef495395e2377ced8f0fb, type: 3}
+      propertyPath: SorterPositionOffset.y
+      value: -13.308563
+      objectReference: {fileID: 0}
+    - target: {fileID: 5922540687310110353, guid: ee720886deeef495395e2377ced8f0fb, type: 3}
+      propertyPath: SorterPositionOffset2.y
+      value: -13.736237
       objectReference: {fileID: 0}
     - target: {fileID: 5922540687310110353, guid: ee720886deeef495395e2377ced8f0fb, type: 3}
       propertyPath: renderersToSort.Array.size
@@ -274,17 +286,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Full
       objectReference: {fileID: 0}
+    - target: {fileID: 7873049881167146590, guid: ee720886deeef495395e2377ced8f0fb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7921590353394365957, guid: ee720886deeef495395e2377ced8f0fb, type: 3}
       propertyPath: indicatorOffset.x
-      value: -2.9793463
+      value: -2.9793472
       objectReference: {fileID: 0}
     - target: {fileID: 7921590353394365957, guid: ee720886deeef495395e2377ced8f0fb, type: 3}
       propertyPath: indicatorOffset.y
-      value: 10.1238365
+      value: 10.12384
       objectReference: {fileID: 0}
     - target: {fileID: 7921590353394365957, guid: ee720886deeef495395e2377ced8f0fb, type: 3}
       propertyPath: indicatorOffset.z
       value: 0.001953125
+      objectReference: {fileID: 0}
+    - target: {fileID: 7921590353394365957, guid: ee720886deeef495395e2377ced8f0fb, type: 3}
+      propertyPath: interactionPoint.y
+      value: -5.103882
       objectReference: {fileID: 0}
     - target: {fileID: 9111088182786982871, guid: ee720886deeef495395e2377ced8f0fb, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x

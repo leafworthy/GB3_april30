@@ -27,7 +27,6 @@ namespace __SCRIPTS
 			var match = playerStats.TryGetValue(player, out var stats);
 			if (match)
 			{
-				Debug.Log(statType.ToString() +" stat value  " + stats.GetStatValue(statType));
 				return stats.GetStatValue(statType);
 			}
 

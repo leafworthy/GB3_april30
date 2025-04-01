@@ -22,7 +22,7 @@ namespace __SCRIPTS
 		public void SetPlayer(Player player)
 		{
 			owner = player;
-			PlayerName.text = "Player " + (owner.buttonIndex+1);
+			PlayerName.text = "Player " + (owner.playerIndex +1);
 			playerStats = owner.GetComponent<PlayerStats>();
 			if (playerStats == null) return;
 			DisplayStats();

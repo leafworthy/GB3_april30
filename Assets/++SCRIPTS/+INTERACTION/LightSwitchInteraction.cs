@@ -12,13 +12,19 @@ namespace __SCRIPTS
         private bool isBroken;
         public GameObject transformToDestroy;
 
-        protected void Start()
+        protected void OnEnable()
         {
-            life = GetComponentInChildren<Life>();
-            life.OnDead += Life_Dead;
+           // life = GetComponentInChildren<Life>();
+            //life.OnDead += Life_Dead;
             originalState = isOn;
             OnActionPress += Interactable_OnInteract;
             SetLightActive(originalState);
+        }
+
+        private void OnDisable()
+        {
+                //ife.OnDead -= Life_Dead;
+                 OnActionPress -= Interactable_OnInteract;
         }
 
         private void Life_Dead(Player player)

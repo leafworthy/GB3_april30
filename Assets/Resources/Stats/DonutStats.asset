@@ -14,14 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debrisType: 0
   isObstacle: 0
+  isPlayerAttackable: 1
   AttackHeight: 5
   AttackDamage: 20
   AttackRate: 1
   Attack2Damage: 0
   Attack2Rate: 0
   AttackRange: 2
+  PrimaryAttackDamage: 10
+  PrimaryAttackRate: 0
+  PrimaryAttackRange: 2
+  SecondaryAttackDamage: 0
+  SecondaryAttackRate: 0
+  SecondaryAttackRange: 0
+  TertiaryAttackDamage: 0
+  TertiaryAttackRate: 0
+  TertiaryAttackRange: 0
+  UnlimitedAttackDamage: 0
+  UnlimitedAttackRate: 0
+  UnlimitedAttackRange: 0
   HealthMax: 65
-  MoveSpeed: 40
+  MoveSpeed: 17.7
   DashSpeed: 0
   JumpSpeed: 2
   AggroRange: 40

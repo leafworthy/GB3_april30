@@ -51,6 +51,7 @@ namespace __SCRIPTS
 		{
 			if(Vector2.Distance( CursorManager.GetCamera().transform.position, position) > maxDistance) return;
 			//I.SFXaudioSource.gameObject.transform.position = position;
+			if (I.SFXaudioSource == null) return;
 			I.SFXaudioSource.PlayOneShot(clip);
 		}
 

@@ -22,7 +22,6 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
-			LevelManager.OnStopLevel += LevelStopLevel;
 			Player.OnPlayerSpawned += ListenToJoinedPlayer;
 		
 			// Hide menu graphic initially
@@ -44,11 +43,9 @@ namespace __SCRIPTS
 			isListening = true;
 		}
 
-		private void LevelStopLevel(GameLevel gameLevel)
+		private void OnDisable()
 		{
 			StopListeningToJoinedPlayers();
-			LevelManager.OnStopLevel -= LevelStopLevel;
-			LevelManager.OnStopLevel -= LevelStopLevel;
 			Player.OnPlayerSpawned -= ListenToJoinedPlayer;
 		}
 

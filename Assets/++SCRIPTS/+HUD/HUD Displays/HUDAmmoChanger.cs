@@ -23,6 +23,7 @@ namespace __SCRIPTS.HUD_Displays
 		{
 			if(_player == null) return;
 			if (_player.CurrentCharacter != Character.Bean) return;
+			if(_player.SpawnedPlayerGO == null) return;
 			gunAttack = _player.SpawnedPlayerGO.GetComponent<GunAttack>();
 			if(isGlocking == gunAttack.isGlocking) return;
 			isGlocking = gunAttack.isGlocking;

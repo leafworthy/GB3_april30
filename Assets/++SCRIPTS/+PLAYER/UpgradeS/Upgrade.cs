@@ -20,7 +20,7 @@ namespace __SCRIPTS.UpgradeS
 			Debug.Log("upgraded level of " + GetName() + " to " + level);
 		}
 
-		public int Cost => (int)Mathf.Round(cost* (level*.25f+1));
+		public int Cost => (int)Mathf.Round(cost+ (level*100));
 
 		public int Level => level;
 

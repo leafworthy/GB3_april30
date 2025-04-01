@@ -30,6 +30,11 @@ namespace __SCRIPTS
 		public float TertiaryAttackDamage;
 		public float TertiaryAttackRate;
 		public float TertiaryAttackRange;
+
+		//KNIFE + BAT
+		public float UnlimitedAttackDamage;
+		public float UnlimitedAttackRate;
+		public float UnlimitedAttackRange;
 	
 		public float HealthMax;
 		public float MoveSpeed;

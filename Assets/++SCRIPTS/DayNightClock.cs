@@ -109,7 +109,7 @@ namespace __SCRIPTS
 			{
 				// Format time string
 				var timeString = FormatTimeString(timeOfDay);
-				Debug.Log(timeString);
+			
 				var dayString = "";
 
 				// Add day counter if enabled
@@ -215,7 +215,6 @@ namespace __SCRIPTS
 			var hours = timeOfDay * 24f;
 			var hoursInt = Mathf.FloorToInt(hours);
 			var minutes = Mathf.FloorToInt((hours - hoursInt) * 60f);
-			Debug.Log(timeOfDay);
 	
 
 			var period = hoursInt >= 12 ? "PM" : "AM";

@@ -21,14 +21,11 @@ namespace __SCRIPTS
         private Transform currentCenter;
         private float timeSinceCheck;
     
-        private void Start()
-        {
-            LevelManager.OnStartLevel += OnStartLevel;
-            // Find player if not assigned
-        
-        }
+     
 
-        private void OnStartLevel(GameLevel obj)
+       
+
+        public void StartGraphPositioning()
         {
             if (player == null)
                 player = Players.AllJoinedPlayers[0].SpawnedPlayerGO.transform;
@@ -39,7 +36,7 @@ namespace __SCRIPTS
                 return;
             }
 
-            MyDebugUtilities.DrawX(player.position, 3, Color.blue);
+            
             // Find AstarPath
             pathfinder = AstarPath.active;
             if (pathfinder == null)
@@ -70,6 +67,8 @@ namespace __SCRIPTS
             }
 
             FindCenters();
+            UpdateGraphCenter();
+          
 
             // Initial center update
 
@@ -83,10 +82,9 @@ namespace __SCRIPTS
             foreach (GameObject go in taggedCenters)
             {
                 potentialCenters.Add(go.transform);
-                Debug.DrawLine(player.transform.position, go.transform.position, Color.red);
             }
 
-            UpdateGraphCenter();
+            
         }
 
         private void Update()
@@ -108,13 +106,12 @@ namespace __SCRIPTS
             // Find closest center to player
             Transform closestCenter = FindClosestCenter();
             if (closestCenter == null) return;
-            Debug.Log("this is cthe closest now: ", closestCenter);
             // Only update if the closest center has changed
             if (closestCenter != currentCenter)
             {
                 currentCenter = closestCenter;
                 Debug.Log("changing closest", currentCenter);
-            
+                
                 // Move grid center to this position
                 grid.center = closestCenter.position;
                 Debug.DrawLine(player.transform.position, closestCenter.position, Color.green);

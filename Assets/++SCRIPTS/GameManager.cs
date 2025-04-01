@@ -4,13 +4,22 @@ namespace __SCRIPTS
 {
     public class GameManager : Singleton<GameManager>
     {
-        public bool gameManagerLoaded;
+        public static bool gameManagerLoaded;
         public Camera gameCamera;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void OnEnable()
         {
             DontDestroyOnLoad(gameObject);
             gameManagerLoaded = true;
+        }
+
+        private void OnDisable()
+        {
+            gameManagerLoaded = false;
+            if (gameCamera != null)
+            {
+                gameCamera.gameObject.SetActive(false);
+            }
         }
 
         private void Start()

@@ -9,16 +9,17 @@ namespace __SCRIPTS
 	{
 		public TravelPoint defaultTravelPoint;
 		public SceneDefinition scene;
+		public GraphNodePositioner nodePositioner;
 		public event Action OnLevelRestart;
 		public event Action OnGameOver;
 		private List<TravelPoint> getSpawnPoints() => FindObjectsByType<TravelPoint>(FindObjectsSortMode.None).ToList();
-
-
+		
 		private bool hasSpawnPoint(TravelPoint travelPoint) => getSpawnPoints().Contains(travelPoint);
 
 		private void Start()
 		{
 			Players.OnAllJoinedPlayersDead += LoseLevel;
+			nodePositioner = GetComponent<GraphNodePositioner>();
 		}
 
 		public GameObject SpawnPlayer(Player player, TravelPoint travelPoint, bool fallFromSky)
@@ -50,6 +51,7 @@ namespace __SCRIPTS
 		public void StartLevel()
 		{
 			SpawnPlayers(LevelManager.I.RespawnTravelPoint != null ? LevelManager.I.RespawnTravelPoint : defaultTravelPoint);
+			nodePositioner.StartGraphPositioning();
 		}
 
 		private void SpawnPlayers(TravelPoint travelPoint)

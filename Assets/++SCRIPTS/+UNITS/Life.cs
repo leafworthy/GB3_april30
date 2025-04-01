@@ -24,8 +24,8 @@ namespace __SCRIPTS
 		public float AttackHeight => unitData.AttackHeight;
 		
 		public float PrimaryAttackDamageWithExtra => unitData.PrimaryAttackDamage+ ExtraMaxDamageFactor* unitData.PrimaryAttackDamage;
-		public float PrimaryAttackRange => unitData.AttackRange;
-		public float PrimaryAttackRate => unitData.AttackRate;
+		public float PrimaryAttackRange => unitData.PrimaryAttackRange;
+		public float PrimaryAttackRate => unitData.PrimaryAttackRate;
 
 		public float SecondaryAttackDamageWithExtra => unitData.SecondaryAttackDamage+ ExtraMaxDamageFactor* unitData.SecondaryAttackDamage;
 		public float SecondaryAttackRange => unitData.SecondaryAttackRange;
@@ -35,7 +35,9 @@ namespace __SCRIPTS
 		public float TertiaryAttackRange => unitData.TertiaryAttackRange;
 		public float TertiaryAttackRate => unitData.TertiaryAttackRate;
 
-
+		public float UnlimitedAttackDamageWithExtra => unitData.UnlimitedAttackDamage + ExtraMaxDamageFactor * unitData.UnlimitedAttackDamage;
+		public float UnlimitedAttackRange => unitData.UnlimitedAttackRange;
+		public float UnlimitedAttackRate => unitData.UnlimitedAttackRate;
 		public float HealthMax => unitData.HealthMax+ExtraMaxHealthFactor* unitData.HealthMax;
 		public float MoveSpeed => unitData.MoveSpeed + ExtraMaxSpeedFactor* unitData.MoveSpeed;
 		public float DashSpeed => unitData.DashSpeed + ExtraMaxSpeedFactor* unitData.DashSpeed;
@@ -125,7 +127,7 @@ namespace __SCRIPTS
 			CameraShaker_FX.ShakeCamera(transform.position, CameraShaker_FX.ShakeIntensityType.normal);
 			if (anim != null)
 			{
-				//anim.SetTrigger(Animations.HitTrigger);
+				anim.SetTrigger(Animations.HitTrigger);
 				if (attack.IsWounding)
 				{
 					OnWounded?.Invoke(attack);
