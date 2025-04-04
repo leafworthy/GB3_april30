@@ -16,18 +16,21 @@ namespace __SCRIPTS
 		public float extraPush = .2f;
 		private Targetter targetter;
 
-		private void Start()
+
+		public override void SetPlayer(Player _player)
 		{
+			base.SetPlayer(_player);
 			body = GetComponent<Body>();
 			anim = GetComponent<Animations>();
 			targetter = GetComponent<Targetter>();
-
 			ai = GetComponent<EnemyAI>();
-			ai.OnAttack += AI_Attack;
 
+			ai.OnAttack += AI_Attack;
 			anim.animEvents.OnAttackHit += OnAttackHit;
 			anim.animEvents.OnAttackStop += OnAttackStop;
+			
 		}
+
 
 		private void OnAttackStop(int obj)
 		{
@@ -37,11 +40,14 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			ai.OnAttack -= AI_Attack;
+			anim.animEvents.OnAttackHit -= OnAttackHit;
+			anim.animEvents.OnAttackStop -= OnAttackStop;
+			 
 		}
 
 		private void AI_Attack(Life newTarget)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (TargetIsInvalid(newTarget)) return;
 			currentTargetLife = newTarget;
 			StartAttack();
@@ -66,7 +72,7 @@ namespace __SCRIPTS
 
 		private void OnAttackHit(int attackType)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (currentTargetLife == null) return;
 			if (attacker.IsDead() || currentTargetLife.IsDead()) return;
 			if (!currentTargetLife.IsObstacle)

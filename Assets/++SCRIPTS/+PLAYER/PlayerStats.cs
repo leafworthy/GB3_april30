@@ -11,8 +11,8 @@ namespace __SCRIPTS
 		public List<PlayerStat> playerStats = new();
 		private PlayerStat stat;
 		private bool hasInit;
-		public static event Action OnStatsReset;
-		public static event Action<Player,PlayerStat> OnPlayerStatChange;
+		public  event Action OnStatsReset;
+		public  event Action<Player,PlayerStat> OnPlayerStatChange;
 	
 		public void Start()
 		{
@@ -22,9 +22,8 @@ namespace __SCRIPTS
 				Debug.LogError("PlayerStats script must be attached to a Player object.");
 			}
 			owner = player;
-			EnemyManager.OnPlayerKillsEnemy += EnemiesOnPlayerKillsEnemy;
-			Attack.OnAnyAttack += PlayerAttacksOnAttack;
-			LevelManager.OnStartLevel += (t) => ResetStats();
+			EnemyManager.I.OnPlayerKillsEnemy += EnemiesOnPlayerKillsEnemy;
+			LevelManager.I.OnStartLevel += (t) => ResetStats();
 			InitStats();
 		}
 
@@ -69,11 +68,7 @@ namespace __SCRIPTS
 			ChangeStat(PlayerStat.StatType.Kills, 1);
 		}
 
-		private void PlayerAttacksOnAttack(Attack attack)
-		{
-			if (attack.Owner != owner) return;
-			ChangeStat(PlayerStat.StatType.AttacksTotal, 1);
-		}
+	
 
 	
 

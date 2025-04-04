@@ -1,10 +1,11 @@
 ﻿using System;
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
 	[ExecuteInEditMode]
-	public class Life : MonoBehaviour
+	public class Life : MonoBehaviour, INeedPlayer
 	{
 	
 		[HideInInspector] public Player player;
@@ -84,8 +85,7 @@ namespace __SCRIPTS
 		[HideInInspector]public float Health;
 		private Color backgroundColor;
 		public event Action<Player> OnPlayerSet;
-
-		public static event Action<Attack, Life> OnAnyAttackHit;
+ 
 	
 
 		public float GetFraction()
@@ -129,7 +129,7 @@ namespace __SCRIPTS
 
 		
 
-			CameraShaker_FX.ShakeCamera(transform.position, CameraShaker_FX.ShakeIntensityType.normal);
+			CameraShaker.ShakeCamera(transform.position, CameraShaker.ShakeIntensityType.normal);
 			if (anim != null)
 			{
 				anim.SetTrigger(Animations.HitTrigger);
@@ -139,8 +139,6 @@ namespace __SCRIPTS
 					//do damaging hit
 				}
 			}
-
-			OnAnyAttackHit?.Invoke(attack, this);
 			OnAttackHit?.Invoke(attack, this);
 			//should be different based on material
 		

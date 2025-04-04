@@ -12,34 +12,36 @@ namespace __SCRIPTS
 		public GraphNodePositioner nodePositioner;
 		public event Action OnLevelRestart;
 		public event Action OnGameOver;
+		public event Action<Player> OnPlayerSpawned;
 		private List<TravelPoint> getSpawnPoints() => FindObjectsByType<TravelPoint>(FindObjectsSortMode.None).ToList();
 		
 		private bool hasSpawnPoint(TravelPoint travelPoint) => getSpawnPoints().Contains(travelPoint);
 
 		private void Start()
 		{
-			Players.OnAllJoinedPlayersDead += LoseLevel;
+			Players.I.OnAllJoinedPlayersDead += LoseLevel;
 			nodePositioner = GetComponent<GraphNodePositioner>();
 		}
 
-		public GameObject SpawnPlayer(Player player, TravelPoint travelPoint, bool fallFromSky)
+		private void SpawnPlayer(Player player, TravelPoint travelPoint)
 		{
 			if (!hasSpawnPoint(travelPoint)) travelPoint = defaultTravelPoint;
 			Debug.Log($"Spawning player {player.playerIndex}");
 			Players.SetActionMaps(Players.PlayerActionMap);
-			return player.Spawn(travelPoint.transform.position, fallFromSky);
+			player.Spawn(travelPoint.transform.position, travelPoint.fallFromSky);
+			OnPlayerSpawned?.Invoke(player);
 		}
 
-		public GameObject SpawnPlayerAt(Player player, Vector2 position, bool fallFromSky)
+		public GameObject SpawnPlayerFromSky(Player player, Vector2 position)
 		{
 			Debug.Log($"Spawning player {player.playerIndex}");
 			Players.SetActionMaps(Players.PlayerActionMap);
-			return player.Spawn(position, fallFromSky);
+			return player.Spawn(position, true);
 		}
 
 		public void StopLevel()
 		{
-			Players.OnAllJoinedPlayersDead -= LoseLevel;
+			Players.I.OnAllJoinedPlayersDead -= LoseLevel;
 		}
 
 		private void LoseLevel()
@@ -66,7 +68,7 @@ namespace __SCRIPTS
 			{
 				if (player == null) continue;
 				if (player.SpawnedPlayerGO != null) continue;
-				SpawnPlayer(player, travelPoint, travelPoint.fallFromSky);
+				SpawnPlayer(player, travelPoint);
 			}
 		}
 	}

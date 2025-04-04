@@ -18,8 +18,8 @@ namespace __SCRIPTS.UpgradeS
 		private bool inMenu;
 		private void OnEnable()
 		{
-			LevelManager.OnStopLevel += LevelGameSceneOnStopLevel;
-			PauseManager.OnPause += PauseWhileInMenu;
+			LevelManager.I.OnStopLevel += LevelGameSceneOnStopLevel;
+			PauseManager.I.OnPause += PauseWhileInMenu;
 			
 		}
 
@@ -56,18 +56,18 @@ namespace __SCRIPTS.UpgradeS
 
 		private void OnDisable()
 		{
-			LevelManager.OnStopLevel -= LevelGameSceneOnStopLevel;
-			PauseManager.OnPause -= PauseWhileInMenu;
+			LevelManager.I.OnStopLevel -= LevelGameSceneOnStopLevel;
+			PauseManager.I.OnPause -= PauseWhileInMenu;
 		}
 
 	
 
-		public void SetPlayer(Player player)
+		public void SetPlayer(Player _player)
 		{
 			Debug.Log("made it in menu", this);
-			owner = player;
+			owner = _player;
 
-			Debug.Log("set player");
+			Debug.Log("set _player");
 			Visible.SetActive(false);
 		}
 
@@ -97,12 +97,12 @@ namespace __SCRIPTS.UpgradeS
 	
 			if (!playerUpgrades.BuyUpgrade(upgrade))
 			{
-				SFX.sounds.charSelect_deselect_sounds.PlayRandom();
+				SFX.I.sounds.charSelect_deselect_sounds.PlayRandom();
 				RisingTextCreator.CreateRisingText("Not enough cash" , owner.SpawnedPlayerGO.transform.position, Color.red);
 				return;
 			}
 
-			SFX.sounds.charSelect_select_sounds.PlayRandom();
+			SFX.I.sounds.charSelect_select_sounds.PlayRandom();
 			
 			RisingTextCreator.CreateRisingText(upgrade.GetDescription, owner.SpawnedPlayerGO.transform.position, Color.white);
 			OnUpgradePurchased?.Invoke(owner);

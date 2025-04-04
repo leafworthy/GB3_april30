@@ -15,16 +15,19 @@ namespace __SCRIPTS
         [Header("Settings")]
         public string centerObjectsTag = "GraphCenter"; // Optional: find centers by tag
         public float checkInterval = 0.5f; // How often to check for closest node
+        public bool useGraphCaching = true; // Toggle for enabling/disabling caching
+        
+        [Header("Debug")]
+        public bool logCacheInfo = true;
     
         private AstarPath pathfinder;
         private GridGraph grid;
         private Transform currentCenter;
         private float timeSinceCheck;
-    
-     
-
-       
-
+        
+        // Dictionary to keep track of which centers we've already scanned
+        private Dictionary<int, bool> scannedCenters = new Dictionary<int, bool>();
+        
         public void StartGraphPositioning()
         {
             if (player == null)
@@ -35,7 +38,6 @@ namespace __SCRIPTS
                 enabled = false;
                 return;
             }
-
             
             // Find AstarPath
             pathfinder = AstarPath.active;
@@ -68,10 +70,6 @@ namespace __SCRIPTS
 
             FindCenters();
             UpdateGraphCenter();
-          
-
-            // Initial center update
-
         }
 
         [Button()]
@@ -83,8 +81,6 @@ namespace __SCRIPTS
             {
                 potentialCenters.Add(go.transform);
             }
-
-            
         }
 
         private void Update()
@@ -106,17 +102,43 @@ namespace __SCRIPTS
             // Find closest center to player
             Transform closestCenter = FindClosestCenter();
             if (closestCenter == null) return;
+            
             // Only update if the closest center has changed
             if (closestCenter != currentCenter)
             {
+                // Update the current center reference
                 currentCenter = closestCenter;
-                Debug.Log("changing closest", currentCenter);
+                int centerId = currentCenter.GetInstanceID();
                 
-                // Move grid center to this position
-                grid.center = closestCenter.position;
-                Debug.DrawLine(player.transform.position, closestCenter.position, Color.green);
-                // Update the graph
-                pathfinder.Scan();
+                // Check if we've already scanned this center
+                if (useGraphCaching && scannedCenters.TryGetValue(centerId, out bool hasScanned) && hasScanned)
+                {
+                    // This center has already been scanned, we can just update the center position 
+                    // without doing a full scan
+                    grid.center = currentCenter.position;
+                    
+                    // We don't need to call Scan() again, the graph is already updated for this center
+                    if (logCacheInfo)
+                    {
+                        Debug.Log("Using cached graph for center: " + currentCenter.name);
+                    }
+                }
+                else
+                {
+                    // First time visiting this center, do a full scan
+                    grid.center = currentCenter.position;
+                    pathfinder.Scan();
+                    
+                    // Mark this center as scanned
+                    if (useGraphCaching)
+                    {
+                        scannedCenters[centerId] = true;
+                        if (logCacheInfo)
+                        {
+                            Debug.Log("Scanned and cached graph for center: " + currentCenter.name);
+                        }
+                    }
+                }
             }
         }
     
@@ -141,6 +163,20 @@ namespace __SCRIPTS
             }
         
             return closest;
+        }
+        
+        // Clear cache on disable
+        private void OnDisable()
+        {
+            scannedCenters.Clear();
+        }
+        
+        // Method to manually clear the cache if needed
+        [Button()]
+        public void ClearCache()
+        {
+            scannedCenters.Clear();
+            Debug.Log("Graph cache cleared");
         }
     }
 }

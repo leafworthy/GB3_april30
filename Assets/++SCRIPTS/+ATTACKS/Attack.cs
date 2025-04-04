@@ -7,9 +7,7 @@ namespace __SCRIPTS
 	[Serializable]
 	public class Attack
 	{
-		public static event Action<Attack> OnAnyAttack;
 	
-
 		public Attack(Life attacker, Life defender, float damageAmount)
 		{
 			DestinationLife = defender;
@@ -29,8 +27,6 @@ namespace __SCRIPTS
 			}
 
 			DamageAmount = damageAmount;
-		
-			OnAnyAttack?.Invoke(this);
 		}
 
 		public Attack(Life attacker, Vector2 attackFloorPoint, Vector2 destinationFloorPoint, Life defender, float damageAmount)
@@ -51,8 +47,6 @@ namespace __SCRIPTS
 			}
 		
 			DamageAmount = damageAmount;
-		
-			OnAnyAttack?.Invoke(this);
 		}
 
 	

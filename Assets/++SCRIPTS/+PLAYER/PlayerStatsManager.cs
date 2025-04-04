@@ -18,7 +18,7 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
-			LevelManager.OnPlayerSpawned += Players_OnPlayerJoins;
+			LevelManager.I.OnPlayerSpawned += Players_OnPlayerJoins;
 		}
 
 		public float GetStatAmount(Player player,PlayerStat.StatType statType)

@@ -271,7 +271,7 @@ namespace __SCRIPTS
 
 			if(isBoss) Debug.Log("Boss spawned!");
 			// Register with EnemyManager using the static method
-			EnemyManager.CollectEnemy(enemy);
+			EnemyManager.I.CollectEnemy(enemy);
 		}
 
 		private void CleanupDeadEnemies()

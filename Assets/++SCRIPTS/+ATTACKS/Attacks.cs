@@ -1,14 +1,12 @@
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class Attacks : MonoBehaviour
+	public class Attacks : MonoBehaviour, INeedPlayer	
 	{
 		protected Life attacker;
-		private void OnEnable()
-		{
-			attacker = GetComponent<Life>();
-		}
+		
 
 		protected void HitTarget(float attackDamage, Life targetLife, float extraPush = 0)
 		{
@@ -31,6 +29,11 @@ namespace __SCRIPTS
 			var direction = (currentTargetLife.transform.position - position).normalized;
 			var distance = Vector3.Distance(position, currentTargetLife.transform.position);
 			return Physics2D.Raycast(position, direction, distance, layer);
+		}
+
+		public virtual void SetPlayer(Player _player)
+		{
+			attacker = GetComponent<Life>();
 		}
 	}
 }

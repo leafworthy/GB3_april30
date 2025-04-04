@@ -12,11 +12,11 @@ namespace __SCRIPTS.HUD_Displays
 		private GunAttack gunAttack;
 		private bool isGlocking;
 	
-		public void SetPlayer(Player player)
+		public void SetPlayer(Player _player)
 		{
-			_player = player;
-			if (player.CurrentCharacter != Character.Bean) return;
-			gunAttack = player.SpawnedPlayerGO.GetComponent<GunAttack>();
+			this._player = _player;
+			if (_player.CurrentCharacter != Character.Bean) return;
+			gunAttack = _player.SpawnedPlayerGO.GetComponent<GunAttack>();
 		}
 
 		private void Update()

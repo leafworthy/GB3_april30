@@ -20,6 +20,7 @@ namespace __SCRIPTS
 
         private void OnDisable()
         {
+             if(animEvents == null) return; 
             animEvents.OnAttackHit -= Anim_OnAttackHit;
             animEvents.OnStep -= Anim_OnStep;
             animEvents.OnRoar -= Anim_OnRoar;
@@ -27,10 +28,10 @@ namespace __SCRIPTS
             animEvents.OnDieStart -= Anim_OnDie;
         }
 
-        private void Anim_OnDie() => SFX.sounds.donut_die_sounds.PlayRandomAt(transform.position);
-        private void Anim_OnHit() => SFX.sounds.bloodSounds.PlayRandomAt(transform.position);
-        private void Anim_OnRoar() => SFX.sounds.donut_roar_sounds.PlayRandomAt(transform.position);
-        private void Anim_OnAttackHit(int attackType) => SFX.sounds.donut_hit_sounds.PlayRandomAt(transform.position);
-        private void Anim_OnStep() => SFX.sounds.donut_walk_sounds.PlayRandomAt(transform.position);
+        private void Anim_OnDie() => SFX.I.sounds.donut_die_sounds.PlayRandomAt(transform.position);
+        private void Anim_OnHit() => SFX.I.sounds.bloodSounds.PlayRandomAt(transform.position);
+        private void Anim_OnRoar() => SFX.I.sounds.donut_roar_sounds.PlayRandomAt(transform.position);
+        private void Anim_OnAttackHit(int attackType) => SFX.I.sounds.donut_hit_sounds.PlayRandomAt(transform.position);
+        private void Anim_OnStep() => SFX.I.sounds.donut_walk_sounds.PlayRandomAt(transform.position);
     }
 }

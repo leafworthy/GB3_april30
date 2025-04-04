@@ -19,8 +19,8 @@ namespace __SCRIPTS
 		public void OnDisable()
 		{
 			Debug.Log("object maker disabled");
-			LevelManager.OnStartLevel -= PoolObjects;
-			LevelManager.OnStopLevel -= DestroyAllUnits;
+			LevelManager.I.OnStartLevel -= PoolObjects;
+			LevelManager.I.OnStopLevel -= DestroyAllUnits;
 			pools.Clear();
 			allActiveUnits.Clear();
 		}
@@ -30,8 +30,8 @@ namespace __SCRIPTS
 			Debug.Log("i start again");
 			containerContainer = new GameObject("Object Pools");
 			containerContainer.transform.SetParent(I.transform);
-			LevelManager.OnStartLevel += PoolObjects;
-			LevelManager.OnStopLevel += DestroyAllUnits;
+			LevelManager.I.OnStartLevel += PoolObjects;
+			LevelManager.I.OnStopLevel += DestroyAllUnits;
 		}
 
 		private void PoolObjects(GameLevel gameLevel)

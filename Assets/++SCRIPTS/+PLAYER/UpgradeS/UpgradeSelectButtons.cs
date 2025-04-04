@@ -86,7 +86,7 @@ namespace __SCRIPTS.UpgradeS
 
 		private void OnCancel(NewControlButton obj)
 		{
-			SFX.sounds.charSelect_deselect_sounds.PlayRandom();
+			SFX.I.sounds.charSelect_deselect_sounds.PlayRandom();
 			currentlySelectedButton.Deselect();
 			Debug.Log("Exit button pressed");
 			OnExit?.Invoke();
@@ -107,7 +107,7 @@ namespace __SCRIPTS.UpgradeS
 		private void OnRight(NewInputAxis obj)
 		{
 			Debug.Log("on right");
-			SFX.sounds.charSelect_move_sounds.PlayRandom();
+			SFX.I.sounds.charSelect_move_sounds.PlayRandom();
 			currentlySelectedButton.Unhighlight();
 			SetCurrentButton(currentlySelectedButton.buttonToRight);
 			currentlySelectedButton.transform.DOPunchScale(Vector3.one * .1f, 0.5f, 1, 0.1f);
@@ -116,7 +116,7 @@ namespace __SCRIPTS.UpgradeS
 		private void OnLeft(NewInputAxis obj)
 		{
 			Debug.Log("on left");
-			SFX.sounds.charSelect_move_sounds.PlayRandom();
+			SFX.I.sounds.charSelect_move_sounds.PlayRandom();
 			currentlySelectedButton.Unhighlight();
 			SetCurrentButton(currentlySelectedButton.buttonToLeft);
 		}

@@ -16,11 +16,20 @@ namespace __SCRIPTS
             }
         }
 
-        public static void AddToScene(GameObject go = null)
+        private static void AddToScene(GameObject go = null)
         {
             if (_instance != null) return;
             _instance = FindFirstObjectByType<T>(FindObjectsInactive.Include);
- 
+           /* if(_instance == null)
+            {
+                if (go == null)
+                {
+                    go = new GameObject(typeof(T).Name);
+                    go.AddComponent<T>();
+                }
+                _instance = go.GetComponent<T>();
+                Debug.Log("Singleton " + typeof(T).Name + " created", go);
+            }*/
         }
 
 
@@ -32,9 +41,8 @@ namespace __SCRIPTS
             Debug.Log("SINGLETON ONLINE: " + typeof(T).Name, this);
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
-            Debug.Log("this happens to " + typeof(T).Name, this);
             Debug.Log("SINGLETON OFFLINE: " + typeof(T).Name, this);
         }
     }

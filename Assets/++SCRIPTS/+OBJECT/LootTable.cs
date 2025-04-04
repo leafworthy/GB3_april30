@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace __SCRIPTS
 {
@@ -14,49 +16,33 @@ namespace __SCRIPTS
 		Damage,
 		Gas
 	}
-	public class LootTable : MonoBehaviour
+
+	public class LootTable : Singleton<LootTable>
 	{
 		private static List<GameObject> _dropsToSpawn = new();
-		private static bool _isInitialized;
 
 
 		private void Start()
 		{
-			if (_isInitialized) return;
-			_isInitialized = true;
-			EnemyManager.OnEnemyDying += (x, y) => DropLoot(y.transform.position);
-		
-			// Check if ASSETS is initialized
-			if (ASSETS.I == null || ASSETS.FX == null)
-			{
-				// Delay initialization if assets aren't ready yet
-				Invoke(nameof(DelayedInit), 0.1f);
-			}
-			else
-			{
-				MakeDropList();
-			}
-		}
-	
-		private void DelayedInit()
-		{
+			EnemyManager.I.OnEnemyDying += DropLootFromEnemy;
 			MakeDropList();
 		}
 
-		public static void DropLoot(Vector2 position, LootType type = LootType.Random)
+		private void OnDisable()
 		{
-			// Check if ASSETS is initialized
-			if (ASSETS.I == null || ASSETS.FX == null)
-			{
-				Debug.LogWarning("Can't drop loot: ASSETS not initialized");
-				return;
-			}
-		
-			if (_dropsToSpawn.Count == 0) 
-			{
-				MakeDropList();
-			}
-		
+			if(EnemyManager.I != null) EnemyManager.I.OnEnemyDying -= DropLootFromEnemy;
+		}
+
+		private void DropLootFromEnemy(Player player, Life life)
+		{
+			if (life.IsDead()) DropLoot(life.transform.position);
+		}
+
+
+		public void DropLoot(Vector2 position, LootType type = LootType.Random)
+		{
+			if (_dropsToSpawn.Count == 0) MakeDropList();
+
 			GameObject lootPrefab = null;
 			switch (type)
 			{
@@ -85,18 +71,20 @@ namespace __SCRIPTS
 					lootPrefab = ASSETS.FX.gasPickupPrefab;
 					break;
 			}
+
 			var prefab = ObjectMaker.I.Make(lootPrefab, position);
 			var fallingObject = prefab.GetComponent<FallToFloor>();
-			fallingObject.FireForDrops(new Vector3((float)Random.Range(-1, 1), -1),Color.white, 5, true);
-
+			fallingObject.FireForDrops(new Vector3(Random.Range(-1, 1), -1), Color.white, 5, true);
 		}
-		private static void MakeDropList()
+
+		private void MakeDropList()
 		{
 			_dropsToSpawn.Clear();
 			_dropsToSpawn.Add(ASSETS.FX.ammoPickupPrefab);
 			_dropsToSpawn.Add(ASSETS.FX.ammoPickupPrefab);
 			_dropsToSpawn.Add(ASSETS.FX.ammoPickupPrefab);
 			_dropsToSpawn.Add(ASSETS.FX.ammoPickupPrefab);
+			_dropsToSpawn.Add(ASSETS.FX.ammoPickupPrefab);
 
 			_dropsToSpawn.Add(ASSETS.FX.cashPickupPrefab);
 			_dropsToSpawn.Add(ASSETS.FX.cashPickupPrefab);
@@ -107,6 +95,8 @@ namespace __SCRIPTS
 			_dropsToSpawn.Add(ASSETS.FX.cashPickupPrefab);
 			_dropsToSpawn.Add(ASSETS.FX.cashPickupPrefab);
 
+			_dropsToSpawn.Add(ASSETS.FX.healthPickupPrefab);
+			_dropsToSpawn.Add(ASSETS.FX.healthPickupPrefab);
 			_dropsToSpawn.Add(ASSETS.FX.healthPickupPrefab);
 			_dropsToSpawn.Add(ASSETS.FX.healthPickupPrefab);
 
@@ -114,7 +104,5 @@ namespace __SCRIPTS
 
 			_dropsToSpawn.Add(ASSETS.FX.gasPickupPrefab);
 		}
-
-	
 	}
 }

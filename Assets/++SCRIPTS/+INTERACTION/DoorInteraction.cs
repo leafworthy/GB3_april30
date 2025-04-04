@@ -78,7 +78,7 @@ namespace __SCRIPTS
 			{
 				//start normal loading bar
 				base.InteractableOnActionPress(player);
-				SFX.sounds.door_repair_sound.PlayRandomAt(transform.position);
+				SFX.I.sounds.door_repair_sound.PlayRandomAt(transform.position);
 				return;
 			}
 
@@ -92,11 +92,11 @@ namespace __SCRIPTS
 			DoorAnimator.SetBool(IsOpen, open);
 			if (isOpen)
 			{
-				SFX.sounds.door_open_sound.PlayRandomAt(transform.position);
+				SFX.I.sounds.door_open_sound.PlayRandomAt(transform.position);
 			}
 			else
 			{
-				SFX.sounds.door_close_sound.PlayRandomAt(transform.position);
+				SFX.I.sounds.door_close_sound.PlayRandomAt(transform.position);
 			}
 			UpdateGraph();
 		}
@@ -127,8 +127,8 @@ namespace __SCRIPTS
 
 
 		
-			SFX.sounds.door_break_sound.PlayRandomAt(life1.transform.position);
-			SFX.sounds.door_break_sound.PlayRandomAt(life1.transform.position);
+			SFX.I.sounds.door_break_sound.PlayRandomAt(life1.transform.position);
+			SFX.I.sounds.door_break_sound.PlayRandomAt(life1.transform.position);
 			Debug.Log("here");
 			SetCollidersEnabled(false);
 			OnBreak?.Invoke(player);

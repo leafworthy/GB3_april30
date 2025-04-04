@@ -38,7 +38,7 @@ namespace __SCRIPTS._ZOMBIESPAWN
 			var newZombie = ObjectMaker.I.Make(newPrefab, transform.position);
 			var newLife = newZombie.GetComponent<Life>();
 			newLife.SetPlayer(Players.EnemyPlayer);
-			EnemyManager.CollectEnemy(newZombie);
+			EnemyManager.I.CollectEnemy(newZombie);
 		}
 
 		public void StartWave(ZombieWave newWave)

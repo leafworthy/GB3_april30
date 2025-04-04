@@ -7,19 +7,19 @@ namespace __SCRIPTS
 	public class LevelManager : Singleton<LevelManager>
 	{
 		public TravelPoint RespawnTravelPoint;
-		public bool IsInGame;
 		private static string originSpawnPointID;
 		private static string destinationSpawnPointID;
 		private static SceneDefinition restartedLevelScene;
 		private static GameLevel currentLevel;
 
-		public static event Action<GameLevel> OnStopLevel;
-		public static event Action<GameLevel> OnStartLevel;
-		public static event Action<Player> OnPlayerSpawned;
-		public static event Action OnGameOver;
+		public event Action<GameLevel> OnStopLevel;
+		public event Action<GameLevel> OnStartLevel;
+		public event Action<Player> OnPlayerSpawned;
+		public event Action OnGameOver;
+		public event Action OnWinGame;
 
-		private static TravelPoint _currentTravelPoint;
-		private static Dictionary<Character,GameObject> persistentCharacters;
+		private TravelPoint _currentTravelPoint;
+		private Dictionary<Character,GameObject> persistentCharacters;
 
 		private void RegisterPersistentCharacter(Character character, GameObject characterPrefab)
 		{
@@ -39,7 +39,7 @@ namespace __SCRIPTS
 		public void StartGame()
 		{
 			SceneLoader.I.GoToScene(ASSETS.Scenes.startingScene);
-			SceneLoader.OnSceneReadyToStartLevel += SceneLoaderSceneReadyToStartLevel;
+			SceneLoader.I.OnSceneReadyToStartLevel += SceneLoaderSceneReadyToStartLevel;
 			
 			_currentTravelPoint = null;
 		}
@@ -49,10 +49,10 @@ namespace __SCRIPTS
 			Debug.Log("start level" + newLevel.name);
 			Players.SetActionMaps(Players.PlayerActionMap);
 			currentLevel = newLevel;
-			currentLevel.StartLevel();
-			IsInGame = true;
 			currentLevel.OnGameOver += newLevel_GameOver;
 			currentLevel.OnLevelRestart += newLevel_OnLevelRestart;
+			currentLevel.OnPlayerSpawned += (p) => OnPlayerSpawned?.Invoke(p);
+			currentLevel.StartLevel();
 			OnStartLevel?.Invoke(currentLevel);
 		}
 
@@ -105,14 +105,13 @@ namespace __SCRIPTS
 			currentLevel.OnGameOver -= newLevel_GameOver;
 			currentLevel.OnLevelRestart -= newLevel_OnLevelRestart;
 			currentLevel = null;
-			IsInGame = false;
 			OnStopLevel?.Invoke(currentLevel);
 		}
 
 		private void StopGame()
 		{
 			StopLevel();
-			SceneLoader.OnSceneReadyToStartLevel -= SceneLoaderSceneReadyToStartLevel;
+			SceneLoader.I.OnSceneReadyToStartLevel -= SceneLoaderSceneReadyToStartLevel;
 		}
 		
 
@@ -149,7 +148,7 @@ namespace __SCRIPTS
 			var p1 =  Players.AllJoinedPlayers[0];
 			if (p1 == null) return;
 			
-			RegisterPersistentCharacter(owner.CurrentCharacter, currentLevel.SpawnPlayerAt(owner, p1.SpawnedPlayerGO.transform.position, true));
+			RegisterPersistentCharacter(owner.CurrentCharacter, currentLevel.SpawnPlayerFromSky(owner, p1.SpawnedPlayerGO.transform.position));
 			OnPlayerSpawned?.Invoke(owner);
 		}
 
@@ -170,6 +169,6 @@ namespace __SCRIPTS
 			graphNodePositioner.StopCulling();
 		}
 
-		public static event Action OnWinGame;
+		
 	}
 }

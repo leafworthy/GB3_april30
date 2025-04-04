@@ -5,7 +5,6 @@ namespace __SCRIPTS
 {
 	public class SecondaryAttack_ChargeAttack : Attacks
 	{
-		public float chargeRate = 10;
 		private AnimationEvents animEvents;
 		private Animations anim;
 		private Body body;
@@ -27,13 +26,9 @@ namespace __SCRIPTS
 		public event Action OnChargePress;
 		public event Action OnChargeStop;
 
-		private void Start()
+		public override void SetPlayer(Player _player)
 		{
-			Init();
-		}
-
-		private void Init()
-		{
+			base.SetPlayer(_player);
 			move = GetComponent<MoveAbility>();
 			body = GetComponent<Body>();
 			anim = GetComponent<Animations>();
@@ -53,27 +48,28 @@ namespace __SCRIPTS
 			SpawnFX();
 		}
 
+
 		private void OnDisable()
 		{
-			if (attacker != null)
-			{
-				attacker.player.Controller.Attack2LeftTrigger.OnPress -= Player_ChargePress;
-				attacker.player.Controller.Attack2LeftTrigger.OnRelease -= Player_ChargeRelease;
-			}
+			if (attacker != null) return;
+			attacker.player.Controller.Attack2LeftTrigger.OnPress -= Player_ChargePress;
+			attacker.player.Controller.Attack2LeftTrigger.OnRelease -= Player_ChargeRelease;
+			if (animEvents != null) return;
+			animEvents = anim.animEvents;
+			animEvents.OnFullyCharged -= Anim_FullyCharged;
+			animEvents.OnAttackHit -= Anim_AttackHit;
 		}
 
 		private void Update()
 		{
 			if (isCharging)
 			{
-			
 				ShowAiming();
 				body.BottomFaceDirection(move.MoveAimDir.x > 0);
 			}
 			else
 				HideAiming();
 		}
-
 
 
 		private void SpawnFX()
@@ -95,7 +91,7 @@ namespace __SCRIPTS
 
 		private void Player_ChargePress(NewControlButton newControlButton)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (!body.arms.Do(verbName)) return;
 
 			if (!body.legs.Do(verbName))
@@ -103,6 +99,7 @@ namespace __SCRIPTS
 				body.arms.StopSafely(verbName);
 				return;
 			}
+
 			isCharging = true;
 			isFullyCharged = false;
 			OnChargePress?.Invoke();
@@ -113,12 +110,12 @@ namespace __SCRIPTS
 
 		private void Player_ChargeRelease(NewControlButton newControlButton)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (!isCharging) return;
 			OnChargeStop?.Invoke();
 			Debug.Log("release");
 			isCharging = false;
-			
+
 			if (isFullyCharged)
 			{
 				Debug.Log("goes here");
@@ -149,21 +146,13 @@ namespace __SCRIPTS
 		private void SpecialAttackHit(int attackType)
 		{
 			var position = body.AimCenter.transform.position;
-			Vector2 targetPoint;
-			if (move.IsIdle())
-			{
-				targetPoint = aim.GetAimPoint();
-			}
-			else
-			{
-				targetPoint = move.GetMoveAimPoint();
-			}
+			var targetPoint = move.IsIdle() ? aim.GetAimPoint() : move.GetMoveAimPoint();
 
 			var connect = false;
 			SpecialAttackDistance = Vector2.Distance(position, targetPoint);
 			body.arms.Stop(verbName);
 			body.legs.Stop(verbName);
-			DidCollideWithBuilding(position, targetPoint, out var raycast);
+			MoveIfDidCollideWithBuilding(position, targetPoint, out var raycast);
 			OnSpecialAttackHit?.Invoke();
 
 			foreach (var raycastHit2D in raycast)
@@ -173,12 +162,13 @@ namespace __SCRIPTS
 				HitTarget(life.SecondaryAttackDamageWithExtra, otherLife, 3);
 			}
 
-			var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position + move.MoveAimDir * SpecialAttackDistance, GetHitRange(attackType));
+			var circleCast = Physics2D.OverlapCircleAll(
+				(Vector2)transform.position + move.MoveAimDir * SpecialAttackDistance, GetHitRange(attackType));
 
 			foreach (var hit2D in circleCast)
 			{
 				var otherLife = hit2D.gameObject.GetComponent<Life>();
-				if(otherLife == null) continue;
+				if (otherLife == null) continue;
 				if (!otherLife.isEnemyOf(attacker) || otherLife.cantDie || otherLife.IsObstacle) return;
 				HitTarget(otherLife.SecondaryAttackDamageWithExtra, otherLife, 2);
 				connect = true;
@@ -189,15 +179,14 @@ namespace __SCRIPTS
 			OnAttackHit?.Invoke();
 		}
 
-		private bool DidCollideWithBuilding(Vector3 position, Vector3 targetPoint, out RaycastHit2D[] raycast)
+		private void MoveIfDidCollideWithBuilding(Vector3 position, Vector3 targetPoint, out RaycastHit2D[] raycast)
 		{
 			var hitObstacle = Physics2D.Linecast(position, targetPoint, ASSETS.LevelAssets.BuildingLayer);
 			if (hitObstacle) targetPoint = hitObstacle.point;
 
-			raycast = Physics2D.CircleCastAll(position, SpecialAttackWidth, move.MoveAimDir, SpecialAttackDistance, ASSETS.LevelAssets.EnemyLayer);
-			Debug.DrawRay((Vector2) position, move.MoveAimDir * SpecialAttackDistance, Color.red);
+			raycast = Physics2D.CircleCastAll(position, SpecialAttackWidth, move.MoveAimDir, SpecialAttackDistance,
+				ASSETS.LevelAssets.EnemyLayer);
 			transform.position = targetPoint;
-			return raycast.Length > 0;
 		}
 
 		private float GetHitRange(int attackType)

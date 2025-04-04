@@ -41,7 +41,7 @@ namespace __SCRIPTS
 
 		private void FixedUpdate()
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (!isOn) return;
 			if (shotCounter > 0)
 			{
@@ -57,7 +57,7 @@ namespace __SCRIPTS
 
 		private void line(Vector2 start, Vector2 end)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (start == end) return;
 			if (sprite == null) sprite = GetComponent<SpriteRenderer>();
 

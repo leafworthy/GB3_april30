@@ -1,10 +1,11 @@
 using __SCRIPTS._ENEMYAI;
 using __SCRIPTS.Cursor;
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class MoveController : MonoBehaviour
+	public class MoveController : MonoBehaviour, INeedPlayer
 	{
 		public bool CanMove { get; set; }
 
@@ -20,41 +21,48 @@ namespace __SCRIPTS
 		private bool isWounded;
 		private EnemyAI ai;
 
-		private void Start()
+		
+
+		public void SetPlayer(Player _player)
 		{
 			anim = GetComponent<Animations>();
 			life = GetComponent<Life>();
 			mover = GetComponent<MoveAbility>();
 			life = GetComponent<Life>();
 			body = GetComponent<Body>();
-			owner = life.player;
+			owner = _player;
 
 			life.OnWounded += Life_OnWounded;
 			life.OnDying += Life_OnDead;
-			if (life.IsPlayer)
-			{
-				owner = life.player;
-				var _controller = owner.Controller;
-				_controller.MoveAxis.OnChange += Player_MoveInDirection;
-				_controller.MoveAxis.OnInactive += Player_StopMoving;
-				CanMove = true;
-			}
-			else
-			{
-				ai = GetComponent<EnemyAI>();
-				ai.OnMoveInDirection += AI_MoveInDirection;
-				ai.OnStopMoving += AI_StopMoving;
-				if (ai.BornOnAggro)
-					CanMove = false;
-				else
-					CanMove = true;
-			}
+			InitializeLife();
 
 			anim.animEvents.OnStep += Anim_OnStep;
 			anim.animEvents.OnUseLegs += Anim_UseLegs;
 			anim.animEvents.OnStopUsingLegs += Anim_StopUsingLegs;
 			anim.animEvents.OnDashStop += Anim_DashStop;
 			anim.animEvents.OnRecovered += Anim_Recovered;
+		}
+		private void InitializeLife()
+		{
+			if (life.IsPlayer)
+			{
+				owner = life.player;
+				owner.Controller.MoveAxis.OnChange += Player_MoveInDirection;
+				owner.Controller.MoveAxis.OnInactive += Player_StopMoving;
+				CanMove = true;
+			}
+			else
+			{
+				ai = GetComponent<EnemyAI>();
+				if (ai == null)
+				{
+					Debug.LogError("No AI found on " + gameObject.name);
+					return;
+				}
+				ai.OnMoveInDirection += AI_MoveInDirection;
+				ai.OnStopMoving += AI_StopMoving;
+				CanMove = !ai.BornOnAggro;
+			}
 		}
 
 		private void OnDisable()
@@ -140,7 +148,7 @@ namespace __SCRIPTS
 
 		private void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (isWounded) return;
 			if (!CanMove) return;
 
@@ -159,6 +167,22 @@ namespace __SCRIPTS
 			StartMoving(direction);
 		}
 
+		private void AI_MoveInDirection(Vector2 direction)
+		{
+			if (PauseManager.I.IsPaused) return;
+			if (!CanMove) return;
+			if (body.arms.isActive) return;
+			StartMoving(direction);
+		}
+		private void Player_StopMoving(IControlAxis controlAxis)
+		{
+			StopMoving();
+		}
+
+		private void AI_StopMoving()
+		{
+			StopMoving();
+		}
 		private void StartMoving(Vector2 direction)
 		{
 			MoveDir = direction;
@@ -170,32 +194,17 @@ namespace __SCRIPTS
 
 		private void StopMoving()
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			anim.SetBool(Animations.IsMoving, false);
 			mover.StopMoving();
 		}
 
-		private void Player_StopMoving(IControlAxis controlAxis)
-		{
-			StopMoving();
-		}
-
-		private void AI_StopMoving()
-		{
-			StopMoving();
-		}
-
-		private void AI_MoveInDirection(Vector2 direction)
-		{
-			if (PauseManager.IsPaused) return;
-			if (!CanMove) return;
-			if (body.arms.isActive) return;
-			StartMoving(direction);
-		}
 
 		public void Push(Vector2 moveMoveDir, float statsDashSpeed)
 		{
 			mover.Push(moveMoveDir, statsDashSpeed);
 		}
+
+		
 	}
 }

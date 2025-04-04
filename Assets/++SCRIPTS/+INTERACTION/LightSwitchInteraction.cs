@@ -40,7 +40,7 @@ namespace __SCRIPTS
         {
             if (isBroken) return;
             SetLightActive(!isOn);
-            SFX.sounds.light_switch_sound.PlayRandomAt(transform.position);
+            SFX.I.sounds.light_switch_sound.PlayRandomAt(transform.position);
         }
 
 

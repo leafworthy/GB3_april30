@@ -7,7 +7,7 @@ namespace __SCRIPTS
 		private float roarRate;
 		private float currentRoarTime;
 
-		private void Start()
+		private void OnEnable()
 		{
 			roarRate = Random.Range(15, 25);
 		}
@@ -19,7 +19,7 @@ namespace __SCRIPTS
 			{
 				currentRoarTime = 0;
 				roarRate = Random.Range(15, 25);
-				SFX.sounds.cone_roar_sounds.PlayRandomAt(transform.position);
+				SFX.I.sounds.cone_roar_sounds.PlayRandomAt(transform.position);
 			}
 		}
 	}

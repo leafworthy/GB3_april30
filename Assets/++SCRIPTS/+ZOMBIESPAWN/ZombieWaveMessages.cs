@@ -15,8 +15,8 @@ namespace __SCRIPTS._ZOMBIESPAWN
 		private void Start()
 		{
 			zombieWaveManager = FindFirstObjectByType<ZombieWaveManager>();
-			LevelManager.OnStartLevel += LevelGameSceneOnStartLevel;
-			LevelManager.OnStopLevel += LevelGameSceneOnStopLevel;
+			LevelManager.I.OnStartLevel += LevelGameSceneOnStartLevel;
+			LevelManager.I.OnStopLevel += LevelGameSceneOnStopLevel;
 			visible.SetActive(isOn);
 		}
 

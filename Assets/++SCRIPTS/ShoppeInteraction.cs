@@ -26,7 +26,7 @@ namespace __SCRIPTS
 		{
 			if (!playersInShoppe.Contains(player)) playersInShoppe.Add(player);
 			animator.SetBool(IsOpen, true);
-			Players.PlayerOpensShoppe(player);
+			Players.I.PlayerOpensShoppe(player);
 		}
 
 		private void PlayerClosesShoppe(Player player)
@@ -37,13 +37,13 @@ namespace __SCRIPTS
 
 		private void PlayerEnters(Player player)
 		{
-			Player.OnPlayerLeavesUpgradeSetupMenu += PlayerClosesShoppe;
+			player.OnPlayerLeavesUpgradeSetupMenu += PlayerClosesShoppe;
 			player.Say("Buy?");
 		}
 
 		private void PlayerExits(Player player)
 		{
-			Player.OnPlayerLeavesUpgradeSetupMenu -= PlayerClosesShoppe;
+			player.OnPlayerLeavesUpgradeSetupMenu -= PlayerClosesShoppe;
 			player.StopSaying();
 			PlayerClosesShoppe(player);
 		}

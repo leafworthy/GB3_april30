@@ -41,7 +41,7 @@ namespace __SCRIPTS
 		private PlayerControls playerControls;
 		private InputAction anyButtonAction;
 
-		public static event Action<SceneDefinition> OnSceneReadyToStartLevel;
+		public event Action<SceneDefinition> OnSceneReadyToStartLevel;
 
 		#region Lifecycle Methods
 

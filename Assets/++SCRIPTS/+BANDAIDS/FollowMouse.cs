@@ -9,7 +9,7 @@ namespace __SCRIPTS
 
         void Update()
         {
-            if (PauseManager.IsPaused)
+            if (PauseManager.I.IsPaused)
             {
                 return;
             }

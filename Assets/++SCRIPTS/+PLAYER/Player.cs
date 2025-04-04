@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using __SCRIPTS.HUD_Displays;
 using __SCRIPTS.UpgradeS;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -50,9 +51,8 @@ namespace __SCRIPTS
 		public bool hasKey;
 		public List<PlayerInteractable> interactables = new();
 		private PlayerInteractable selectedInteractable;
-		public static event Action<Player> OnPlayerSpawned;
-		public static event Action<Player> OnPlayerDies;
-		public static event Action<Player> OnPlayerLeavesUpgradeSetupMenu;
+		public event Action<Player> OnPlayerDies;
+		public event Action<Player> OnPlayerLeavesUpgradeSetupMenu;
 
 		private PlayerUpgrades playerUpgrades;
 
@@ -61,7 +61,7 @@ namespace __SCRIPTS
 		private void Start()
 		{
 			playerUpgrades = GetComponent<PlayerUpgrades>();
-			DontDestroyOnLoad(gameObject);
+			gameObject.transform.SetParent(GameManager.I.gameObject.transform);
 		}
 
 		private void FixedUpdate()
@@ -141,18 +141,18 @@ namespace __SCRIPTS
 			state = State.SelectingCharacter;
 			CurrentButton = null;
 			SpawnedPlayerGO = null;
-			LevelManager.OnStopLevel -= LevelStopLevelCleanUp;
+			LevelManager.I.OnStopLevel -= LevelStopLevelCleanUp;
 			if (spawnedPlayerDefence != null) spawnedPlayerDefence.OnDead -= OnPlayerDied;
 		}
 
-		public GameObject Spawn(Vector2 travelPoint, bool fallFromSky)
+		public GameObject Spawn(Vector2 position, bool fallFromSky)
 		{
-			Debug.Log("Spawning player at " + travelPoint);
+			Debug.Log("Spawning player at " + position);
 			state = State.Alive;
 
 			// Create the character instance
 			var spawnedPlayerGO = Instantiate(GetPrefabFromCharacter(this));
-			spawnedPlayerGO.transform.position = travelPoint;
+			spawnedPlayerGO.transform.position = position;
 
 			SetSpawnedPlayerGO(spawnedPlayerGO);
 		
@@ -164,17 +164,16 @@ namespace __SCRIPTS
 			var jumpController = spawnedPlayerGO.GetComponentInChildren<JumpController>();
 			if (jumpController != null)
 			{
-				jumpController.Init(fallFromSky);
+				jumpController.SetFallFromSky(fallFromSky);
 			}
 
 			// Apply any upgrades
 			if (playerUpgrades != null) playerUpgrades.ApplyUpgrades(this);
 		
 			// Subscribe to level stop event for cleanup
-			LevelManager.OnStopLevel += LevelStopLevelCleanUp;
+			LevelManager.I.OnStopLevel += LevelStopLevelCleanUp;
 
 			// Notify that player has spawned
-			OnPlayerSpawned?.Invoke(this);
 			return spawnedPlayerGO;
 		}
 
@@ -183,7 +182,13 @@ namespace __SCRIPTS
 			SpawnedPlayerGO = newGO;
 			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
 			spawnedPlayerDefence.OnDead += OnPlayerDied; // Updated to use new method name
-			spawnedPlayerDefence.SetPlayer(this);
+
+			foreach (var component in newGO.GetComponents<INeedPlayer>())
+			{
+				component.SetPlayer(this);
+				Debug.Log("set player " + this.playerIndex + " to " + component.GetType().Name);
+			}
+			
 			sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
 		}
 

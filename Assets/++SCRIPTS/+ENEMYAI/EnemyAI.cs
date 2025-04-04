@@ -86,7 +86,7 @@ namespace __SCRIPTS._ENEMYAI
         private void FixedUpdate()
         {
             // Early-out if paused or dead.
-            if (PauseManager.IsPaused || Life.IsDead())
+            if (PauseManager.I.IsPaused || Life.IsDead())
                 return;
 
             currentState?.UpdateState();

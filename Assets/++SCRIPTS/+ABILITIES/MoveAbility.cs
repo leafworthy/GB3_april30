@@ -59,12 +59,18 @@ namespace __SCRIPTS
 			return life.player.Controller.MoveAxis.GetCurrentAngle();
 		}
 
-		private void Start()
+		private void OnEnable()
 		{
 			body = GetComponent<Body>();
 			life = GetComponent<Life>();
 			if (life == null) return;
 			life.OnDying += Life_OnDying;
+		}
+
+		private void OnDisable()
+		{
+			if (life == null) return;
+			life.OnDying -= Life_OnDying;
 		}
 
 		private void Life_OnDying(Player arg1, Life arg2)
@@ -76,7 +82,7 @@ namespace __SCRIPTS
 
 		private void FixedUpdate()
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 
 			if (isMoving && IsActive) AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
 
@@ -132,7 +138,7 @@ namespace __SCRIPTS
 		private void MoveObjectTo(Vector2 destination, bool teleport = false)
 		{
 			rb = GetComponent<Rigidbody2D>();
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (rb != null)
 				rb.MovePosition(destination);
 			else

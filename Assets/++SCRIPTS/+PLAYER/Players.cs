@@ -19,20 +19,22 @@ namespace __SCRIPTS
 		public static readonly List<Player> AllJoinedPlayers = new();
 
 		// Action maps
-		public static readonly string UIActionMap = "UI";
-		public static readonly string PlayerActionMap = "PlayerMovement";
+		public const string UIActionMap = "UI";
+		public const string PlayerActionMap = "PlayerMovement";
 
 		// Events
-		public static event Action<Player> OnPlayerGetUpgrades;
-		public static event Action OnAllJoinedPlayersDead;
-		public static event Action<Player> OnPlayerJoins;
+		public event Action<Player> OnPlayerGetUpgrades;
+		public event Action OnAllJoinedPlayersDead;
+		public event Action<Player> OnPlayerJoins;
+		public event Action<Player> OnPlayerDies;
 
-		private void Start()
+
+		private void OnEnable()
 		{
 			_inputManager = GetComponent<PlayerInputManager>();
 			_inputManager.onPlayerJoined += Input_OnPlayerJoins;
 
-			Player.OnPlayerDies += Player_PlayerDies;
+
 			ZombieWaveManager.OnWaveEnd += PlayersGetUpgrades;
 
 			// Create enemy player
@@ -40,14 +42,15 @@ namespace __SCRIPTS
 			_enemyPlayer = enemy.AddComponent<Player>();
 			_enemyPlayer.Join(null, EnemyPlayerData, 5);
 			SetActionMaps(UIActionMap);
-
-		
 		}
 
 		// Properly clean up event subscriptions
-		private void OnDestroy()
+		private void OnDisable()
 		{
-			Player.OnPlayerDies -= Player_PlayerDies;
+			foreach (var player in AllJoinedPlayers)
+			{
+				Players.I.OnPlayerDies -= Player_PlayerDies;
+			}
 
 			if (_inputManager != null) _inputManager.onPlayerJoined -= Input_OnPlayerJoins;
 
@@ -64,7 +67,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		public static void PlayerOpensShoppe(Player player)
+		public void PlayerOpensShoppe(Player player)
 		{
 			OnPlayerGetUpgrades?.Invoke(player);
 			Debug.Log("player upgrading");
@@ -76,6 +79,7 @@ namespace __SCRIPTS
 			Debug.Log("cleared all players");
 			foreach (var player in AllJoinedPlayers)
 			{
+				if (player == null) return;
 				Destroy(player.gameObject);
 			}
 
@@ -93,17 +97,23 @@ namespace __SCRIPTS
 		private void JoinPlayer(PlayerInput newPlayerInput, Player joiningPlayer)
 		{
 			if (AllJoinedPlayers.Contains(joiningPlayer)) return;
+			if(AllJoinedPlayers.Count >= 4)
+			{
+				Debug.Log("Max players reached");
+				return;
+			}
 			AllJoinedPlayers.Add(joiningPlayer);
 			joiningPlayer.Join(newPlayerInput, playerPresets[newPlayerInput.playerIndex], newPlayerInput.playerIndex);
 			OnPlayerJoins?.Invoke(joiningPlayer);
+			joiningPlayer.OnPlayerDies += Player_PlayerDies;
 			Debug.Log("PLAYER" + newPlayerInput.name + newPlayerInput.playerIndex + " JOINS FROM INPUT MANAGER");
 		}
 
 		// Handle player death
-		private static void Player_PlayerDies(Player deadPlayer)
+		private void Player_PlayerDies(Player deadPlayer)
 		{
-			//Debug.Log("PLAYER" + deadPlayer.name + deadPlayer.playerIndex+" has died");
-
+			Debug.Log("PLAYER" + deadPlayer.name + deadPlayer.playerIndex + " has died");
+			OnPlayerDies?.Invoke(deadPlayer);
 			if (AllJoinedPlayersAreDead()) OnAllJoinedPlayersDead?.Invoke();
 		}
 
@@ -117,16 +127,13 @@ namespace __SCRIPTS
 		// Set action maps for all players
 		public static void SetActionMaps(string actionMap)
 		{
-			foreach (var player in AllJoinedPlayers)
-			{
-				SetActionMap(player, actionMap);
-			}
+			foreach (var player in AllJoinedPlayers) SetActionMap(player, actionMap);
 		}
 
 		// Set action map for a specific player
 		public static void SetActionMap(Player player, string actionMap)
 		{
-			if(player == null) return;
+			if (player == null) return;
 			player.input.SwitchCurrentActionMap(actionMap);
 		}
 	}

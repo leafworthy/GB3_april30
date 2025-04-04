@@ -56,7 +56,7 @@ namespace __SCRIPTS
 		{
 			if (!hasSelected) return;
 			hasSelected = false;
-			SFX.sounds.charSelect_deselect_sounds.PlayRandom();
+			SFX.I.sounds.charSelect_deselect_sounds.PlayRandom();
 			currentlySelectedButton.Deselect();
 		}
 
@@ -90,14 +90,14 @@ namespace __SCRIPTS
 		private void ChooseCharacter()
 		{
 			currentlySelectedButton.Unhighlight();
-			SFX.sounds.charSelect_select_sounds.PlayRandom();
+			SFX.I.sounds.charSelect_select_sounds.PlayRandom();
 			OnCharacterChosen?.Invoke(currentlySelectedButton.character);
 		}
 
 		private void OnRight(NewInputAxis obj)
 		{
 			if (hasSelected) return;
-			SFX.sounds.charSelect_move_sounds.PlayRandom();
+			SFX.I.sounds.charSelect_move_sounds.PlayRandom();
 			hasJoined = true;
 			currentlySelectedButton.Unhighlight();
 			currentlySelectedButton = currentlySelectedButton.buttonToRight;
@@ -108,7 +108,7 @@ namespace __SCRIPTS
 		{
 			if (hasSelected) return;
 			hasJoined = true;
-			SFX.sounds.charSelect_move_sounds.PlayRandom();
+			SFX.I.sounds.charSelect_move_sounds.PlayRandom();
 			currentlySelectedButton.Unhighlight();
 			currentlySelectedButton = currentlySelectedButton.buttonToLeft;
 			currentlySelectedButton.Highlight();

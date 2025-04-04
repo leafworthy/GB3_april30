@@ -13,19 +13,10 @@ namespace __SCRIPTS
 		private Body body;
 		private Animations anim;
 		private EnemyAI ai;
-		private MoveAbility mover;
 		private Life currentTarget;
-		private Targetter targets;
 
-		private void Start()
+		private void OnEnable()
 		{
-			Activate();
-		}
-
-		private void Activate()
-		{
-			targets = GetComponent<Targetter>();
-			mover = GetComponent<MoveAbility>();
 			life = GetComponent<Life>();
 			body = GetComponent<Body>();
 			anim = GetComponent<Animations>();
@@ -36,7 +27,7 @@ namespace __SCRIPTS
 			anim.animEvents.OnAttackHit += CreateSlime;
 		}
 
-		private void CleanUp()
+		private void OnDisable()
 		{
 			ai.OnAttack -= AI_Attack;
 			anim.animEvents.OnAttackHit -= CreateSlime;
@@ -45,7 +36,7 @@ namespace __SCRIPTS
 
 		private void AI_Attack(Life _life)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (life.IsDead()) return;
 			AttackTarget(_life);
 		}

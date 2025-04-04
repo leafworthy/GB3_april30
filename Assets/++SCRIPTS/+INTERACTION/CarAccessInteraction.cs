@@ -5,7 +5,6 @@ namespace __SCRIPTS
 {
 	public class CarAccessInteraction : TimedInteraction
 	{
-		private bool occupied;
 		private bool hasBeenOpened;
 		private bool hasGas;
 		public event Action<Player> OnCarAccessActionPressed;
@@ -20,7 +19,7 @@ namespace __SCRIPTS
 			OnTimeComplete += Interactable_OnTimeComplete;
 		}
 
-		void OnDisable()
+		protected override void OnDisable()
 		{
 			base.OnDisable();
 			OnPlayerEnters -= Interactable_OnPlayerEnters;
@@ -48,7 +47,7 @@ namespace __SCRIPTS
 				else
 				{
 					player.Say("Filling gas...", 0);
-					SFX.sounds.siphon_gas_sound.PlayRandomAt(transform.position);
+					SFX.I.sounds.siphon_gas_sound.PlayRandomAt(transform.position);
 					base.InteractableOnActionPress(player);
 				}
 			}
@@ -87,8 +86,7 @@ namespace __SCRIPTS
 			if (!HasEnoughGas() || gasFilled) return;
 			gasFilled = true;
 			PlayerStatsManager.I.ChangeStat(player,PlayerStat.StatType.Gas, -ASSETS.Vars.GasGoal);
-			occupied = false;
-			Interactable_OnPlayerEnters(player);
+		Interactable_OnPlayerEnters(player);
 		}
 
 		private void Interactable_OnPlayerEnters(Player player)
@@ -121,8 +119,6 @@ namespace __SCRIPTS
 
 		private void Interactable_OnPlayerExits(Player player)
 		{
-			if (!occupied) return;
-			occupied = false;
 			player.StopSaying();
 		}
 	}

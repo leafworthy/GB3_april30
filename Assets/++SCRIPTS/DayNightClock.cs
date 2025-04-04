@@ -61,8 +61,9 @@ namespace __SCRIPTS
 		{
 			// Validate UI references
 			if (DayText == null) Debug.LogWarning("DayNightClock: Time text reference is missing!");
-			LevelManager.OnStartLevel += SetStartingTime;
-			Player.OnPlayerDies += PlayerOnPlayerDies;
+			LevelManager.I.OnStartLevel += SetStartingTime;
+			Players.I.OnPlayerDies += PlayerOnPlayerDies;
+			SetStartingTime(null);
 			//UpdateClock(DayNightCycle.I.timeOfDay);
 		}
 
@@ -73,8 +74,8 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			LevelManager.OnStopLevel -= SetStartingTime;
-			Player.OnPlayerDies -= PlayerOnPlayerDies;
+			LevelManager.I.OnStopLevel -= SetStartingTime;
+			Players.I.OnPlayerDies -= PlayerOnPlayerDies;
 		}
 
 		private void SetStartingTime(GameLevel obj)

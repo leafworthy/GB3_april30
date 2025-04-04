@@ -22,7 +22,7 @@ namespace __SCRIPTS
 
 		private void Anim_OnSplat()
 		{ 
-			SFX.sounds.cone_splat_sounds.PlayRandomAt(transform.position);
+			SFX.I.sounds.cone_splat_sounds.PlayRandomAt(transform.position);
 		}
 
 		private void OnDisable()
@@ -36,11 +36,11 @@ namespace __SCRIPTS
 		 
 		}
 
-		private void Anim_OnDie()=> SFX.sounds.cone_die_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnHit()=> SFX.sounds.cone_gethit_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnRoar()=> SFX.sounds.cone_roar_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnAttackHit(int attackType)=> SFX.sounds.cone_attack_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnStep()=> SFX.sounds.cone_walk_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnDie()=> SFX.I.sounds.cone_die_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnHit()=> SFX.I.sounds.cone_gethit_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnRoar()=> SFX.I.sounds.cone_roar_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnAttackHit(int attackType)=> SFX.I.sounds.cone_attack_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnStep()=> SFX.I.sounds.cone_walk_sounds.PlayRandomAt(transform.position);
 	
 	}
 }

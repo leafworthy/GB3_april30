@@ -9,7 +9,6 @@ namespace __SCRIPTS
 	{
 		private List<PickupEffect> currentEffects = new List<PickupEffect>();
 		private List<PickupEffect> effectsToRemove = new List<PickupEffect>();
-		public static event Action<Pickup, Player> OnPickup;
 
 		private void Update()
 		{
@@ -29,7 +28,6 @@ namespace __SCRIPTS
 		{
 			var life = GetComponent<Life>();
 			if (life is null) return;
-			OnPickup?.Invoke(pickup, life.player);
 
 			foreach (var pickupEffect in pickup.GetEffects())
 			{

@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace __SCRIPTS
 {
@@ -23,6 +24,15 @@ namespace __SCRIPTS
 		{
 			if (isActive)
 			{
+				Debug.Log( $"Tried to do {Verb} but current activity is {currentActivity}" +
+				          $" on {this} with {currentActivity} and is active: {isActive}");
+				return false;
+			}
+			if (currentActivity == Verb)
+			{
+				Debug.Log( $"Tried to do {Verb} but current activity is {currentActivity}" +
+				          $" on {this} with {currentActivity} and is active: {isActive}");
+				
 				return false;
 			}
 			isActive = true;
@@ -44,12 +54,21 @@ namespace __SCRIPTS
 
 		public bool StopSafely(string Verb = "")
 		{
-			if (currentActivity != Verb) return false;
+			if (currentActivity != Verb)
+			{
+				Debug.Log( $"Tried to stop {Verb} but current activity is {currentActivity}" +
+				          $" on {this} with {currentActivity} and is active: {isActive}");
+				return false;
+			}
 			if (!isActive)
 			{
+				Debug.Log( $"Tried to stop {Verb} but current activity is {currentActivity}" +
+				          $" on {this} with {currentActivity} and is active: {isActive}");
 				return false;
 			}
 
+			Debug.Log("Stopped activity safely: " + Verb + " on " + this + " with " + currentActivity +
+			          " and is active: " + isActive);
 			isActive = false;
 			currentActivity = null;
 			return true;

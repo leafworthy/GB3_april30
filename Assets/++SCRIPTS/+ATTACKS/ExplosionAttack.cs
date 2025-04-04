@@ -6,23 +6,21 @@ namespace __SCRIPTS
 	[Serializable]
 	public class ExplosionAttack : Attacks
 	{
-		private float currentCooldownTime;
 		private Life currentTargetLife;
 
 		private EnemyAI ai;
 		private Animations anim;
-		private Life life;
 		private float explosionRadius = 5;
 
-		private void Start()
+		public override void SetPlayer(Player _player)
 		{
-			life = GetComponent<Life>();
+			base.SetPlayer(_player);
 			anim = GetComponent<Animations>();
 			anim.animEvents.OnAttackHit += AttackHit;
-			if (life.IsPlayer)
+			if (attacker.IsPlayer)
 			{
-				life.player.Controller.Attack1RightTrigger.OnPress += Player_Attack;
-			
+				attacker.player.Controller.Attack1RightTrigger.OnPress += Player_Attack;
+
 			}
 			else
 			{
@@ -33,32 +31,35 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			if (life.IsPlayer)
+			if (attacker.IsPlayer)
 			{
-				life.player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
+				attacker.player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
 			}
 			else
 			{
 				ai.OnAttack -= AI_Attack;
 			}
+
+			if (anim == null) return;
+			if (anim.animEvents == null) return;
+			anim.animEvents.OnAttackHit -= AttackHit;
 	
 		}
 
 		private void AttackHit(int attackType)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (attacker.IsDead()) return;
 			if (currentTargetLife == null) return;
 
-			life = GetComponent<Life>();
-			Explosion_FX.Explode(transform.position, explosionRadius, life.PrimaryAttackDamageWithExtra, life.player);
-			life.DieNow();
+			Explosion_FX.Explode(transform.position, explosionRadius, attacker.PrimaryAttackDamageWithExtra, attacker.player);
+			attacker.DieNow();
 		}
 
 		private void AI_Attack(Life newTarget)
 		{
 			if (newTarget == null) return;
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (attacker.IsDead()) return;
 			var move = GetComponent<MoveAbility>();
 			currentTargetLife = newTarget;
@@ -68,7 +69,7 @@ namespace __SCRIPTS
 
 		private void Player_Attack(NewControlButton newControlButton)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (attacker.IsDead()) return;
 
 			var hitObject = RaycastToObject(currentTargetLife);

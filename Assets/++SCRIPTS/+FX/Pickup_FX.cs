@@ -5,7 +5,7 @@ namespace __SCRIPTS
 {
 	public class Pickup_FX : MonoBehaviour
 	{
-		[SerializeField] private CameraShaker_FX.ShakeIntensityType shakeIntensity;
+		[SerializeField] private CameraShaker.ShakeIntensityType shakeIntensity;
 		[SerializeField] private CameraStunner_FX.StunLength stunLength;
 		private Pickup pickup;
 		private Life_FX lifeFX;
@@ -27,7 +27,7 @@ namespace __SCRIPTS
 			otherTintHandler.StartTint(pickupTintColor);
 			var position = transform.position;
 			ObjectMaker.I.Make(ASSETS.FX.pickupEffectPrefab, position);
-			CameraShaker_FX.ShakeCamera(position,shakeIntensity);
+			CameraShaker.ShakeCamera(position,shakeIntensity);
 			CameraStunner_FX.StartStun(stunLength);
 			if(pickupItem.itemType == PickupItem.ItemType.cash)
 				RisingTextCreator.CreateRisingText("+$" + pickupItem.itemAmount, position, Color.white);

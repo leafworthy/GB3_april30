@@ -6,28 +6,24 @@ namespace __SCRIPTS
 {
 	public class SFX : Singleton<SFX>
 	{
-		private static List<AudioSource> AudioSources = new();
 		public AudioSource ongoingAudioSource;
-		public static AudioAssets sounds => _audio ? _audio : Resources.Load<AudioAssets>("Assets/Audio");
-		private static AudioAssets _audio;
+		public AudioAssets sounds => _audio ? _audio : Resources.Load<AudioAssets>("Assets/Audio");
+		private AudioAssets _audio;
 		public AudioSource UIaudioSource;
 		public AudioSource SFXaudioSource;
-		private static float maxDistance = 100;
+		private const float maxDistance = 100;
 
-		private void OnEnable()
+		public  void PlayRandomAt(List<AudioClip> list, Vector3 position)
 		{
-			ListExtensions.OnPlaySoundAt += ListExtensionsOnOnPlaySoundAt;
-			ListExtensions.OnPlaySound += ListExtensionsOnOnPlaySound;
+			
+			PlaySFXAt(list.GetRandom(), position);
+
 		}
 
-		private void ListExtensionsOnOnPlaySound(AudioClip clip)
+		public  void PlayRandom(AudioClip clip)
 		{
 			PlayUISound(clip);
-		}
 
-		private void ListExtensionsOnOnPlaySoundAt(AudioClip clip, Vector3 vector3)
-		{
-			PlaySFXAt(clip, vector3);
 		}
 
 		public  void StartOngoingSound()
@@ -47,8 +43,9 @@ namespace __SCRIPTS
 			I.UIaudioSource.PlayOneShot(clip);
 		}
 
-		private static void PlaySFXAt(AudioClip clip, Vector3 position, float delay = 0)
+		private static void PlaySFXAt(AudioClip clip, Vector3 position)
 		{
+			if (CursorManager.GetCamera() == null) return;
 			if(Vector2.Distance( CursorManager.GetCamera().transform.position, position) > maxDistance) return;
 			//I.SFXaudioSource.gameObject.transform.position = position;
 			if (I.SFXaudioSource == null) return;

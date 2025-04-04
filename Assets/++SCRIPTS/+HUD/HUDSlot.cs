@@ -43,16 +43,31 @@ namespace __SCRIPTS
 			charSelectMenu.OnCharacterChosen -= SetCharacterHudVisible;
 		}
 
-		public void StartUpgradeSelectMenu(Player player)
+		public void OpenUpgradeSelectMenu(Player player)
 		{
 			upgradeSetupMenu.gameObject.SetActive(true);
 			upgradeSetupMenu.StartUpgradeSelectMenu(player);
+			PauseManager.I.OnPause += CloseAllUpgradeSelectMenus;
 			upgradeSetupMenu.OnUpgradeExit += CloseUpgradeSelectMenu;
+		}
+		
+		private void CloseAllUpgradeSelectMenus(Player p)
+		{
+			
+			foreach (var player in Players.AllJoinedPlayers)
+			{
+				if (player == null) continue;
+				player.LeaveUpgradeSetupMenu();
+			}
+			
 		}
 
 		private void CloseUpgradeSelectMenu(Player player)
 		{
+			PauseManager.I.OnPause -= CloseUpgradeSelectMenu;
+			upgradeSetupMenu.OnUpgradeExit -= CloseUpgradeSelectMenu;
 			upgradeSetupMenu.gameObject.SetActive(false);
+			if(player == null) return;
 			player.LeaveUpgradeSetupMenu();
 		}
 

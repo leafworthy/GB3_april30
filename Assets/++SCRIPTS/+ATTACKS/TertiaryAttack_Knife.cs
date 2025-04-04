@@ -1,14 +1,12 @@
 using System;
 using System.Linq;
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
 	public class TertiaryAttack_Knife : Attacks
 	{
-		private int knifeCoolDown = 4;
-
-		private Life life;
 		private Player player;
 		private Body body;
 		private Animations anim;
@@ -21,18 +19,27 @@ namespace __SCRIPTS
 		public event Action OnMiss;
 		public event Action<Vector2> OnHit;
 
-		private void Start()
+		public override void SetPlayer(Player _player)
 		{
+			 base.SetPlayer(_player);
 			anim = GetComponent<Animations>();
 			body = GetComponent<Body>();
-			life = GetComponent<Life>();
-			player = life.player;
+			player = _player;
 			player.Controller.Attack3Circle.OnPress += PlayerKnifePress;
 			player.Controller.Attack3Circle.OnRelease += PlayerKnifeRelease;
 			anim.animEvents.OnAttackHit += Anim_AttackHit;
 			anim.animEvents.OnAttackStop += Anim_AttackStop;
 		}
 
+		private void OnDisable()
+		{
+			if (player == null) return;
+			if (anim == null) return;
+			player.Controller.Attack3Circle.OnPress -= PlayerKnifePress;
+			player.Controller.Attack3Circle.OnRelease -= PlayerKnifeRelease;
+			anim.animEvents.OnAttackHit -= Anim_AttackHit;
+			anim.animEvents.OnAttackStop -= Anim_AttackStop;
+		}
 		private void Anim_AttackStop(int obj)
 		{
 			Debug.Log("knife stop");
@@ -44,14 +51,7 @@ namespace __SCRIPTS
 			PlayerKnifePress(null);
 		}
 
-		private void OnDisable()
-		{
-			if(player == null) return;
-			if(anim == null) return;
-			player.Controller.Attack3Circle.OnPress -= PlayerKnifePress;
-			player.Controller.Attack3Circle.OnRelease -= PlayerKnifeRelease;
-			anim.animEvents.OnAttackHit -= Anim_AttackHit;
-		}
+	
 
 		private void PlayerKnifeRelease(NewControlButton newControlButton)
 		{
@@ -60,7 +60,7 @@ namespace __SCRIPTS
 
 		private void PlayerKnifePress(NewControlButton newControlButton)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			isPressing = true;
 			StartAttack();
 		}
@@ -87,7 +87,7 @@ namespace __SCRIPTS
 		private GameObject FindClosestHit()
 		{
 	
-			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, life.TertiaryAttackRange, ASSETS.LevelAssets.EnemyLayer)
+			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange, ASSETS.LevelAssets.EnemyLayer)
 			                          .ToList();
 			if (circleCast.Count <= 0) return null;
 
@@ -128,7 +128,7 @@ namespace __SCRIPTS
 			}
 			OnHit?.Invoke(enemyHit.transform.position);
 		
-			HitTarget(life.TertiaryAttackDamageWithExtra, enemy, 2);
+			HitTarget(attacker.TertiaryAttackDamageWithExtra, enemy, 2);
 
 		}
 

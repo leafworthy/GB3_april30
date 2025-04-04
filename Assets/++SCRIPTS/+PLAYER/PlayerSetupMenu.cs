@@ -19,17 +19,19 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
-			Visible.SetActive(false);
+			Debug.Log("player setup menu start", this);
+			//Visible.SetActive(false);
 		}
 
 		private void OnEnable()
 		{
-			LevelManager.OnStopLevel += LevelGameSceneOnStopLevel;
+			Debug.Log("player setup menu enabled", this);
+			LevelManager.I.OnStopLevel += LevelGameSceneOnStopLevel;
 		}
 
 		private void OnDisable()
 		{
-			LevelManager.OnStopLevel -= LevelGameSceneOnStopLevel;
+			LevelManager.I.OnStopLevel -= LevelGameSceneOnStopLevel;
 		}
 
 		private void LevelGameSceneOnStopLevel(GameLevel gameLevel)
@@ -45,9 +47,9 @@ namespace __SCRIPTS
 
 		public event Action<Character> OnCharacterChosen;
 
-		public void SetPlayer(Player player)
+		public void SetPlayer(Player _player)
 		{
-			owner = player;
+			owner = _player;
 		}
 
 		public void StartSetupMenu(Player player)

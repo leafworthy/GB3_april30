@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class EnemyManager : MonoBehaviour
+	public class EnemyManager : Singleton<EnemyManager>
 	{
 		private static List<Life> _allEnemies = new();
-		public static event Action<Player, Life> OnPlayerKillsEnemy;
-		public static event Action<Player, Life> OnEnemyDying;
+		public event Action<Player, Life> OnPlayerKillsEnemy;
+		public event Action<Player, Life> OnEnemyDying;
 	
 
 
-		public static void CollectEnemy(GameObject enemy)
+		public void CollectEnemy(GameObject enemy)
 		{
 			var enemyDefence = enemy.gameObject.GetComponent<Life>();
 
@@ -24,7 +24,7 @@ namespace __SCRIPTS
 			_allEnemies.Add(enemyDefence);
 		}
 
-		private static void EnemyDying(Player x, Life y)
+		private void EnemyDying(Player x, Life y)
 		{
 			OnEnemyDying?.Invoke(x, y);
 		}
@@ -41,7 +41,7 @@ namespace __SCRIPTS
 
 	
 
-		private static void EnemyKilled(Player killer, Life life)
+		private  void EnemyKilled(Player killer, Life life)
 		{
 			OnPlayerKillsEnemy?.Invoke(killer, life);
 		}

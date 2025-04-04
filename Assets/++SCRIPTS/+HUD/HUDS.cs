@@ -13,23 +13,24 @@ namespace __SCRIPTS
 		public GameObject Clock;
 
 		public bool canJoin = false;
-		private void Start()
+		private void OnEnable()
 		{
+			Debug.Log("huds starts");
 			Vignette.SetActive(false);
 			Clock.SetActive(false);
-			Debug.Log("huds starts");
-			LevelManager.OnStartLevel += LevelSceneOnStartLevel;
-			LevelManager.OnPlayerSpawned += LevelScene_OnPlayerSpawned;
-			LevelManager.OnGameOver += Level_OnGameOver;
-			LevelManager.OnWinGame += Level_OnGameOver;
-			LevelManager.OnStopLevel += LevelSceneOnStopLevel;
-			
+			LevelManager.I.OnStartLevel += LevelSceneOnStartLevel;
+			LevelManager.I.OnPlayerSpawned += LevelScene_OnPlayerSpawned;
+			LevelManager.I.OnGameOver += Level_OnGameOver;
+			LevelManager.I.OnWinGame += Level_OnGameOver;
+			LevelManager.I.OnStopLevel += (t)=> Level_OnGameOver();
+			canJoin = true;
 			DisableAllHUDSlots();
 			
 		}
 
 	
-	
+
+
 		private void Level_OnGameOver()
 		{
 			Vignette.SetActive(false);
@@ -37,33 +38,36 @@ namespace __SCRIPTS
 			canJoin = false;
 			Players.SetActionMaps(Players.UIActionMap);
 			DisableAllHUDSlots();
-			gameObject.SetActive(false);
+			//gameObject.SetActive(false);
+			Debug.Log("huds on game over");
 		}
 
-		private void LevelSceneOnStopLevel(GameLevel gameLevel)
+		private void OnDisable()
 		{
-			LevelManager.OnStopLevel -= LevelSceneOnStopLevel;
 			canJoin  = false;
-			Players.OnPlayerJoins -= JoinInGame;
-			Players.OnPlayerGetUpgrades -= OpenUpgradePanel;
+			Players.I.OnPlayerJoins -= JoinInGame;
+			Players.I.OnPlayerGetUpgrades -= OpenUpgradePanel;
+			Players.SetActionMaps(Players.UIActionMap);
 			Vignette.SetActive(false);
 			Clock.SetActive(false);
-			DisableAllHUDSlots();
+			Debug.Log("hud stopped");
 		}
 
 	
 
 		private void LevelScene_OnPlayerSpawned(Player player)
 		{
+			Debug.Log("set slot player  " + player.input.playerIndex);
 			SetHUDSlotPlayer(player);
 		}
 
 		private void LevelSceneOnStartLevel(GameLevel gameLevel)
 		{
+			//gameObject.SetActive(true);
 			Debug.Log("made it here");
 			CreateHUDForPlayers(Players.AllJoinedPlayers);
-			Players.OnPlayerJoins += JoinInGame;
-			Players.OnPlayerGetUpgrades += OpenUpgradePanel;
+			Players.I.OnPlayerJoins += JoinInGame;
+			Players.I.OnPlayerGetUpgrades += OpenUpgradePanel;
 			Vignette.SetActive(true);
 			Clock.SetActive(true);
 			canJoin = true;
@@ -73,7 +77,7 @@ namespace __SCRIPTS
 		{
 			var slot = I.currentHUDSlots[(int)player.input.playerIndex];
 			slot.gameObject.SetActive(true);
-			slot.StartUpgradeSelectMenu(player);
+			slot.OpenUpgradeSelectMenu(player);
 		}
 
 
@@ -88,10 +92,8 @@ namespace __SCRIPTS
 
 		private void JoinInGame(Player player)
 		{
-			//if (!LevelManager.I.IsInGame) return;
 			if(!canJoin) return;
 			Debug.Log("join in game");
-			
 			var slot = I.currentHUDSlots[(int) player.input.playerIndex];
 			slot.gameObject.SetActive(true);
 			slot.StartCharSelectMenu(player);

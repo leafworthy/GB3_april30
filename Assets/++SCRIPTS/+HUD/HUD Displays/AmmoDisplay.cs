@@ -19,7 +19,7 @@ namespace __SCRIPTS.HUD_Displays
 
 		private void Start()
 		{
-			LevelManager.OnStopLevel += CleanUp;
+			LevelManager.I.OnStopLevel += CleanUp;
 			barFX = GetComponentInChildren<Bar_FX>();
 		}
 
@@ -52,10 +52,7 @@ namespace __SCRIPTS.HUD_Displays
 
 			if (barFX == null) return;
 			barFX.UpdateBar(ammoToDisplay.reserveAmmo, ammoToDisplay.maxReserveAmmo);
-			if (shake)
-			{
-				ShakeObject();
-			}
+		
 		}
 
 		private void GreyOut()
@@ -68,12 +65,7 @@ namespace __SCRIPTS.HUD_Displays
 			if (greys) ammoDisplayCanvas.alpha = 1;
 		}
 
-		protected void ShakeObject()
-		{
-			var shaker = shakeObject.GetComponent<ObjectShaker>();
-			if (shaker == null) shaker = shakeObject.AddComponent<ObjectShaker>();
-			shaker.Shake(ObjectShaker.ShakeIntensityType.low);
-		}
+	
 
 		public void SetAmmo(Ammo newAmmo)
 		{

@@ -43,7 +43,8 @@ namespace __SCRIPTS
 
 		private void Awake()
 		{
-			animator = GetComponentInChildren<Animator>();
+			if (animator == null) animator = GetComponentInChildren<Animator>();
+			animEvents = GetComponentInChildren<AnimationEvents>();
 			CacheParameterHashes();
 		}
 
@@ -54,12 +55,6 @@ namespace __SCRIPTS
 			{
 				parameterHashes.Add(param.nameHash);
 			}
-		}
-
-		private void OnValidate()
-		{
-			if (animator == null) animator = GetComponentInChildren<Animator>();
-			animEvents = GetComponentInChildren<AnimationEvents>();
 		}
 
 		public void Play(string animationClipName, int layer, float startingPlace)

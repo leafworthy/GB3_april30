@@ -92,7 +92,7 @@ namespace __SCRIPTS.Projectiles
 			hitLife.TakeDamage(attack);
 			rotationRate = 300;
 			mover.StopMoving();
-			SFX.sounds.kunai_hit_sounds.PlayRandomAt(transform.position);
+			SFX.I.sounds.kunai_hit_sounds.PlayRandomAt(transform.position);
 
 			ObjectMaker.I.Make(ASSETS.FX.hit5_xstrike, transform.position);
 			Fire(attack, true);

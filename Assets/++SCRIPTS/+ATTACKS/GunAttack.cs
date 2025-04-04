@@ -21,7 +21,9 @@ namespace __SCRIPTS
 		private AmmoInventory ammoInventory;
 		private string VerbName = "shooting";
 		private float attackRate => isGlocking ? attacker.UnlimitedAttackRate : attacker.PrimaryAttackRate;
-		private float currentDamage => isGlocking ? attacker.UnlimitedAttackDamageWithExtra : attacker.PrimaryAttackDamageWithExtra;
+
+		private float currentDamage =>
+			isGlocking ? attacker.UnlimitedAttackDamageWithExtra : attacker.PrimaryAttackDamageWithExtra;
 
 		private AmmoInventory.AmmoType ammoType =>
 			isGlocking ? AmmoInventory.AmmoType.unlimited : AmmoInventory.AmmoType.primaryAmmo;
@@ -36,25 +38,22 @@ namespace __SCRIPTS
 		private string ReloadVerb => isGlocking ? "ReloadGlock" : "ReloadAK";
 		public event Action OnEmpty;
 
-		private void OnValidate()
+		public override void SetPlayer(Player player)
 		{
 			attacker = GetComponent<Life>();
-		}
-
-		public void Start()
-		{
 			ammoInventory = GetComponent<AmmoInventory>();
 			anim = GetComponent<Animations>();
+			body = GetComponent<Body>();
+			arms = body.arms;
+			aim = GetComponent<GunAimAbility>();
+
 			anim.animEvents.OnReload += Anim_OnReload;
 			anim.animEvents.OnReloadStop += Anim_OnReloadStop;
 
-			body = GetComponent<Body>();
-			arms = body.arms;
 
 			ListenToPlayer();
-			aim = GetComponent<GunAimAbility>();
-			attacker.OnDying += OnDead;
 		}
+
 
 		private void Anim_OnReloadStop()
 		{
@@ -64,6 +63,8 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
+			anim.animEvents.OnReload -= Anim_OnReload;
+			anim.animEvents.OnReloadStop -= Anim_OnReloadStop;
 			StopListeningToPlayer();
 		}
 
@@ -93,6 +94,7 @@ namespace __SCRIPTS
 			if (attacker == null) attacker = GetComponent<Life>();
 			var player = attacker.player;
 			if (player == null) return;
+			attacker.OnDying += OnDead;
 			player.Controller.Attack1RightTrigger.OnPress += PlayerControllerShootPress;
 			player.Controller.Attack1RightTrigger.OnRelease += PlayerControllerShootRelease;
 			player.Controller.ReloadTriangle.OnPress += Player_Reload;
@@ -102,10 +104,9 @@ namespace __SCRIPTS
 		private void StopListeningToPlayer()
 		{
 			if (attacker == null) attacker = GetComponent<Life>();
-			attacker.OnDying -= OnDead;
 			var player = attacker.player;
 			if (player == null) return;
-
+			attacker.OnDying -= OnDead;
 			player.Controller.Attack1RightTrigger.OnPress -= PlayerControllerShootPress;
 			player.Controller.Attack1RightTrigger.OnRelease -= PlayerControllerShootRelease;
 			player.Controller.ReloadTriangle.OnPress -= Player_Reload;
@@ -114,7 +115,7 @@ namespace __SCRIPTS
 
 		private void FixedUpdate()
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (arms.currentActivity != VerbName)
 			{
 				isShooting = false;
@@ -128,7 +129,7 @@ namespace __SCRIPTS
 
 		private void PlayerControllerShootPress(NewControlButton newControlButton)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			isPressing = true;
 			TryShooting();
 		}
@@ -166,10 +167,10 @@ namespace __SCRIPTS
 			if (!arms.Do(VerbName))
 			{
 				Debug.Log("can't gun attack because busy with  " + arms.currentActivity);
-				StopShooting();
 				return;
 			}
 
+			Debug.Log("actually start shooting");
 			StartShooting();
 		}
 
@@ -221,22 +222,24 @@ namespace __SCRIPTS
 
 		private void ShotMissed()
 		{
-			var missPosition = (Vector2) body.FootPoint.transform.position + aim.AimDir.normalized * attacker.PrimaryAttackRange;
-			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, aim.AimDir.normalized, attacker.PrimaryAttackRange,
+			var missPosition = (Vector2)body.FootPoint.transform.position +
+			                   aim.AimDir.normalized * attacker.PrimaryAttackRange;
+			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, aim.AimDir.normalized,
+				attacker.PrimaryAttackRange,
 				ASSETS.LevelAssets.BuildingLayer);
 			if (raycastHit) missPosition = raycastHit.point;
 			var newAttack = new Attack(attacker, body.FootPoint.transform.position, missPosition, null, 0);
 
 			OnShotMissed?.Invoke(newAttack, body.AttackStartPoint.transform.position);
 
-			;
 		}
 
 		private void ShotHitTarget(RaycastHit2D hitObject)
 		{
 			var target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
 			if (target == null) return;
-			var newAttack = new Attack(attacker, body.FootPoint.transform.position, hitObject.point, target, currentDamage);
+			var newAttack = new Attack(attacker, body.FootPoint.transform.position, hitObject.point, target,
+				currentDamage);
 			OnShotHitTarget?.Invoke(newAttack, body.AttackStartPoint.transform.position);
 			target.TakeDamage(newAttack);
 		}
@@ -245,15 +248,18 @@ namespace __SCRIPTS
 		{
 			if (body.isOverLandable)
 			{
-				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, attacker.PrimaryAttackRange,
+				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
+					attacker.PrimaryAttackRange,
 					ASSETS.LevelAssets.EnemyLayerOnLandable);
 
-				Debug.DrawRay(body.FootPoint.transform.position, targetDirection.normalized * attacker.PrimaryAttackRange, Color.red, 1f);
+				Debug.DrawRay(body.FootPoint.transform.position,
+					targetDirection.normalized * attacker.PrimaryAttackRange, Color.red, 1f);
 				return raycastHit;
 			}
 			else
 			{
-				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, attacker.PrimaryAttackRange,
+				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
+					attacker.PrimaryAttackRange,
 					ASSETS.LevelAssets.EnemyLayer);
 				return raycastHit;
 			}
@@ -279,7 +285,7 @@ namespace __SCRIPTS
 
 		private void Player_SwapWeapon(NewControlButton newControlButton)
 		{
-			if (!isReloading && !isShooting) StartSwapping();
+			if (!arms.isActive) StartSwapping();
 		}
 
 		private void StartSwapping()
@@ -319,10 +325,7 @@ namespace __SCRIPTS
 			isReloading = true;
 			if (isGlocking)
 			{
-				if (aim.AimDir.x > 0)
-					anim.Play(ReloadGlockAnimationClip.name, 1, 0);
-				else
-					anim.Play(ReloadGlockAnimationLeftClip.name, 1, 0);
+				anim.Play(aim.AimDir.x > 0 ? ReloadGlockAnimationClip.name : ReloadGlockAnimationLeftClip.name, 1, 0);
 			}
 			else
 				anim.Play(ReloadAKAnimationClip.name, 1, 0);

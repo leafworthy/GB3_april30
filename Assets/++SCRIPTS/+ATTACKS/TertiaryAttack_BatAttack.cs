@@ -24,13 +24,9 @@ namespace __SCRIPTS
 		public event Action OnSwing;
 		public event Action<Vector2> OnHit;
 
-		private void Start()
+		public override void SetPlayer(Player _player)
 		{
-			Init();
-		}
-
-		private void Init()
-		{
+			base.SetPlayer(_player);
 			body = GetComponent<Body>();
 			anim = GetComponent<Animations>();
 			life = GetComponent<Life>();
@@ -52,6 +48,7 @@ namespace __SCRIPTS
 			owner.Controller.Attack3Circle.OnPress -= Player_AttackPress;
 			owner.Controller.Attack3Circle.OnRelease -= Player_AttackRelease;
 			owner.Controller.MoveAxis.OnChange -= Player_MoveInDirection;
+			if (animEvents == null) return;
 			animEvents.OnAttackHit -= Anim_AttackHit;
 			animEvents.OnAttackStop -= Anim_AttackStop;
 		}

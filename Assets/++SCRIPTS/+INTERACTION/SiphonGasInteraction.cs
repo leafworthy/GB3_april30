@@ -31,7 +31,7 @@ namespace __SCRIPTS
 		private void Interactable_OnActionPress(Player player)
 		{
 		
-			SFX.sounds.siphon_gas_sound.PlayRandomAt(transform.position);
+			SFX.I.sounds.siphon_gas_sound.PlayRandomAt(transform.position);
 		}
 
 		protected override bool canEnter(Player player)
@@ -47,7 +47,7 @@ namespace __SCRIPTS
 				player.Say("No more gas", 0);
 				return;
 			}
-			LootTable.DropLoot(dropPoint.transform.position, LootType.Gas);
+			LootTable.I.DropLoot(dropPoint.transform.position, LootType.Gas);
 			gasAmount--;
 			if (gasAmount <= 0)
 			{

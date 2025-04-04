@@ -17,21 +17,21 @@ namespace __SCRIPTS
 		private void OnEnable()
 		{
 			nade = GetComponent<NadeAttack>();
+			body = GetComponent<Body>();
+			
 			nade.OnThrow += Nade_OnThrow;
 			nade.OnShowAiming += Nade_OnShowAiming;
 			nade.OnHideAiming += Nade_OnHideAiming;
 			nade.OnAimAt += Nade_OnAimAt;
 			nade.OnAimInDirection += Nade_OnAimInDirection;
-			body = GetComponent<Body>();
 			
+			Nade_OnHideAiming();
 			SpawnTrajectoryMarkers();
 	
 		}
 
 		private void OnDisable()
 		{
-			if (currentArrowHead != null) ObjectMaker.I.Unmake(currentArrowHead);
-			
 			_trajectoryMarkersContainer.Clear();
 			nade.OnThrow -= Nade_OnThrow;
 			nade.OnShowAiming -= Nade_OnShowAiming;
@@ -56,6 +56,7 @@ namespace __SCRIPTS
 		{
 			if (!isShowingAiming) return;
 			isShowingAiming = false;
+			Debug.Log("hide aiming plz");
 			if (currentArrowHead == null) return;
 			currentArrowHead.SetActive(false);
 			if (_trajectoryMarkersContainer.Count <= 0) return;
@@ -71,6 +72,7 @@ namespace __SCRIPTS
 		{
 			if (isShowingAiming) return;
 			isShowingAiming = true;
+			Debug.Log("show aiming plz");
 			currentArrowHead.SetActive(true);
 			if (_trajectoryMarkersContainer.Count <= 0)
 			{

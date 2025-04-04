@@ -11,10 +11,11 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
-		
-			Player.OnPlayerSpawned += AddMembersToCameraFollowTargetGroup;
-			Player.OnPlayerDies += Player_PlayerDies;
-			LevelManager.OnStopLevel += LevelManager_OnStopLevel;
+
+			LevelManager.I.OnPlayerSpawned += AddMembersToCameraFollowTargetGroup;
+			Players.I.OnPlayerDies += Player_PlayerDies;
+			LevelManager.I.OnStopLevel += LevelManager_OnStopLevel;
+			Debug.Log("GameLevelCameraTargetGroupManager started");
 		}
 
 		private void LevelManager_OnStopLevel(GameLevel level)
@@ -41,6 +42,10 @@ namespace __SCRIPTS
 				cameraFollowTargetGroup.AddMember(player.SpawnedPlayerGO.transform, 1, 0);
 				var stickTarget = ObjectMaker.I.Make(ASSETS.Players.followStickPrefab).GetComponent<FollowCursor>();
 				stickTarget.Init(player);
+			}
+			else
+			{
+				Debug.LogError("Player's spawned player game object is null");
 			}
 		}
 

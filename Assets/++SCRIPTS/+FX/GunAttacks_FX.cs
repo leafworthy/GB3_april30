@@ -37,7 +37,7 @@ namespace __SCRIPTS
 	
 			var bulletScript = newBullet.GetComponent<Bullet_FX>();
 			bulletScript.Fire(attack, attackStartPosition);
-			CameraShaker_FX.ShakeCamera((Vector2)attack.OriginFloorPoint, CameraShaker_FX.ShakeIntensityType.normal);
+			CameraShaker.ShakeCamera((Vector2)attack.OriginFloorPoint, CameraShaker.ShakeIntensityType.normal);
 		}
 
 		private static void MakeBulletShell(Attack attack)

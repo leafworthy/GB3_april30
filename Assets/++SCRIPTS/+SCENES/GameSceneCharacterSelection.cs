@@ -13,29 +13,23 @@ namespace __SCRIPTS
 		private bool playersAllChosen;
 		private bool isListening;
 		private List<Player> playersBeingListenedTo = new();
-		public static event Action OnSelectCharacter;
-		public static event Action OnDeselectCharacter;
-		public static event Action OnPlayerMoveLeft;
-		public static event Action OnPlayerMoveRight;
-		public static event Action OnPlayerUnjoins;
-		public static event Action OnPlayerStartsSelecting;
-		public static event Action OnTryToStartGame;
+		public event Action OnSelectCharacter;
+		public event Action OnDeselectCharacter;
+		public event Action OnPlayerMoveLeft;
+		public event Action OnPlayerMoveRight;
+		public event Action OnPlayerUnjoins;
+		public event Action OnPlayerStartsSelecting;
+		public event Action OnTryToStartGame;
 
 		protected void Start()
 		{
 			CleanUp();
-			Players.OnPlayerJoins += PlayerStartsSelecting;
-			foreach (var player in Players.AllJoinedPlayers)
-			{
-				PlayerStartsSelectingFromMainMenu(player);
-			}
+			Players.I.OnPlayerJoins += PlayerStartsSelecting;
+			foreach (var player in Players.AllJoinedPlayers) PlayerStartsSelectingFromMainMenu(player);
 
-			foreach (var button in Buttons)
-			{
-				button.SetPlayerColors();
-			}
+			foreach (var button in Buttons) button.SetPlayerColors();
 
-		
+
 			isActive = true;
 			//Debug.Log("Character Selection Start");
 		}
@@ -55,15 +49,12 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			Players.OnPlayerJoins -= PlayerStartsSelecting;
+			Players.I.OnPlayerJoins -= PlayerStartsSelecting;
 		}
 
 		private void CleanUp()
 		{
-			foreach (var button in Buttons)
-			{
-				button.CleanUp();
-			}
+			foreach (var button in Buttons) button.CleanUp();
 
 			HideGoGoGo();
 			playersAllChosen = false;
@@ -126,10 +117,7 @@ namespace __SCRIPTS
 		private void StopListeningToPlayers()
 		{
 			var tempList = playersBeingListenedTo.ToList();
-			foreach (var player in tempList)
-			{
-				StopListeningToPlayer(player);
-			}
+			foreach (var player in tempList) StopListeningToPlayer(player);
 
 			playersBeingListenedTo.Clear();
 		}
@@ -141,15 +129,12 @@ namespace __SCRIPTS
 
 		private void PlayerMoveRight(IControlAxis controlAxis)
 		{
-			MoveButton(controlAxis,true);
+			MoveButton(controlAxis, true);
 		}
 
 		private void MoveButton(IControlAxis controlAxis, bool toRight)
 		{
-			if (!isActive)
-			{
-				return;
-			}
+			if (!isActive) return;
 
 			var player = controlAxis.owner;
 			if (player.state != Player.State.SelectingCharacter) return;
@@ -179,10 +164,7 @@ namespace __SCRIPTS
 
 		private void PlayerPressSelect(NewControlButton newControlButton)
 		{
-			if (!isActive)
-			{
-				return;
-			}
+			if (!isActive) return;
 
 			var player = newControlButton.owner;
 
@@ -200,8 +182,6 @@ namespace __SCRIPTS
 			}
 		}
 
-		// Add a new event for character selection completion
-		public static event Action OnCharacterSelectionComplete;
 
 		private void TryToStartGame(Player player)
 		{
@@ -212,22 +192,13 @@ namespace __SCRIPTS
 			StopListeningToPlayers();
 			ClearAllPlayerButtons();
 			isActive = false;
-			Players.OnPlayerJoins -= PlayerStartsSelecting;
-		
-			// Trigger character selection complete event
-			OnCharacterSelectionComplete?.Invoke();
+			Players.I.OnPlayerJoins -= PlayerStartsSelecting;
 			LevelManager.I.StartGame();
-
-
-
 		}
 
 		private void ClearAllPlayerButtons()
 		{
-			foreach (var player in Players.AllJoinedPlayers)
-			{
-				player.CurrentButton = null;
-			}
+			foreach (var player in Players.AllJoinedPlayers) player.CurrentButton = null;
 		}
 
 		private void PlayerPressCancel(NewControlButton newControlButton)
@@ -264,7 +235,8 @@ namespace __SCRIPTS
 
 		private void CheckIfPlayersAllSelected()
 		{
-			var playersStillSelecting = Players.AllJoinedPlayers.Where(t => t.state == Player.State.SelectingCharacter).ToList();
+			var playersStillSelecting =
+				Players.AllJoinedPlayers.Where(t => t.state == Player.State.SelectingCharacter).ToList();
 			if (playersStillSelecting.Count > 0)
 			{
 				HideGoGoGo();

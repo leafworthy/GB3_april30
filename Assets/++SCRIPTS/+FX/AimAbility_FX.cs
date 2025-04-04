@@ -21,7 +21,7 @@ namespace __SCRIPTS
 
 		private void Update()
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if(aimAbility.hasEnoughMagnitude())
 			{
 				AimFlashlight();

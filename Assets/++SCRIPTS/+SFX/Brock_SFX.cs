@@ -45,8 +45,8 @@ namespace __SCRIPTS
 	
 		private void SecondaryAttackChargeStop()
 		{
-			SFX.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
-			SFX.sounds.brock_special_attack_sounds.PlayRandomAt(transform.position);
+			SFX.I.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
+			SFX.I.sounds.brock_special_attack_sounds.PlayRandomAt(transform.position);
 			SFX.I.StopOngoingSound();
 		}
 
@@ -68,29 +68,29 @@ namespace __SCRIPTS
 			 
 		}
 
-		private void MeleeAttackOnSwing() => SFX.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
+		private void MeleeAttackOnSwing() => SFX.I.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 
-		private void Life_OnDying(Player arg1, Life arg2) => SFX.sounds.player_die_sounds.PlayRandomAt(transform.position);
+		private void Life_OnDying(Player arg1, Life arg2) => SFX.I.sounds.player_die_sounds.PlayRandomAt(transform.position);
 
-		private void MeleeAttackOnHit(Vector2 vector2) => SFX.sounds.brock_bathit_sounds.PlayRandomAt(vector2);
-		private void ChargeAttack_OnAttackHit() => SFX.sounds.brock_bathit_sounds.PlayRandomAt(transform.position);
+		private void MeleeAttackOnHit(Vector2 vector2) => SFX.I.sounds.brock_bathit_sounds.PlayRandomAt(vector2);
+		private void ChargeAttack_OnAttackHit() => SFX.I.sounds.brock_bathit_sounds.PlayRandomAt(transform.position);
 
 		private void PrimaryAttackKunaiOnThrow(Vector3 vector3, Vector3 vector4, float arg3, Life arg4, bool arg5) =>
-			SFX.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
+			SFX.I.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 
-		private void SecondaryAttackChargeAttackOnSpecialAttackHit() => SFX.sounds.brock_homerunhit_sounds.PlayRandomAt(transform.position);
+		private void SecondaryAttackChargeAttackOnSpecialAttackHit() => SFX.I.sounds.brock_homerunhit_sounds.PlayRandomAt(transform.position);
 		private void SecondaryAttackChargeAttackOnSecondaryAttackChargePress() => SFX.I.StartOngoingSound();
-		private void Jump_OnLand(Vector2 obj) => SFX.sounds.land_sound.PlayRandomAt(transform.position);
-		private void Jump_OnJump(Vector2 obj) => SFX.sounds.jump_sound.PlayRandomAt(transform.position);
+		private void Jump_OnLand(Vector2 obj) => SFX.I.sounds.land_sound.PlayRandomAt(transform.position);
+		private void Jump_OnJump(Vector2 obj) => SFX.I.sounds.jump_sound.PlayRandomAt(transform.position);
 		private void Life_OnWounded(Attack obj)  {
-			SFX.sounds.brock_gethit_sounds.PlayRandomAt(transform.position);
-			SFX.sounds.jump_sound.PlayRandomAt(transform.position);
+			SFX.I.sounds.brock_gethit_sounds.PlayRandomAt(transform.position);
+			SFX.I.sounds.jump_sound.PlayRandomAt(transform.position);
 		}
-		private void Anim_Dash() => SFX.sounds.bean_roll_sounds.PlayRandomAt(transform.position);
-		private void Anim_Teleport() => SFX.sounds.brock_teleport_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnDie() => SFX.sounds.player_die_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnHit() => SFX.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnRoar() => SFX.sounds.brock_teleport_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnStep() => SFX.sounds.player_walk_sounds_concrete.PlayRandomAt(transform.position);
+		private void Anim_Dash() => SFX.I.sounds.bean_roll_sounds.PlayRandomAt(transform.position);
+		private void Anim_Teleport() => SFX.I.sounds.brock_teleport_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnDie() => SFX.I.sounds.player_die_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnHit() => SFX.I.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnRoar() => SFX.I.sounds.brock_teleport_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnStep() => SFX.I.sounds.player_walk_sounds_concrete.PlayRandomAt(transform.position);
 	}
 }

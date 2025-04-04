@@ -1,8 +1,9 @@
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class JumpController : MonoBehaviour
+	public class JumpController : MonoBehaviour, INeedPlayer
 	{
 		private Life life;
 		private JumpAbility jump;
@@ -12,27 +13,44 @@ namespace __SCRIPTS
 		private string VerbName = "Jumping";
 		private float FallInDistance = 80;
 
-		public void Init(bool fallFromSky)
+		public void SetPlayer(Player _player)
 		{
 			life = GetComponent<Life>();
+			life.OnWounded += Life_Wounded;
 			life.player.Controller.Jump.OnPress += Controller_Jump;
-
+			
 			anim = GetComponent<Animations>();
 			animEvents = anim.animEvents;
 			animEvents.OnRoar += AnimEvents_OnRoar;
 			animEvents.OnLandingStop += AnimEvents_OnLandingStop;
 			body = GetComponent<Body>();
+			
+		}
+		public void SetFallFromSky(bool fallFromSky)
+		{
 			jump = GetComponent<JumpAbility>();
+			jump.FallFromHeight(fallFromSky ? FallInDistance : 0);
+			jump.OnFall += Jump_OnFall;
 			jump.OnLand += Land;
 			jump.OnResting += Jump_OnResting;
-			jump.OnFall += Jump_OnFall;
-			jump.FallFromHeight(fallFromSky ? FallInDistance : 0);
-			life.OnWounded += Life_Wounded;
+			}
 
+		private void OnDisable()
+		{
+			if (life == null) return;
+			if (life.player == null) return;
+			life.player.Controller.Jump.OnPress -= Controller_Jump;
+			if (jump == null) return;
+			jump.OnLand -= Land;
+			jump.OnResting -= Jump_OnResting;
+			jump.OnFall -= Jump_OnFall;
+			life.OnWounded -= Life_Wounded;
+			if (animEvents == null) return;
+			animEvents.OnRoar -= AnimEvents_OnRoar;
+			animEvents.OnLandingStop -= AnimEvents_OnLandingStop;
 
 
 		}
-
 		private void AnimEvents_OnLandingStop()
 		{
 			jump.StartResting();
@@ -43,26 +61,11 @@ namespace __SCRIPTS
 			jump.SetActive(true);
 		}
 
-		private void OnDisable()
-		{ 
-			if(life == null) return;
-			if(life.player == null) return;
-			life.player.Controller.Jump.OnPress -= Controller_Jump;
-	 
-			if(jump == null) return;
-			jump.OnLand -= Land;
-			jump.OnResting -= Jump_OnResting;
-			jump.OnFall -= Jump_OnFall;
-			life.OnWounded -= Life_Wounded;
-			animEvents.OnRoar -= AnimEvents_OnRoar;
-			animEvents.OnLandingStop -= AnimEvents_OnLandingStop;
-		  
-			
-		}
+	
 
 		private void Controller_Jump(NewControlButton newControlButton)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 
 			Jump();
 		}
@@ -86,9 +89,9 @@ namespace __SCRIPTS
 			anim.SetBool(Animations.IsFalling, false);
 		}
 
-		private void Jump(float modifier = 1)
+		private void Jump()
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 
 
 			if (!body.arms.Do(VerbName)) return;
@@ -116,5 +119,6 @@ namespace __SCRIPTS
 		}
 
 
+		
 	}
 }

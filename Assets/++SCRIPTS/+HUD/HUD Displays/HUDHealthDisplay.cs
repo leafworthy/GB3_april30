@@ -16,21 +16,21 @@ namespace __SCRIPTS.HUD_Displays
 		public Image capSpriteRenderer;
 
 
-		public void SetPlayer(Player player)
+		public void SetPlayer(Player _player)
 		{
 			if (playerDefence != null)
 			{
 				playerDefence.OnFractionChanged -= UpdateDisplay;
 			}
-			playerDefence = player.SpawnedPlayerGO.GetComponentInChildren<Life>();
+			playerDefence = _player.SpawnedPlayerGO.GetComponentInChildren<Life>();
 			if (barFX.slowBarImage != null)
 			{
-				barFX.slowBarImage.color = player.playerColor;
+				barFX.slowBarImage.color = _player.playerColor;
 			}
 
 			if (capSpriteRenderer != null)
 			{
-				capSpriteRenderer.color = player.playerColor;
+				capSpriteRenderer.color = _player.playerColor;
 			}
 
 			playerDefence.OnFractionChanged += UpdateDisplay;
@@ -45,8 +45,8 @@ namespace __SCRIPTS.HUD_Displays
 			healthText.text = Mathf.Ceil(playerDefence.Health).ToString();
 			MaxHealthText.text = "/" + Mathf.Ceil(playerDefence.HealthMax).ToString();
 			barFX.UpdateBar(playerDefence.Health, playerDefence.HealthMax);
-			var shaker = shakeIcon.gameObject.AddComponent<ObjectShaker>();
-			shaker.Shake(ObjectShaker.ShakeIntensityType.medium);
+			//var shaker = shakeIcon.gameObject.AddComponent<ObjectShaker>();
+			//shaker.Shake(ObjectShaker.ShakeIntensityType.medium);
 		}
 	}
 }

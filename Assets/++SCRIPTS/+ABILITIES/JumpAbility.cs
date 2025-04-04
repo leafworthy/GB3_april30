@@ -15,6 +15,8 @@ namespace __SCRIPTS
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnResting;
 		public event Action<Vector2> OnJump;
+		public event Action<Vector2> OnFall;
+		public event Action OnBounce;
 
 		private bool isOverLandable;
 		[FormerlySerializedAs("isInAir")] public bool IsJumping;
@@ -22,8 +24,6 @@ namespace __SCRIPTS
 		private float currentLandableHeight;
 		private bool isActive = true;
 		private bool isJumping;
-		public Action<Vector2> OnFall;
-		public event Action OnBounce;
 		private bool initiated;
 		private float minBounceVelocity = 1000;
 		private float bounceVelocityDragFactor = .2f;
@@ -63,8 +63,19 @@ namespace __SCRIPTS
 			if (initiated) return;
 			initiated = true;
 			thing = GetComponent<ThingWithHeight>();
-			thing.OnFallFromLandable += FallFromHeight;
 			body = GetComponent<Body>();
+			thing.OnFallFromLandable += FallFromHeight;
+		}
+
+		private void OnEnable()
+		{
+			Init();
+
+		}
+
+		private void OnDisable()
+		{ 
+			if (thing != null) thing.OnFallFromLandable -= FallFromHeight;
 		}
 
 		public void FallFromHeight(float fallHeight)
@@ -90,7 +101,7 @@ namespace __SCRIPTS
 
 		protected void FixedUpdate()
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (isResting) return;
 			if (!isActive) return;
 			if (!IsJumping) return;

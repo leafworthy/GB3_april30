@@ -1,8 +1,9 @@
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class DashAbility : MonoBehaviour
+	public class DashAbility : MonoBehaviour, INeedPlayer
 	{
 		private AnimationEvents animEvents;
 		private MoveController moveController;
@@ -15,7 +16,7 @@ namespace __SCRIPTS
 		private string DashVerbName = "dashing";
 		public bool teleport;
 
-		private void Start()
+		public void SetPlayer(Player _player)
 		{
 			move = GetComponent<MoveAbility>();
 			anim = GetComponent<Animations>();
@@ -24,26 +25,25 @@ namespace __SCRIPTS
 			moveController = GetComponent<MoveController>();
 
 			life = GetComponent<Life>();
-			owner = life.player;
-			owner.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
+			owner = _player;
 
 			animEvents = anim.animEvents;
+			owner.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
 			animEvents.OnDashStop += Anim_DashStop;
 			animEvents.OnTeleport += Anim_Teleport;
 		}
 
+
 		private void OnDisable()
 		{
+		if (owner == null) return;
+			if (owner.Controller == null) return;
 			if (animEvents != null)
 			{
 				animEvents.OnDashStop -= Anim_DashStop;
 				animEvents.OnTeleport -= Anim_Teleport;
 			}
-			if (owner == null) return;
-			if (owner.Controller == null) return;
 			owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
-			owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
-		
 	
 		}
 
@@ -68,7 +68,7 @@ namespace __SCRIPTS
 		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 		{
 			if (!moveController.CanMove) return;
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (!jumps.isResting) return;
 			//body.arms.Stop();
 			//if (!teleport) body.legs.Stop();
@@ -88,5 +88,7 @@ namespace __SCRIPTS
 
 		
 		}
+
+		
 	}
 }

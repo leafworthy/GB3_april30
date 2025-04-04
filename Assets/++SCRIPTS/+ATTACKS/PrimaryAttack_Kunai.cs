@@ -16,12 +16,7 @@ namespace __SCRIPTS
 		private bool isPressing;
 		public event Action<Vector3, Vector3, float, Life, bool> OnThrow;
 
-		private void Start()
-		{
-			Init();
-		}
-
-		private void Init()
+		private void OnEnable()
 		{
 			ammo = GetComponent<AmmoInventory>();
 			body = GetComponent<Body>();

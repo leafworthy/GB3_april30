@@ -15,7 +15,7 @@ namespace __SCRIPTS
 
 		private void StartPickup(Collider2D col, Color pickupTintColor)
 		{
-			SFX.PlayUISound(SFX.sounds.pickup_pickup_sounds.GetRandom());
+			SFX.PlayUISound(SFX.I.sounds.pickup_pickup_sounds.GetRandom());
 		}
 	}
 }

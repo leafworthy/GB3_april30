@@ -22,8 +22,8 @@ namespace __SCRIPTS.Cursor
 		private void Start()
 		{
 			UnityEngine.Cursor.visible = false;
-			LevelManager.OnStartLevel += LevelStartsLevel;
-			LevelManager.OnPlayerSpawned += InitCursor;
+			LevelManager.I.OnStartLevel += LevelStartsLevel;
+			LevelManager.I.OnPlayerSpawned += InitCursor;
 		}
 
 		private void LevelStartsLevel(GameLevel level)
@@ -38,8 +38,8 @@ namespace __SCRIPTS.Cursor
 
 		private void OnDisable()
 		{
-			LevelManager.OnStartLevel -= LevelStartsLevel;
-			LevelManager.OnPlayerSpawned -= InitCursor;
+			LevelManager.I.OnStartLevel -= LevelStartsLevel;
+			LevelManager.I.OnPlayerSpawned -= InitCursor;
 			currentCursors.Clear();
 		}
 
@@ -72,13 +72,13 @@ namespace __SCRIPTS.Cursor
 			//DontDestroyOnLoad(currentCursor);
 			var image = currentCursor.GetComponentInChildren<Image>();
 			if (image != null) image.color = player.playerColor;
-			LevelManager.OnStartLevel += (t) => { SetCursorsActive(true); };
-			PauseManager.OnPause += x =>
+			LevelManager.I.OnStartLevel += (t) => { SetCursorsActive(true); };
+			PauseManager.I.OnPause += x =>
 			{
 				SetCursorsActive(false);
 			};
-			PauseManager.OnUnpause += x => { SetCursorsActive(true); };
-			LevelManager.OnStopLevel += t => { SetCursorsActive(false); };
+			PauseManager.I.OnUnpause += x => { SetCursorsActive(true); };
+			LevelManager.I.OnStopLevel += t => { SetCursorsActive(false); };
 			currentCursor.gameObject.SetActive(true);
 			currentCursors.Add(currentCursor);
 			SetCursorsActive(true);

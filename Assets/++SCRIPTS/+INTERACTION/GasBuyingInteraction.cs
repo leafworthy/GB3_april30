@@ -31,7 +31,7 @@ namespace __SCRIPTS
 
 		private void Interactable_OnTimeComplete(Player player)
 		{
-			LootTable.DropLoot(dropPoint.transform.position, LootType.Gas);
+			LootTable.I.DropLoot(dropPoint.transform.position, LootType.Gas);
 			player.SpendMoney(price);
 			gasAmount--;
 			if (gasAmount <= 0)

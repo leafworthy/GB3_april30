@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class CameraShaker_FX: MonoBehaviour
+	public class CameraShaker: MonoBehaviour
 	{
 		private static CinemachineImpulseSource cinemachineImpulseSource;
 		private static float shakeMultiplier = 0.3f;

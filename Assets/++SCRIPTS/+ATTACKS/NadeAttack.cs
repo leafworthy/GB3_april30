@@ -1,22 +1,22 @@
 using System;
 using __SCRIPTS.Cursor;
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class NadeAttack : MonoBehaviour
+	public class NadeAttack : MonoBehaviour, INeedPlayer
 	{
 		private AnimationEvents animationEvents;
 		private Vector2 startPoint;
 		private Vector2 endPoint;
 
 		private const int throwTime = 30;
-		private const float throwDistanceMultiplier = 60;
 
 		private GunAimAbility aim;
 		private MoveAbility move;
 		private AmmoInventory ammo;
-		private Arms arms=>body.arms;
+		private Arms arms => body.arms;
 		private Player player;
 		private Life life;
 		private Body body;
@@ -24,10 +24,9 @@ namespace __SCRIPTS
 
 		private bool IsAiming;
 		private float currentCooldownTime;
-		private float cooldownRate=> life.PrimaryAttackRate;
-
-		private string VerbName = "nading";
-		private string AimVerbName = "aiming";
+		
+		public static string AimVerbName = "aiming";
+		public static string VerbName = "nading";
 		private string AnimationName = "Top-Throw-Nade";
 		private bool _isAiming;
 
@@ -37,32 +36,34 @@ namespace __SCRIPTS
 		public event Action<Vector2, Vector2> OnAimAt;
 		public event Action<Vector2, Vector2> OnAimInDirection;
 
-
-		private void Start()
+		public void SetPlayer(Player _player)
 		{
 			anim = GetComponent<Animations>();
 			body = GetComponent<Body>();
 			life = GetComponent<Life>();
-			player = life.player;
+			player = _player;
 			move = GetComponent<MoveAbility>();
 
 			ammo = GetComponent<AmmoInventory>();
 			aim = GetComponent<GunAimAbility>();
-
-			OnHideAiming?.Invoke();
 			ListenToPlayer();
 		}
 
 		private void OnDisable()
 		{
+			StopListeningToPlayer();
+		}
+
+		private void StopListeningToPlayer()
+		{
 			if (player == null) return;
 			if (player.Controller == null) return;
+			if (anim == null) return;
 			animationEvents.OnThrow -= Anim_Throw;
 			animationEvents.OnThrowStop -= Anim_ThrowStop;
 			player.Controller.AimAxis.OnChange -= Player_OnAim;
 			player.Controller.Attack2LeftTrigger.OnPress -= Player_NadePress;
 			player.Controller.Attack2LeftTrigger.OnRelease -= Player_NadeRelease;
-	
 		}
 
 		private void ListenToPlayer()
@@ -71,8 +72,6 @@ namespace __SCRIPTS
 			animationEvents = anim.animEvents;
 			animationEvents.OnThrow += Anim_Throw;
 			animationEvents.OnThrowStop += Anim_ThrowStop;
-
-			
 			player.Controller.AimAxis.OnChange += Player_OnAim;
 			player.Controller.Attack2LeftTrigger.OnPress += Player_NadePress;
 			player.Controller.Attack2LeftTrigger.OnRelease += Player_NadeRelease;
@@ -89,25 +88,23 @@ namespace __SCRIPTS
 		{
 			if (IsAiming)
 			{
-				if(player.isUsingMouse) AimAt(CursorManager.GetMousePosition());
-				else Aim(aim.AimDir);
+				if (player.isUsingMouse) AimAt(CursorManager.GetMousePosition());
+				else Aim();
 				OnShowAiming?.Invoke();
 			}
 			else
-			{
-		
 				OnHideAiming?.Invoke();
-			}
 		}
 
 		private void Player_NadePress(NewControlButton newControlButton)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (!ammo.HasReserveAmmo(AmmoInventory.AmmoType.nades))
 			{
 				Debug.Log("no nades");
 				return;
 			}
+
 			if (!arms.Do(AimVerbName))
 			{
 				Debug.Log("can't nade " + arms.currentActivity);
@@ -115,56 +112,59 @@ namespace __SCRIPTS
 			}
 
 			Debug.Log("nade aiming start");
-			
 			IsAiming = true;
 			OnShowAiming?.Invoke();
 		}
 
 		private void Player_NadeRelease(NewControlButton newControlButton)
 		{
-			if (PauseManager.IsPaused) return;
-			
+			if (PauseManager.I.IsPaused) return;
+			OnHideAiming?.Invoke();
 			IsAiming = false;
 			if (!ammo.HasReserveAmmo(AmmoInventory.AmmoType.nades))
 			{
+				arms.StopSafely(AimVerbName);
 				Debug.Log("no nades");
 				return;
 			}
 
-
-			anim.Play(AnimationName, 1, 0);
-			OnHideAiming?.Invoke();
+			if (arms.currentActivity == AimVerbName)
+			{
+				arms.StopSafely(AimVerbName);
+				arms.Do(VerbName);
+				Debug.Log("nade release");
+				anim.Play(AnimationName, 1, 0);
+				
+			}
+			else
+			{
+				arms.StopSafely(AimVerbName);
+			}
+		
 		}
 
-	
 
 		private void Anim_Throw()
 		{
 			ammo.UseAmmo(AmmoInventory.AmmoType.nades, 1);
 			startPoint = body.AimCenter.transform.position;
-			var velocity = new Vector3((endPoint.x - startPoint.x) / throwTime, (endPoint.y - startPoint.y) / throwTime);
-			Debug.Log("nade throw");
+			var velocity = new Vector3((endPoint.x - startPoint.x) / throwTime,
+				(endPoint.y - startPoint.y) / throwTime);
 			OnThrow?.Invoke(startPoint, velocity, throwTime, life.player);
 		}
 
 		private void Player_OnAim(IControlAxis controlAxis, Vector2 aimDir)
 		{
-			Aim(controlAxis.GetCurrentAngle());
+			if (!IsAiming) return;
+			Aim();
 		}
 
-		private void Aim(Vector2 aimDir)
+		private void Aim()
 		{
 			if (body == null) return;
-			
+
 			startPoint = body.AimCenter.transform.position;
-			if (!player.Controller.AimAxis.isActive)
-			{
-				endPoint =  move.GetMoveAimPoint();
-			}
-			else
-			{
-				endPoint = aim.GetAimPoint();
-			}
+			endPoint = !player.Controller.AimAxis.isActive ? move.GetMoveAimPoint() : aim.GetAimPoint();
 
 			OnAimInDirection?.Invoke(startPoint, endPoint);
 		}
@@ -175,5 +175,7 @@ namespace __SCRIPTS
 			endPoint = aimPos;
 			OnAimAt?.Invoke(startPoint, endPoint);
 		}
+
+	
 	}
 }

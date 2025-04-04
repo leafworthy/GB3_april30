@@ -10,11 +10,11 @@ namespace __SCRIPTS.UpgradeS
 
 		private void Start()
 		{
-			LevelManager.OnStartLevel += ResetUpgrades;
+			LevelManager.I.OnStartLevel += ResetUpgrades;
 		}
 		private void OnDisable()
 		{
-			LevelManager.OnStartLevel -= ResetUpgrades;
+			LevelManager.I.OnStartLevel -= ResetUpgrades;
 		}
 
 		private void ResetUpgrades(GameLevel gameLevel)

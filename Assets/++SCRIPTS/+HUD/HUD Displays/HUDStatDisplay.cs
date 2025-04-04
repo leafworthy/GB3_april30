@@ -5,7 +5,7 @@ namespace __SCRIPTS.HUD_Displays
 {
 	public interface INeedPlayer
 	{
-		void SetPlayer(Player player);
+		void SetPlayer(Player _player);
 	}
 	public class HUDStatDisplay : MonoBehaviour, INeedPlayer
 	{
@@ -19,16 +19,23 @@ namespace __SCRIPTS.HUD_Displays
 
 		private void Start()
 		{
-			LevelManager.OnStartLevel += (t) => UpdateDisplay();
-			LevelManager.OnPlayerSpawned += (t) => UpdateDisplay();
+			LevelManager.I.OnStartLevel += (t) => UpdateDisplay();
+			LevelManager.I.OnPlayerSpawned += (t) => UpdateDisplay();
 		}
 
 	
-		public virtual void SetPlayer(Player player)
+		public virtual void SetPlayer(Player _player)
 		{
-			owner = player;
-			PlayerStats.OnPlayerStatChange += Players_PlayerStatChange;
-			PlayerStats.OnStatsReset += UpdateDisplay;
+			owner = _player;
+			var playerStats = owner.GetComponent<PlayerStats>();
+			if(playerStats == null)
+			{
+				Debug.LogError("PlayerStats component not found on _player object.");
+				return;
+			}
+
+			playerStats.OnPlayerStatChange += Players_PlayerStatChange;
+			playerStats.OnStatsReset += UpdateDisplay;
 			UpdateDisplay();
 		}
 
@@ -48,9 +55,7 @@ namespace __SCRIPTS.HUD_Displays
 			{
 				displayText.text = CurrentAmount.ToString();
 			}
-			var shaker = statIcon.gameObject.GetComponent<ObjectShaker>();
-			if(shaker == null) shaker = statIcon.gameObject.AddComponent<ObjectShaker>();
-			shaker.Shake(ObjectShaker.ShakeIntensityType.medium);
+			
 		}
 	}
 }

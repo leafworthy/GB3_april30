@@ -9,10 +9,11 @@ namespace __SCRIPTS
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void OnEnable()
         {
-            DontDestroyOnLoad(gameObject);
+           
             gameManagerLoaded = true;
         }
 
+        
         private void OnDisable()
         {
             gameManagerLoaded = false;
@@ -26,6 +27,7 @@ namespace __SCRIPTS
         {
             // Initialize the game manager
             Debug.Log("GameManager started");
+            DontDestroyOnLoad(gameObject);
         }
         
         public void DisableGameCamera()

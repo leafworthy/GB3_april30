@@ -1,12 +1,11 @@
 using __SCRIPTS.Cursor;
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class AimAbility : MonoBehaviour
+	public class AimAbility : MonoBehaviour, INeedPlayer
 	{
-	
-
 		private Life life;
 		protected Player owner;
 		protected Body body;
@@ -19,25 +18,20 @@ namespace __SCRIPTS
 
 		private MoveAbility moveAbility;
 
-		public virtual void Start()
+		public virtual void SetPlayer(Player player)
 		{
-			Init();
-		}
-
-		private void Init()
-		{
-			if (hasInitiated) return;
-			hasInitiated = true;
 			moveAbility = GetComponent<MoveAbility>();
 			body = GetComponent<Body>();
 			life = GetComponent<Life>();
 			if (life == null) return;
-			owner = life.player;
+			
+			owner = player;
+			Debug.Log("new owner is " + owner.name, this);
 			if (owner == null) return;
+			AimDir = Vector2.right;
 			if (owner.isUsingMouse) return;
 			if (!owner.IsPlayer()) return;
 			owner.Controller.AimAxis.OnChange += AimerOnAim;
-			AimDir = Vector2.right;
 		}
 
 		private void OnDisable()
@@ -47,17 +41,18 @@ namespace __SCRIPTS
 			if (!owner.IsPlayer()) return;
 			owner.Controller.AimAxis.OnChange -= AimerOnAim;
 		}
+	
 
 		private void AimerOnAim(IControlAxis controlAxis, Vector2 newAimDir)
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (owner.isDead()) return;
 			if (hasEnoughMagnitude()) AimDir = newAimDir;
 		}
 
 		protected virtual void Update()
 		{
-			if (PauseManager.IsPaused) return;
+			if (PauseManager.I.IsPaused) return;
 			if (!owner.IsPlayer()) return;
 			if (owner.isDead()) return;
 			if (owner.isUsingMouse) AimDir = GetRealAimDir();
@@ -93,7 +88,7 @@ namespace __SCRIPTS
 
 		public Vector2 GetAimPoint()
 		{
-			Init();
+			if(owner == null) return Vector2.zero;
 			if (!owner.isUsingMouse)
 				return (Vector2)body.AimCenter.transform.position + (Vector2)GetRealAimDir() * maxAimDistance;
 			else
@@ -104,7 +99,7 @@ namespace __SCRIPTS
 
 		protected virtual Vector3 GetRealAimDir()
 		{
-			Init();
+			if (owner == null) return Vector2.zero;
 
 			if (owner.isUsingMouse)
 				return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
@@ -114,6 +109,7 @@ namespace __SCRIPTS
 
 		public bool hasEnoughMagnitude()
 		{
+			if(owner == null) return false;
 			if (owner.isUsingMouse) return true;
 			return GetRealAimDir().magnitude > minMagnitude;
 		}
