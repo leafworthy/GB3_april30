@@ -25,9 +25,9 @@ namespace __SCRIPTS
 		private float currentDamage =>
 			isGlocking ? attacker.UnlimitedAttackDamageWithExtra : attacker.PrimaryAttackDamageWithExtra;
 
-		private AmmoInventory.AmmoType ammoType =>
-			isGlocking ? AmmoInventory.AmmoType.unlimited : AmmoInventory.AmmoType.primaryAmmo;
-
+		
+		
+		public Ammo GetCorrectAmmoType() => isGlocking ? ammoInventory.unlimitedAmmo : ammoInventory.primaryAmmo;
 		public AnimationClip ReloadAKAnimationClip;
 		public AnimationClip ReloadGlockAnimationClip;
 		public AnimationClip ReloadGlockAnimationLeftClip;
@@ -143,9 +143,9 @@ namespace __SCRIPTS
 			}
 
 			UseCorrectWeapon();
-			if (!ammoInventory.HasAmmoInClip(ammoType))
+			if (!GetCorrectAmmoType().hasAmmoInClip())
 			{
-				if (!ammoInventory.HasAmmoInReserveOrClip(ammoType))
+				if (!GetCorrectAmmoType().hasAmmoInReserveOrClip())
 				{
 					StopShooting();
 					Debug.Log("ammo just emptied");
@@ -202,7 +202,7 @@ namespace __SCRIPTS
 		private void UseCorrectWeapon()
 		{
 			if (isGlockingOnPurpose) return;
-			if (ammoInventory.HasAmmoInReserveOrClip(AmmoInventory.AmmoType.primaryAmmo))
+			if (ammoInventory.primaryAmmo.hasAmmoInReserveOrClip( ))
 			{
 				isGlocking = false;
 				return;
@@ -271,14 +271,14 @@ namespace __SCRIPTS
 
 			if (!(Time.time >= currentCooldownTime)) return;
 
-			if (!ammoInventory.HasAmmoInClip(ammoType))
+			if (!GetCorrectAmmoType().hasAmmoInClip())
 			{
 				StopShooting();
 				StartReloading();
 				return;
 			}
 
-			ammoInventory.UseAmmo(ammoType, 1);
+			GetCorrectAmmoType().UseAmmo(1);
 			currentCooldownTime = Time.time + attackRate;
 			ShootTarget(targetDir);
 		}
@@ -307,13 +307,13 @@ namespace __SCRIPTS
 				return;
 			}
 
-			if (ammoInventory.clipIsFull(ammoType))
+			if (GetCorrectAmmoType().clipIsFull())
 			{
 				Debug.Log("Clip is full");
 				return;
 			}
 
-			if (!ammoInventory.HasReserveAmmo(ammoType))
+			if (!GetCorrectAmmoType().hasReserveAmmo())
 			{
 				Debug.Log("has reserve ammo");
 				return;
@@ -334,7 +334,7 @@ namespace __SCRIPTS
 		private void Anim_OnReload()
 		{
 			OnReload?.Invoke();
-			ammoInventory.Reload(ammoType);
+			GetCorrectAmmoType().Reload();
 			isEmpty = false;
 		}
 	}

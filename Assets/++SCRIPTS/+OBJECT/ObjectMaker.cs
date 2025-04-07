@@ -19,17 +19,23 @@ namespace __SCRIPTS
 		public void OnDisable()
 		{
 			Debug.Log("object maker disabled");
-			LevelManager.I.OnStartLevel -= PoolObjects;
-			LevelManager.I.OnStopLevel -= DestroyAllUnits;
 			pools.Clear();
 			allActiveUnits.Clear();
+			if (LevelManager.I == null) return;
+			LevelManager.I.OnStartLevel -= PoolObjects;
+			LevelManager.I.OnStopLevel -= DestroyAllUnits;
 		}
 
-		private void Start()
+		private void OnEnable()
 		{
 			Debug.Log("i start again");
-			containerContainer = new GameObject("Object Pools");
-			containerContainer.transform.SetParent(I.transform);
+			if (containerContainer == null)
+			{
+				containerContainer = new GameObject("Object Pools");
+				containerContainer.transform.SetParent(I.transform);
+			}
+
+			if (LevelManager.I == null) return;
 			LevelManager.I.OnStartLevel += PoolObjects;
 			LevelManager.I.OnStopLevel += DestroyAllUnits;
 		}
@@ -73,17 +79,12 @@ namespace __SCRIPTS
 			if (prefab == null) return null;
 			GameObject instance;
 			var recycledScript = prefab.GetComponent<RecycleGameObject>();
-			if (recycledScript != null)
-			{
+			if (recycledScript == null) recycledScript = prefab.AddComponent<RecycleGameObject>();
+			
 				var pool = I.GetObjectPool(recycledScript);
 				instance = pool.NextObject(pos).gameObject;
 				instance.transform.SetParent(pool.transform);
-			}
-			else
-			{
-				instance = Instantiate(prefab);
-				instance.transform.position = pos;
-			}
+			
 
 			allActiveUnits.Add(instance);
 			return instance;

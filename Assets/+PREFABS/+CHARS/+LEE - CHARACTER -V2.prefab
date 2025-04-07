@@ -1222,7 +1222,6 @@ GameObject:
   - component: {fileID: 7989878562820206202}
   - component: {fileID: 4438008110232962491}
   - component: {fileID: 2200326529762980377}
-  - component: {fileID: 8661013162353797366}
   - component: {fileID: 1964895978986862838}
   - component: {fileID: 5847639457248376755}
   - component: {fileID: 6817430969720502418}
@@ -1502,18 +1501,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b46b879f14bf446da8719f43968def84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8661013162353797366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3924160363998699687}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7150e132cf84a4c8a1b68634fb4cc57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1964895978986862838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1538,7 +1525,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0328323bda4c4d02ae8decb39e5a9f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargeRate: 10
 --- !u!114 &6817430969720502418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1552,7 +1538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   primaryAmmo:
-    type: 0
+    weaponType: 3
     reserveAmmo: 25
     clipSize: 50
     AmmoInClip: 50
@@ -1560,15 +1546,15 @@ MonoBehaviour:
     reloads: 0
     unlimited: 0
   secondaryAmmo:
-    type: 3
+    weaponType: 5
     reserveAmmo: 100
     clipSize: 100
     AmmoInClip: 100
     maxReserveAmmo: 100
     reloads: 0
-    unlimited: 0
+    unlimited: 1
   tertiaryAmmo:
-    type: 4
+    weaponType: 4
     reserveAmmo: 100
     clipSize: 100
     AmmoInClip: 100
@@ -1576,7 +1562,7 @@ MonoBehaviour:
     reloads: 0
     unlimited: 0
   unlimitedAmmo:
-    type: 0
+    weaponType: 0
     reserveAmmo: 0
     clipSize: 0
     AmmoInClip: 0

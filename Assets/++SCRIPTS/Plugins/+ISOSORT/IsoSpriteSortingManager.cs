@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace __SCRIPTS.Plugins._ISOSORT
 {
-    //[ExecuteInEditMode]
+    [ExecuteInEditMode]
     public class IsoSpriteSortingManager : MonoBehaviour
     {
         // Singleton instance

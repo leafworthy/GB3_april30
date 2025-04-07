@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 15003, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: New macOS Profile
+  m_Name: New Windows Profile
   m_EditorClassIdentifier: 
   m_AssetVersion: 1
-  m_BuildTarget: 2
+  m_BuildTarget: 19
   m_Subtarget: 2
-  m_PlatformId: 0d2129357eac403d8b359c2dcbf82502
+  m_PlatformId: 4e3c793746204150860bf175a9a41a05
   m_PlatformBuildProfile:
-    rid: 2558243176651424070
+    rid: 1779524519729037394
   m_OverrideGlobalSceneList: 0
   m_Scenes: []
   m_ScriptingDefines: []
@@ -40,7 +40,7 @@ MonoBehaviour:
     - line: '|   cursorHotspot: {x: 0, y: 0}'
     - line: '|   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b:
         0.1254902, a: 1}'
-    - line: '|   m_ShowUnitySplashScreen: 1'
+    - line: '|   m_ShowUnitySplashScreen: 0'
     - line: '|   m_ShowUnitySplashLogo: 1'
     - line: '|   m_SplashScreenOverlayOpacity: 1'
     - line: '|   m_SplashScreenAnimation: 1'
@@ -63,8 +63,7 @@ MonoBehaviour:
     - line: '|     width: 1'
     - line: '|     height: 1'
     - line: '|   m_SplashScreenLogos: []'
-    - line: '|   m_VirtualRealitySplashScreen: {fileID: 2800000, guid: e871324ffc9004c638ba58b14a78d9e0,
-        type: 3}'
+    - line: '|   m_VirtualRealitySplashScreen: {instanceID: 0}'
     - line: '|   m_HolographicTrackingLossScreen: {instanceID: 0}'
     - line: '|   defaultScreenWidth: 3840'
     - line: '|   defaultScreenHeight: 2160'
@@ -79,7 +78,7 @@ MonoBehaviour:
     - line: '|   mipStripping: 0'
     - line: '|   numberOfMipsStripped: 0'
     - line: '|   numberOfMipsStrippedPerMipmapLimitGroup: {}'
-    - line: '|   m_StackTraceTypes: 010000000100000001000000010000000100000001000000'
+    - line: '|   m_StackTraceTypes: 000000000000000000000000000000000000000001000000'
     - line: '|   iosShowActivityIndicatorOnLoading: -1'
     - line: '|   androidShowActivityIndicatorOnLoading: -1'
     - line: '|   iosUseCustomAppBackgroundBehavior: 0'
@@ -106,7 +105,7 @@ MonoBehaviour:
     - line: '|   androidApplicationEntry: 1'
     - line: '|   defaultIsNativeResolution: 1'
     - line: '|   macRetinaSupport: 1'
-    - line: '|   runInBackground: 0'
+    - line: '|   runInBackground: 1'
     - line: '|   muteOtherAudioSources: 0'
     - line: '|   Prepare IOS For Recording: 0'
     - line: '|   Force IOS Speakers When Recording: 0'
@@ -180,7 +179,7 @@ MonoBehaviour:
     - line: '|   isWsaHolographicRemotingEnabled: 0'
     - line: '|   enableFrameTimingStats: 0'
     - line: '|   enableOpenGLProfilerGPURecorders: 1'
-    - line: '|   allowHDRDisplaySupport: 1'
+    - line: '|   allowHDRDisplaySupport: 0'
     - line: '|   useHDRDisplay: 0'
     - line: '|   hdrBitDepth: 0'
     - line: '|   m_ColorGamuts: 0000000003000000'
@@ -918,8 +917,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 2558243176651424070
-      type: {class: OSXStandaloneBuildProfile, ns: UnityEditor.OSXStandalone, asm: UnityEditor.OSXStandalone.Extensions}
+    - rid: 1779524519729037394
+      type: {class: WindowsPlatformSettings, ns: UnityEditor.WindowsStandalone, asm: UnityEditor.WindowsStandalone.Extensions}
       data:
         m_Development: 0
         m_ConnectProfiler: 0
@@ -932,6 +931,9 @@ MonoBehaviour:
         m_ExplicitArrayBoundsChecks: 0
         m_CompressionType: 0
         m_InstallInBuildFolder: 0
-        m_MacOSXcodeBuildConfig: 1
-        m_Architecture: 2
-        m_CreateXcodeProject: 0
+        m_WindowsBuildAndRunDeployTarget: 0
+        m_Architecture: 0
+        m_CreateSolution: 0
+        m_CopyPDBFiles: 0
+        m_WindowsDevicePortalAddress: 
+        m_WindowsDevicePortalUsername: 

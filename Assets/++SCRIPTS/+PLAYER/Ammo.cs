@@ -6,7 +6,7 @@ namespace __SCRIPTS
 	[Serializable]
 	public class Ammo
 	{
-		public AmmoInventory.AmmoType type;
+		public WeaponType weaponType;
 		public int reserveAmmo;
 		public int clipSize;
 		public int AmmoInClip;
@@ -16,11 +16,7 @@ namespace __SCRIPTS
 		public bool reloads = true;
 		public bool unlimited;
 
-
-		public bool hasAmmoInClip()
-		{
-			return AmmoInClip > 0;
-		}
+		public bool hasAmmoInClip() => AmmoInClip > 0;
 
 		public bool hasReserveAmmo(int min = 0)
 		{
@@ -31,8 +27,9 @@ namespace __SCRIPTS
 		public bool hasAmmoInReserveOrClip()
 		{
 			if (unlimited) return true;
-			return reserveAmmo+AmmoInClip > 0;
+			return reserveAmmo + AmmoInClip > 0;
 		}
+
 		public void AddAmmoToReserve(int amount)
 		{
 			reserveAmmo = Mathf.Min(reserveAmmo + amount, maxReserveAmmo);
@@ -67,8 +64,9 @@ namespace __SCRIPTS
 				OnAmmoGained?.Invoke();
 				return;
 			}
+
 			if (!reloads) return;
-			if ((reserveAmmo <= 0))return;
+			if (reserveAmmo <= 0) return;
 			if (AmmoInClip >= clipSize) return;
 			var ammoNeeded = clipSize - AmmoInClip;
 
@@ -86,15 +84,9 @@ namespace __SCRIPTS
 			OnAmmoGained?.Invoke();
 		}
 
-		public bool hasFullReserve()
-		{
-			return reserveAmmo == maxReserveAmmo;
-		}
+		public bool hasFullReserve() => reserveAmmo == maxReserveAmmo;
 
-		public bool clipIsFull()
-		{
-			return (AmmoInClip >= clipSize);
-		}
+		public bool clipIsFull() => AmmoInClip >= clipSize;
 
 		public void UseAmmo(int amount)
 		{

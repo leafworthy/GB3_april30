@@ -3,69 +3,48 @@ using UnityEngine;
 
 namespace __SCRIPTS.HUD_Displays
 {
-	public class AmmoDisplay : MonoBehaviour
+	public class AmmoDisplay : MonoBehaviour, INeedPlayer
 	{
 		private Bar_FX barFX;
 		public TMP_Text ammoText;
 		public TMP_Text totalText;
-		protected Ammo ammoToDisplay;
-		public GameObject shakeObject;
+		private Ammo ammoToDisplay;
 		public CanvasGroup ammoDisplayCanvas;
 		public bool hasSlash;
 
 		public bool greys;
 		private bool init;
 
-
-		private void Start()
-		{
-			LevelManager.I.OnStopLevel += CleanUp;
-			barFX = GetComponentInChildren<Bar_FX>();
-		}
-
-	
 		protected virtual void UpdateDisplay(bool shake = false)
 		{
-			if (ammoText != null)
-			{
-				ammoText.text = ammoToDisplay.reloads ? ammoToDisplay.AmmoInClip.ToString() : ammoToDisplay.reserveAmmo.ToString();
-			}
+			if (ammoText != null) ammoText.text = ammoToDisplay.reloads ? ammoToDisplay.AmmoInClip.ToString() : ammoToDisplay.reserveAmmo.ToString();
 
 			if (totalText != null)
 			{
-				if(hasSlash) totalText.text = "/"+ammoToDisplay.maxReserveAmmo.ToString();
+				if (hasSlash) totalText.text = "/" + ammoToDisplay.maxReserveAmmo;
 				else totalText.text = ammoToDisplay.reserveAmmo.ToString();
 			}
 
 			if (!ammoToDisplay.hasAmmoInClip() && ammoToDisplay.reloads)
-			{
 				GreyOut();
-			}
-			else if(!ammoToDisplay.hasReserveAmmo() && !ammoToDisplay.reloads)
-			{
+			else if (!ammoToDisplay.hasReserveAmmo() && !ammoToDisplay.reloads)
 				GreyOut();
-			}
 			else
-			{
 				Ungrey();
-			}
 
 			if (barFX == null) return;
 			barFX.UpdateBar(ammoToDisplay.reserveAmmo, ammoToDisplay.maxReserveAmmo);
-		
 		}
 
 		private void GreyOut()
 		{
-			if(greys) ammoDisplayCanvas.alpha = .25f;
+			if (greys) ammoDisplayCanvas.alpha = .25f;
 		}
 
 		private void Ungrey()
 		{
 			if (greys) ammoDisplayCanvas.alpha = 1;
 		}
-
-	
 
 		public void SetAmmo(Ammo newAmmo)
 		{
@@ -74,15 +53,14 @@ namespace __SCRIPTS.HUD_Displays
 				ammoToDisplay.OnAmmoGained -= AmmoUsedUpdateDisplay;
 				ammoToDisplay.OnAmmoGained -= AmmoGainedUpdateDisplay;
 			}
+
 			ammoToDisplay = newAmmo;
 			ammoToDisplay.OnAmmoUsed += AmmoUsedUpdateDisplay;
 			ammoToDisplay.OnAmmoGained += AmmoGainedUpdateDisplay;
-	
+
 			init = true;
-			UpdateDisplay(false);
+			UpdateDisplay();
 		}
-
-
 
 		private void CleanUp(GameLevel gameLevel)
 		{
@@ -96,10 +74,17 @@ namespace __SCRIPTS.HUD_Displays
 		{
 			UpdateDisplay(true);
 		}
+
 		private void AmmoGainedUpdateDisplay()
 		{
-			UpdateDisplay(false);
+			UpdateDisplay();
 		}
 
+		public void SetPlayer(Player _player)
+		{
+			LevelManager.I.OnStopLevel += CleanUp;
+			barFX = GetComponentInChildren<Bar_FX>();
+			if (barFX.fastBarImage != null) barFX.fastBarImage.color = _player.playerColor;
+		}
 	}
 }

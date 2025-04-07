@@ -26,25 +26,37 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
         public void OnSceneGUI()
         {
-            IsoSpriteSorting myTarget = (IsoSpriteSorting)target;
+            IsoSpriteSorting myTarget = (IsoSpriteSorting) target;
 
-            var fmh_31_13_638687467658385480 = Quaternion.identity; myTarget.SorterPositionOffset = Handles.FreeMoveHandle(
-                myTarget.transform.position + myTarget.SorterPositionOffset,
-                0.08f * HandleUtility.GetHandleSize(myTarget.transform.position),
-                Vector3.zero,
-                Handles.DotHandleCap
-            ) - myTarget.transform.position;
+            // Get the local-to-world matrix to account for scaling
+            Matrix4x4 localToWorld = myTarget.transform.localToWorldMatrix;
+
+            // Calculate the world positions considering scaling
+            Vector3 worldPos1 = localToWorld.MultiplyPoint3x4(myTarget.SorterPositionOffset);
+
+            // First handle position
+            var fmh_31_13_638687467658385480 = Quaternion.identity;
+            Vector3 newPos = Handles.FreeMoveHandle(worldPos1, 0.08f * HandleUtility.GetHandleSize(myTarget.transform.position), Vector3.zero,
+                Handles.DotHandleCap);
+
+            // Convert back to local offset
+            myTarget.SorterPositionOffset = myTarget.transform.worldToLocalMatrix.MultiplyPoint3x4(newPos);
 
             if (myTarget.sortType == IsoSpriteSorting.SortType.Line)
             {
-                var fmh_41_17_638687467658394920 = Quaternion.identity; myTarget.SorterPositionOffset2 = Handles.FreeMoveHandle(
-                    myTarget.transform.position + myTarget.SorterPositionOffset2,
-                    0.08f * HandleUtility.GetHandleSize(myTarget.transform.position),
-                    Vector3.zero,
-                    Handles.DotHandleCap
-                ) - myTarget.transform.position;
+                // Calculate the second world position considering scaling
+                Vector3 worldPos2 = localToWorld.MultiplyPoint3x4(myTarget.SorterPositionOffset2);
 
-                Handles.DrawLine(myTarget.transform.position + myTarget.SorterPositionOffset, myTarget.transform.position + myTarget.SorterPositionOffset2);
+                // Second handle position
+                var fmh_41_17_638687467658394920 = Quaternion.identity;
+                Vector3 newPos2 = Handles.FreeMoveHandle(worldPos2, 0.08f * HandleUtility.GetHandleSize(myTarget.transform.position), Vector3.zero,
+                    Handles.DotHandleCap);
+
+                // Convert back to local offset
+                myTarget.SorterPositionOffset2 = myTarget.transform.worldToLocalMatrix.MultiplyPoint3x4(newPos2);
+
+                // Draw line with the scaled positions
+                Handles.DrawLine(worldPos1, worldPos2);
             }
 
             if (GUI.changed)

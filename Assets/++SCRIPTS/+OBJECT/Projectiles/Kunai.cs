@@ -12,7 +12,7 @@ namespace __SCRIPTS.Projectiles
 		private bool isActive;
 		private bool isAirThrow;
 
-		public void Throw(Vector3 throwDirection, Vector3 pos, float throwHeight, Life thrower, bool IsAirThrow = false)
+		public void Throw(Vector3 throwDirection, Vector3 pos, float throwHeight, Life thrower)
 		{
 			direction = throwDirection;
 			transform.position = pos;

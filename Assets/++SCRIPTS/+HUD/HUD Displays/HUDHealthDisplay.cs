@@ -12,29 +12,25 @@ namespace __SCRIPTS.HUD_Displays
 		public TMP_Text healthText;
 		public TMP_Text MaxHealthText;
 		private Life playerDefence;
-		public GameObject shakeIcon;
-		public Image capSpriteRenderer;
 
 
 		public void SetPlayer(Player _player)
 		{
+			barFX = GetComponentInChildren<Bar_FX>();
 			if (playerDefence != null)
 			{
 				playerDefence.OnFractionChanged -= UpdateDisplay;
 			}
 			playerDefence = _player.SpawnedPlayerGO.GetComponentInChildren<Life>();
-			if (barFX.slowBarImage != null)
-			{
-				barFX.slowBarImage.color = _player.playerColor;
-			}
+			
 
-			if (capSpriteRenderer != null)
+			if (barFX.fastBarImage != null)
 			{
-				capSpriteRenderer.color = _player.playerColor;
+				barFX.fastBarImage.color = _player.playerColor;
 			}
 
 			playerDefence.OnFractionChanged += UpdateDisplay;
-			barFX = GetComponentInChildren<Bar_FX>();
+			
 			UpdateDisplay(0);
 		}
 

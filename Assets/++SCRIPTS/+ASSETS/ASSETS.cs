@@ -54,7 +54,34 @@ namespace __SCRIPTS
                 return I._fx;
             }
         }
-    
+
+        // House Assets
+        private HouseAssets _house;
+        public static HouseAssets House
+        {
+            get
+            {
+                // Check if instance exists
+                if (I == null)
+                {
+                    Debug.LogWarning("ASSETS.FX accessed before ASSETS singleton initialization");
+                    return Resources.Load<HouseAssets>("Assets/House");
+                }
+
+                // Check if HOUSE is loaded
+                if (I._house == null)
+                {
+                    I._house = Resources.Load<HouseAssets>("Assets/House");
+                    if (I._house == null)
+                    {
+                        Debug.LogError("Failed to load FX assets");
+                    }
+                }
+
+                return I._house;
+            }
+        }
+
         // Scene Definition Assets
         private SceneDefinitionAssets _scenes;
         public static SceneDefinitionAssets Scenes => I._scenes ? I._scenes : Resources.Load<SceneDefinitionAssets>("Assets/SceneDefinitions");

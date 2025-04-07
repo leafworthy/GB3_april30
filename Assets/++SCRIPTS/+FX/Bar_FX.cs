@@ -25,9 +25,12 @@ namespace __SCRIPTS
 
 		private void UpdateGradient()
 		{
-			var time = _life == null ? targetFill : _life.GetFraction();
+			
 			if (colorMode == ColorMode.Gradient)
+			{
+				var time = _life == null ? targetFill : _life.GetFraction();
 				fastBarImage.color = barGradient.Evaluate(time);
+			}
 		}
 
 		#region PUBLIC FUNCTIONS

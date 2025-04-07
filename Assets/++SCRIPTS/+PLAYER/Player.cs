@@ -7,14 +7,7 @@ using UnityEngine.InputSystem;
 
 namespace __SCRIPTS
 {
-	public enum Character
-	{
-		None,
-		Karrot,
-		Bean,
-		Brock,
-		Tmato
-	}
+
 
 	public class Player : MonoBehaviour
 	{

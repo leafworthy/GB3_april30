@@ -99,7 +99,7 @@ namespace __SCRIPTS
 		private void Player_NadePress(NewControlButton newControlButton)
 		{
 			if (PauseManager.I.IsPaused) return;
-			if (!ammo.HasReserveAmmo(AmmoInventory.AmmoType.nades))
+			if (!ammo.secondaryAmmo.hasReserveAmmo())
 			{
 				Debug.Log("no nades");
 				return;
@@ -121,7 +121,7 @@ namespace __SCRIPTS
 			if (PauseManager.I.IsPaused) return;
 			OnHideAiming?.Invoke();
 			IsAiming = false;
-			if (!ammo.HasReserveAmmo(AmmoInventory.AmmoType.nades))
+			if (!ammo.secondaryAmmo.hasReserveAmmo())
 			{
 				arms.StopSafely(AimVerbName);
 				Debug.Log("no nades");
@@ -146,7 +146,7 @@ namespace __SCRIPTS
 
 		private void Anim_Throw()
 		{
-			ammo.UseAmmo(AmmoInventory.AmmoType.nades, 1);
+			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = body.AimCenter.transform.position;
 			var velocity = new Vector3((endPoint.x - startPoint.x) / throwTime,
 				(endPoint.y - startPoint.y) / throwTime);

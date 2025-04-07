@@ -1,36 +1,43 @@
 using System;
+using __SCRIPTS.HUD_Displays;
+using __SCRIPTS.Projectiles;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class PrimaryAttack_Kunai : MonoBehaviour
+	public class PrimaryAttack_Kunai : MonoBehaviour, INeedPlayer
 	{
 		private AnimationEvents animationEvents;
 
-		private Life life;
 		private AimAbility aim;
 		private Animations anim;
 		private Body body;
-		private AmmoInventory ammo;
+		private AmmoInventory ammoInventory;
 		private string KunaiVerbName = "throwing kunai";
 		private bool isPressing;
+		private Player player;
 		public event Action<Vector3, Vector3, float, Life, bool> OnThrow;
 
 		private void OnEnable()
 		{
-			ammo = GetComponent<AmmoInventory>();
+			ammoInventory = GetComponent<AmmoInventory>();
 			body = GetComponent<Body>();
 			anim = GetComponent<Animations>();
 			aim = GetComponent<AimAbility>();
-			life = GetComponent<Life>();
 
-			life.player.Controller.Attack1RightTrigger.OnPress += StartPress;
-			life.player.Controller.Attack1RightTrigger.OnRelease += StopPressing;
+			
+		}
+
+		public void SetPlayer(Player _player)
+		{
+			if (_player == null) return;
+			player = _player;
+			player.Controller.Attack1RightTrigger.OnPress += StartPress;
+			player.Controller.Attack1RightTrigger.OnRelease += StopPressing;
 			animationEvents = anim.animEvents;
 			animationEvents.OnThrow += Anim_Throw;
 			animationEvents.OnThrowStop += Anim_ThrowStop;
 		}
-
 		private void StopPressing(NewControlButton obj)
 		{
 			if (!isPressing) return;
@@ -41,8 +48,8 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{ 
-			life.player.Controller.Attack1RightTrigger.OnPress -= StartPress;
-			life.player.Controller.Attack1RightTrigger.OnRelease -= StopPressing;
+			player.Controller.Attack1RightTrigger.OnPress -= StartPress;
+			player.Controller.Attack1RightTrigger.OnRelease -= StopPressing;
 			animationEvents.OnThrow -= Anim_Throw;
 			animationEvents.OnThrowStop -= Anim_ThrowStop;
 	
@@ -50,12 +57,15 @@ namespace __SCRIPTS
 
 		private void Anim_Throw()
 		{
-			if (!ammo.HasReserveAmmo(AmmoInventory.AmmoType.primaryAmmo)) return;
+			if (!ammoInventory.primaryAmmo.hasReserveAmmo()) return;
 			body.arms.currentActivity = KunaiVerbName;
-			ammo.UseAmmo(AmmoInventory.AmmoType.primaryAmmo, 1);
+			ammoInventory.primaryAmmo.UseAmmo( 1);
 	
 			var throwHeight = body.ThrowPoint.transform.position.y - transform.position.y;
-			OnThrow?.Invoke(aim.AimDir, transform.position, throwHeight, life, false);
+			var newProjectile = ObjectMaker.I.Make(ASSETS.FX.kunaiPrefab, transform.position);
+			var kunaiScript = newProjectile.GetComponent<Kunai>();
+			kunaiScript.Throw(aim.AimDir, transform.position, throwHeight, player.spawnedPlayerDefence);
+			OnThrow?.Invoke(aim.AimDir, transform.position, throwHeight, player.spawnedPlayerDefence, false);
 		}
 
 		private void Anim_ThrowStop()
@@ -81,7 +91,7 @@ namespace __SCRIPTS
 
 		private void StartAttack()
 		{
-			if (!ammo.HasReserveAmmo(AmmoInventory.AmmoType.primaryAmmo))
+			if (!ammoInventory.primaryAmmo.hasReserveAmmo())
 			{
 				Debug.Log("no kunai ammo");
 				return;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using VInspector;
 
@@ -17,10 +18,22 @@ namespace __SCRIPTS
 			Set(revealedObjectIndex);
 		}
 
-		[Button()]
+		[Button]
 		public void Set()
 		{
 			Set(revealedObjectIndex);
+		}
+
+		[Button]
+		public void GetChildGameObjects()
+		{
+			objectsToReveal.Clear();
+			foreach (Transform child in transform)
+			{
+				objectsToReveal.Add(child.gameObject);
+			}
+
+			Set(revealedObjectIndex); // Ensure the correct object is set after getting children
 		}
 
 
@@ -28,24 +41,18 @@ namespace __SCRIPTS
 		{
 			if (objectsToReveal.Count <= 0) return;
 			if (objectIndex >= objectsToReveal.Count) return;
-			if (objectIndex >= objectsToReveal.Count)
-			{
-				objectIndex = objectsToReveal.Count - 1;
-			}
+			if (objectIndex >= objectsToReveal.Count) objectIndex = objectsToReveal.Count - 1;
 			revealedObjectIndex = objectIndex;
-			foreach (var obj in objectsToReveal) obj.SetActive(false);
+			foreach (var obj in objectsToReveal)
+			{
+				obj.SetActive(false);
+			}
 
 			if (isAdditive)
-			{
-				for (int i = 0; i <= objectIndex; i++)
-				{
+				for (var i = 0; i <= objectIndex; i++)
 					objectsToReveal[i].SetActive(true);
-				}
-			}
 			else
-			{
 				objectsToReveal[revealedObjectIndex].SetActive(true);
-			}
 		}
 
 		public void SetPlayerColor(Color color)
