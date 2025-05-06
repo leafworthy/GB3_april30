@@ -9,7 +9,6 @@ namespace __SCRIPTS
 		{
 			if (transformToDestroy == null) return;
 			ObjectMaker.I.Unmake(transformToDestroy.gameObject);
-			Debug.Log("destroyed");
 		}
 	}
 }

@@ -350,6 +350,7 @@ GameObject:
   - component: {fileID: 3461774669495696490}
   - component: {fileID: 2194203459170913656}
   - component: {fileID: -5959914097894329155}
+  - component: {fileID: 1065996253617682288}
   m_Layer: 7
   m_Name: +CONE
   m_TagString: Untagged
@@ -436,9 +437,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   unitData: {fileID: 11400000, guid: c02aec4cc3eec40779caeffd1cb4e07c, type: 2}
+  ExtraMaxHealthFactor: 0
+  ExtraMaxSpeedFactor: 0
+  ExtraMaxDamageFactor: 0
   cantDie: 0
   isInvincible: 0
-  Health: 125
+  Health: 80
 --- !u!114 &1868243376366810161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -742,6 +746,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 369b58c66d724fa6bccf56c8d634508e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1065996253617682288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136819711188386144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4ef8758c04c9499cb77fa29f047d722, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9136819711387657586
 GameObject:
   m_ObjectHideFlags: 0
@@ -833,7 +849,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 89d91152eb4854eeaa6ae0ddc3c1cb19, type: 2}
+  - {fileID: 2100000, guid: f2225536de5a54f678b090880b106dad, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

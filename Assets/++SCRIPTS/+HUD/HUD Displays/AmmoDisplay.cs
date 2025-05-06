@@ -21,7 +21,7 @@ namespace __SCRIPTS.HUD_Displays
 
 			if (totalText != null)
 			{
-				if (hasSlash) totalText.text = "/" + ammoToDisplay.maxReserveAmmo;
+				if (hasSlash) totalText.text = "/" + ammoToDisplay.reserveAmmo;
 				else totalText.text = ammoToDisplay.reserveAmmo.ToString();
 			}
 

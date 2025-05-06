@@ -16,7 +16,7 @@ namespace __SCRIPTS
 		private List<Renderer> renderersToTint = new();
 		private Color materialTintColor;
 		private const float tintFadeSpeed = 6f;
-		private static readonly int PlayerColor = Shader.PropertyToID("_PlayerColor");
+		private static readonly int ColorReplaceColor = Shader.PropertyToID("_NewColorA");
 		private static readonly int Tint = Shader.PropertyToID("_Tint");
 
 		public enum ColorMode
@@ -34,7 +34,6 @@ namespace __SCRIPTS
 		private Life _life;
 		public GameObject healthBar;
 		public bool BlockTint;
-		private string playerColor = "_PlayerColor";
 
 		public void OnEnable()
 		{
@@ -55,7 +54,7 @@ namespace __SCRIPTS
 			Debug.Log("on player set" + player.playerColor);
 			foreach (var r in renderersToTint)
 			{
-				r.material.SetColor(playerColor, player.playerColor);
+				r.material.SetColor(ColorReplaceColor, player.playerColor);
 			}
 		}
 
