@@ -230,8 +230,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 
 		private void OnEnable()
 		{
-			foreach (OnRenderMode onRenderMode in FindObjectsOfType(typeof(OnRenderMode))) onRenderMode.DestroySelf();
-
+			foreach (OnRenderMode onRenderMode in FindObjectsByType< OnRenderMode>(FindObjectsSortMode.None)) onRenderMode.DestroySelf();
+//CHANGED findobjectsbytype
 			SmartLighting2D.Scripts.Scriptable.LightSprite2D.List.Clear();
 
 			UpdateProfile();

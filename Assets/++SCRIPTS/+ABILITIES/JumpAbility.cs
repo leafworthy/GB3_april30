@@ -4,13 +4,12 @@ using UnityEngine.Serialization;
 
 namespace __SCRIPTS
 {
-	public class JumpAbility : MonoBehaviour
+	public class JumpAbility : MonoBehaviour, IActivity
 	{
 		private Body body;
 		public bool isResting;
 		private float verticalVelocity;
 
-		public static readonly string VerbName = "jumping";
 
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnResting;
@@ -29,6 +28,7 @@ namespace __SCRIPTS
 		private float bounceVelocityDragFactor = .2f;
 		private float landTimer;
 		private float maxFlyTime = 2.5f;
+		public string VerbName => "Jump";
 
 		public void SetActive(bool active)
 		{
@@ -42,12 +42,12 @@ namespace __SCRIPTS
 			IsJumping = true;
 			isResting = false;
 			OnJump?.Invoke(transform.position+ new Vector3(0,startingHeight,0));
-		
+
 			verticalVelocity = verticalSpeed;
-		
+
 			thing = GetComponent<ThingWithHeight>();
 			thing.SetDistanceToGround(startingHeight);
-		
+
 			body = GetComponent<Body>();
 			if (body == null) return;
 			body.ChangeLayer(Body.BodyLayer.jumping);
@@ -74,15 +74,15 @@ namespace __SCRIPTS
 		}
 
 		private void OnDisable()
-		{ 
+		{
 			if (thing != null) thing.OnFallFromLandable -= FallFromHeight;
 		}
 
 		public void FallFromHeight(float fallHeight)
 		{
 			Init();
-	
-	
+
+
 			if (body != null)
 			{
 				if (body.ShadowObject != null) body.ShadowObject.transform.localPosition = new Vector3(0,
@@ -94,9 +94,9 @@ namespace __SCRIPTS
 			isResting = false;
 			OnFall?.Invoke(transform.position);
 			landTimer = 0;
-		
+
 		}
-	
+
 
 
 		protected void FixedUpdate()
@@ -107,10 +107,10 @@ namespace __SCRIPTS
 			if (!IsJumping) return;
 
 			Fly();
-		
+
 		}
 
-	
+
 
 		private void Fly()
 		{
@@ -118,7 +118,7 @@ namespace __SCRIPTS
 			if(landTimer> maxFlyTime)
 			{
 				//Debug.Log("time out");
-				
+
 				Land();
 				return;
 			}
@@ -167,8 +167,8 @@ namespace __SCRIPTS
 			isResting = true;
 			OnResting?.Invoke(transform.position);
 			if (body == null) return;
-			body.legs.StopSafely("Landing");
-			body.arms.StopSafely(VerbName);
+			body.legs.StopSafely(this);
+			body.arms.StopSafely(this);
 			thing.canLand = false;
 		}
 

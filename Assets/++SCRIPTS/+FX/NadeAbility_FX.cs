@@ -6,7 +6,7 @@ namespace __SCRIPTS
 {
 	public class NadeAbility_FX : MonoBehaviour
 	{
-	
+
 		private NadeAttack nade;
 		private Body body;
 		private GameObject currentArrowHead;
@@ -18,16 +18,15 @@ namespace __SCRIPTS
 		{
 			nade = GetComponent<NadeAttack>();
 			body = GetComponent<Body>();
-			
+
 			nade.OnThrow += Nade_OnThrow;
 			nade.OnShowAiming += Nade_OnShowAiming;
 			nade.OnHideAiming += Nade_OnHideAiming;
 			nade.OnAimAt += Nade_OnAimAt;
-			nade.OnAimInDirection += Nade_OnAimInDirection;
-			
+
 			Nade_OnHideAiming();
 			SpawnTrajectoryMarkers();
-	
+
 		}
 
 		private void OnDisable()
@@ -37,7 +36,6 @@ namespace __SCRIPTS
 			nade.OnShowAiming -= Nade_OnShowAiming;
 			nade.OnHideAiming -= Nade_OnHideAiming;
 			nade.OnAimAt -= Nade_OnAimAt;
-			nade.OnAimInDirection -= Nade_OnAimInDirection;
 		}
 
 
@@ -48,7 +46,7 @@ namespace __SCRIPTS
 
 		private void Nade_OnAimAt(Vector2 startPoint, Vector2 endPoint)
 		{
-			
+
 			PlaceMarkers(startPoint, endPoint);
 		}
 
@@ -66,7 +64,7 @@ namespace __SCRIPTS
 			}
 		}
 
-	
+
 
 		private void Nade_OnShowAiming()
 		{
@@ -93,7 +91,7 @@ namespace __SCRIPTS
 			}
 		}
 
-	
+
 		private void Nade_OnThrow(Vector2 startPoint, Vector2 velocity, float time, Player player)
 		{
 			var newProjectile = ObjectMaker.I.Make(ASSETS.FX.nadePrefab, body.AimCenter.transform.position);
@@ -116,7 +114,7 @@ namespace __SCRIPTS
 			}
 		}
 
-	
+
 
 		private static Vector3 SampleParabola(Vector3 start, Vector3 end, float height, float t)
 		{

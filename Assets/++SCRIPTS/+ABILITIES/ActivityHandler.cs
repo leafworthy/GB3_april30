@@ -1,4 +1,6 @@
 using System;
+using DTT.Utils.Workflow;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -16,62 +18,67 @@ namespace __SCRIPTS
 	[Serializable]
 	public class ActivityHandler
 	{
-		public string currentActivity;
+		[CanBeNull] public IActivity currentActivity;
 		public bool isActive;
+		public string ActivityStory = "Activity Story Start";
 
 
-		public bool Do(string Verb)
+		public bool Do(IActivity activity)
 		{
 			if (isActive)
 			{
-				Debug.Log( $"Tried to do {Verb} but current activity is {currentActivity}" +
-				          $" on {this} with {currentActivity} and is active: {isActive}");
+				if (currentActivity.VerbName == activity.VerbName)
+				{
+					ActivityStory += "\nTried to start doing " + activity.VerbName + " but already doing it";
+					return false;
+				}
+
+				ActivityStory += "\n" +
+				                 $"Tried to do {activity.VerbName} but current activity is {currentActivity?.VerbName}" +
+				                 $" on {this} with {currentActivity?.VerbName} and is active: {isActive}";
 				return false;
 			}
-			if (currentActivity == Verb)
-			{
-				Debug.Log( $"Tried to do {Verb} but current activity is {currentActivity}" +
-				          $" on {this} with {currentActivity} and is active: {isActive}");
-				
-				return false;
-			}
+
+			ActivityStory += "\nStarted doing " + activity.VerbName + " with last activity: " +
+			                 currentActivity?.VerbName;
 			isActive = true;
-			currentActivity = Verb;
+			currentActivity = activity;
+			Debug.Log(ActivityStory);
 			return true;
 		}
 
-
-		public bool Stop(string Verb = "")
+		public bool StopCurrentActivity()
 		{
-			if (!isActive)
-			{
-				return false;
-			}
+			if (!isActive) return false;
+
+			ActivityStory += "\nStopped doing " + currentActivity;
 			isActive = false;
 			currentActivity = null;
+			Debug.Log(ActivityStory);
 			return true;
 		}
 
-		public bool StopSafely(string Verb = "")
+		public void StopSafely(IActivity activity)
 		{
-			if (currentActivity != Verb)
+			if (currentActivity?.VerbName != activity.VerbName)
 			{
-				Debug.Log( $"Tried to stop {Verb} but current activity is {currentActivity}" +
-				          $" on {this} with {currentActivity} and is active: {isActive}");
-				return false;
-			}
-			if (!isActive)
-			{
-				Debug.Log( $"Tried to stop {Verb} but current activity is {currentActivity}" +
-				          $" on {this} with {currentActivity} and is active: {isActive}");
-				return false;
+				ActivityStory += "\n Tried to stop " + activity.VerbName + " but current activity is " +
+				                 currentActivity?.VerbName;
+				return;
 			}
 
-			Debug.Log("Stopped activity safely: " + Verb + " on " + this + " with " + currentActivity +
-			          " and is active: " + isActive);
+			if (!isActive)
+			{
+				ActivityStory += "\n Tried to stop " + activity.VerbName + " but not currently active";
+				return;
+			}
+
+			ActivityStory += "\n Stopped doing " + activity.VerbName + " with last activity: " +
+			                 currentActivity?.VerbName;
 			isActive = false;
 			currentActivity = null;
-			return true;
+			Debug.Log(ActivityStory);
 		}
 	}
+
 }

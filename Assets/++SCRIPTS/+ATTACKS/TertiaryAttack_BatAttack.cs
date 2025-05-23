@@ -11,7 +11,7 @@ namespace __SCRIPTS
 		private JumpAbility jumps;
 		private Animations anim;
 		private Body body;
-		private const string batAttackVerbName = "bat attacking";
+		public override string VerbName => "Bat-Attack";
 		private bool isCharging;
 		private Life life;
 
@@ -66,8 +66,8 @@ namespace __SCRIPTS
 		private void Anim_AttackStop(int attackType)
 		{
 			isAttacking = false;
-			body.arms.StopSafely();
-			body.legs.StopSafely();
+			body.arms.StopSafely(this);
+			body.legs.StopSafely(this);
 
 			if (attackType == 0)
 			{
@@ -135,13 +135,13 @@ namespace __SCRIPTS
 
 		private void StartRandomAttack()
 		{
-			if (!body.arms.Do(batAttackVerbName))
+			if (!body.arms.Do(this))
 			{
-				if (body.arms.currentActivity != JumpAbility.VerbName)
+				if ((JumpAbility) body.arms.currentActivity != jumps)
 					return;
 			}
 
-			if (!body.legs.Do(batAttackVerbName)) return;
+			if (!body.legs.Do(this)) return;
 			if (isAttacking) return;
 			isAttacking = true;
 

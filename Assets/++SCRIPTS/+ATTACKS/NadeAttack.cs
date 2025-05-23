@@ -5,7 +5,11 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class NadeAttack : MonoBehaviour, INeedPlayer
+	public class NadeAimActivity : IActivity
+	{
+		public string VerbName => "Nade-Aim";
+	}
+	public class NadeAttack : MonoBehaviour, INeedPlayer, IActivity
 	{
 		private AnimationEvents animationEvents;
 		private Vector2 startPoint;
@@ -24,9 +28,9 @@ namespace __SCRIPTS
 
 		private bool IsAiming;
 		private float currentCooldownTime;
-		
-		public static string AimVerbName = "aiming";
-		public static string VerbName = "nading";
+
+		private NadeAimActivity aimActivity = new NadeAimActivity();
+		public  string VerbName => "Nade-Attack";
 		private string AnimationName = "Top-Throw-Nade";
 		private bool _isAiming;
 
@@ -39,6 +43,7 @@ namespace __SCRIPTS
 		public void SetPlayer(Player _player)
 		{
 			anim = GetComponent<Animations>();
+			animationEvents = anim.animEvents;
 			body = GetComponent<Body>();
 			life = GetComponent<Life>();
 			player = _player;
@@ -79,7 +84,7 @@ namespace __SCRIPTS
 
 		private void Anim_ThrowStop()
 		{
-			arms.StopSafely(VerbName);
+			arms.StopSafely(this);
 			Debug.Log("nade stop");
 		}
 
@@ -105,7 +110,7 @@ namespace __SCRIPTS
 				return;
 			}
 
-			if (!arms.Do(AimVerbName))
+			if (!arms.Do(aimActivity))
 			{
 				Debug.Log("can't nade " + arms.currentActivity);
 				return;
@@ -123,24 +128,24 @@ namespace __SCRIPTS
 			IsAiming = false;
 			if (!ammo.secondaryAmmo.hasReserveAmmo())
 			{
-				arms.StopSafely(AimVerbName);
+				arms.StopSafely(aimActivity);
 				Debug.Log("no nades");
 				return;
 			}
 
-			if (arms.currentActivity == AimVerbName)
+			if (arms.currentActivity == aimActivity)
 			{
-				arms.StopSafely(AimVerbName);
-				arms.Do(VerbName);
+				arms.StopSafely(aimActivity);
+				arms.Do(this);
 				Debug.Log("nade release");
 				anim.Play(AnimationName, 1, 0);
-				
+
 			}
 			else
 			{
-				arms.StopSafely(AimVerbName);
+				arms.StopSafely(aimActivity);
 			}
-		
+
 		}
 
 
@@ -176,6 +181,6 @@ namespace __SCRIPTS
 			OnAimAt?.Invoke(startPoint, endPoint);
 		}
 
-	
+
 	}
 }

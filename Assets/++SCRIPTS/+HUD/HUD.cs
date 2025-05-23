@@ -21,9 +21,12 @@ namespace __SCRIPTS
 		kunai,
 		bat,
 		chargedBat,
-		knife
+		knife,
+		shotgun,
+		mine,
+		chainsaw
 	}
-	
+
 	public class HUD : MonoBehaviour, INeedPlayer
 	{
 		private AmmoInventory _currentAmmoInventory;
@@ -46,7 +49,7 @@ namespace __SCRIPTS
 			if (tertiaryAmmoDisplay != null) tertiaryAmmoDisplay.SetAmmo(_currentAmmoInventory.tertiaryAmmo);
 
 			var playerAmmo = newPlayer.SpawnedPlayerGO.GetComponent<AmmoInventory>();
-			
+
 			primaryWeaponIcon.Set((int)playerAmmo.primaryAmmo.weaponType);
 			secondaryWeaponIcon.Set((int) playerAmmo.secondaryAmmo.weaponType);
 			tertiaryWeaponIcon.Set((int) playerAmmo.tertiaryAmmo.weaponType);
@@ -54,8 +57,8 @@ namespace __SCRIPTS
 			CharIcon.Set((int)newPlayer.CurrentCharacter); // Set to the first character icon by default
 		}
 
-		
 
-	
+
+
 	}
 }

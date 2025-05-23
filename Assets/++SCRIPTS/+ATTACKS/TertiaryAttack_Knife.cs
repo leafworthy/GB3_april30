@@ -1,18 +1,16 @@
 using System;
 using System.Linq;
-using __SCRIPTS.HUD_Displays;
+using __SCRIPTS;
 using UnityEngine;
 
-namespace __SCRIPTS
-{
-	public class TertiaryAttack_Knife : Attacks
+public class TertiaryAttack_Knife : Attacks
 	{
 		private Player player;
 		private Body body;
 		private Animations anim;
-		private string VerbName = "knifing";
+		public override string VerbName => "Knife-Attack";
 		private string AnimationClipName = "Top-Knife";
-		
+
 		private bool isAttacking;
 		private bool isPressing;
 		public GameObject attackPoint;
@@ -44,14 +42,14 @@ namespace __SCRIPTS
 		{
 			Debug.Log("knife stop");
 			anim.SetBool(Animations.IsBobbing, true);
-			body.arms.StopSafely(VerbName);
+			body.arms.StopSafely(this);
 			isAttacking = false;
 			if (!isPressing) return;
 			Debug.Log("knife start again");
 			PlayerKnifePress(null);
 		}
 
-	
+
 
 		private void PlayerKnifeRelease(NewControlButton newControlButton)
 		{
@@ -72,7 +70,7 @@ namespace __SCRIPTS
 				Debug.Log("can't knife, still knifing");
 				return;
 			}
-			if (!body.arms.Do(VerbName))
+			if (!body.arms.Do(this))
 			{
 				Debug.Log("can't knife, still busy " + body.arms.currentActivity);
 				return;
@@ -86,7 +84,7 @@ namespace __SCRIPTS
 
 		private GameObject FindClosestHit()
 		{
-	
+
 			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange, ASSETS.LevelAssets.EnemyLayer)
 			                          .ToList();
 			if (circleCast.Count <= 0) return null;
@@ -127,10 +125,9 @@ namespace __SCRIPTS
 				return;
 			}
 			OnHit?.Invoke(enemyHit.transform.position);
-		
+
 			HitTarget(attacker.TertiaryAttackDamageWithExtra, enemy, 2);
 
 		}
 
 	}
-}

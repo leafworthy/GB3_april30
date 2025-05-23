@@ -9,14 +9,14 @@ namespace __SCRIPTS.HUD_Displays
 		public Image AKIcon;
 		public Image PistolIcon;
 		private Player player;
-		private GunAttack gunAttack;
+		private GunAttack_AK_Glock gunAttackAkGlock;
 		private bool isGlocking;
 	
 		public void SetPlayer(Player _player)
 		{
 			player = _player;
 			if (player.CurrentCharacter != Character.Bean) return;
-			gunAttack = _player.SpawnedPlayerGO.GetComponent<GunAttack>();
+			gunAttackAkGlock = _player.SpawnedPlayerGO.GetComponent<GunAttack_AK_Glock>();
 		}
 
 		private void Update()
@@ -24,9 +24,9 @@ namespace __SCRIPTS.HUD_Displays
 			if(player == null) return;
 			if (player.CurrentCharacter != Character.Bean) return;
 			if(player.SpawnedPlayerGO == null) return;
-			gunAttack = player.SpawnedPlayerGO.GetComponent<GunAttack>();
-			if(isGlocking == gunAttack.isGlocking) return;
-			isGlocking = gunAttack.isGlocking;
+			gunAttackAkGlock = player.SpawnedPlayerGO.GetComponent<GunAttack_AK_Glock>();
+			if(isGlocking == gunAttackAkGlock.isGlocking) return;
+			isGlocking = gunAttackAkGlock.isGlocking;
 			ChangeAmmo(isGlocking);
 		}
 

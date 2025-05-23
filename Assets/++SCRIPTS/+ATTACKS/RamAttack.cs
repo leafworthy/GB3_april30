@@ -13,6 +13,7 @@ namespace __SCRIPTS
 		private MoveAbility mover;
 		[SerializeField]private float pushBackAmount = 3;
 
+		public override string VerbName => "Ram-Attack";
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
@@ -52,7 +53,7 @@ namespace __SCRIPTS
 			isCooledDown = true;
 		}
 
-	
+
 
 		private void CheckForHit(GameObject other)
 		{
@@ -71,7 +72,7 @@ namespace __SCRIPTS
 			{
 				var door = other.GetComponentInChildren<DoorInteraction>();
 				if(door == null || door.isOpen || door.isBroken) return;
-			
+
 			}
 			else
 			{

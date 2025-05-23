@@ -20,8 +20,7 @@ namespace __SCRIPTS
 		private Animations anim;
 		private bool isWounded;
 		private EnemyAI ai;
-
-		
+		private string VerbName = "Moving";
 
 		public void SetPlayer(Player _player)
 		{
@@ -107,13 +106,13 @@ namespace __SCRIPTS
 		private void Anim_StopUsingLegs()
 		{
 			CanMove = true;
-			body.legs.Stop("On use legs");
+			body.legs.StopSafely(mover);
 		}
 
 		private void Anim_UseLegs()
 		{
 			CanMove = false;
-			body.legs.Do("On use legs");
+			body.legs.Do(mover);
 		}
 
 		private void Anim_OnStep()
@@ -205,6 +204,6 @@ namespace __SCRIPTS
 			mover.Push(moveMoveDir, statsDashSpeed);
 		}
 
-		
+		public bool IsIdle() => mover.IsIdle();
 	}
 }

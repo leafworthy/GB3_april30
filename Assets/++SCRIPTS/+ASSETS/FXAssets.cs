@@ -16,7 +16,7 @@ namespace __SCRIPTS
     [CreateAssetMenu(menuName = "My Assets/DebreeAssets")]
     public class FXAssets : ScriptableObject
     {
-    
+
         [Header("Hit FX")]
         public List<GameObject> blood_debree = new List<GameObject>();
         public List<GameObject> bloodspray = new List<GameObject>();
@@ -50,7 +50,7 @@ namespace __SCRIPTS
         public List<GameObject> cushion_debree = new List<GameObject>();
         public List<GameObject> wall_debree = new List<GameObject>();
         public List<GameObject> metal_debree = new List<GameObject>();
-    
+
         public List<GameObject> bulletholes = new List<GameObject>();
 
         [Space,Header("Weapon FX")]
@@ -61,6 +61,7 @@ namespace __SCRIPTS
         public GameObject muzzleFlashPrefab;
         public GameObject bulletShellPrefab;
         public GameObject nadePrefab;
+        public GameObject minePrefab;
         public GameObject kunaiPrefab;
 
         [Space,Header("Pickup FX")]
@@ -84,7 +85,7 @@ namespace __SCRIPTS
 
         public List<GameObject> GetBulletHits(DebrisType debrisType)
         {
-       
+
             switch (debrisType)
             {
                 case DebrisType.blood:

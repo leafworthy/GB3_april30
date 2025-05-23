@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class MoveAbility : MonoBehaviour
+	public class MoveAbility : MonoBehaviour, IActivity
 	{
 		private Vector2 moveVelocity;
 		private Vector2 pushVelocity;
@@ -30,6 +30,7 @@ namespace __SCRIPTS
 		private Body body;
 		private float maxAimDistance = 30;
 		private float minDirectionMagnitude = .2f;
+		public string VerbName => "Move";
 		public Vector2 MoveAimDir { get; set; }
 
 		public Vector2 GetMoveAimPoint(float multiplier = 1)
@@ -173,6 +174,6 @@ namespace __SCRIPTS
 
 		public bool IsIdle() => life.player.Controller.MoveAxis.currentMagnitudeIsTooSmall();
 
-		public Vector2 GetRealMagnitude() => life.player.Controller.MoveAxis.GetCurrentAngle();
+
 	}
 }

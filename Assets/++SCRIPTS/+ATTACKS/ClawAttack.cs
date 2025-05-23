@@ -16,6 +16,7 @@ namespace __SCRIPTS
 		public float extraPush = .2f;
 		private Targetter targetter;
 
+		public override string VerbName => "MeleeAttack";
 
 		public override void SetPlayer(Player _player)
 		{
@@ -28,13 +29,13 @@ namespace __SCRIPTS
 			ai.OnAttack += AI_Attack;
 			anim.animEvents.OnAttackHit += OnAttackHit;
 			anim.animEvents.OnAttackStop += OnAttackStop;
-			
+
 		}
 
 
 		private void OnAttackStop(int obj)
 		{
-			body.arms.Stop("MeleeAttack");
+			body.arms.StopSafely(this);
 		}
 
 		private void OnDisable()
@@ -42,7 +43,7 @@ namespace __SCRIPTS
 			ai.OnAttack -= AI_Attack;
 			anim.animEvents.OnAttackHit -= OnAttackHit;
 			anim.animEvents.OnAttackStop -= OnAttackStop;
-			 
+
 		}
 
 		private void AI_Attack(Life newTarget)
@@ -92,8 +93,8 @@ namespace __SCRIPTS
 			{
 				HitTarget(attacker.PrimaryAttackDamageWithExtra, currentTargetLife, extraPush);
 			}
-			
-		
+
+
 		}
 	}
 }

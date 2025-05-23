@@ -21,6 +21,8 @@ namespace __SCRIPTS
 		[HideInInspector] public bool BottomIsFacingRight = true;
 		[HideInInspector] public bool TopIsFacingRight = true;
 
+
+
 		public void ChangeLayer(BodyLayer bodyLayer)
 		{
 			//Debug.Log("layer change" + bodyLayer.ToString());

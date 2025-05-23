@@ -4,12 +4,12 @@ namespace __SCRIPTS
 {
 	public class Bean_SFX : MonoBehaviour
 	{
-	
+
 		private Animations anim;
 		private AnimationEvents animEvents;
 		private Life life;
 		private JumpAbility jump;
-		private GunAttack gunAttack;
+		private GunAttack_AK_Glock gunAttackAkGlock;
 		private TertiaryAttack_Knife tertiaryAttackKnife;
 		private NadeAttack nadeAttack;
 
@@ -18,10 +18,10 @@ namespace __SCRIPTS
 			anim = GetComponent<Animations>();
 			life = GetComponent<Life>();
 			jump = GetComponent<JumpAbility>();
-			gunAttack = GetComponent<GunAttack>();
+			gunAttackAkGlock = GetComponent<GunAttack_AK_Glock>();
 			tertiaryAttackKnife = GetComponent<TertiaryAttack_Knife>();
 			nadeAttack = GetComponent<NadeAttack>();
-		
+
 			animEvents = anim.animEvents;
 			animEvents.OnStep += Anim_OnStep;
 			animEvents.OnHitStart += Anim_OnHit;
@@ -32,16 +32,16 @@ namespace __SCRIPTS
 			life.OnDying += Life_OnDying;
 			jump.OnJump += Jump_OnJump;
 			jump.OnLand += Jump_OnLand;
-			gunAttack.OnShotHitTarget += GunAttackOnOnShotHitTarget;
-			gunAttack.OnShotMissed += GunAttackOnShotMissed;
-			gunAttack.OnReload += GunAttackOnReload;
-			gunAttack.OnEmpty += GunAttackOnEmpty;
+			gunAttackAkGlock.OnShotHitTarget += GunAttackAkGlockOnOnShotHitTarget;
+			gunAttackAkGlock.OnShotMissed += GunAttackAkGlockOnShotMissed;
+			gunAttackAkGlock.OnReload += GunAttackAkGlockOnReload;
+			gunAttackAkGlock.OnEmpty += GunAttackAkGlockOnEmpty;
 			tertiaryAttackKnife.OnMiss += TertiaryAttackKnifeOnMiss;
 			tertiaryAttackKnife.OnHit += TertiaryAttackKnifeOnHit;
 			nadeAttack.OnThrow += NadeAttackOnThrow;
 		}
 
-		private void GunAttackOnEmpty()
+		private void GunAttackAkGlockOnEmpty()
 		{
 			SFX.I.sounds.ak47_empty_shoot_sounds.PlayRandomAt(transform.position);
 		}
@@ -54,25 +54,25 @@ namespace __SCRIPTS
 			animEvents.OnDash -= Anim_Dash;
 			animEvents.OnTeleport -= Anim_Teleport;
 			life.OnWounded -= Life_OnWounded;
-		
+
 			life.OnAttackHit -= Life_AttackHit;
 			jump.OnJump -= Jump_OnJump;
 			jump.OnLand -= Jump_OnLand;
-			gunAttack.OnShotHitTarget -= GunAttackOnOnShotHitTarget;
-			gunAttack.OnShotMissed -= GunAttackOnShotMissed;
-			gunAttack.OnReload -= GunAttackOnReload;
+			gunAttackAkGlock.OnShotHitTarget -= GunAttackAkGlockOnOnShotHitTarget;
+			gunAttackAkGlock.OnShotMissed -= GunAttackAkGlockOnShotMissed;
+			gunAttackAkGlock.OnReload -= GunAttackAkGlockOnReload;
 			tertiaryAttackKnife.OnMiss -= TertiaryAttackKnifeOnMiss;
 			tertiaryAttackKnife.OnHit -= TertiaryAttackKnifeOnHit;
 			nadeAttack.OnThrow -= NadeAttackOnThrow;
 		}
 
-		private void GunAttackOnShotMissed(Attack attack, Vector2 hitPositionh)
+		private void GunAttackAkGlockOnShotMissed(Attack attack, Vector2 hitPositionh)
 		{
 			SFX.I.sounds.bean_gun_miss_sounds.PlayRandomAt(hitPositionh);
 			SFX.I.sounds.ak47_shoot_sounds.PlayRandomAt(transform.position);
 		}
 
-		private void GunAttackOnOnShotHitTarget(Attack attack, Vector2 hitPosition)
+		private void GunAttackAkGlockOnOnShotHitTarget(Attack attack, Vector2 hitPosition)
 		{
 			SFX.I.sounds.GetBulletHitSounds(attack.DestinationLife.DebrisType).PlayRandomAt(hitPosition);
 			SFX.I.sounds.ak47_shoot_sounds.PlayRandomAt(attack.OriginFloorPoint);
@@ -82,7 +82,7 @@ namespace __SCRIPTS
 		private void NadeAttackOnThrow(Vector2 vector2, Vector2 vector3, float arg3, Player arg4) => SFX.I.sounds.bean_nade_throw_sounds.PlayRandomAt(transform.position);
 		private void Life_AttackHit(Attack attack, Life hitLife) => SFX.I.sounds.bloodSounds.PlayRandomAt(transform.position);
 		private void TertiaryAttackKnifeOnMiss() => SFX.I.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
-		private void GunAttackOnReload() => SFX.I.sounds.bean_reload_sounds.PlayRandomAt(transform.position);
+		private void GunAttackAkGlockOnReload() => SFX.I.sounds.bean_reload_sounds.PlayRandomAt(transform.position);
 		private void Jump_OnLand(Vector2 obj) => SFX.I.sounds.land_sound.PlayRandomAt(transform.position);
 		private void TertiaryAttackKnifeOnHit(Vector2 vector2) => SFX.I.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
 

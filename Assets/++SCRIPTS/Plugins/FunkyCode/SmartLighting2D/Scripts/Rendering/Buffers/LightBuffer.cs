@@ -163,7 +163,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
         static public void UpdateName(LightBuffer2D buffer)
         {
-            return;
+            //return;
             string freeString = "";
 
             if (buffer.Free)

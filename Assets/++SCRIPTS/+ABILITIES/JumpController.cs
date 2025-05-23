@@ -3,28 +3,34 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class JumpController : MonoBehaviour, INeedPlayer
+
+	public class LandingActivity:IActivity
+	{
+		public string VerbName => "Landing";
+	}
+	public class JumpController : MonoBehaviour, INeedPlayer, IActivity
 	{
 		private Life life;
 		private JumpAbility jump;
 		private Animations anim;
 		private AnimationEvents animEvents;
 		private Body body;
-		private string VerbName = "Jumping";
 		private float FallInDistance = 80;
+		private LandingActivity landingActivity = new LandingActivity();
+		public string VerbName => "Jumping";
 
 		public void SetPlayer(Player _player)
 		{
 			life = GetComponent<Life>();
 			life.OnWounded += Life_Wounded;
 			life.player.Controller.Jump.OnPress += Controller_Jump;
-			
+
 			anim = GetComponent<Animations>();
 			animEvents = anim.animEvents;
 			animEvents.OnRoar += AnimEvents_OnRoar;
 			animEvents.OnLandingStop += AnimEvents_OnLandingStop;
 			body = GetComponent<Body>();
-			
+
 		}
 		public void SetFallFromSky(bool fallFromSky)
 		{
@@ -61,7 +67,7 @@ namespace __SCRIPTS
 			jump.SetActive(true);
 		}
 
-	
+
 
 		private void Controller_Jump(NewControlButton newControlButton)
 		{
@@ -74,7 +80,7 @@ namespace __SCRIPTS
 			anim.ResetTrigger(Animations.LandTrigger);
 			anim.SetTrigger(Animations.FlyingTrigger);
 			jump.Jump(body.GetCurrentLandableHeight(), life.JumpSpeed, 99);
-		
+
 		}
 
 		private void Jump_OnFall(Vector2 obj)
@@ -84,17 +90,17 @@ namespace __SCRIPTS
 
 		private void Jump_OnResting(Vector2 obj)
 		{
-			body.arms.StopSafely("Land");
-			body.legs.StopSafely("Land");
+			body.arms.StopSafely(landingActivity);
+			body.legs.StopSafely(landingActivity);
 			anim.SetBool(Animations.IsFalling, false);
 		}
 
-		private void Jump()
+		public void Jump()
 		{
 			if (PauseManager.I.IsPaused) return;
 
 
-			if (!body.arms.Do(VerbName)) return;
+			if (!body.arms.Do(this)) return;
 			if (!jump.isResting) return;
 
 
@@ -111,14 +117,12 @@ namespace __SCRIPTS
 			anim.ResetTrigger(Animations.JumpTrigger);
 			anim.SetTrigger(Animations.LandTrigger);
 			anim.SetBool(Animations.IsFalling, false);
-		
-			body.arms.Stop(VerbName);
-			body.arms.Do("Land");
-			body.legs.Do("Land");
-		
+			body.legs.StopCurrentActivity();
+			body.arms.StopCurrentActivity();
+			body.arms.Do(landingActivity);
+			body.legs.Do(landingActivity);
+
 		}
 
-
-		
 	}
 }

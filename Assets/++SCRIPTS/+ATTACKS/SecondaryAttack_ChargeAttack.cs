@@ -20,7 +20,7 @@ namespace __SCRIPTS
 		private float SpecialAttackWidth = 3;
 		private bool isFullyCharged;
 		private GameObject currentArrowHead;
-		private string verbName = "ChargeAttack";
+		public override string VerbName => "ChargeAttack";
 		public event Action OnAttackHit;
 		public event Action OnSpecialAttackHit;
 		public event Action OnChargePress;
@@ -92,11 +92,11 @@ namespace __SCRIPTS
 		private void Player_ChargePress(NewControlButton newControlButton)
 		{
 			if (PauseManager.I.IsPaused) return;
-			if (!body.arms.Do(verbName)) return;
+			if (!body.arms.Do(this)) return;
 
-			if (!body.legs.Do(verbName))
+			if (!body.legs.Do(this))
 			{
-				body.arms.StopSafely(verbName);
+				body.arms.StopSafely(this);
 				return;
 			}
 
@@ -127,8 +127,8 @@ namespace __SCRIPTS
 			{
 				anim.SetBool(Animations.IsCharging, false);
 				ammo.secondaryAmmo.UseAmmo(1000);
-				body.arms.Stop(verbName);
-				body.legs.Stop(verbName);
+				body.arms.StopSafely(this);
+				body.legs.StopSafely(this);
 			}
 		}
 
@@ -150,8 +150,8 @@ namespace __SCRIPTS
 
 			var connect = false;
 			SpecialAttackDistance = Vector2.Distance(position, targetPoint);
-			body.arms.Stop(verbName);
-			body.legs.Stop(verbName);
+			body.arms.StopSafely(this);
+			body.legs.StopSafely(this);
 			MoveIfDidCollideWithBuilding(position, targetPoint, out var raycast);
 			OnSpecialAttackHit?.Invoke();
 

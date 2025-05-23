@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace __SCRIPTS.Plugins._ISOSORT
 {
@@ -24,10 +25,9 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		public int renderBelowSortingOrder = 0;
 		private int visibleStaticLastRefreshFrame = 0;
-	
-		private static IsoSpriteSorting[] isoSorters = new  IsoSpriteSorting[8];
 
-	
+		private static IsoSpriteSorting[] isoSorters = new IsoSpriteSorting[8];
+
 		public List<IsoSpriteSorting> VisibleStaticDependencies
 		{
 			get
@@ -69,7 +69,6 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			RefreshPoint2();
 		}
 
-
 		private void RefreshBounds()
 		{
 			if (renderersToSort.Count <= 0) return;
@@ -79,10 +78,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				return;
 			}
 
-			if (renderersToSort[0] == null)
-			{
-				GetRenderers();
-			}
+			if (renderersToSort[0] == null) GetRenderers();
 
 			if (renderersToSort[0] == null) return;
 			cachedBounds = new Bounds2D(renderersToSort[0].bounds);
@@ -95,11 +91,9 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				if (transform == null) return;
 				t = transform;
 			}
-		
+
 			if (t != null)
-			{
 				cachedPoint1 = SorterPositionOffset + t.position;
-			}
 			else
 			{
 				// Fallback if transform is still null
@@ -110,15 +104,10 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		private void RefreshPoint2()
 		{
-			if (t == null)
-			{
-				t = transform;
-			}
-		
+			if (t == null) t = transform;
+
 			if (t != null)
-			{
 				cachedPoint2 = SorterPositionOffset2 + t.position;
-			}
 			else
 			{
 				// Fallback if transform is still null
@@ -187,9 +176,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				if (sortType == SortType.Line)
 					return (SortingPoint1.y + SortingPoint2.y) / 2;
 				else
-				{
 					return SortingPoint1.y;
-				}
 			}
 		}
 
@@ -198,7 +185,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 #if UNITY_EDITOR
 			if (!Application.isPlaying)
 			{
-				isoSorters = UnityEngine.Object.FindObjectsOfType<IsoSpriteSorting>(true);
+				isoSorters = FindObjectsOfType<IsoSpriteSorting>(true);
 				foreach (var t1 in isoSorters)
 				{
 					t1.Setup();
@@ -211,12 +198,10 @@ namespace __SCRIPTS.Plugins._ISOSORT
 #endif
 		}
 
-
 		private void Awake()
 		{
 			t = transform; //This needs to be here AND in the setup function
 		}
-
 
 		private void OnEnable()
 		{
@@ -238,78 +223,61 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		private void OnValidate()
 		{
 			// Make sure transform reference is set
-			if (t == null)
-			{
-				t = transform;
-			}
-		
+			if (t == null) t = transform;
+
 			// Only proceed if we have a valid transform
 			if (t != null)
 			{
 				GetRenderers();
 				forceSort = true;
-			
+
 				// Only register if IsoSpriteSortingManager exists
-				if (IsoSpriteSortingManager.I != null)
-				{
-					IsoSpriteSortingManager.RegisterSprite(this);
-				}
+				if (IsoSpriteSortingManager.I != null) IsoSpriteSortingManager.RegisterSprite(this);
 			}
 		}
 
 		private void OnTransformChildrenChanged()
 		{
-			if (t == null)
-			{
-				t = transform;
-			}
-		
+			if (t == null) t = transform;
+
 			GetRenderers();
 			forceSort = true;
 		}
-	
+
 		private void OnDrawGizmosSelected()
 		{
 			// Force refresh in Scene view when object is selected
 			if (!Application.isPlaying)
 			{
-				if (t == null)
-				{
-					t = transform;
-				}
-			
+				if (t == null) t = transform;
+
 				forceSort = true;
 				RefreshPoint1();
 				RefreshPoint2();
 				RefreshBounds();
-			
-				if (IsoSpriteSortingManager.I != null)
-				{
-					IsoSpriteSortingManager.UpdateSorting();
-				}
+
+				if (IsoSpriteSortingManager.I != null) IsoSpriteSortingManager.UpdateSorting();
 			}
 		}
-	
+
 		private Vector3 lastPosition;
 		private Quaternion lastRotation;
 		private Vector3 lastScale;
-	
+		[SerializeField] private SortingGroup sortingGroup;
+
 		private void OnDrawGizmos()
 		{
 			// Check if transform has changed
 			if (!Application.isPlaying && t != null)
 			{
-				bool hasChanged = 
-					t.position != lastPosition || 
-					t.rotation != lastRotation || 
-					t.localScale != lastScale;
-				
+				var hasChanged = t.position != lastPosition || t.rotation != lastRotation || t.localScale != lastScale;
+
 				if (hasChanged)
 				{
 					lastPosition = t.position;
 					lastRotation = t.rotation;
 					lastScale = t.localScale;
-				
+
 					forceSort = true;
 					RefreshPoint1();
 					RefreshPoint2();
@@ -321,33 +289,29 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		}
 #endif
 
-	
 		public void GetRenderers()
 		{
 			if (hasRenderers) return;
 			hasRenderers = true;
+
 			RemoveNulls();
 			var tempRenderersToSort = GetComponentsInChildren<SpriteRenderer>(true);
 			foreach (var spriteRenderer in tempRenderersToSort)
 			{
 				if (spriteRenderer.CompareTag("DontSort")) continue;
-				if (!renderersToSort.Contains(spriteRenderer))
-				{
-				
-				
-					renderersToSort.Add(spriteRenderer);
-				}
+				if (!renderersToSort.Contains(spriteRenderer)) renderersToSort.Add(spriteRenderer);
 			}
 		}
 
 		public void RemoveNulls()
 		{
-			for (int i = renderersToSort.Count - 1; i >= 0; i--)
+			for (var i = renderersToSort.Count - 1; i >= 0; i--)
 			{
 				if (renderersToSort[i] == null)
 					renderersToSort.RemoveAt(i);
 			}
 		}
+
 		public static int CompairIsoSortersBasic(IsoSpriteSorting sprite1, IsoSpriteSorting sprite2)
 		{
 			var y1 = sprite1.sortType == SortType.Point ? sprite1.SortingPoint1.y : sprite1.SortingLineCenterHeight;
@@ -359,9 +323,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		public static int CompareIsoSorters(IsoSpriteSorting sprite1, IsoSpriteSorting sprite2)
 		{
 			if (sprite1.sortType == SortType.Point && sprite2.sortType == SortType.Point)
-			{
 				return sprite2.SortingPoint1.y.CompareTo(sprite1.SortingPoint1.y);
-			}
 			else if (sprite1.sortType == SortType.Line && sprite2.sortType == SortType.Line)
 				return CompareLineAndLine(sprite1, sprite2);
 			else if (sprite1.sortType == SortType.Point && sprite2.sortType == SortType.Line)
@@ -382,18 +344,15 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		{
 			Vector2 line1Point1 = line1.SortingPoint1;
 			Vector2 line1Point2 = line1.SortingPoint2;
-			var line1LowPoint = (line1Point1.y > line1Point2.y) ? line1Point2 : line1Point1;
-			var line1HighPoint = (line1Point1.y > line1Point2.y) ? line1Point1 : line1Point2;
+			var line1LowPoint = line1Point1.y > line1Point2.y ? line1Point2 : line1Point1;
+			var line1HighPoint = line1Point1.y > line1Point2.y ? line1Point1 : line1Point2;
 			var line1slantUpward = line1HighPoint.x > line1LowPoint.x;
-		
-		
+
 			Vector2 line2Point1 = line2.SortingPoint1;
 			Vector2 line2Point2 = line2.SortingPoint2;
-			var line2LowPoint = (line2Point1.y > line2Point2.y) ? line2Point2 : line2Point1;
-			var line2HighPoint = (line2Point1.y > line2Point2.y) ?  line2Point1 : line2Point2;
+			var line2LowPoint = line2Point1.y > line2Point2.y ? line2Point2 : line2Point1;
+			var line2HighPoint = line2Point1.y > line2Point2.y ? line2Point1 : line2Point2;
 			var line2slantUpward = line2HighPoint.x > line2LowPoint.x;
-
-		
 
 			var comp1 = ComparePointAndLine(line1Point1, line2);
 			var comp2 = ComparePointAndLine(line1Point2, line2);
@@ -417,15 +376,11 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			if (line1slantUpward == line2slantUpward)
 			{
 				if (line1slantUpward)
-				{
-					return (line1LowPoint.x > line2LowPoint.x) ? 1 : -1;
-				}
+					return line1LowPoint.x > line2LowPoint.x ? 1 : -1;
 				else
-				{
-					return (line1LowPoint.x > line2LowPoint.x) ? -1 : 1;
-				}
+					return line1LowPoint.x > line2LowPoint.x ? -1 : 1;
 			}
-		
+
 			if (oneVStwo != int.MinValue)
 				return oneVStwo;
 			if (twoVSone != int.MinValue)
@@ -434,10 +389,8 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			return CompareLineCenters(line1, line2);
 		}
 
-		private static int CompareLineCenters(IsoSpriteSorting line1, IsoSpriteSorting line2)
-		{
-			return -line1.SortingLineCenterHeight.CompareTo(line2.SortingLineCenterHeight);
-		}
+		private static int CompareLineCenters(IsoSpriteSorting line1, IsoSpriteSorting line2) =>
+			-line1.SortingLineCenterHeight.CompareTo(line2.SortingLineCenterHeight);
 
 		private static int ComparePointAndLine(Vector3 point, IsoSpriteSorting line)
 		{
@@ -448,7 +401,8 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				return 1;
 			else
 			{
-				var slope = (line.SortingPoint2.y - line.SortingPoint1.y) / (line.SortingPoint2.x - line.SortingPoint1.x);
+				var slope = (line.SortingPoint2.y - line.SortingPoint1.y) /
+				            (line.SortingPoint2.x - line.SortingPoint1.x);
 				var intercept = line.SortingPoint1.y - slope * line.SortingPoint1.x;
 				var yOnLineForPoint = slope * point.x + intercept;
 				return yOnLineForPoint > point.y ? 1 : -1;
@@ -469,12 +423,11 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				for (var j = 0; j < renderersToSort.Count; ++j)
 				{
 					if (renderersToSort[j] == null) continue;
-					renderersToSort[j].sortingOrder = value + j;
+
+					sortingGroup.sortingOrder = value + j;
 				}
 			}
 		}
-
-	
 
 		public Bounds2D TheBounds
 		{
@@ -496,11 +449,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		private void OnDestroy()
 		{
-			if (Application.isPlaying)
-			{
-		
-				Unregister();
-			}
+			if (Application.isPlaying) Unregister();
 		}
 
 		private void Unregister()

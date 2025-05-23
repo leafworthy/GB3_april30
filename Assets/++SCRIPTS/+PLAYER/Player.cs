@@ -148,7 +148,7 @@ namespace __SCRIPTS
 			spawnedPlayerGO.transform.position = position;
 
 			SetSpawnedPlayerGO(spawnedPlayerGO);
-		
+
 			var animations = spawnedPlayerGO.GetComponentInChildren<Animations>();
 			if (animations != null)
 			{
@@ -162,7 +162,7 @@ namespace __SCRIPTS
 
 			// Apply any upgrades
 			if (playerUpgrades != null) playerUpgrades.ApplyUpgrades(this);
-		
+
 			// Subscribe to level stop event for cleanup
 			LevelManager.I.OnStopLevel += LevelStopLevelCleanUp;
 
@@ -181,7 +181,7 @@ namespace __SCRIPTS
 				component.SetPlayer(this);
 				Debug.Log("set player " + this.playerIndex + " to " + component.GetType().Name);
 			}
-			
+
 			sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
 		}
 
@@ -196,7 +196,7 @@ namespace __SCRIPTS
 				case Character.Brock:
 					return ASSETS.Players.BrockLeePlayerPrefab;
 				case Character.Tmato:
-					return ASSETS.Players.BrockLeePlayerPrefab;
+					return ASSETS.Players.TMatoPlayerPrefab;
 			}
 
 			return null;

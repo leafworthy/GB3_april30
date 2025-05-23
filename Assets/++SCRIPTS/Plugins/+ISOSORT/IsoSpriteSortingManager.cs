@@ -9,12 +9,12 @@ namespace __SCRIPTS.Plugins._ISOSORT
         // Singleton instance
         private static IsoSpriteSortingManager _instance;
         public static IsoSpriteSortingManager I => _instance;
-    
+
         private void Awake()
         {
             _instance = this;
         }
-    
+
         private void OnDestroy()
         {
             if (_instance == this)
@@ -22,7 +22,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
                 _instance = null;
             }
         }
-    
+
         private static readonly List<IsoSpriteSorting> fgSpriteList = new List<IsoSpriteSorting>(128);
         private static readonly List<IsoSpriteSorting> floorSpriteList = new List<IsoSpriteSorting>(128);
         private static readonly List<IsoSpriteSorting> staticSpriteList = new List<IsoSpriteSorting>(128);
@@ -44,7 +44,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
             }
             else if (newSprite.renderAboveAll)
             {
-	       
+
                 if(!fgSpriteList.Contains(newSprite)) fgSpriteList.Add(newSprite);
                 SortListSimple(fgSpriteList);
                 SetSortOrderTop(fgSpriteList);
@@ -124,11 +124,11 @@ namespace __SCRIPTS.Plugins._ISOSORT
             spriteToRemove.staticDependencies.Clear();
         }
         //work now
-        void Update() 
+        void Update()
         {
             IsoSpriteSorting.UpdateSorters();
             UpdateSorting();
-        
+
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
@@ -138,7 +138,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 #endif
         }
 
-   
+
         public static void UpdateSorting()
         {
             FilterListByVisibility(staticSpriteList, currentlyVisibleStaticSpriteList);
@@ -298,6 +298,6 @@ namespace __SCRIPTS.Plugins._ISOSORT
             });
         }
 
-   
+
     }
 }

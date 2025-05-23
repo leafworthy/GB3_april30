@@ -27,6 +27,8 @@ namespace __SCRIPTS
 		public static readonly int KnifeTrigger = Animator.StringToHash("KnifeTrigger");
 		public static readonly int ThrowTrigger = Animator.StringToHash("ThrowTrigger");
 		public static readonly int DashTrigger = Animator.StringToHash("DashTrigger");
+		public static readonly int ShootingTrigger = Animator.StringToHash("ShootingTrigger");
+		public static readonly int ShieldTrigger = Animator.StringToHash("ShieldTrigger");
 
 		public static readonly int IsFallingFromSky = Animator.StringToHash("FallFromSky");
 		public static readonly int IsBobbing = Animator.StringToHash("IsBobbing");
@@ -34,12 +36,17 @@ namespace __SCRIPTS
 		public static readonly int IsGlocking = Animator.StringToHash("IsGlocking");
 		public static readonly int IsDead = Animator.StringToHash("IsDead");
 		public static readonly int IsShooting = Animator.StringToHash("IsShooting");
+		public static readonly int IsAttacking = Animator.StringToHash("IsAttacking");
 		public static readonly int IsCharging = Animator.StringToHash("IsCharging");
 		public static readonly int IsMoving = Animator.StringToHash("IsMoving");
+		public static readonly int IsChainsawing = Animator.StringToHash("IsChainsawing");
 
 		public static readonly int GlockTrigger = Animator.StringToHash("GlockTrigger");
 
 		private HashSet<int> parameterHashes;
+		private static int _aimDir;
+		public static readonly int IsShielding  = Animator.StringToHash("IsShielding");
+		public static readonly int AimDir = Animator.StringToHash("AimDir");
 
 		private void Awake()
 		{
@@ -60,6 +67,7 @@ namespace __SCRIPTS
 		public void Play(string animationClipName, int layer, float startingPlace)
 		{
 			if (animator == null) animator = GetComponentInChildren<Animator>();
+			Debug.Log("playing " + animationClipName);
 			animator.Play(animationClipName, layer, startingPlace);
 		}
 
@@ -83,6 +91,7 @@ namespace __SCRIPTS
 
 		public void SetBool(int parameterHash, bool value)
 		{
+			if (animator == null) animator = GetComponentInChildren<Animator>();
 			if (animator == null)
 			{
 				Debug.LogWarning("Animator not found.");
@@ -98,5 +107,22 @@ namespace __SCRIPTS
 		}
 
 		private bool HasParameter(int parameterHash) => animator != null && parameterHashes.Contains(parameterHash);
+
+		public void SetInt(int parameterHash, int getAimDirNumberFromDegrees)
+		{
+			if (animator == null) animator = GetComponentInChildren<Animator>();
+			if (animator == null)
+			{
+				Debug.LogWarning("Animator not found.");
+				return;
+			}
+
+			if (HasParameter(parameterHash))
+			{
+				animator.SetInteger(parameterHash, getAimDirNumberFromDegrees);
+			}
+			else
+				Debug.LogWarning($"Parameter with hash {getAimDirNumberFromDegrees} does not exist.", this);
+		}
 	}
 }

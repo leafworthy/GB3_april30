@@ -9,7 +9,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Debug
     public class LightingDebug
     {
         static public float atlasTimer = 0;
-    
+
         static public TimerHelper timer;
 
         static UnityEngine.Object[] lights = null;
@@ -20,11 +20,14 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Debug
         static public void OnGUI()
         {
             if (lights == null) {
-                lights = UnityEngine.Object.FindObjectsOfType(typeof(Light2D));
-                colliders = UnityEngine.Object.FindObjectsOfType(typeof(LightCollider2D));
-                sprites = UnityEngine.Object.FindObjectsOfType(typeof(LightSprite2D));
+                lights = UnityEngine.Object.FindObjectsByType<Light2D>(FindObjectsSortMode.None) as Light2D[];
+                colliders =
+                    UnityEngine.Object.FindObjectsByType<LightCollider2D>(FindObjectsSortMode
+                        .None) as LightCollider2D[];
+                sprites =
+                    UnityEngine.Object.FindObjectsByType<LightSprite2D>(FindObjectsSortMode.None) as LightSprite2D[];
 
-                tilemaps = UnityEngine.Object.FindObjectsOfType(typeof(LightTilemapCollider2D));
+                tilemaps = UnityEngine.Object.FindObjectsByType< LightTilemapCollider2D>(FindObjectsSortMode.None) as LightTilemapCollider2D[];
             }
 
             if (timer == null)
@@ -54,7 +57,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Debug
             GUI.skin.GetStyle("label").alignment =  TextAnchor.UpperLeft;
 
             int textSpace = 15;
-            
+
             int y = textSpace;
 
             //GUI.Label(new Rect(10, y, 500, 20), "Total Custom Physics Shapes: " + totalPhysicsShapes);
@@ -68,7 +71,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Debug
             GUI.Label(new Rect(10, y, 500, 20), "Atlas Timer: " + atlasTimer);
 
             y += textSpace;
-            
+
             //GUI.Label(new Rect(10, y, 500, 20), "Camera Size: " + mainBuffer.cameraSize);
 
             y += textSpace;
@@ -148,7 +151,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Debug
             GUI.Label(new Rect(10, y, 500, 20), "=========================");
 
             y += textSpace;
-            
+
             //GUI.Label(new Rect(10, y, 500, 20), "Light Main Buffer Updates: " + ShowLightMainBufferUpdates);
 
             y += textSpace;
@@ -166,8 +169,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Debug
 
             y += textSpace;
 
-        
-            RightBottomPanel() ;    
+
+            RightBottomPanel() ;
         }
 
         public static void RightBottomPanel() {
@@ -182,15 +185,15 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Debug
             GUI.Label(new Rect(0, -50, Screen.width - 10, Screen.height), "Colliders Count: " + colliders.Length, style);
             GUI.Label(new Rect(0, -70, Screen.width - 10, Screen.height), "Sprite Renderers Count: " + sprites.Length, style);
         }
-            
+
         static public void SecondUpdate()
         {
 
             timer = TimerHelper.Create();
 
-            lights = UnityEngine.Object.FindObjectsOfType(typeof(Light2D));
-            colliders = UnityEngine.Object.FindObjectsOfType(typeof(LightCollider2D));
-            sprites = UnityEngine.Object.FindObjectsOfType(typeof(LightSprite2D));
+            lights = UnityEngine.Object.FindObjectsByType<Light2D>(FindObjectsSortMode.None) as Light2D[];
+            colliders = UnityEngine.Object.FindObjectsByType<LightCollider2D>(FindObjectsSortMode.None) as LightCollider2D[];
+            sprites = UnityEngine.Object.FindObjectsByType<LightSprite2D>(FindObjectsSortMode.None) as LightSprite2D[];
         }
     }
 }

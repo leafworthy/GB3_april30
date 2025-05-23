@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class DashAbility : MonoBehaviour, INeedPlayer
+	public class DashAbility : MonoBehaviour, INeedPlayer, IActivity
 	{
 		private AnimationEvents animEvents;
 		private MoveController moveController;
@@ -13,8 +13,9 @@ namespace __SCRIPTS
 		private JumpAbility jumps;
 		private Body body;
 		private Animations anim;
-		private string DashVerbName = "dashing";
+		public string VerbName => "Dash";
 		public bool teleport;
+		private string verbName;
 
 		public void SetPlayer(Player _player)
 		{
@@ -33,47 +34,47 @@ namespace __SCRIPTS
 			animEvents.OnTeleport += Anim_Teleport;
 		}
 
-
 		private void OnDisable()
 		{
-		if (owner == null) return;
+			if (owner == null) return;
 			if (owner.Controller == null) return;
 			if (animEvents != null)
 			{
 				animEvents.OnDashStop -= Anim_DashStop;
 				animEvents.OnTeleport -= Anim_Teleport;
 			}
+
 			owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
-	
 		}
 
 		private void Anim_Teleport()
 		{
-			var newPoint = (Vector2)transform.position + move.GetLastMoveAimDirOffset();
+			var newPoint = (Vector2) transform.position + move.GetLastMoveAimDirOffset();
 			var landable = body.GetLandableAtPosition(newPoint);
 			body.ChangeLayer(landable != null ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
-			if (landable != null)body.SetDistanceToGround(landable.height);
+			if (landable != null) body.SetDistanceToGround(landable.height);
 			transform.position = newPoint;
 		}
 
 		private void Anim_DashStop()
 		{
 			body.ChangeLayer(body.isOverLandable ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
-			body.legs.StopSafely(DashVerbName);
-			body.arms.StopSafely(DashVerbName);
+			body.legs.StopSafely(this);
+			body.arms.StopSafely(this);
 		}
-
-	
 
 		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 		{
 			if (!moveController.CanMove) return;
 			if (PauseManager.I.IsPaused) return;
 			if (!jumps.isResting) return;
-			//body.arms.Stop();
-			//if (!teleport) body.legs.Stop();
-			if (!body.arms.Do(DashVerbName)) return;
-			if(!teleport) if (!body.legs.Do(DashVerbName)) return;
+			if (!body.arms.Do(this)) return;
+			if (!teleport)
+			{
+				if (!body.legs.Do(this))
+					return;
+			}
+
 			anim.SetTrigger(Animations.DashTrigger);
 			if (!teleport)
 			{
@@ -85,10 +86,8 @@ namespace __SCRIPTS
 				body.ChangeLayer(Body.BodyLayer.jumping);
 				body.canLand = true;
 			}
-
-		
 		}
 
-		
+
 	}
 }

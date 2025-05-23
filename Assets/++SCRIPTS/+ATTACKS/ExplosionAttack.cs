@@ -11,6 +11,7 @@ namespace __SCRIPTS
 		private EnemyAI ai;
 		private Animations anim;
 		private float explosionRadius = 5;
+		public override string VerbName => "ExplosionAttack";
 
 		public override void SetPlayer(Player _player)
 		{
@@ -43,7 +44,7 @@ namespace __SCRIPTS
 			if (anim == null) return;
 			if (anim.animEvents == null) return;
 			anim.animEvents.OnAttackHit -= AttackHit;
-	
+
 		}
 
 		private void AttackHit(int attackType)
@@ -82,6 +83,6 @@ namespace __SCRIPTS
 		}
 
 
-	
+
 	}
 }

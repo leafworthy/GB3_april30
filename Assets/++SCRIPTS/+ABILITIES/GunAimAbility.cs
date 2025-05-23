@@ -1,7 +1,16 @@
+using System;
 using System.Collections.Generic;
+using __SCRIPTS;
 using __SCRIPTS.Cursor;
 using UnityEngine;
 
+public interface IAimableGun
+{
+	event Action<Attack, Vector2> OnShotHitTarget;
+	event Action<Attack, Vector2> OnShotMissed;
+	bool isGlocking { get;  }
+	bool isReloading { get; }
+}
 namespace __SCRIPTS
 {
 	public class GunAimAbility : AimAbility
@@ -11,6 +20,7 @@ namespace __SCRIPTS
 		public Vector2 CorrectForGlockOffset = new(-0.37f, 0);
 		public Vector2 OriginalTopSpritePosition;
 		public GameObject TopSprite;
+		private NadeAttack nadeAttack;
 
 		[Header("AK Clips")] public AnimationClip E;
 		public AnimationClip EEN;
@@ -44,29 +54,30 @@ namespace __SCRIPTS
 
 		private List<AnimationClip> akClips = new();
 		private List<AnimationClip> glockClips = new();
-		private GunAttack gunAttack;
+		private IAimableGun aimableGun;
 		private bool Reloading;
 
 		public override void SetPlayer(Player player)
 		{
 			base.SetPlayer(player);
 			anim = GetComponent<Animations>();
-			gunAttack = GetComponent<GunAttack>();
+			aimableGun = GetComponent<IAimableGun>();
 			akClips.AddMany(E, EEN, EN, NE, NW, WN, WWN, W, WWS, WS, SW, SE, ES, EES);
 			glockClips.AddMany(Glock_E, Glock_EEN, Glock_EN, Glock_NE, Glock_NW, Glock_WN, Glock_WWN, Glock_W,
 				Glock_WWS, Glock_WS, Glock_SW,
 				Glock_SE, Glock_ES, Glock_EES);
 			OriginalTopSpritePosition = TopSprite.transform.localPosition;
 			anim.animEvents.OnAnimationComplete += Anim_OnComplete;
-			gunAttack.OnShotHitTarget += GunOnShoot;
-			gunAttack.OnShotMissed += GunOnShoot;
+			aimableGun.OnShotHitTarget += AimableGunOnShoot;
+			aimableGun.OnShotMissed += AimableGunOnShoot;
+			nadeAttack = GetComponent<NadeAttack>();
 		}
 
 		private void OnDisable()
 		{
-			if (gunAttack == null) return;
-			gunAttack.OnShotHitTarget -= GunOnShoot;
-			gunAttack.OnShotMissed -= GunOnShoot;
+			if (aimableGun == null) return;
+			aimableGun.OnShotHitTarget -= AimableGunOnShoot;
+			aimableGun.OnShotMissed -= AimableGunOnShoot;
 			if (anim == null) return;
 			if (anim.animEvents != null) anim.animEvents.OnAnimationComplete -= Anim_OnComplete;
 		}
@@ -83,14 +94,14 @@ namespace __SCRIPTS
 			isAttacking = false;
 		}
 
-		private void GunOnShoot(Attack attack, Vector2 vector2)
+		private void AimableGunOnShoot(Attack attack, Vector2 vector2)
 		{
 			if (attack.Owner != owner) return;
 			isAttacking = true;
 			anim.animator.speed = 1;
 			anim.SetFloat(Animations.ShootSpeed, 1);
 			anim.Play(GetAnimationClipNameFromDegrees(GetDegrees()), 1, .25f);
-			if (gunAttack.isGlocking)
+			if (aimableGun.isGlocking)
 			{
 				if (!body.TopIsFacingRight)
 					TopSprite.transform.localPosition = OriginalTopSpritePosition + CorrectForGlockOffset;
@@ -110,19 +121,19 @@ namespace __SCRIPTS
 		{
 			base.Update();
 			body.TopFaceDirection(GetClampedAimDir().x >= 0);
-			if (gunAttack.isGlocking)
+			if (aimableGun.isGlocking)
 			{
 				if (!body.TopIsFacingRight)
 					TopSprite.transform.localPosition = OriginalTopSpritePosition + CorrectForGlockOffset;
 				else TopSprite.transform.localPosition = OriginalTopSpritePosition;
 			}
 
-			if (body.arms.currentActivity == NadeAttack.AimVerbName)
+			if ((NadeAttack) body.arms.currentActivity == nadeAttack)
 			{
 				AimInDirection(GetDegrees());
 			}
 
-			if (!isAttacking && !gunAttack.isReloading && !body.arms.isActive)
+			if (!isAttacking && !aimableGun.isReloading && !body.arms.isActive)
 			{
 				AimInDirection(GetDegrees());
 			}
@@ -136,7 +147,7 @@ namespace __SCRIPTS
 			var angleDifference = 25.7f;
 			var whichOne = Mathf.FloorToInt(Mathf.Abs(degrees / angleDifference));
 
-			if (gunAttack.isGlocking)
+			if (aimableGun.isGlocking)
 			{
 				if (whichOne >= glockClips.Count) whichOne = 0;
 				return glockClips[whichOne].name;
@@ -157,7 +168,7 @@ namespace __SCRIPTS
 
 			if (whichOne >= akClips.Count) whichOne = 0;
 
-			if (gunAttack.isGlocking)
+			if (aimableGun.isGlocking)
 			{
 				if (glockClips[whichOne] != null) anim.Play(glockClips[whichOne].name, 1, 0);
 				if (!body.TopIsFacingRight)
@@ -187,11 +198,6 @@ namespace __SCRIPTS
 
 			if (clampedDir.x < 0 && clampedDir.x > -.25) clampedDir.x = -.25f;
 			return clampedDir;
-		}
-
-		public float GetRealMagnitude()
-		{
-			return owner.Controller.MoveAxis.GetCurrentAngle().magnitude;
 		}
 	}
 }
