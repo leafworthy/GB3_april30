@@ -10,11 +10,10 @@ namespace __SCRIPTS
 		public TravelPoint defaultTravelPoint;
 		public SceneDefinition scene;
 		public GraphNodePositioner nodePositioner;
-		public event Action OnLevelRestart;
 		public event Action OnGameOver;
 		public event Action<Player> OnPlayerSpawned;
 		private List<TravelPoint> getSpawnPoints() => FindObjectsByType<TravelPoint>(FindObjectsSortMode.None).ToList();
-		
+
 		private bool hasSpawnPoint(TravelPoint travelPoint) => getSpawnPoints().Contains(travelPoint);
 
 		private void Start()

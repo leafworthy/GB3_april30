@@ -2,12 +2,12 @@
 
 namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 {
-	public class UnfreezeState : IEnemyState
+	public class UnfreezeState : IAIState
 	{
-		private EnemyAI _ai;
+		private IAI _ai;
 		private Vector2 randomDirection;
 		private float unstickTime = 1;
-		public void OnEnterState(EnemyAI ai)
+		public void OnEnterState(IAI ai)
 		{
 			_ai = ai;
 			randomDirection = UnityEngine.Random.insideUnitCircle;

@@ -33,7 +33,6 @@ namespace __SCRIPTS
 
 		public override void SetPlayer(Player player)
 		{
-			attacker = GetComponent<Life>();
 			ammoInventory = GetComponent<AmmoInventory>();
 			anim = GetComponent<Animations>();
 			anim.animEvents.OnAnimationComplete += Anim_OnComplete;
@@ -64,7 +63,6 @@ namespace __SCRIPTS
 
 		private void ListenToPlayer()
 		{
-			if (attacker == null) attacker = GetComponent<Life>();
 			var player = attacker.player;
 			if (player == null) return;
 			attacker.OnDying += OnDead;
@@ -74,7 +72,6 @@ namespace __SCRIPTS
 
 		private void StopListeningToPlayer()
 		{
-			if (attacker == null) attacker = GetComponent<Life>();
 			var player = attacker.player;
 			if (player == null) return;
 			attacker.OnDying -= OnDead;

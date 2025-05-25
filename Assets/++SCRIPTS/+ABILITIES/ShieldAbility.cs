@@ -16,7 +16,6 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 	private JumpController jumpController;
 	private Body body;
 	private Animations anim;
-	private string DashVerbName = "dashing";
 	private bool isDashing;
 	private bool isShielding;
 	public AnimationClip shieldOutClip;
@@ -99,7 +98,6 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 		if (moveController.IsIdle())
 		{
 			CancelShielding(null);
-			return;
 		}
 		else
 		{

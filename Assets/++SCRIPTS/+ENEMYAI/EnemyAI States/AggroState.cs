@@ -2,15 +2,15 @@ using UnityEngine;
 
 namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 {
-	public class AggroState : IEnemyState
+	public class AggroState : IAIState
 	{
 		private Life target;
-		private EnemyAI ai;
+		private IAI ai;
 
-		public void OnEnterState(EnemyAI _ai)
+		public void OnEnterState(IAI _ai)
 		{
 			ai = _ai;
-			_ai.OnAggro();
+			_ai.GetBornIfBornOnAggro();
 			target = ai.Targets.GetClosestPlayer();
 
 			if (target == null)
@@ -21,12 +21,12 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 			}
 
 			ai.Pathmaker.SetTargetPosition(target.transform.position);
-	
+
 		}
 
 		private bool CanAttackObstacleWithinAttackRange()
 		{
-		
+
 			var closestObstacle = ai.Targets.GetClosestAttackableObstacle();
 			if (closestObstacle == null) return false;
 			if(ai.Targets.HasLineOfSightWith(target.transform.position))
@@ -40,7 +40,7 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 			return true;
 		}
 
-	
+
 
 		public void OnExitState()
 		{

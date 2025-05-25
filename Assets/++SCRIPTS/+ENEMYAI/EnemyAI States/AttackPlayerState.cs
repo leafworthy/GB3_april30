@@ -1,13 +1,13 @@
 namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 {
-	public class AttackPlayerState : IEnemyState
+	public class AttackPlayerState : IAIState
 	{
 		private Life target;
-		private EnemyAI ai;
-	
+		private IAI ai;
 
-		public void OnEnterState(EnemyAI _ai)
-		{ 
+
+		public void OnEnterState(IAI _ai)
+		{
 			ai = _ai;
 			target = _ai.Targets.GetClosestAttackablePlayer();
 			if (target == null)
@@ -25,13 +25,6 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 
 		public void UpdateState()
 		{
-			/*
-		if (!ai.FoundTargetInAggroRange())
-		{
-			ai.Thoughts.Think("No Target Found, going idle!");
-			ai.TransitionToState(new IdleState());
-			return;
-		}*/
 
 			target = ai.Targets.GetClosestAttackablePlayer();
 			if (target != null)
@@ -47,11 +40,11 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 		}
 	}
 
-	public class AttackObstacleState : IEnemyState
+	public class AttackObstacleState : IAIState
 	{
 		private Life target;
-		private EnemyAI ai;
-		public void OnEnterState(EnemyAI _ai)
+		private IAI ai;
+		public void OnEnterState(IAI _ai)
 		{
 			ai = _ai;
 			AttackObstacle();
@@ -69,7 +62,7 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 			target = ai.Targets.GetClosestAttackableObstacle();
 			if (target != null && !target.IsDead())
 			{
-			
+
 				ai.Thoughts.Think("Attacking Door!");
 				ai.Attack(target);
 			}

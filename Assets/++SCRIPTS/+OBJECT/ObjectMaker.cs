@@ -42,6 +42,7 @@ namespace __SCRIPTS
 
 		private void PoolObjects(GameLevel gameLevel)
 		{
+			Debug.Log("poolin");
 			foreach (var obj in ObjectsToPool)
 			{
 
@@ -80,11 +81,11 @@ namespace __SCRIPTS
 			GameObject instance;
 			var recycledScript = prefab.GetComponent<RecycleGameObject>();
 			if (recycledScript == null) recycledScript = prefab.AddComponent<RecycleGameObject>();
-			
+
 				var pool = I.GetObjectPool(recycledScript);
 				instance = pool.NextObject(pos).gameObject;
 				instance.transform.SetParent(pool.transform);
-			
+
 
 			allActiveUnits.Add(instance);
 			return instance;
@@ -103,10 +104,12 @@ namespace __SCRIPTS
 					recyleGameObject.DeactivateGameObject();
 				else
 				{
-					allActiveUnits.Remove(_gameObject);
+
 					var comp = _gameObject.AddComponent<RecycleGameObject>();
 					comp.DeactivateGameObject();
 				}
+
+				allActiveUnits.Remove(_gameObject);
 			}
 		}
 

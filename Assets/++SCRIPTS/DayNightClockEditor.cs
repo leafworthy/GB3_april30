@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-   
-    public class DayNightClockEditor : Editor
+
+    public class DayNightClockEditor : UnityEditor.Editor
     {
         private SerializedProperty timeTextProp;
         private SerializedProperty daytimeRadialImageProp;
@@ -57,7 +57,7 @@ namespace __SCRIPTS
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-        
+
             // UI References Section
             EditorGUILayout.LabelField("UI References", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(timeTextProp);
@@ -67,57 +67,57 @@ namespace __SCRIPTS
             EditorGUILayout.PropertyField(backgroundImageProp);
             EditorGUILayout.PropertyField(dayIconProp);
             EditorGUILayout.PropertyField(nightIconProp);
-        
+
             EditorGUILayout.Space();
-        
+
             // Time Format Settings
             showTimeSettings = EditorGUILayout.Foldout(showTimeSettings, "Time Format Settings", true);
             if (showTimeSettings)
             {
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(use24HourFormatProp);
-            
+
                 // Only show AM/PM setting if using 12-hour format
                 if (!use24HourFormatProp.boolValue)
                 {
                     EditorGUILayout.PropertyField(showAmPmProp);
                 }
-            
+
                 EditorGUILayout.PropertyField(showDayProp);
                 EditorGUI.indentLevel--;
             }
-        
+
             EditorGUILayout.Space();
-        
+
             // Visual Settings
             showVisualSettings = EditorGUILayout.Foldout(showVisualSettings, "Visual Settings", true);
             if (showVisualSettings)
             {
                 EditorGUI.indentLevel++;
-            
+
                 // Day/Night threshold
                 EditorGUILayout.LabelField("Day/Night Thresholds");
                 EditorGUILayout.PropertyField(daytimeStartProp, new GUIContent("Daytime Start"));
                 EditorGUILayout.PropertyField(nighttimeStartProp, new GUIContent("Nighttime Start"));
                 EditorGUILayout.PropertyField(currentDayProp, new GUIContent("Current Day"));
-            
+
                 // Convert to human-readable time for reference
                 float daytimeHours = daytimeStartProp.floatValue * 24f;
                 int daytimeHoursInt = Mathf.FloorToInt(daytimeHours);
                 int daytimeMinutes = Mathf.FloorToInt((daytimeHours - daytimeHoursInt) * 60f);
-            
+
                 float nighttimeHours = nighttimeStartProp.floatValue * 24f;
                 int nighttimeHoursInt = Mathf.FloorToInt(nighttimeHours);
                 int nighttimeMinutes = Mathf.FloorToInt((nighttimeHours - nighttimeHoursInt) * 60f);
-            
+
                 EditorGUILayout.HelpBox(
-                    string.Format("Daytime starts at {0:D2}:{1:D2}\nNighttime starts at {2:D2}:{3:D2}", 
+                    string.Format("Daytime starts at {0:D2}:{1:D2}\nNighttime starts at {2:D2}:{3:D2}",
                         daytimeHoursInt, daytimeMinutes, nighttimeHoursInt, nighttimeMinutes),
                     MessageType.Info
                 );
-            
+
                 EditorGUILayout.Space();
-            
+
                 // Colors
                 EditorGUILayout.LabelField("Colors");
                 EditorGUILayout.PropertyField(daytimeTextColorProp);
@@ -126,10 +126,10 @@ namespace __SCRIPTS
                 EditorGUILayout.PropertyField(nighttimeOutlineColorProp);
                 EditorGUILayout.PropertyField(daytimeBackgroundColorProp);
                 EditorGUILayout.PropertyField(nighttimeBackgroundColorProp);
-            
+
                 EditorGUI.indentLevel--;
             }
-        
+
             serializedObject.ApplyModifiedProperties();
         }
     }

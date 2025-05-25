@@ -128,7 +128,7 @@ namespace __SCRIPTS
 				else TopSprite.transform.localPosition = OriginalTopSpritePosition;
 			}
 
-			if ((NadeAttack) body.arms.currentActivity == nadeAttack)
+			if (body.arms.currentActivity?.VerbName == nadeAttack.VerbName)
 			{
 				AimInDirection(GetDegrees());
 			}

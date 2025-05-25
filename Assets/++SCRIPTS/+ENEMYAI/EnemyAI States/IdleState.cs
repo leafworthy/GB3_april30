@@ -2,17 +2,18 @@ using UnityEngine;
 
 namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 {
-	public class IdleState : IEnemyState
+	public class IdleState : IAIState
 	{
 		private float idleCooldown;
-		private EnemyAI ai;
+		private IAI ai;
+		private float idleCoolDownMax = 2;
 
-		public void OnEnterState(EnemyAI _ai)
+		public void OnEnterState(IAI _ai)
 		{
 			ai = _ai;
-			idleCooldown = ai.idleCoolDownMax;
+			idleCooldown = idleCoolDownMax;
 			ai.StopMoving();
-		
+
 		}
 
 		public void OnExitState()
@@ -21,7 +22,7 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 
 		public void UpdateState()
 		{
-			if (ai.FoundTargetInAggroRange())
+			if (ai.Targets.GetClosestPlayerInAggroRange() != null)
 			{
 				ai.Thoughts.Think("Found target in aggro range, going aggro.");
 				ai.TransitionToState(new AggroState());

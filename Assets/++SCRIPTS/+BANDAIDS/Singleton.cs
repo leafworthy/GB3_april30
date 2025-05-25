@@ -20,7 +20,7 @@ namespace __SCRIPTS
         {
             if (_instance != null) return;
             _instance = FindFirstObjectByType<T>(FindObjectsInactive.Include);
-           /* if(_instance == null)
+            if(_instance == null)
             {
                 if (go == null)
                 {
@@ -28,8 +28,8 @@ namespace __SCRIPTS
                     go.AddComponent<T>();
                 }
                 _instance = go.GetComponent<T>();
-                Debug.Log("Singleton " + typeof(T).Name + " created", go);
-            }*/
+                Debug.Log("Singleton " + typeof(T).Name + "actually created", go);
+            }
         }
 
 

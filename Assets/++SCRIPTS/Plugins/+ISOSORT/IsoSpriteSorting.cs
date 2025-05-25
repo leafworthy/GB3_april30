@@ -185,7 +185,8 @@ namespace __SCRIPTS.Plugins._ISOSORT
 #if UNITY_EDITOR
 			if (!Application.isPlaying)
 			{
-				isoSorters = FindObjectsOfType<IsoSpriteSorting>(true);
+				//CHANGED THIS from findObjectsOfType to FindObjectsByType
+				isoSorters = (IsoSpriteSorting[])FindObjectsByType(typeof(IsoSpriteSorting), FindObjectsInactive.Include, FindObjectsSortMode.None);
 				foreach (var t1 in isoSorters)
 				{
 					t1.Setup();
@@ -263,7 +264,6 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		private Vector3 lastPosition;
 		private Quaternion lastRotation;
 		private Vector3 lastScale;
-		[SerializeField] private SortingGroup sortingGroup;
 
 		private void OnDrawGizmos()
 		{
@@ -424,7 +424,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				{
 					if (renderersToSort[j] == null) continue;
 
-					sortingGroup.sortingOrder = value + j;
+					renderersToSort[j].sortingOrder = value + j;
 				}
 			}
 		}

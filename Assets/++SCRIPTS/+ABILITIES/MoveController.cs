@@ -20,14 +20,11 @@ namespace __SCRIPTS
 		private Animations anim;
 		private bool isWounded;
 		private EnemyAI ai;
-		private string VerbName = "Moving";
-
 		public void SetPlayer(Player _player)
 		{
 			anim = GetComponent<Animations>();
 			life = GetComponent<Life>();
 			mover = GetComponent<MoveAbility>();
-			life = GetComponent<Life>();
 			body = GetComponent<Body>();
 			owner = _player;
 
@@ -43,8 +40,11 @@ namespace __SCRIPTS
 		}
 		private void InitializeLife()
 		{
+
+
 			if (life.IsPlayer)
 			{
+				Debug.Log("life is player", this);
 				owner = life.player;
 				owner.Controller.MoveAxis.OnChange += Player_MoveInDirection;
 				owner.Controller.MoveAxis.OnInactive += Player_StopMoving;
@@ -55,9 +55,9 @@ namespace __SCRIPTS
 				ai = GetComponent<EnemyAI>();
 				if (ai == null)
 				{
-					Debug.LogError("No AI found on " + gameObject.name);
 					return;
 				}
+
 				ai.OnMoveInDirection += AI_MoveInDirection;
 				ai.OnStopMoving += AI_StopMoving;
 				CanMove = !ai.BornOnAggro;

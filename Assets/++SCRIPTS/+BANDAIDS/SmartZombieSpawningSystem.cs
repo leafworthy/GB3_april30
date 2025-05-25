@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using __SCRIPTS.Cursor;
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -133,6 +134,7 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
+			Debug.Log("zombie spawning started");
 			spawnArea = GetComponent<PolygonCollider2D>();
 			spawnArea.isTrigger = true;
 			spawnPoints.AddRange(GetComponentsInChildren<SmartZombieSpawnPoint>());
@@ -228,7 +230,16 @@ namespace __SCRIPTS
 		private void ConfigureNewEnemy(GameObject enemy, bool isBoss = false)
 		{
 			// Set up the Life component
+			Debug.Log("configuring new enemy");
 			var life = enemy.GetComponent<Life>();
+			life.SetPlayer(Players.EnemyPlayer);
+			foreach (var component in enemy.GetComponents<INeedPlayer>())
+			{
+
+				component.SetPlayer(Players.EnemyPlayer);
+
+			}
+
 			if (life != null)
 			{
 				// Apply difficulty scaling
@@ -266,7 +277,7 @@ namespace __SCRIPTS
 				life.AddHealth(life.HealthMax);
 
 				// Set the player reference to enemy player
-				life.SetPlayer(Players.EnemyPlayer);
+
 			}
 
 			if(isBoss) Debug.Log("Boss spawned!");

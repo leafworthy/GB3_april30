@@ -40,7 +40,9 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
+			if (ai == null) return;
 			ai.OnAttack -= AI_Attack;
+			if (anim == null) return;
 			anim.animEvents.OnAttackHit -= OnAttackHit;
 			anim.animEvents.OnAttackStop -= OnAttackStop;
 

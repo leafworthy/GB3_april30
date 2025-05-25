@@ -10,8 +10,11 @@ namespace __SCRIPTS
 		private static List<Life> _allEnemies = new();
 		public event Action<Player, Life> OnPlayerKillsEnemy;
 		public event Action<Player, Life> OnEnemyDying;
-	
 
+   		private void OnEnable()
+		{
+			LevelManager.I.OnStopLevel += ClearEnemies;
+		}
 
 		public void CollectEnemy(GameObject enemy)
 		{
@@ -29,7 +32,7 @@ namespace __SCRIPTS
 			OnEnemyDying?.Invoke(x, y);
 		}
 
-		private void OnDisable()
+		private void ClearEnemies(GameLevel gameLevel)
 		{
 			foreach (var enemy in _allEnemies)
 			{
@@ -39,7 +42,7 @@ namespace __SCRIPTS
 			_allEnemies.Clear();
 		}
 
-	
+
 
 		private  void EnemyKilled(Player killer, Life life)
 		{

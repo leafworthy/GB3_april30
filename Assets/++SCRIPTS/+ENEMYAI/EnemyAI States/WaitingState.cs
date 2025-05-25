@@ -1,9 +1,9 @@
 namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 {
-	public class WaitingState : IEnemyState
+	public class WaitingState : IAIState
 	{
-		private EnemyAI ai;
-		public void OnEnterState(EnemyAI _ai)
+		private IAI ai;
+		public void OnEnterState(IAI _ai)
 		{
 			ai = _ai;
 		}
@@ -14,7 +14,7 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 
 		public void UpdateState()
 		{
-			if (ai.FoundTargetInAggroRange())
+			if (ai.Targets.FoundTargetInAggroRange())
 			{
 				ai.Thoughts.Think("Found target in aggro range, going aggro.");
 				ai.TransitionToState(new AggroState());

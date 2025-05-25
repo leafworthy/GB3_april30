@@ -28,10 +28,6 @@ namespace __SCRIPTS
 			MakeDropList();
 		}
 
-		private void OnDisable()
-		{
-			if(EnemyManager.I != null) EnemyManager.I.OnEnemyDying -= DropLootFromEnemy;
-		}
 
 		private void DropLootFromEnemy(Player player, Life life)
 		{

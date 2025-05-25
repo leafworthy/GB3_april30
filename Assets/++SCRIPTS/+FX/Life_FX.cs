@@ -44,7 +44,7 @@ namespace __SCRIPTS
 			_life.OnFractionChanged += DefenceOnDefenceChanged;
 			_life.OnDying += DefenceOnDead;
 			_life.OnPlayerSet += OnPlayerSet;
-			if (_life.unitData.ShowLifeBar) return;
+			if (_life.unitData.showLifeBar) return;
 			if (healthBar != null) healthBar.SetActive(false);
 		}
 
@@ -78,11 +78,11 @@ namespace __SCRIPTS
 			}
 		}
 
-	
+
 
 		private void Life_Damaged(Attack attack)
 		{
-			
+
 			CreateDamageRisingText(attack);
 			if (attack.DestinationLife.DebrisType == DebrisType.none) return;
 			StartTint(attack.color);
@@ -148,12 +148,12 @@ namespace __SCRIPTS
 				var backwardDebree = ObjectMaker.I.Make(ASSETS.FX.GetDebree(_life.DebrisType), attack.DestinationFloorPoint);
 				backwardDebree.GetComponent<FallToFloor>().Fire(flippedAttack);
 				ObjectMaker.I.Unmake(backwardDebree, 3);
-				
+
 					var sprite = forwardDebree.GetComponentInChildren<SpriteRenderer>();
 					if (sprite != null) sprite.color = DebreeTint;
 					sprite = backwardDebree.GetComponentInChildren<SpriteRenderer>();
 					if (sprite != null) sprite.color = DebreeTint;
-			
+
 			}
 
 		}
@@ -199,7 +199,7 @@ namespace __SCRIPTS
 			if (_life == null) return;
 			if (healthBar == null) return;
 
-			if (!_life.unitData.ShowLifeBar) return;
+			if (!_life.unitData.showLifeBar) return;
 			targetFill = _life.GetFraction();
 			if (targetFill > .9f || targetFill <= 0)
 				healthBar.SetActive(false);

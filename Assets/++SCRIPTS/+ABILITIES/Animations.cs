@@ -67,7 +67,7 @@ namespace __SCRIPTS
 		public void Play(string animationClipName, int layer, float startingPlace)
 		{
 			if (animator == null) animator = GetComponentInChildren<Animator>();
-			Debug.Log("playing " + animationClipName);
+
 			animator.Play(animationClipName, layer, startingPlace);
 		}
 

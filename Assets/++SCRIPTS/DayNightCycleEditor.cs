@@ -5,7 +5,7 @@ using UnityEngine;
 namespace __SCRIPTS
 {
 	[CustomEditor(typeof(DayNightCycle))]
-	public class DayNightCycleEditor : Editor
+	public class DayNightCycleEditor : UnityEditor.Editor
 	{
 		private DayNightCycle cycle;
 		private SerializedProperty targetLightProp;

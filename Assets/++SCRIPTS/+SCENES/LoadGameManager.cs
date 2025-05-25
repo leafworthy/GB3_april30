@@ -6,10 +6,12 @@ namespace __SCRIPTS
     /// <summary>
     /// Ensures the GameManager scene is loaded additively when a game scene is loaded
     /// </summary>
-    public class LoadGameManager : MonoBehaviour
+    public static class LoadGameManager
     {
-        public SceneDefinition gameManagerScene;
-        private void Awake()
+        private static string SceneName => "0_GameManagerScene";
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void LoadGameManagerAtStart()
         {
             if (GameManager.gameManagerLoaded)
             {
@@ -19,7 +21,7 @@ namespace __SCRIPTS
             CreateGameManager();
         }
 
-        private void CreateGameManager()
+        private static void CreateGameManager()
         {
             // Check if GameManager scene is already loaded
             for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -29,9 +31,9 @@ namespace __SCRIPTS
                 Debug.Log("GameManager scene already loaded");
                 return;
             }
-        
+
             // Load GameManager scene additively
-            SceneManager.LoadScene(gameManagerScene.sceneName, LoadSceneMode.Additive);
+            SceneManager.LoadScene(SceneName, LoadSceneMode.Single);
             Debug.Log($"Loading GameManager scene");
         }
     }

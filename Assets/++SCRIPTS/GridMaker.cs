@@ -15,7 +15,7 @@ namespace __SCRIPTS
 		private List<GameObject> gridCells = new List<GameObject>();
 		public Vector2 offset;
 
-	
+
 #if UNITY_EDITOR
 		[Button()]
 		public void MakeGrid()
@@ -49,11 +49,7 @@ namespace __SCRIPTS
 
 			// Load Prefab Asset as Object from path
 			Object _newObject = AssetDatabase.LoadAssetAtPath(prefabPath, typeof(Object));
-			return null; //CHANGED THIS
-			//Instantiate the Prefab in the scene, as a child of the GO this script runs on
-			GameObject _newPrefabInstance = PrefabUtility.InstantiatePrefab(_newObject, this.transform) as GameObject;
-			_newPrefabInstance.transform.position = position;
-			return _newPrefabInstance;
+			return null;
 		}
 #endif
 
@@ -77,4 +73,3 @@ namespace __SCRIPTS
 		}
 	}
 }
-

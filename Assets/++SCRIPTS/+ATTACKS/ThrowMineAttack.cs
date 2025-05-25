@@ -31,7 +31,6 @@ namespace __SCRIPTS
 		public AnimationClip mineDropAnimation;
 		public string VerbName => "Throw-Mine";
 
-		private static string ThrowVerbName = "nading";
 
 		public event Action<Vector2, Player> OnThrow;
 
@@ -116,7 +115,7 @@ namespace __SCRIPTS
 			{
 				if ((jump.IsJumping))
 				{
-					if (arms.currentActivity.VerbName == VerbName) return;
+					if (arms.currentActivity?.VerbName == VerbName) return;
 					arms.StopCurrentActivity();
 					arms.Do(this);
 				}

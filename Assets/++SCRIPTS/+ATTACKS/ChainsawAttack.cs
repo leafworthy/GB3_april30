@@ -28,7 +28,6 @@ namespace __SCRIPTS
 
 		public override void SetPlayer(Player _player)
 		{
-			base.SetPlayer(_player);
 			anim = GetComponent<Animations>();
 			body = GetComponent<Body>();
 			player = _player;
@@ -130,7 +129,7 @@ namespace __SCRIPTS
 				return;
 			}
 
-			if (body.arms.isActive && body.arms.currentActivity.VerbName != VerbName)
+			if (body.arms.isActive && body.arms.currentActivity?.VerbName != VerbName)
 			{
 				StopAttacking();
 				StopChainsawing();

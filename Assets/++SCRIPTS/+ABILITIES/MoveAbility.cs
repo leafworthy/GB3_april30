@@ -19,7 +19,6 @@ namespace __SCRIPTS
 		private bool isMoving;
 		private bool isDragging = true;
 
-		private Vector2 lastAimMovePoint;
 		private Vector2 lastAimDirOffset;
 
 		private float moveSpeed;
@@ -29,28 +28,21 @@ namespace __SCRIPTS
 		private Life life;
 		private Body body;
 		private float maxAimDistance = 30;
-		private float minDirectionMagnitude = .2f;
 		public string VerbName => "Move";
 		public Vector2 MoveAimDir { get; set; }
 
-		public Vector2 GetMoveAimPoint(float multiplier = 1)
+		public Vector2 GetMoveAimPoint()
 		{
 			if (life == null || !life.IsPlayer) return Vector2.zero;
 			MoveAimDir = GetMoveAimDir();
 			lastAimDirOffset = MoveAimDir * maxAimDistance;
 			if (!life.player.isUsingMouse) return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
 			var mousePos = CursorManager.GetMousePosition();
-			//if (Vector2.Distance(body.AimCenter.transform.position, mousePos) < maxAimDistance)
-			//{
-			//	return mousePos;
-			//}
-			//else
-			//{
+
 			return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
-			//}
+
 		}
 
-		public Vector2 GetLastMoveAimPoint() => lastAimMovePoint;
 		public Vector2 GetLastMoveAimDirOffset() => lastAimDirOffset;
 
 		public Vector3 GetMoveAimDir()
@@ -121,7 +113,6 @@ namespace __SCRIPTS
 			moveDir = direction.normalized;
 			moveSpeed = newSpeed;
 			isMoving = true;
-			lastAimMovePoint = GetMoveAimPoint();
 		}
 
 		private void AddMoveVelocity(Vector2 tempVel)

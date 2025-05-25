@@ -5,7 +5,8 @@ namespace __SCRIPTS
 {
 	public class Attacks : MonoBehaviour, INeedPlayer, IActivity
 	{
-		protected Life attacker;
+		private Life _attacker;
+		protected Life attacker => _attacker?? GetComponent<Life>();
 		public virtual string VerbName => "Generic-Attack";
 
 		protected void HitTarget(float attackDamage, Life targetLife, float extraPush = 0)
@@ -33,10 +34,7 @@ namespace __SCRIPTS
 
 		public virtual void SetPlayer(Player _player)
 		{
-			attacker = GetComponent<Life>();
 		}
-
-
 	}
 }
 

@@ -6,8 +6,20 @@ namespace __SCRIPTS._ENEMYAI
 {
 	public class Targetter : MonoBehaviour
 	{
+		private void Awake()
+		{
+			wanderPoint = transform.position;
+		}
+
 		private Life targetterLife => GetComponent<Life>();
+		public Vector3 WanderPoint
+		{
+			get => wanderPoint;
+			private set => wanderPoint = value;
+		}
+		public float WanderRadius = 50;
 		private Life specialTarget;
+		private Vector3 wanderPoint;
 
 		#region private functions
 
@@ -49,7 +61,7 @@ namespace __SCRIPTS._ENEMYAI
 			Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
 			         .Where(life => life != null && TargetIsValid(life)).ToList();
 
-	
+
 		private List<Life> GetValidObstaclesInRange(LayerMask layer, float range)
 		{
 			return Physics2D.OverlapCircleAll(transform.position, range)
@@ -109,7 +121,7 @@ namespace __SCRIPTS._ENEMYAI
 		private bool ObstacleIsValid(Life target)
 		{
 			if (target == null || target.IsDead()) return false;
-		
+
 			if (!target.IsObstacle) return false;
 			var door = target.GetComponentInParent<DoorInteraction>();
 			if (door == null) return false;
@@ -119,10 +131,11 @@ namespace __SCRIPTS._ENEMYAI
 
 			return true;
 		}
+
+		public bool FoundTargetInAggroRange()
+		{
+			var target = GetClosestPlayerInAggroRange();
+			return target != null;
+		}
 	}
 }
-
-
-
-
-

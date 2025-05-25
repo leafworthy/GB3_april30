@@ -1,5 +1,4 @@
 using System;
-using DTT.Utils.Workflow;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -27,7 +26,7 @@ namespace __SCRIPTS
 		{
 			if (isActive)
 			{
-				if (currentActivity.VerbName == activity.VerbName)
+				if (currentActivity?.VerbName == activity.VerbName)
 				{
 					ActivityStory += "\nTried to start doing " + activity.VerbName + " but already doing it";
 					return false;

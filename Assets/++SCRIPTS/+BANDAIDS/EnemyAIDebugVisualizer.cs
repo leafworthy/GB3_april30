@@ -35,7 +35,7 @@ namespace __SCRIPTS
 
 			// Draw Wander Range
 			Gizmos.color = wanderRangeColor;
-			Gizmos.DrawSphere(enemyAI.WanderPoint, enemyAI.WanderRadius);
+			Gizmos.DrawSphere(enemyAI.Targets.WanderPoint, enemyAI.Targets.WanderRadius);
 		}
 	}
 }

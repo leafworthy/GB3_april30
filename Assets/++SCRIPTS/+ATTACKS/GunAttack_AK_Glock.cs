@@ -44,7 +44,6 @@ namespace __SCRIPTS
 
 		public override void SetPlayer(Player player)
 		{
-			attacker = GetComponent<Life>();
 			ammoInventory = GetComponent<AmmoInventory>();
 			anim = GetComponent<Animations>();
 			body = GetComponent<Body>();
@@ -93,7 +92,6 @@ namespace __SCRIPTS
 
 		private void ListenToPlayer()
 		{
-			if (attacker == null) attacker = GetComponent<Life>();
 			var player = attacker.player;
 			if (player == null) return;
 			attacker.OnDying += OnDead;
@@ -105,7 +103,6 @@ namespace __SCRIPTS
 
 		private void StopListeningToPlayer()
 		{
-			if (attacker == null) attacker = GetComponent<Life>();
 			var player = attacker.player;
 			if (player == null) return;
 			attacker.OnDying -= OnDead;
@@ -118,7 +115,7 @@ namespace __SCRIPTS
 		private void FixedUpdate()
 		{
 			if (PauseManager.I.IsPaused) return;
-			if ((GunAttack_AK_Glock) arms.currentActivity != this) isShooting = false;
+			if (arms.currentActivity?.VerbName != this.VerbName) isShooting = false;
 
 			if (isPressing) TryShooting();
 			if (isShooting) ShootWithCooldown(aim.AimDir);
