@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 3810485456986275567}
   - component: {fileID: 3648571505978919920}
   m_Layer: 9
-  m_Name: Life Point
+  m_Name: Wall_Wood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -187,10 +187,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 0aae0210f0dee4921a6e58b0c9008305, type: 2}
+  _unitData:
+    unitName: 
+    category: 0
+    debrisType: 0
+    isPlayerSwingHittable: 0
+    showLifeBar: 0
+    isInvincible: 0
+    healthMax: 0
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 0
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+  ExtraMaxHealthFactor: 0
+  ExtraMaxSpeedFactor: 0
+  ExtraMaxDamageFactor: 0
   cantDie: 1
   isInvincible: 0
-  Health: 100
+  Health: 0
 --- !u!114 &3648571505978919920
 MonoBehaviour:
   m_ObjectHideFlags: 0

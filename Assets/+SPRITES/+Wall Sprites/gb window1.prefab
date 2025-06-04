@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7843662131286379676}
   - component: {fileID: 3519283188518870037}
   m_Layer: 12
-  m_Name: Life
+  m_Name: Window
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -97,8 +97,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 0aae0210f0dee4921a6e58b0c9008305, type: 2}
+  _unitData:
+    unitName: 
+    category: 0
+    debrisType: 0
+    isPlayerSwingHittable: 0
+    showLifeBar: 0
+    isInvincible: 0
+    healthMax: 0
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 0
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+  ExtraMaxHealthFactor: 0
+  ExtraMaxSpeedFactor: 0
+  ExtraMaxDamageFactor: 0
   cantDie: 0
+  isInvincible: 0
   Health: 100
 --- !u!1 &2260240910022495033
 GameObject:
@@ -153,8 +180,8 @@ MonoBehaviour:
   sortingBounds: {fileID: 0}
   renderBelowSortingOrder: 0
   sortType: 1
-  SorterPositionOffset: {x: 1.3379364, y: -6.0191765, z: 0}
-  SorterPositionOffset2: {x: 6.618801, y: -3.472702, z: 0}
+  SorterPositionOffset: {x: 1.3379364, y: -6.019165, z: 0}
+  SorterPositionOffset2: {x: 6.618805, y: -3.4727173, z: 0}
   renderersToSort:
   - {fileID: 6471293830764233971}
   - {fileID: 446444561550738400}
@@ -461,7 +488,7 @@ GameObject:
   - component: {fileID: 4832847899672098451}
   - component: {fileID: 5479028638363957388}
   m_Layer: 9
-  m_Name: Life.001
+  m_Name: Window
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -546,6 +573,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 03b241913a1b948df8b5ab5d17e40694, type: 2}
+  _unitData:
+    unitName: 
+    category: 0
+    debrisType: 0
+    isPlayerSwingHittable: 0
+    showLifeBar: 0
+    isInvincible: 0
+    healthMax: 0
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 0
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+  ExtraMaxHealthFactor: 0
+  ExtraMaxSpeedFactor: 0
+  ExtraMaxDamageFactor: 0
   cantDie: 0
-  Health: 10
+  isInvincible: 0
+  Health: 0

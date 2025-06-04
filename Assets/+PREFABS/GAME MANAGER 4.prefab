@@ -967,6 +967,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7739533299982849461}
   - component: {fileID: 4988086923026325045}
+  - component: {fileID: 3420169346286193079}
   m_Layer: 0
   m_Name: EnemyManager
   m_TagString: Untagged
@@ -1001,6 +1002,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde6d4e913ac4cdda60c78362a3108a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3420169346286193079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6996643312487965524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f50fcafa5d0444299886f807acccd863, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  database: {fileID: 11400000, guid: bf6ea19043f4748d8b8005fa1f10255a, type: 2}
+  isInitialized: 1
 --- !u!1 &7096072629693841366
 GameObject:
   m_ObjectHideFlags: 0
@@ -1853,6 +1868,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6244637268837789419, guid: 13b442448c34a41b29f15dcbab37ac61, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6266207304287336087, guid: 13b442448c34a41b29f15dcbab37ac61, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2005,6 +2024,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6576702270907114590, guid: 13b442448c34a41b29f15dcbab37ac61, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902697686073604250, guid: 13b442448c34a41b29f15dcbab37ac61, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6953278851879006789, guid: 13b442448c34a41b29f15dcbab37ac61, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2123,6 +2150,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7719601257943994349, guid: 13b442448c34a41b29f15dcbab37ac61, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7911746816152346764, guid: 13b442448c34a41b29f15dcbab37ac61, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8047903217936667433, guid: 13b442448c34a41b29f15dcbab37ac61, type: 3}

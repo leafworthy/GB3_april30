@@ -67,6 +67,7 @@ namespace __SCRIPTS
 		{
 			player = _player;
 			OnPlayerSet?.Invoke(player);
+			_unitData = GetStats();
 		}
 
 		[Button()]
@@ -145,7 +146,7 @@ namespace __SCRIPTS
 				anim.SetTrigger(Animations.HitTrigger);
 				if (attack.IsWounding)
 				{
-					OnWounded?.Invoke(attack);
+					//OnWounded?.Invoke(attack);
 					//do damaging hit
 				}
 			}

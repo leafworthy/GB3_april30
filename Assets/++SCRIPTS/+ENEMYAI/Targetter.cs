@@ -64,7 +64,7 @@ namespace __SCRIPTS._ENEMYAI
 
 		private List<Life> GetValidObstaclesInRange(LayerMask layer, float range)
 		{
-			return Physics2D.OverlapCircleAll(transform.position, range)
+			return Physics2D.OverlapCircleAll(transform.position, range, layer)
 			                .Select(x => x.GetComponentInChildren<Life>())
 			                .Where(life => life != null && ObstacleIsValid(life)).ToList();
 		}

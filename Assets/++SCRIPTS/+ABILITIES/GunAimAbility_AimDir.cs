@@ -93,7 +93,7 @@ namespace __SCRIPTS
 			if (!isAttacking && !aimableGun.isReloading && !body.arms.isActive)
 			{
 				anim.Play(GetAnimationClipNameFromDegrees(GetDegrees()), 1, 0);
-				Debug.Log("aimed");
+
 			}
 		}
 
@@ -124,8 +124,7 @@ namespace __SCRIPTS
 			// Calculate the portion number (1-18)
 			int portionNumber = Mathf.FloorToInt(offsetDegrees / portionWidth);
 			portionNumber = Mathf.Clamp(portionNumber, 0, AnimationClips.Length - 1);
-			Debug.Log("portion number: " + portionNumber + " degrees: " + degrees + "dir = " + AnimationClips[
-				portionNumber]);
+
 			return portionNumber;
 		}
 

@@ -4,6 +4,7 @@
  using __SCRIPTS;
  using UnityEngine;
  using UnityEngine.Networking;
+ using VInspector;
 
  [CreateAssetMenu(menuName = "My Assets/UnitStatsDatabase")]
     public class UnitStatsDatabase : ScriptableObject
@@ -31,6 +32,7 @@
 
             coroutineRunner.StartCoroutine(LoadDataCoroutine());
         }
+
 
         private IEnumerator LoadDataCoroutine()
         {

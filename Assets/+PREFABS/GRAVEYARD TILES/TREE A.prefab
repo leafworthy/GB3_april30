@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6090140584266906357}
   - component: {fileID: 9129195127140697937}
   m_Layer: 9
-  m_Name: Life
+  m_Name: Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,10 +47,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 5a98aa2089bfc49ac88745e95a958639, type: 2}
+  _unitData:
+    unitName: 
+    category: 0
+    debrisType: 0
+    isPlayerSwingHittable: 0
+    showLifeBar: 0
+    isInvincible: 0
+    healthMax: 0
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 0
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+  ExtraMaxHealthFactor: 0
+  ExtraMaxSpeedFactor: 0
+  ExtraMaxDamageFactor: 0
   cantDie: 1
   isInvincible: 0
-  Health: 100
+  Health: 0
 --- !u!114 &6090140584266906357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,7 +109,7 @@ MonoBehaviour:
     invertX: 0
     invertY: 0
     depth: 1
-    spriteRenderer: {fileID: 1616150723029701840}
+    spriteRenderer: {fileID: 0}
   mainShape:
     shadowType: 3
     maskType: 1

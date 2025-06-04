@@ -122,7 +122,8 @@ namespace __SCRIPTS
 		/// <returns>UnitStatsData or null if not found</returns>
 		public UnitStatsData GetUnitStats(string unitName)
 		{
-
+			Debug.Log("trying " + unitName);
+			unitName = unitName.Replace("(Clone)", "");
 			if (unitStatsLookup.TryGetValue(unitName, out var stats))
 			{
 				Debug.Log("found it first time");
@@ -134,8 +135,15 @@ namespace __SCRIPTS
 				Debug.Log("found it second time");
 				return stats2;
 			}
-			Debug.LogWarning($"Unit stats not found for: {unitName}");
-			return null;
+			Debug.Log($"Unit stats not found for: {unitName} using default stats");
+			// Return default stats if not found
+			 if(unitStatsLookup.TryGetValue(unitName, out var defaultName))
+			 {
+				 return defaultName;
+			 }
+
+			 Debug.LogWarning($"default stats not found for: {unitName}, returning null");
+			 return null;
 		}
 
 		/// <summary>
@@ -197,6 +205,8 @@ namespace __SCRIPTS
 				Debug.Log("Created UnitStatsDatabase asset");
 			}
 		}
+
+
 
 		[ContextMenu("Load Data Now")]
 		private void LoadDataEditor()

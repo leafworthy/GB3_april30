@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class PlayerStats: MonoBehaviour 
+	public class PlayerStats: MonoBehaviour
 	{
 		private Player owner;
 		public List<PlayerStat> playerStats = new();
@@ -13,7 +13,7 @@ namespace __SCRIPTS
 		private bool hasInit;
 		public  event Action OnStatsReset;
 		public  event Action<Player,PlayerStat> OnPlayerStatChange;
-	
+
 		public void Start()
 		{
 			var player = GetComponent<Player>();
@@ -50,7 +50,7 @@ namespace __SCRIPTS
 			playerStats.Clear();
 
 			AddStat(new PlayerStat(PlayerStat.StatType.Kills, 0));
-			
+			AddStat(new PlayerStat(PlayerStat.StatType.DaysSurvived, 0));
 			AddStat(new PlayerStat(PlayerStat.StatType.Accuracy, 0));
 			AddStat(new PlayerStat(PlayerStat.StatType.AttacksHit, 0));
 			AddStat(new PlayerStat(PlayerStat.StatType.AttacksTotal, 0));
@@ -60,17 +60,17 @@ namespace __SCRIPTS
 			Debug.Log("stats reset");
 			OnStatsReset?.Invoke();
 		}
-	
+
 
 		private void EnemiesOnPlayerKillsEnemy(Player player, Life life)
 		{if (player != owner) return;
-		
+
 			ChangeStat(PlayerStat.StatType.Kills, 1);
 		}
 
-	
 
-	
+
+
 
 
 		public float GetStatValue(PlayerStat.StatType statType)
@@ -95,7 +95,7 @@ namespace __SCRIPTS
 			var changingStat = GetStat(type);
 			changingStat.ChangeStat(change);
 			OnPlayerStatChange?.Invoke(owner, changingStat);
-		
+
 		}
 
 		private PlayerStat GetStat(PlayerStat.StatType type)
@@ -109,7 +109,7 @@ namespace __SCRIPTS
 		{
 			InitStats();
 			var changingStat = GetStat(statType);
-			changingStat.SetStat(value); 
+			changingStat.SetStat(value);
 			OnPlayerStatChange?.Invoke(owner, changingStat);
 		}
 	}
