@@ -3,7 +3,7 @@ using System.Linq;
 using __SCRIPTS.Plugins._ISOSORT;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Player
 {
 	[ExecuteInEditMode]
 	public class ThingWithHeight : MonoBehaviour

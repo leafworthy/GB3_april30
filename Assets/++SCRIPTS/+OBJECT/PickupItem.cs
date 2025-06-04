@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Objects
 {
 	public class PickupItem : MonoBehaviour
 	{

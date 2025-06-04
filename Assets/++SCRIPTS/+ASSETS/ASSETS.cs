@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Assets
 {
     /// <summary>
     /// Unified Asset Management System.

@@ -6,7 +6,7 @@ public class ReloadActivity : IActivity
 	public string VerbName => "Reloading";
 }
 
-namespace __SCRIPTS
+namespace GangstaBean.Attacks
 {
 	[Serializable]
 	public class GunAttack_AK_Glock : Attacks, IAimableGun, IActivity

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Effects
 {
 	public class AK_GunAttacks_FX : MonoBehaviour
 	{

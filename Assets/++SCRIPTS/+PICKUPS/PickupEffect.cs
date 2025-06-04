@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Pickups
 {
 	[Serializable]
 	public class PickupEffect

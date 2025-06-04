@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace __SCRIPTS
+namespace GangstaBean.Pickups
 {
 	public class CashPickup : Pickup
 	{

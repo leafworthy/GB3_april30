@@ -1,9 +1,9 @@
 using System;
-using __SCRIPTS.Cursor;
-using __SCRIPTS.HUD_Displays;
+using GangstaBean.UI;
+using GangstaBean.UI.HUD;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Attacks
 {
 	public class NadeAimActivity : IActivity
 	{

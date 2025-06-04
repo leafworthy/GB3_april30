@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace __SCRIPTS
+namespace GangstaBean.Assets
 {
 	[CreateAssetMenu(menuName = "My Assets/UI Assets")]
 	public class UIAssets:ScriptableObject

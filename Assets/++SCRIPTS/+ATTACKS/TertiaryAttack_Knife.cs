@@ -1,9 +1,13 @@
 using System;
 using System.Linq;
-using __SCRIPTS;
+using GangstaBean.Core;
+using GangstaBean.Player;
+using GangstaBean.Abilities;
 using UnityEngine;
 
-public class TertiaryAttack_Knife : Attacks
+namespace GangstaBean.Attacks
+{
+	public class TertiaryAttack_Knife : Attacks
 	{
 		private Player player;
 		private Body body;

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Scenes
 {
     /// <summary>
     /// ScriptableObject to define a scene with its metadata

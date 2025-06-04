@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace __SCRIPTS
+namespace GangstaBean.Assets
 {
     public enum isoDirection
     {

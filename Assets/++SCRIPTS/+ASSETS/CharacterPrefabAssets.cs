@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Assets
 {
 	[CreateAssetMenu(menuName = "My Assets/PlayerAssets")]
 	public class CharacterPrefabAssets : ScriptableObject

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace __SCRIPTS.HUD_Displays
+namespace GangstaBean.UI.HUD.HUD_Displays
 {
 	public class HUDAmmoChanger : MonoBehaviour, INeedPlayer
 	{

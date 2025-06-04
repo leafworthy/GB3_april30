@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace __SCRIPTS.Cursor
+namespace GangstaBean.UI.Cursor
 {
 	public class PlayerCursor : MonoBehaviour
 	{

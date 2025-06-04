@@ -1,7 +1,7 @@
 using System;
-using __SCRIPTS._ENEMYAI;
+using GangstaBean.EnemyAI;
 
-namespace __SCRIPTS
+namespace GangstaBean.Attacks
 {
 	[Serializable]
 	public class ExplosionAttack : Attacks

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using __SCRIPTS.Projectiles;
+using GangstaBean.Objects.Projectiles;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Effects
 {
 	public class NadeAbility_FX : MonoBehaviour
 	{

@@ -2,7 +2,7 @@ using System;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Abilities
 {
 	[Serializable]
 	public class Arms : ActivityHandler

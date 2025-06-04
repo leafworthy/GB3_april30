@@ -1,9 +1,9 @@
-using __SCRIPTS._ENEMYAI;
-using __SCRIPTS.Cursor;
-using __SCRIPTS.HUD_Displays;
+using GangstaBean.EnemyAI;
+using GangstaBean.UI;
+using GangstaBean.UI.HUD;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Abilities
 {
 	public class MoveController : MonoBehaviour, INeedPlayer
 	{

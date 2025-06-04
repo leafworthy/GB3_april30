@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using __SCRIPTS.Cursor;
+using GangstaBean.UI;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Audio
 {
 	public class SFX : Singleton<SFX>
 	{

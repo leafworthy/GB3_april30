@@ -1,8 +1,8 @@
 ﻿using System;
-using __SCRIPTS._ENEMYAI;
+using GangstaBean.EnemyAI;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Attacks
 {
 	[Serializable]
 	public class ClawAttack : Attacks

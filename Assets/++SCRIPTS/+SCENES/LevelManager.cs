@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Scenes
 {
 	public class LevelManager : Singleton<LevelManager>
 	{

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Effects
 {
 	public class JumpAbility_FX : MonoBehaviour
 	{

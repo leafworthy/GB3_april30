@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace __SCRIPTS.Projectiles
+namespace GangstaBean.Objects.Projectiles.Projectiles
 {
 	public class Kunai : FallToFloor
 	{

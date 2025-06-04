@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Effects
 {
 	[ExecuteAlways]
 	public class Tint_FX : MonoBehaviour

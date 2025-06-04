@@ -1,7 +1,7 @@
-using __SCRIPTS.Cursor;
+using GangstaBean.UI;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Abilities
 {
 	public class MoveAbility : MonoBehaviour, IActivity
 	{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace __SCRIPTS
+namespace GangstaBean.Pickups
 {
 	[Serializable]
 	public abstract class Pickup : MonoBehaviour

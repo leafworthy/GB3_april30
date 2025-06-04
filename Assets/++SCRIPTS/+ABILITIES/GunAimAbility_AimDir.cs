@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using __SCRIPTS;
-using __SCRIPTS.Cursor;
+using GangstaBean.Core;
+using GangstaBean.UI;
 using UnityEngine;
 
 
-namespace __SCRIPTS
+namespace GangstaBean.Abilities
 {
 	public class GunAimAbility_Simple : AimAbility
 	{

@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace __SCRIPTS.HUD_Displays
+namespace GangstaBean.UI.HUD.HUD_Displays
 {
 	public interface INeedPlayer
 	{

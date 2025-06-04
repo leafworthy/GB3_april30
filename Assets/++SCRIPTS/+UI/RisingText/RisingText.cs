@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace __SCRIPTS.RisingText
+namespace GangstaBean.UI.RisingText
 {
 	public class RisingText : MonoBehaviour
 	{

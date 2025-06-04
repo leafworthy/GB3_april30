@@ -1,4 +1,4 @@
-namespace __SCRIPTS
+namespace GangstaBean.Pickups
 {
 	public class HealthPickupEffect : PickupEffect
 	{

@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace __SCRIPTS
+namespace GangstaBean.Attacks
 {
 	public class TertiaryAttack_BatAttack : Attacks
 	{

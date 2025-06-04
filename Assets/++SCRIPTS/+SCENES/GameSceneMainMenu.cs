@@ -1,4 +1,4 @@
-namespace __SCRIPTS
+namespace GangstaBean.Scenes
 {
 	/// <summary>
 	/// Handles the main menu scene functionality

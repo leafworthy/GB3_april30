@@ -1,8 +1,8 @@
 using System;
-using __SCRIPTS.HUD_Displays;
+using GangstaBean.UI.HUD;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.UI.HUD
 {
 	public enum Character
 	{

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Assets
 {
 	/// <summary>
 	/// Asset container for easily accessing scene definitions.

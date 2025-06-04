@@ -1,7 +1,7 @@
 using __SCRIPTS.RisingText;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Effects
 {
 	public class Pickup_FX : MonoBehaviour
 	{

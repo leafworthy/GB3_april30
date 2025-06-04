@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Player
 {
 	public class PlayerStatsDisplay : MonoBehaviour
 	{

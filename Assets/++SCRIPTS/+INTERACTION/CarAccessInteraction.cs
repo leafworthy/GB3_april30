@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Interaction
 {
 	public class CarAccessInteraction : TimedInteraction
 	{

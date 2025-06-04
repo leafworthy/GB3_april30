@@ -1,7 +1,7 @@
-using __SCRIPTS.HUD_Displays;
+using GangstaBean.UI.HUD;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Attacks
 {
 	public class Attacks : MonoBehaviour, INeedPlayer, IActivity
 	{

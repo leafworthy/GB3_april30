@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace __SCRIPTS.RisingText
+namespace GangstaBean.UI.RisingText
 {
 	public class RisingTextCreator : Singleton<RisingTextCreator>
 	{

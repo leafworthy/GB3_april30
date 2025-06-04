@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using __SCRIPTS.HUD_Displays;
-using __SCRIPTS.UpgradeS;
+using GangstaBean.UI.HUD;
+using GangstaBean.Player.Upgrades;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace __SCRIPTS
+namespace GangstaBean.Player
 {
 
 

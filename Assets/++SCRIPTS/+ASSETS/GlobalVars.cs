@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Assets
 {
 	[Serializable,CreateAssetMenu(menuName = "My Assets/GlobalVars")]
 	public class GlobalVars : ScriptableObject

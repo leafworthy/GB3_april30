@@ -1,9 +1,9 @@
 using System;
-using __SCRIPTS.Cursor;
+using GangstaBean.UI;
 using Unity.Cinemachine;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Effects
 {
 	public class CameraShaker: MonoBehaviour
 	{

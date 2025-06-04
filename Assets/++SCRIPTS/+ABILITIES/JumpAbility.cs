@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace __SCRIPTS
+namespace GangstaBean.Abilities
 {
 	public class JumpAbility : MonoBehaviour, IActivity
 	{

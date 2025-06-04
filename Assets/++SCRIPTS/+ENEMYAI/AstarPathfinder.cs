@@ -4,7 +4,7 @@ using __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace __SCRIPTS._ENEMYAI
+namespace GangstaBean.EnemyAI._ENEMYAI
 {
 	public class AstarPathfinder : MonoBehaviour
 	{

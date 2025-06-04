@@ -2,7 +2,7 @@ using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Scenes
 {
 	public class GameLevelCameraTargetGroupManager : MonoBehaviour
 	{

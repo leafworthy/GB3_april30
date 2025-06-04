@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Player
 {
 	public class PlayerIndicator : MonoBehaviour
 	{

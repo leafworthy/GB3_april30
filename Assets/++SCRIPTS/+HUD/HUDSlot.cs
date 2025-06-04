@@ -1,9 +1,9 @@
-using __SCRIPTS.HUD_Displays;
+using GangstaBean.UI.HUD;
 using __SCRIPTS.UpgradeS;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
 
-namespace __SCRIPTS
+namespace GangstaBean.UI.HUD
 {
 	public class HUDSlot : MonoBehaviour
 	{

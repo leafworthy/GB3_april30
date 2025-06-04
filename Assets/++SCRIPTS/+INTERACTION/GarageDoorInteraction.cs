@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace __SCRIPTS
+namespace GangstaBean.Interaction
 {
   public class GarageDoorInteraction : PlayerInteractable
   {

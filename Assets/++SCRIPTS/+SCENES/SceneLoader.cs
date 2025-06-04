@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace __SCRIPTS
+namespace GangstaBean.Scenes
 {
 	/// <summary>
 	/// Integrated scene transition system that handles both scene loading and player spawn positions
