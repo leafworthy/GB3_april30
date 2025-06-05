@@ -14,13 +14,13 @@ public class GameSceneGameOver : GameScene
 	    {
 		    display.gameObject.SetActive(false);
 	    }
-	    for (int i = 0; i < Players.AllJoinedPlayers.Count; i++)
+	    for (int i = 0; i < Players.I.AllJoinedPlayers.Count; i++)
 	    {
 		    
-			    Debug.Log("stats for player " + Players.AllJoinedPlayers[i].playerIndex);
+			    Debug.Log("stats for player " + Players.I.AllJoinedPlayers[i].playerIndex);
 			    displays[i].gameObject.SetActive(true);
-			    displays[i].SetPlayer(Players.AllJoinedPlayers[i]);
-			    Players.AllJoinedPlayers[i].Controller.Select.OnPress += ContinuePress;
+			    displays[i].SetPlayer(Players.I.AllJoinedPlayers[i]);
+			    Players.I.AllJoinedPlayers[i].Controller.Select.OnPress += ContinuePress;
 		    
 		    
 	    }
@@ -30,7 +30,7 @@ public class GameSceneGameOver : GameScene
 
     private void ContinuePress(NewControlButton obj)
     {
-	    foreach (var player in Players.AllJoinedPlayers)
+	    foreach (var player in Players.I.AllJoinedPlayers)
 	    {
 			player.Controller.Select.OnPress -= ContinuePress;
 	    }

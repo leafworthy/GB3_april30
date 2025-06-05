@@ -24,7 +24,8 @@ namespace __SCRIPTS
 		knife,
 		shotgun,
 		mine,
-		chainsaw
+		chainsaw,
+		shield
 	}
 
 	public class HUD : MonoBehaviour, INeedPlayer

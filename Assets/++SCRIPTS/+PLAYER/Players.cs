@@ -16,7 +16,7 @@ namespace __SCRIPTS
 		private Player _enemyPlayer;
 
 		public static Player EnemyPlayer => I._enemyPlayer;
-		public static readonly List<Player> AllJoinedPlayers = new();
+		public  List<Player> AllJoinedPlayers = new();
 
 		// Action maps
 		public const string UIActionMap = "UI";
@@ -77,13 +77,13 @@ namespace __SCRIPTS
 		public static void ClearAllJoinedPlayers()
 		{
 			Debug.Log("cleared all players");
-			foreach (var player in AllJoinedPlayers)
+			foreach (var player in I.AllJoinedPlayers)
 			{
 				if (player == null) return;
 				Destroy(player.gameObject);
 			}
 
-			AllJoinedPlayers.Clear();
+			I.AllJoinedPlayers.Clear();
 		}
 
 		// Handle a new player joining
@@ -120,14 +120,14 @@ namespace __SCRIPTS
 		// Check if all players are dead
 		private static bool AllJoinedPlayersAreDead()
 		{
-			var playersAlive = AllJoinedPlayers.Where(t => t.state == Player.State.Alive).ToList();
+			var playersAlive = I.AllJoinedPlayers.Where(t => t.state == Player.State.Alive).ToList();
 			return playersAlive.Count <= 0;
 		}
 
 		// Set action maps for all players
 		public static void SetActionMaps(string actionMap)
 		{
-			foreach (var player in AllJoinedPlayers) SetActionMap(player, actionMap);
+			foreach (var player in I.AllJoinedPlayers) SetActionMap(player, actionMap);
 		}
 
 		// Set action map for a specific player

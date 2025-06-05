@@ -38,13 +38,13 @@ namespace __SCRIPTS
 			if (hasStarted) return;
 			playerStats.Clear();
 			hasStarted = true;
-			foreach (var player in Players.AllJoinedPlayers)
+			foreach (var player in Players.I.AllJoinedPlayers)
 			{
 				playerStats.Add(player, player.GetComponent<PlayerStats>());
 			}
 		}
 
-	
+
 		public void ChangeStat(Player player, PlayerStat.StatType statType, float change)
 		{
 			var match = playerStats.TryGetValue(player, out var stats);
@@ -59,7 +59,7 @@ namespace __SCRIPTS
 				Debug.Log("Player not found in PlayerStatsManager");
 			}
 		}
-		
+
 
 		private void Players_OnPlayerJoins(Player player)
 		{
@@ -71,7 +71,7 @@ namespace __SCRIPTS
 			}
 
 			playerStats.TryAdd(player, stats);
-		
+
 		}
 
 		public void SetStatAmount(Player owner, PlayerStat.StatType statType, float value)

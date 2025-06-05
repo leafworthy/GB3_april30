@@ -29,7 +29,7 @@ namespace __SCRIPTS.Cursor
 		private void LevelStartsLevel(GameLevel level)
 		{
 			isActive = true;
-			foreach (var player in Players.AllJoinedPlayers)
+			foreach (var player in Players.I.AllJoinedPlayers)
 			{
 				InitCursor(player);
 			}
@@ -46,7 +46,7 @@ namespace __SCRIPTS.Cursor
 		private void InitCursor(Player player)
 		{
 			//if (!player.isUsingMouse) return;
-		
+
 			switch (player.playerIndex)
 			{
 				case 0:
@@ -82,23 +82,23 @@ namespace __SCRIPTS.Cursor
 			currentCursor.gameObject.SetActive(true);
 			currentCursors.Add(currentCursor);
 			SetCursorsActive(true);
-			if (Players.AllJoinedPlayers.Count < 4)
+			if (Players.I.AllJoinedPlayers.Count < 4)
 			{
 				player4cursor.SetActive(false);
 			}
 
-			if (Players.AllJoinedPlayers.Count < 3)
+			if (Players.I.AllJoinedPlayers.Count < 3)
 			{
 				player3cursor.SetActive(false);
 			}
 
-			if (Players.AllJoinedPlayers.Count < 2)
+			if (Players.I.AllJoinedPlayers.Count < 2)
 			{
 				player2cursor.SetActive(false);
 			}
 		}
 
-	
+
 
 		private void SetCursorsActive(bool active)
 		{

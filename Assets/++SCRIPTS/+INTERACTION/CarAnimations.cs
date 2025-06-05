@@ -16,7 +16,7 @@ namespace __SCRIPTS
 
 		public void PlayerEntersCar()
 		{
-			foreach (var player in Players.AllJoinedPlayers) player.SpawnedPlayerGO.SetActive(false);
+			foreach (var player in Players.I.AllJoinedPlayers) player.SpawnedPlayerGO.SetActive(false);
 		}
 
 		private void OnEnable()

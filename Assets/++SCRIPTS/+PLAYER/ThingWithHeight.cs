@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
+using __SCRIPTS;
 using __SCRIPTS.Plugins._ISOSORT;
 using UnityEngine;
 
-namespace __SCRIPTS
-{
+
 	[ExecuteInEditMode]
 	public class ThingWithHeight : MonoBehaviour
 	{
@@ -116,4 +116,3 @@ namespace __SCRIPTS
 			return DistanceToGround;
 		}
 	}
-}

@@ -9,7 +9,7 @@ namespace __SCRIPTS
 		private Player owner;
 		public TextMeshProUGUI PlayerName;
 		public TextMeshProUGUI Stat_Kills;
-		public TextMeshProUGUI Stat_Days;
+		public TextMeshProUGUI Stat_Time;
 		public TextMeshProUGUI Stat_CashGained;
 		public TextMeshProUGUI Stat_Gas;
 		public TextMeshProUGUI Stat_Upgrades;
@@ -46,7 +46,7 @@ namespace __SCRIPTS
 					break;
 				case Character.Tmato:
 
-					hideRevealObjects.Set(1);
+					hideRevealObjects.Set(2);
 					break;
 			}
 		}
@@ -54,12 +54,12 @@ namespace __SCRIPTS
 		private void DisplayStats()
 		{
 			Stat_Kills.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.Kills).ToString();
-			Stat_Days.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.DaysSurvived).ToString();
+			Stat_Time.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.TimeSurvived).ToString();
 			Stat_CashGained.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.TotalCash).ToString();
 			Stat_Gas.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.Gas).ToString();
-			Stat_Upgrades.text = owner.GetComponent<PlayerUpgrades>().GetTotalUpgradesPurchased().ToString();
+			//Stat_Upgrades.text = owner.GetComponent<PlayerUpgrades>().GetTotalUpgradesPurchased().ToString();
 		}
 
-	
+
 	}
 }

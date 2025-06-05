@@ -138,12 +138,12 @@ namespace __SCRIPTS
 
 		public void SpawnPlayerFromInGame(Player owner)
 		{
-			if (Players.AllJoinedPlayers.Count <= 0)
+			if (Players.I.AllJoinedPlayers.Count <= 0)
 			{
 				Debug.LogError("no players in game");
 				return;
 			}
-			var p1 =  Players.AllJoinedPlayers[0];
+			var p1 =  Players.I.AllJoinedPlayers[0];
 			if (p1 == null) return;
 
 			RegisterPersistentCharacter(owner.CurrentCharacter, currentLevel.SpawnPlayerFromSky(owner, p1.SpawnedPlayerGO.transform.position));

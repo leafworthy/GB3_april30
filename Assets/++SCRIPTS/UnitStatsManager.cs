@@ -46,7 +46,8 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
-			if (database != null && database.googleSheetsConfig.autoLoadOnStart) LoadData();
+			LoadData();
+			Debug.Log("load started");
 		}
 
 		/// <summary>
@@ -72,6 +73,7 @@ namespace __SCRIPTS
 			{
 				BuildLookupDictionary();
 				StartAutoRefresh();
+				Debug.Log("Unit stats data loaded successfully");
 			}
 
 			OnDataLoaded?.Invoke(success);

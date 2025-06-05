@@ -22,7 +22,8 @@ namespace __SCRIPTS
 			Key,
 			None,
 			DaysSurvived,
-			UpgradesPurchased
+			UpgradesPurchased,
+			TimeSurvived
 		}
 
 		public  StatType type;

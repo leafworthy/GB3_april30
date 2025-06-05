@@ -47,7 +47,7 @@ namespace __SCRIPTS
 
 		private void CloseAllUpgradeSelectMenus(Player p)
 		{
-			foreach (var player in Players.AllJoinedPlayers)
+			foreach (var player in Players.I.AllJoinedPlayers)
 			{
 				if (player == null) continue;
 				player.LeaveUpgradeSetupMenu();

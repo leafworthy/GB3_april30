@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -30,7 +31,7 @@ namespace __SCRIPTS
 		}
 
 		private void Jumper_OnResting(Vector2 obj)
-		{ 
+		{
 			if (_freezeRotation)
 			{
 				transform.rotation = Quaternion.identity;

@@ -14,8 +14,10 @@ namespace __SCRIPTS
 		[SerializeField] private ButtonState currentState;
 		private CharacterSelectIndicators characterSelectIndicators;
 
-		private void Start()
+		private void OnEnable()
 		{
+			playersWhoHighlightedThisCharacter.Clear();
+			playersWhoSelectedThisCharacter.Clear();
 			characterSelectIndicators = GetComponentInChildren<CharacterSelectIndicators>();
 			UpdateIndicator();
 		}
@@ -29,8 +31,8 @@ namespace __SCRIPTS
 
 		public void HighlightButton(Player player)
 		{
-		
-		
+			if (player == null) return;
+
 			playersWhoHighlightedThisCharacter.Add(player);
 
 			UpdateState();
@@ -38,6 +40,7 @@ namespace __SCRIPTS
 
 		public void UnHighlightButton(Player player)
 		{
+			if (player == null) return;
 			playersWhoHighlightedThisCharacter.Remove(player);
 			UpdateState();
 		}
@@ -96,7 +99,7 @@ namespace __SCRIPTS
 				//Debug.Log("Button " + character + " is highlighted for player " + player.input.playerIndex);
 			}
 
-			foreach (var player in playersWhoSelectedThisCharacter)		
+			foreach (var player in playersWhoSelectedThisCharacter)
 			{
 				characterSelectIndicators.Set(player.input.playerIndex, 2);
 				//Debug.Log("Button " + character + " is selected for player " + player.input.playerIndex, this);

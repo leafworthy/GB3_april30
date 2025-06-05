@@ -211,7 +211,7 @@ namespace __SCRIPTS
 			if (!enableBossZombies) return;
 			if (Random.value > bossZombieChance) return;
 
-			if (Players.I == null || Players.AllJoinedPlayers.Count == 0) return;
+			if (Players.I == null || Players.I.AllJoinedPlayers.Count == 0) return;
 
 			// Get a valid spawn position
 			var spawnPosition = spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position;

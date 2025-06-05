@@ -63,7 +63,7 @@ namespace __SCRIPTS
 				return;
 			}
 			Debug.Log("fall from sky " + travelPoint.fallFromSky);
-			foreach (var player in Players.AllJoinedPlayers)
+			foreach (var player in Players.I.AllJoinedPlayers)
 			{
 				if (player == null) continue;
 				if (player.SpawnedPlayerGO != null) continue;

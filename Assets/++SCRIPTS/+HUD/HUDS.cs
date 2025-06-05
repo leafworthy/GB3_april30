@@ -65,7 +65,7 @@ namespace __SCRIPTS
 		{
 			//gameObject.SetActive(true);
 			Debug.Log("made it here");
-			CreateHUDForPlayers(Players.AllJoinedPlayers);
+			CreateHUDForPlayers(Players.I.AllJoinedPlayers);
 			Players.I.OnPlayerJoins += JoinInGame;
 			Players.I.OnPlayerGetUpgrades += OpenUpgradePanel;
 			Vignette.SetActive(true);

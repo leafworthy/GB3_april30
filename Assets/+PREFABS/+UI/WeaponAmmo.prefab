@@ -134,7 +134,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.1
+  m_fontSize: 8.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -270,7 +270,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35.45
+  m_fontSize: 11.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -442,7 +442,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ammoText: {fileID: 3261353562067570768}
   totalText: {fileID: 3622910248695798391}
-  shakeObject: {fileID: 717409445627751730}
   ammoDisplayCanvas: {fileID: 125973471178207778}
   hasSlash: 1
   greys: 0
@@ -959,6 +958,26 @@ PrefabInstance:
     - target: {fileID: 858190974899798439, guid: 19e0abeac1d8d2f49862b8f89d354f47, type: 3}
       propertyPath: m_Name
       value: WeaponIcon
+      objectReference: {fileID: 0}
+    - target: {fileID: 998966627477837672, guid: 19e0abeac1d8d2f49862b8f89d354f47, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5492463744079873371, guid: 19e0abeac1d8d2f49862b8f89d354f47, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5492463744079873371, guid: 19e0abeac1d8d2f49862b8f89d354f47, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5492463744079873371, guid: 19e0abeac1d8d2f49862b8f89d354f47, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.000038146973
+      objectReference: {fileID: 0}
+    - target: {fileID: 5492463744079873371, guid: 19e0abeac1d8d2f49862b8f89d354f47, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6723556688770458505, guid: 19e0abeac1d8d2f49862b8f89d354f47, type: 3}
       propertyPath: m_Pivot.x

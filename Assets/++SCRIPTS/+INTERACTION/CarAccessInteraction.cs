@@ -59,7 +59,7 @@ namespace __SCRIPTS
 
 		private bool DoAnyPlayersHaveAKey()
 		{
-			foreach (var player in Players.AllJoinedPlayers)
+			foreach (var player in Players.I.AllJoinedPlayers)
 			{
 				if (player.hasKey) return true;
 			}
@@ -70,7 +70,7 @@ namespace __SCRIPTS
 		private int GetTotalGasFromAllJoinedPlayers()
 		{
 			var totalGas = 0;
-			foreach (var player in Players.AllJoinedPlayers)
+			foreach (var player in Players.I.AllJoinedPlayers)
 			{
 				totalGas += (int)PlayerStatsManager.I.GetStatAmount(player,PlayerStat.StatType.Gas);
 			}

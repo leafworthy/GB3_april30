@@ -21,11 +21,11 @@ namespace __SCRIPTS
 		public event Action OnPlayerStartsSelecting;
 		public event Action OnTryToStartGame;
 
-		protected void Start()
+		protected void OnEnable()
 		{
 			CleanUp();
 			Players.I.OnPlayerJoins += PlayerStartsSelecting;
-			foreach (var player in Players.AllJoinedPlayers) PlayerStartsSelectingFromMainMenu(player);
+			foreach (var player in Players.I.AllJoinedPlayers) PlayerStartsSelectingFromMainMenu(player);
 
 			foreach (var button in Buttons) button.SetPlayerColors();
 
@@ -85,7 +85,7 @@ namespace __SCRIPTS
 			OnPlayerUnjoins?.Invoke();
 			StopListeningToPlayer(player);
 			player.Controller.Select.OnPress += OnUnjoinedPlayerPressSelect;
-			Players.AllJoinedPlayers.Remove(player);
+			Players.I.AllJoinedPlayers.Remove(player);
 			//player.gameObject.SetActive(false);
 		}
 
@@ -198,7 +198,7 @@ namespace __SCRIPTS
 
 		private void ClearAllPlayerButtons()
 		{
-			foreach (var player in Players.AllJoinedPlayers) player.CurrentButton = null;
+			foreach (var player in Players.I.AllJoinedPlayers) player.CurrentButton = null;
 		}
 
 		private void PlayerPressCancel(NewControlButton newControlButton)
@@ -236,7 +236,7 @@ namespace __SCRIPTS
 		private void CheckIfPlayersAllSelected()
 		{
 			var playersStillSelecting =
-				Players.AllJoinedPlayers.Where(t => t.state == Player.State.SelectingCharacter).ToList();
+				Players.I.AllJoinedPlayers.Where(t => t.state == Player.State.SelectingCharacter).ToList();
 			if (playersStillSelecting.Count > 0)
 			{
 				HideGoGoGo();

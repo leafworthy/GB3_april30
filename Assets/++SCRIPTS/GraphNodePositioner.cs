@@ -31,7 +31,7 @@ namespace __SCRIPTS
         public void StartGraphPositioning()
         {
             if (player == null)
-                player = Players.AllJoinedPlayers[0].SpawnedPlayerGO.transform;
+                player = Players.I.AllJoinedPlayers[0].SpawnedPlayerGO.transform;
             if (player == null)
             {
                 Debug.LogError("No player found in scene!");
