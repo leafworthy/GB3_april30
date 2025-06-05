@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using GangstaBean.UI.HUD;
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 using VInspector;
 
-namespace GangstaBean.Units
+namespace __SCRIPTS
 {
 	[ExecuteInEditMode]
 	public class Life : MonoBehaviour, INeedPlayer

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GangstaBean.Scenes
+namespace __SCRIPTS
 {
     public class SceneAnimationEvents : MonoBehaviour
     {

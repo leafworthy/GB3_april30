@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GangstaBean.Interaction
+namespace __SCRIPTS
 {
 	public class TimedInteraction : PlayerInteractable
 	{

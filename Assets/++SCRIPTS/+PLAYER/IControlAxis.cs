@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace GangstaBean.Player
+namespace __SCRIPTS
 {
 	public interface IControlAxis 
 	{

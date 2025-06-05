@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GangstaBean.Effects
+namespace __SCRIPTS
 {
 	public class KnifeAttacks_FX : MonoBehaviour
 	{

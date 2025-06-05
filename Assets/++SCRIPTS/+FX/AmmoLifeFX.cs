@@ -1,7 +1,7 @@
 using System;
 using UnityEngine.UI;
 
-namespace GangstaBean.Effects
+namespace __SCRIPTS
 {
 	[Serializable]
 	public class AmmoLifeFX : Life_FX

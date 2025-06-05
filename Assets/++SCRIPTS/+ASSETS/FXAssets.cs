@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace GangstaBean.Assets
+namespace __SCRIPTS
 {
 	[CreateAssetMenu(menuName = "My Assets/DebreeAssets")]
 	public class FXAssets : ScriptableObject

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace GangstaBean.Effects
+namespace __SCRIPTS
 {
 	public class CameraStunner_FX : MonoBehaviour
 	{

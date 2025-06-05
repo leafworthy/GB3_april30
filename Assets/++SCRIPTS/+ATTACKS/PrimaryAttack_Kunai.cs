@@ -1,9 +1,9 @@
 using System;
-using GangstaBean.UI.HUD;
-using GangstaBean.Objects.Projectiles;
+using __SCRIPTS.HUD_Displays;
+using __SCRIPTS.Projectiles;
 using UnityEngine;
 
-namespace GangstaBean.Attacks
+namespace __SCRIPTS
 {
 	public class PrimaryAttack_Kunai : MonoBehaviour, INeedPlayer, IActivity
 	{

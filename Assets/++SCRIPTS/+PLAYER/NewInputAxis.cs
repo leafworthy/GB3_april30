@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace GangstaBean.Player
+namespace __SCRIPTS
 {
 	public class NewInputAxis : IControlAxis
 	{

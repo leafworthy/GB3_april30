@@ -1,7 +1,7 @@
 ﻿using __SCRIPTS.Plugins._ISOSORT;
 using UnityEngine;
 
-namespace GangstaBean.Effects
+namespace __SCRIPTS
 {
 	public class Bullet_FX : MonoBehaviour
 	{

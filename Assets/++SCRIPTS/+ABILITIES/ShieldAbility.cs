@@ -1,5 +1,5 @@
-using GangstaBean.Core;
-using GangstaBean.UI.HUD;
+using __SCRIPTS;
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 
 public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity

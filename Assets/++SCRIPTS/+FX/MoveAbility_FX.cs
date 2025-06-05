@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GangstaBean.Effects
+namespace __SCRIPTS
 {
 	public class MoveAbility_FX : MonoBehaviour
 	{

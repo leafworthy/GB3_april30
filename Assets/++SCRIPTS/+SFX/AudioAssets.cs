@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GangstaBean.Audio
+namespace __SCRIPTS
 {
 	[CreateAssetMenu(menuName = "My Assets/AudioAssets")]
 	public class AudioAssets : ScriptableObject

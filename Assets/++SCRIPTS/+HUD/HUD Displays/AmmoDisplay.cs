@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace GangstaBean.UI.HUD.HUD_Displays
+namespace __SCRIPTS.HUD_Displays
 {
 	public class AmmoDisplay : MonoBehaviour, INeedPlayer
 	{

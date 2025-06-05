@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace GangstaBean.Abilities
+namespace __SCRIPTS
 {
     public class AnimationEvents : MonoBehaviour
     {

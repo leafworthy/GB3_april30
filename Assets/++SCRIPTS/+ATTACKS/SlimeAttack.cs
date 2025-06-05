@@ -1,8 +1,8 @@
-using GangstaBean.EnemyAI;
-using GangstaBean.Objects.Projectiles;
+using __SCRIPTS._ENEMYAI;
+using __SCRIPTS.Projectiles;
 using UnityEngine;
 
-namespace GangstaBean.Attacks
+namespace __SCRIPTS
 {
 	public class SlimeAttack : MonoBehaviour
 	{

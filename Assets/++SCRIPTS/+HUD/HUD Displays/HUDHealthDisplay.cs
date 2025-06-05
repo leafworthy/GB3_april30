@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace GangstaBean.UI.HUD.HUD_Displays
+namespace __SCRIPTS.HUD_Displays
 {
 	[ExecuteInEditMode]
 	public class HUDHealthDisplay : MonoBehaviour, INeedPlayer {

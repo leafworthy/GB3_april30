@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GangstaBean.Player
+namespace __SCRIPTS
 {
 	[CreateAssetMenu(menuName = "My Assets/PlayerData")]
 	public class PlayerData : ScriptableObject

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GangstaBean.Interaction
+namespace __SCRIPTS
 {
 	public class LevelLoadInteraction : TimedInteraction
 	{

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GangstaBean.Interaction
+namespace __SCRIPTS
 {
 	public class PlayerInteractable : MonoBehaviour
 	{

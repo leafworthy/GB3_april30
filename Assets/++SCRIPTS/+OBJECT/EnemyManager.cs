@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace GangstaBean.Objects
+namespace __SCRIPTS
 {
 	public class EnemyManager : Singleton<EnemyManager>
 	{

@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace GangstaBean.EnemyAI._ENEMYAI
+namespace __SCRIPTS._ENEMYAI
 {
 	public class EnemyThoughts : MonoBehaviour
 	{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace GangstaBean.Pickups
+namespace __SCRIPTS
 {
 	public class PickupAbility : MonoBehaviour
 	{

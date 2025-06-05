@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GangstaBean.UI
+namespace __SCRIPTS
 {
 	public class CharacterSelectButtons : MonoBehaviour
 	{

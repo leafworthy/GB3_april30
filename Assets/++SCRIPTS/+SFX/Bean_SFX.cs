@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GangstaBean.Audio
+namespace __SCRIPTS
 {
 	public class Bean_SFX : MonoBehaviour
 	{

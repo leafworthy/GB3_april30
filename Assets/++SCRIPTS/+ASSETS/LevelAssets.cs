@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GangstaBean.Assets
+namespace __SCRIPTS
 {
 	[CreateAssetMenu(menuName = "My Assets/LayerAssets")]
 	public class LevelAssets : ScriptableObject

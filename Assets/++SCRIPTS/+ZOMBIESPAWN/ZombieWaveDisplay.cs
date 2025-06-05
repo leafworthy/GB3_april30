@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace GangstaBean.ZombieSpawn._ZOMBIESPAWN
+namespace __SCRIPTS._ZOMBIESPAWN
 {
 	public class ZombieWaveDisplay:MonoBehaviour
 	{

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace GangstaBean.EnemyAI._ENEMYAI
+namespace __SCRIPTS._ENEMYAI
 {
 	public class Targetter : MonoBehaviour
 	{

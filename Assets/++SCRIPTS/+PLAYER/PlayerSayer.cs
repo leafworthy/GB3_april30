@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace GangstaBean.Player
+namespace __SCRIPTS
 {
 	public class PlayerSayer : MonoBehaviour
 	{

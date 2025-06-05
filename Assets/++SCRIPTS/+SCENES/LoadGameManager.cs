@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace GangstaBean.Scenes
+namespace __SCRIPTS
 {
     /// <summary>
     /// Ensures the GameManager scene is loaded additively when a game scene is loaded

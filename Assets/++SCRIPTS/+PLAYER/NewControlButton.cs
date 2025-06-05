@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GangstaBean.Player
+namespace __SCRIPTS
 {
 	public interface NewControlButton 
 	{

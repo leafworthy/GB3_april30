@@ -2,7 +2,7 @@ using System;
 using __SCRIPTS._ENEMYAI.EnemyAI_States;
 using UnityEngine;
 
-namespace GangstaBean.EnemyAI._ENEMYAI
+namespace __SCRIPTS._ENEMYAI
 {
 	public interface IAI
 	{

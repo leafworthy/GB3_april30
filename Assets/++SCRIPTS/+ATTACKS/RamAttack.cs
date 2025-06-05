@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-namespace GangstaBean.Attacks
+namespace __SCRIPTS
 {
 	[Serializable]
 	public class RamAttack : Attacks

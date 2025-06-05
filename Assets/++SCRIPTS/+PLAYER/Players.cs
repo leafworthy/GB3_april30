@@ -5,7 +5,7 @@ using __SCRIPTS._ZOMBIESPAWN;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace GangstaBean.Player
+namespace __SCRIPTS
 {
 	public class Players : Singleton<Players>
 	{

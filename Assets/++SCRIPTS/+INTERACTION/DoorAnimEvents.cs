@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace GangstaBean.Interaction
+namespace __SCRIPTS
 {
     [ExecuteInEditMode]
     public class DoorAnimEvents : MonoBehaviour

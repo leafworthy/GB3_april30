@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace GangstaBean.Interaction
+namespace __SCRIPTS
 {
 	public class LootOpenInteraction : PlayerInteractable
 	{

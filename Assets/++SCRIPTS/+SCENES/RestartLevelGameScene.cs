@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace GangstaBean.Scenes
+namespace __SCRIPTS
 {
     public class RestartLevelGameScene : GameScene
     {

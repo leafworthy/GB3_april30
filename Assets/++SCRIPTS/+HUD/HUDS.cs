@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace GangstaBean.UI.HUD
+namespace __SCRIPTS
 {
 	public class HUDS : Singleton<HUDS>
 	{

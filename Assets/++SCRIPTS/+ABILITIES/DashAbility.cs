@@ -1,7 +1,7 @@
-using GangstaBean.UI.HUD;
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 
-namespace GangstaBean.Abilities
+namespace __SCRIPTS
 {
 	public class DashAbility : MonoBehaviour, INeedPlayer, IActivity
 	{

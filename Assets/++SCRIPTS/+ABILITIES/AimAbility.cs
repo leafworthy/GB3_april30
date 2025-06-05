@@ -1,8 +1,8 @@
-using GangstaBean.UI;
-using GangstaBean.UI.HUD;
+using __SCRIPTS.Cursor;
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 
-namespace GangstaBean.Abilities
+namespace __SCRIPTS
 {
 	public class AimAbility : MonoBehaviour, INeedPlayer
 	{

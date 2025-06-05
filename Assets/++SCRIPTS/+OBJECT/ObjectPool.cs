@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace GangstaBean.Objects
+namespace __SCRIPTS
 {
 	public class ObjectPool : MonoBehaviour
 	{

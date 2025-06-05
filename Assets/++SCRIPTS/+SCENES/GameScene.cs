@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GangstaBean.Scenes
+namespace __SCRIPTS
 {
     /// <summary>
     /// Base class for all game scenes, providing scene identification and navigation.

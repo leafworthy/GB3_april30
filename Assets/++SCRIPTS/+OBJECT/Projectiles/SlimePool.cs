@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GangstaBean.Objects.Projectiles.Projectiles
+namespace __SCRIPTS.Projectiles
 {
 	public class SlimePool : MonoBehaviour
 	{

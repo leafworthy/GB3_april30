@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using GangstaBean.Core;
-using GangstaBean.UI;
+using __SCRIPTS;
+using __SCRIPTS.Cursor;
 using UnityEngine;
 
 public interface IAimableGun
@@ -11,7 +11,7 @@ public interface IAimableGun
 	bool isGlocking { get;  }
 	bool isReloading { get; }
 }
-namespace GangstaBean.Abilities
+namespace __SCRIPTS
 {
 	public class GunAimAbility : AimAbility
 	{

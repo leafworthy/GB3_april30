@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GangstaBean.Objects.Projectiles.Projectiles
+namespace __SCRIPTS.Projectiles
 {
 	public class Nade:MonoBehaviour  {
 		private Vector2 velocity;

@@ -1,5 +1,5 @@
 using System;
-using GangstaBean.Core;
+using __SCRIPTS;
 using UnityEngine;
 
 public class Mine : MonoBehaviour

@@ -1,8 +1,8 @@
-using GangstaBean.UI;
+using __SCRIPTS.Cursor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-namespace GangstaBean.Effects
+namespace __SCRIPTS
 {
 	public class AimAbility_FX : MonoBehaviour
 	{

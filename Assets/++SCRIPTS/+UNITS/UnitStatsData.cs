@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GangstaBean.Units
+namespace __SCRIPTS
 {
 	[Serializable]
 	public class UnitStatsData

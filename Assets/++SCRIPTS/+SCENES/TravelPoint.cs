@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GangstaBean.Scenes
+namespace __SCRIPTS
 {
 	/// <summary>
 	/// Defines whether a spawn point is an entry, exit or both

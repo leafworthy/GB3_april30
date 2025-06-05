@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace GangstaBean.Attacks
+namespace __SCRIPTS
 {
 	[Serializable]
 	public class Attack

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using GangstaBean.UI;
-using GangstaBean.UI.HUD;
+using __SCRIPTS.Cursor;
+using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 
-namespace GangstaBean.Attacks
+namespace __SCRIPTS
 {
 	public class ThrowMineAttack : MonoBehaviour, INeedPlayer, IActivity
 	{

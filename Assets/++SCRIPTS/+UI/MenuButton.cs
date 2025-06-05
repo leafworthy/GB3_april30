@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GangstaBean.UI
+namespace __SCRIPTS
 {
 	public class MenuButton : MonoBehaviour
 	{

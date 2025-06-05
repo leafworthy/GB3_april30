@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GangstaBean.Pickups
+namespace __SCRIPTS
 {
 	public class PoisonDamageEffect:MonoBehaviour
 	{

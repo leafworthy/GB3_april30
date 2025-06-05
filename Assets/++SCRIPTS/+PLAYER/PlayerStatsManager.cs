@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GangstaBean.Player
+namespace __SCRIPTS
 {
 	public class PlayerStatsManager : Singleton<PlayerStatsManager>
 	{

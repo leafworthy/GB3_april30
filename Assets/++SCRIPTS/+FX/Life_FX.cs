@@ -4,7 +4,7 @@ using __SCRIPTS.RisingText;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GangstaBean.Effects
+namespace __SCRIPTS
 {
 	public class Life_FX : MonoBehaviour
 	{

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GangstaBean.UI
+namespace __SCRIPTS
 {
 	public class CharacterSelectIndicators : MonoBehaviour
 	{

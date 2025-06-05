@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine.InputSystem;
 
-namespace GangstaBean.Player
+namespace __SCRIPTS
 {
 	public class NewInputButton : NewControlButton
 	{

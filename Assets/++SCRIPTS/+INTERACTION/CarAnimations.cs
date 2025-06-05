@@ -2,7 +2,7 @@ using System;
 using Unity.Cinemachine;
 using UnityEngine;
 
-namespace GangstaBean.Interaction
+namespace __SCRIPTS
 {
 	public class CarAnimations : MonoBehaviour
 	{

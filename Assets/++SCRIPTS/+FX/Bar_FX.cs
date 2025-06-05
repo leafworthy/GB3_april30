@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace GangstaBean.Effects
+namespace __SCRIPTS
 {
 	[ExecuteAlways]
 	public class Bar_FX : MonoBehaviour

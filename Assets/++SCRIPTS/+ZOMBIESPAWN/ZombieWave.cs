@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GangstaBean.ZombieSpawn._ZOMBIESPAWN
+namespace __SCRIPTS._ZOMBIESPAWN
 {
 	[Serializable]
 	public class ZombieWave

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace GangstaBean.Attacks
+namespace __SCRIPTS
 {
 	public class GunAttack_Shotgun : Attacks, IAimableGun
 	{

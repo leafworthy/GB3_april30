@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GangstaBean.Objects
+namespace __SCRIPTS
 {
 	[RequireComponent(typeof(MoveAbility)), RequireComponent(typeof(JumpAbility))]
 	public class FallToFloor : ThingWithHeight

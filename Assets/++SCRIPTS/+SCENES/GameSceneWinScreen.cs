@@ -1,6 +1,6 @@
 using UnityEngine.Video;
 
-namespace GangstaBean.Scenes
+namespace __SCRIPTS
 {
 	/// <summary>
 	/// Handles the victory screen with video playback

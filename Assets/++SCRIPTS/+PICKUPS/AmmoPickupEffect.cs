@@ -1,4 +1,4 @@
-namespace GangstaBean.Pickups
+namespace __SCRIPTS
 {
 	public class AmmoPickupEffect : PickupEffect
 	{

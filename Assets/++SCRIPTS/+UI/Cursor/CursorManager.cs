@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace GangstaBean.UI.Cursor
+namespace __SCRIPTS.Cursor
 {
 	public class CursorManager : MonoBehaviour
 	{
