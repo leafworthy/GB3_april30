@@ -15,15 +15,16 @@ namespace __SCRIPTS
 
 		private bool isAttacking;
 		private bool isChainsawing;
+		private bool isPressingChainsawButton;
 		public GameObject attackPoint;
 		public event Action OnMiss;
+		private Vector2 moveDir;
 
 		public event Action<Vector2> OnStartChainsawing;
 		public event Action<Vector2> OnStartAttacking;
 		public event Action<Vector2> OnStopAttacking;
 		public event Action<Vector2> OnStopChainsawing;
 		private float counter;
-		private float counterMax = 10;
 		public AnimationClip chainsawClip;
 
 		public override void SetPlayer(Player _player)
@@ -34,6 +35,13 @@ namespace __SCRIPTS
 			player.Controller.Attack3Circle.OnPress += PlayerChainsawPress;
 			player.Controller.Attack3Circle.OnRelease += PlayerChainsawRelease;
 			player.Controller.Attack1RightTrigger.OnPress += PlayerPrimaryPress;
+			player.Controller.MoveAxis.OnChange += Player_MoveInDirection;
+			
+			// Listen for actions that should cancel chainsawing
+			player.Controller.Attack2LeftTrigger.OnPress += PlayerMinePress;
+			player.Controller.Jump.OnPress += PlayerJumpPress;
+			player.Controller.DashRightShoulder.OnPress += PlayerDashPress;
+			
 			anim.animEvents.OnAttackStop += Anim_OnAttackStop;
 		}
 
@@ -70,17 +78,73 @@ namespace __SCRIPTS
 			if (anim == null) return;
 			isAttacking = false;
 			isChainsawing = false;
+			isPressingChainsawButton = false;
 			player.Controller.Attack3Circle.OnPress -= PlayerChainsawPress;
 			player.Controller.Attack3Circle.OnRelease -= PlayerChainsawRelease;
+			player.Controller.MoveAxis.OnChange -= Player_MoveInDirection;
+			
+			// Unsubscribe from cancel actions
+			player.Controller.Attack2LeftTrigger.OnPress -= PlayerMinePress;
+			player.Controller.Jump.OnPress -= PlayerJumpPress;
+			player.Controller.DashRightShoulder.OnPress -= PlayerDashPress;
+		}
+
+		private void Player_MoveInDirection(NewInputAxis arg1, Vector2 dir)
+		{
+			moveDir = dir;
+		}
+
+		private void PlayerMinePress(NewControlButton obj)
+		{
+			if (isChainsawing || isAttacking)
+			{
+				CancelChainsawing();
+			}
+		}
+
+		private void PlayerJumpPress(NewControlButton obj)
+		{
+			if (isChainsawing || isAttacking)
+			{
+				CancelChainsawing();
+			}
+		}
+
+		private void PlayerDashPress(NewControlButton obj)
+		{
+			if (isChainsawing || isAttacking)
+			{
+				CancelChainsawing();
+			}
+		}
+
+		private void CancelChainsawing()
+		{
+			isPressingChainsawButton = false;
+			StopAttacking();
+			StopChainsawing();
 		}
 
 		private void FixedUpdate()
 		{
 			if (PauseManager.I.IsPaused) return;
-			if (isAttacking)
+			
+			// Handle facing direction while chainsawing
+			if (isChainsawing && moveDir != Vector2.zero && body != null)
+			{
+				body.BottomFaceDirection(moveDir.x > 0);
+			}
+			
+			// Auto-start attacking if chainsawing but not attacking and button still pressed
+			if (isChainsawing && !isAttacking && isPressingChainsawButton)
+			{
+				StartAttacking();
+			}
+			
+			if (isAttacking && attacker != null)
 			{
 				counter += Time.fixedDeltaTime;
-				if (counter >= counterMax)
+				if (counter >= attacker.TertiaryAttackRate)
 				{
 					counter = 0;
 					HitClosest();
@@ -91,43 +155,35 @@ namespace __SCRIPTS
 		private void HitClosest()
 		{
 			var enemyHit = FindClosestHits();
-			if (enemyHit.Count == 0)
+			if (enemyHit == null || enemyHit.Count == 0)
 			{
 				OnMiss?.Invoke();
 				return;
 			}
-			else
+			
+			foreach (var enemy in enemyHit)
 			{
-				foreach (var enemy in enemyHit)
-				{
-					if (enemy == null) continue;
-					if (enemy.IsPlayer || enemy.cantDie || enemy.IsObstacle) continue;
-					if (enemy.IsDead()) continue;
-					HitTarget(attacker.TertiaryAttackDamageWithExtra, enemy, 1);
-				}
+				if (enemy == null) continue;
+				if (enemy.IsPlayer || enemy.cantDie || enemy.IsObstacle) continue;
+				if (enemy.IsDead()) continue;
+				HitTarget(attacker.TertiaryAttackDamageWithExtra, enemy, 1);
 			}
 		}
 
 		private void PlayerChainsawRelease(NewControlButton newControlButton)
 		{
 			if (PauseManager.I.IsPaused) return;
+			isPressingChainsawButton = false;
 			StopAttacking();
 			OnStopAttacking?.Invoke(transform.position);
 		}
 
 		private void StartChainsawing()
 		{
-			if (isChainsawing)
-			{
-				StartAttacking();
-				return;
-			}
+			if (isChainsawing) return; // Already chainsawing
+			
 			if (!body.arms.Do(this)) return;
-			if (!body.legs.Do(this))
-			{
-				body.arms.StopSafely(this);
-				return;
-			}
+			// Don't occupy legs - allow movement while chainsawing
 
 			if (body.arms.isActive && body.arms.currentActivity?.VerbName != VerbName)
 			{
@@ -159,17 +215,27 @@ namespace __SCRIPTS
 		private void PlayerChainsawPress(NewControlButton newControlButton)
 		{
 			if (PauseManager.I.IsPaused) return;
+			isPressingChainsawButton = true;
 			StartChainsawing();
 		}
 
 		private List<Life> FindClosestHits()
 		{
+			// Null checks
+			if (attackPoint == null || attacker == null || ASSETS.LevelAssets == null)
+			{
+				return new List<Life>();
+			}
+
 			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange,
 				ASSETS.LevelAssets.EnemyLayer).ToList();
-			if (circleCast.Count <= 0) return null;
+			if (circleCast.Count <= 0) return new List<Life>();
+			
 			var enemies = new List<Life>();
 			foreach (var enemyCollider in circleCast)
 			{
+				if (enemyCollider == null || enemyCollider.gameObject == null) continue;
+				
 				var enemy = enemyCollider.gameObject.GetComponent<Life>();
 				if (enemy == null) enemy = enemyCollider.gameObject.GetComponentInParent<Life>();
 				if (enemy == null) continue;

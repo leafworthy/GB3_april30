@@ -121,6 +121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2910067963188203709}
   - component: {fileID: 1744937240233568092}
+  - component: {fileID: 7867591669494894817}
   m_Layer: 0
   m_Name: station bottom-actual
   m_TagString: Untagged
@@ -198,6 +199,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7867591669494894817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6365348860112285649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMovable: 1
+  renderBelowAll: 0
+  sortingBounds: {fileID: 0}
+  renderBelowSortingOrder: 0
+  sortType: 0
+  SorterPositionOffset: {x: 1.1132889, y: 36.80301, z: 0}
+  SorterPositionOffset2: {x: 0, y: 0, z: 0}
+  renderersToSort:
+  - {fileID: 1744937240233568092}
+  renderAboveAll: 0
 --- !u!1 &6932971765547358421
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,6 +282,10 @@ PrefabInstance:
     - target: {fileID: 863186155442475318, guid: da9baaa9456ec4f6a98c61fa35b40c6d, type: 3}
       propertyPath: m_SortingOrder
       value: 483
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052985236293123429, guid: da9baaa9456ec4f6a98c61fa35b40c6d, type: 3}
+      propertyPath: Health
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4441666161486732207, guid: da9baaa9456ec4f6a98c61fa35b40c6d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -346,6 +373,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 6200000, guid: 8c34822b7022040fdb2f7864b7bc46f4, type: 2}
+    - target: {fileID: 3920727678223850721, guid: cb46d6210d9ce4d6ebf0eed61839dc45, type: 3}
+      propertyPath: Health
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4651720180371243583, guid: cb46d6210d9ce4d6ebf0eed61839dc45, type: 3}
       propertyPath: bumpMapMode.spriteRenderer
       value: 
@@ -437,6 +468,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 6200000, guid: 8c34822b7022040fdb2f7864b7bc46f4, type: 2}
+    - target: {fileID: 3920727678223850721, guid: cb46d6210d9ce4d6ebf0eed61839dc45, type: 3}
+      propertyPath: Health
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4651720180371243583, guid: cb46d6210d9ce4d6ebf0eed61839dc45, type: 3}
       propertyPath: bumpMapMode.spriteRenderer
       value: 
@@ -547,6 +582,10 @@ PrefabInstance:
     - target: {fileID: 863186155442475318, guid: da9baaa9456ec4f6a98c61fa35b40c6d, type: 3}
       propertyPath: m_SortingOrder
       value: 489
+      objectReference: {fileID: 0}
+    - target: {fileID: 3052985236293123429, guid: da9baaa9456ec4f6a98c61fa35b40c6d, type: 3}
+      propertyPath: Health
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4366736525621955178, guid: da9baaa9456ec4f6a98c61fa35b40c6d, type: 3}
       propertyPath: SorterPositionOffset.y

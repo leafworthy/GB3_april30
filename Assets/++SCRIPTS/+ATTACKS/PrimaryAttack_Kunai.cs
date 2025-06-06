@@ -1,6 +1,7 @@
 using System;
 using __SCRIPTS.HUD_Displays;
 using __SCRIPTS.Projectiles;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS

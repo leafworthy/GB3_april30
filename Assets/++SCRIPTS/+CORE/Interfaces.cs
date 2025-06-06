@@ -15,4 +15,13 @@ namespace GangstaBean.Core
     {
         public string VerbName { get; }
     }
+
+    /// <summary>
+    /// Interface for components that need to reset their state when reused from object pool
+    /// </summary>
+    public interface IPoolable
+    {
+        void OnPoolSpawn();
+        void OnPoolDespawn();
+    }
 }

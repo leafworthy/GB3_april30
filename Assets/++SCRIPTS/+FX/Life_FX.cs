@@ -3,10 +3,11 @@ using System.Linq;
 using __SCRIPTS.RisingText;
 using UnityEngine;
 using UnityEngine.UI;
+using GangstaBean.Core;
 
 namespace __SCRIPTS
 {
-	public class Life_FX : MonoBehaviour
+	public class Life_FX : MonoBehaviour, IPoolable
 	{
 
 
@@ -247,5 +248,31 @@ namespace __SCRIPTS
 		}
 
 		#endregion
+
+		public void OnPoolSpawn()
+		{
+			// Reset tint to no tint (transparent) when spawning from pool
+			materialTintColor = new Color(1, 1, 1, 1);
+			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
+			foreach (var r in renderersToTint)
+			{
+				if (r != null && r.material != null)
+				{
+					r.material.SetColor(Tint, materialTintColor);
+				}
+			}
+		}
+
+		public void OnPoolDespawn()
+		{
+			// Clean up event subscriptions when despawning
+			if (_life != null)
+			{
+				_life.OnDamaged -= Life_Damaged;
+				_life.OnFractionChanged -= DefenceOnDefenceChanged;
+				_life.OnDying -= DefenceOnDead;
+				_life.OnPlayerSet -= OnPlayerSet;
+			}
+		}
 	}
 }

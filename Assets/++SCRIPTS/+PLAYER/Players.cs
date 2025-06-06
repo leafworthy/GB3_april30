@@ -76,11 +76,32 @@ namespace __SCRIPTS
 		// Clear joined players (typically used when starting a new game)
 		public static void ClearAllJoinedPlayers()
 		{
-			Debug.Log("cleared all players");
-			foreach (var player in I.AllJoinedPlayers)
+			if (I == null)
 			{
-				if (player == null) return;
-				Destroy(player.gameObject);
+				Debug.LogWarning("Players.ClearAllJoinedPlayers: Players singleton is null");
+				return;
+			}
+
+			Debug.Log("Clearing all players");
+			var playersToDestroy = new List<Player>(I.AllJoinedPlayers);
+			
+			foreach (var player in playersToDestroy)
+			{
+				if (player == null) continue; // Continue instead of return to process all players
+				
+				try
+				{
+					// Properly cleanup player before destroying
+					if (player.SpawnedPlayerGO != null)
+					{
+						Destroy(player.SpawnedPlayerGO);
+					}
+					Destroy(player.gameObject);
+				}
+				catch (System.Exception e)
+				{
+					Debug.LogError($"Players.ClearAllJoinedPlayers: Failed to destroy player {player.playerIndex}: {e.Message}");
+				}
 			}
 
 			I.AllJoinedPlayers.Clear();
@@ -89,23 +110,72 @@ namespace __SCRIPTS
 		// Handle a new player joining
 		private void Input_OnPlayerJoins(PlayerInput newPlayerInput)
 		{
+			if (newPlayerInput == null)
+			{
+				Debug.LogError("Players.Input_OnPlayerJoins: newPlayerInput is null");
+				return;
+			}
+
 			var joiningPlayer = newPlayerInput.GetComponent<Player>();
+			if (joiningPlayer == null)
+			{
+				Debug.LogError($"Players.Input_OnPlayerJoins: Player component missing on PlayerInput {newPlayerInput.playerIndex}");
+				return;
+			}
+
 			JoinPlayer(newPlayerInput, joiningPlayer);
 		}
 
 		// Join a player to the game
 		private void JoinPlayer(PlayerInput newPlayerInput, Player joiningPlayer)
 		{
-			if (AllJoinedPlayers.Contains(joiningPlayer)) return;
-			if(AllJoinedPlayers.Count >= 4)
+			if (newPlayerInput == null || joiningPlayer == null)
 			{
-				Debug.Log("Max players reached");
+				Debug.LogError("Players.JoinPlayer: null parameters provided");
 				return;
 			}
-			AllJoinedPlayers.Add(joiningPlayer);
-			joiningPlayer.Join(newPlayerInput, playerPresets[newPlayerInput.playerIndex], newPlayerInput.playerIndex);
-			OnPlayerJoins?.Invoke(joiningPlayer);
-			joiningPlayer.OnPlayerDies += Player_PlayerDies;
+
+			// Check for duplicate players
+			if (AllJoinedPlayers.Contains(joiningPlayer))
+			{
+				Debug.LogWarning($"Players.JoinPlayer: Player {joiningPlayer.playerIndex} already joined");
+				return;
+			}
+
+			// Check player limit
+			if (AllJoinedPlayers.Count >= 4)
+			{
+				Debug.Log("Max players reached (4)");
+				return;
+			}
+
+			// Validate player index and preset
+			int playerIndex = newPlayerInput.playerIndex;
+			if (playerIndex < 0 || playerIndex >= playerPresets.Length)
+			{
+				Debug.LogError($"Players.JoinPlayer: Invalid player index {playerIndex}, using index 0");
+				playerIndex = 0;
+			}
+
+			try
+			{
+				AllJoinedPlayers.Add(joiningPlayer);
+				joiningPlayer.Join(newPlayerInput, playerPresets[playerIndex], playerIndex);
+				
+				// Subscribe to player death events with error handling
+				joiningPlayer.OnPlayerDies += Player_PlayerDies;
+				
+				// Notify other systems
+				OnPlayerJoins?.Invoke(joiningPlayer);
+				
+				Debug.Log($"Player {playerIndex} successfully joined. Total players: {AllJoinedPlayers.Count}");
+			}
+			catch (System.Exception e)
+			{
+				Debug.LogError($"Players.JoinPlayer: Failed to join player {playerIndex}: {e.Message}");
+				// Remove from list if joining failed
+				AllJoinedPlayers.Remove(joiningPlayer);
+			}
 			Debug.Log("PLAYER" + newPlayerInput.name + newPlayerInput.playerIndex + " JOINS FROM INPUT MANAGER");
 		}
 
@@ -134,6 +204,11 @@ namespace __SCRIPTS
 		public static void SetActionMap(Player player, string actionMap)
 		{
 			if (player == null) return;
+			if(player.input == null)
+			{
+				player.input = player.GetComponent<PlayerInput>();
+				return;
+			}
 			player.input.SwitchCurrentActionMap(actionMap);
 		}
 	}

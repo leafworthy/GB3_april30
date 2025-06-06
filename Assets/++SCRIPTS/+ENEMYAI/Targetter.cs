@@ -1,12 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using GangstaBean.Core;
 
 namespace __SCRIPTS._ENEMYAI
 {
-	public class Targetter : MonoBehaviour
+	public class Targetter : MonoBehaviour, IPoolable
 	{
 		private void Awake()
+		{
+			InitializeTargetter();
+		}
+
+		private void InitializeTargetter()
 		{
 			wanderPoint = transform.position;
 		}
@@ -136,6 +142,18 @@ namespace __SCRIPTS._ENEMYAI
 		{
 			var target = GetClosestPlayerInAggroRange();
 			return target != null;
+		}
+
+		public void OnPoolSpawn()
+		{
+			// Reinitialize targetter when spawned from pool
+			InitializeTargetter();
+		}
+
+		public void OnPoolDespawn()
+		{
+			// Clean up when returning to pool
+			specialTarget = null;
 		}
 	}
 }

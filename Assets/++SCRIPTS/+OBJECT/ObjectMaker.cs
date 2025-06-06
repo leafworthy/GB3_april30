@@ -19,8 +19,7 @@ namespace __SCRIPTS
 		public void OnDisable()
 		{
 			Debug.Log("object maker disabled");
-			pools.Clear();
-			allActiveUnits.Clear();
+			DestroyAllUnits(null);
 			if (LevelManager.I == null) return;
 			LevelManager.I.OnStartLevel -= PoolObjects;
 			LevelManager.I.OnStopLevel -= DestroyAllUnits;

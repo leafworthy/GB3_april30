@@ -1,11 +1,12 @@
 using __SCRIPTS._ENEMYAI;
 using __SCRIPTS.Cursor;
 using __SCRIPTS.HUD_Displays;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class MoveController : MonoBehaviour, INeedPlayer
+	public class MoveController : MonoBehaviour, INeedPlayer, IPoolable
 	{
 		public bool CanMove { get; set; }
 
@@ -205,5 +206,26 @@ namespace __SCRIPTS
 		}
 
 		public bool IsIdle() => mover.IsIdle();
+
+		public void OnPoolSpawn()
+		{
+			// Reinitialize movement controller when spawned from pool
+			CanMove = true;
+			isWounded = false;
+			MoveDir = Vector2.zero;
+			// Reinitialize life connections if it's not a player
+			if (life != null && !life.IsPlayer)
+			{
+				InitializeLife();
+			}
+		}
+
+		public void OnPoolDespawn()
+		{
+			// Clean up when returning to pool
+			StopMoving();
+			CanMove = false;
+			MoveDir = Vector2.zero;
+		}
 	}
 }

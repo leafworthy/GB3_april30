@@ -16,16 +16,15 @@ public class GameSceneGameOver : GameScene
 	    }
 	    for (int i = 0; i < Players.I.AllJoinedPlayers.Count; i++)
 	    {
-		    
+
 			    Debug.Log("stats for player " + Players.I.AllJoinedPlayers[i].playerIndex);
 			    displays[i].gameObject.SetActive(true);
 			    displays[i].SetPlayer(Players.I.AllJoinedPlayers[i]);
 			    Players.I.AllJoinedPlayers[i].Controller.Select.OnPress += ContinuePress;
-		    
-		    
+
+
 	    }
 
-	    GameManager.I.DisableGameCamera();
     }
 
     private void ContinuePress(NewControlButton obj)
@@ -37,14 +36,14 @@ public class GameSceneGameOver : GameScene
 
 	    Destroy(GameManager.I.gameObject);
 	    UnityEngine.Debug.Log("Game Manager Destroyed");
-	    
+
 	    SceneManager.LoadScene(gameManagerScene.sceneName, LoadSceneMode.Additive);
-	    
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using VInspector;
 
 namespace __SCRIPTS.Plugins._ISOSORT
 {
-    [ExecuteInEditMode]
+    //[ExecuteInEditMode]
     public class IsoSpriteSortingManager : MonoBehaviour
     {
         // Singleton instance
@@ -12,7 +13,14 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
         private void Awake()
         {
-            _instance = this;
+            if (_instance == null)
+            {
+                _instance = this;
+            }
+            else if (_instance != this)
+            {
+                DestroyImmediate(gameObject);
+            }
         }
 
         private void OnDestroy()
@@ -23,13 +31,15 @@ namespace __SCRIPTS.Plugins._ISOSORT
             }
         }
 
-        private static readonly List<IsoSpriteSorting> fgSpriteList = new List<IsoSpriteSorting>(128);
-        private static readonly List<IsoSpriteSorting> floorSpriteList = new List<IsoSpriteSorting>(128);
-        private static readonly List<IsoSpriteSorting> staticSpriteList = new List<IsoSpriteSorting>(128);
-        private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new List<IsoSpriteSorting>(128);
+        private static readonly List<IsoSpriteSorting> fgSpriteList = new List<IsoSpriteSorting>(256);
+        private static readonly List<IsoSpriteSorting> floorSpriteList = new List<IsoSpriteSorting>(256);
+        private static readonly List<IsoSpriteSorting> staticSpriteList = new List<IsoSpriteSorting>(256);
+        private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new List<IsoSpriteSorting>(
+            256);
 
-        private static readonly List<IsoSpriteSorting> moveableSpriteList = new List<IsoSpriteSorting>(128);
-        private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new List<IsoSpriteSorting>(128);
+        private static readonly List<IsoSpriteSorting> moveableSpriteList = new List<IsoSpriteSorting>(256);
+        private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new List<IsoSpriteSorting>(
+            256);
         private static readonly List<IsoSpriteSorting> sortedSprites = new List<IsoSpriteSorting>(256);
 
         public static void RegisterSprite(IsoSpriteSorting newSprite)
@@ -123,7 +133,6 @@ namespace __SCRIPTS.Plugins._ISOSORT
             spriteToRemove.inverseStaticDependencies.Clear();
             spriteToRemove.staticDependencies.Clear();
         }
-        //work now
         void Update()
         {
             IsoSpriteSorting.UpdateSorters();
@@ -138,7 +147,12 @@ namespace __SCRIPTS.Plugins._ISOSORT
 #endif
         }
 
-
+        [Button]
+        public void UpdateSortingButton()
+        {
+            IsoSpriteSorting.UpdateSorters();
+            UpdateSorting();
+        }
         public static void UpdateSorting()
         {
             FilterListByVisibility(staticSpriteList, currentlyVisibleStaticSpriteList);

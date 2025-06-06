@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GangstaBean.Core;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace __SCRIPTS.HUD_Displays

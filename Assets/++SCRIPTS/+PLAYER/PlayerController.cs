@@ -35,29 +35,45 @@ namespace __SCRIPTS
         public void InitializeAndLinkToPlayer(Player player)
         {
             if (initialized) return;
-            initialized = true;
-            owner = player; 
-            controls = new PlayerControls();
-          
             
-            
-            SetAxes();
+            if (player == null)
+            {
+                Debug.LogError("PlayerController.InitializeAndLinkToPlayer: player is null");
+                return;
+            }
 
-            Select = new NewInputButton(controls.UI.Select, owner);
-            Cancel = new NewInputButton(controls.UI.Cancel, owner);
-            Unpause = new NewInputButton(controls.UI.Unpause, owner);
-            Select = new NewInputButton(controls.UI.Select, owner);
-            
-            Pause = new NewInputButton(controls.PlayerMovement.Pause, owner);
-            Jump = new NewInputButton(controls.PlayerMovement.Jump, owner);
-            DashRightShoulder = new NewInputButton(controls.PlayerMovement.DashLeftShoulder, owner);
-            Attack1RightTrigger = new NewInputButton(controls.PlayerMovement.Attack1RightTrigger, owner);
-            Attack2LeftTrigger = new NewInputButton(controls.PlayerMovement.Attack2LeftTrigger, owner);
-            Attack3Circle = new NewInputButton(controls.PlayerMovement.Attack3Circle, owner);
-            ReloadTriangle = new NewInputButton(controls.PlayerMovement.ReloadTriangle, owner);
-            InteractRightShoulder = new NewInputButton(controls.PlayerMovement.InteractRightShoulder, owner);
-            SwapWeaponSquare = new NewInputButton(controls.PlayerMovement.SwapWeaponSquare, owner);
-          
+            try
+            {
+                owner = player; 
+                controls = new PlayerControls();
+                
+                // Safe axes initialization - only after owner is set
+                SetAxes();
+
+                // Initialize UI controls
+                Select = new NewInputButton(controls.UI.Select, owner);
+                Cancel = new NewInputButton(controls.UI.Cancel, owner);
+                Unpause = new NewInputButton(controls.UI.Unpause, owner);
+                // Note: Removed duplicate Select assignment
+                
+                // Initialize movement controls
+                Pause = new NewInputButton(controls.PlayerMovement.Pause, owner);
+                Jump = new NewInputButton(controls.PlayerMovement.Jump, owner);
+                DashRightShoulder = new NewInputButton(controls.PlayerMovement.DashLeftShoulder, owner);
+                Attack1RightTrigger = new NewInputButton(controls.PlayerMovement.Attack1RightTrigger, owner);
+                Attack2LeftTrigger = new NewInputButton(controls.PlayerMovement.Attack2LeftTrigger, owner);
+                Attack3Circle = new NewInputButton(controls.PlayerMovement.Attack3Circle, owner);
+                ReloadTriangle = new NewInputButton(controls.PlayerMovement.ReloadTriangle, owner);
+                InteractRightShoulder = new NewInputButton(controls.PlayerMovement.InteractRightShoulder, owner);
+                SwapWeaponSquare = new NewInputButton(controls.PlayerMovement.SwapWeaponSquare, owner);
+                
+                initialized = true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"PlayerController.InitializeAndLinkToPlayer: Failed to initialize for player {player?.playerIndex}: {e.Message}");
+                initialized = false;
+            }
         }
 
         private void FixedUpdate()
@@ -68,10 +84,25 @@ namespace __SCRIPTS
 
         private void SetAxes()
         {
-            AimAxis = owner.isUsingMouse ? new NewInputAxis(controls.PlayerMovement.MousePosition, owner) : new NewInputAxis(controls.PlayerMovement.StickAiming, owner);
+            if (owner == null || controls == null)
+            {
+                Debug.LogWarning("PlayerController.SetAxes: owner or controls is null, skipping axes setup");
+                return;
+            }
 
-            UIAxis = new NewInputAxis(controls.UI.Movement, owner);
-            MoveAxis = new NewInputAxis(controls.PlayerMovement.Movement, owner);
+            try
+            {
+                AimAxis = owner.isUsingMouse ? 
+                    new NewInputAxis(controls.PlayerMovement.MousePosition, owner) : 
+                    new NewInputAxis(controls.PlayerMovement.StickAiming, owner);
+
+                UIAxis = new NewInputAxis(controls.UI.Movement, owner);
+                MoveAxis = new NewInputAxis(controls.PlayerMovement.Movement, owner);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"PlayerController.SetAxes: Failed to initialize axes for player {owner?.playerIndex}: {e.Message}");
+            }
         }
     }
 }

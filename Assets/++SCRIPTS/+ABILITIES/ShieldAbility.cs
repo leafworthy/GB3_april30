@@ -1,5 +1,6 @@
 using __SCRIPTS;
 using __SCRIPTS.HUD_Displays;
+using GangstaBean.Core;
 using UnityEngine;
 
 public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity

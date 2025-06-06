@@ -1,15 +1,30 @@
+using System.Collections.Generic;
+using __SCRIPTS;
 using UnityEngine;
+using VInspector;
 
 namespace __SCRIPTS
 {
+
+[ExecuteAlways]
 	public class ColorSchemeHandler: MonoBehaviour
 	{
+		private void Awake()
+		{
+			RandomPalette();
+		}
+
 		public HouseColorScheme houseColors;
 
-
-		public Color GetColor(HouseColorScheme.ColorType type)
+		[Button]
+		public void RandomPalette()
 		{
-			return houseColors.GetColor(type);
+			HouseColorScheme[] allSchemes = Resources.LoadAll<HouseColorScheme>("ColorPalettes");
+
+
+			int randomIndex = Random.Range(0, allSchemes.Length);
+			houseColors = allSchemes[randomIndex];
+			Debug.Log($"Randomly selected color scheme: {houseColors.name}");
 		}
 	}
 }

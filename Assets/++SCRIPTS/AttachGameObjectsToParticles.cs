@@ -28,12 +28,24 @@ public class AttachGameObjectsToParticles : MonoBehaviour
 	{
 		var count = m_ParticleSystem.GetParticles(m_Particles);
 
-		while (m_Instances.Count < count)
+		int attempts = 0;
+		int maxAttempts = 100;
+		
+		while (m_Instances.Count < count && attempts < maxAttempts)
 		{
 			var prefab = ObjectMaker.I.Make(m_Prefab);
-			Debug.Log("new instance ");
-			prefab.transform.SetParent(particleParent.transform);
-			m_Instances.Add(prefab);
+			if (prefab != null)
+			{
+				Debug.Log("new instance ");
+				prefab.transform.SetParent(particleParent.transform);
+				m_Instances.Add(prefab);
+			}
+			else
+			{
+				Debug.LogWarning("AttachGameObjectsToParticles: Failed to create prefab instance");
+				break;
+			}
+			attempts++;
 		}
 
 		var instanceToRemove = new List<GameObject>();

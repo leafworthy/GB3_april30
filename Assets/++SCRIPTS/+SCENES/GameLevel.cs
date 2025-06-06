@@ -12,6 +12,8 @@ namespace __SCRIPTS
 		public GraphNodePositioner nodePositioner;
 		public event Action OnGameOver;
 		public event Action<Player> OnPlayerSpawned;
+		private CityMaker cityMaker;
+
 		private List<TravelPoint> getSpawnPoints() => FindObjectsByType<TravelPoint>(FindObjectsSortMode.None).ToList();
 
 		private bool hasSpawnPoint(TravelPoint travelPoint) => getSpawnPoints().Contains(travelPoint);
@@ -19,7 +21,7 @@ namespace __SCRIPTS
 		private void Start()
 		{
 			Players.I.OnAllJoinedPlayersDead += LoseLevel;
-			nodePositioner = GetComponent<GraphNodePositioner>();
+
 		}
 
 		private void SpawnPlayer(Player player, TravelPoint travelPoint)
@@ -51,8 +53,13 @@ namespace __SCRIPTS
 
 		public void StartLevel()
 		{
-			SpawnPlayers(LevelManager.I.RespawnTravelPoint != null ? LevelManager.I.RespawnTravelPoint : defaultTravelPoint);
+			cityMaker = FindFirstObjectByType<CityMaker>();
+			cityMaker.GenerateCity();
+			defaultTravelPoint = FindFirstObjectByType<TravelPoint>();
+			SpawnPlayers(defaultTravelPoint);
+			nodePositioner = GetComponent<GraphNodePositioner>();
 			nodePositioner.StartGraphPositioning();
+
 		}
 
 		private void SpawnPlayers(TravelPoint travelPoint)
@@ -70,5 +77,7 @@ namespace __SCRIPTS
 				SpawnPlayer(player, travelPoint);
 			}
 		}
+
+
 	}
 }

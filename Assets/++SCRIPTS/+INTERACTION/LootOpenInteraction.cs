@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace __SCRIPTS
 {
@@ -23,6 +24,7 @@ namespace __SCRIPTS
 		{
 			hideRevealObjects = GetComponentInChildren<HideRevealObjects>();
 			hideRevealObjects.Set(0);
+			howMuchLoot =  Random.Range(1, howMuchLoot); // Randomly add 0-2 loot items to the container
 			OnActionPress += interactable_OnInteract;
 			OnPlayerEnters += interactable_PlayerEnters;
 			OnPlayerExits += interactable_PlayerExits;

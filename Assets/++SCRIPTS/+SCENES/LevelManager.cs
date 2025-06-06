@@ -17,8 +17,8 @@ namespace __SCRIPTS
 		public event Action<Player> OnPlayerSpawned;
 		public event Action OnGameOver;
 		public event Action OnWinGame;
+		private float gameStartTime;
 
-		private TravelPoint _currentTravelPoint;
 		private Dictionary<Character,GameObject> persistentCharacters;
 
 		private void RegisterPersistentCharacter(Character character, GameObject characterPrefab)
@@ -41,7 +41,6 @@ namespace __SCRIPTS
 			SceneLoader.I.GoToScene(ASSETS.Scenes.startingScene);
 			SceneLoader.I.OnSceneReadyToStartLevel += SceneLoaderSceneReadyToStartLevel;
 
-			_currentTravelPoint = null;
 		}
 
 		private void StartLevel(GameLevel newLevel)
@@ -52,6 +51,9 @@ namespace __SCRIPTS
 			currentLevel.OnGameOver += newLevel_GameOver;
 			currentLevel.OnPlayerSpawned += (p) => OnPlayerSpawned?.Invoke(p);
 			currentLevel.StartLevel();
+
+
+		gameStartTime = Time.time;
 			OnStartLevel?.Invoke(currentLevel);
 		}
 
@@ -70,7 +72,6 @@ namespace __SCRIPTS
 
 		public void StartNextLevel(TravelPoint travelPoint)
 		{
-			_currentTravelPoint = travelPoint;
 			LoadLevel(null);
 		}
 
@@ -95,8 +96,7 @@ namespace __SCRIPTS
 			StartLevel(gameLevel);
 		}
 
-
-		public void StopLevel()
+		private void StopLevel()
 		{
 			if (currentLevel == null) return;
 			restartedLevelScene = currentLevel.scene;
@@ -167,6 +167,12 @@ namespace __SCRIPTS
 			graphNodePositioner.StopCulling();
 		}
 
+		public float GetCurrentLevelTimeElapsed() => GetTimeElapsed();
 
+		private float GetTimeElapsed()
+		{
+			if (gameStartTime == 0) return 0f;
+			return Time.time - gameStartTime;
+		}
 	}
 }

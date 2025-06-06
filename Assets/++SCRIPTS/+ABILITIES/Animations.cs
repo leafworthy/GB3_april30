@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using GangstaBean.Core;
 
 namespace __SCRIPTS
 {
-	public class Animations : MonoBehaviour
+	public class Animations : MonoBehaviour, IPoolable
 	{
 		public AnimationEvents animEvents;
 		[SerializeField] public Animator animator;
@@ -50,9 +51,15 @@ namespace __SCRIPTS
 
 		private void Awake()
 		{
+			InitializeAnimations();
+		}
+
+		private void InitializeAnimations()
+		{
 			if (animator == null) animator = GetComponentInChildren<Animator>();
 			animEvents = GetComponentInChildren<AnimationEvents>();
 			CacheParameterHashes();
+			ResetAnimatorState();
 		}
 
 		private void CacheParameterHashes()
@@ -123,6 +130,43 @@ namespace __SCRIPTS
 			}
 			else
 				Debug.LogWarning($"Parameter with hash {getAimDirNumberFromDegrees} does not exist.", this);
+		}
+
+		private void ResetAnimatorState()
+		{
+			if (animator == null) return;
+			
+			// Reset all boolean parameters to false
+			SetBool(IsDead, false);
+			SetBool(IsAttacking, false);
+			SetBool(IsCharging, false);
+			SetBool(IsMoving, false);
+			SetBool(IsChainsawing, false);
+			SetBool(IsShooting, false);
+			SetBool(IsGlocking, false);
+			SetBool(IsFalling, false);
+			SetBool(IsBobbing, false);
+			SetBool(IsFallingFromSky, false);
+			SetBool(IsShielding, false);
+			
+			// Reset triggers
+			ResetTrigger(AggroTrigger);
+			ResetTrigger(HitTrigger);
+			ResetTrigger(DeathTrigger);
+			ResetTrigger(Attack1Trigger);
+			ResetTrigger(Attack2Trigger);
+			ResetTrigger(Attack3Trigger);
+		}
+
+		public void OnPoolSpawn()
+		{
+			// Reinitialize animations when spawned from pool
+			InitializeAnimations();
+		}
+
+		public void OnPoolDespawn()
+		{
+			// Nothing needed when despawning
 		}
 	}
 }

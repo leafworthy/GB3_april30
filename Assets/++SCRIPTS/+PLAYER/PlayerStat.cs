@@ -28,15 +28,15 @@ namespace __SCRIPTS
 
 		public  StatType type;
 		[SerializeField]private float value;
-	
+
 		public void SetStat(float newValue)
 		{
 			value = newValue;
 		}
-	
+
 		public float GetStatAmount() => value;
 
-		public void ChangeStat(float change)
+		public void IncreaseStat(float change)
 		{
 			Debug.Log("chaging stat " + type + " by " + change);
 			value += change;

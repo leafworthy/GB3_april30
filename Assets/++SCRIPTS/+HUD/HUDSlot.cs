@@ -1,5 +1,6 @@
 using __SCRIPTS.HUD_Displays;
 using __SCRIPTS.UpgradeS;
+using GangstaBean.Core;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
 

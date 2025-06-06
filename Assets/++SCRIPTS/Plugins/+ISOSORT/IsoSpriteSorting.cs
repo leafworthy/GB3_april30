@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 
 namespace __SCRIPTS.Plugins._ISOSORT
 {
-	//[ExecuteInEditMode]
+	[ExecuteInEditMode]
 	public class IsoSpriteSorting : MonoBehaviour
 	{
 		public bool isMovable;
@@ -267,8 +267,8 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		private void OnDrawGizmos()
 		{
-			// Check if transform has changed
-			if (!Application.isPlaying && t != null)
+			// Check if transform has changed - limit frequency to prevent editor freezing
+			if (!Application.isPlaying && t != null && Time.realtimeSinceStartup - lastGizmosUpdateTime > 0.1f)
 			{
 				var hasChanged = t.position != lastPosition || t.rotation != lastRotation || t.localScale != lastScale;
 
@@ -282,11 +282,13 @@ namespace __SCRIPTS.Plugins._ISOSORT
 					RefreshPoint1();
 					RefreshPoint2();
 					RefreshBounds();
-					IsoSpriteSortingManager.UpdateSorting();
-					SceneView.RepaintAll();
+					// Don't call UpdateSorting and RepaintAll from OnDrawGizmos as it can cause infinite loops
+					lastGizmosUpdateTime = Time.realtimeSinceStartup;
 				}
 			}
 		}
+
+		private float lastGizmosUpdateTime = 0f;
 #endif
 
 		public void GetRenderers()

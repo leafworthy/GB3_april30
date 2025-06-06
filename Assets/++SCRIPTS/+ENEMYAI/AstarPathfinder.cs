@@ -2,11 +2,12 @@ using System;
 using __SCRIPTS.Plugins.AstarPathfindingProject.Core;
 using __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI;
 using UnityEngine;
+using GangstaBean.Core;
 using Random = UnityEngine.Random;
 
 namespace __SCRIPTS._ENEMYAI
 {
-	public class AstarPathfinder : MonoBehaviour
+	public class AstarPathfinder : MonoBehaviour, IPoolable
 	{
 		public event Action<Vector2> OnNewDirection;
 		private Vector2 targetPosition;
@@ -27,12 +28,20 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void OnEnable()
 		{
+			InitializePathfinder();
+		}
+
+		private void InitializePathfinder()
+		{
 			seeker = GetComponent<Seeker>();
 			currentPath = null;
 			var aStar = FindFirstObjectByType<AstarPath>();
 			if (aStar is null) enabled = false;
 			isPathing = true;
 			lastPosition = transform.position;
+			counter = 0;
+			frozenCounter = 0;
+			currentWaypoint = 0;
 		}
 
 		public void SetTargetPosition(Vector2 newTargetPosition)
@@ -46,13 +55,13 @@ namespace __SCRIPTS._ENEMYAI
 		{
 			if(!isPathing) return;
 			if (p.error) return;
-		  
+
 			currentPath = p;
 			currentWaypoint = 2;
 			UpdateDirection();
 		}
 
-	
+
 
 		private void FixedUpdate()
 		{
@@ -62,6 +71,7 @@ namespace __SCRIPTS._ENEMYAI
 			if (counter >= rate)
 			{
 				if (seeker == null) seeker = GetComponent<Seeker>();
+				if (seeker == null) return;
 				counter = 0;
 				seeker.StartPath(transform.position, targetPosition, OnPathComplete);
 				return;
@@ -127,6 +137,19 @@ namespace __SCRIPTS._ENEMYAI
 		{
 			isPathing = false;
 			OnNewDirection?.Invoke((target - transform.position).normalized);
+		}
+
+		public void OnPoolSpawn()
+		{
+			// Reinitialize pathfinder when spawned from pool
+			InitializePathfinder();
+		}
+
+		public void OnPoolDespawn()
+		{
+			// Clean up when returning to pool
+			StopPathing();
+			currentPath = null;
 		}
 	}
 }

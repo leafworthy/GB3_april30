@@ -351,6 +351,7 @@ GameObject:
   - component: {fileID: 2194203459170913656}
   - component: {fileID: -5959914097894329155}
   - component: {fileID: -5407103618921158120}
+  - component: {fileID: 4380901330312204681}
   m_Layer: 7
   m_Name: Cone
   m_TagString: Untagged
@@ -465,7 +466,7 @@ MonoBehaviour:
   ExtraMaxDamageFactor: 0
   cantDie: 0
   isInvincible: 0
-  Health: 0
+  Health: 80
 --- !u!114 &1868243376366810161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -780,6 +781,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4380901330312204681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9136819711188386144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd748a8e8c6541bc8a0a93a01251830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pallettes:
+  - {fileID: 2100000, guid: f2225536de5a54f678b090880b106dad, type: 2}
+  - {fileID: 2100000, guid: 468e6b834c0844f9fa022630f15d8ca9, type: 2}
+  - {fileID: 2100000, guid: 62f29fea3d4ce470a9f936935d28ed71, type: 2}
+  - {fileID: 2100000, guid: d2c375b89dcba41c482f28a14d78122d, type: 2}
+  spriteRenderer: {fileID: 494462091829049330}
 --- !u!1 &9136819711387657586
 GameObject:
   m_ObjectHideFlags: 0

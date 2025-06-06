@@ -105,11 +105,11 @@ namespace __SCRIPTS
 
 		private IEnumerator AutoRefreshCoroutine()
 		{
-			while (true)
+			while (database != null && database.googleSheetsConfig.autoRefreshInterval > 0)
 			{
 				yield return new WaitForSeconds(database.googleSheetsConfig.autoRefreshInterval);
 
-				if (!IsLoading)
+				if (!IsLoading && database != null)
 				{
 					Debug.Log("Auto-refreshing unit stats data...");
 					LoadData();
@@ -131,11 +131,15 @@ namespace __SCRIPTS
 				Debug.Log("found it first time");
 				return stats;
 			}
-			LoadData();
-			if (unitStatsLookup.TryGetValue(unitName, out var stats2))
+			
+			if (!IsLoading)
 			{
-				Debug.Log("found it second time");
-				return stats2;
+				LoadData();
+				if (unitStatsLookup.TryGetValue(unitName, out var stats2))
+				{
+					Debug.Log("found it second time");
+					return stats2;
+				}
 			}
 			Debug.Log($"Unit stats not found for: {unitName} using default stats");
 			// Return default stats if not found

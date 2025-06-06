@@ -1,6 +1,7 @@
 using System;
 using __SCRIPTS._ENEMYAI.EnemyAI_States;
 using UnityEngine;
+using GangstaBean.Core;
 
 namespace __SCRIPTS._ENEMYAI
 {
@@ -26,7 +27,7 @@ namespace __SCRIPTS._ENEMYAI
 		void UpdateState();
 	}
 
-	public class EnemyAI : MonoBehaviour, IAI
+	public class EnemyAI : MonoBehaviour, IAI, IPoolable
 	{
 		public bool stopMovingOnAttack = true;
 		private IAIState currentState;
@@ -62,6 +63,11 @@ namespace __SCRIPTS._ENEMYAI
 		}
 
 		private void Start()
+		{
+			InitializeAI();
+		}
+
+		private void InitializeAI()
 		{
 			if (Pathmaker != null) Pathmaker.OnNewDirection += HandleNewDirection;
 			TransitionToState(new AggroState());
@@ -120,6 +126,20 @@ namespace __SCRIPTS._ENEMYAI
 		private void HandleNewDirection(Vector2 direction)
 		{
 			OnMoveInDirection?.Invoke(direction);
+		}
+
+		public void OnPoolSpawn()
+		{
+			// Reinitialize AI when spawned from pool
+			InitializeAI();
+		}
+
+		public void OnPoolDespawn()
+		{
+			// Clean up when returning to pool
+			if (Pathmaker != null) Pathmaker.OnNewDirection -= HandleNewDirection;
+			currentState?.OnExitState();
+			currentState = null;
 		}
 	}
 }

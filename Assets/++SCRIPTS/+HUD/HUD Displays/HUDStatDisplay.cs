@@ -1,12 +1,10 @@
+using GangstaBean.Core;
 using TMPro;
 using UnityEngine;
 
 namespace __SCRIPTS.HUD_Displays
 {
-	public interface INeedPlayer
-	{
-		void SetPlayer(Player _player);
-	}
+
 	public class HUDStatDisplay : MonoBehaviour, INeedPlayer
 	{
 		public PlayerStat.StatType statType;
@@ -23,7 +21,7 @@ namespace __SCRIPTS.HUD_Displays
 			LevelManager.I.OnPlayerSpawned += (t) => UpdateDisplay();
 		}
 
-	
+
 		public virtual void SetPlayer(Player _player)
 		{
 			owner = _player;
@@ -55,7 +53,7 @@ namespace __SCRIPTS.HUD_Displays
 			{
 				displayText.text = CurrentAmount.ToString();
 			}
-			
+
 		}
 	}
 }

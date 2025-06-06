@@ -3,11 +3,12 @@ using System.Text.RegularExpressions;
 using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 using VInspector;
+using GangstaBean.Core;
 
 namespace __SCRIPTS
 {
 	[ExecuteInEditMode]
-	public class Life : MonoBehaviour, INeedPlayer
+	public class Life : MonoBehaviour, INeedPlayer, IPoolable
 	{
 		[HideInInspector] public Player player;
 		public UnitStatsData unitData => _unitData ?? GetStats();
@@ -108,6 +109,11 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
+			InitializeLife();
+		}
+
+		private void InitializeLife()
+		{
 			anim = GetComponent<Animations>();
 			if (anim != null)
 			{
@@ -117,7 +123,14 @@ namespace __SCRIPTS
 
 			originalLayer = gameObject.layer;
 			ResetHealthToMax();
+			isDead = false;
+			isInvincible = false;
 			OnFractionChanged?.Invoke(GetFraction());
+			
+			// Ensure colliders are enabled
+			EnableAllColliders();
+			// Reset layer if it was changed to Dead
+			gameObject.layer = originalLayer;
 		}
 
 		private void SetInvincible(bool _isInvincible)
@@ -276,6 +289,37 @@ namespace __SCRIPTS
 		public void SetExtraMaxSpeedFactor(float newExtraMaxSpeed)
 		{
 			ExtraMaxSpeedFactor = newExtraMaxSpeed;
+		}
+
+		private void EnableAllColliders()
+		{
+			var colliders = GetComponents<Collider2D>();
+			foreach (var col in colliders)
+			{
+				col.enabled = true;
+			}
+
+			var moreColliders = GetComponentsInChildren<Collider2D>();
+			foreach (var col in moreColliders)
+			{
+				col.enabled = true;
+			}
+		}
+
+		public void OnPoolSpawn()
+		{
+			// Reinitialize life when spawned from pool
+			InitializeLife();
+		}
+
+		public void OnPoolDespawn()
+		{
+			// Clean up when returning to pool
+			if (anim != null)
+			{
+				anim.animEvents.OnDieStop -= Die;
+				anim.animEvents.OnInvincible -= SetInvincible;
+			}
 		}
 	}
 }

@@ -50,7 +50,7 @@ namespace __SCRIPTS
 			playerStats.Clear();
 
 			AddStat(new PlayerStat(PlayerStat.StatType.Kills, 0));
-			AddStat(new PlayerStat(PlayerStat.StatType.DaysSurvived, 0));
+			AddStat(new PlayerStat(PlayerStat.StatType.TimeSurvived, 0));
 			AddStat(new PlayerStat(PlayerStat.StatType.Accuracy, 0));
 			AddStat(new PlayerStat(PlayerStat.StatType.AttacksHit, 0));
 			AddStat(new PlayerStat(PlayerStat.StatType.AttacksTotal, 0));
@@ -93,7 +93,7 @@ namespace __SCRIPTS
 		{
 			InitStats();
 			var changingStat = GetStat(type);
-			changingStat.ChangeStat(change);
+			changingStat.IncreaseStat(change);
 			OnPlayerStatChange?.Invoke(owner, changingStat);
 
 		}

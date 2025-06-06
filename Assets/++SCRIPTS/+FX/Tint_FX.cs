@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using GangstaBean.Core;
 
 namespace __SCRIPTS
 {
 	[ExecuteAlways]
-	public class Tint_FX : MonoBehaviour
+	public class Tint_FX : MonoBehaviour, IPoolable
 	{
 		[Header("Color Options")] public float TintFadeSpeed = 6f;
 
@@ -55,5 +56,20 @@ namespace __SCRIPTS
 			}
 		}
 
+		public void OnPoolSpawn()
+		{
+			// Reset tint to no tint (transparent) when spawning from pool
+			materialTintColor = new Color(1, 1, 1, 0);
+			OnEnable();
+			foreach (var r in renderersToTint)
+			{
+				r.material.SetColor(Tint, materialTintColor);
+			}
+		}
+
+		public void OnPoolDespawn()
+		{
+			// Nothing needed when despawning
+		}
 	}
 }
