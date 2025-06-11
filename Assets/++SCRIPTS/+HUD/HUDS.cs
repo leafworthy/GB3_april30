@@ -94,6 +94,14 @@ namespace __SCRIPTS
 		{
 			if(!canJoin) return;
 			Debug.Log("join in game");
+			
+			// Ensure player stats are properly initialized before setting up HUD
+			var playerStats = player.GetComponent<PlayerStats>();
+			if (playerStats != null)
+			{
+				playerStats.ResetStats(); // Initialize stats for mid-game join
+			}
+			
 			var slot = I.currentHUDSlots[(int) player.input.playerIndex];
 			slot.gameObject.SetActive(true);
 			slot.StartCharSelectMenu(player);
@@ -110,6 +118,7 @@ namespace __SCRIPTS
 			currentHUDSlots = GetComponentsInChildren<HUDSlot>(true).ToList();
 			foreach (var hudSlot in currentHUDSlots) hudSlot.gameObject.SetActive(false);
 		}
+		
 
 	}
 }

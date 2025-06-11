@@ -30,12 +30,15 @@ namespace __SCRIPTS.Plugins.Editor
         
             EditorGUILayout.Space();
         
-            // Draw custom spawn rate curve visualization
-            showSpawnRateCurve = EditorGUILayout.Foldout(showSpawnRateCurve, "Spawn Rate by Time of Day", true);
+            // Draw custom difficulty curve visualization
+            showSpawnRateCurve = EditorGUILayout.Foldout(showSpawnRateCurve, "Difficulty Curve Over Time", true);
             if (showSpawnRateCurve)
             {
-                DrawSpawnRateCurve(spawner);
+                DrawDifficultyCurve(spawner);
             }
+            
+            // Draw enemy unlock timeline
+            DrawEnemyUnlockTimeline(spawner);
         
             EditorGUILayout.Space();
         
@@ -58,7 +61,7 @@ namespace __SCRIPTS.Plugins.Editor
             }
         }
     
-        private void DrawSpawnRateCurve(SmartZombieSpawningSystem spawner)
+        private void DrawDifficultyCurve(SmartZombieSpawningSystem spawner)
         {
             float height = 100;
             Rect curveRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth - 40, height);
@@ -71,14 +74,14 @@ namespace __SCRIPTS.Plugins.Editor
                 // Draw grid lines
                 Handles.color = new Color(0.3f, 0.3f, 0.3f);
             
-                // Vertical lines (time of day)
-                for (int i = 0; i <= 24; i += 6)
+                // Vertical lines (time progression)
+                for (int i = 0; i <= 10; i += 2)
                 {
-                    float x = curveRect.x + (i / 24f) * curveRect.width;
+                    float x = curveRect.x + (i / 10f) * curveRect.width;
                     Handles.DrawLine(new Vector3(x, curveRect.y), new Vector3(x, curveRect.y + curveRect.height));
                 }
             
-                // Horizontal lines (spawn rate)
+                // Horizontal lines (difficulty level)
                 for (int i = 0; i <= 10; i += 2)
                 {
                     float y = curveRect.y + curveRect.height - (i / 10f) * curveRect.height;
@@ -87,19 +90,29 @@ namespace __SCRIPTS.Plugins.Editor
             
                 // Draw time labels
                 GUI.color = Color.white;
-                GUI.Label(new Rect(curveRect.x, curveRect.y + curveRect.height + 5, 50, 20), "12 AM");
-                GUI.Label(new Rect(curveRect.x + curveRect.width * 0.25f - 20, curveRect.y + curveRect.height + 5, 50, 20), "6 AM");
-                GUI.Label(new Rect(curveRect.x + curveRect.width * 0.5f - 20, curveRect.y + curveRect.height + 5, 50, 20), "12 PM");
-                GUI.Label(new Rect(curveRect.x + curveRect.width * 0.75f - 20, curveRect.y + curveRect.height + 5, 50, 20), "6 PM");
-                GUI.Label(new Rect(curveRect.x + curveRect.width - 40, curveRect.y + curveRect.height + 5, 50, 20), "12 AM");
+                GUI.Label(new Rect(curveRect.x, curveRect.y + curveRect.height + 5, 50, 20), "Start");
+                GUI.Label(new Rect(curveRect.x + curveRect.width * 0.5f - 20, curveRect.y + curveRect.height + 5, 50, 20), "Mid");
+                GUI.Label(new Rect(curveRect.x + curveRect.width - 40, curveRect.y + curveRect.height + 5, 50, 20), "Max");
             
-                // Draw the curve
+                // Draw the difficulty curve
                 Handles.color = Color.yellow;
                 Vector3 prevPoint = Vector3.zero;
             
                 for (float t = 0; t <= 1; t += 0.01f)
                 {
-                    float value = spawner.spawnRateCurve.Evaluate(t);
+                    float value = spawner.GetCurrentDifficulty();
+                    if (Application.isPlaying)
+                    {
+                        // If playing, show actual current difficulty
+                        value = spawner.GetCurrentDifficulty();
+                    }
+                    else
+                    {
+                        // If not playing, show the curve shape
+                        // We can't access the private difficultyOverTime curve, so show a representative curve
+                        value = Mathf.SmoothStep(0f, 1f, t);
+                    }
+                    
                     float x = curveRect.x + t * curveRect.width;
                     float y = curveRect.y + curveRect.height - value * curveRect.height;
                 
@@ -113,14 +126,16 @@ namespace __SCRIPTS.Plugins.Editor
                     prevPoint = newPoint;
                 }
             
-                // Draw current time marker if day/night cycle is available
+                // Draw current progress marker if playing
                 if (Application.isPlaying)
                 {
-                    float timeOfDay = DayNightCycle.I.GetCurrentDayFraction();
-                    float currentRate = spawner.spawnRateCurve.Evaluate(timeOfDay);
+                    float currentDifficulty = spawner.GetCurrentDifficulty();
+                    float gameTime = Time.time;
+                    float difficultyRampTime = 300f; // Default value, can't access private field
+                    float progress = Mathf.Clamp01(gameTime / difficultyRampTime);
                 
-                    float markerX = curveRect.x + timeOfDay * curveRect.width;
-                    float markerY = curveRect.y + curveRect.height - currentRate * curveRect.height;
+                    float markerX = curveRect.x + progress * curveRect.width;
+                    float markerY = curveRect.y + curveRect.height - currentDifficulty * curveRect.height;
                 
                     Handles.color = Color.red;
                     float markerSize = 5f;
@@ -135,20 +150,114 @@ namespace __SCRIPTS.Plugins.Editor
                         new Vector3(markerX + markerSize, markerY - markerSize)
                     );
                 
-                    // Display current time and rate
+                    // Display current difficulty
                     EditorGUI.LabelField(
                         new Rect(markerX + 10, markerY - 20, 100, 20), 
-                        $"Time: {timeOfDay:F2}"
+                        $"Progress: {progress:F2}"
                     );
                 
                     EditorGUI.LabelField(
                         new Rect(markerX + 10, markerY, 100, 20), 
-                        $"Rate: {currentRate:F2}"
+                        $"Difficulty: {currentDifficulty:F2}"
                     );
                 }
             }
         
             EditorGUILayout.Space();
+        }
+        
+        private void DrawEnemyUnlockTimeline(SmartZombieSpawningSystem spawner)
+        {
+            EditorGUILayout.LabelField("Enemy Unlock Timeline", EditorStyles.boldLabel);
+            
+            // Get unlock times using reflection since they're private
+            var toastUnlockTime = GetPrivateField<float>(spawner, "toastUnlockTime");
+            var coneUnlockTime = GetPrivateField<float>(spawner, "coneUnlockTime");
+            var donutUnlockTime = GetPrivateField<float>(spawner, "donutUnlockTime");
+            var cornUnlockTime = GetPrivateField<float>(spawner, "cornUnlockTime");
+            var difficultyRampTime = GetPrivateField<float>(spawner, "difficultyRampTime");
+            
+            float maxTime = Mathf.Max(toastUnlockTime, coneUnlockTime, donutUnlockTime, cornUnlockTime, difficultyRampTime);
+            if (maxTime <= 0) maxTime = 300f; // Fallback
+            
+            float height = 60;
+            Rect timelineRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth - 40, height);
+            
+            if (Event.current.type == EventType.Repaint)
+            {
+                // Draw background
+                EditorGUI.DrawRect(timelineRect, new Color(0.2f, 0.2f, 0.2f));
+                
+                // Draw time markers
+                Handles.color = new Color(0.3f, 0.3f, 0.3f);
+                for (int i = 0; i <= 10; i++)
+                {
+                    float time = (i / 10f) * maxTime;
+                    float x = timelineRect.x + (i / 10f) * timelineRect.width;
+                    Handles.DrawLine(new Vector3(x, timelineRect.y), new Vector3(x, timelineRect.y + timelineRect.height));
+                    
+                    // Draw time labels
+                    GUI.color = Color.white;
+                    GUI.Label(new Rect(x - 15, timelineRect.y + timelineRect.height + 5, 30, 20), $"{time:F0}s");
+                }
+                
+                // Draw enemy unlock points
+                var enemies = new[]
+                {
+                    ("Toast", toastUnlockTime, Color.yellow),
+                    ("Cone", coneUnlockTime, Color.green),
+                    ("Donut", donutUnlockTime, Color.magenta),
+                    ("Corn", cornUnlockTime, Color.red)
+                };
+                
+                foreach (var enemy in enemies)
+                {
+                    if (enemy.Item2 <= maxTime)
+                    {
+                        float x = timelineRect.x + (enemy.Item2 / maxTime) * timelineRect.width;
+                        float y = timelineRect.y + timelineRect.height * 0.5f;
+                        
+                        // Draw unlock marker
+                        Handles.color = enemy.Item3;
+                        Handles.DrawSolidDisc(new Vector3(x, y), Vector3.forward, 4f);
+                        
+                        // Draw enemy name
+                        GUI.color = enemy.Item3;
+                        GUI.Label(new Rect(x - 20, y - 25, 40, 20), enemy.Item1);
+                    }
+                }
+                
+                // Draw current time marker if playing
+                if (Application.isPlaying)
+                {
+                    float gameStartTime = GetPrivateField<float>(spawner, "gameStartTime");
+                    float currentGameTime = Time.time - gameStartTime;
+                    
+                    if (currentGameTime <= maxTime)
+                    {
+                        float x = timelineRect.x + (currentGameTime / maxTime) * timelineRect.width;
+                        
+                        Handles.color = Color.white;
+                        Handles.DrawLine(new Vector3(x, timelineRect.y), new Vector3(x, timelineRect.y + timelineRect.height));
+                        
+                        // Draw current time
+                        GUI.color = Color.white;
+                        GUI.Label(new Rect(x - 15, timelineRect.y - 20, 30, 20), $"{currentGameTime:F1}s");
+                    }
+                }
+            }
+            
+            EditorGUILayout.Space();
+        }
+        
+        private T GetPrivateField<T>(object obj, string fieldName)
+        {
+            var field = obj.GetType().GetField(fieldName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (field != null)
+            {
+                return (T)field.GetValue(obj);
+            }
+            return default(T);
         }
     
         private void DrawSpawnPointsSettings(SmartZombieSpawningSystem spawner)
@@ -178,7 +287,8 @@ namespace __SCRIPTS.Plugins.Editor
             
                 // Display spawn point properties
                 EditorGUI.indentLevel++;
-                spawnPoints[i].spawnAreaSize = EditorGUILayout.Vector2Field("Spawn Area Size", spawnPoints[i].spawnAreaSize);
+                EditorGUILayout.LabelField($"Active: {spawnPoints[i].IsActive()}");
+                EditorGUILayout.LabelField($"Position: {spawnPoints[i].transform.position}");
                 EditorGUI.indentLevel--;
             
                 EditorGUILayout.EndVertical();
@@ -195,8 +305,8 @@ namespace __SCRIPTS.Plugins.Editor
         
             SmartZombieSpawnPoint spawnPoint = newPoint.AddComponent<SmartZombieSpawnPoint>();
         
-            // Set defaults
-            spawnPoint.spawnAreaSize = new Vector2(3, 3);
+            // Set defaults - the new spawn point has its own default settings
+            spawnPoint.SetActive(true);
         
             // Select the new spawn point
             Selection.activeGameObject = newPoint;

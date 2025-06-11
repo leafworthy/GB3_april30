@@ -4,6 +4,8 @@ using __SCRIPTS.HUD_Displays;
 using UnityEngine;
 using VInspector;
 using GangstaBean.Core;
+using Unity.VisualScripting;
+using IPoolable = GangstaBean.Core.IPoolable;
 
 namespace __SCRIPTS
 {
@@ -71,18 +73,25 @@ namespace __SCRIPTS
 			_unitData = GetStats();
 		}
 
+		private void OnEnable()
+		{
+			_unitData = GetStats();
+		}
+
 		[Button()]
 		public UnitStatsData GetStats()
 		{
 			var original = gameObject.name;
-			var result = Regex.Replace(original, @"\d+$", "");
-			_unitData = UnitStatsManager.I.GetUnitStats(result);
+			//var result = Regex.Replace(original, @"\d+$", "");
+			_unitData = UnitStatsManager.I.GetUnitStats(original);
 			return _unitData;
 		}
 
 		public bool cantDie;
 		public bool isInvincible;
 
+
+		public event Action<Attack, Life> OnAttackShielded;
 		public event Action<Attack, Life> OnAttackHit;
 		public event Action<Attack> OnDamaged;
 		public event Action<float> OnFractionChanged;
@@ -99,6 +108,7 @@ namespace __SCRIPTS
 
 		[HideInInspector] public float Health;
 		private Color backgroundColor;
+		public bool isShielded;
 		public event Action<Player> OnPlayerSet;
 
 		public float GetFraction()
@@ -109,6 +119,7 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
+			_unitData = GetStats();
 			InitializeLife();
 		}
 
@@ -126,7 +137,7 @@ namespace __SCRIPTS
 			isDead = false;
 			isInvincible = false;
 			OnFractionChanged?.Invoke(GetFraction());
-			
+
 			// Ensure colliders are enabled
 			EnableAllColliders();
 			// Reset layer if it was changed to Dead
@@ -149,7 +160,12 @@ namespace __SCRIPTS
 			if (attack.DestinationLife.isInvincible) return;
 			// Check if this unit is invincible from the data
 			if (unitData.isInvincible) return;
-
+			if(isShielded)
+			{
+				// If shielded, do not take damage but still invoke the hit event
+				OnAttackShielded?.Invoke(attack, this);
+				return;
+			}
 			OnDamaged?.Invoke(attack);
 			ChangeHealth(attack);
 
@@ -320,6 +336,11 @@ namespace __SCRIPTS
 				anim.animEvents.OnDieStop -= Die;
 				anim.animEvents.OnInvincible -= SetInvincible;
 			}
+		}
+
+		public void SetShielding(bool isOn)
+		{
+			isShielded = isOn;
 		}
 	}
 }

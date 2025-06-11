@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace __SCRIPTS
 {
-	
+
 	[RequireComponent(typeof(DayNightCycle))]
 	public class DayNightClock : MonoBehaviour
 	{
@@ -69,7 +69,7 @@ namespace __SCRIPTS
 
 		private void PlayerOnPlayerDies(Player player)
 		{
-			PlayerStatsManager.I.ChangeStat(player, PlayerStat.StatType.DaysSurvived, currentDay-1);
+			//PlayerStatsManager.I.ChangeStat(player, PlayerStat.StatType.DaysSurvived, currentDay-1);
 		}
 
 		private void OnDisable()
@@ -110,7 +110,7 @@ namespace __SCRIPTS
 			{
 				// Format time string
 				var timeString = FormatTimeString(timeOfDay);
-			
+
 				var dayString = "";
 
 				// Add day counter if enabled
@@ -139,7 +139,7 @@ namespace __SCRIPTS
 				if (isDaytime)
 				{
 					// Calculate day progress (0-1) based on time within day period
-					
+
 					daytimeRadialImage.fillAmount = dayProgress;
 				}
 			}
@@ -153,7 +153,7 @@ namespace __SCRIPTS
 				if (!isDaytime)
 				{
 					// Calculate night progress (0-1) based on time within night period
-					
+
 					nighttimeRadialImage.fillAmount = nightProgress;
 				}
 			}
@@ -216,7 +216,7 @@ namespace __SCRIPTS
 			var hours = timeOfDay * 24f;
 			var hoursInt = Mathf.FloorToInt(hours);
 			var minutes = Mathf.FloorToInt((hours - hoursInt) * 60f);
-	
+
 
 			var period = hoursInt >= 12 ? "PM" : "AM";
 			var displayHours = hoursInt % 12 == 0 ? 12 : hoursInt % 12;

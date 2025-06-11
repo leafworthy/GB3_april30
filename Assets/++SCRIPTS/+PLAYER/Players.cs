@@ -84,11 +84,11 @@ namespace __SCRIPTS
 
 			Debug.Log("Clearing all players");
 			var playersToDestroy = new List<Player>(I.AllJoinedPlayers);
-			
+
 			foreach (var player in playersToDestroy)
 			{
 				if (player == null) continue; // Continue instead of return to process all players
-				
+
 				try
 				{
 					// Properly cleanup player before destroying
@@ -151,7 +151,7 @@ namespace __SCRIPTS
 
 			// Validate player index and preset
 			int playerIndex = newPlayerInput.playerIndex;
-			if (playerIndex < 0 || playerIndex >= playerPresets.Length)
+			if (playerIndex < 0 || playerIndex >= playerPresets.Count)
 			{
 				Debug.LogError($"Players.JoinPlayer: Invalid player index {playerIndex}, using index 0");
 				playerIndex = 0;
@@ -161,13 +161,13 @@ namespace __SCRIPTS
 			{
 				AllJoinedPlayers.Add(joiningPlayer);
 				joiningPlayer.Join(newPlayerInput, playerPresets[playerIndex], playerIndex);
-				
+
 				// Subscribe to player death events with error handling
 				joiningPlayer.OnPlayerDies += Player_PlayerDies;
-				
+
 				// Notify other systems
 				OnPlayerJoins?.Invoke(joiningPlayer);
-				
+
 				Debug.Log($"Player {playerIndex} successfully joined. Total players: {AllJoinedPlayers.Count}");
 			}
 			catch (System.Exception e)

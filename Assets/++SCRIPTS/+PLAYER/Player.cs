@@ -130,15 +130,6 @@ namespace __SCRIPTS
 			PlayerStatsManager.I.SetStatAmount(player, PlayerStat.StatType.TimeSurvived, LevelManager.I.GetCurrentLevelTimeElapsed());
 		}
 
-		private void LevelStopLevelCleanUp(GameLevel gameLevel)
-		{
-			// Otherwise clean up normally
-			state = State.SelectingCharacter;
-			CurrentButton = null;
-			SpawnedPlayerGO = null;
-			LevelManager.I.OnStopLevel -= LevelStopLevelCleanUp;
-			if (spawnedPlayerDefence != null) spawnedPlayerDefence.OnDead -= OnPlayerDied;
-		}
 
 		public GameObject Spawn(Vector2 position, bool fallFromSky)
 		{
@@ -164,9 +155,6 @@ namespace __SCRIPTS
 
 			// Apply any upgrades
 			if (playerUpgrades != null) playerUpgrades.ApplyUpgrades(this);
-
-			// Subscribe to level stop event for cleanup
-			LevelManager.I.OnStopLevel += LevelStopLevelCleanUp;
 
 			// Notify that player has spawned
 			return spawnedPlayerGO;

@@ -93,6 +93,13 @@ namespace __SCRIPTS
 		{
 			var player = obj.owner;
 			player.Controller.Select.OnPress -= OnUnjoinedPlayerPressSelect;
+			
+			// Add player back to AllJoinedPlayers when rejoining
+			if (!Players.I.AllJoinedPlayers.Contains(player))
+			{
+				Players.I.AllJoinedPlayers.Add(player);
+			}
+			
 			PlayerStartsSelecting(player);
 		}
 

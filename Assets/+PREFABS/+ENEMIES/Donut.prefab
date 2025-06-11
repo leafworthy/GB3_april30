@@ -368,7 +368,6 @@ GameObject:
   - component: {fileID: 8468380082729349932}
   - component: {fileID: 7433541532888936559}
   - component: {fileID: 4576851402562854117}
-  - component: {fileID: -2506452886687311854}
   m_Layer: 7
   m_Name: Donut
   m_TagString: Untagged
@@ -483,6 +482,7 @@ MonoBehaviour:
   cantDie: 0
   isInvincible: 0
   Health: 50
+  isShielded: 0
 --- !u!114 &5829456033049239117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -783,18 +783,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 369b58c66d724fa6bccf56c8d634508e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-2506452886687311854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4019382462400588572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4019382462604234510

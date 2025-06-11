@@ -6,7 +6,7 @@ namespace __SCRIPTS
 {
 	public class PlayerStatsManager : Singleton<PlayerStatsManager>
 	{
-		private Dictionary<Player, PlayerStats> playerStats = new();
+		private static Dictionary<Player, PlayerStats> playerStats = new();
 
 		public event Action <Player, PlayerStat.StatType , float> OnPlayerStatChange;
 		private bool hasStarted;
@@ -30,7 +30,16 @@ namespace __SCRIPTS
 				return stats.GetStatValue(statType);
 			}
 
-			return -999;
+			// If player not found, try to add them (for mid-game joins)
+			var playerStatsComponent = player.GetComponent<PlayerStats>();
+			if (playerStatsComponent != null)
+			{
+				playerStats.TryAdd(player, playerStatsComponent);
+				return playerStatsComponent.GetStatValue(statType);
+			}
+
+			Debug.LogWarning($"Player {player.playerIndex} not found in PlayerStatsManager and has no PlayerStats component");
+			return 0; // Return 0 instead of -999 for better display
 		}
 
 		private void GatherPlayerStats()

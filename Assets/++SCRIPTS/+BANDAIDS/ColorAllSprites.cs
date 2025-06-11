@@ -15,7 +15,7 @@ namespace __SCRIPTS
 		private HouseColorScheme houseColorScheme;
 		private SpriteShapeRenderer shapeRenderer;
 		private Tilemap tileMap;
-
+#if UNITY_EDITOR
 		public void Update()
 		{
 			if (!Application.isPlaying)
@@ -29,7 +29,7 @@ namespace __SCRIPTS
 			}
 		}
 
-#if UNITY_EDITOR
+
 		private float lastUpdateTime = 0f;
 #endif
 		private void OnEnable()

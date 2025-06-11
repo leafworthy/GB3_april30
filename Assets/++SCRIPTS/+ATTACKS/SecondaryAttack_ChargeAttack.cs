@@ -146,7 +146,7 @@ namespace __SCRIPTS
 		private void SpecialAttackHit(int attackType)
 		{
 			var position = body.AimCenter.transform.position;
-			var targetPoint = move.IsIdle() ? aim.GetAimPoint() : move.GetMoveAimPoint();
+			var targetPoint = move.IsIdle() ? aim.GetAimPoint() : ((Vector2) position + (Vector2)move.GetLastMoveAimDirOffset());
 
 			var connect = false;
 			SpecialAttackDistance = Vector2.Distance(position, targetPoint);

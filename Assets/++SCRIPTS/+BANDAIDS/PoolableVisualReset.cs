@@ -15,43 +15,43 @@ namespace __SCRIPTS
         [SerializeField] private bool resetSpriteRendererColors = true;
         [SerializeField] private bool resetMaterialTints = true;
         [SerializeField] private Color defaultSpriteColor = Color.white;
-        
+
         private List<SpriteRenderer> spriteRenderers = new();
         private List<Renderer> renderers = new();
         private static readonly int TintProperty = Shader.PropertyToID("_Tint");
-        
+
         private void Awake()
         {
             CacheComponents();
         }
-        
+
         private void CacheComponents()
         {
             spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true).ToList();
             renderers = GetComponentsInChildren<Renderer>(true).ToList();
         }
-        
+
         public void OnPoolSpawn()
         {
             // Refresh component cache in case hierarchy changed
             CacheComponents();
-            
+
             if (resetSpriteRendererColors)
             {
                 ResetSpriteRendererColors();
             }
-            
+
             if (resetMaterialTints)
             {
                 ResetMaterialTints();
             }
         }
-        
+
         public void OnPoolDespawn()
         {
             // Nothing needed when despawning
         }
-        
+
         private void ResetSpriteRendererColors()
         {
             foreach (var spriteRenderer in spriteRenderers)
@@ -62,10 +62,10 @@ namespace __SCRIPTS
                 }
             }
         }
-        
+
         private void ResetMaterialTints()
         {
-            Color transparentTint = new Color(1, 1, 1, 0);
+            Color transparentTint = new Color(1, 1, 1, 1);
             foreach (var renderer in renderers)
             {
                 if (renderer != null && renderer.material != null)

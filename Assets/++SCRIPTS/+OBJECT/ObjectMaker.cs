@@ -79,7 +79,10 @@ namespace __SCRIPTS
 			if (prefab == null) return null;
 			GameObject instance;
 			var recycledScript = prefab.GetComponent<RecycleGameObject>();
-			if (recycledScript == null) recycledScript = prefab.AddComponent<RecycleGameObject>();
+			if (recycledScript == null)
+			{
+				return Instantiate(prefab, pos, Quaternion.identity);
+			}
 
 				var pool = I.GetObjectPool(recycledScript);
 				instance = pool.NextObject(pos).gameObject;

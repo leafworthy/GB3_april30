@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Top-Throw-Nade
+  m_Name: ThrowNade_Top
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -906,7 +906,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Top-Knife
+  m_Name: Top-Bean_Knife_Attack
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1472,10 +1472,10 @@ AnimatorStateMachine:
     m_Position: {x: 70, y: 30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -9180985893876220120}
-    m_Position: {x: 70, y: -50, z: 0}
+    m_Position: {x: 70, y: -60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4118606456740349707}
-    m_Position: {x: 70, y: -10, z: 0}
+    m_Position: {x: 70, y: -20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5595756218334190550}
     m_Position: {x: -190, y: 90, z: 0}

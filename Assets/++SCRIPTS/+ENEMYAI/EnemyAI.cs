@@ -69,6 +69,7 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void InitializeAI()
 		{
+			Debug.Log($"[{gameObject.name}] InitializeAI called - transitioning to AggroState");
 			if (Pathmaker != null) Pathmaker.OnNewDirection += HandleNewDirection;
 			TransitionToState(new AggroState());
 		}

@@ -22,6 +22,8 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 	public AnimationClip shieldOutClip;
 	public string VerbName => "Shield";
 	private ShieldDashActivity shieldDashActivity = new ShieldDashActivity();
+	private float counter;
+	private float counterMax = .25f;
 
 	public void SetPlayer(Player _player)
 	{
@@ -41,6 +43,24 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 		animEvents.OnDashStop += Anim_DashStop;
 	}
 
+
+
+	private void ShieldPush()
+	{
+		var hits = Physics2D.OverlapCircleAll(transform.position, 30, ASSETS.LevelAssets.EnemyLayer);
+		foreach (var hit in hits)
+		{
+			var _life = hit.GetComponent<Life>();
+			if (_life != null && _life.isEnemyOf(life))
+			{
+				Debug.Log("ShieldAbility: Shield hit enemy " + life.name, this);
+				var movement = hit.GetComponent<MoveAbility>();
+				if (movement == null) return;
+				movement.Push((hit.transform.position - transform.position).normalized, life.DashSpeed*1.5f);
+			}
+		}
+	}
+
 	private void OnDisable()
 	{
 		if (owner == null) return;
@@ -49,6 +69,14 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 		owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 		owner.Controller.Attack1RightTrigger.OnPress -= CancelShielding;
 		owner.Controller.Jump.OnPress -= StartJump;
+
+		// Clean up any stuck shield/dash states
+		if (isShielding || isDashing)
+		{
+			Debug.Log("ShieldAbility: OnDisable cleanup - resetting shield and dash states", this);
+			SetShielding(false);
+			SetDashing(false);
+		}
 	}
 	private void StartJump(NewControlButton obj)
 	{
@@ -66,6 +94,14 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 		if (!moveController.CanMove) return;
 		if (PauseManager.I.IsPaused) return;
 		if (!jumps.isResting) return;
+
+		// Check if character has teleport dash ability - if so, let that take priority
+		var dashAbility = GetComponent<DashAbility>();
+		if (dashAbility != null && dashAbility.teleport)
+		{
+			Debug.Log("ShieldAbility: Deferring to teleport DashAbility", this);
+			return;
+		}
 
 		if (!isShielding)
 		{
@@ -106,6 +142,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 
 			SetDashing(true);
 			moveController.Push(moveController.MoveDir, life.DashSpeed);
+			ShieldPush();
 		}
 	}
 
@@ -126,6 +163,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 		}
 		isShielding = isOn;
 		anim.SetBool(Animations.IsShielding, isOn);
+		life.SetShielding(isOn);
 
 	}
 
@@ -133,6 +171,8 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 	private void Anim_DashStop()
 	{
 		SetDashing(false);
+		// Also clear shielding state when dash completes
+		SetShielding(false);
 	}
 
 

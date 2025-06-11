@@ -47,17 +47,40 @@ namespace __SCRIPTS._ENEMYAI
 		public void SetTargetPosition(Vector2 newTargetPosition)
 		{
 			isPathing = true;
-			//seeker.StartPath(transform.position, targetPosition, OnPathComplete);
 			targetPosition = newTargetPosition;
+			
+			Debug.Log($"[{gameObject.name}] SetTargetPosition called - Target: {newTargetPosition}, isPathing: {isPathing}");
+			
+			// Start pathfinding immediately instead of waiting for FixedUpdate counter
+			if (seeker == null) seeker = GetComponent<Seeker>();
+			if (seeker != null)
+			{
+				Debug.Log($"[{gameObject.name}] Starting path from {transform.position} to {targetPosition}");
+				seeker.StartPath(transform.position, targetPosition, OnPathComplete);
+			}
+			else
+			{
+				Debug.LogError($"[{gameObject.name}] Seeker component is null!");
+			}
 		}
 
 		private void OnPathComplete(Path p)
 		{
+			Debug.Log($"[{gameObject.name}] OnPathComplete called - isPathing: {isPathing}, path error: {p.error}");
+			
 			if(!isPathing) return;
-			if (p.error) return;
+			if (p.error) 
+			{
+				Debug.LogError($"[{gameObject.name}] Path error: {p.errorLog}");
+				// Fallback: walk directly toward target when pathfinding fails
+				Debug.Log($"[{gameObject.name}] Pathfinding failed, walking directly to target");
+				WalkInDirectionOfTarget(targetPosition);
+				return;
+			}
 
 			currentPath = p;
 			currentWaypoint = 2;
+			Debug.Log($"[{gameObject.name}] Path complete - {p.vectorPath.Count} waypoints");
 			UpdateDirection();
 		}
 

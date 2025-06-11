@@ -128,14 +128,27 @@ namespace __SCRIPTS
 				else TopSprite.transform.localPosition = OriginalTopSpritePosition;
 			}
 
-			if (body.arms.currentActivity?.VerbName == nadeAttack.VerbName)
+			// Only aim if we're in nade aiming mode, not throwing
+			if (body.arms.currentActivity?.VerbName == "Nade-Aim")
 			{
 				AimInDirection(GetDegrees());
 			}
 
-			if (!isAttacking && !aimableGun.isReloading && !body.arms.isActive)
+			// Check what the arms are currently doing
+			string currentActivity = body.arms.currentActivity?.VerbName;
+			
+			// Don't aim during special attacks that use animations on layer 1
+			bool shouldBlockAiming = currentActivity == "Knife-Attack" || 
+			                        currentActivity == "Nade-Attack";
+			
+			// Only aim when appropriate
+			if (!isAttacking && !aimableGun.isReloading && !shouldBlockAiming)
 			{
-				AimInDirection(GetDegrees());
+				// Only aim if arms are truly free OR not doing conflicting activities
+				if (!body.arms.isActive || currentActivity == null)
+				{
+					AimInDirection(GetDegrees());
+				}
 			}
 		}
 

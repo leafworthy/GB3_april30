@@ -27,7 +27,7 @@ namespace __SCRIPTS
 			InitStats();
 		}
 
-		private void InitStats()
+		public void InitStats()
 		{
 			if (hasInit) return;
 			Debug.Log("stats initialized");

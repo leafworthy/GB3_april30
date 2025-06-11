@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using __SCRIPTS;
 using UnityEngine;
-using VInspector.Libs;
 
 [RequireComponent(typeof(ParticleSystem))]
 public class AttachGameObjectsToParticles : MonoBehaviour
@@ -30,7 +29,7 @@ public class AttachGameObjectsToParticles : MonoBehaviour
 
 		int attempts = 0;
 		int maxAttempts = 100;
-		
+
 		while (m_Instances.Count < count && attempts < maxAttempts)
 		{
 			var prefab = ObjectMaker.I.Make(m_Prefab);

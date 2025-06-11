@@ -59,7 +59,7 @@ namespace __SCRIPTS
 		public void OnPoolSpawn()
 		{
 			// Reset tint to no tint (transparent) when spawning from pool
-			materialTintColor = new Color(1, 1, 1, 0);
+			materialTintColor = new Color(1, 1, 1, 1);
 			OnEnable();
 			foreach (var r in renderersToTint)
 			{

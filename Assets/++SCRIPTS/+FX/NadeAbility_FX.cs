@@ -19,34 +19,47 @@ namespace __SCRIPTS
 			nade = GetComponent<NadeAttack>();
 			body = GetComponent<Body>();
 
+			if (nade == null)
+			{
+				Debug.LogError("NadeAbility_FX: NadeAttack component not found!");
+				return;
+			}
+
+			Debug.Log("NadeAbility_FX: Subscribing to NadeAttack events");
 			nade.OnThrow += Nade_OnThrow;
 			nade.OnShowAiming += Nade_OnShowAiming;
 			nade.OnHideAiming += Nade_OnHideAiming;
 			nade.OnAimAt += Nade_OnAimAt;
+			nade.OnAimInDirection += Nade_OnAimInDirection;
 
 			Nade_OnHideAiming();
 			SpawnTrajectoryMarkers();
-
 		}
 
 		private void OnDisable()
 		{
 			_trajectoryMarkersContainer.Clear();
-			nade.OnThrow -= Nade_OnThrow;
-			nade.OnShowAiming -= Nade_OnShowAiming;
-			nade.OnHideAiming -= Nade_OnHideAiming;
-			nade.OnAimAt -= Nade_OnAimAt;
+			if (nade != null)
+			{
+				Debug.Log("NadeAbility_FX: Unsubscribing from NadeAttack events");
+				nade.OnThrow -= Nade_OnThrow;
+				nade.OnShowAiming -= Nade_OnShowAiming;
+				nade.OnHideAiming -= Nade_OnHideAiming;
+				nade.OnAimAt -= Nade_OnAimAt;
+				nade.OnAimInDirection -= Nade_OnAimInDirection;
+			}
 		}
 
 
 		private void Nade_OnAimInDirection(Vector2 startPoint, Vector2 endPoint)
 		{
+			Debug.Log($"NadeAbility_FX: OnAimInDirection - {startPoint} to {endPoint}");
 			PlaceMarkers(startPoint, endPoint);
 		}
 
 		private void Nade_OnAimAt(Vector2 startPoint, Vector2 endPoint)
 		{
-
+			Debug.Log($"NadeAbility_FX: OnAimAt - {startPoint} to {endPoint}");
 			PlaceMarkers(startPoint, endPoint);
 		}
 
@@ -54,13 +67,12 @@ namespace __SCRIPTS
 		{
 			if (!isShowingAiming) return;
 			isShowingAiming = false;
-			Debug.Log("hide aiming plz");
-			if (currentArrowHead == null) return;
-			currentArrowHead.SetActive(false);
+			Debug.Log("NadeAbility_FX: hide aiming plz");
+			if (currentArrowHead != null) currentArrowHead.SetActive(false);
 			if (_trajectoryMarkersContainer.Count <= 0) return;
 			foreach (var marker in _trajectoryMarkersContainer)
 			{
-				marker.SetActive(false);
+				if (marker != null) marker.SetActive(false);
 			}
 		}
 
@@ -70,32 +82,80 @@ namespace __SCRIPTS
 		{
 			if (isShowingAiming) return;
 			isShowingAiming = true;
-			Debug.Log("show aiming plz");
-			currentArrowHead.SetActive(true);
+			Debug.Log("NadeAbility_FX: show aiming plz");
+			if (currentArrowHead != null) currentArrowHead.SetActive(true);
 			if (_trajectoryMarkersContainer.Count <= 0)
 			{
 				SpawnTrajectoryMarkers();
 				return;
 			}
-			foreach (var marker in _trajectoryMarkersContainer) marker.SetActive(true);
-
+			foreach (var marker in _trajectoryMarkersContainer) 
+			{
+				if (marker != null) marker.SetActive(true);
+			}
 		}
 
 		private void SpawnTrajectoryMarkers()
 		{
+			Debug.Log("NadeAbility_FX: Spawning trajectory markers");
+			
+			if (ASSETS.FX.nadeTargetPrefab == null)
+			{
+				Debug.LogError("ASSETS.FX.nadeTargetPrefab is null!");
+				return;
+			}
+			
+			if (ASSETS.FX.trajectoryMarkerPrefab == null)
+			{
+				Debug.LogError("ASSETS.FX.trajectoryMarkerPrefab is null!");
+				return;
+			}
+			
 			currentArrowHead = ObjectMaker.I.Make(ASSETS.FX.nadeTargetPrefab);
-			currentArrowHead.SetActive(false);
+			if (currentArrowHead != null)
+			{
+				currentArrowHead.SetActive(false);
+				Debug.Log("Created nade target arrow");
+			}
+			
 			for (var i = 0; i < _numberOfMarkers; i++)
 			{
-				_trajectoryMarkersContainer.Add(ObjectMaker.I.Make(ASSETS.FX.trajectoryMarkerPrefab));
+				var marker = ObjectMaker.I.Make(ASSETS.FX.trajectoryMarkerPrefab);
+				if (marker != null)
+				{
+					_trajectoryMarkersContainer.Add(marker);
+				}
 			}
+			
+			Debug.Log($"Created {_trajectoryMarkersContainer.Count} trajectory markers");
 		}
 
 
 		private void Nade_OnThrow(Vector2 startPoint, Vector2 velocity, float time, Player player)
 		{
+			Debug.Log($"NadeAbility_FX: Nade_OnThrow called! Creating grenade from {startPoint} with velocity {velocity}");
+			
+			if (ASSETS.FX.nadePrefab == null)
+			{
+				Debug.LogError("ASSETS.FX.nadePrefab is null! Cannot create grenade.");
+				return;
+			}
+			
 			var newProjectile = ObjectMaker.I.Make(ASSETS.FX.nadePrefab, body.AimCenter.transform.position);
+			if (newProjectile == null)
+			{
+				Debug.LogError("Failed to create grenade projectile!");
+				return;
+			}
+			
 			var nadeThrower = newProjectile.GetComponent<Nade>();
+			if (nadeThrower == null)
+			{
+				Debug.LogError("Grenade projectile missing Nade component!");
+				return;
+			}
+			
+			Debug.Log("Launching grenade projectile...");
 			nadeThrower.Launch(startPoint, velocity, time, player);
 		}
 

@@ -12,7 +12,7 @@ namespace __SCRIPTS
 
 			var layer = _owner.IsPlayer() ? ASSETS.LevelAssets.EnemyLayer : ASSETS.LevelAssets.PlayerLayer;
 			var hits = Physics2D.OverlapCircleAll(explosionPosition, explosionRadius, layer);
-		
+
 			CameraShaker.ShakeCamera(explosionPosition, CameraShaker.ShakeIntensityType.high);
 			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);
 			SFX.I.sounds.bean_nade_explosion_sounds.PlayRandomAt(explosionPosition);
@@ -28,7 +28,7 @@ namespace __SCRIPTS
 					otherMove.Push(explosionPosition - defence.transform.position, pushFactor * ratio);
 				var newAttack = new Attack(_owner.spawnedPlayerDefence, explosionPosition, defence.transform.position,
 					defence, explosionDamage * ratio);
-				newAttack.IsWounding = true;
+				//newAttack.IsWounding = true;
 				defence.TakeDamage(newAttack);
 			}
 		}

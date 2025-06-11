@@ -48,13 +48,12 @@ namespace __SCRIPTS
 		private void LoseLevel()
 		{
 			OnGameOver?.Invoke();
-			StopLevel();
 		}
 
 		public void StartLevel()
 		{
-			cityMaker = FindFirstObjectByType<CityMaker>();
-			cityMaker.GenerateCity();
+			//cityMaker = FindFirstObjectByType<CityMaker>();
+			//cityMaker.GenerateCity();
 			defaultTravelPoint = FindFirstObjectByType<TravelPoint>();
 			SpawnPlayers(defaultTravelPoint);
 			nodePositioner = GetComponent<GraphNodePositioner>();

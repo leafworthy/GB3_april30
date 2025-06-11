@@ -34,11 +34,8 @@ public class GameSceneGameOver : GameScene
 			player.Controller.Select.OnPress -= ContinuePress;
 	    }
 
-	    Destroy(GameManager.I.gameObject);
-	    UnityEngine.Debug.Log("Game Manager Destroyed");
-
-	    SceneManager.LoadScene(gameManagerScene.sceneName, LoadSceneMode.Additive);
-
+	    // Use the original level manager system
+	    LevelManager.I.ExitToMainMenu();
     }
 
     // Update is called once per frame

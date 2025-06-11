@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4343433282639333256}
   - component: {fileID: 9119736165614473997}
   - component: {fileID: 3667821776840960880}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Back Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,8 +107,8 @@ MonoBehaviour:
   sortingBounds: {fileID: 0}
   renderBelowSortingOrder: 0
   sortType: 1
-  SorterPositionOffset: {x: 5.1130257, y: -6.3076706, z: 0}
-  SorterPositionOffset2: {x: 6.1721344, y: -5.9110336, z: 0}
+  SorterPositionOffset: {x: 5.1146393, y: -6.3076363, z: 0}
+  SorterPositionOffset2: {x: 6.173752, y: -5.911028, z: 0}
   renderersToSort:
   - {fileID: 1403131798044607136}
   renderAboveAll: 0
@@ -180,7 +180,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -453,8 +453,8 @@ MonoBehaviour:
   sortingBounds: {fileID: 0}
   renderBelowSortingOrder: 0
   sortType: 1
-  SorterPositionOffset: {x: -4.5284424, y: -5.904251, z: 0}
-  SorterPositionOffset2: {x: 4.9348755, y: -1.3786621, z: 0}
+  SorterPositionOffset: {x: -4.52874, y: -5.904293, z: 0}
+  SorterPositionOffset2: {x: 4.9345856, y: -1.3786869, z: 0}
   renderersToSort:
   - {fileID: 7599226733927065709}
   renderAboveAll: 0
@@ -471,7 +471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openSortingPoint1: {x: -3.949463, y: -5.73407, z: 0}
-  openSortingPoint2: {x: -4.029358, y: -12.758743, z: 0}
+  openSortingPoint2: {x: -4.029358, y: -12.758728, z: 0}
 --- !u!114 &5290067728388085103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -567,7 +567,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3547440162358740012, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: Health
-      value: 200
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3547440162358740012, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: cantDie
@@ -650,7 +650,15 @@ PrefabInstance:
       value: Front Wall
       objectReference: {fileID: 0}
     - target: {fileID: 6806070673501800903, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6806070673501800903, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6875359972785059917, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
+      propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6875359972785059917, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}
@@ -855,7 +863,7 @@ MonoBehaviour:
   sortingBounds: {fileID: 0}
   renderBelowSortingOrder: 0
   sortType: 0
-  SorterPositionOffset: {x: -5.5495453, y: -11.812599, z: 0}
+  SorterPositionOffset: {x: -5.548378, y: -11.812586, z: 0}
   SorterPositionOffset2: {x: 0, y: 0, z: 0}
   renderersToSort:
   - {fileID: 359072328796171202}

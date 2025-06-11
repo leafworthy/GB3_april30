@@ -11,22 +11,36 @@ namespace __SCRIPTS
 		public PlayerSetupMenu charSelectMenu;
 		public UpgradeSetupMenu upgradeSetupMenu;
 		private Player currentPlayer;
+		public GameObject characterHUD;
 
 		public void SetPlayer(Player player)
 		{
 			currentPlayer = player;
+			
+			// Ensure player stats are initialized before setting up HUD components
+			var playerStats = player.GetComponent<PlayerStats>();
+			if (playerStats != null)
+			{
+				// Force initialization if not already done
+				playerStats.InitStats();
+			}
+			
 			foreach (var needPlayer in GetComponentsInChildren<INeedPlayer>(true))
 			{
+				// Skip the character select menu since it's already handled
+				if (needPlayer.GetType() == typeof(PlayerSetupMenu)) continue;
 				needPlayer.SetPlayer(currentPlayer);
 			}
 
 			charSelectMenu.gameObject.SetActive(false);
+			characterHUD.gameObject.SetActive(true);
 		}
 
 		public void StartCharSelectMenu(Player player)
 		{
 			Debug.Log("here for player  " + player.playerIndex);
 			player.input.uiInputModule = charSelectMenu.GetComponentInChildren<InputSystemUIInputModule>();
+			characterHUD.gameObject.SetActive(false);
 			charSelectMenu.gameObject.SetActive(true);
 			charSelectMenu.StartSetupMenu(player);
 
@@ -68,6 +82,8 @@ namespace __SCRIPTS
 		{
 			if (currentPlayer == null) return;
 			charSelectMenu.gameObject.SetActive(false);
+			characterHUD.gameObject.SetActive(true);
+
 		}
 	}
 }

@@ -1,337 +1,423 @@
 using System.Collections.Generic;
-using __SCRIPTS.Cursor;
-using __SCRIPTS.HUD_Displays;
 using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	/// <summary>
-	/// A smarter zombie spawning system that dynamically spawns enemies based on time of day,
-	/// player proximity, camera visibility, and collision checks.
-	/// </summary>
-	public class SmartZombieSpawningSystem : MonoBehaviour
-	{
-		#region Enemies
-
-		[Header("Enemy Type Distribution"), Tooltip("Relative spawn frequency for Toast enemy (0-1)"), Range(0, 1)]
-		public float toastSpawnFrequency = 0.4f;
-
-		[Tooltip("Relative spawn frequency for Cone enemy (0-1)"), Range(0, 1)]
-		public float coneSpawnFrequency = 0.3f;
-
-		[Tooltip("Relative spawn frequency for Donut enemy (0-1)"), Range(0, 1)]
-		public float donutSpawnFrequency = 0.2f;
-
-		[Tooltip("Relative spawn frequency for Corn enemy (0-1)"), Range(0, 1)]
-		public float cornSpawnFrequency = 0.1f;
-		[Tooltip("Difficulty scaling curve over time (0-1)")]
-		public AnimationCurve difficultyCurve = new(new Keyframe(0.0f, 0.0f), // Game start (easiest)
-			new Keyframe(0.5f, 0.5f), // Mid-game (medium)
-			new Keyframe(1.0f, 1.0f) // Game end (hardest)
-		);
-
-		[Tooltip("Zombie health multiplier at maximum difficulty")]
-		public float maxHealthMultiplier = 2.0f;
-
-		[Tooltip("Zombie damage multiplier at maximum difficulty")]
-		public float maxDamageMultiplier = 1.5f;
-
-		[Tooltip("Zombie speed multiplier at maximum difficulty")]
-		public float maxSpeedMultiplier = 1.3f;
-
-		#endregion
-
-		#region Spawning Settings
-
-		[Header("Spawn Settings"), Tooltip("Maximum number of enemies to spawn")]
-		public int maxEnemies = 30;
-
-		[Tooltip("Minimum distance from player to spawn enemies")]
-		public float minPlayerDistance = 5f;
-
-		[Tooltip("Maximum distance from player to spawn enemies")]
-		public float maxPlayerDistance = 30f;
-
-		[Tooltip("Use object pooling instead of direct instantiation")]
-		public bool useObjectPooling = true;
-
-		[Header("Time-based Spawning"), Tooltip("Spawn rate curve based on time of day (0-1)")]
-		public AnimationCurve spawnRateCurve = new(new Keyframe(0.0f, 1.0f), // Midnight (max spawning)
-			new Keyframe(0.2f, 0.8f), // Early morning (high spawning)
-			new Keyframe(0.25f, 0.3f), // Sunrise (reduced spawning)
-			new Keyframe(0.3f, 0.0f), // Morning (no spawning)
-			new Keyframe(0.7f, 0.0f), // Afternoon (no spawning)
-			new Keyframe(0.75f, 0.2f), // Sunset (starts spawning)
-			new Keyframe(0.85f, 0.6f), // Dusk (increased spawning)
-			new Keyframe(1.0f, 1.0f) // Night (max spawning)
-		);
-
-		[Tooltip("Base spawning interval in seconds")]
-		public float baseSpawnInterval = 5f;
-
-		[Tooltip("Minimum spawning interval in seconds")]
-		public float minSpawnInterval = 1f;
-
-		[Header("Proximity Spawning"), Tooltip("Enable spawning when players are nearby")]
-		public bool enableProximitySpawning = true;
-
-		[Tooltip("Distance at which proximity spawners activate")]
-		public float proximityActivationDistance = 15f;
-
-		[Tooltip("Enable heat map spawning focused on player activity")]
-		public bool useHeatMapSpawning = true;
-
-		[Tooltip("Range of heat map influence")]
-		public float heatMapRange = 50f;
-
-		[Header("Off-Camera Spawning"), Tooltip("Ensure enemies spawn outside camera view")]
-		public bool ensureOffCameraSpawning = true;
-
-		[Tooltip("Margin beyond camera edges for spawning")]
-		public float offCameraMargin = 2f;
-
-		#endregion
-
-		#region Wandering Zombies
-
-		[Header("Wandering Zombies"), Tooltip("Enable wandering zombies around the map")]
-		public bool enableWanderingZombies = true;
-
-		[Tooltip("Maximum number of wandering zombies")]
-		public int maxWanderingZombies = 15;
-
-		[Tooltip("Interval for wandering zombie spawn checks")]
-		public float wanderingSpawnInterval = 20f;
-
-		[Tooltip("Group size for wandering zombies (1 = no groups)"), Range(1, 5)]
-		public int wanderingGroupSize = 1;
-
-		#endregion
-
-		#region Bosses
-
-		[Header("Special Events"), Tooltip("Enable boss zombies to spawn occasionally")]
-		public bool enableBossZombies;
-
-		[Tooltip("Chance of a boss zombie spawn (0-1)"), Range(0, 1)]
-		public float bossZombieChance = 0.05f;
-
-		[Tooltip("Interval between special event checks")]
-		public float bossEventInterval = 180f;
-
-		#endregion
-
-		// Private variables
-		private List<SmartZombieSpawnPoint> spawnPoints = new();
-		private List<GameObject> spawnedEnemies = new();
-		private float nextSpawnTime;
-		private float nextWanderingSpawnTime;
-		private float nextSpecialEventTime;
-		private float gameStartTime;
-		private float currentDifficulty;
-		private PolygonCollider2D spawnArea;
-		private Camera mainCamera;
-
-		private void Start()
-		{
-			Debug.Log("zombie spawning started");
-			spawnArea = GetComponent<PolygonCollider2D>();
-			spawnArea.isTrigger = true;
-			spawnPoints.AddRange(GetComponentsInChildren<SmartZombieSpawnPoint>());
-			gameStartTime = Time.time;
-			mainCamera = CursorManager.GetCamera();
-		}
-
-		private void Update()
-		{
-			CleanupDeadEnemies();
-			UpdateDifficulty();
-			UpdateSpawnPoints();
-			UpdateBossZombies();
-		}
-
-		private void UpdateSpawnPoints()
-		{
-			var spawnRate = GetCurrentSpawnRate();
-			var currentTime = Time.time;
-			var actualSpawnInterval = Mathf.Lerp(baseSpawnInterval, minSpawnInterval, spawnRate);
-			// Regular spawn points
-			if (!(currentTime >= nextSpawnTime)) return;
-			TrySpawnFromSpawnPoints();
-			nextSpawnTime = currentTime + actualSpawnInterval;
-		}
-
-		private void UpdateBossZombies()
-		{
-			var currentTime = Time.time;
-			// Special events
-			if (enableBossZombies && currentTime >= nextSpecialEventTime)
-			{
-				TryTriggerSpecialEvent();
-				nextSpecialEventTime = currentTime + bossEventInterval;
-			}
-		}
-
-		private void UpdateDifficulty()
-		{
-			// Calculate how far we are through the game (assuming a 20-minute session)
-			var gameProgress = Mathf.Clamp01((Time.time - gameStartTime) / (20f * 60f));
-
-			// Update current difficulty based on game progress
-			currentDifficulty = difficultyCurve.Evaluate(gameProgress);
-		}
-
-		private float GetCurrentSpawnRate() => spawnRateCurve.Evaluate(DayNightCycle.I.GetCurrentDayFraction());
-
-		private void TrySpawnFromSpawnPoints()
-		{
-			if (spawnPoints.Count == 0)
-			{
-				Debug.Log("No active spawn points available!");
-				return;
-			}
-			var selectedPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
-			var enemyPrefab = GetRandomEnemyPrefab();
-			if (enemyPrefab == null)
-			{
-				Debug.LogWarning("No valid enemy prefab available!");
-				return;
-			}
-
-			// Try to spawn at that point
-			var enemy = selectedPoint.TrySpawn(enemyPrefab, ensureOffCameraSpawning, mainCamera, offCameraMargin);
-
-			if (enemy == null) return;
-			ConfigureNewEnemy(enemy);
-			spawnedEnemies.Add(enemy);
-		}
-
-		private void TryTriggerSpecialEvent()
-		{
-			if (!enableBossZombies) return;
-			if (Random.value > bossZombieChance) return;
-
-			if (Players.I == null || Players.I.AllJoinedPlayers.Count == 0) return;
-
-			// Get a valid spawn position
-			var spawnPosition = spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position;
-
-			// Prefer Donut or Corn as a "boss" - they're bigger enemies
-			var bossEnemyPrefab = Random.value > 0.5f ? ASSETS.Players.DonutEnemyPrefab : ASSETS.Players.CornEnemyPrefab;
-			if (bossEnemyPrefab == null) return;
-
-			var enemy = ObjectMaker.I.Make(bossEnemyPrefab, spawnPosition);
-
-			if (enemy == null) return;
-			ConfigureNewEnemy(enemy, true);
-			spawnedEnemies.Add(enemy);
-		}
-
-		private void ConfigureNewEnemy(GameObject enemy, bool isBoss = false)
-		{
-			// Set up the Life component
-			Debug.Log("configuring new enemy");
-			var life = enemy.GetComponent<Life>();
-			life.SetPlayer(Players.EnemyPlayer);
-			foreach (var component in enemy.GetComponents<INeedPlayer>())
-			{
-
-				component.SetPlayer(Players.EnemyPlayer);
-
-			}
-
-			if (life != null)
-			{
-				// Apply difficulty scaling
-				var healthMultiplier = Mathf.Lerp(1.0f, maxHealthMultiplier, currentDifficulty);
-				var damageMultiplier = Mathf.Lerp(1.0f, maxDamageMultiplier, currentDifficulty);
-				var speedMultiplier = Mathf.Lerp(1.0f, maxSpeedMultiplier, currentDifficulty);
-
-				// Apply boss multipliers if applicable
-				if (isBoss)
-				{
-					healthMultiplier *= 2.5f;
-					damageMultiplier *= 1.5f;
-					speedMultiplier *= 0.8f; // Bosses are slower but tougher
-
-					enemy.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
-
-					// Apply a slight tint
-					var renderers = enemy.GetComponentsInChildren<SpriteRenderer>();
-					foreach (var _renderer in renderers)
-					{
-						_renderer.color = new Color(1.0f, 0.8f, 0.8f);
-					}
-				}
-
-				// Apply the multipliers - need to use appropriate methods since the Life properties are read-only
-				life.SetExtraMaxHealthFactor(healthMultiplier);
-
-				// Apply damage multiplier
-				life.SetExtraMaxDamageFactor(damageMultiplier);
-
-				// Apply speed multiplier
-				life.SetExtraMaxSpeedFactor(speedMultiplier);
-
-				// Reset health to full after modifying max
-				life.AddHealth(life.HealthMax);
-
-				// Set the player reference to enemy player
-
-			}
-
-			if(isBoss) Debug.Log("Boss spawned!");
-			// Register with EnemyManager using the static method
-			EnemyManager.I.CollectEnemy(enemy);
-		}
-
-		private void CleanupDeadEnemies()
-		{
-			spawnedEnemies.RemoveAll(enemy => enemy == null);
-		}
-
-		private GameObject GetRandomEnemyPrefab()
-		{
-			// Calculate the total frequency
-			var totalFrequency = toastSpawnFrequency + coneSpawnFrequency + donutSpawnFrequency + cornSpawnFrequency;
-
-			if (totalFrequency <= 0)
-			{
-				Debug.LogWarning("All enemy spawn frequencies are zero!");
-				return null;
-			}
-
-			// Get a random value
-			var random = Random.Range(0, totalFrequency);
-
-			// Determine which enemy to spawn based on the random value
-			if (random < toastSpawnFrequency)
-			{
-				Debug.Log("toast");
-				return ASSETS.Players.ToastEnemyPrefab;
-			}
-
-			random -= toastSpawnFrequency;
-
-			if (random < coneSpawnFrequency)
-			{
-				Debug.Log("cone");
-				return ASSETS.Players.ConeEnemyPrefab;
-			}
-
-			random -= coneSpawnFrequency;
-
-			if (random < donutSpawnFrequency)
-			{
-				Debug.Log("donut");
-				return ASSETS.Players.DonutEnemyPrefab;
-			}
-
-			Debug.Log("corn");
-
-			// If we get here, it's Corn (or if all else fails)
-			return ASSETS.Players.CornEnemyPrefab;
-		}
-	}
+    /// <summary>
+    /// Simplified zombie spawning system with time-based difficulty curve.
+    /// No longer depends on day/night cycle or complex camera detection.
+    /// </summary>
+    public class SmartZombieSpawningSystem : MonoBehaviour
+    {
+        [Header("Spawn Settings")]
+        [SerializeField] private float baseSpawnInterval = 3f;
+        [SerializeField] private float minSpawnInterval = 0.5f;
+        [SerializeField] private int maxActiveZombies = 20;
+        [SerializeField] private float difficultyRampTime = 300f; // 5 minutes to reach max difficulty
+
+        [Header("Enemy Types")]
+        [SerializeField, Range(0, 1)] private float toastSpawnFrequency = 0.4f;
+        [SerializeField] private float toastUnlockTime = 0f; // Available from start
+        [SerializeField, Range(0, 1)] private float coneSpawnFrequency = 0.3f;
+        [SerializeField] private float coneUnlockTime = 30f; // Unlocks after 30 seconds
+        [SerializeField, Range(0, 1)] private float donutSpawnFrequency = 0.2f;
+        [SerializeField] private float donutUnlockTime = 90f; // Unlocks after 1.5 minutes
+        [SerializeField, Range(0, 1)] private float cornSpawnFrequency = 0.1f;
+        [SerializeField] private float cornUnlockTime = 180f; // Unlocks after 3 minutes
+
+        [Header("Difficulty Scaling")]
+        [SerializeField] private AnimationCurve difficultyOverTime = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+        [SerializeField] private AnimationCurve spawnRateOverTime = AnimationCurve.EaseInOut(0f, 1f, 1f, 3f);
+        [SerializeField] private float maxHealthMultiplier = 2.0f;
+        [SerializeField] private float maxDamageMultiplier = 1.5f;
+        [SerializeField] private float maxSpeedMultiplier = 1.3f;
+
+        [Header("Boss Events")]
+        [SerializeField] private bool enableBossZombies = false;
+        [SerializeField, Range(0, 1)] private float bossZombieChance = 0.05f;
+        [SerializeField] private float bossEventInterval = 180f;
+
+        [Header("Debug")]
+        [SerializeField] private bool enableDebugLogs = false;
+
+        private List<SmartZombieSpawnPoint> spawnPoints = new List<SmartZombieSpawnPoint>();
+        private List<GameObject> spawnedEnemies = new List<GameObject>();
+        private float gameStartTime;
+        private float lastSpawnTime;
+        private float lastBossEventTime;
+        private int activeZombieCount = 0;
+
+        public static SmartZombieSpawningSystem Instance { get; private set; }
+
+        // Events
+        public System.Action<int> OnZombieCountChanged;
+
+        void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                gameStartTime = Time.time;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        void Start()
+        {
+            FindAllSpawnPoints();
+
+            if (enableDebugLogs)
+            {
+                Debug.Log($"SmartZombieSpawningSystem initialized with {spawnPoints.Count} spawn points");
+            }
+        }
+
+        void Update()
+        {
+            CleanupDeadEnemies();
+
+            if (ShouldAttemptSpawn())
+            {
+                AttemptSpawn();
+            }
+
+            if (enableBossZombies && ShouldAttemptBossSpawn())
+            {
+                AttemptBossSpawn();
+            }
+        }
+
+        private void FindAllSpawnPoints()
+        {
+            spawnPoints.Clear();
+            spawnPoints.AddRange(GetComponentsInChildren<SmartZombieSpawnPoint>());
+
+            if (spawnPoints.Count == 0)
+            {
+                // Fallback: find all spawn points in scene
+                SmartZombieSpawnPoint[] allSpawnPoints = FindObjectsOfType<SmartZombieSpawnPoint>();
+                spawnPoints.AddRange(allSpawnPoints);
+            }
+        }
+
+        private bool ShouldAttemptSpawn()
+        {
+            if (activeZombieCount >= maxActiveZombies)
+                return false;
+
+            float currentSpawnInterval = GetCurrentSpawnInterval();
+            return Time.time - lastSpawnTime >= currentSpawnInterval;
+        }
+
+        private bool ShouldAttemptBossSpawn()
+        {
+            return Time.time - lastBossEventTime >= bossEventInterval;
+        }
+
+        private float GetCurrentSpawnInterval()
+        {
+            float gameTime = Time.time - gameStartTime;
+            float difficultyProgress = Mathf.Clamp01(gameTime / difficultyRampTime);
+            float spawnRateMultiplier = spawnRateOverTime.Evaluate(difficultyProgress);
+
+            return Mathf.Lerp(baseSpawnInterval, minSpawnInterval, difficultyProgress) / spawnRateMultiplier;
+        }
+
+        private void AttemptSpawn()
+        {
+            if (spawnPoints.Count == 0)
+                return;
+
+            // Choose random spawn point
+            SmartZombieSpawnPoint chosenSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+            GameObject enemyPrefab = GetRandomEnemyPrefab();
+
+            if (enemyPrefab == null)
+                return;
+
+            // Try to spawn at that point
+            Vector3 spawnPosition = chosenSpawnPoint.transform.position;
+            GameObject enemy = ObjectMaker.I.Make(enemyPrefab, spawnPosition);
+
+            if (enemy != null)
+            {
+                ConfigureNewEnemy(enemy, false);
+                spawnedEnemies.Add(enemy);
+                lastSpawnTime = Time.time;
+                activeZombieCount++;
+                OnZombieCountChanged?.Invoke(activeZombieCount);
+
+                if (enableDebugLogs)
+                {
+                    Debug.Log($"Zombie spawned at {chosenSpawnPoint.name}. Active count: {activeZombieCount}");
+                }
+            }
+        }
+
+        private void AttemptBossSpawn()
+        {
+            lastBossEventTime = Time.time;
+
+            if (Random.value > bossZombieChance)
+                return;
+
+            if (spawnPoints.Count == 0)
+                return;
+
+            // Choose random spawn point
+            SmartZombieSpawnPoint chosenSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+
+            // Prefer Donut or Corn as boss enemies
+            GameObject bossEnemyPrefab = Random.value > 0.5f ? ASSETS.Players.DonutEnemyPrefab : ASSETS.Players.CornEnemyPrefab;
+
+            if (bossEnemyPrefab == null)
+                return;
+
+            Vector3 spawnPosition = chosenSpawnPoint.transform.position;
+            GameObject enemy = ObjectMaker.I.Make(bossEnemyPrefab, spawnPosition);
+
+            if (enemy != null)
+            {
+                ConfigureNewEnemy(enemy, true);
+                spawnedEnemies.Add(enemy);
+                activeZombieCount++;
+                OnZombieCountChanged?.Invoke(activeZombieCount);
+
+                if (enableDebugLogs)
+                {
+                    Debug.Log("Boss spawned!");
+                }
+            }
+        }
+
+        private void ConfigureNewEnemy(GameObject enemy, bool isBoss = false)
+        {
+            // Set up the Life component
+            var life = enemy.GetComponent<Life>();
+            if (life != null)
+            {
+                life.SetPlayer(Players.EnemyPlayer);
+
+                // Calculate difficulty multipliers
+                float gameTime = Time.time - gameStartTime;
+                float difficultyProgress = Mathf.Clamp01(gameTime / difficultyRampTime);
+                float currentDifficulty = difficultyOverTime.Evaluate(difficultyProgress);
+
+                var healthMultiplier = Mathf.Lerp(1.0f, maxHealthMultiplier, currentDifficulty);
+                var damageMultiplier = Mathf.Lerp(1.0f, maxDamageMultiplier, currentDifficulty);
+                var speedMultiplier = Mathf.Lerp(1.0f, maxSpeedMultiplier, currentDifficulty);
+
+                // Apply boss multipliers if applicable
+                if (isBoss)
+                {
+                    healthMultiplier *= 2.5f;
+                    damageMultiplier *= 1.5f;
+                    speedMultiplier *= 0.8f; // Bosses are slower but tougher
+
+                    enemy.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+
+                    // Apply a slight tint
+                    var renderers = enemy.GetComponentsInChildren<SpriteRenderer>();
+                    foreach (var renderer in renderers)
+                    {
+                        renderer.color = new Color(1.0f, 0.8f, 0.8f);
+                    }
+                }
+
+                // Apply the multipliers
+                life.SetExtraMaxHealthFactor(healthMultiplier);
+                life.SetExtraMaxDamageFactor(damageMultiplier);
+                life.SetExtraMaxSpeedFactor(speedMultiplier);
+
+                // Reset health to full after modifying max
+                life.AddHealth(life.HealthMax);
+            }
+
+            // Set player reference for all components that need it
+            foreach (var component in enemy.GetComponents<INeedPlayer>())
+            {
+                component.SetPlayer(Players.EnemyPlayer);
+            }
+
+            // Register with EnemyManager
+            EnemyManager.I.CollectEnemy(enemy);
+        }
+
+        private void CleanupDeadEnemies()
+        {
+            int originalCount = spawnedEnemies.Count;
+            spawnedEnemies.RemoveAll(enemy => enemy == null);
+
+            int removedCount = originalCount - spawnedEnemies.Count;
+            if (removedCount > 0)
+            {
+                activeZombieCount = Mathf.Max(0, activeZombieCount - removedCount);
+                OnZombieCountChanged?.Invoke(activeZombieCount);
+            }
+        }
+
+        private GameObject GetRandomEnemyPrefab()
+        {
+            float gameTime = Time.time - gameStartTime;
+            
+            // Build list of available enemies based on unlock times
+            var availableEnemies = new System.Collections.Generic.List<(GameObject prefab, float frequency)>();
+            
+            // Check each enemy type and add if unlocked
+            if (gameTime >= toastUnlockTime && ASSETS.Players.ToastEnemyPrefab != null)
+            {
+                availableEnemies.Add((ASSETS.Players.ToastEnemyPrefab, toastSpawnFrequency));
+            }
+            
+            if (gameTime >= coneUnlockTime && ASSETS.Players.ConeEnemyPrefab != null)
+            {
+                availableEnemies.Add((ASSETS.Players.ConeEnemyPrefab, coneSpawnFrequency));
+            }
+            
+            if (gameTime >= donutUnlockTime && ASSETS.Players.DonutEnemyPrefab != null)
+            {
+                availableEnemies.Add((ASSETS.Players.DonutEnemyPrefab, donutSpawnFrequency));
+            }
+            
+            if (gameTime >= cornUnlockTime && ASSETS.Players.CornEnemyPrefab != null)
+            {
+                availableEnemies.Add((ASSETS.Players.CornEnemyPrefab, cornSpawnFrequency));
+            }
+            
+            // If no enemies are available yet, return null
+            if (availableEnemies.Count == 0)
+            {
+                if (enableDebugLogs)
+                {
+                    Debug.LogWarning($"No enemies unlocked yet! Game time: {gameTime:F1}s");
+                }
+                return null;
+            }
+            
+            // Calculate total frequency of available enemies
+            float totalFrequency = 0f;
+            foreach (var enemy in availableEnemies)
+            {
+                totalFrequency += enemy.frequency;
+            }
+            
+            if (totalFrequency <= 0)
+            {
+                Debug.LogWarning("All available enemy spawn frequencies are zero!");
+                // Return first available enemy as fallback
+                return availableEnemies[0].prefab;
+            }
+            
+            // Select random enemy based on weighted probability
+            float random = Random.Range(0, totalFrequency);
+            float currentWeight = 0f;
+            
+            foreach (var enemy in availableEnemies)
+            {
+                currentWeight += enemy.frequency;
+                if (random <= currentWeight)
+                {
+                    return enemy.prefab;
+                }
+            }
+            
+            // Fallback: return last available enemy
+            return availableEnemies[availableEnemies.Count - 1].prefab;
+        }
+
+        // Public methods for external control
+        public void SetSpawnRate(float multiplier)
+        {
+            baseSpawnInterval = baseSpawnInterval / multiplier;
+            minSpawnInterval = minSpawnInterval / multiplier;
+        }
+
+        public void SetMaxZombies(int maxCount)
+        {
+            maxActiveZombies = maxCount;
+        }
+
+        public float GetCurrentDifficulty()
+        {
+            float gameTime = Time.time - gameStartTime;
+            float difficultyProgress = Mathf.Clamp01(gameTime / difficultyRampTime);
+            return difficultyOverTime.Evaluate(difficultyProgress);
+        }
+
+        public int GetActiveZombieCount()
+        {
+            return activeZombieCount;
+        }
+
+        public int GetMaxZombieCount()
+        {
+            return maxActiveZombies;
+        }
+        
+        public string GetUnlockedEnemiesInfo()
+        {
+            float gameTime = Time.time - gameStartTime;
+            var unlockedEnemies = new System.Collections.Generic.List<string>();
+            
+            if (gameTime >= toastUnlockTime) unlockedEnemies.Add("Toast");
+            if (gameTime >= coneUnlockTime) unlockedEnemies.Add("Cone");
+            if (gameTime >= donutUnlockTime) unlockedEnemies.Add("Donut");
+            if (gameTime >= cornUnlockTime) unlockedEnemies.Add("Corn");
+            
+            if (unlockedEnemies.Count == 0)
+                return "None unlocked yet";
+                
+            return string.Join(", ", unlockedEnemies);
+        }
+
+        // Debug visualization
+        void OnGUI()
+        {
+            if (!enableDebugLogs)
+                return;
+                
+            float gameTime = Time.time - gameStartTime;
+
+            GUILayout.BeginArea(new Rect(10, 10, 350, 250));
+            GUILayout.Label($"Active Zombies: {activeZombieCount}/{maxActiveZombies}");
+            GUILayout.Label($"Current Difficulty: {GetCurrentDifficulty():F2}");
+            GUILayout.Label($"Spawn Interval: {GetCurrentSpawnInterval():F2}s");
+            GUILayout.Label($"Game Time: {gameTime:F1}s");
+            GUILayout.Label($"Available Spawn Points: {spawnPoints.Count}");
+            GUILayout.Label($"Unlocked Enemies: {GetUnlockedEnemiesInfo()}");
+            
+            // Show next unlock
+            string nextUnlock = GetNextUnlockInfo(gameTime);
+            if (!string.IsNullOrEmpty(nextUnlock))
+            {
+                GUILayout.Label($"Next Unlock: {nextUnlock}");
+            }
+            
+            GUILayout.EndArea();
+        }
+        
+        private string GetNextUnlockInfo(float currentGameTime)
+        {
+            var upcomingUnlocks = new System.Collections.Generic.List<(string name, float time)>();
+            
+            if (currentGameTime < toastUnlockTime) upcomingUnlocks.Add(("Toast", toastUnlockTime));
+            if (currentGameTime < coneUnlockTime) upcomingUnlocks.Add(("Cone", coneUnlockTime));
+            if (currentGameTime < donutUnlockTime) upcomingUnlocks.Add(("Donut", donutUnlockTime));
+            if (currentGameTime < cornUnlockTime) upcomingUnlocks.Add(("Corn", cornUnlockTime));
+            
+            if (upcomingUnlocks.Count == 0)
+                return "";
+                
+            // Sort by time and get the next one
+            upcomingUnlocks.Sort((a, b) => a.time.CompareTo(b.time));
+            var nextUnlock = upcomingUnlocks[0];
+            float timeRemaining = nextUnlock.time - currentGameTime;
+            
+            return $"{nextUnlock.name} in {timeRemaining:F1}s";
+        }
+    }
 }

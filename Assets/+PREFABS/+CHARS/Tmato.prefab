@@ -215,22 +215,22 @@ MonoBehaviour:
     category: 0
     debrisType: 0
     isPlayerSwingHittable: 0
-    showLifeBar: 0
+    showLifeBar: 1
     isInvincible: 0
     healthMax: 450
-    moveSpeed: 40
+    moveSpeed: 45
     dashSpeed: 250
     jumpSpeed: 2
     aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 80
-    attack3Rate: 0.15
-    attack3Range: 4
+    attack1Damage: 40
+    attack1Rate: 1
+    attack1Range: 100
+    attack2Damage: 300
+    attack2Rate: 1
+    attack2Range: 50
+    attack3Damage: 25
+    attack3Rate: 0.1
+    attack3Range: 20
     attack4Damage: 0
     attack4Rate: 0
     attack4Range: 0
@@ -240,6 +240,7 @@ MonoBehaviour:
   cantDie: 0
   isInvincible: 0
   Health: 450
+  isShielded: 0
 --- !u!114 &8674550254211582662
 MonoBehaviour:
   m_ObjectHideFlags: 0

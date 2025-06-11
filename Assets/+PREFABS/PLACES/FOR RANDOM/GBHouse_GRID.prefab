@@ -3917,7 +3917,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 874422915
   m_SortingLayer: -2
-  m_SortingOrder: -10046
+  m_SortingOrder: -10259
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 12.3, y: 6.3, z: 0}
   m_MaxChunkCount: 16
@@ -3964,13 +3964,85 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 65861667877167270, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 65861667877167270, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Dresser
+      objectReference: {fileID: 0}
+    - target: {fileID: 65861667877167270, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 65861667877167270, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 104046690545431156, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset.x
+      value: 5.74498
+      objectReference: {fileID: 0}
+    - target: {fileID: 104046690545431156, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset.y
+      value: -10.07814
+      objectReference: {fileID: 0}
+    - target: {fileID: 104046690545431156, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset.z
+      value: 0.000003695488
+      objectReference: {fileID: 0}
+    - target: {fileID: 104046690545431156, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset2.x
+      value: -8.464195
+      objectReference: {fileID: 0}
+    - target: {fileID: 104046690545431156, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset2.y
+      value: -12.464615
+      objectReference: {fileID: 0}
+    - target: {fileID: 104046690545431156, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset2.z
+      value: 0.000003695488
+      objectReference: {fileID: 0}
     - target: {fileID: 127652484448020707, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 3098
       objectReference: {fileID: 0}
+    - target: {fileID: 131444613032902290, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 131444613032902290, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: TrashSmall
+      objectReference: {fileID: 0}
+    - target: {fileID: 131444613032902290, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 131444613032902290, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 162215738426040731, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 1562
+      objectReference: {fileID: 0}
+    - target: {fileID: 348108376480904002, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 348108376480904002, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 348108376480904002, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 348108376480904002, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 379565338618330999, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -3978,7 +4050,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 422277104190155678, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
-      value: -8794
+      value: -9253
+      objectReference: {fileID: 0}
+    - target: {fileID: 519620468349391854, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 519620468349391854, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 519620468349391854, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 519620468349391854, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 533939161852864036, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -3987,6 +4075,38 @@ PrefabInstance:
     - target: {fileID: 679863525051823653, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 679863525051823653, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 679863525051823653, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 679863525051823653, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 679863525051823653, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 802087391049262935, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 802087391049262935, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 802087391049262935, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 802087391049262935, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 847328807318507542, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4007,6 +4127,22 @@ PrefabInstance:
     - target: {fileID: 1011526756905240834, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011526756905240834, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011526756905240834, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011526756905240834, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1011526756905240834, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1033515028611847458, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4034,7 +4170,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1568420379515063752, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
-      value: 0
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1568420379515063752, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1568420379515063752, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Life
+      objectReference: {fileID: 0}
+    - target: {fileID: 1568420379515063752, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.healthMax
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1568420379515063752, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.moveSpeed
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1568420379515063752, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1568420379515063752, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1595990900887468791, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4043,6 +4203,10 @@ PrefabInstance:
     - target: {fileID: 1622166639724680624, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 2998
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663339487945427357, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset2.y
+      value: -9.862427
       objectReference: {fileID: 0}
     - target: {fileID: 1675577482760985201, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4060,6 +4224,22 @@ PrefabInstance:
       propertyPath: Health
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1823745150147163217, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823745150147163217, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823745150147163217, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823745150147163217, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1837496950140802033, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 2986
@@ -4071,6 +4251,22 @@ PrefabInstance:
     - target: {fileID: 2003651921157748093, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 2770
+      objectReference: {fileID: 0}
+    - target: {fileID: 2042927985181986827, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2042927985181986827, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 2042927985181986827, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2042927985181986827, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2060267176472132449, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4088,6 +4284,22 @@ PrefabInstance:
       propertyPath: Health
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2173489240833936246, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2173489240833936246, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 2173489240833936246, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2173489240833936246, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2210931062705845491, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 2987
@@ -4100,9 +4312,41 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 1555
       objectReference: {fileID: 0}
+    - target: {fileID: 2344535285013741040, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2344535285013741040, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 2344535285013741040, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2344535285013741040, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2367915516663613904, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2367915516663613904, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2367915516663613904, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 2367915516663613904, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2367915516663613904, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2419129955129618329, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4112,13 +4356,41 @@ PrefabInstance:
       propertyPath: Health
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2446694795877140152, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: m_Name
+      value: Life
+      objectReference: {fileID: 0}
     - target: {fileID: 2476380417362544892, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 3252
       objectReference: {fileID: 0}
     - target: {fileID: 2508302913225058864, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
-      value: 0
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508302913225058864, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508302913225058864, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Door_Metal
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508302913225058864, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.healthMax
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508302913225058864, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508302913225058864, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.showLifeBar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508302913225058864, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isPlayerSwingHittable
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2508464916861873702, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
@@ -4152,9 +4424,57 @@ PrefabInstance:
       propertyPath: _unitData.isPlayerSwingHittable
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2609802519626465980, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2609802519626465980, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 2609802519626465980, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2609802519626465980, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2624661291833158390, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2624661291833158390, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 2624661291833158390, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2624661291833158390, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2634214951210105590, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2634214951210105590, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2634214951210105590, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 2634214951210105590, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2634214951210105590, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2638893710065433174, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4174,11 +4494,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2811179914390882864, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
-      value: 0
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2811179914390882864, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2811179914390882864, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Life
+      objectReference: {fileID: 0}
+    - target: {fileID: 2811179914390882864, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.healthMax
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2811179914390882864, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.moveSpeed
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 2811179914390882864, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2811179914390882864, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2857143788050194913, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2857143788050194913, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2857143788050194913, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 2857143788050194913, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2857143788050194913, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885674862876245279, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset2.y
+      value: -15.485962
       objectReference: {fileID: 0}
     - target: {fileID: 2893873981933775866, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4187,6 +4551,22 @@ PrefabInstance:
     - target: {fileID: 2908953811473888248, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 3177
+      objectReference: {fileID: 0}
+    - target: {fileID: 2950879759612176725, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2950879759612176725, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 2950879759612176725, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2950879759612176725, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3019854909015063356, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4206,7 +4586,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3219088952873666560, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
-      value: -9376
+      value: -9895
       objectReference: {fileID: 0}
     - target: {fileID: 3246378349844360250, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4216,21 +4596,125 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 2754
       objectReference: {fileID: 0}
+    - target: {fileID: 3279870342344270408, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279870342344270408, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279870342344270408, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3279870342344270408, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3312555738153535445, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3312555738153535445, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3312555738153535445, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 3312555738153535445, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3312555738153535445, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3320500359609387784, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset.y
+      value: -6.080017
+      objectReference: {fileID: 0}
+    - target: {fileID: 3320500359609387784, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset2.y
+      value: -4.336548
       objectReference: {fileID: 0}
     - target: {fileID: 3343600242199713087, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 2647
       objectReference: {fileID: 0}
+    - target: {fileID: 3400969686343582747, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3400969686343582747, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 3400969686343582747, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3400969686343582747, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3421002508421351161, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 1613
       objectReference: {fileID: 0}
+    - target: {fileID: 3475347824242017493, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3475347824242017493, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 3475347824242017493, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3475347824242017493, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3521825456633224370, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521825456633224370, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521825456633224370, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521825456633224370, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521825456633224370, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3526998211104536406, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3526998211104536406, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 3526998211104536406, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3526998211104536406, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3551458279108871817, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4248,6 +4732,38 @@ PrefabInstance:
       propertyPath: Health
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3731241355093575589, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3731241355093575589, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 3731241355093575589, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3731241355093575589, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771630600078042718, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771630600078042718, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771630600078042718, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771630600078042718, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3790337867245129012, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 3443
@@ -4263,6 +4779,22 @@ PrefabInstance:
     - target: {fileID: 4006534786165372035, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006534786165372035, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006534786165372035, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006534786165372035, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006534786165372035, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4053031939401317290, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4316,6 +4848,22 @@ PrefabInstance:
       propertyPath: Health
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4232850732034685574, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4232850732034685574, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 4232850732034685574, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4232850732034685574, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4236105944160470122, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 2106
@@ -4326,7 +4874,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4447509934679647247, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
-      value: 0
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447509934679647247, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447509934679647247, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Life
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447509934679647247, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.healthMax
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447509934679647247, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.moveSpeed
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447509934679647247, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447509934679647247, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4452411520705714141, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4339,6 +4911,22 @@ PrefabInstance:
     - target: {fileID: 4505234640545171922, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 1567
+      objectReference: {fileID: 0}
+    - target: {fileID: 4525092476937816592, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4525092476937816592, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: BackyardTrash
+      objectReference: {fileID: 0}
+    - target: {fileID: 4525092476937816592, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4525092476937816592, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4571030171881526953, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4355,6 +4943,38 @@ PrefabInstance:
     - target: {fileID: 4641790358934003813, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 1903
+      objectReference: {fileID: 0}
+    - target: {fileID: 4668267268961437847, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4668267268961437847, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 4668267268961437847, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4668267268961437847, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4750080154717411541, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4750080154717411541, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 4750080154717411541, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4750080154717411541, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4763443817726116874, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4448,6 +5068,22 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 3420
       objectReference: {fileID: 0}
+    - target: {fileID: 5342101417114510370, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5342101417114510370, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 5342101417114510370, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5342101417114510370, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5404219272276692617, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 2544
@@ -4459,6 +5095,22 @@ PrefabInstance:
     - target: {fileID: 5476093683184653199, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5476093683184653199, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5476093683184653199, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 5476093683184653199, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5476093683184653199, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5509202154926678008, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4520,13 +5172,69 @@ PrefabInstance:
       propertyPath: Health
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5730353597183353336, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730353597183353336, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Life
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730353597183353336, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.healthMax
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730353597183353336, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.moveSpeed
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730353597183353336, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5730353597183353336, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5732936783188283917, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 3414
       objectReference: {fileID: 0}
+    - target: {fileID: 5742384981177479432, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5742384981177479432, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 5742384981177479432, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5742384981177479432, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5838170946648940744, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 3018
+      objectReference: {fileID: 0}
+    - target: {fileID: 5989708281495763795, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5989708281495763795, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 5989708281495763795, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5989708281495763795, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6012644931508953384, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4536,6 +5244,22 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 2774
       objectReference: {fileID: 0}
+    - target: {fileID: 6028472901274212323, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset.x
+      value: 9.837128
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028472901274212323, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset.y
+      value: -4.932129
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028472901274212323, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset2.x
+      value: -8.476837
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028472901274212323, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset2.y
+      value: -1.4991455
+      objectReference: {fileID: 0}
     - target: {fileID: 6058104010190712858, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 1623
@@ -4543,6 +5267,10 @@ PrefabInstance:
     - target: {fileID: 6087291163129069988, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 1893
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096892369081513761, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset2.y
+      value: -5.2822266
       objectReference: {fileID: 0}
     - target: {fileID: 6334789180237302023, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4576,9 +5304,41 @@ PrefabInstance:
       propertyPath: Health
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6681207163438001884, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6681207163438001884, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 6681207163438001884, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6681207163438001884, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6704121472329693920, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6709166552576280424, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6709166552576280424, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 6709166552576280424, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6709166552576280424, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6789513745178193904, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4590,7 +5350,47 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6811810243490303947, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
-      value: 0
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811810243490303947, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811810243490303947, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Door_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811810243490303947, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.healthMax
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811810243490303947, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811810243490303947, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.showLifeBar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811810243490303947, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isPlayerSwingHittable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951661756778915381, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951661756778915381, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951661756778915381, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6951661756778915381, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6958974278386930106, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4612,6 +5412,22 @@ PrefabInstance:
       propertyPath: Health
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7066823461836640406, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7066823461836640406, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 7066823461836640406, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7066823461836640406, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7112514477137762056, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 2104
@@ -4619,6 +5435,22 @@ PrefabInstance:
     - target: {fileID: 7112588392709969128, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 2649
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182348396312155473, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182348396312155473, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182348396312155473, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182348396312155473, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7214003184629723335, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4636,9 +5468,41 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 1617
       objectReference: {fileID: 0}
+    - target: {fileID: 7545104865410998608, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7545104865410998608, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 7545104865410998608, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7545104865410998608, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7578327420545123818, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 3240
+      objectReference: {fileID: 0}
+    - target: {fileID: 7699795210661337397, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7699795210661337397, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 7699795210661337397, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7699795210661337397, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7703402692430656188, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4658,7 +5522,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7800365196355715739, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
-      value: -8793
+      value: -9252
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889340959114606091, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889340959114606091, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889340959114606091, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889340959114606091, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7898715963299797645, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4675,6 +5555,22 @@ PrefabInstance:
     - target: {fileID: 8004592946346023505, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 3365
+      objectReference: {fileID: 0}
+    - target: {fileID: 8036159372812565185, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8036159372812565185, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 8036159372812565185, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8036159372812565185, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8107999002629161450, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4696,6 +5592,22 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 3139
       objectReference: {fileID: 0}
+    - target: {fileID: 8247645844041336202, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8247645844041336202, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Wall_Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 8247645844041336202, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8247645844041336202, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8351744807590132525, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 3155
@@ -4707,6 +5619,22 @@ PrefabInstance:
     - target: {fileID: 8454649358406938053, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: Health
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8454649358406938053, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.category
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8454649358406938053, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.unitName
+      value: Window
+      objectReference: {fileID: 0}
+    - target: {fileID: 8454649358406938053, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.debrisType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8454649358406938053, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: _unitData.isInvincible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8627241991448126383, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4746,7 +5674,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8941455177842111020, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
-      value: -8848
+      value: -9319
       objectReference: {fileID: 0}
     - target: {fileID: 8955300407961285538, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4755,6 +5683,14 @@ PrefabInstance:
     - target: {fileID: 8988294650597843189, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
       value: 2778
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019324750100108310, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset.y
+      value: -6.080017
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019324750100108310, guid: e45ee97e811184013a502abe0950e339, type: 3}
+      propertyPath: SorterPositionOffset2.y
+      value: -4.336548
       objectReference: {fileID: 0}
     - target: {fileID: 9051451191721147487, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
@@ -4770,7 +5706,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9068653368556072062, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder
-      value: -8932
+      value: -9607
       objectReference: {fileID: 0}
     - target: {fileID: 9219953498480124245, guid: e45ee97e811184013a502abe0950e339, type: 3}
       propertyPath: m_SortingOrder

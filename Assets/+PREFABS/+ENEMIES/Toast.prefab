@@ -493,7 +493,6 @@ GameObject:
   - component: {fileID: 238225865449430015}
   - component: {fileID: 5668455432631234438}
   - component: {fileID: 7594583681699860136}
-  - component: {fileID: 2366571943393596592}
   m_Layer: 7
   m_Name: Toast
   m_TagString: Untagged
@@ -610,6 +609,7 @@ MonoBehaviour:
   cantDie: 0
   isInvincible: 0
   Health: 75
+  isShielded: 0
 --- !u!114 &-8070408823439803412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -971,18 +971,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 369b58c66d724fa6bccf56c8d634508e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2366571943393596592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7431454428826219940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8681001409653053418

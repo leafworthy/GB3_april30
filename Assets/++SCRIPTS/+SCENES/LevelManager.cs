@@ -10,7 +10,7 @@ namespace __SCRIPTS
 		private static string originSpawnPointID;
 		private static string destinationSpawnPointID;
 		private static SceneDefinition restartedLevelScene;
-		private static GameLevel currentLevel;
+		public GameLevel currentLevel;
 
 		public event Action<GameLevel> OnStopLevel;
 		public event Action<GameLevel> OnStartLevel;
@@ -67,7 +67,13 @@ namespace __SCRIPTS
 		private void newLevel_GameOver()
 		{
 			OnGameOver?.Invoke();
-			LoadLevel(ASSETS.Scenes.GameOverScene);
+			GoToGameOverScreen();
+		}
+
+		private void GoToGameOverScreen()
+		{
+			StopLevel();
+			SceneLoader.I.GoToScene(ASSETS.Scenes.GameOverScene);
 		}
 
 		public void StartNextLevel(TravelPoint travelPoint)
@@ -100,6 +106,7 @@ namespace __SCRIPTS
 		{
 			if (currentLevel == null) return;
 			restartedLevelScene = currentLevel.scene;
+			Debug.Log($"LevelManager: Saved restart scene: {restartedLevelScene?.name}");
 			currentLevel.StopLevel();
 			currentLevel.OnGameOver -= newLevel_GameOver;
 			currentLevel = null;
@@ -116,21 +123,49 @@ namespace __SCRIPTS
 		public void RestartLevel()
 		{
 			StopLevel();
+			
+			// Explicitly clear object pools on restart to prevent lingering objects
+			if (ObjectMaker.I != null)
+			{
+				ObjectMaker.I.DestroyAllUnits(null);
+				Debug.Log("LevelManager: Explicitly cleared object pools on restart");
+			}
+			
 			SceneLoader.I.GoToScene(ASSETS.Scenes.restartLevel);
 		}
+
+
 
 		public void ExitToMainMenu()
 		{
 			StopGame();
+			
+			// Explicitly clear object pools when exiting to main menu
+			if (ObjectMaker.I != null)
+			{
+				ObjectMaker.I.DestroyAllUnits(null);
+				Debug.Log("LevelManager: Explicitly cleared object pools on exit to main menu");
+			}
+			
+			SceneLoader.I.GoToScene(ASSETS.Scenes.mainMenu);
+		}
 
-			SceneLoader.I.GoToScene(ASSETS.Scenes.GameOverScene);
+		public void SetRestartScene(SceneDefinition scene)
+		{
+			restartedLevelScene = scene;
+			Debug.Log($"LevelManager: Manually set restart scene to: {scene?.name}");
 		}
 
 		public void GoBackFromRestart()
 		{
+			Debug.Log($"LevelManager: Attempting to restart. Restart scene is: {restartedLevelScene?.name}");
+
 			if (restartedLevelScene == null)
 			{
-				Debug.LogError("no restart scene");
+				Debug.LogError("no restart scene - falling back to starting scene");
+				// Fallback to the main starting scene if we lost the restart reference
+				LoadLevel(ASSETS.Scenes.startingScene);
+				return;
 			}
 			LoadLevel(restartedLevelScene);
 		}
@@ -158,7 +193,6 @@ namespace __SCRIPTS
 		public void WinGame()
 		{
 			OnWinGame?.Invoke();
-			LoadLevel(ASSETS.Scenes.WinScene);
 		}
 
 		public void StartWinningGame()

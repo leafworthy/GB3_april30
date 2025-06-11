@@ -45,8 +45,14 @@ namespace __SCRIPTS
 			_life.OnFractionChanged += DefenceOnDefenceChanged;
 			_life.OnDying += DefenceOnDead;
 			_life.OnPlayerSet += OnPlayerSet;
+			_life.OnAttackShielded += DefenceOnAttackShielded;
 			if (_life.unitData.showLifeBar) return;
 			if (healthBar != null) healthBar.SetActive(false);
+		}
+
+		private void DefenceOnAttackShielded(Attack attack, Life defence)
+		{
+
 		}
 
 		private void OnPlayerSet(Player player)
@@ -83,12 +89,22 @@ namespace __SCRIPTS
 
 		private void Life_Damaged(Attack attack)
 		{
+			if (_life.isShielded)
+			{
+				StartTint(Color.yellow);
+			}
+			else
+			{
+				StartTint(attack.color);
+				CreateDamageRisingText(attack);
+				SprayDebree(attack);
+				MakeHitMark(attack);
+			}
 
-			CreateDamageRisingText(attack);
 			if (attack.DestinationLife.DebrisType == DebrisType.none) return;
-			StartTint(attack.color);
-			SprayDebree(attack);
-			MakeHitMark(attack);
+
+
+
 		}
 
 		private void MakeHitMark(Attack attack)

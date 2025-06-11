@@ -507,7 +507,6 @@ GameObject:
   - component: {fileID: -389476094525104034}
   - component: {fileID: 4259043095036619887}
   - component: {fileID: 5664718955461414284}
-  - component: {fileID: -5181032491113510347}
   m_Layer: 7
   m_Name: Corn
   m_TagString: Untagged
@@ -623,6 +622,7 @@ MonoBehaviour:
   cantDie: 0
   isInvincible: 0
   Health: 40
+  isShielded: 0
 --- !u!114 &3380774032305505157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -923,18 +923,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 369b58c66d724fa6bccf56c8d634508e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-5181032491113510347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5317405891896899284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5317405892234367686

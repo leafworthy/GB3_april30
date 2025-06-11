@@ -11,7 +11,7 @@ namespace __SCRIPTS
 		private bool IsActive;
 		private Vector2 lastDir;
 		private bool hasDirection;
-		
+
 		public bool isActive => IsActive;
 
 		public NewInputAxis(InputAction _action, Player _owner)
@@ -36,60 +36,84 @@ namespace __SCRIPTS
 			currentDir = newDir;
 			OnChange?.Invoke(this, currentDir);
 
-			if (currentMagnitudeIsTooSmall())
+			bool tooSmall = currentMagnitudeIsTooSmall();
+
+			// Handle inactive state
+			if (tooSmall)
 			{
 				if (IsActive)
 				{
 					IsActive = false;
 					OnInactive?.Invoke(this);
-					RightPressed = false;
-					LeftPressed = false;
-					DownPressed = false;
-					UpPressed = false;
 				}
 
-			
+				// Always reset directional state when inactive
+				if (RightPressed || LeftPressed || UpPressed || DownPressed)
+				{
+					RightPressed = LeftPressed = UpPressed = DownPressed = false;
+				}
+
 				return;
 			}
 
+			// Handle transition to active state
 			if (!IsActive)
 			{
 				IsActive = true;
 				OnActive?.Invoke(this);
-				return;
+
+				// Reset directional states on activation to avoid stale triggers
+				RightPressed = LeftPressed = UpPressed = DownPressed = false;
 			}
 
-			if (currentDir.x > 0)
+			// Horizontal movement
+			if (newDir.x > 0.01f)
 			{
-				LeftPressed = false;
-				if (RightPressed) return;
-				RightPressed = true;
-				OnRight?.Invoke(this);
+				if (!RightPressed)
+				{
+					RightPressed = true;
+					LeftPressed = false;
+					OnRight?.Invoke(this);
+				}
 			}
-			else if (currentDir.x < 0)
+			else if (newDir.x < -0.01f)
 			{
-				RightPressed = false;
-				if (LeftPressed) return;
-				LeftPressed = true;
-				OnLeft?.Invoke(this);
+				if (!LeftPressed)
+				{
+					LeftPressed = true;
+					RightPressed = false;
+					OnLeft?.Invoke(this);
+				}
+			}
+			else
+			{
+				RightPressed = LeftPressed = false;
 			}
 
-			if (currentDir.y > 0)
+			// Vertical movement
+			if (newDir.y > 0.01f)
 			{
-				DownPressed = false;
-				if (UpPressed) return;
-				UpPressed = true;
-				OnUp?.Invoke(this);
+				if (!UpPressed)
+				{
+					UpPressed = true;
+					DownPressed = false;
+					OnUp?.Invoke(this);
+				}
 			}
-			else if (currentDir.y < 0)
+			else if (newDir.y < -0.01f)
 			{
-				UpPressed = false;
-				if (DownPressed) return;
-				DownPressed = true;
-				OnDown?.Invoke(this);
+				if (!DownPressed)
+				{
+					DownPressed = true;
+					UpPressed = false;
+					OnDown?.Invoke(this);
+				}
+			}
+			else
+			{
+				UpPressed = DownPressed = false;
 			}
 		}
-
 		public bool currentMagnitudeIsTooSmall() => !(currentDir.magnitude > .3f);
 
 		private bool UpPressed;

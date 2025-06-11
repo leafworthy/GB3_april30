@@ -54,7 +54,7 @@ namespace __SCRIPTS
 		private void DisplayStats()
 		{
 			Stat_Kills.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.Kills).ToString();
-			Stat_Time.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.TimeSurvived).ToString();
+			Stat_Time.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.TimeSurvived).ToString("F1");
 			Stat_CashGained.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.TotalCash).ToString();
 			Stat_Gas.text = PlayerStatsManager.I.GetStatAmount(owner, PlayerStat.StatType.Gas).ToString();
 			//Stat_Upgrades.text = owner.GetComponent<PlayerUpgrades>().GetTotalUpgradesPurchased().ToString();

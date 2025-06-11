@@ -23,7 +23,7 @@ namespace __SCRIPTS
 
 		private void GoToMainMenu(VideoPlayer source)
 		{ 
-			SceneLoader.I.GoToScene( ASSETS.Scenes.GameOverScene );
+			LevelManager.I.ExitToMainMenu();
 		}
 	}
 }

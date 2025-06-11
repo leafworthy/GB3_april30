@@ -9,7 +9,7 @@ public class TertiaryAttack_Knife : Attacks
 		private Body body;
 		private Animations anim;
 		public override string VerbName => "Knife-Attack";
-		private string AnimationClipName = "Top-Knife";
+		private string AnimationClipName = "Top-Bean_Knife_Attack";
 
 		private bool isAttacking;
 		private bool isPressing;

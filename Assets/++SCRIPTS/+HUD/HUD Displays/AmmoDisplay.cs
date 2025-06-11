@@ -51,7 +51,7 @@ namespace __SCRIPTS.HUD_Displays
 		{
 			if (ammoToDisplay != null)
 			{
-				ammoToDisplay.OnAmmoGained -= AmmoUsedUpdateDisplay;
+				ammoToDisplay.OnAmmoUsed -= AmmoUsedUpdateDisplay;
 				ammoToDisplay.OnAmmoGained -= AmmoGainedUpdateDisplay;
 			}
 
@@ -67,7 +67,7 @@ namespace __SCRIPTS.HUD_Displays
 		{
 			if (!init) return;
 			init = false;
-			ammoToDisplay.OnAmmoGained -= AmmoUsedUpdateDisplay;
+			ammoToDisplay.OnAmmoUsed -= AmmoUsedUpdateDisplay;
 			ammoToDisplay.OnAmmoGained -= AmmoGainedUpdateDisplay;
 		}
 

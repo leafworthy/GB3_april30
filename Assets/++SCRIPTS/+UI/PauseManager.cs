@@ -84,8 +84,7 @@ namespace __SCRIPTS
 			{
 				case MenuButton.ButtonType.Restart:
 					Unpause();
-
-					LevelManager.I.RestartLevel(); // Fallback
+					LevelManager.I.RestartLevel();
 					break;
 				case MenuButton.ButtonType.Resume:
 					Unpause();

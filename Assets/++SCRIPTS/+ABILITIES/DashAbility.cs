@@ -46,11 +46,38 @@ namespace __SCRIPTS
 			}
 
 			owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
+
+			// Clean up any pending invokes and ensure arms are freed
+			CancelInvoke(nameof(SafetyArmRelease));
+			if (body != null && body.arms.currentActivity?.VerbName == VerbName)
+			{
+				body.arms.StopSafely(this);
+			}
 		}
 
 		private void Anim_Teleport()
 		{
-			var newPoint = (Vector2) transform.position + move.GetLastMoveAimDirOffset();
+			// Get the current movement direction for teleport
+			Vector2 teleportDirection = moveController.MoveDir;
+
+			// If not moving, use the last movement direction or default to facing direction
+			if (teleportDirection.magnitude < 0.1f)
+			{
+				teleportDirection = move.GetLastMoveAimDirOffset().normalized;
+				if (teleportDirection.magnitude < 0.1f)
+				{
+					// Fallback to facing direction
+					teleportDirection = body.BottomIsFacingRight ? Vector2.right : Vector2.left;
+				}
+			}
+
+			// Calculate teleport distance (adjust this value as needed)
+			float teleportDistance = life.DashSpeed; // You can adjust this value
+			Vector2 teleportOffset = teleportDirection.normalized * teleportDistance;
+			Vector2 newPoint = (Vector2)transform.position + teleportOffset;
+
+			Debug.Log($"DashAbility: Teleporting {owner.name} from {transform.position} to {newPoint}, direction: {teleportDirection}, offset: {teleportOffset}");
+
 			var landable = body.GetLandableAtPosition(newPoint);
 			body.ChangeLayer(landable != null ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
 			if (landable != null) body.SetDistanceToGround(landable.height);
@@ -59,9 +86,50 @@ namespace __SCRIPTS
 
 		private void Anim_DashStop()
 		{
+			Debug.Log($"DashAbility: OnDashStop called for {owner.name}. Arms active: {body.arms.isActive}, Current activity: {body.arms.currentActivity?.VerbName}");
+
+			// Cancel safety release since animation event fired properly
+			CancelInvoke(nameof(SafetyArmRelease));
+
 			body.ChangeLayer(body.isOverLandable ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
 			body.legs.StopSafely(this);
 			body.arms.StopSafely(this);
+
+			// Force refresh of aiming system after dash completes
+			RefreshAimingSystem();
+
+			Debug.Log($"DashAbility: After StopSafely - Arms active: {body.arms.isActive}, Current activity: {body.arms.currentActivity?.VerbName}");
+		}
+
+		private void RefreshAimingSystem()
+		{
+			// Find and refresh the aiming ability to prevent stuck aim direction
+			var aimAbility = GetComponent<AimAbility>();
+			if (aimAbility != null && owner != null)
+			{
+				Debug.Log($"DashAbility: Refreshing aim system for {owner.name}");
+
+				// Ensure IsShielding is cleared in case ShieldAbility left it stuck
+				if (anim != null)
+				{
+					anim.SetBool(Animations.IsShielding, false);
+					Debug.Log($"DashAbility: Cleared IsShielding animator flag");
+				}
+
+				// Force the aim direction to update
+				if (!owner.isUsingMouse && owner.Controller != null)
+				{
+					var currentAim = owner.Controller.AimAxis.GetCurrentAngle();
+					Debug.Log($"DashAbility: Current controller aim: {currentAim}, AimAbility.AimDir: {aimAbility.AimDir}");
+
+					// Force refresh by setting the aim direction directly if controller has input
+					if (currentAim.magnitude > 0.2f)
+					{
+						aimAbility.AimDir = currentAim.normalized;
+						Debug.Log($"DashAbility: Forced AimDir update to: {aimAbility.AimDir}");
+					}
+				}
+			}
 		}
 
 		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
@@ -69,11 +137,18 @@ namespace __SCRIPTS
 			if (!moveController.CanMove) return;
 			if (PauseManager.I.IsPaused) return;
 			if (!jumps.isResting) return;
+
+			Debug.Log($"DashAbility: Dash pressed for {owner.name}. Arms active: {body.arms.isActive}, Current activity: {body.arms.currentActivity?.VerbName}");
+
 			if (!body.arms.Do(this)) return;
 			if (!teleport)
 			{
 				if (!body.legs.Do(this))
+				{
+					// If legs fail but arms succeeded, clean up arms
+					body.arms.StopSafely(this);
 					return;
+				}
 			}
 
 			anim.SetTrigger(Animations.DashTrigger);
@@ -86,6 +161,19 @@ namespace __SCRIPTS
 			{
 				body.ChangeLayer(Body.BodyLayer.jumping);
 				body.canLand = true;
+			}
+
+			// Safety mechanism: ensure arms are freed after animation duration
+			Invoke(nameof(SafetyArmRelease), 2f);
+		}
+
+		private void SafetyArmRelease()
+		{
+			if (body.arms.currentActivity?.VerbName == VerbName)
+			{
+				Debug.LogWarning($"DashAbility: Safety arm release triggered for {owner.name} - animation event may have failed");
+				body.arms.StopSafely(this);
+				RefreshAimingSystem();
 			}
 		}
 

@@ -45,13 +45,18 @@ namespace __SCRIPTS.HUD_Displays
 		private void UpdateDisplay()
 		{
 			if (owner == null) return;
+			
+			var currentAmount = CurrentAmount;
+			// Don't display negative values (which indicate uninitialized stats)
+			if (currentAmount < 0) currentAmount = 0;
+			
 			if(hasMax)
 			{
-				displayText.text = CurrentAmount.ToString() +"/" + PlayerStatsManager.I.MaxGas.ToString();
+				displayText.text = currentAmount.ToString() +"/" + PlayerStatsManager.I.MaxGas.ToString();
 			}
 			else
 			{
-				displayText.text = CurrentAmount.ToString();
+				displayText.text = currentAmount.ToString();
 			}
 
 		}

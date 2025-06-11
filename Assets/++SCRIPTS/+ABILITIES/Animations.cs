@@ -75,6 +75,34 @@ namespace __SCRIPTS
 		{
 			if (animator == null) animator = GetComponentInChildren<Animator>();
 
+			if (animator == null)
+			{
+				Debug.LogError($"Cannot play animation '{animationClipName}' - Animator is null!");
+				return;
+			}
+
+			// Check if the animation exists
+			bool animationExists = false;
+			for (int i = 0; i < animator.runtimeAnimatorController.animationClips.Length; i++)
+			{
+				if (animator.runtimeAnimatorController.animationClips[i].name == animationClipName)
+				{
+					animationExists = true;
+					break;
+				}
+			}
+
+			if (!animationExists)
+			{
+				Debug.LogError($"Animation '{animationClipName}' not found in animator controller! Available animations:");
+				foreach (var clip in animator.runtimeAnimatorController.animationClips)
+				{
+					Debug.Log($"  - {clip.name}");
+				}
+				return;
+			}
+
+			Debug.Log($"Playing animation: {animationClipName} on layer {layer}");
 			animator.Play(animationClipName, layer, startingPlace);
 		}
 
