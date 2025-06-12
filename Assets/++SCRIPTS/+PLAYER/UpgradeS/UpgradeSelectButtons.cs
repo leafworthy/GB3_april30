@@ -23,7 +23,7 @@ namespace __SCRIPTS.UpgradeS
 			_player = player;
 			hasInit = true;
 			ResetButtons();
-			Debug.Log("buttons initialized");
+
 			player.Controller.UIAxis.OnLeft += OnLeft;
 			player.Controller.UIAxis.OnRight += OnRight;
 			player.Controller.Select.OnPress += OnSelect;
@@ -88,7 +88,7 @@ namespace __SCRIPTS.UpgradeS
 		{
 			SFX.I.sounds.charSelect_deselect_sounds.PlayRandom();
 			currentlySelectedButton.Deselect();
-			Debug.Log("Exit button pressed");
+
 			OnExit?.Invoke();
 		}
 
@@ -106,7 +106,7 @@ namespace __SCRIPTS.UpgradeS
 
 		private void OnRight(NewInputAxis obj)
 		{
-			Debug.Log("on right");
+
 			SFX.I.sounds.charSelect_move_sounds.PlayRandom();
 			currentlySelectedButton.Unhighlight();
 			SetCurrentButton(currentlySelectedButton.buttonToRight);
@@ -115,7 +115,7 @@ namespace __SCRIPTS.UpgradeS
 
 		private void OnLeft(NewInputAxis obj)
 		{
-			Debug.Log("on left");
+
 			SFX.I.sounds.charSelect_move_sounds.PlayRandom();
 			currentlySelectedButton.Unhighlight();
 			SetCurrentButton(currentlySelectedButton.buttonToLeft);

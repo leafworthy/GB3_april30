@@ -21,7 +21,7 @@ namespace __SCRIPTS
             player = GetComponent<Player>();
             if (player == null)
             {
-                Debug.LogError("UINavigationMigrator: No Player component found!");
+
                 enabled = false;
                 return;
             }

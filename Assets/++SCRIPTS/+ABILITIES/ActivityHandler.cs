@@ -42,7 +42,7 @@ namespace __SCRIPTS
 			                 currentActivity?.VerbName;
 			isActive = true;
 			currentActivity = activity;
-			Debug.Log(ActivityStory);
+
 			return true;
 		}
 
@@ -53,7 +53,7 @@ namespace __SCRIPTS
 			ActivityStory += "\nStopped doing " + currentActivity;
 			isActive = false;
 			currentActivity = null;
-			Debug.Log(ActivityStory);
+
 			return true;
 		}
 
@@ -76,7 +76,7 @@ namespace __SCRIPTS
 			                 currentActivity?.VerbName;
 			isActive = false;
 			currentActivity = null;
-			Debug.Log(ActivityStory);
+
 		}
 	}
 

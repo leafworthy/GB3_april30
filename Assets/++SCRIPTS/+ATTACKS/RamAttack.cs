@@ -91,7 +91,7 @@ namespace __SCRIPTS
 			other.TakeDamage(otherAttack);
 			attacker.TakeDamage(bouncebackAttack);
 			mover.Push(bouncebackAttack.Direction, pushBackAmount);
-			Debug.Log("pushing");
+
 		}
 	}
 }

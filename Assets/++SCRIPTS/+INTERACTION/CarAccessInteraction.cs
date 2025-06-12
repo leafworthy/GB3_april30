@@ -75,7 +75,7 @@ namespace __SCRIPTS
 				totalGas += (int)PlayerStatsManager.I.GetStatAmount(player,PlayerStat.StatType.Gas);
 			}
 
-			Debug.Log("total gas  " + totalGas);
+
 			return totalGas;
 		}
 
@@ -91,13 +91,13 @@ namespace __SCRIPTS
 
 		private void Interactable_OnPlayerEnters(Player player)
 		{
-			Debug.Log("player enters");
+
 			if (gasFilled)
 			{
 				//if (HasKey())
 				//{
 					player.Say("Let's go!", 0);
-					Debug.Log("Success!");
+
 				//}
 				//else
 				//	player.Say("Needs a key...", 0);

@@ -109,7 +109,7 @@ namespace __SCRIPTS
 			anim.ResetTrigger(Animations.LandTrigger);
 			anim.SetTrigger(Animations.JumpTrigger);
 			jump.Jump(body.GetCurrentLandableHeight(), life.JumpSpeed, 99);
-			Debug.Log("regular jump start");
+
 		}
 
 

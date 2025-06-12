@@ -257,14 +257,14 @@ namespace __SCRIPTS
 		{
 			titlePressStart.Set(1);
 			playersAllChosen = true;
-			Debug.Log("show");
+
 		}
 
 		private void HideGoGoGo()
 		{
 			playersAllChosen = false;
 			titlePressStart.Set(0);
-			Debug.Log("hide");
+
 		}
 	}
 }

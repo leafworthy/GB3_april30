@@ -76,7 +76,7 @@ namespace __SCRIPTS
 			Vector2 teleportOffset = teleportDirection.normalized * teleportDistance;
 			Vector2 newPoint = (Vector2)transform.position + teleportOffset;
 
-			Debug.Log($"DashAbility: Teleporting {owner.name} from {transform.position} to {newPoint}, direction: {teleportDirection}, offset: {teleportOffset}");
+
 
 			var landable = body.GetLandableAtPosition(newPoint);
 			body.ChangeLayer(landable != null ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
@@ -86,7 +86,7 @@ namespace __SCRIPTS
 
 		private void Anim_DashStop()
 		{
-			Debug.Log($"DashAbility: OnDashStop called for {owner.name}. Arms active: {body.arms.isActive}, Current activity: {body.arms.currentActivity?.VerbName}");
+
 
 			// Cancel safety release since animation event fired properly
 			CancelInvoke(nameof(SafetyArmRelease));
@@ -98,7 +98,7 @@ namespace __SCRIPTS
 			// Force refresh of aiming system after dash completes
 			RefreshAimingSystem();
 
-			Debug.Log($"DashAbility: After StopSafely - Arms active: {body.arms.isActive}, Current activity: {body.arms.currentActivity?.VerbName}");
+
 		}
 
 		private void RefreshAimingSystem()
@@ -107,26 +107,26 @@ namespace __SCRIPTS
 			var aimAbility = GetComponent<AimAbility>();
 			if (aimAbility != null && owner != null)
 			{
-				Debug.Log($"DashAbility: Refreshing aim system for {owner.name}");
+
 
 				// Ensure IsShielding is cleared in case ShieldAbility left it stuck
 				if (anim != null)
 				{
 					anim.SetBool(Animations.IsShielding, false);
-					Debug.Log($"DashAbility: Cleared IsShielding animator flag");
+
 				}
 
 				// Force the aim direction to update
 				if (!owner.isUsingMouse && owner.Controller != null)
 				{
 					var currentAim = owner.Controller.AimAxis.GetCurrentAngle();
-					Debug.Log($"DashAbility: Current controller aim: {currentAim}, AimAbility.AimDir: {aimAbility.AimDir}");
+
 
 					// Force refresh by setting the aim direction directly if controller has input
 					if (currentAim.magnitude > 0.2f)
 					{
 						aimAbility.AimDir = currentAim.normalized;
-						Debug.Log($"DashAbility: Forced AimDir update to: {aimAbility.AimDir}");
+
 					}
 				}
 			}
@@ -138,7 +138,7 @@ namespace __SCRIPTS
 			if (PauseManager.I.IsPaused) return;
 			if (!jumps.isResting) return;
 
-			Debug.Log($"DashAbility: Dash pressed for {owner.name}. Arms active: {body.arms.isActive}, Current activity: {body.arms.currentActivity?.VerbName}");
+
 
 			if (!body.arms.Do(this)) return;
 			if (!teleport)
@@ -171,7 +171,7 @@ namespace __SCRIPTS
 		{
 			if (body.arms.currentActivity?.VerbName == VerbName)
 			{
-				Debug.LogWarning($"DashAbility: Safety arm release triggered for {owner.name} - animation event may have failed");
+
 				body.arms.StopSafely(this);
 				RefreshAimingSystem();
 			}

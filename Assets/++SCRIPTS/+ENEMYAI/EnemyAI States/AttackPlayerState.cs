@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 {
 	public class AttackPlayerState : IAIState
@@ -59,16 +61,28 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 				ai.TransitionToState(new WanderState());
 				return;
 			}
+
 			target = ai.Targets.GetClosestAttackableObstacle();
 			if (target != null && !target.IsDead())
 			{
-
-				ai.Thoughts.Think("Attacking Door!");
-				ai.Attack(target);
+				// Check if we're still within attack range
+				float distance = Vector2.Distance(ai.transform.position, target.transform.position);
+				if (distance <= ai.Life.PrimaryAttackRange)
+				{
+					ai.Thoughts.Think("Attacking Door!");
+					ai.Attack(target);
+				}
+				else
+				{
+					// Door is too far away now, go back to chasing player
+					ai.Thoughts.Think("Door too far, going back to aggro");
+					ai.TransitionToState(new AggroState());
+				}
 			}
 			else
 			{
-				ai.Thoughts.Think("No more door, Going back to aggro");
+				// Door is destroyed or no longer attackable - return to player targeting
+				ai.Thoughts.Think("Door cleared, Going back to aggro");
 				ai.TransitionToState(new AggroState());
 			}
 		}

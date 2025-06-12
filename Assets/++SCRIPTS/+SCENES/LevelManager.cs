@@ -29,7 +29,7 @@ namespace __SCRIPTS
 			}
 
 			if (persistentCharacters.TryAdd(character, characterPrefab)) return;
-			Debug.Log("Character already registered");
+
 		}
 		protected void Start()
 		{
@@ -45,7 +45,7 @@ namespace __SCRIPTS
 
 		private void StartLevel(GameLevel newLevel)
 		{
-			Debug.Log("start level" + newLevel.name);
+
 			Players.SetActionMaps(Players.PlayerActionMap);
 			currentLevel = newLevel;
 			currentLevel.OnGameOver += newLevel_GameOver;
@@ -90,12 +90,12 @@ namespace __SCRIPTS
 
 		private void SceneLoaderSceneReadyToStartLevel(SceneDefinition newScene)
 		{
-			Debug.Log(newScene.sceneName + " scene loaded, starting level");
+
 			var gameLevel = FindFirstObjectByType<GameLevel>();
 			if(gameLevel == null)
 			{
 
-				Debug.Log("no game level in scene");
+
 				return;
 			}
 
@@ -106,7 +106,7 @@ namespace __SCRIPTS
 		{
 			if (currentLevel == null) return;
 			restartedLevelScene = currentLevel.scene;
-			Debug.Log($"LevelManager: Saved restart scene: {restartedLevelScene?.name}");
+
 			currentLevel.StopLevel();
 			currentLevel.OnGameOver -= newLevel_GameOver;
 			currentLevel = null;
@@ -128,7 +128,7 @@ namespace __SCRIPTS
 			if (ObjectMaker.I != null)
 			{
 				ObjectMaker.I.DestroyAllUnits(null);
-				Debug.Log("LevelManager: Explicitly cleared object pools on restart");
+
 			}
 			
 			SceneLoader.I.GoToScene(ASSETS.Scenes.restartLevel);
@@ -144,7 +144,7 @@ namespace __SCRIPTS
 			if (ObjectMaker.I != null)
 			{
 				ObjectMaker.I.DestroyAllUnits(null);
-				Debug.Log("LevelManager: Explicitly cleared object pools on exit to main menu");
+
 			}
 			
 			SceneLoader.I.GoToScene(ASSETS.Scenes.mainMenu);
@@ -153,16 +153,16 @@ namespace __SCRIPTS
 		public void SetRestartScene(SceneDefinition scene)
 		{
 			restartedLevelScene = scene;
-			Debug.Log($"LevelManager: Manually set restart scene to: {scene?.name}");
+
 		}
 
 		public void GoBackFromRestart()
 		{
-			Debug.Log($"LevelManager: Attempting to restart. Restart scene is: {restartedLevelScene?.name}");
+
 
 			if (restartedLevelScene == null)
 			{
-				Debug.LogError("no restart scene - falling back to starting scene");
+
 				// Fallback to the main starting scene if we lost the restart reference
 				LoadLevel(ASSETS.Scenes.startingScene);
 				return;
@@ -175,7 +175,7 @@ namespace __SCRIPTS
 		{
 			if (Players.I.AllJoinedPlayers.Count <= 0)
 			{
-				Debug.LogError("no players in game");
+
 				return;
 			}
 			var p1 =  Players.I.AllJoinedPlayers[0];

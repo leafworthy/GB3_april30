@@ -28,7 +28,7 @@ namespace __SCRIPTS.HUD_Displays
 			var playerStats = owner.GetComponent<PlayerStats>();
 			if(playerStats == null)
 			{
-				Debug.LogError("PlayerStats component not found on _player object.");
+
 				return;
 			}
 

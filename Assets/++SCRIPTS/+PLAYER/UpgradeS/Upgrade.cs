@@ -17,7 +17,7 @@ namespace __SCRIPTS.UpgradeS
 		public void UpgradeLevel()
 		{
 			level++;
-			Debug.Log("upgraded level of " + GetName() + " to " + level);
+
 		}
 
 		public int Cost => (int)Mathf.Round(cost+ (level*100));

@@ -60,7 +60,6 @@ namespace __SCRIPTS._ENEMYAI
 			// Debug logging to help identify door targeting issues
 			if (obstacles.Count > 0)
 			{
-				Debug.Log($"{gameObject.name}: Found {obstacles.Count} attackable obstacles. Closest: {(closest != null ? closest.name : "none")}");
 			}
 			
 			return closest;
@@ -74,7 +73,6 @@ namespace __SCRIPTS._ENEMYAI
 			var playersWithGOs = Players.I.AllJoinedPlayers.Where(x => (x.spawnedPlayerDefence != null)).ToList();
 			var playerLives = playersWithGOs.Select(x => x.spawnedPlayerDefence).Where(x => !x.IsDead()).ToList();
 			
-			Debug.Log($"[{gameObject.name}] GetPlayers called - AllJoinedPlayers: {Players.I.AllJoinedPlayers.Count}, with GO: {playersWithGOs.Count}, alive: {playerLives.Count}");
 			
 			return playerLives;
 		}
@@ -184,7 +182,8 @@ namespace __SCRIPTS._ENEMYAI
 			
 			if (door == null) 
 			{
-				Debug.LogWarning($"{gameObject.name}: Found obstacle {target.name} but no DoorInteraction component");
+				// TODO: Replace with structured logging
+				// Debug.LogWarning($"{gameObject.name}: Found obstacle {target.name} but no DoorInteraction component");
 				return false;
 			}
 			

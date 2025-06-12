@@ -129,7 +129,7 @@ namespace __SCRIPTS
 		
 			SFX.I.sounds.door_break_sound.PlayRandomAt(life1.transform.position);
 			SFX.I.sounds.door_break_sound.PlayRandomAt(life1.transform.position);
-			Debug.Log("here");
+
 			SetCollidersEnabled(false);
 			OnBreak?.Invoke(player);
 		}

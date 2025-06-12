@@ -103,7 +103,7 @@ namespace __SCRIPTS
 			isCharging = true;
 			isFullyCharged = false;
 			OnChargePress?.Invoke();
-			Debug.Log("press");
+
 			anim.SetTrigger(Animations.ChargeStartTrigger);
 			anim.SetBool(Animations.IsCharging, true);
 		}
@@ -113,12 +113,12 @@ namespace __SCRIPTS
 			if (PauseManager.I.IsPaused) return;
 			if (!isCharging) return;
 			OnChargeStop?.Invoke();
-			Debug.Log("release");
+
 			isCharging = false;
 
 			if (isFullyCharged)
 			{
-				Debug.Log("goes here");
+
 				ammo.secondaryAmmo.UseAmmo(1000);
 				anim.SetTrigger(Animations.ChargeAttackTrigger);
 				anim.SetBool(Animations.IsCharging, false);

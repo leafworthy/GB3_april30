@@ -53,7 +53,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 			var _life = hit.GetComponent<Life>();
 			if (_life != null && _life.isEnemyOf(life))
 			{
-				Debug.Log("ShieldAbility: Shield hit enemy " + life.name, this);
+
 				var movement = hit.GetComponent<MoveAbility>();
 				if (movement == null) return;
 				movement.Push((hit.transform.position - transform.position).normalized, life.DashSpeed*1.5f);
@@ -73,7 +73,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 		// Clean up any stuck shield/dash states
 		if (isShielding || isDashing)
 		{
-			Debug.Log("ShieldAbility: OnDisable cleanup - resetting shield and dash states", this);
+
 			SetShielding(false);
 			SetDashing(false);
 		}
@@ -99,7 +99,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 		var dashAbility = GetComponent<DashAbility>();
 		if (dashAbility != null && dashAbility.teleport)
 		{
-			Debug.Log("ShieldAbility: Deferring to teleport DashAbility", this);
+
 			return;
 		}
 
@@ -109,7 +109,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 			{
 				return;
 			}
-			Debug.Log("shielding start", this);
+
 			SetShielding(true);
 
 			if (!moveController.IsIdle())
@@ -123,7 +123,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 		}
 		else
 		{
-			Debug.Log("shielding dash", this);
+
 			ShieldDash();
 		}
 	}
@@ -148,7 +148,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 
 	private void SetDashing(bool isOn)
 	{
-		Debug.Log("dashing " + isOn, this);
+
 		isDashing = isOn;
 		if (isOn) anim.SetTrigger(Animations.DashTrigger);
 		else body.legs.StopSafely(shieldDashActivity);
@@ -156,7 +156,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 
 	private void SetShielding(bool isOn)
 	{
-		Debug.Log(  "shielding " + isOn, this);
+
 		if (!isOn)
 		{
 			body.arms.StopSafely(this);

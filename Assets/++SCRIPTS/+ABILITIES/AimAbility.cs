@@ -27,7 +27,7 @@ namespace __SCRIPTS
 			if (life == null) return;
 			
 			owner = player;
-			Debug.Log("new owner is " + owner.name, this);
+
 			if (owner == null) return;
 			AimDir = Vector2.right;
 			if (owner.isUsingMouse) return;

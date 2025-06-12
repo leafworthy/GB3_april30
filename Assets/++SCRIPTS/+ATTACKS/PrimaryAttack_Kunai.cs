@@ -79,7 +79,7 @@ namespace __SCRIPTS
 			}
 			else
 			{
-				Debug.Log("not pressing");
+
 			}
 		}
 
@@ -95,7 +95,7 @@ namespace __SCRIPTS
 		{
 			if (!ammoInventory.primaryAmmo.hasReserveAmmo())
 			{
-				Debug.Log("no kunai ammo");
+
 				return;
 			}
 

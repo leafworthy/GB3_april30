@@ -19,7 +19,7 @@ namespace __SCRIPTS
 			var player = GetComponent<Player>();
 			if (player == null)
 			{
-				Debug.LogError("PlayerStats script must be attached to a Player object.");
+
 			}
 			owner = player;
 			EnemyManager.I.OnPlayerKillsEnemy += EnemiesOnPlayerKillsEnemy;
@@ -30,7 +30,7 @@ namespace __SCRIPTS
 		public void InitStats()
 		{
 			if (hasInit) return;
-			Debug.Log("stats initialized");
+
 			hasInit = true;
 		ResetStats();
 		}
@@ -39,7 +39,7 @@ namespace __SCRIPTS
 		{
 			if (playerStats.Contains(_stat))
 			{
-				Debug.Log("Stat already exists");
+
 				return;
 			}
 			playerStats.Add(_stat);
@@ -57,7 +57,7 @@ namespace __SCRIPTS
 			if (owner == null) return;
 			AddStat(new PlayerStat(PlayerStat.StatType.TotalCash, owner.GetStartingCash()));
 			AddStat(new PlayerStat(PlayerStat.StatType.Gas, 0));
-			Debug.Log("stats reset");
+
 			OnStatsReset?.Invoke();
 		}
 

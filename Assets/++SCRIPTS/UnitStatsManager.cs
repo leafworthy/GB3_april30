@@ -37,18 +37,45 @@ namespace __SCRIPTS
 		private bool isInitialized = false;
 
 		private Dictionary<string, UnitStatsData> unitStatsLookup = new();
+		private Dictionary<string, string> nameCleaningCache = new();
 		private Coroutine autoRefreshCoroutine;
+		
+		// Cache version to invalidate cached stats in Life components
+		private int cacheVersion = 0;
+		public int CacheVersion => cacheVersion;
 
 		public event System.Action<bool> OnDataLoaded; // bool = success
 		public bool IsLoading => database != null && database.isLoading;
 		public bool IsInitialized => isInitialized;
 		public string LastLoadTime => database?.lastLoadTime ?? "";
 		public string LastError => database?.lastError ?? "";
+		
+		/// <summary>
+		/// Validate that critical units exist in the database
+		/// </summary>
+		public bool ValidateCriticalUnits()
+		{
+			if (!IsDatabaseReady()) return false;
+			
+			// Check for essential units that must exist
+			string[] criticalUnits = { "Life" };
+			
+			foreach (string unitName in criticalUnits)
+			{
+				if (!unitStatsLookup.ContainsKey(unitName))
+				{
+					// TODO: Replace with structured logging
+				// Debug.LogError($"Critical unit '{unitName}' missing from UnitStats database!");
+					return false;
+				}
+			}
+			
+			return true;
+		}
 
 		private void Start()
 		{
 			LoadData();
-			Debug.Log("load started");
 		}
 
 		/// <summary>
@@ -61,7 +88,6 @@ namespace __SCRIPTS
 			// Try to use cached data first at runtime
 			if (Application.isPlaying && database.allUnits != null && database.allUnits.Count > 0)
 			{
-				Debug.Log($"Using cached unit stats data ({database.allUnits.Count} units)");
 				BuildLookupDictionary();
 				OnDataLoaded?.Invoke(true);
 				return;
@@ -85,9 +111,7 @@ namespace __SCRIPTS
 				// Save the loaded data to the asset in editor
 				UnityEditor.EditorUtility.SetDirty(database);
 				UnityEditor.AssetDatabase.SaveAssets();
-				Debug.Log($"Unit stats data loaded successfully and saved to asset ({unitStatsLookup.Count} units)");
 #else
-				Debug.Log("Unit stats data loaded successfully");
 #endif
 			}
 
@@ -97,6 +121,8 @@ namespace __SCRIPTS
 		private void BuildLookupDictionary()
 		{
 			unitStatsLookup.Clear();
+			nameCleaningCache.Clear();
+			cacheVersion++; // Increment cache version to invalidate cached stats
 
 			if (database?.allUnits != null)
 			{
@@ -107,7 +133,8 @@ namespace __SCRIPTS
 			}
 
 			isInitialized = true;
-			Debug.Log($"Initialized UnitStatsManager with {unitStatsLookup.Count} units");
+			#if UNITY_EDITOR || DEVELOPMENT_BUILD
+			#endif
 		}
 
 		/// <summary>
@@ -118,7 +145,6 @@ namespace __SCRIPTS
 			// If not initialized or lookup is empty, but we have database data
 			if ((!isInitialized || unitStatsLookup.Count == 0) && database != null && database.allUnits != null && database.allUnits.Count > 0)
 			{
-				Debug.Log("Building lookup dictionary from cached data...");
 				BuildLookupDictionary();
 			}
 		}
@@ -139,7 +165,6 @@ namespace __SCRIPTS
 
 				if (!IsLoading && database != null)
 				{
-					Debug.Log("Auto-refreshing unit stats data...");
 					LoadData();
 				}
 			}
@@ -152,13 +177,15 @@ namespace __SCRIPTS
 		/// <returns>UnitStatsData or null if not found</returns>
 		public UnitStatsData GetUnitStats(string unitName)
 		{
-			Debug.Log($"Getting unit stats for {unitName}");
+			#if UNITY_EDITOR || DEVELOPMENT_BUILD
+			#endif
 			if (string.IsNullOrEmpty(unitName)) return GetDefaultLifeStats();
 
 			// Validate database is properly loaded
 			if (!IsDatabaseReady())
 			{
-				Debug.LogWarning($"Database not ready for unit lookup: {unitName}. Using default Life stats.");
+				// TODO: Replace with structured logging
+				// Debug.LogWarning($"Database not ready for unit lookup: {unitName}. Using default Life stats.");
 				return GetDefaultLifeStats();
 			}
 
@@ -174,7 +201,8 @@ namespace __SCRIPTS
 			// If not found, return default Life stats
 			if (foundStats == null)
 			{
-				Debug.LogWarning($"Unit stats not found for: '{originalName}' (cleaned: '{unitName}'). Using default Life stats.");
+				// TODO: Replace with structured logging
+				// Debug.LogWarning($"Unit stats not found for: '{originalName}' (cleaned: '{unitName}'). Using default Life stats.");
 				return GetDefaultLifeStats();
 			}
 
@@ -194,7 +222,8 @@ namespace __SCRIPTS
 			bool hasLookup = unitStatsLookup != null && unitStatsLookup.Count > 0;
 			bool initialized = isInitialized;
 
-			Debug.Log($"Database ready check - HasDatabase: {hasDatabase}, HasLookup: {hasLookup}, Initialized: {initialized}");
+			#if UNITY_EDITOR || DEVELOPMENT_BUILD
+			#endif
 
 			return hasDatabase && hasLookup && initialized;
 		}
@@ -216,7 +245,8 @@ namespace __SCRIPTS
 			// Try exact match first
 			if (unitStatsLookup.TryGetValue(cleanedName, out var stats))
 			{
-				Debug.Log($"Found exact match for '{cleanedName}'");
+				#if UNITY_EDITOR || DEVELOPMENT_BUILD
+				#endif
 				return stats;
 			}
 
@@ -224,7 +254,8 @@ namespace __SCRIPTS
 			var fuzzyMatch = FindFuzzyMatch(cleanedName);
 			if (fuzzyMatch != null)
 			{
-				Debug.Log($"Found fuzzy match for '{originalName}' -> '{fuzzyMatch.unitName}'");
+				#if UNITY_EDITOR || DEVELOPMENT_BUILD
+				#endif
 				return fuzzyMatch;
 			}
 
@@ -240,35 +271,46 @@ namespace __SCRIPTS
 			// If database is ready, try to get Life stats
 			if (IsDatabaseReady() && unitStatsLookup.TryGetValue("Life", out var lifeStats))
 			{
-				Debug.Log("Using Life stats from database as default");
 				return lifeStats;
 			}
 
 			// Database not ready or no Life entry - return null to indicate we need to handle this
-			Debug.LogError("No default Life stats available - database may not be loaded");
+			// TODO: Replace with structured logging
+			// Debug.LogError("No default Life stats available - database may not be loaded");
 			return null;
 		}
 
 		/// <summary>
-		/// Clean unit name by removing common suffixes and patterns
+		/// Clean unit name by removing common suffixes and patterns with memoization
 		/// </summary>
 		private string CleanUnitName(string unitName)
 		{
 			if (string.IsNullOrEmpty(unitName)) return unitName;
+			
+			// Check cache first
+			if (nameCleaningCache.TryGetValue(unitName, out var cachedResult))
+			{
+				return cachedResult;
+			}
+			
+			string cleanedName = unitName;
 
 			// Remove (Clone) suffix
-			unitName = unitName.Replace("(Clone)", "");
+			cleanedName = cleanedName.Replace("(Clone)", "");
 
 			// Remove trailing numbers
-			unitName = System.Text.RegularExpressions.Regex.Replace(unitName, @"\d+$", "");
+			cleanedName = System.Text.RegularExpressions.Regex.Replace(cleanedName, @"\d+$", "");
 
 			// Remove "Variant" suffixes (including multiple ones)
-			unitName = System.Text.RegularExpressions.Regex.Replace(unitName, @"(\s+Variant)+$", "");
+			cleanedName = System.Text.RegularExpressions.Regex.Replace(cleanedName, @"(\s+Variant)+$", "");
 
 			// Trim whitespace
-			unitName = unitName.Trim();
+			cleanedName = cleanedName.Trim();
+			
+			// Cache the result
+			nameCleaningCache[unitName] = cleanedName;
 
-			return unitName;
+			return cleanedName;
 		}
 
 		/// <summary>
@@ -365,7 +407,6 @@ namespace __SCRIPTS
 		#endif
 		public void RefreshData()
 		{
-			Debug.Log("Manual refresh requested...");
 			LoadData();
 		}
 
@@ -391,7 +432,6 @@ namespace __SCRIPTS
 				return;
 			}
 
-			Debug.Log("Force reloading data from Google Sheets...");
 			database.OnDataLoaded += OnDatabaseLoaded;
 			database.LoadFromGoogleSheets(this);
 		}
@@ -403,7 +443,6 @@ namespace __SCRIPTS
 				database = ScriptableObject.CreateInstance<UnitStatsDatabase>();
 				UnityEditor.AssetDatabase.CreateAsset(database, "Assets/UnitStatsDatabase.asset");
 				UnityEditor.AssetDatabase.SaveAssets();
-				Debug.Log("Created UnitStatsDatabase asset");
 			}
 		}
 
@@ -417,7 +456,6 @@ namespace __SCRIPTS
 			}
 			else
 			{
-				Debug.Log("Loading data in Edit Mode - will cache for runtime use");
 				LoadDataInEditMode();
 			}
 		}
@@ -434,7 +472,6 @@ namespace __SCRIPTS
 			database.lastError = "";
 
 			string url = database.googleSheetsConfig.GetCSVUrl();
-			Debug.Log($"Loading data from: {url}");
 
 			try
 			{
@@ -451,13 +488,13 @@ namespace __SCRIPTS
 					UnityEditor.EditorUtility.SetDirty(database);
 					UnityEditor.AssetDatabase.SaveAssets();
 
-					Debug.Log($"Successfully loaded and cached {database.allUnits.Count} units from Google Sheets");
 				}
 			}
 			catch (System.Exception e)
 			{
 				database.lastError = $"Error: {e.Message}";
-				Debug.LogError($"Error loading from Google Sheets: {e.Message}");
+				// TODO: Replace with structured logging
+				// Debug.LogError($"Error loading from Google Sheets: {e.Message}");
 			}
 			finally
 			{
@@ -548,7 +585,6 @@ namespace __SCRIPTS
 				database.allUnits.Clear();
 				UnityEditor.EditorUtility.SetDirty(database);
 				UnityEditor.AssetDatabase.SaveAssets();
-				Debug.Log("Cleared cached unit stats data");
 			}
 
 			if (Application.isPlaying)
@@ -572,11 +608,9 @@ namespace __SCRIPTS
 				"wall tile exterior 123"
 			};
 
-			Debug.Log("=== Testing Name Cleaning ===");
 			foreach (string name in testNames)
 			{
 				string cleaned = CleanUnitName(name);
-				Debug.Log($"'{name}' -> '{cleaned}'");
 			}
 		}
 #endif

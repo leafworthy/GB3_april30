@@ -13,35 +13,17 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 			_ai.GetBornIfBornOnAggro();
 			target = ai.Targets.GetClosestPlayer();
 
-			Debug.Log($"[{ai.transform.name}] AggroState.OnEnterState - Found target: {(target != null ? target.name : "NULL")}");
 
 			if (target == null)
 			{
 				ai.Thoughts.Think("No target found, going idle");
-				Debug.Log($"[{ai.transform.name}] No target found, transitioning to IdleState");
 				ai.TransitionToState(new IdleState());
 				return;
 			}
 
-			Debug.Log($"[{ai.transform.name}] Setting target position to: {target.transform.position}");
 			ai.Pathmaker.SetTargetPosition(target.transform.position);
 		}
 
-		private bool CanAttackObstacleWithinAttackRange()
-		{
-
-			var closestObstacle = ai.Targets.GetClosestAttackableObstacle();
-			if (closestObstacle == null) return false;
-			if(!ai.Targets.HasLineOfSightWith(closestObstacle.transform.position))
-			{
-				ai.Thoughts.Think("Not attacking because obstacle not in sight");
-				return false;
-			}
-
-			ai.Thoughts.Think("attacking obstacle " + closestObstacle.name);
-			ai.TransitionToState(new AttackObstacleState());
-			return true;
-		}
 
 
 
@@ -55,18 +37,26 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 			target = ai.Targets.GetClosestPlayer();
 			if (target == null)
 			{
-				Debug.Log($"[{ai.transform.name}] AggroState.UpdateState - No target, going to IdleState");
 				ai.TransitionToState(new IdleState());
 				return;
 			}
 
+			// Check if we're stuck near a door and need to attack it
+			if (IsBlockedByDoor())
+			{
+				var blockingDoor = ai.Targets.GetClosestAttackableObstacle();
+				if (blockingDoor != null)
+				{
+					ai.TransitionToState(new AttackObstacleState());
+					return;
+				}
+			}
+
 			// Try pathfinding first, but have fallback to direct movement
-			Debug.Log($"[{ai.transform.name}] AggroState.UpdateState - Targeting: {target.name} at {target.transform.position}");
 			
 			// If we have line of sight, walk directly (this avoids pathfinding issues)
 			if (ai.Targets.HasLineOfSightWith(target.transform.position))
 			{
-				Debug.Log($"[{ai.transform.name}] Has line of sight, walking directly to target");
 				ai.Pathmaker.WalkInDirectionOfTarget(target.transform.position);
 			}
 			else
@@ -78,10 +68,26 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 			// If close enough to attack, switch to attack state
 			if (CloseEnoughToAttack()) 
 			{
-				Debug.Log($"[{ai.transform.name}] Close enough to attack, switching to AttackPlayerState");
 				ai.TransitionToState(new AttackPlayerState());
 				return;
 			}
+		}
+
+		private bool IsBlockedByDoor()
+		{
+			// Check if we can't reach the player due to a door blocking the path
+			if (!ai.Targets.HasLineOfSightWith(target.transform.position))
+			{
+				// No line of sight - check if there's a door within attack range
+				var nearbyDoor = ai.Targets.GetClosestAttackableObstacle();
+				if (nearbyDoor != null)
+				{
+					float doorDistance = Vector2.Distance(ai.transform.position, nearbyDoor.transform.position);
+					// If we're close to a door and can't see the player, the door is likely blocking us
+					return doorDistance <= ai.Life.PrimaryAttackRange * 1.5f;
+				}
+			}
+			return false;
 		}
 
 		private void WalkDirectlyToTarget()

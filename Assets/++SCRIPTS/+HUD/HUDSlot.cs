@@ -38,7 +38,7 @@ namespace __SCRIPTS
 
 		public void StartCharSelectMenu(Player player)
 		{
-			Debug.Log("here for player  " + player.playerIndex);
+
 			player.input.uiInputModule = charSelectMenu.GetComponentInChildren<InputSystemUIInputModule>();
 			characterHUD.gameObject.SetActive(false);
 			charSelectMenu.gameObject.SetActive(true);

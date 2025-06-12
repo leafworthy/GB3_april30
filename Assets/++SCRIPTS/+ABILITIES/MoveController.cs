@@ -45,7 +45,7 @@ namespace __SCRIPTS
 
 			if (life.IsPlayer)
 			{
-				Debug.Log("life is player", this);
+
 				owner = life.player;
 				owner.Controller.MoveAxis.OnChange += Player_MoveInDirection;
 				owner.Controller.MoveAxis.OnInactive += Player_StopMoving;

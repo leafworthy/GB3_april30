@@ -100,7 +100,7 @@ namespace __SCRIPTS
 			// For scenes that don't require button press
 			if (loadingOperation.allowSceneActivation && progressValue >= 1.0f)
 			{
-				Debug.Log(loadingScene.displayName +"scene loaded, time to fade out");
+
 				isLoading = false;
 				FadeOut();
 				return;
@@ -112,7 +112,7 @@ namespace __SCRIPTS
 
 		private void LoadingComplete()
 		{
-			Debug.Log("loading complete for scene: " + loadingScene.DisplayName);
+
 			loadingComplete = true;
 			if (percentLoadedText != null) percentLoadedText.text = "100";
 			pressAnyButtonText.gameObject.SetActive(loadingScene.requiresButtonPressToLoad);
@@ -146,13 +146,13 @@ namespace __SCRIPTS
 			//FROM LEVEL MANAGER
 			if (sceneDefinition == null || !sceneDefinition.IsValid())
 			{
-				Debug.LogError("Invalid scene definition");
+
 				return;
 			}
 
 			// Store the destination
 			loadingScene = sceneDefinition;
-			Debug.Log($"Loading scene: {sceneDefinition.DisplayName}");
+
 
 			// Start the transition
 			StartFadingIn();
@@ -167,12 +167,12 @@ namespace __SCRIPTS
 		{
 			if (scene == null)
 			{
-				Debug.Log("scene is null");
+
 				return;
 			}
 
 			currentlyLoadedScene = scene;
-			Debug.Log($"Current scene set to {currentlyLoadedScene.DisplayName} ({currentlyLoadedScene.SceneName})");
+
 			OnSceneReadyToStartLevel?.Invoke(currentlyLoadedScene);
 			loadingScene = null;
 			isLoading = false;
@@ -204,7 +204,7 @@ namespace __SCRIPTS
 			// First scene load needs a fade out
 			if (HandleFirstLoad()) return;
 			isLoading = false;
-			Debug.Log($"Scene manager load finished: {scene.name}");
+
 			// Update internal tracking 
 			SetCurrentScene(ASSETS.Scenes.GetByName(scene.name));
 			//START LEVEL
@@ -227,7 +227,7 @@ namespace __SCRIPTS
 		/// </summary>
 		private void StartFadingIn()
 		{
-			Debug.Log("start fading in");
+
 			// Setup the appropriate screen
 			HandleTransitionScreen();
 
@@ -299,7 +299,7 @@ namespace __SCRIPTS
 			isLoading = true;
 			loadingOperation = SceneManager.LoadSceneAsync(loadingScene.SceneName);
 			loadingOperation.allowSceneActivation = !loadingScene.requiresButtonPressToLoad;
-			Debug.Log("loading scene async starting: " + loadingScene.SceneName + " it requires button press: " + loadingScene.requiresButtonPressToLoad);
+
 		}
 
 		private float UpdateLoadingProgress()
@@ -338,7 +338,7 @@ namespace __SCRIPTS
 		/// </summary>
 		private void FadeOut()
 		{
-			Debug.Log("fade out here");
+
 			faderAnimator.SetBool(IsFadedIn, false);
 
 			if (pressAnyButtonText != null)

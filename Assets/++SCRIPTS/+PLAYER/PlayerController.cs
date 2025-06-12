@@ -38,7 +38,7 @@ namespace __SCRIPTS
             
             if (player == null)
             {
-                Debug.LogError("PlayerController.InitializeAndLinkToPlayer: player is null");
+
                 return;
             }
 
@@ -71,7 +71,7 @@ namespace __SCRIPTS
             }
             catch (System.Exception e)
             {
-                Debug.LogError($"PlayerController.InitializeAndLinkToPlayer: Failed to initialize for player {player?.playerIndex}: {e.Message}");
+
                 initialized = false;
             }
         }
@@ -86,7 +86,7 @@ namespace __SCRIPTS
         {
             if (owner == null || controls == null)
             {
-                Debug.LogWarning("PlayerController.SetAxes: owner or controls is null, skipping axes setup");
+
                 return;
             }
 
@@ -101,7 +101,7 @@ namespace __SCRIPTS
             }
             catch (System.Exception e)
             {
-                Debug.LogError($"PlayerController.SetAxes: Failed to initialize axes for player {owner?.playerIndex}: {e.Message}");
+
             }
         }
     }

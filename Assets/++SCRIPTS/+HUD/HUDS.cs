@@ -15,7 +15,7 @@ namespace __SCRIPTS
 		public bool canJoin = false;
 		private void OnEnable()
 		{
-			Debug.Log("huds starts");
+
 			Vignette.SetActive(false);
 			Clock.SetActive(false);
 			LevelManager.I.OnStartLevel += LevelSceneOnStartLevel;
@@ -39,7 +39,7 @@ namespace __SCRIPTS
 			Players.SetActionMaps(Players.UIActionMap);
 			DisableAllHUDSlots();
 			//gameObject.SetActive(false);
-			Debug.Log("huds on game over");
+
 		}
 
 		private void OnDisable()
@@ -50,21 +50,21 @@ namespace __SCRIPTS
 			Players.SetActionMaps(Players.UIActionMap);
 			Vignette.SetActive(false);
 			Clock.SetActive(false);
-			Debug.Log("hud stopped");
+
 		}
 
 	
 
 		private void LevelScene_OnPlayerSpawned(Player player)
 		{
-			Debug.Log("set slot player  " + player.input.playerIndex);
+
 			SetHUDSlotPlayer(player);
 		}
 
 		private void LevelSceneOnStartLevel(GameLevel gameLevel)
 		{
 			//gameObject.SetActive(true);
-			Debug.Log("made it here");
+
 			CreateHUDForPlayers(Players.I.AllJoinedPlayers);
 			Players.I.OnPlayerJoins += JoinInGame;
 			Players.I.OnPlayerGetUpgrades += OpenUpgradePanel;
@@ -85,7 +85,7 @@ namespace __SCRIPTS
 		{
 			foreach (var player in players)
 			{
-				Debug.Log("set hud slot");
+
 				SetHUDSlotPlayer(player);
 			}
 		}
@@ -93,7 +93,7 @@ namespace __SCRIPTS
 		private void JoinInGame(Player player)
 		{
 			if(!canJoin) return;
-			Debug.Log("join in game");
+
 			
 			// Ensure player stats are properly initialized before setting up HUD
 			var playerStats = player.GetComponent<PlayerStats>();

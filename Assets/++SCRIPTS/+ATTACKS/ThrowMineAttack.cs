@@ -108,7 +108,7 @@ namespace __SCRIPTS
 
 			if (!ammo.secondaryAmmo.hasReserveAmmo())
 			{
-				Debug.Log("no mines");
+
 				return;
 			}
 
@@ -127,13 +127,13 @@ namespace __SCRIPTS
 			}
 
 			isPressing = true;
-			Debug.Log("throw start");
+
 			anim.Play(mineDropAnimation.name, 1, 0);
 		}
 
 		private void Player_ThrowRelease(NewControlButton obj)
 		{
-			Debug.Log("throw finish");
+
 			isPressing = false;
 		}
 
@@ -159,7 +159,7 @@ namespace __SCRIPTS
 			}
 			else
 			{
-				Debug.Log("mine not found");
+
 			}
 		}
 

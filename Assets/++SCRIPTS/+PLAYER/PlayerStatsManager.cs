@@ -38,7 +38,7 @@ namespace __SCRIPTS
 				return playerStatsComponent.GetStatValue(statType);
 			}
 
-			Debug.LogWarning($"Player {player.playerIndex} not found in PlayerStatsManager and has no PlayerStats component");
+
 			return 0; // Return 0 instead of -999 for better display
 		}
 
@@ -59,13 +59,13 @@ namespace __SCRIPTS
 			var match = playerStats.TryGetValue(player, out var stats);
 			if (match)
 			{
-				Debug.Log("Player was found in PlayerStatsManager");
+
 				stats.ChangeStat(statType, change);
 				OnPlayerStatChange?.Invoke(player, statType, stats.GetStatValue(statType));
 			}
 			else
 			{
-				Debug.Log("Player not found in PlayerStatsManager");
+
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace __SCRIPTS
 			var stats = player.GetComponent<PlayerStats>();
 			if(stats == null)
 			{
-				Debug.LogError("Player does not have PlayerStats component");
+
 				return;
 			}
 
@@ -92,7 +92,7 @@ namespace __SCRIPTS
 			}
 			else
 			{
-				Debug.LogError("Player not found in PlayerStatsManager");
+
 			}
 		}
 	}

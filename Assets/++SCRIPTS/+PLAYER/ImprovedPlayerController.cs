@@ -35,7 +35,7 @@ namespace __SCRIPTS
             
             if (player == null)
             {
-                Debug.LogError("ImprovedPlayerController.InitializeAndLinkToPlayer: player is null");
+
                 return;
             }
             
@@ -55,11 +55,11 @@ namespace __SCRIPTS
                 InitializeButtons();
                 
                 initialized = true;
-                Debug.Log($"ImprovedPlayerController initialized for player {player.playerIndex}");
+
             }
             catch (System.Exception e)
             {
-                Debug.LogError($"ImprovedPlayerController.InitializeAndLinkToPlayer: Failed to initialize for player {player?.playerIndex}: {e.Message}");
+
                 initialized = false;
             }
         }
@@ -78,7 +78,7 @@ namespace __SCRIPTS
             }
             catch (System.Exception e)
             {
-                Debug.LogError($"ImprovedPlayerController.InitializeGameplayAxes: Failed for player {owner?.playerIndex}: {e.Message}");
+
             }
         }
         
@@ -101,7 +101,7 @@ namespace __SCRIPTS
             }
             catch (System.Exception e)
             {
-                Debug.LogError($"ImprovedPlayerController.InitializeButtons: Failed for player {owner?.playerIndex}: {e.Message}");
+
             }
         }
         

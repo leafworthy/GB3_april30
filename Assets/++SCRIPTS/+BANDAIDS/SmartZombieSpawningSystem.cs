@@ -39,7 +39,7 @@ namespace __SCRIPTS
         [SerializeField] private float bossEventInterval = 180f;
 
         [Header("Debug")]
-        [SerializeField] private bool enableDebugLogs = false;
+        [SerializeField] private bool enableDebugLogs = true;
 
         private List<SmartZombieSpawnPoint> spawnPoints = new List<SmartZombieSpawnPoint>();
         private List<GameObject> spawnedEnemies = new List<GameObject>();
@@ -79,6 +79,14 @@ namespace __SCRIPTS
         void Update()
         {
             CleanupDeadEnemies();
+
+            if (enableDebugLogs && Time.frameCount % 120 == 0) // Log every 2 seconds at 60fps
+            {
+                Debug.Log($"Spawning Status - Active: {activeZombieCount}/{maxActiveZombies}, " +
+                         $"Time since last spawn: {Time.time - lastSpawnTime:F1}s, " +
+                         $"Required interval: {GetCurrentSpawnInterval():F1}s, " +
+                         $"Should spawn: {ShouldAttemptSpawn()}");
+            }
 
             if (ShouldAttemptSpawn())
             {
@@ -130,16 +138,38 @@ namespace __SCRIPTS
         private void AttemptSpawn()
         {
             if (spawnPoints.Count == 0)
+            {
+                if (enableDebugLogs)
+                {
+                    Debug.Log("No spawn points available");
+                }
                 return;
+            }
 
             // Choose random spawn point
             SmartZombieSpawnPoint chosenSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
             GameObject enemyPrefab = GetRandomEnemyPrefab();
 
             if (enemyPrefab == null)
+            {
+                if (enableDebugLogs)
+                {
+                    Debug.Log("No enemy prefab available to spawn");
+                }
                 return;
+            }
 
-            // Try to spawn at that point
+            // Check if the spawn point can spawn
+            if (!chosenSpawnPoint.CanSpawn())
+            {
+                if (enableDebugLogs)
+                {
+                    Debug.Log($"Spawn point {chosenSpawnPoint.name} cannot spawn (distance or other constraints)");
+                }
+                return;
+            }
+
+            // Use spawn point position - pathfinding will handle invalid positions gracefully
             Vector3 spawnPosition = chosenSpawnPoint.transform.position;
             GameObject enemy = ObjectMaker.I.Make(enemyPrefab, spawnPosition);
 

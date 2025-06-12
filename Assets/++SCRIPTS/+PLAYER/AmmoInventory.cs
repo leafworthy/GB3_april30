@@ -36,7 +36,7 @@ namespace __SCRIPTS
 					unlimitedAmmo.AddAmmoToReserve(amount);
 					break;
 				default:
-					Debug.LogWarning("Unknown ammo type: " + ammoType);
+
 					break;
 			}
 		}

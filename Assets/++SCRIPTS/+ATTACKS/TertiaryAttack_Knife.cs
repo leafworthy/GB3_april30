@@ -40,12 +40,12 @@ public class TertiaryAttack_Knife : Attacks
 		}
 		private void Anim_AttackStop(int obj)
 		{
-			Debug.Log("knife stop");
+
 			anim.SetBool(Animations.IsBobbing, true);
 			body.arms.StopSafely(this);
 			isAttacking = false;
 			if (!isPressing) return;
-			Debug.Log("knife start again");
+
 			PlayerKnifePress(null);
 		}
 
@@ -67,16 +67,16 @@ public class TertiaryAttack_Knife : Attacks
 		{
 			if(isAttacking)
 			{
-				Debug.Log("can't knife, still knifing");
+
 				return;
 			}
 			if (!body.arms.Do(this))
 			{
-				Debug.Log("can't knife, still busy " + body.arms.currentActivity);
+
 				return;
 			}
 			isAttacking = true;
-			Debug.Log("knife start");
+
 			anim.Play(AnimationClipName, 1, 0);
 			anim.SetTrigger(Animations.KnifeTrigger);
 			anim.SetBool(Animations.IsBobbing, false);

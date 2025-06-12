@@ -15,7 +15,7 @@ namespace __SCRIPTS
         {
             if (GameManager.gameManagerLoaded)
             {
-                Debug.Log("game manager already created");
+
                 return;
             }
             CreateGameManager();
@@ -28,13 +28,13 @@ namespace __SCRIPTS
             {
                 string sceneName = SceneManager.GetSceneAt(i).name;
                 if (sceneName != "GameManagerScene" && sceneName != "GameManager") continue;
-                Debug.Log("GameManager scene already loaded");
+
                 return;
             }
 
             // Load GameManager scene additively
             SceneManager.LoadScene(SceneName, LoadSceneMode.Single);
-            Debug.Log($"Loading GameManager scene");
+
         }
     }
 }

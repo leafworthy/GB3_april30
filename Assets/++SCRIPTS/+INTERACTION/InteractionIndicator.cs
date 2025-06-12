@@ -88,7 +88,7 @@ namespace __SCRIPTS
 		private void SetIndicatorColor(Player player)
 		{
 			indicator.SetColor(player.playerColor);
-			Debug.Log("color change");
+
 		}
 
 		private PlayerIndicator MakeIndicator()

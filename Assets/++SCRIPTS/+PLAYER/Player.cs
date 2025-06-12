@@ -133,7 +133,7 @@ namespace __SCRIPTS
 
 		public GameObject Spawn(Vector2 position, bool fallFromSky)
 		{
-			Debug.Log("Spawning player at " + position);
+
 			state = State.Alive;
 
 			// Create the character instance
@@ -164,7 +164,7 @@ namespace __SCRIPTS
 		{
 			if (newGO == null)
 			{
-				Debug.LogError($"Player.SetSpawnedPlayerGO: newGO is null for player {playerIndex}");
+
 				return;
 			}
 
@@ -174,7 +174,7 @@ namespace __SCRIPTS
 			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
 			if (spawnedPlayerDefence == null)
 			{
-				Debug.LogError($"Player.SetSpawnedPlayerGO: Life component missing on spawned player {playerIndex}");
+
 				return;
 			}
 			
@@ -184,7 +184,7 @@ namespace __SCRIPTS
 			}
 			catch (System.Exception e)
 			{
-				Debug.LogError($"Player.SetSpawnedPlayerGO: Failed to subscribe to OnDead event for player {playerIndex}: {e.Message}");
+
 			}
 
 			// Safe component initialization with error handling
@@ -196,11 +196,11 @@ namespace __SCRIPTS
 				try
 				{
 					component.SetPlayer(this);
-					Debug.Log($"Set player {playerIndex} to {component.GetType().Name}");
+
 				}
 				catch (System.Exception e)
 				{
-					Debug.LogError($"Player.SetSpawnedPlayerGO: Failed to set player on component {component.GetType().Name} for player {playerIndex}: {e.Message}");
+
 				}
 			}
 
@@ -210,12 +210,12 @@ namespace __SCRIPTS
 				sayer = SpawnedPlayerGO.GetComponentInChildren<PlayerSayer>();
 				if (sayer == null)
 				{
-					Debug.LogWarning($"Player.SetSpawnedPlayerGO: PlayerSayer component not found for player {playerIndex}");
+
 				}
 			}
 			catch (System.Exception e)
 			{
-				Debug.LogError($"Player.SetSpawnedPlayerGO: Failed to get PlayerSayer for player {playerIndex}: {e.Message}");
+
 			}
 		}
 
@@ -246,7 +246,7 @@ namespace __SCRIPTS
 		{
 			if (playerData == null)
 			{
-				Debug.LogError("Player.Join: playerData is null");
+
 				return;
 			}
 
@@ -271,7 +271,7 @@ namespace __SCRIPTS
 				}
 				catch (System.Exception e)
 				{
-					Debug.LogWarning($"Player.Join: Failed to detect input device for player {playerIndex}: {e.Message}");
+
 					isUsingMouse = false; // Default to controller
 				}
 			}
@@ -282,7 +282,7 @@ namespace __SCRIPTS
 			Controller = GetComponent<PlayerController>();
 			if (Controller == null)
 			{
-				Debug.LogError($"Player.Join: PlayerController component missing on player {playerIndex}");
+
 				return;
 			}
 
@@ -292,7 +292,7 @@ namespace __SCRIPTS
 			}
 			catch (System.Exception e)
 			{
-				Debug.LogError($"Player.Join: Failed to initialize controller for player {playerIndex}: {e.Message}");
+
 				return;
 			}
 

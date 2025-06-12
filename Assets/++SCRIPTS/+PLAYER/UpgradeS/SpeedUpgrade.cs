@@ -11,7 +11,7 @@ namespace __SCRIPTS.UpgradeS
 		public override void CauseEffect(Player player)
 		{
 			base.CauseEffect(player);
-			Debug.Log("speed upgrade  caused effect " + .1f * level);
+
 			player.spawnedPlayerDefence.SetExtraMaxSpeedFactor(.1f * level);
 		}
 	}

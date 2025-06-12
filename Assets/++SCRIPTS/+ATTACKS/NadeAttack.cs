@@ -88,7 +88,7 @@ namespace __SCRIPTS
 
 		private void Anim_ThrowStop()
 		{
-			Debug.Log("Anim_ThrowStop called - stopping nade throw activity");
+
 			isThrowingGrenade = false;
 			arms.StopSafely(this);
 		}
@@ -108,7 +108,7 @@ namespace __SCRIPTS
 			// Safety timeout for stuck throw animation
 			if (isThrowingGrenade && Time.time - throwStartTime > THROW_TIMEOUT)
 			{
-				Debug.LogWarning("Grenade throw animation timed out! Force stopping arms activity.");
+
 				isThrowingGrenade = false;
 				arms.StopSafely(this);
 			}
@@ -119,17 +119,17 @@ namespace __SCRIPTS
 			if (PauseManager.I.IsPaused) return;
 			if (!ammo.secondaryAmmo.hasReserveAmmo())
 			{
-				Debug.Log("no nades");
+
 				return;
 			}
 
 			if (!arms.Do(aimActivity))
 			{
-				Debug.Log("can't nade " + arms.currentActivity);
+
 				return;
 			}
 
-			Debug.Log("nade aiming start");
+
 			IsAiming = true;
 			OnShowAiming?.Invoke();
 		}
@@ -143,30 +143,30 @@ namespace __SCRIPTS
 			if (!ammo.secondaryAmmo.hasReserveAmmo())
 			{
 				arms.StopSafely(aimActivity);
-				Debug.Log("no nades - stopping aim activity");
+
 				return;
 			}
 
 			if (arms.currentActivity == aimActivity)
 			{
-				Debug.Log("nade release - switching from aim to throw");
+
 				arms.StopSafely(aimActivity);
 				
 				if (arms.Do(this))
 				{
-					Debug.Log("nade throw activity started, playing animation: " + AnimationName);
+
 					isThrowingGrenade = true;
 					throwStartTime = Time.time;
 					anim.Play(AnimationName, 1, 0);
 				}
 				else
 				{
-					Debug.LogWarning("Failed to start nade throw activity! Arms busy with: " + arms.currentActivity?.VerbName);
+
 				}
 			}
 			else
 			{
-				Debug.LogWarning("Expected aim activity but found: " + arms.currentActivity?.VerbName + ", stopping aim activity anyway");
+
 				arms.StopSafely(aimActivity);
 			}
 		}
@@ -174,21 +174,21 @@ namespace __SCRIPTS
 
 		private void Anim_Throw()
 		{
-			Debug.Log("Anim_Throw called - actually throwing the grenade!");
+
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = body.AimCenter.transform.position;
 			var velocity = new Vector3((endPoint.x - startPoint.x) / throwTime,
 				(endPoint.y - startPoint.y) / throwTime);
 			
-			Debug.Log($"Throwing nade from {startPoint} to {endPoint} with velocity {velocity}");
+
 			if (OnThrow != null)
 			{
 				OnThrow.Invoke(startPoint, velocity, throwTime, life.player);
-				Debug.Log($"OnThrow event invoked with {OnThrow.GetInvocationList().Length} listeners");
+
 			}
 			else
 			{
-				Debug.LogError("OnThrow event has no listeners! Grenade won't spawn.");
+
 			}
 		}
 

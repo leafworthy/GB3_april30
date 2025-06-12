@@ -15,7 +15,7 @@ namespace __SCRIPTS
 			LevelManager.I.OnPlayerSpawned += AddMembersToCameraFollowTargetGroup;
 			Players.I.OnPlayerDies += Player_PlayerDies;
 			LevelManager.I.OnStopLevel += LevelManager_OnStopLevel;
-			Debug.Log("GameLevelCameraTargetGroupManager started");
+
 		}
 
 		private void LevelManager_OnStopLevel(GameLevel level)
@@ -35,7 +35,7 @@ namespace __SCRIPTS
 
 		private void AddMembersToCameraFollowTargetGroup(Player player)
 		{
-			Debug.Log("Adding player to camera follow target group");
+
 			if (cameraFollowTargetGroup == null) cameraFollowTargetGroup = FindFirstObjectByType<CinemachineTargetGroup>();
 			if (player.SpawnedPlayerGO != null)
 			{
@@ -45,7 +45,7 @@ namespace __SCRIPTS
 			}
 			else
 			{
-				Debug.LogError("Player's spawned player game object is null");
+
 			}
 		}
 

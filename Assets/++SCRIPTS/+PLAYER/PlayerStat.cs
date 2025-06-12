@@ -38,7 +38,7 @@ namespace __SCRIPTS
 
 		public void IncreaseStat(float change)
 		{
-			Debug.Log("chaging stat " + type + " by " + change);
+
 			value += change;
 		}
 	}

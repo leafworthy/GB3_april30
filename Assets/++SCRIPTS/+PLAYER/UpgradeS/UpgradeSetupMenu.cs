@@ -65,10 +65,10 @@ namespace __SCRIPTS.UpgradeS
 
 		public void SetPlayer(Player _player)
 		{
-			Debug.Log("made it in menu", this);
+
 			owner = _player;
 
-			Debug.Log("set _player");
+
 			Visible.SetActive(false);
 		}
 
@@ -112,7 +112,7 @@ namespace __SCRIPTS.UpgradeS
 
 		public void StartUpgradeSelectMenu(Player player)
 		{
-			Debug.Log("started upgrade menu");
+
 			inMenu = true;
 			SetPlayer(player);
 			playerUpgrades = player.GetComponent<PlayerUpgrades>();

@@ -36,7 +36,7 @@ namespace __SCRIPTS
 			ammoInventory = GetComponent<AmmoInventory>();
 			anim = GetComponent<Animations>();
 			anim.animEvents.OnAnimationComplete += Anim_OnComplete;
-			Debug.Log("this happens");
+
 			body = GetComponent<Body>();
 			arms = body.arms;
 			aim = GetComponent<GunAimAbility_Simple>();
@@ -47,7 +47,7 @@ namespace __SCRIPTS
 		{
 			StopShooting();
 			arms.StopSafely(this);
-			Debug.Log("shooting not busy");
+
 		}
 
 		private void OnDisable()
@@ -102,7 +102,7 @@ namespace __SCRIPTS
 				if (!GetCorrectAmmoType().hasAmmoInReserveOrClip())
 				{
 					StopShooting();
-					Debug.Log("ammo just emptied");
+
 				}
 
 				if (isEmpty) return;
@@ -129,7 +129,7 @@ namespace __SCRIPTS
 		private void ShootTarget(Vector3 targetPosition)
 		{
 			if (!arms.Do(this)) return;
-			Debug.Log("shooting busy");
+
 			isShooting = true;
 			anim.SetTrigger(Animations.ShootingTrigger);
 			for (var i = 0; i < numberOfShots; i++)
@@ -180,8 +180,6 @@ namespace __SCRIPTS
 				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
 					attacker.PrimaryAttackRange, ASSETS.LevelAssets.EnemyLayerOnLandable);
 
-				Debug.DrawRay(body.FootPoint.transform.position,
-					targetDirection.normalized * attacker.PrimaryAttackRange, Color.red, 1f);
 				return raycastHit;
 			}
 			else

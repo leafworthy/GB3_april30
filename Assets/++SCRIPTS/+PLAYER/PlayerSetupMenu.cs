@@ -20,13 +20,13 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
-			Debug.Log("player setup menu start", this);
+
 			//Visible.SetActive(false);
 		}
 
 		private void OnEnable()
 		{
-			Debug.Log("player setup menu enabled", this);
+
 			LevelManager.I.OnStopLevel += LevelGameSceneOnStopLevel;
 		}
 
@@ -56,7 +56,7 @@ namespace __SCRIPTS
 		public void StartSetupMenu(Player player)
 		{
 			SetPlayer(player);
-			Debug.Log(  player.name + " is setting up");
+
 			Visible.SetActive(true);
 			readyText.SetActive(false);
 			ignoreInputTime = Time.time + ignoreInputTime;
@@ -68,7 +68,7 @@ namespace __SCRIPTS
 		{
 			if (!inputEnabled) return;
 			owner.CurrentCharacter = character;
-			Debug.Log("Character chosen: " + character);
+
 			readyText.SetActive(true);
 			readyPanel.SetActive(true);
 			menuPanel.SetActive(false);

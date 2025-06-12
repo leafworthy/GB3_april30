@@ -58,7 +58,7 @@ namespace __SCRIPTS
 
 		private void Anim_OnReloadStop()
 		{
-			Debug.Log("reload stop anim");
+
 			StopReloading();
 		}
 
@@ -132,7 +132,7 @@ namespace __SCRIPTS
 		{
 			if (isReloading)
 			{
-				Debug.Log("cant shoot, reloading");
+
 				return;
 			}
 
@@ -142,7 +142,7 @@ namespace __SCRIPTS
 				if (!GetCorrectAmmoType().hasAmmoInReserveOrClip())
 				{
 					StopShooting();
-					Debug.Log("ammo just emptied");
+
 					if (isEmpty) return;
 					OnEmpty?.Invoke();
 					isEmpty = true;
@@ -150,7 +150,7 @@ namespace __SCRIPTS
 					return;
 				}
 
-				Debug.Log("no ammo, start reloading");
+
 				StartReloading();
 				if (isEmpty) return;
 				OnEmpty?.Invoke();
@@ -160,7 +160,7 @@ namespace __SCRIPTS
 
 			if (!arms.Do(this)) return;
 
-			Debug.Log("actually start shooting");
+
 			StartShooting();
 		}
 
@@ -176,7 +176,7 @@ namespace __SCRIPTS
 			isShooting = false;
 
 			arms.StopSafely(this);
-			Debug.Log("stop shooting");
+
 
 			if (anim == null) return;
 			anim.SetBool(Animations.IsShooting, false);
@@ -239,8 +239,6 @@ namespace __SCRIPTS
 				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
 					attacker.PrimaryAttackRange, ASSETS.LevelAssets.EnemyLayerOnLandable);
 
-				Debug.DrawRay(body.FootPoint.transform.position,
-					targetDirection.normalized * attacker.PrimaryAttackRange, Color.red, 1f);
 				return raycastHit;
 			}
 			else
@@ -289,19 +287,19 @@ namespace __SCRIPTS
 		{
 			if (isReloading)
 			{
-				Debug.Log("still reloading");
+
 				return;
 			}
 
 			if (GetCorrectAmmoType().clipIsFull())
 			{
-				Debug.Log("Clip is full");
+
 				return;
 			}
 
 			if (!GetCorrectAmmoType().hasReserveAmmo())
 			{
-				Debug.Log("has reserve ammo");
+
 				return;
 			}
 

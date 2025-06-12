@@ -46,7 +46,26 @@ namespace __SCRIPTS
 			if (!(Time.time >= currentCooldownTime)) return;
 			currentTarget = targetLife;
 			currentCooldownTime = Time.time + life.PrimaryAttackRate;
+			
+			// Face the target only when starting a new attack
+			FaceTarget();
+			
 			anim.SetTrigger(Animations.Attack1Trigger);
+		}
+		
+		private void FaceTarget()
+		{
+			if (currentTarget == null) return;
+			
+			// Calculate direction to target
+			Vector2 directionToTarget = currentTarget.transform.position - transform.position;
+			
+			// Only update facing if the distance is significant to avoid flipping
+			if (Mathf.Abs(directionToTarget.x) > 0.5f)
+			{
+				bool shouldFaceRight = directionToTarget.x > 0;
+				body.BottomFaceDirection(shouldFaceRight);
+			}
 		}
 
 		private void CreateSlime(int attackType)

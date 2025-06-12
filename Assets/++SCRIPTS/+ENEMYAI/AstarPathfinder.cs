@@ -48,39 +48,41 @@ namespace __SCRIPTS._ENEMYAI
 		{
 			isPathing = true;
 			targetPosition = newTargetPosition;
-			
-			Debug.Log($"[{gameObject.name}] SetTargetPosition called - Target: {newTargetPosition}, isPathing: {isPathing}");
-			
+
+			//Debug.Log($"[{gameObject.name}] SetTargetPosition called - Target: {newTargetPosition}, isPathing: {isPathing}");
+
 			// Start pathfinding immediately instead of waiting for FixedUpdate counter
 			if (seeker == null) seeker = GetComponent<Seeker>();
 			if (seeker != null)
 			{
-				Debug.Log($"[{gameObject.name}] Starting path from {transform.position} to {targetPosition}");
+				//Debug.Log($"[{gameObject.name}] Starting path from {transform.position} to {targetPosition}");
 				seeker.StartPath(transform.position, targetPosition, OnPathComplete);
 			}
 			else
 			{
-				Debug.LogError($"[{gameObject.name}] Seeker component is null!");
+				// TODO: Replace with structured logging
+				// Debug.LogError($"[{gameObject.name}] Seeker component is null!");
 			}
 		}
 
 		private void OnPathComplete(Path p)
 		{
-			Debug.Log($"[{gameObject.name}] OnPathComplete called - isPathing: {isPathing}, path error: {p.error}");
-			
+			//Debug.Log($"[{gameObject.name}] OnPathComplete called - isPathing: {isPathing}, path error: {p.error}");
+
 			if(!isPathing) return;
-			if (p.error) 
+			if (p.error)
 			{
-				Debug.LogError($"[{gameObject.name}] Path error: {p.errorLog}");
-				// Fallback: walk directly toward target when pathfinding fails
-				Debug.Log($"[{gameObject.name}] Pathfinding failed, walking directly to target");
+				//Debug.Log($"[{gameObject.name}] Path error: {p.errorLog}");
+				//Debug.Log($"[{gameObject.name}] Not near pathfinding nodes - using direct movement toward target");
+
+				// Use direct movement when not near pathfinding nodes
 				WalkInDirectionOfTarget(targetPosition);
 				return;
 			}
 
 			currentPath = p;
 			currentWaypoint = 2;
-			Debug.Log($"[{gameObject.name}] Path complete - {p.vectorPath.Count} waypoints");
+			//Debug.Log($"[{gameObject.name}] Path complete - {p.vectorPath.Count} waypoints");
 			UpdateDirection();
 		}
 
@@ -88,14 +90,24 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void FixedUpdate()
 		{
-			if(!isPathing) return;
+			if (!isPathing)
+			{
+				// We're in direct movement mode - check if we should switch back to pathfinding
+				HandleDirectMovement();
+				return;
+			}
+
+			// We're in pathfinding mode
 			IfFrozen_StartNewPath();
 			lastPosition = transform.position;
+
+			// Check if we should try pathfinding periodically
 			if (counter >= rate)
 			{
 				if (seeker == null) seeker = GetComponent<Seeker>();
 				if (seeker == null) return;
 				counter = 0;
+
 				seeker.StartPath(transform.position, targetPosition, OnPathComplete);
 				return;
 			}
@@ -104,6 +116,38 @@ namespace __SCRIPTS._ENEMYAI
 
 			if (PathIsInvalid()) return;
 			UpdatePositionOnPath();
+		}
+
+		private void HandleDirectMovement()
+		{
+			// Continue moving toward target
+			OnNewDirection?.Invoke((targetPosition - (Vector2)transform.position).normalized);
+
+			// Periodically check if we can switch back to pathfinding
+			counter++;
+			if (counter >= rate * 2) // Check less frequently than pathfinding mode
+			{
+				counter = 0;
+				if (CanUsePathfinding())
+				{
+					isPathing = true;
+					// Try pathfinding immediately
+					if (seeker != null)
+					{
+						seeker.StartPath(transform.position, targetPosition, OnPathComplete);
+					}
+				}
+			}
+		}
+
+		private bool CanUsePathfinding()
+		{
+			if (AstarPath.active?.data?.gridGraph == null) return false;
+
+			var graph = AstarPath.active.data.gridGraph;
+			var nearestNode = graph.GetNearest(transform.position, null).node;
+
+			return nearestNode != null && nearestNode.Walkable;
 		}
 
 		private void IfFrozen_StartNewPath()
@@ -161,6 +205,7 @@ namespace __SCRIPTS._ENEMYAI
 			isPathing = false;
 			OnNewDirection?.Invoke((target - transform.position).normalized);
 		}
+
 
 		public void OnPoolSpawn()
 		{

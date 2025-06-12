@@ -63,14 +63,14 @@ namespace __SCRIPTS
 			foreach (var player in AllJoinedPlayers)
 			{
 				OnPlayerGetUpgrades?.Invoke(player);
-				Debug.Log("players get upgrades!");
+
 			}
 		}
 
 		public void PlayerOpensShoppe(Player player)
 		{
 			OnPlayerGetUpgrades?.Invoke(player);
-			Debug.Log("player upgrading");
+
 		}
 
 		// Clear joined players (typically used when starting a new game)
@@ -78,11 +78,11 @@ namespace __SCRIPTS
 		{
 			if (I == null)
 			{
-				Debug.LogWarning("Players.ClearAllJoinedPlayers: Players singleton is null");
+
 				return;
 			}
 
-			Debug.Log("Clearing all players");
+
 			var playersToDestroy = new List<Player>(I.AllJoinedPlayers);
 
 			foreach (var player in playersToDestroy)
@@ -100,7 +100,7 @@ namespace __SCRIPTS
 				}
 				catch (System.Exception e)
 				{
-					Debug.LogError($"Players.ClearAllJoinedPlayers: Failed to destroy player {player.playerIndex}: {e.Message}");
+
 				}
 			}
 
@@ -112,14 +112,14 @@ namespace __SCRIPTS
 		{
 			if (newPlayerInput == null)
 			{
-				Debug.LogError("Players.Input_OnPlayerJoins: newPlayerInput is null");
+
 				return;
 			}
 
 			var joiningPlayer = newPlayerInput.GetComponent<Player>();
 			if (joiningPlayer == null)
 			{
-				Debug.LogError($"Players.Input_OnPlayerJoins: Player component missing on PlayerInput {newPlayerInput.playerIndex}");
+
 				return;
 			}
 
@@ -131,21 +131,21 @@ namespace __SCRIPTS
 		{
 			if (newPlayerInput == null || joiningPlayer == null)
 			{
-				Debug.LogError("Players.JoinPlayer: null parameters provided");
+
 				return;
 			}
 
 			// Check for duplicate players
 			if (AllJoinedPlayers.Contains(joiningPlayer))
 			{
-				Debug.LogWarning($"Players.JoinPlayer: Player {joiningPlayer.playerIndex} already joined");
+
 				return;
 			}
 
 			// Check player limit
 			if (AllJoinedPlayers.Count >= 4)
 			{
-				Debug.Log("Max players reached (4)");
+
 				return;
 			}
 
@@ -153,7 +153,7 @@ namespace __SCRIPTS
 			int playerIndex = newPlayerInput.playerIndex;
 			if (playerIndex < 0 || playerIndex >= playerPresets.Count)
 			{
-				Debug.LogError($"Players.JoinPlayer: Invalid player index {playerIndex}, using index 0");
+
 				playerIndex = 0;
 			}
 
@@ -168,21 +168,21 @@ namespace __SCRIPTS
 				// Notify other systems
 				OnPlayerJoins?.Invoke(joiningPlayer);
 
-				Debug.Log($"Player {playerIndex} successfully joined. Total players: {AllJoinedPlayers.Count}");
+
 			}
 			catch (System.Exception e)
 			{
-				Debug.LogError($"Players.JoinPlayer: Failed to join player {playerIndex}: {e.Message}");
+
 				// Remove from list if joining failed
 				AllJoinedPlayers.Remove(joiningPlayer);
 			}
-			Debug.Log("PLAYER" + newPlayerInput.name + newPlayerInput.playerIndex + " JOINS FROM INPUT MANAGER");
+
 		}
 
 		// Handle player death
 		private void Player_PlayerDies(Player deadPlayer)
 		{
-			Debug.Log("PLAYER" + deadPlayer.name + deadPlayer.playerIndex + " has died");
+
 			OnPlayerDies?.Invoke(deadPlayer);
 			if (AllJoinedPlayersAreDead()) OnAllJoinedPlayersDead?.Invoke();
 		}

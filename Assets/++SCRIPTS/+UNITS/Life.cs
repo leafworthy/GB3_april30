@@ -13,9 +13,10 @@ namespace __SCRIPTS
 	public class Life : MonoBehaviour, INeedPlayer, IPoolable
 	{
 		[HideInInspector] public Player player;
-		public UnitStatsData unitData => _unitData ?? GetStats();
+		public UnitStatsData unitData => GetCachedStats();
 
 		[SerializeField] private UnitStatsData _unitData;
+		private int _cachedStatsVersion = -1; // Track cache version
 		public float ExtraMaxHealthFactor;
 		public float ExtraMaxSpeedFactor;
 		public float ExtraMaxDamageFactor;
@@ -70,21 +71,50 @@ namespace __SCRIPTS
 		{
 			player = _player;
 			OnPlayerSet?.Invoke(player);
-			_unitData = GetStats();
+			// Don't immediately fetch stats - let GetCachedStats() handle it
 		}
 
 		private void OnEnable()
 		{
-			_unitData = GetStats();
+			// Don't immediately fetch stats - let GetCachedStats() handle it lazily
+		}
+
+		/// <summary>
+		/// Get cached stats with version checking to avoid repeated database lookups
+		/// </summary>
+		private UnitStatsData GetCachedStats()
+		{
+			// Check if we need to refresh the cache
+			if (_unitData == null || _cachedStatsVersion != UnitStatsManager.I.CacheVersion)
+			{
+				_unitData = GetStats();
+				_cachedStatsVersion = UnitStatsManager.I.CacheVersion;
+				
+				// Fallback validation - if we still don't have stats, log an error
+				if (_unitData == null)
+				{
+					// TODO: Replace with structured logging
+					// Debug.LogError($"Failed to load unit stats for '{gameObject.name}'. UnitStatsManager may not be initialized or unit may not exist in database.", this);
+				}
+			}
+			return _unitData;
 		}
 
 		[Button()]
 		public UnitStatsData GetStats()
 		{
 			var original = gameObject.name;
-			//var result = Regex.Replace(original, @"\d+$", "");
 			_unitData = UnitStatsManager.I.GetUnitStats(original);
 			return _unitData;
+		}
+		
+		/// <summary>
+		/// Force refresh of cached stats - useful when database is reloaded
+		/// </summary>
+		public void InvalidateStatsCache()
+		{
+			_cachedStatsVersion = -1;
+			_unitData = null;
 		}
 
 		public bool cantDie;
@@ -119,7 +149,8 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
-			_unitData = GetStats();
+			// Ensure stats are loaded before initializing
+			GetCachedStats();
 			InitializeLife();
 		}
 
@@ -202,8 +233,6 @@ namespace __SCRIPTS
 			var topRight = new Vector2(pos.x + size, pos.y - size);
 			var bottomLeft = new Vector2(pos.x - size, pos.y + size);
 			var bottomRight = new Vector2(pos.x + size, pos.y + size);
-			Debug.DrawLine(topLeft, bottomRight, color);
-			Debug.DrawLine(topRight, bottomLeft, color);
 		}
 
 		private void ChangeHealth(Attack attack)

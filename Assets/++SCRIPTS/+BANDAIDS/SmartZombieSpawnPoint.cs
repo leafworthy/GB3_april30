@@ -10,8 +10,6 @@ namespace __SCRIPTS
     {
         [Header("Spawn Settings")]
         [SerializeField] private Vector2 spawnAreaSize = new Vector2(3, 3);
-        [SerializeField] private float minDistanceFromPlayer = 5f;
-        [SerializeField] private float maxDistanceFromPlayer = 30f;
         [SerializeField] private bool isActive = true;
         [SerializeField] private int maxSpawnAttempts = 10;
         
@@ -25,31 +23,7 @@ namespace __SCRIPTS
         
         public bool CanSpawn()
         {
-            if (!isActive)
-                return false;
-                
-            // Check if any player is within valid distance range
-            if (Players.I != null && Players.I.AllJoinedPlayers.Count > 0)
-            {
-                bool hasValidPlayer = false;
-                foreach (var player in Players.I.AllJoinedPlayers)
-                {
-                    if (player != null)
-                    {
-                        float distance = Vector3.Distance(transform.position, player.transform.position);
-                        if (distance >= minDistanceFromPlayer && distance <= maxDistanceFromPlayer)
-                        {
-                            hasValidPlayer = true;
-                            break;
-                        }
-                    }
-                }
-                
-                if (!hasValidPlayer)
-                    return false;
-            }
-            
-            return true;
+            return isActive;
         }
         
         public bool TrySpawn()
@@ -115,11 +89,6 @@ namespace __SCRIPTS
             // Draw spawn point
             Gizmos.color = isActive ? gizmoColor : Color.gray;
             Gizmos.DrawWireCube(transform.position, new Vector3(spawnAreaSize.x, spawnAreaSize.y, 0));
-            
-            // Draw distance ranges
-            Gizmos.color = new Color(gizmoColor.r, gizmoColor.g, gizmoColor.b, 0.2f);
-            Gizmos.DrawWireSphere(transform.position, minDistanceFromPlayer);
-            Gizmos.DrawWireSphere(transform.position, maxDistanceFromPlayer);
         }
         
         void OnDrawGizmosSelected()
@@ -130,12 +99,6 @@ namespace __SCRIPTS
             // Highlight when selected
             Gizmos.color = Color.yellow;
             Gizmos.DrawCube(transform.position, new Vector3(spawnAreaSize.x, spawnAreaSize.y, 0.1f));
-            
-            // Draw distance ranges more prominently when selected
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, minDistanceFromPlayer);
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, maxDistanceFromPlayer);
         }
     }
 }

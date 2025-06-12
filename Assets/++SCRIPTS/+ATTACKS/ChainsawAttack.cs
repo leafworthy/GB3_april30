@@ -206,7 +206,6 @@ namespace __SCRIPTS
 			isChainsawing = false;
 			anim.SetBool(Animations.IsChainsawing, isChainsawing);
 			body.arms.StopSafely(this);
-			Debug.Log("chainsaw stop");
 			OnStopChainsawing?.Invoke(transform.position);
 		}
 

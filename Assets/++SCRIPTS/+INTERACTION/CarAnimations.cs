@@ -41,7 +41,7 @@ namespace __SCRIPTS
 		{
 			SFX.I.sounds.car_start_sound.PlayRandomAt(transform.position);
 			LevelManager.I.StartWinningGame();
-			Debug.Log("heyo");
+
 		}
 
 		public void OnCarStart()
@@ -51,7 +51,7 @@ namespace __SCRIPTS
 		public void OnCarSkirtOff()
 		{
 			LevelManager.I.WinGame();
-			Debug.Log("win");
+
 		}
 	}
 }

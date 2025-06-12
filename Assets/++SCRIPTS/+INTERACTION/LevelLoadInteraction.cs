@@ -44,11 +44,11 @@ namespace __SCRIPTS
 		private void OnInteractionComplete(Player player)
 		{
 			if (isFinished) return;
-			Debug.Log($"LevelLoadInteraction: Transitioning from {SceneLoader.I.GetCurrentSceneDefinition().sceneName} to {travelPoint.destinationScene.sceneName}");
+
 
 			if(travelPoint.destinationScene == null)
 			{
-				Debug.LogError("Destination scene is null");
+
 				return;
 			}
 			// Load the destination scene

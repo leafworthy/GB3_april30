@@ -27,7 +27,7 @@ namespace __SCRIPTS
 		private void SpawnPlayer(Player player, TravelPoint travelPoint)
 		{
 			if (!hasSpawnPoint(travelPoint)) travelPoint = defaultTravelPoint;
-			Debug.Log($"Spawning player {player.playerIndex}");
+
 			Players.SetActionMaps(Players.PlayerActionMap);
 			player.Spawn(travelPoint.transform.position, travelPoint.fallFromSky);
 			OnPlayerSpawned?.Invoke(player);
@@ -35,7 +35,7 @@ namespace __SCRIPTS
 
 		public GameObject SpawnPlayerFromSky(Player player, Vector2 position)
 		{
-			Debug.Log($"Spawning player {player.playerIndex}");
+
 			Players.SetActionMaps(Players.PlayerActionMap);
 			return player.Spawn(position, true);
 		}
@@ -65,10 +65,10 @@ namespace __SCRIPTS
 		{
 			if (travelPoint == null)
 			{
-				Debug.LogError("No travel point found");
+
 				return;
 			}
-			Debug.Log("fall from sky " + travelPoint.fallFromSky);
+
 			foreach (var player in Players.I.AllJoinedPlayers)
 			{
 				if (player == null) continue;

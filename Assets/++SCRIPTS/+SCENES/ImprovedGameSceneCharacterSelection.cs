@@ -201,7 +201,7 @@ namespace __SCRIPTS
         {
             if (!playerEventHandlers.TryGetValue(player, out var handlers))
             {
-                Debug.LogWarning($"No event handlers found for player {player.playerIndex}");
+
                 playersBeingListenedTo.Remove(player);
                 return;
             }

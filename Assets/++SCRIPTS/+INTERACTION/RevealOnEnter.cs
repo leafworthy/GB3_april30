@@ -63,13 +63,13 @@ namespace __SCRIPTS
 
 		private void Hide()
 		{
-			Debug.Log("hide");
+
 			hideRevealObjects.Set(1);
 		}
 
 		private void Reveal()
 		{
-			Debug.Log("reveal");
+
 			hideRevealObjects.Set(0);
 		}
 

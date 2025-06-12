@@ -876,7 +876,7 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core
 			pathProcessor.TickNonMultithreaded();
 
 			// Return calculated paths
-			pathReturnQueue.ReturnPaths(true); 
+			pathReturnQueue.ReturnPaths(true);
 		}
 
 		private void PerformBlockingActions (bool force = false) {
@@ -1418,7 +1418,7 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core
 
 
 			// Return all paths
-			pathReturnQueue.ReturnPaths(false);
+			//pathReturnQueue.ReturnPaths(false);
 
 			if (logPathResults == PathLog.Heavy)
 				Debug.Log("Destroying Graphs");

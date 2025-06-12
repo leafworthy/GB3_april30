@@ -29,19 +29,19 @@ namespace __SCRIPTS.UpgradeS
 		{
 			if(upgrade.Cost > PlayerStatsManager.I.GetStatAmount(player,PlayerStat.StatType.TotalCash))
 			{
-				Debug.Log("not enough cash for " + upgrade.GetName());
+
 				return false;
 			}
 
-			Debug.Log("upgrade purchased: " + upgrade.GetName());
+
 			PlayerStatsManager.I.ChangeStat(player, PlayerStat.StatType.TotalCash, -upgrade.Cost);
-				Debug.Log("upgrade level up");
+
 				upgrade.UpgradeLevel();
 			
 
 			if (!upgrades.Contains(upgrade))
 			{
-				Debug.Log("add new upgrade " + upgrade.GetName());
+
 				upgrades.Add(upgrade);
 			}
 
@@ -55,7 +55,7 @@ namespace __SCRIPTS.UpgradeS
 			player = _player;
 			foreach (var upgrade in upgrades)
 			{
-				Debug.Log("Applying upgrade" + upgrade.GetName());
+
 				upgrade.CauseEffect(player);
 			}
 		}

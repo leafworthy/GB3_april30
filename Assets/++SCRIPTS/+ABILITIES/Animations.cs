@@ -77,7 +77,7 @@ namespace __SCRIPTS
 
 			if (animator == null)
 			{
-				Debug.LogError($"Cannot play animation '{animationClipName}' - Animator is null!");
+
 				return;
 			}
 
@@ -94,15 +94,15 @@ namespace __SCRIPTS
 
 			if (!animationExists)
 			{
-				Debug.LogError($"Animation '{animationClipName}' not found in animator controller! Available animations:");
+
 				foreach (var clip in animator.runtimeAnimatorController.animationClips)
 				{
-					Debug.Log($"  - {clip.name}");
+
 				}
 				return;
 			}
 
-			Debug.Log($"Playing animation: {animationClipName} on layer {layer}");
+			//Debug.Log($"Playing animation: {animationClipName} on layer {layer}");
 			animator.Play(animationClipName, layer, startingPlace);
 		}
 
@@ -129,7 +129,7 @@ namespace __SCRIPTS
 			if (animator == null) animator = GetComponentInChildren<Animator>();
 			if (animator == null)
 			{
-				Debug.LogWarning("Animator not found.");
+
 				return;
 			}
 
@@ -137,8 +137,6 @@ namespace __SCRIPTS
 			{
 				if (animator.GetBool(parameterHash) != value) animator.SetBool(parameterHash, value);
 			}
-			else
-				Debug.LogWarning($"Parameter with hash {parameterHash} does not exist.", this);
 		}
 
 		private bool HasParameter(int parameterHash) => animator != null && parameterHashes.Contains(parameterHash);
@@ -148,7 +146,7 @@ namespace __SCRIPTS
 			if (animator == null) animator = GetComponentInChildren<Animator>();
 			if (animator == null)
 			{
-				Debug.LogWarning("Animator not found.");
+
 				return;
 			}
 
@@ -156,14 +154,12 @@ namespace __SCRIPTS
 			{
 				animator.SetInteger(parameterHash, getAimDirNumberFromDegrees);
 			}
-			else
-				Debug.LogWarning($"Parameter with hash {getAimDirNumberFromDegrees} does not exist.", this);
 		}
 
 		private void ResetAnimatorState()
 		{
 			if (animator == null) return;
-			
+
 			// Reset all boolean parameters to false
 			SetBool(IsDead, false);
 			SetBool(IsAttacking, false);
@@ -176,7 +172,7 @@ namespace __SCRIPTS
 			SetBool(IsBobbing, false);
 			SetBool(IsFallingFromSky, false);
 			SetBool(IsShielding, false);
-			
+
 			// Reset triggers
 			ResetTrigger(AggroTrigger);
 			ResetTrigger(HitTrigger);
