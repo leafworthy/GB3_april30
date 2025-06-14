@@ -22,8 +22,9 @@ namespace __SCRIPTS.Projectiles
 			RotateToDirection();
 			rotationRate = 0;
 			isActive = true;
-			mover = GetComponent<MoveAbility>();
-			jumper = GetComponent<JumpAbility>();
+			
+			// Use inherited component initialization instead of GetComponent
+			InitializeComponents();
 		}
 
 		private void RotateToDirection()
@@ -36,8 +37,9 @@ namespace __SCRIPTS.Projectiles
 
 		protected override void FixedUpdate()
 		{
-			if (mover == null) mover = GetComponent<MoveAbility>();
-			if (jumper == null) jumper = GetComponent<JumpAbility>();
+			// Use inherited component initialization (no GetComponent calls in FixedUpdate!)
+			InitializeComponents();
+			
 			if (!isActive)
 			{
 				base.FixedUpdate();

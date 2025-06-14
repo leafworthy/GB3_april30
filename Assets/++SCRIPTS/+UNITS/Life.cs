@@ -47,7 +47,7 @@ namespace __SCRIPTS
 		public float UnlimitedAttackRange => unitData.attack4Range;
 		public float UnlimitedAttackRate => unitData.attack4Rate;
 
-		public float HealthMax => unitData.healthMax + ExtraMaxHealthFactor * unitData.healthMax;
+		public float HealthMax => unitData != null ? unitData.healthMax + ExtraMaxHealthFactor * unitData.healthMax : 100f;
 		public float MoveSpeed => unitData.moveSpeed + ExtraMaxSpeedFactor * unitData.moveSpeed;
 		public float DashSpeed => unitData.dashSpeed + ExtraMaxSpeedFactor * unitData.dashSpeed;
 
@@ -84,6 +84,12 @@ namespace __SCRIPTS
 		/// </summary>
 		private UnitStatsData GetCachedStats()
 		{
+			// Check if UnitStatsManager is available
+			if (UnitStatsManager.I == null)
+			{
+				return null; // Return null safely if manager not ready
+			}
+			
 			// Check if we need to refresh the cache
 			if (_unitData == null || _cachedStatsVersion != UnitStatsManager.I.CacheVersion)
 			{
@@ -151,6 +157,8 @@ namespace __SCRIPTS
 		{
 			// Ensure stats are loaded before initializing
 			GetCachedStats();
+			
+			// Only initialize if we have valid stats or can work without them
 			InitializeLife();
 		}
 
@@ -182,7 +190,16 @@ namespace __SCRIPTS
 
 		private void ResetHealthToMax()
 		{
-			Health = HealthMax;
+			float maxHealth = HealthMax;
+			if (maxHealth > 0)
+			{
+				Health = maxHealth;
+			}
+			else
+			{
+				// Fallback value if HealthMax is invalid
+				Health = 100f;
+			}
 		}
 
 		public void TakeDamage(Attack attack)

@@ -4,19 +4,32 @@ namespace __SCRIPTS
 {
 	public class FollowCursor : MonoBehaviour
 	{
-		private AimAbility aim;
+		private AimAbility cachedAimAbility;
 
-		// Start is called before the first frame update
+		// Optimized initialization using cached component reference
 		public void Init(Player player)
 		{
-			aim = player.SpawnedPlayerGO.GetComponent<AimAbility>();
-			if (aim == null) return;
-			transform.position = aim.GetAimPoint();
+			if (player?.SpawnedPlayerGO != null)
+			{
+				// Cache the AimAbility component reference to avoid GetComponent calls
+				cachedAimAbility = player.SpawnedPlayerGO.GetComponentInChildren<AimAbility>();
+				
+				if (cachedAimAbility == null)
+				{
+					Debug.LogWarning($"AimAbility not found in children of {player.SpawnedPlayerGO.name}", this);
+					return;
+				}
+				
+				// Initialize position
+				transform.position = cachedAimAbility.GetAimPoint();
+			}
 		}
 
 		private void Update()
 		{
-			transform.position = aim.GetAimPoint();
+			// Use cached reference instead of GetComponent calls
+			if (cachedAimAbility == null) return;
+			transform.position = cachedAimAbility.GetAimPoint();
 		}
 	}
 }

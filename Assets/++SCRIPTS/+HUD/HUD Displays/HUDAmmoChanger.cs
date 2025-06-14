@@ -17,7 +17,16 @@ namespace __SCRIPTS.HUD_Displays
 		{
 			player = _player;
 			if (player.CurrentCharacter != Character.Bean) return;
-			gunAttackAkGlock = _player.SpawnedPlayerGO.GetComponent<GunAttack_AK_Glock>();
+			
+			// Cache the component reference once during setup
+			if (_player.SpawnedPlayerGO != null)
+			{
+				gunAttackAkGlock = _player.SpawnedPlayerGO.GetComponent<GunAttack_AK_Glock>();
+				if (gunAttackAkGlock == null)
+				{
+					Debug.LogWarning($"GunAttack_AK_Glock not found on {_player.SpawnedPlayerGO.name}", this);
+				}
+			}
 		}
 
 		private void Update()
@@ -25,7 +34,10 @@ namespace __SCRIPTS.HUD_Displays
 			if(player == null) return;
 			if (player.CurrentCharacter != Character.Bean) return;
 			if(player.SpawnedPlayerGO == null) return;
-			gunAttackAkGlock = player.SpawnedPlayerGO.GetComponent<GunAttack_AK_Glock>();
+			
+			// Use cached reference instead of GetComponent every frame
+			if (gunAttackAkGlock == null) return;
+			
 			if(isGlocking == gunAttackAkGlock.isGlocking) return;
 			isGlocking = gunAttackAkGlock.isGlocking;
 			ChangeAmmo(isGlocking);
