@@ -198,6 +198,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Console"",
+                    ""type"": ""Button"",
+                    ""id"": ""ef4a9de7-dfb7-4cbf-a6bd-56ce5ed3179c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -293,17 +302,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""c8a90a8e-29eb-4269-b417-f377f47533a0"",
                     ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard + Mouse"",
-                    ""action"": ""Pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""076a6fc6-f755-4ebe-866a-49acc5ccc8bc"",
-                    ""path"": ""<Keyboard>/backquote"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard + Mouse"",
@@ -519,6 +517,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Swap Weapon - Square"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a0a8630-56d1-4e9b-953b-a1f851d90f72"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard + Mouse"",
+                    ""action"": ""Console"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""88307597-9dbd-4f0c-8865-43c3bbc40e47"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard + Mouse"",
+                    ""action"": ""Console"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -630,6 +650,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""dc7b1a10-11e1-41a0-9a0c-0f7efad070dc"",
                     ""expectedControlType"": ""Quaternion"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Console"",
+                    ""type"": ""Button"",
+                    ""id"": ""e8a1f1d1-209e-4fec-99fd-a656e8e01c7b"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -976,6 +1005,200 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""TrackedDeviceOrientation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""485ce3ad-2ed9-4bf2-aee9-f6bdfa155aab"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard + Mouse"",
+                    ""action"": ""Console"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8cac04e-f5cd-4b73-b87f-470771d9bc33"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard + Mouse"",
+                    ""action"": ""Console"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Console"",
+            ""id"": ""c0a5e1d7-8b9f-4c3a-a2b6-7d4e8f1a5c9b"",
+            ""actions"": [
+                {
+                    ""name"": ""ToggleConsole"",
+                    ""type"": ""Button"",
+                    ""id"": ""d1b6f2e8-9c0f-5d4a-b3c7-8e5f9a2d6c0b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Tab"",
+                    ""type"": ""Button"",
+                    ""id"": ""e2c7a3f9-0d1a-6e5b-c4d8-9f6a0b3e7d1c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UpArrow"",
+                    ""type"": ""Button"",
+                    ""id"": ""f3d8b4a0-1e2b-7f6c-d5e9-0a7b1c4f8e2d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DownArrow"",
+                    ""type"": ""Button"",
+                    ""id"": ""a4e9c5b1-2f3c-8a7d-e6f0-1b8c2d5a9f3e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""b5f0d6c2-3a4d-9b8e-f7a1-2c9d3e6b0a4f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BlockGameInput"",
+                    ""type"": ""Button"",
+                    ""id"": ""c7a8b4f1-0e3b-5d8c-e9f2-6c4d7e0a9b2f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""c6a1e7d3-4b5e-0c9f-a8b2-3d0e4f7c1a5b"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard + Mouse"",
+                    ""action"": ""ToggleConsole"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7b2f8e4-5c6f-1d0a-b9c3-4e1f5a8d2b6c"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard + Mouse"",
+                    ""action"": ""ToggleConsole"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8c3a9f5-6d7a-2e1b-c0d4-5f2a6b9e3c7d"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ToggleConsole"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9d4b0a6-7e8b-3f2c-d1e5-6a3b7c0f4d8e"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard + Mouse"",
+                    ""action"": ""Tab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a0e5c1b7-8f9c-4a3d-e2f6-7b4c8d1f5e9a"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard + Mouse"",
+                    ""action"": ""UpArrow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b1f6d2c8-9a0d-5b4e-f3a7-8c5d9e2a6f0b"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard + Mouse"",
+                    ""action"": ""DownArrow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c2a7e3d9-0b1e-6c5f-a4b8-9d6e0f3b7c1d"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard + Mouse"",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3b8e4f0-1f4c-7e9d-f0a3-7e5f8b1c4d6a"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard + Mouse"",
+                    ""action"": ""BlockGameInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4c9f5a1-2a5d-8f0e-a1b4-8f6a9c2e5d7b"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard + Mouse"",
+                    ""action"": ""BlockGameInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f5d0a6b2-3b6e-9a1f-b2c5-9a7b0d3f6e8c"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""BlockGameInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1024,6 +1247,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerMovement_DashLeftShoulder = m_PlayerMovement.FindAction("Dash - Left Shoulder", throwIfNotFound: true);
         m_PlayerMovement_InteractRightShoulder = m_PlayerMovement.FindAction("Interact - Right Shoulder", throwIfNotFound: true);
         m_PlayerMovement_SwapWeaponSquare = m_PlayerMovement.FindAction("Swap Weapon - Square", throwIfNotFound: true);
+        m_PlayerMovement_Console = m_PlayerMovement.FindAction("Console", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Select = m_UI.FindAction("Select", throwIfNotFound: true);
@@ -1038,12 +1262,22 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
         m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        m_UI_Console = m_UI.FindAction("Console", throwIfNotFound: true);
+        // Console
+        m_Console = asset.FindActionMap("Console", throwIfNotFound: true);
+        m_Console_ToggleConsole = m_Console.FindAction("ToggleConsole", throwIfNotFound: true);
+        m_Console_Tab = m_Console.FindAction("Tab", throwIfNotFound: true);
+        m_Console_UpArrow = m_Console.FindAction("UpArrow", throwIfNotFound: true);
+        m_Console_DownArrow = m_Console.FindAction("DownArrow", throwIfNotFound: true);
+        m_Console_Escape = m_Console.FindAction("Escape", throwIfNotFound: true);
+        m_Console_BlockGameInput = m_Console.FindAction("BlockGameInput", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
     {
         UnityEngine.Debug.Assert(!m_PlayerMovement.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerMovement.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, PlayerControls.UI.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Console.enabled, "This will cause a leak and performance issues, PlayerControls.Console.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1131,6 +1365,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_DashLeftShoulder;
     private readonly InputAction m_PlayerMovement_InteractRightShoulder;
     private readonly InputAction m_PlayerMovement_SwapWeaponSquare;
+    private readonly InputAction m_PlayerMovement_Console;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerMovement".
     /// </summary>
@@ -1190,6 +1425,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerMovement/SwapWeaponSquare".
         /// </summary>
         public InputAction @SwapWeaponSquare => m_Wrapper.m_PlayerMovement_SwapWeaponSquare;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerMovement/Console".
+        /// </summary>
+        public InputAction @Console => m_Wrapper.m_PlayerMovement_Console;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1252,6 +1491,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwapWeaponSquare.started += instance.OnSwapWeaponSquare;
             @SwapWeaponSquare.performed += instance.OnSwapWeaponSquare;
             @SwapWeaponSquare.canceled += instance.OnSwapWeaponSquare;
+            @Console.started += instance.OnConsole;
+            @Console.performed += instance.OnConsole;
+            @Console.canceled += instance.OnConsole;
         }
 
         /// <summary>
@@ -1299,6 +1541,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwapWeaponSquare.started -= instance.OnSwapWeaponSquare;
             @SwapWeaponSquare.performed -= instance.OnSwapWeaponSquare;
             @SwapWeaponSquare.canceled -= instance.OnSwapWeaponSquare;
+            @Console.started -= instance.OnConsole;
+            @Console.performed -= instance.OnConsole;
+            @Console.canceled -= instance.OnConsole;
         }
 
         /// <summary>
@@ -1348,6 +1593,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_MiddleClick;
     private readonly InputAction m_UI_ScrollWheel;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
+    private readonly InputAction m_UI_Console;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1407,6 +1653,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/TrackedDeviceOrientation".
         /// </summary>
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Console".
+        /// </summary>
+        public InputAction @Console => m_Wrapper.m_UI_Console;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1469,6 +1719,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @TrackedDeviceOrientation.started += instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.performed += instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.canceled += instance.OnTrackedDeviceOrientation;
+            @Console.started += instance.OnConsole;
+            @Console.performed += instance.OnConsole;
+            @Console.canceled += instance.OnConsole;
         }
 
         /// <summary>
@@ -1516,6 +1769,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @TrackedDeviceOrientation.started -= instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.performed -= instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.canceled -= instance.OnTrackedDeviceOrientation;
+            @Console.started -= instance.OnConsole;
+            @Console.performed -= instance.OnConsole;
+            @Console.canceled -= instance.OnConsole;
         }
 
         /// <summary>
@@ -1549,6 +1805,157 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="UIActions" /> instance referencing this action map.
     /// </summary>
     public UIActions @UI => new UIActions(this);
+
+    // Console
+    private readonly InputActionMap m_Console;
+    private List<IConsoleActions> m_ConsoleActionsCallbackInterfaces = new List<IConsoleActions>();
+    private readonly InputAction m_Console_ToggleConsole;
+    private readonly InputAction m_Console_Tab;
+    private readonly InputAction m_Console_UpArrow;
+    private readonly InputAction m_Console_DownArrow;
+    private readonly InputAction m_Console_Escape;
+    private readonly InputAction m_Console_BlockGameInput;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Console".
+    /// </summary>
+    public struct ConsoleActions
+    {
+        private @PlayerControls m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public ConsoleActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Console/ToggleConsole".
+        /// </summary>
+        public InputAction @ToggleConsole => m_Wrapper.m_Console_ToggleConsole;
+        /// <summary>
+        /// Provides access to the underlying input action "Console/Tab".
+        /// </summary>
+        public InputAction @Tab => m_Wrapper.m_Console_Tab;
+        /// <summary>
+        /// Provides access to the underlying input action "Console/UpArrow".
+        /// </summary>
+        public InputAction @UpArrow => m_Wrapper.m_Console_UpArrow;
+        /// <summary>
+        /// Provides access to the underlying input action "Console/DownArrow".
+        /// </summary>
+        public InputAction @DownArrow => m_Wrapper.m_Console_DownArrow;
+        /// <summary>
+        /// Provides access to the underlying input action "Console/Escape".
+        /// </summary>
+        public InputAction @Escape => m_Wrapper.m_Console_Escape;
+        /// <summary>
+        /// Provides access to the underlying input action "Console/BlockGameInput".
+        /// </summary>
+        public InputAction @BlockGameInput => m_Wrapper.m_Console_BlockGameInput;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Console; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="ConsoleActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(ConsoleActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="ConsoleActions" />
+        public void AddCallbacks(IConsoleActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ConsoleActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ConsoleActionsCallbackInterfaces.Add(instance);
+            @ToggleConsole.started += instance.OnToggleConsole;
+            @ToggleConsole.performed += instance.OnToggleConsole;
+            @ToggleConsole.canceled += instance.OnToggleConsole;
+            @Tab.started += instance.OnTab;
+            @Tab.performed += instance.OnTab;
+            @Tab.canceled += instance.OnTab;
+            @UpArrow.started += instance.OnUpArrow;
+            @UpArrow.performed += instance.OnUpArrow;
+            @UpArrow.canceled += instance.OnUpArrow;
+            @DownArrow.started += instance.OnDownArrow;
+            @DownArrow.performed += instance.OnDownArrow;
+            @DownArrow.canceled += instance.OnDownArrow;
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
+            @BlockGameInput.started += instance.OnBlockGameInput;
+            @BlockGameInput.performed += instance.OnBlockGameInput;
+            @BlockGameInput.canceled += instance.OnBlockGameInput;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="ConsoleActions" />
+        private void UnregisterCallbacks(IConsoleActions instance)
+        {
+            @ToggleConsole.started -= instance.OnToggleConsole;
+            @ToggleConsole.performed -= instance.OnToggleConsole;
+            @ToggleConsole.canceled -= instance.OnToggleConsole;
+            @Tab.started -= instance.OnTab;
+            @Tab.performed -= instance.OnTab;
+            @Tab.canceled -= instance.OnTab;
+            @UpArrow.started -= instance.OnUpArrow;
+            @UpArrow.performed -= instance.OnUpArrow;
+            @UpArrow.canceled -= instance.OnUpArrow;
+            @DownArrow.started -= instance.OnDownArrow;
+            @DownArrow.performed -= instance.OnDownArrow;
+            @DownArrow.canceled -= instance.OnDownArrow;
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
+            @BlockGameInput.started -= instance.OnBlockGameInput;
+            @BlockGameInput.performed -= instance.OnBlockGameInput;
+            @BlockGameInput.canceled -= instance.OnBlockGameInput;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="ConsoleActions.UnregisterCallbacks(IConsoleActions)" />.
+        /// </summary>
+        /// <seealso cref="ConsoleActions.UnregisterCallbacks(IConsoleActions)" />
+        public void RemoveCallbacks(IConsoleActions instance)
+        {
+            if (m_Wrapper.m_ConsoleActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="ConsoleActions.AddCallbacks(IConsoleActions)" />
+        /// <seealso cref="ConsoleActions.RemoveCallbacks(IConsoleActions)" />
+        /// <seealso cref="ConsoleActions.UnregisterCallbacks(IConsoleActions)" />
+        public void SetCallbacks(IConsoleActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ConsoleActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ConsoleActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="ConsoleActions" /> instance referencing this action map.
+    /// </summary>
+    public ConsoleActions @Console => new ConsoleActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -1666,6 +2073,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSwapWeaponSquare(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Console" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnConsole(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
@@ -1758,5 +2172,62 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Console" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnConsole(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Console" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="ConsoleActions.AddCallbacks(IConsoleActions)" />
+    /// <seealso cref="ConsoleActions.RemoveCallbacks(IConsoleActions)" />
+    public interface IConsoleActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "ToggleConsole" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleConsole(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Tab" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTab(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "UpArrow" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnUpArrow(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DownArrow" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDownArrow(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Escape" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEscape(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "BlockGameInput" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBlockGameInput(InputAction.CallbackContext context);
     }
 }

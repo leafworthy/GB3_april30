@@ -89,7 +89,7 @@ namespace __SCRIPTS
 
 		public Vector2 GetAimPoint()
 		{
-			if(owner == null) return Vector2.zero;
+			if(owner == null || body == null || body.AimCenter == null) return Vector2.zero;
 			if (!owner.isUsingMouse)
 				return (Vector2)body.AimCenter.transform.position + (Vector2)GetRealAimDir() * maxAimDistance;
 			else

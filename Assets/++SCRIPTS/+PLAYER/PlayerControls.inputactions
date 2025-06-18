@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Console",
+                    "type": "Button",
+                    "id": "ef4a9de7-dfb7-4cbf-a6bd-56ce5ed3179c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -207,17 +216,6 @@
                     "name": "",
                     "id": "c8a90a8e-29eb-4269-b417-f377f47533a0",
                     "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard + Mouse",
-                    "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "076a6fc6-f755-4ebe-866a-49acc5ccc8bc",
-                    "path": "<Keyboard>/backquote",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard + Mouse",
@@ -433,6 +431,28 @@
                     "action": "Swap Weapon - Square",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0a0a8630-56d1-4e9b-953b-a1f851d90f72",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard + Mouse",
+                    "action": "Console",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "88307597-9dbd-4f0c-8865-43c3bbc40e47",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard + Mouse",
+                    "action": "Console",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -544,6 +564,15 @@
                     "type": "PassThrough",
                     "id": "dc7b1a10-11e1-41a0-9a0c-0f7efad070dc",
                     "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Console",
+                    "type": "Button",
+                    "id": "e8a1f1d1-209e-4fec-99fd-a656e8e01c7b",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -888,6 +917,200 @@
                     "processors": "",
                     "groups": "",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "485ce3ad-2ed9-4bf2-aee9-f6bdfa155aab",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard + Mouse",
+                    "action": "Console",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8cac04e-f5cd-4b73-b87f-470771d9bc33",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard + Mouse",
+                    "action": "Console",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Console",
+            "id": "c0a5e1d7-8b9f-4c3a-a2b6-7d4e8f1a5c9b",
+            "actions": [
+                {
+                    "name": "ToggleConsole",
+                    "type": "Button",
+                    "id": "d1b6f2e8-9c0f-5d4a-b3c7-8e5f9a2d6c0b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Tab",
+                    "type": "Button",
+                    "id": "e2c7a3f9-0d1a-6e5b-c4d8-9f6a0b3e7d1c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UpArrow",
+                    "type": "Button",
+                    "id": "f3d8b4a0-1e2b-7f6c-d5e9-0a7b1c4f8e2d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DownArrow",
+                    "type": "Button",
+                    "id": "a4e9c5b1-2f3c-8a7d-e6f0-1b8c2d5a9f3e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "b5f0d6c2-3a4d-9b8e-f7a1-2c9d3e6b0a4f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BlockGameInput",
+                    "type": "Button",
+                    "id": "c7a8b4f1-0e3b-5d8c-e9f2-6c4d7e0a9b2f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c6a1e7d3-4b5e-0c9f-a8b2-3d0e4f7c1a5b",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard + Mouse",
+                    "action": "ToggleConsole",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d7b2f8e4-5c6f-1d0a-b9c3-4e1f5a8d2b6c",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard + Mouse",
+                    "action": "ToggleConsole",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8c3a9f5-6d7a-2e1b-c0d4-5f2a6b9e3c7d",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "ToggleConsole",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f9d4b0a6-7e8b-3f2c-d1e5-6a3b7c0f4d8e",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard + Mouse",
+                    "action": "Tab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0e5c1b7-8f9c-4a3d-e2f6-7b4c8d1f5e9a",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard + Mouse",
+                    "action": "UpArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b1f6d2c8-9a0d-5b4e-f3a7-8c5d9e2a6f0b",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard + Mouse",
+                    "action": "DownArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c2a7e3d9-0b1e-6c5f-a4b8-9d6e0f3b7c1d",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard + Mouse",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3b8e4f0-1f4c-7e9d-f0a3-7e5f8b1c4d6a",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard + Mouse",
+                    "action": "BlockGameInput",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4c9f5a1-2a5d-8f0e-a1b4-8f6a9c2e5d7b",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard + Mouse",
+                    "action": "BlockGameInput",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f5d0a6b2-3b6e-9a1f-b2c5-9a7b0d3f6e8c",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "BlockGameInput",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

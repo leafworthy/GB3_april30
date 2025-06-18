@@ -21,6 +21,7 @@ namespace __SCRIPTS
 		// Action maps
 		public const string UIActionMap = "UI";
 		public const string PlayerActionMap = "PlayerMovement";
+		public const string ConsoleActionMap = "Console";
 
 		// Events
 		public event Action<Player> OnPlayerGetUpgrades;

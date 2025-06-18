@@ -1,0 +1,125 @@
+{
+    "name": "ConsoleInputActions",
+    "maps": [
+        {
+            "name": "Console",
+            "id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+            "actions": [
+                {
+                    "name": "ToggleConsole",
+                    "type": "Button",
+                    "id": "2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Tab",
+                    "type": "Button",
+                    "id": "3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UpArrow",
+                    "type": "Button",
+                    "id": "4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DownArrow",
+                    "type": "Button",
+                    "id": "5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleConsole",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleConsole",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DownArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
