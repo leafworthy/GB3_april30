@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using __SCRIPTS;
+using GangstaBean.Core;
 using UnityEngine;
 
 public class TertiaryAttack_Knife : Attacks
@@ -17,12 +18,28 @@ public class TertiaryAttack_Knife : Attacks
 		public event Action OnMiss;
 		public event Action<Vector2> OnHit;
 
+		public bool TryCompleteGracefully(CompletionReason reason, IActivity newActivity = null)
+		{
+			switch (reason)
+			{
+				case CompletionReason.AnimationInterrupt:
+				case CompletionReason.NewActivity:
+					// Handle graceful completion
+					isAttacking = false;
+					isPressing = false;
+					anim.SetBool(Animations.IsBobbing, true);
+					return true;
+			}
+			return false;
+		}
+
 		public override void SetPlayer(Player _player)
 		{
 			 base.SetPlayer(_player);
 			anim = GetComponent<Animations>();
 			body = GetComponent<Body>();
 			player = _player;
+			Debug.Log("[Knife] SetPlayer called, connecting input events");
 			player.Controller.Attack3Circle.OnPress += PlayerKnifePress;
 			player.Controller.Attack3Circle.OnRelease += PlayerKnifeRelease;
 			anim.animEvents.OnAttackHit += Anim_AttackHit;
@@ -58,23 +75,30 @@ public class TertiaryAttack_Knife : Attacks
 
 		private void PlayerKnifePress(NewControlButton newControlButton)
 		{
-			if (PauseManager.I.IsPaused) return;
+			if (PauseManager.I.IsPaused) 
+			{
+				Debug.Log("[Knife] BLOCKED: Game is paused");
+				return;
+			}
+			Debug.Log("[Knife] Player pressed knife button");
 			isPressing = true;
 			StartAttack();
 		}
 
 		private void StartAttack()
 		{
+			Debug.Log($"[Knife] StartAttack called, isAttacking: {isAttacking}");
 			if(isAttacking)
 			{
-
+				Debug.Log("[Knife] BLOCKED: Already attacking");
 				return;
 			}
-			if (!body.arms.Do(this))
+			if (!body.arms.DoWithCompletion(this, GangstaBean.Core.CompletionReason.NewActivity))
 			{
-
+				Debug.Log("[Knife] BLOCKED: Arms busy, cannot start knife attack");
 				return;
 			}
+			Debug.Log("[Knife] SUCCESS: Starting knife attack");
 			isAttacking = true;
 
 			anim.Play(AnimationClipName, 1, 0);

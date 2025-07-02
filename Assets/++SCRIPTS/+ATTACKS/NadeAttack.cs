@@ -9,6 +9,17 @@ namespace __SCRIPTS
 	public class NadeAimActivity : IActivity
 	{
 		public string VerbName => "Nade-Aim";
+
+		public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
+		{
+			switch (reason)
+			{
+				case GangstaBean.Core.CompletionReason.AnimationInterrupt:
+				case GangstaBean.Core.CompletionReason.NewActivity:
+					return true;
+			}
+			return false;
+		}
 	}
 	public class NadeAttack : MonoBehaviour, INeedPlayer, IActivity
 	{
@@ -44,6 +55,28 @@ namespace __SCRIPTS
 		public event Action<Vector2, Vector2> OnAimAt;
 		public event Action<Vector2, Vector2> OnAimInDirection;
 
+		public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
+		{
+			switch (reason)
+			{
+				case GangstaBean.Core.CompletionReason.AnimationInterrupt:
+					if (isThrowingGrenade)
+					{
+						isThrowingGrenade = false;
+						OnHideAiming?.Invoke();
+						return true;
+					}
+					if (IsAiming)
+					{
+						IsAiming = false;
+						OnHideAiming?.Invoke();
+						return true;
+					}
+					break;
+			}
+			return false;
+		}
+
 		public void SetPlayer(Player _player)
 		{
 			anim = GetComponent<Animations>();
@@ -55,6 +88,7 @@ namespace __SCRIPTS
 
 			ammo = GetComponent<AmmoInventory>();
 			aim = GetComponent<GunAimAbility>();
+			Debug.Log("[Grenade] SetPlayer called, connecting input events");
 			ListenToPlayer();
 		}
 
@@ -117,19 +151,21 @@ namespace __SCRIPTS
 		private void Player_NadePress(NewControlButton newControlButton)
 		{
 			if (PauseManager.I.IsPaused) return;
+			Debug.Log("[Grenade] Player pressed grenade button");
+			
 			if (!ammo.secondaryAmmo.hasReserveAmmo())
 			{
-
+				Debug.Log("[Grenade] BLOCKED: No ammo for grenade");
 				return;
 			}
 
 			if (!arms.Do(aimActivity))
 			{
-
+				Debug.Log("[Grenade] BLOCKED: Arms busy, cannot start aiming");
 				return;
 			}
 
-
+			Debug.Log("[Grenade] SUCCESS: Started aiming");
 			IsAiming = true;
 			OnShowAiming?.Invoke();
 		}
@@ -137,36 +173,36 @@ namespace __SCRIPTS
 		private void Player_NadeRelease(NewControlButton newControlButton)
 		{
 			if (PauseManager.I.IsPaused) return;
+			Debug.Log("[Grenade] Player released grenade button");
 			OnHideAiming?.Invoke();
 			IsAiming = false;
 			
 			if (!ammo.secondaryAmmo.hasReserveAmmo())
 			{
+				Debug.Log("[Grenade] BLOCKED: No ammo");
 				arms.StopSafely(aimActivity);
-
 				return;
 			}
 
 			if (arms.currentActivity == aimActivity)
 			{
-
-				arms.StopSafely(aimActivity);
+				Debug.Log("[Grenade] Stopping aim activity and starting throw");
 				
-				if (arms.Do(this))
+				if (arms.DoWithCompletion(this, GangstaBean.Core.CompletionReason.NewActivity))
 				{
-
+					Debug.Log("[Grenade] SUCCESS: Starting throw animation");
 					isThrowingGrenade = true;
 					throwStartTime = Time.time;
 					anim.Play(AnimationName, 1, 0);
 				}
 				else
 				{
-
+					Debug.Log("[Grenade] BLOCKED: Could not transition from aim to throw");
 				}
 			}
 			else
 			{
-
+				Debug.Log($"[Grenade] BLOCKED: Expected aim activity but current is {arms.currentActivity?.VerbName}");
 				arms.StopSafely(aimActivity);
 			}
 		}

@@ -20,6 +20,21 @@ namespace __SCRIPTS
 		private string verbName;
 		public event Action<Vector3, Vector3, float, Life, bool> OnThrow;
 
+		public bool TryCompleteGracefully(CompletionReason reason, IActivity newActivity = null)
+		{
+			switch (reason)
+			{
+				case CompletionReason.AnimationInterrupt:
+				case CompletionReason.NewActivity:
+					// Handle graceful completion
+					isPressing = false;
+					body.arms.StopSafely(this);
+					anim.ResetTrigger(Animations.ThrowTrigger);
+					return true;
+			}
+			return false;
+		}
+
 		private void OnEnable()
 		{
 			ammoInventory = GetComponent<AmmoInventory>();

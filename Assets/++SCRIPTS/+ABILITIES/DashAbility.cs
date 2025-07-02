@@ -18,6 +18,25 @@ namespace __SCRIPTS
 		public bool teleport;
 		private string verbName;
 
+		public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
+		{
+			switch (reason)
+			{
+				case GangstaBean.Core.CompletionReason.AnimationInterrupt:
+					CancelInvoke(nameof(SafetyArmRelease));
+					RefreshAimingSystem();
+					return true;
+				case GangstaBean.Core.CompletionReason.NewActivity:
+					if (newActivity?.VerbName == "Shooting")
+					{
+						CancelInvoke(nameof(SafetyArmRelease));
+						return true;
+					}
+					break;
+			}
+			return false;
+		}
+
 		public void SetPlayer(Player _player)
 		{
 			move = GetComponent<MoveAbility>();

@@ -1,4 +1,5 @@
 ﻿using System;
+using GangstaBean.Core;
 using UnityEngine;
 
 public class ReloadActivity : IActivity
@@ -26,6 +27,21 @@ namespace __SCRIPTS
 		private Animations anim;
 		private AmmoInventory ammoInventory;
 		public override string VerbName => "Shooting";
+
+		public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
+		{
+			switch (reason)
+			{
+				case GangstaBean.Core.CompletionReason.AnimationInterrupt:
+					if (isReloading)
+					{
+						StopReloading();
+						return true;
+					}
+					break;
+			}
+			return false;
+		}
 		private float attackRate => isGlocking ? attacker.UnlimitedAttackRate : attacker.PrimaryAttackRate;
 
 		private float currentDamage =>
@@ -80,7 +96,7 @@ namespace __SCRIPTS
 		{
 			if (!isReloading) return;
 			isReloading = false;
-			arms.StopSafely(reloadActivity);
+			arms.StopSafely( reloadActivity);
 			if (!isPressing)
 			{
 				anim.SetBool(Animations.IsBobbing, true);

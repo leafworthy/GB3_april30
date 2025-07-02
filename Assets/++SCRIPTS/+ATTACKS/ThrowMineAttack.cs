@@ -32,7 +32,6 @@ namespace __SCRIPTS
 		public AnimationClip mineDropAnimation;
 		public string VerbName => "Throw-Mine";
 
-
 		public event Action<Vector2, Player> OnThrow;
 
 		public void SetPlayer(Player _player)

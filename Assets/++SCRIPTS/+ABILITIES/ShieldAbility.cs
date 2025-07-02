@@ -8,6 +8,17 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 	public class ShieldDashActivity : IActivity
 	{
 		public string VerbName => "Shield-Dash";
+
+		public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
+		{
+			switch (reason)
+			{
+				case GangstaBean.Core.CompletionReason.AnimationInterrupt:
+				case GangstaBean.Core.CompletionReason.NewActivity:
+					return true;
+			}
+			return false;
+		}
 	}
 	private AnimationEvents animEvents;
 	private MoveController moveController;
@@ -24,6 +35,26 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 	private ShieldDashActivity shieldDashActivity = new ShieldDashActivity();
 	private float counter;
 	private float counterMax = .25f;
+
+	public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
+	{
+		switch (reason)
+		{
+			case GangstaBean.Core.CompletionReason.AnimationInterrupt:
+				SetShielding(false);
+				SetDashing(false);
+				return true;
+			case GangstaBean.Core.CompletionReason.NewActivity:
+				if (newActivity?.VerbName == "Shooting" || newActivity?.VerbName == "Dash")
+				{
+					SetShielding(false);
+					SetDashing(false);
+					return true;
+				}
+				break;
+		}
+		return false;
+	}
 
 	public void SetPlayer(Player _player)
 	{
