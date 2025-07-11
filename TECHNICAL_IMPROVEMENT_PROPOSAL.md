@@ -58,7 +58,7 @@ Code Quality Metrics:
 ```
 Current Architecture (Problematic):
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Player.cs     │    │   GameManager   │    │   ASSETS.cs     │
+│   Player.cs     │    │   GameManager   │    │   assets.cs     │
 │  (Monolithic)   │◄──►│   (Singleton)   │◄──►│   (Singleton)   │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          ▲                       ▲                       ▲

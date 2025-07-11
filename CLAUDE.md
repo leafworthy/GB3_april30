@@ -46,3 +46,34 @@ This Unity project shows strong organization at the folder level but has several
 - Each major system has its own folder (+ABILITIES, +ATTACKS, +PLAYER, etc.)
 - FX, SFX, and UI components are properly separated
 - Console system is available for debugging and testing
+
+## AI Assistant Safety Rules
+
+### Critical File Deletion Protection
+- **NEVER delete files without explicit approval for each individual file**
+- **NEVER make bulk deletions or "cleanup" operations**
+- AI assistants cannot detect Unity Inspector component attachments
+- Scripts may be attached to GameObjects/prefabs via Inspector even with no code references
+- Always test in Unity Editor after any file deletion before proceeding
+
+### Required Process for Any Deletions
+1. Show exactly which files you want to delete
+2. Explain why you believe each file is unused
+3. Wait for explicit approval for each file
+4. Test project in Unity Editor after each deletion
+5. If ANY prefab shows "Missing Script" errors, stop immediately and restore files
+
+### Safe Work Boundaries
+- Make changes to maximum 1-3 files at a time
+- Focus on specific functionality improvements, not broad "simplification"
+- Never touch core systems (Player, UI, Input, Scene Management) without explicit permission
+- Always work on feature branches, never directly on main
+- Create backup branches before any risky refactoring work
+
+### Red Flags - Stop Immediately If
+- AI suggests deleting more than 2-3 files at once
+- AI claims code is "unused" without Unity Editor verification
+- AI proposes "aggressive cleanup" or "bulk simplification"
+- Any "Missing Script" errors appear in Unity Editor
+
+These rules exist because Unity component attachments via Inspector are invisible to code analysis tools.

@@ -48,8 +48,8 @@ public static class RaycastHelper
     public static RaycastHit2D CheckTargetRaycast(Vector2 origin, Vector2 direction, float range, bool isOverLandable)
     {
         var layerMask = isOverLandable ? 
-            ASSETS.LevelAssets.EnemyLayerOnLandable : 
-            ASSETS.LevelAssets.EnemyLayer;
+            assets.LevelAssets.EnemyLayerOnLandable : 
+            assets.LevelAssets.EnemyLayer;
         return Physics2D.Raycast(origin, direction.normalized, range, layerMask);
     }
 }
@@ -72,13 +72,13 @@ public abstract class PausableMonoBehaviour : MonoBehaviour
 {
     protected virtual void Update()
     {
-        if (PauseManager.I.IsPaused) return;
+        if (pauseManager.IsPaused) return;
         OnUpdate();
     }
     
     protected virtual void FixedUpdate()
     {
-        if (PauseManager.I.IsPaused) return;
+        if (pauseManager.IsPaused) return;
         OnFixedUpdate();
     }
     
