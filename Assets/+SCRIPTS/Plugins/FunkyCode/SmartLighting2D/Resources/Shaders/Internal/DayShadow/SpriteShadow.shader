@@ -3,6 +3,8 @@
 	Properties
 	{
 		_MainTex ("Sprite Texture", 2D) = "white" {}
+
+		_Darkness("Darkness",Color) = (0, 0, 0, 1)
 	}
 
 	SubShader
@@ -19,7 +21,7 @@
 		Cull Off
 		Lighting Off
 		ZWrite Off
-		Blend One OneMinusSrcAlpha // min/max?
+		BlendOp Min
 
 		Pass
 		{
@@ -31,6 +33,8 @@
 			#include "UnityCG.cginc"
 
 			sampler2D _MainTex;
+
+			float4 _Darkness;
 
 			struct appdata_t
 			{
@@ -49,6 +53,7 @@
 			v2f vert(appdata_t IN)
 			{
 				v2f OUT;
+
 				OUT.vertex = UnityObjectToClipPos(IN.vertex);
 				OUT.texcoord = IN.texcoord;
 				OUT.color = IN.color;
@@ -59,14 +64,8 @@
 			fixed4 frag(v2f IN) : SV_Target
 			{
 				fixed4 color = tex2D (_MainTex, IN.texcoord);
-				color.r = 1;
-				color.g = 1;
-				color.b = 1;
 
-				color *= IN.color;
-				color.rgb *= color.a;
-				
-				return color;
+				return float4(lerp(1 + _Darkness.rgb - color.a + 1 - IN.color.a, 1, 1 - _Darkness.a), 1);
 			}
 
 			ENDCG

@@ -1,13 +1,9 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
 using UnityEngine;
+using FunkyCode.LightingSettings;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
+namespace FunkyCode.EventHandling
 {
     public class LightTilemap : Base
     {
@@ -30,16 +26,15 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
             {
                 int layerId = eventPreset.layerSetting.list[iid].layerID;
 
-                List<LightTilemapCollider2D> tilemapColliderList = LightTilemapCollider2D.GetShadowList(layerId);
-
-                foreach(LightTilemapCollider2D id in tilemapColliderList)
+                var tilemapColliderList = LightTilemapCollider2D.GetShadowList(layerId);
+                foreach(var id in tilemapColliderList)
                 {
-                    Components.LightTilemap2D.Types.Base tilemapCollider = id.GetCurrentTilemap();
-
+                    var tilemapCollider = id.GetCurrentTilemap();
                     int count = tilemapCollider.chunkManager.GetTiles(light.transform2D.WorldRect);
 
-                    for(int t = 0; t < count; t++) {
-                        LightTile tile = tilemapCollider.chunkManager.display[t];
+                    for(int t = 0; t < count; t++)
+                    {
+                        var tile = tilemapCollider.chunkManager.display[t];
 
                         if (tile.occluded)
                         {
@@ -54,26 +49,18 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
                             case ShadowTileType.ColliderOnly:
 
                                 if (tile.colliderType == UnityEngine.Tilemaps.Tile.ColliderType.None)
-                                {
                                     continue;
-                                }
 
                             break;
                         }
 
-                        List<Polygon2> polygons = tile.GetWorldPolygons(tilemapCollider);
-
+                        var polygons = tile.GetWorldPolygons(tilemapCollider);
                         if (polygons.Count < 1)
-                        {
                             continue;
-                        }
 
                         Vector2 tilePosition = tile.GetWorldPosition(tilemapCollider) + lightPosition;
-
                         if (tile.NotInRange(tilePosition, light.size))
-                        {
                             continue;
-                        }
 
                         removePointsCollidingCount = 0;
                         removeCollisionsCount = 0;
@@ -98,7 +85,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
 
                                 rotLeft = (float)System.Math.Atan2 (edgeLeft.y, edgeLeft.x);
                                 rotRight = (float)System.Math.Atan2 (edgeRight.y, edgeRight.x);
-
+                            
                                 projectionLeft.x = edgeLeft.x + (float)System.Math.Cos(rotLeft) * lightSizeSquared;
                                 projectionLeft.y = edgeLeft.y + (float)System.Math.Sin(rotLeft) * lightSizeSquared;
 
@@ -113,8 +100,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
                                 float collisionCount = collisions.Count;
                                 for(int c = 0; c < collisionCount; c++)
                                 {
-                                    LightCollision2D col = collisions[c];
-
+                                    var col = collisions[c];
                                     if (col.collider == id)
                                     {
                                         continue;
@@ -162,7 +148,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
                     }
                 }
             }
-
+            
             return(collisions);
         }
     }

@@ -1,8 +1,7 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
-using UnityEngine;
+﻿using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.ShadowEngine.Algorithm
+namespace FunkyCode
 {
 	public static class SoftShadowSorter
 	{

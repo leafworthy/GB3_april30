@@ -1,68 +1,76 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
 using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extensions
+namespace FunkyCode.LightShape
 {
 	public class SkinnedMeshRendererShape : Base
 	{
 		private SkinnedMeshRenderer skinnedMeshRenderer;
 
-		public SkinnedMeshRenderer GetSkinnedMeshRenderer() {
-			if (skinnedMeshRenderer == null) {
-				if (transform != null) {
-					skinnedMeshRenderer = transform.GetComponent<SkinnedMeshRenderer>();
-				}
+		public SkinnedMeshRenderer GetSkinnedMeshRenderer()
+		{
+			if (!skinnedMeshRenderer && transform)
+			{
+				skinnedMeshRenderer = transform.GetComponent<SkinnedMeshRenderer>();
 			}
-			return(skinnedMeshRenderer);
+
+			return skinnedMeshRenderer;
 		}
 
-		public override List<MeshObject> GetMeshes() {
-			if (Meshes == null) {
-				if (GetSkinnedMeshRenderer() != null) {
-					Mesh mesh = GetSkinnedMeshRenderer().sharedMesh;
-
-					if (mesh != null) {
+		public override List<MeshObject> GetMeshes()
+		{
+			if (Meshes == null)
+			{
+				var renderer = GetSkinnedMeshRenderer();
+				if (renderer)
+				{
+					var mesh = renderer.sharedMesh;
+					if (mesh)
+					{
 						Meshes = new List<MeshObject>();
 
-						MeshObject meshObject = MeshObject.Get(mesh);
-
-						if (meshObject != null) {
+						var meshObject = MeshObject.Get(mesh);
+						if (meshObject != null)
+						{
 							Meshes.Add(meshObject);
 						}
 					}
 				}
 			}
-			return(Meshes);
+			return Meshes;
 		}
 
-		public override List<Polygon2> GetPolygonsWorld() {
-			if (WorldPolygons != null) {
-				return(WorldPolygons);
+		public override List<Polygon2> GetPolygonsWorld()
+		{
+			if (WorldPolygons != null)
+			{
+				return WorldPolygons; 
 			}
 
-			List<MeshObject> meshes = GetMeshes();
-
-			if (meshes == null) {
+			var meshes = GetMeshes();
+			if (meshes == null)
+			{
 				WorldPolygons = new List<Polygon2>();
-				return(WorldPolygons);
+				return WorldPolygons;
 			}
 
-			MeshObject meshObject = meshes[0];
-
-			if (meshObject == null) {
+			var meshObject = meshes[0];
+			if (meshObject == null)
+			{
 				WorldPolygons = new List<Polygon2>();
-				return(WorldPolygons);
+				return WorldPolygons;
 			}
 
 			Vector3 vecA, vecB, vecC;
 			Polygon2 poly;
 
-			if (WorldCache == null) {
+			if (WorldCache == null)
+			{
 				WorldPolygons = new List<Polygon2>();
 
-				for (int i = 0; i < meshObject.triangles.GetLength (0); i = i + 3) {
+				for (int i = 0; i < meshObject.triangles.GetLength (0); i = i + 3)
+				{
 					vecA = transform.TransformPoint(meshObject.vertices [meshObject.triangles [i]]);
 					vecB = transform.TransformPoint(meshObject.vertices [meshObject.triangles [i + 1]]);
 					vecC = transform.TransformPoint(meshObject.vertices [meshObject.triangles [i + 2]]);
@@ -73,16 +81,18 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 					poly.points[2] = vecC;
 
 					WorldPolygons.Add(poly);
-				}
+				}	
 
 				WorldCache = WorldPolygons;
-
-			} else {
+			}
+			else
+			{
 				int count = 0;
 
 				WorldPolygons = WorldCache;
 
-				for (int i = 0; i < meshObject.triangles.GetLength (0); i = i + 3) {
+				for (int i = 0; i < meshObject.triangles.GetLength (0); i = i + 3)
+				{
 					vecA = transform.TransformPoint(meshObject.vertices [meshObject.triangles [i]]);
 					vecB = transform.TransformPoint(meshObject.vertices [meshObject.triangles [i + 1]]);
 					vecC = transform.TransformPoint(meshObject.vertices [meshObject.triangles [i + 2]]);
@@ -94,12 +104,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 					poly.points[1].y = vecB.y;
 					poly.points[2].x = vecC.x;
 					poly.points[2].y = vecC.y;
-
+					
 					count += 1;
 				}
 			}
 
-			return(WorldPolygons);
+			return WorldPolygons;
 		}
-	}
+    }
 }

@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types
+namespace FunkyCode.LightTilemapCollider
 {
 	[System.Serializable]
     public class Rectangle : Base
@@ -20,35 +19,43 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 
 		public bool shadowOptimization = false;
 
-		public override MapType TilemapType() {
+		public override MapType TilemapType()
+		{
 			return(MapType.UnityRectangle);
 		}
 
-        public static ITilemap GetITilemap(Tilemap tilemap) {
+        public static ITilemap GetITilemap(Tilemap tilemap)
+		{
 			ITilemap iTilemap = (ITilemap) FormatterServices.GetUninitializedObject(typeof(ITilemap));
 			typeof(ITilemap).GetField("m_Tilemap", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(iTilemap, tilemap);
 			return iTilemap;
 		}
 
 		// That is not complete
-		override public bool IsPhysicsShape() {
-			if (maskType == MaskType.SpritePhysicsShape) {
+		override public bool IsPhysicsShape()
+		{
+			if (maskType == MaskType.SpritePhysicsShape)
+			{
 				return(true);
 			}
 
-			if (shadowType == ShadowType.SpritePhysicsShape) {
+			if (shadowType == ShadowType.SpritePhysicsShape)
+			{
 				return(true);
 			}
+
 			return(false);
 		}
 
-        public override void Initialize() {
+        public override void Initialize()
+		{
 			base.Initialize();
-
-			if (UpdateProperties() == false) {
+			
+			if (!UpdateProperties())
+			{
 				return;
 			}
-
+						
 			// Tilemap tilemap2D = properties.tilemap; ????/
 
 			lightTilemapCollider2D = gameObject.GetComponent<LightTilemapCollider2D>();
@@ -68,29 +75,31 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 
 		private void InitializeCompositeCollider() {
 			compositeColliders.Clear();
-
+			
 			CompositeCollider2D compositeCollider2D = gameObject.GetComponent<CompositeCollider2D>();
 
 			if (compositeCollider2D != null) {
 				compositeColliders = Polygon2Collider2D.CreateFromCompositeCollider(compositeCollider2D);
 			}
 		}
-
+		
 		public override Vector2 TileWorldPosition(LightTile tile) {
 			Vector2 position = tilemap2D.CellToWorld(tile.gridPosition);
 
 			float rotation = properties.cellAnchor.Atan2() + tilemap2D.transform.eulerAngles.z * Mathf.Deg2Rad;
-			float sizeX = properties.cellAnchor.x;
-			float sizeY = properties.cellAnchor.y;
 
+			float sizeX = properties.cellAnchor.x * tilemap2D.transform.localScale.x;
+			float sizeY = properties.cellAnchor.y * tilemap2D.transform.localScale.y;
+			
 			float distance = Mathf.Sqrt(sizeX * sizeX + sizeY * sizeY);
 
 			// +++ Include Cell Size
 
 			position.x += properties.grid.cellSize.x - 1;
 			position.y += properties.grid.cellSize.y - 1;
-
-			position = position.Push(rotation, distance);
+			
+			position.x += sizeX;
+			position.y += sizeY;
 
 			return(position);
 		}
@@ -106,7 +115,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 
             Vector2 scale = Vector2.one;
 
-            scale.x *= transform.lossyScale.x;
+            scale.x *= transform.lossyScale.x; 
             scale.y *= transform.lossyScale.y;
 
 			bool isGrid = false;
@@ -144,7 +153,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 
 					refreshTile.SetSprite(tileData.sprite);
 					refreshTile.GetPhysicsShapePolygons();
-
+                    
                     refreshTile.occluded = false;
 
 					refreshTile.colliderType = tileData.colliderType;
@@ -159,11 +168,11 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
                 if (tilebase != null)
 				{
                     LightTile lightTile = new LightTile();
-
+				
 					lightTile.gridPosition = positionInt;
 
                     tilebase.GetTileData(positionInt, tilemap, ref tileData);
-
+					
 					Matrix4x4 matrix = tilemap.GetTransformMatrix(positionInt);
 
 					lightTile.rotation = matrix.rotation.eulerAngles.z;
@@ -181,7 +190,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 
             chunkManager.Update(MapTiles, lightTilemapCollider2D.GetCurrentTilemap());
 
-            SmartLighting2D.Components.Night.Light2D.ForceUpdateAll();
+            Light2D.ForceUpdateAll();
 		}
 
 		public LightTile GetTileToRefresh(Vector3Int gridPosition) {
@@ -207,11 +216,11 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 				TileBase tilebase = tilemap2D.GetTile(position);
 
 				if (tilebase != null) {
-
+					
 					tilebase.GetTileData(position, tilemap, ref tileData);
-
+					
 					LightTile lightTile = new LightTile();
-
+				
 					lightTile.gridPosition = position;
 
 					if (shadowOptimization) {
@@ -222,7 +231,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 
 						lightTile.occluded = left && right && up && down;
 					}
-
+					
 					Matrix4x4 matrix = tilemap2D.GetTransformMatrix(position);
 
 					lightTile.rotation = matrix.rotation.eulerAngles.z;
@@ -251,10 +260,10 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 			ITilemap tilemap = GetITilemap(tilemap2D);
 			tilebase.GetTileData(position, tilemap, ref tileData);
 
-			if (tileData.sprite == null) {
+			if (tileData.sprite == null) {	
 				return(false);
 			}
-
+		
 			return(true);
 		}
     }

@@ -50,7 +50,7 @@
                     float4 vertex : SV_POSITION;
                     fixed4 color : COLOR;
                     float2 texcoord : TEXCOORD0;
-                    float2 xy : TEXCOORD1;
+                    float3 xy : TEXCOORD1;
                 };
 
                 v2f vert (appdata_t v)
@@ -60,19 +60,20 @@
                     o.vertex = UnityObjectToClipPos(v.vertex);
                     o.color = v.color;
                     o.texcoord = v.texcoord;
-                    o.xy.x = v.texcoord.x - 0.5;
-                    o.xy.y = v.texcoord.y - 0.5;
-           
+                    
+                    o.xy.xy = float2(v.texcoord.x - 0.5, v.texcoord.y - 0.5);
+                    o.xy.z = _Inner >= 359;
+
                     return o;
                 }
 
                 fixed4 frag (v2f i) : SV_Target
                 {
-                    fixed3 pointValue = max(0, (1 - sqrt(i.xy.x * i.xy.x + i.xy.y * i.xy.y) * 2));
-
                     float dir = ((atan2(i.xy.y, i.xy.x) - _Rotation) * 57.2958 + 450 + 360) % 360;
 
-                    pointValue *= max(0, min(1, (_Inner * 0.5 - abs(dir - 180) + _Outer) / _Outer));
+                    float pointValue = max(0, (1 - sqrt(i.xy.x * i.xy.x + i.xy.y * i.xy.y) * 2));
+
+                    pointValue *= lerp(max(0, min(1, (_Inner * 0.5 - abs(dir - 180) + _Outer) / _Outer)), 1, i.xy.z);
 
                     fixed4 output = fixed4(1, 1, 1, 1);
 
@@ -82,6 +83,7 @@
                 
                     return output;
                 }
+                
                 ENDCG
             }
         }

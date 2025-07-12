@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
 using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.ShadowEngine.Algorithm
+namespace FunkyCode.Rendering.Light.Shadow
 {
     public static class SoftDistance
-    {
+    { 
         public static Pair2 pair = Pair2.Zero();
         public static Vector2 edgeAWorld, edgeBWorld, edgeALocal, edgeBLocal;
         public static Vector2 projectedMiddle, projectedLeft, projectedRight, outerLeft, outerRight;
@@ -48,14 +46,14 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                 {
                     // change to sides of vertices, improve performance
                     if (Math2D.PointInPoly(-position, polygons[i]))
-                    {
+                    { 
                         continue;
                     }
-                }
+                } 
                     else if (ShadowEngine.dontdrawInside)
                 {
                     if (Math2D.PointInPoly(-position, polygons[i]))
-                    {
+                    { 
                         ShadowEngine.continueDrawing = false;
                         return;
                     }
@@ -64,7 +62,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                 for(int x = 0; x < pointsCount; x++)
                 {
                     int next = (x + 1) % pointsCount;
-
+                    
                     pair.A = pointsList[x];
                     pair.B = pointsList[next];
 
@@ -126,12 +124,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                         closestPoint.y = closestPoint.y / sqrt;
 
                         projectedMiddle.x = mx + closestPoint.x * shadowLength;
-                        projectedMiddle.y = my + closestPoint.y *shadowLength;
-
+                        projectedMiddle.y = my + closestPoint.y *shadowLength;                        
+                                    
                         // Middle Fin
                         GL.Vertex3(draw.x + projectedLeft.x, draw.y + projectedLeft.y, 0);
                         GL.Vertex3(draw.x + projectedRight.x, draw.y + projectedRight.y, 0);
-                        GL.Vertex3(draw.x + projectedMiddle.x, draw.y + projectedMiddle.y, 0);
+                        GL.Vertex3(draw.x + projectedMiddle.x, draw.y + projectedMiddle.y, 0); 
 
                         DrawLine(edgeBWorld, projectedLeft, -11, translucency);
                         DrawLine(edgeAWorld, projectedRight, 11, translucency);
@@ -152,7 +150,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
             sizePointNext = sizePointNext < 0 ? 0 : sizePointNext * ShadowEngine.lightSize * 0.01f;
 
             float direction = point.Atan2(nextPoint);
-
+            
             Vector2 p1 = point;
             Vector2 p2 = nextPoint;
             Vector2 p3 = nextPoint;
@@ -204,7 +202,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
                     p3.x += Mathf.Cos(direction + Mathf.PI / 2) * sizePointNext;
                     p3.y += Mathf.Sin(direction + Mathf.PI / 2) * sizePointNext;
-
+                    
                     GL.Color(new Color(0, 0, translucency, 0));
 
                     GL.TexCoord3(0, 0, 1);
@@ -240,7 +238,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
                     p3.x += Mathf.Cos(direction + Mathf.PI / 2) * sizePointNext;
                     p3.y += Mathf.Sin(direction + Mathf.PI / 2) * sizePointNext;
-
+                    
                     GL.Color(new Color(0, 0, translucency, 0));
 
                     GL.TexCoord3(0, 0, 1);
@@ -263,7 +261,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
                     p4.x -= Mathf.Cos(direction + Mathf.PI / 2) * sizePoint;
                     p4.y -= Mathf.Sin(direction + Mathf.PI / 2) * sizePoint;
-
+                    
                     GL.Color(new Color(0, 0, translucency, 1));
 
                     GL.TexCoord3(0, 0, 0);

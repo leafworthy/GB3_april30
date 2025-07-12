@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D.Polygon
+namespace FunkyCode.Utilities
 {
 	public class Polygon2DCollider2D
 	{

@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Occlusion;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extensions;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using FunkyCode.LightShape;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts
+namespace FunkyCode
 {
 
 	[System.Serializable]

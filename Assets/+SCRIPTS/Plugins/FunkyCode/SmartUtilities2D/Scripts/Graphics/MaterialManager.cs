@@ -1,13 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Graphics {
-	public class MaterialManager {
+namespace FunkyCode.Utilities
+{
+	public class MaterialManager
+	{
 		static SmartMaterial vertexLit = null;
 		static SmartMaterial additive = null;
 		static SmartMaterial alpha = null;
 		static SmartMaterial sprite = null;
 
-		static private SmartMaterial GetVertexLit() {
+		static private SmartMaterial GetVertexLit()
+		{
 			if (vertexLit == null || vertexLit.material == null) {
 				//if (Slicer2DSettings.GetRenderingPipeline() == Slicer2DSettings.RenderingPipeline.Universal) {
 					vertexLit =  new SmartMaterial ("Legacy Shaders/Transparent/VertexLit");

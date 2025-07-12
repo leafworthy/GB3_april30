@@ -1,15 +1,15 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Night
+namespace FunkyCode
 	{
 	[CanEditMultipleObjects]
 	[CustomEditor(typeof(LightTexture2D))]
-	public class LightTexture2DEditor : UnityEditor.Editor
+	public class LightTexture2DEditor : Editor
 	{
 		override public void OnInspectorGUI()
 		{
@@ -26,13 +26,13 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Night
 			script.texture = (Texture)EditorGUILayout.ObjectField("Texture", script.texture, typeof(Texture), true);
 
 			if (GUI.changed)
-			{
+			{	
 				if (!EditorApplication.isPlaying)
 				{
 					EditorUtility.SetDirty(target);
-					EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+					EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 				}
 			}
 		}
 	}
-}
+}	

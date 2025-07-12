@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Chunks.Tilemap;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types
+namespace FunkyCode.LightTilemapCollider
 {
 	public enum MapType {UnityRectangle, UnityIsometric, UnityHexagon, SuperTilemapEditor};
 
@@ -17,7 +16,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 
 		private float radius = -1;
 		private Rect rect = new Rect();
-
+	
         public GameObject gameObject;
 		public Transform transform;
         protected TilemapProperties properties = new TilemapProperties();
@@ -25,7 +24,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 		private List<LightTile> mapTiles = new List<LightTile>();
 		public List<LightTile> MapTiles => mapTiles;
 
-		public TilemapManager chunkManager = new TilemapManager();
+		public Chunks.TilemapManager chunkManager = new Chunks.TilemapManager();
 
 		// Mask and Shadow Properties
 		public bool ShadowsDisabled() {
@@ -52,7 +51,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 		public virtual MapType TilemapType() {
 			return(MapType.UnityRectangle);
 		}
-
+	
         public TilemapProperties Properties {
             get => properties;
         }
@@ -82,7 +81,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 			properties.grid = properties.tilemap.layoutGrid;
 
 			if (properties.grid == null) {
-				UnityEngine.Debug.LogError("Lighting 2D Error: Lighting Tilemap Collider is missing Grid", gameObject);
+				Debug.LogError("Lighting 2D Error: Lighting Tilemap Collider is missing Grid", gameObject);
 				return(false);
 			} else {
 				properties.cellSize = properties.grid.cellSize;
@@ -96,7 +95,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 
 		public void ResetWorld() {
 			rect = new Rect();
-
+			
 			foreach(LightTile tile in mapTiles) {
 				tile.ResetWorld();
 			}
@@ -115,7 +114,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 					minX = Mathf.Min(minX, (float)id.x);
 					minY = Mathf.Min(minY, (float)id.y);
 					maxX = Mathf.Max(maxX, (float)id.x);
-					maxY = Mathf.Max(maxY, (float)id.y);
+					maxY = Mathf.Max(maxY, (float)id.y);					
 				}
 
 				rect.x = minX;
@@ -126,17 +125,17 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 
 			return(rect);
 		}
-
+		
 		public float GetRadius() {
 			if (radius < 0) {
 				foreach(LightTile tile in mapTiles) {
 					Vector2 id = tile.GetWorldPosition(this);
-
+				
 					radius = Mathf.Max(radius, Vector2.Distance(id, gameObject.transform.position));
 				}
 
 			}
-
+			
 			return(radius);
 		}
     }

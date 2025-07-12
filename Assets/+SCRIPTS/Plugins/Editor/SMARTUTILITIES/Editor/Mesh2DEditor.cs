@@ -1,13 +1,11 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Components;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Triangulation;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
-namespace __SCRIPTS.Plugins.Editor.SMARTUTILITIES.Editor
+namespace FunkyCode.Utilities
 {
 	[CanEditMultipleObjects]
 	[CustomEditor(typeof(Mesh2D))]
-	public class Mesh2DEditor : UnityEditor.Editor {
+	public class Mesh2DEditor : Editor {
 
 		override public void OnInspectorGUI() {
 			Mesh2D script = target as Mesh2D;

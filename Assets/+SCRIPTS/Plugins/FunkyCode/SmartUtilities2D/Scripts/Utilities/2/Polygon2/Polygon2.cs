@@ -1,18 +1,15 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Triangulation;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D.Polygon;
 using UnityEngine;
+using FunkyCode.LightingSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2
+namespace FunkyCode.Utilities
 {
 	public class Polygon2
 	{
 		public Vector2[] points;
 
 		public Rect GetRect()
-		{
+		{	
 			Rect rect = new Rect();
 
 			float minX = 100000;
@@ -95,7 +92,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 			for(int id = 0; id < points.Length; id++)
 			{
 				point = points[id];
-
+				
 				dist = Vector2.Distance(point, center.Value);
 				rot = point.Atan2(center.Value) + rotation; //??
 
@@ -144,7 +141,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 			{
 				return (true);
 			}
-
+			
 			double sum = 0;
 
 			Vector2 A = points[points.Length - 1];
@@ -173,12 +170,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 
 
 
-
+		
 		///// Constructors - Polygon Creating //////
 
 		static public Polygon2 CreateRect(Vector2 size) {
 			size = size / 2;
-
+			
 			Polygon2 polygon = new Polygon2(4);
 
 			polygon.points[0] = new Vector2(-size.x, -size.y);
@@ -193,7 +190,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 
 		static public Polygon2 CreateIsometric(Vector2 size) {
 			size = size / 2;
-
+			
 			Polygon2 polygon = new Polygon2(4);
 
 			polygon.points[0] = new Vector2(-size.x, size.y );
@@ -224,7 +221,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 			return(polygon);
 		}
 
-		public Mesh CreateMesh(GameObject gameObject, Vector2 UVScale, Vector2 UVOffset, PolygonTriangulator2.Triangulation triangulation = PolygonTriangulator2.Triangulation.Advanced) {
+		public Mesh CreateMesh(GameObject gameObject, Vector2 UVScale, Vector2 UVOffset, PolygonTriangulator2.Triangulation triangulation = PolygonTriangulator2.Triangulation.Advanced) {		
 			if (gameObject.GetComponent<MeshRenderer>() == null) {
 				gameObject.AddComponent<MeshRenderer>();
 			}
@@ -233,7 +230,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 			if (filter == null) {
 				filter = gameObject.AddComponent<MeshFilter>() as MeshFilter;
 			}
-
+			
 			filter.sharedMesh = PolygonTriangulator2.Triangulate (this, UVScale, UVOffset, triangulation);
 			if (filter.sharedMesh == null) {
 				UnityEngine.Object.Destroy(gameObject);
@@ -241,8 +238,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 
 			return(filter.sharedMesh);
 		}
-
-		public Mesh CreateMesh(Vector2 UVScale, Vector2 UVOffset, PolygonTriangulator2.Triangulation triangulation = PolygonTriangulator2.Triangulation.Advanced) {
+		
+		public Mesh CreateMesh(Vector2 UVScale, Vector2 UVOffset, PolygonTriangulator2.Triangulation triangulation = PolygonTriangulator2.Triangulation.Advanced) {        
 			return(PolygonTriangulator2.Triangulate (this, UVScale, UVOffset, triangulation));
 		}
 
@@ -276,7 +273,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 
 
 
-
+		
 		public void ToWorldSpaceSelfUNIVERSAL(Transform transform)
 		{
 			switch(Lighting2D.CoreAxis)
@@ -303,7 +300,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 
 					ToWorldSpaceSelfXZ(transform);
 
-				break;
+				break;	
 			}
 		}
 
@@ -324,11 +321,11 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 			float angle = rotation * Mathf.Deg2Rad;
 			float cos = Mathf.Cos(angle);
 			float sin = Mathf.Sin(angle);
-
+			
 			for(int id = 0; id < count; id++)
 			{
 				Vector2 a = points[id];
-
+				
 				float x = a.x * scale.x;
 				float y = a.y * scale.y;
 
@@ -341,7 +338,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 
 		public void ToWorldSpaceSelfFlipped(Transform transform) {
 			int count = points.Length;
-
+			
 			for(int id = 0; id < count; id++) {
 				points[id] = points[id].TransformToWorldXYFlipped(transform);
 			}
@@ -349,7 +346,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 
 		public void ToWorldSpaceSelfXZ(Transform transform) {
 			int count = points.Length;
-
+			
 			for(int id = 0; id < count; id++) {
 				points[id] = points[id].TransformToWorldXZ(transform);
 			}
@@ -357,7 +354,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 
 		public void ToWorldSpaceSelfXZFlipped(Transform transform) {
 			int count = points.Length;
-
+			
 			for(int id = 0; id < count; id++) {
 				points[id] = points[id].TransformToWorldXZFlipped(transform);
 			}

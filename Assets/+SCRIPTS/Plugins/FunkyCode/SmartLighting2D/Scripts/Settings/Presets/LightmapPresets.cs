@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using FunkyCode.LightSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets
+namespace FunkyCode.LightingSettings
 {
 	[System.Serializable]
 	public class LightmapPresetList
@@ -40,9 +41,17 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets
 			Depth8
 		}
 
+		public enum HDR
+		{
+			Off,
+			Half,
+			Float
+		}
+
 		public string name = "Default";
 
 		public Type type = Type.RGB24;
+		public HDR hdr = HDR.Half;
 
 		public Color darknessColor = new Color(0, 0, 0, 1);
 		public int depth = -100;
@@ -64,7 +73,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets
 			}
 		}
 	}
-
+	
 	[System.Serializable]
 	public class LightmapLayerList
 	{
@@ -86,7 +95,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets
 					list[i] = new LightmapLayer();
 				}
 			}
-
+	
 			return(list);
 		}
 	}

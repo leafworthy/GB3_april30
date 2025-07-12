@@ -1,17 +1,14 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
 using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
+namespace FunkyCode
 {
-	[System.Serializable]
 	public struct LightCollision2D
 	{
 		public enum State
 		{
-			OnCollision,
-			OnCollisionEnter,
+			OnCollision, 
+			OnCollisionEnter, 
 			OnCollisionExit
 		}
 
@@ -21,12 +18,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
 		public List<Vector2> points;
 		public State state;
 
-		public LightCollision2D(bool useInfo, State state)
+		public LightCollision2D(State state)
 		{
 			this.light = null;
 
 			this.collider = null;
-
+			
 			this.points = null;
 
 			this.state = state;

@@ -20,6 +20,7 @@ Shader "Light2D/Internal/Shadow/Fast"
 		Pass
 		{
 			CGPROGRAM
+			
 			#pragma vertex vert
 			#pragma fragment frag
 	
@@ -67,5 +68,6 @@ Shader "Light2D/Internal/Shadow/Fast"
 
 			ENDCG
 		}
+		
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities
+namespace FunkyCode.Utilities
 {
 	public class VirtualSpriteRenderer {
 		public Sprite sprite;

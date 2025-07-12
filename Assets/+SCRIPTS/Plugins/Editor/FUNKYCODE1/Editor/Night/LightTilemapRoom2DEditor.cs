@@ -1,17 +1,13 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SpriteExtension;
-using UnityEditor;
-using UnityEditor.SceneManagement;
+﻿using UnityEditor;
 using UnityEngine;
+using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+using FunkyCode.LightTilemapCollider;
 
-namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Night
+namespace FunkyCode
 {
 	[CustomEditor(typeof(LightTilemapRoom2D))]
-	public class LightTilemapRoom2DEditor : UnityEditor.Editor
+	public class LightTilemapRoom2DEditor : Editor
 	{
 		override public void OnInspectorGUI()
 		{
@@ -26,7 +22,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Night
 			EditorGUILayout.Space();
 
 			script.maskType = (LightTilemapRoom2D.MaskType)EditorGUILayout.EnumPopup("Mask Type", script.maskType);
-
+			
 			EditorGUILayout.Space();
 
 			script.shaderType = (LightTilemapRoom2D.ShaderType)EditorGUILayout.EnumPopup("Shader Type", script.shaderType);
@@ -34,11 +30,11 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Night
 			script.color = EditorGUILayout.ColorField("Shader Color", script.color);
 
 			EditorGUILayout.Space();
-
+		
 			if (GUILayout.Button("Update"))
 			{
-				PhysicsShapeManager.Clear();
-
+				SpriteExtension.PhysicsShapeManager.Clear();
+				
 				script.Initialize();
 				LightingManager2D.ForceUpdate();
 			}
@@ -47,11 +43,11 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Night
 				// script.Initialize();
 
 				LightingManager2D.ForceUpdate();
-
+				
 				if (!EditorApplication.isPlaying)
 				{
 					EditorUtility.SetDirty(script);
-					EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+					EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 				}
 			}
 		}

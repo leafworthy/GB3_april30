@@ -29,6 +29,7 @@
             Pass
             {
                 CGPROGRAM
+                
                 #pragma vertex vert
                 #pragma fragment frag
         
@@ -53,7 +54,7 @@
                     float4 vertex : SV_POSITION;
                     fixed4 color : COLOR;
                     float4 texcoord : TEXCOORD0;
-                    float2 xy : TEXCOORD1;                    
+                    float3 xy : TEXCOORD1;                    
                 };
 
                 v2f vert (appdata_t v)
@@ -62,10 +63,11 @@
 
                     o.vertex = UnityObjectToClipPos(v.vertex);
                     o.color = v.color;
-                    o.xy.x = v.texcoord.x - 0.5;
-                    o.xy.y = v.texcoord.y - 0.5;
                     o.texcoord = UNITY_PROJ_COORD(float4(v.texcoord.x, v.texcoord.y, 1, 1));
-             
+
+                    o.xy.xy = float2(v.texcoord.x - 0.5, v.texcoord.y - 0.5);
+                    o.xy.z = _Inner >= 359;
+           
                     return o;
                 }
 
@@ -75,11 +77,11 @@
 
                     float distance = sqrt(i.xy.x * i.xy.x + i.xy.y * i.xy.y);
                   
-                    fixed3 pointValue = max(0, (1 - distance * 2));
-
                     float dir = ((atan2(i.xy.y, i.xy.x) - _Rotation) * 57.2958 + 810) % 360;
 
-                    pointValue *= max(0, min(1, (_Inner * 0.5 - abs(dir - 180) + _Outer) / _Outer));
+                    fixed3 pointValue = max(0, (1 - distance * 2));
+
+                    pointValue *= lerp(max(0, min(1, (_Inner * 0.5 - abs(dir - 180) + _Outer) / _Outer)), 1, i.xy.z);
 
                     fixed4 output = fixed4(1, 1, 1, 1);
 
@@ -91,6 +93,7 @@
                     
                     return output;
                 }
+                
                 ENDCG
             }
         }

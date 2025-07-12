@@ -3,23 +3,63 @@
 
 // game lightmaps
 
-sampler2D _GameTexture1; float4 _GameRect1; float _GameRotation1;
-sampler2D _GameTexture2; float4 _GameRect2; float _GameRotation2;
-sampler2D _GameTexture3; float4 _GameRect3; float _GameRotation3;
-sampler2D _GameTexture4; float4 _GameRect4; float _GameRotation4;
+sampler2D _GameTexture1; float4 _GameRect1; float4 _GameColor1; float _GameRotation1;
+sampler2D _GameTexture2; float4 _GameRect2; float4 _GameColor2; float _GameRotation2;
+sampler2D _GameTexture3; float4 _GameRect3; float4 _GameColor3; float _GameRotation3;
+sampler2D _GameTexture4; float4 _GameRect4; float4 _GameColor4; float _GameRotation4;
 
 // scene lightmaps
-sampler2D _SceneTexture1; float4 _SceneRect1; float _SceneRotation1;
-sampler2D _SceneTexture2; float4 _SceneRect2; float _SceneRotation2;
-sampler2D _SceneTexture3; float4 _SceneRect3; float _SceneRotation3;
-sampler2D _SceneTexture4; float4 _SceneRect4; float _SceneRotation4;
+sampler2D _SceneTexture1; float4 _SceneRect1; float4 _SceneColor1; float _SceneRotation1;
+sampler2D _SceneTexture2; float4 _SceneRect2; float4 _SceneColor2; float _SceneRotation2;
+sampler2D _SceneTexture3; float4 _SceneRect3; float4 _SceneColor3; float _SceneRotation3;
+sampler2D _SceneTexture4; float4 _SceneRect4; float4 _SceneColor4; float _SceneRotation4;
 
 // day lighting variables
 
 float _Day_Direction;
 float _Day_Height;
+float _Day_Alpha;
+
+float _OffScreen;
 
 sampler2D _NormalMap;
+
+// public values
+
+void SL2D_Value_DayAlpha_float(out float color)
+{
+    color = _Day_Alpha;
+}
+
+void SL2D_Value_DayHeight_float(out float color)
+{
+    color = _Day_Height;
+}
+
+void SL2D_Value_DayDirection_float(out float color)
+{
+    color = _Day_Direction;
+}
+
+void SL2D_Value_Color_1_float(out float4 color)
+{
+    color = max(_GameColor1, _SceneColor1);
+}
+
+void SL2D_Value_Color_2_float(out float4 color)
+{
+    color = max(_GameColor2, _SceneColor2);
+}
+
+void SL2D_Value_Color_3_float(out float4 color)
+{
+    color = max(_GameColor3, _SceneColor3);
+}
+
+void SL2D_Value_Color_4_float(out float4 color)
+{
+    color = max(_GameColor4, _SceneColor4);
+}
 
 // internal api
 
@@ -166,42 +206,35 @@ bool internal_InCamera(float2 pos, float2 rectSize)
 
 // private api (game pass + scene pass)
 
-float4 SL2D_Pass_Light(int id, float2 world)
+float4 SL2D_Pass(float4 color, int id, float2 world)
 {
-    float2 cameraSize, localPosition;
-    float4 color = float4(0, 0, 0, 1);
-
     float4 rect = internal_GameRect(id);
-
     float rotation = internal_GameRotation(id);
+    float2 cameraSize = float2(rect.z, rect.w);
+    float2 localPosition = internal_WorldToLocal(world - float2(rect.x, rect.y), rotation);
+    bool draw = (rect.z > 0) * internal_InCamera(localPosition, cameraSize);
 
-    if (rect.z > 0)
-    {
-        cameraSize = float2(rect.z, rect.w);
-        localPosition = internal_WorldToLocal(world - float2(rect.x, rect.y), rotation);
-
-        if (internal_InCamera(localPosition, cameraSize))
-        {
-            color.rgb = internal_GameLightmap(id, (localPosition + cameraSize / 2) / cameraSize);
-        }
-    }
+    color.rgb = lerp(color.rgb, internal_GameLightmap(id, (localPosition + cameraSize / 2) / cameraSize), draw);
 
     rect = internal_SceneRect(id);
-
     rotation = internal_SceneRotation(id);
+    cameraSize = float2(rect.z, rect.w);
+    localPosition = internal_WorldToLocal(world - float2(rect.x, rect.y), rotation);
+    draw = (rect.z > 0) * internal_InCamera(localPosition, cameraSize);
 
-    if (rect.z > 0)
-    {
-        cameraSize = float2(rect.z, rect.w);
-        localPosition = internal_WorldToLocal(world - float2(rect.x, rect.y), rotation);
+    color.rgb = lerp(color.rgb, internal_SceneLightmap(id, (localPosition + cameraSize / 2) / cameraSize), draw);
 
-        if (internal_InCamera(localPosition, cameraSize))
-        {
-            color.rgb = max(color.rgb, internal_SceneLightmap(id, (localPosition + cameraSize / 2) / cameraSize));
-        }
-    }
+    return color;
+}
 
-    return(color);
+float4 SL2D_Pass_Light(int id, float2 world)
+{
+    float4 color = float4(0, 0, 0, 1);
+    color.rgb = lerp(0, 1, _OffScreen);
+
+    color = SL2D_Pass(color, id, world);
+
+    return color;
 }
 
 float4 SL2D_Pass_Depth(int id, float2 world)
@@ -248,23 +281,20 @@ float4 SL2D_Pass_Depth(int id, float2 world)
 
 void SL2D_Light_float(float2 world, out float4 color)
 {
-    color = SL2D_Pass_Light(1, world);
-
-    color = max(color, SL2D_Pass_Light(2, world));
-
-    color = max(color, SL2D_Pass_Light(3, world));
-
-    color = max(color, SL2D_Pass_Light(4, world));
+    color = float4(0, 0, 0, 1);
+    color.rgb = lerp(0, 1, _OffScreen);
+    
+    color = SL2D_Pass(color, 1, world);
+    color = SL2D_Pass(color, 2, world);
+    color = SL2D_Pass(color, 3, world);
+    color = SL2D_Pass(color, 4, world);
 }
 
 void SL2D_Depth_float(float2 world, float depth, float strength, out float4 color)
 {
     color = lerp(float4(1, 1, 1, 1), float4(1 - strength, 1 - strength, 1 - strength, 1), step(depth, SL2D_Pass_Depth(1, world)));
-
     color = min(color, lerp(float4(1, 1, 1, 1), float4(1 - strength, 1 - strength, 1 - strength, 1), step(depth, SL2D_Pass_Depth(2, world))));
-
     color = min(color, lerp(float4(1, 1, 1, 1), float4(1 - strength, 1 - strength, 1 - strength, 1), step(depth, SL2D_Pass_Depth(3, world))));
-
     color = min(color, lerp(float4(1, 1, 1, 1), float4(1 - strength, 1 - strength, 1 - strength, 1), step(depth, SL2D_Pass_Depth(4, world))));
 }
 

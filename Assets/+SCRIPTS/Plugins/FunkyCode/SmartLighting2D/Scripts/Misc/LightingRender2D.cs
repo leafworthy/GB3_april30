@@ -1,11 +1,7 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using UnityEngine;
-using Texture = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Universal.Objects.Texture;
+﻿using UnityEngine;
+using FunkyCode.LightingSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc
+namespace FunkyCode
 {
 	public class LightingRender2D
 	{
@@ -50,7 +46,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc
 			}
 		}
 
-		public static Vector3 GetSize(UnityEngine.Camera camera)
+		public static Vector3 GetSize(Camera camera)
 		{
 			float sizeY = camera.orthographicSize;
 
@@ -69,7 +65,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc
 		// post-render mode drawing
 		public static void PostRender(LightMainBuffer2D mainBuffer)
 		{
-			UnityEngine.Camera camera = mainBuffer.cameraSettings.GetCamera();
+			Camera camera = mainBuffer.cameraSettings.GetCamera();
 
 			if (camera == null)
 			{
@@ -86,18 +82,18 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc
 				return;
 			}
 
-			if (UnityEngine.Camera.current != camera)
+			if (Camera.current != camera)
 			{
 				return;
 			}
 
-			Texture.Quad.Draw(mainBuffer.GetMaterial(), LightingPosition.GetCameraPlanePosition(camera), GetSize(camera), camera.transform.eulerAngles.z, LightingPosition.GetCameraPlanePosition(camera).z);
+			Rendering.Universal.Texture.Quad.Draw(mainBuffer.GetMaterial(), LightingPosition.GetCameraPlanePosition(camera), GetSize(camera), camera.transform.eulerAngles.z, LightingPosition.GetCameraPlanePosition(camera).z);
 		}
 
 		// mesh-render mode drawing
 		static public void OnRender(LightMainBuffer2D mainBuffer)
 		{
-			UnityEngine.Camera camera = mainBuffer.cameraSettings.GetCamera();
+			Camera camera = mainBuffer.cameraSettings.GetCamera();
 
 			if (camera == null)
 			{
@@ -148,7 +144,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc
 		// graphics.draw() mode drawing
 		static public void PreRender(LightMainBuffer2D mainBuffer)
 		{
-			UnityEngine.Camera camera = mainBuffer.cameraSettings.GetCamera();
+			Camera camera = mainBuffer.cameraSettings.GetCamera();
 
 			if (camera == null)
 			{

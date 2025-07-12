@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
-using UnityEngine;
+﻿using UnityEngine;
+using FunkyCode.Utilities;
+using System.Collections.Generic;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Light2D
+namespace FunkyCode
 {
 	[System.Serializable]
 	public class FreeFormPoints
@@ -19,20 +19,20 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Light2D
 			while (i < 360)
 			{
 				points.Add (new Vector2(Mathf.Cos (i * Mathf.Deg2Rad) * size, Mathf.Sin (i * Mathf.Deg2Rad) * size));
-
+				
 				i += 360f / (float)pointsCount;
 			}
 		}
 	}
 
 	public class LightFreeForm
-	{
+	{		
 		public Polygon2 polygon = new Polygon2(1);
 
 		public Rect worldRect = new Rect();
 
 		private bool update = true;
-
+		
 		public bool UpdateNeeded = false;
 
 		public void ForceUpdate()
@@ -42,7 +42,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Light2D
 
 		// only if something changed (UI / API)
 
-		public void Update(SmartLighting2D.Components.Night.Light2D source)
+		public void Update(Light2D source)
 		{
 			if (!update)
 			{
@@ -56,7 +56,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Light2D
 			if (source.freeFormPoints.points.Count != polygon.points.Length)
 			{
 				System.Array.Resize(ref polygon.points, source.freeFormPoints.points.Count);
-
+			
 				changeUpdate = true;
 			}
 
@@ -74,7 +74,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Light2D
 				{
 					changeUpdate = true;
 
-					
+					/// ????????
+					/// Debug.Log("do2 + " + point + ">"+ cPoint); 
 
 					polygon.points[i] = cPoint;
 				}
@@ -89,7 +90,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Light2D
 			{
 				source.size = minSize;
 			}
-
+		
 			if (changeUpdate)
 			{
 				UpdateNeeded = true;

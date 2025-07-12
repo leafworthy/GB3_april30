@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
 using UnityEngine;
+using FunkyCode.LightingSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth
+namespace FunkyCode.Rendering.Depth
 {
     public class Pass
     {
         public int layerId;
         public LightmapLayer layer;
 
-        public UnityEngine.Camera camera;
+        public Camera camera;
         public Vector2 offset;
 
         public List<DayLightCollider2D> colliderList;
@@ -22,7 +21,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth
         public List<DayLightTilemapCollider2D> tilemapColliderList;
         public int tilemapColliderCount;
 
-        public bool Setup(LightmapLayer slayer, UnityEngine.Camera camera)
+        public bool Setup(LightmapLayer slayer, Camera camera)
         {
             if (slayer.id < 0) {
                 return(false);
@@ -42,7 +41,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth
 
             // drawShadows = slayer.type != LayerType.MaskOnly;
             // drawMask = slayer.type != LayerType.ShadowsOnly;
-
+            
             return(true);
         }
     }

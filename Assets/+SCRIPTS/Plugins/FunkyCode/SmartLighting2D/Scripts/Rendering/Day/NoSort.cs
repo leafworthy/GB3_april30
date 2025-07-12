@@ -1,10 +1,7 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day.Masks;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day.Shadow;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using UnityEngine;
+﻿using UnityEngine;
+using FunkyCode.LightSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day
+namespace FunkyCode.Rendering.Day
 {
     public static class NoSort
     {
@@ -15,12 +12,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day
 
             if (drawShadows)
             {
-                Day.Shadow.Shadow.Begin();
+                Day.Shadow.Begin();
 
                 Shadow.DrawCollider(pass);
                 Shadow.DrawTilemapCollider(pass);
 
-                Day.Shadow.Shadow.End();
+                Day.Shadow.End();
 
                 Shadow.DrawColliderFill(pass);
 
@@ -43,7 +40,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day
                 {
                     return;
                 }
-
+                
                 // regular sprites
 
                 SpriteRenderer2D.currentTexture = null;
@@ -60,7 +57,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day
                     switch(id.mainShape.maskType)
                     {
                         case DayLightCollider2D.MaskType.Sprite:
-
+                        
                             SpriteRenderer2D.Draw(id, pass.offset);
 
                         break;
@@ -126,13 +123,16 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day
                     return;
                 }
 
-                Lighting2D.materials.shadow.GetDayCPUShadow().SetPass(0);
+                Material material = Lighting2D.Materials.shadow.GetDayCPUShadow();
+                material.SetColor("_Darkness", Lighting2D.DayLightingSettings.ShadowColor);
+
+                material.SetPass(0);
                 GL.Begin(GL.TRIANGLES);
 
                 for(int i = 0; i < pass.colliderCount; i++)
                 {
                     DayLightCollider2D id = pass.colliderList[i];
-
+                    
                     if (id.shadowLayer != pass.layerId)
                     {
                         continue;
@@ -142,11 +142,10 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day
                     {
                         case DayLightCollider2D.ShadowType.FillCollider2D:
                         case DayLightCollider2D.ShadowType.FillSpritePhysicsShape:
-
-                            Day.Shadow.Shadow.DrawFill(id, pass.offset);
+                            Day.Shadow.DrawFill(id, pass.offset); 
 
                         break;
-                    }
+                    }             
                 }
 
                 GL.End();
@@ -162,7 +161,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day
                 for(int i = 0; i < pass.colliderCount; i++)
                 {
                     DayLightCollider2D id = pass.colliderList[i];
-
+                    
                     if (id.shadowLayer != pass.layerId)
                     {
                         continue;
@@ -173,10 +172,10 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day
                         case DayLightCollider2D.ShadowType.SpritePhysicsShape:
                         case DayLightCollider2D.ShadowType.Collider2D:
 
-                            Day.Shadow.Shadow.Draw(id, pass.offset);
+                            Day.Shadow.Draw(id, pass.offset);  
 
                         break;
-                    }
+                    }             
                 }
             }
 
@@ -190,13 +189,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day
                 for(int i = 0; i < pass.tilemapColliderCount; i++)
                 {
                     DayLightTilemapCollider2D id = pass.tilemapColliderList[i];
-
+                    
                     if (id.shadowLayer != pass.layerId)
                     {
                         continue;
                     }
 
-                    Day.Shadow.Shadow.DrawTilemap(id, pass.offset);
+                    Day.Shadow.DrawTilemap(id, pass.offset, pass.camera);                
                 }
             }
 

@@ -1,18 +1,19 @@
 ﻿using UnityEngine;
+using FunkyCode.LightSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
+namespace FunkyCode.LightingSettings
 {
 	[System.Serializable]
 	public class QualitySettings
 	{
 		public static string[] LightingSourceTextureSizeArray = new string[]{"Custom", "2048", "1024", "512", "256", "128",  "PixelPerfect"};
 
-		public HDR HDR = HDR.Half;
-	
 		public LightingSourceTextureSize lightTextureSize = LightingSourceTextureSize.px2048;
 		public LightingSourceTextureSize lightEffectTextureSize = LightingSourceTextureSize.px2048;
 		
 		public FilterMode lightFilterMode = FilterMode.Bilinear;
+		public FilterMode lightmapFilterMode = FilterMode.Bilinear;
+
 		public UpdateMethod updateMethod = UpdateMethod.LateUpdate;
 		public CoreAxis coreAxis = CoreAxis.XY;
 	
@@ -78,7 +79,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 
 			layers[0] = "Disabled";
 
-			layers[1] = "Enabled";
+			layers[1] = "Enabled (Masking)";
 
 			for(int i = 0; i < names.Length; i++) {
 				layers[i + 2] = names[i];
@@ -91,11 +92,10 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 	[System.Serializable]
 	public class DayLightingSettings
 	{
-		[Range(0, 1)]
-		public float alpha = 1;
-
 		[Range(0, 360)]
 		public float direction = 270;
+
+		public Color ShadowColor = Color.black;
 
 		[Range(0, 10)]
 		public float height = 1;
@@ -158,6 +158,14 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 	[System.Serializable]
 	public class EditorView
 	{
+		public int sceneViewLayer = 0;
+
+		public int gameViewLayer = 0;
+	}
+
+	[System.Serializable]
+	public class Gizmos
+	{
 		public EditorDrawGizmos drawGizmos = EditorDrawGizmos.Selected;
 		public EditorGizmosBounds drawGizmosBounds = EditorGizmosBounds.Disabled;
 		public EditorChunks drawGizmosChunks = EditorChunks.Disabled;
@@ -187,9 +195,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 		public float alpha = 0.5f;
 
 		public MeshModeShader shader = MeshModeShader.Additive;
-		public UnityEngine.Material[] materials = new UnityEngine.Material[1];
+		public Material[] materials = new Material[1];
 
-		public SortingLayer sortingLayer = new SortingLayer();
+		public LightingSettings.SortingLayer sortingLayer = new LightingSettings.SortingLayer();
 	}
 	
 	[System.Serializable]
@@ -231,23 +239,14 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 				case NormalMapTextureType.Texture:
 
 					return(texture);
-
-				case NormalMapTextureType.SecondaryTexture:
-
-					MaterialPropertyBlock matBlock = new MaterialPropertyBlock();
-					spriteRenderer.GetPropertyBlock(matBlock);
-
-					Texture secondaryTexture = matBlock.GetTexture("_SecondaryTex");
-
-					return(null);
 			}
 			
 			return(null);
 		}
 
-		public UnityEngine.Material SelectMaterial(UnityEngine.Material pixel, UnityEngine.Material direction)
+		public Material SelectMaterial(Material pixel, Material direction)
 		{
-			UnityEngine.Material material = pixel;
+			Material material = pixel;
 
 			if (type == NormalMapType.ObjectToLight)
 			{
@@ -332,6 +331,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 	public enum EditorGizmosBounds
 	{
 		Disabled, 
+		Enabled
+	}
+
+	public enum ShaderPreview
+	{
+		Disabled,
 		Enabled
 	}
 

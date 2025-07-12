@@ -1,12 +1,8 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightOcclusion2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
 using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Occlusion
+namespace FunkyCode
 {
     [ExecuteInEditMode]
     public class LightOcclusion2D : MonoBehaviour
@@ -188,7 +184,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Occlusion
 
             meshFilter.mesh = mesh;
 
-            meshRenderer.sharedMaterial = Lighting2D.materials.GetOcclusionBlur();
+            meshRenderer.sharedMaterial = Lighting2D.Materials.GetOcclusionBlur();
         }
 
         void GenerateMesh_Soft() {
@@ -296,7 +292,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Occlusion
 
             meshFilter.mesh = mesh;
 
-            meshRenderer.sharedMaterial = Lighting2D.materials.GetOcclusionEdge();
+            meshRenderer.sharedMaterial = Lighting2D.Materials.GetOcclusionEdge();
         }
     }
 }

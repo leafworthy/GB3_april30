@@ -1,7 +1,6 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
+namespace FunkyCode.Buffers
 {
     public static class Manager
     {
@@ -28,12 +27,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 					id.Light = light;
 
 					light.ForceUpdate();
-
+					
 					return(id);
 				}
 			}
-
-			return(AddBuffer(light));
+				
+			return(AddBuffer(light));		
 		}
 
 		static public void FreeBuffer(LightBuffer2D buffer)

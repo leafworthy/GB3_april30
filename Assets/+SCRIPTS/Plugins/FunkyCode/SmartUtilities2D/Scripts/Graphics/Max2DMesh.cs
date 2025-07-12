@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D.Polygon;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Graphics {
+namespace FunkyCode.Utilities {
 		
 	public class Mesh2DSubmesh {
 		public Vector2[] uv;
@@ -44,13 +44,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Graphics {
 		static public void Draw(Mesh mesh, Transform transform, Material material) {
 			Matrix4x4 matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
 
-			UnityEngine.Graphics.DrawMesh(mesh, matrix, material, 0);
+			Graphics.DrawMesh(mesh, matrix, material, 0);
 		}
 
 		static public void Draw(Mesh mesh, Material material) {
 			Matrix4x4 matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, 0),  new Vector3(1, 1, 1));
 
-			UnityEngine.Graphics.DrawMesh(mesh, matrix, material, 0);
+			Graphics.DrawMesh(mesh, matrix, material, 0);
 		}
 
 		static public Mesh CreatePolygon(Transform transform, Polygon2D polygon, float lineOffset, float lineWidth, bool connectedLine) {

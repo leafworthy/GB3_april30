@@ -1,18 +1,16 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extensions;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
 using UnityEngine;
+using FunkyCode.LightShape;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCollider2D
+namespace FunkyCode
 {
 	[System.Serializable]
 	public class LightColliderShape
 	{
-		public SmartLighting2D.Components.Light.LightCollider2D.ShadowType  shadowType = SmartLighting2D.Components.Light.LightCollider2D.ShadowType.SpritePhysicsShape;
-		public SmartLighting2D.Components.Light.LightCollider2D.MaskType maskType = SmartLighting2D.Components.Light.LightCollider2D.MaskType.Sprite;
-		public SmartLighting2D.Components.Light.LightCollider2D.MaskPivot maskPivot = SmartLighting2D.Components.Light.LightCollider2D.MaskPivot.TransformCenter;
+		public LightCollider2D.ShadowType shadowType = LightCollider2D.ShadowType.SpritePhysicsShape;
+		public LightCollider2D.MaskType maskType = LightCollider2D.MaskType.Sprite;
+		public LightCollider2D.MaskPivot maskPivot = LightCollider2D.MaskPivot.TransformCenter;
 
 		public LightColliderTransform transform2D = new LightColliderTransform();
 		public Transform transform;
@@ -28,67 +26,67 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 		public Collider3DShape collider3DShape = new Collider3DShape();
 
-		public Base GetShadowShape()
+		public LightShape.Base GetShadowShape()
 		{
 			switch(shadowType)
 			{
-				case SmartLighting2D.Components.Light.LightCollider2D.ShadowType.SpritePhysicsShape:
+				case LightCollider2D.ShadowType.SpritePhysicsShape:
 					return(spritePhysicsShape);
 
-				case SmartLighting2D.Components.Light.LightCollider2D.ShadowType.Collider2D:
+				case LightCollider2D.ShadowType.Collider2D:
 					return(collider2DShape);
 
-				case SmartLighting2D.Components.Light.LightCollider2D.ShadowType.Collider3D:
+				case LightCollider2D.ShadowType.Collider3D:
 					return(collider3DShape);
 
-				case SmartLighting2D.Components.Light.LightCollider2D.ShadowType.CompositeCollider2D:
+				case LightCollider2D.ShadowType.CompositeCollider2D:
 					return(compositeShape);
 
-				case SmartLighting2D.Components.Light.LightCollider2D.ShadowType.MeshRenderer:
+				case LightCollider2D.ShadowType.MeshRenderer:
 					return(meshShape);
 
-				case SmartLighting2D.Components.Light.LightCollider2D.ShadowType.SkinnedMeshRenderer:
+				case LightCollider2D.ShadowType.SkinnedMeshRenderer:
 					return(skinnedMeshShape);
 			}
 
 			return(null);
 		}
 
-		public Base GetMaskShape()
+		public LightShape.Base GetMaskShape()
 		{
 			switch(maskType) {
-				case SmartLighting2D.Components.Light.LightCollider2D.MaskType.Sprite:
+				case LightCollider2D.MaskType.Sprite:
 					return(spriteShape);
 
-				case SmartLighting2D.Components.Light.LightCollider2D.MaskType.BumpedSprite:
+				case LightCollider2D.MaskType.BumpedSprite:
 					return(spriteShape);
 
-				case SmartLighting2D.Components.Light.LightCollider2D.MaskType.SpritePhysicsShape:
+				case LightCollider2D.MaskType.SpritePhysicsShape:
 					return(spritePhysicsShape);
 
-				case SmartLighting2D.Components.Light.LightCollider2D.MaskType.CompositeCollider2D:
+				case LightCollider2D.MaskType.CompositeCollider2D:
 					return(compositeShape);
 
-				case SmartLighting2D.Components.Light.LightCollider2D.MaskType.Collider2D:
+				case LightCollider2D.MaskType.Collider2D:
 					return(collider2DShape);
 					
-				case SmartLighting2D.Components.Light.LightCollider2D.MaskType.Collider3D:
+				case LightCollider2D.MaskType.Collider3D:
 					return(collider3DShape);
 
-				case SmartLighting2D.Components.Light.LightCollider2D.MaskType.MeshRenderer:
+				case LightCollider2D.MaskType.MeshRenderer:
 					return(meshShape);
 
-				case SmartLighting2D.Components.Light.LightCollider2D.MaskType.BumpedMeshRenderer:
+				case LightCollider2D.MaskType.BumpedMeshRenderer:
 					return(meshShape);
 
-				case SmartLighting2D.Components.Light.LightCollider2D.MaskType.SkinnedMeshRenderer:
+				case LightCollider2D.MaskType.SkinnedMeshRenderer:
 					return(skinnedMeshShape);
 			}
 
 			return(null);
 		}
 		
-		public void SetTransform(SmartLighting2D.Components.Light.LightCollider2D lightCollider2D)
+		public void SetTransform(LightCollider2D lightCollider2D)
 		{
 			transform = lightCollider2D.transform;
 
@@ -108,14 +106,14 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 		public void ResetLocal()
 		{
-			Base shadowShape = GetShadowShape();
+			LightShape.Base shadowShape = GetShadowShape();
 
 			if (shadowShape != null) {
 				shadowShape.ResetLocal();
 				shadowShape.ResetWorld();
 			}
 
-			Base maskShape = GetMaskShape();
+			LightShape.Base maskShape = GetMaskShape();
 
 			if (maskShape != null)
 			{
@@ -126,14 +124,14 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 		public void ResetWorld()
 		{
-			Base shadowShape = GetShadowShape();
+			LightShape.Base shadowShape = GetShadowShape();
 
 			if (shadowShape != null)
 			{
 				shadowShape.ResetWorld();
 			}
 
-			Base maskShape = GetMaskShape();
+			LightShape.Base maskShape = GetMaskShape();
 
 			if (maskShape != null)
 			{
@@ -143,8 +141,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 		public bool RectOverlap(Rect rect)
 		{
-			Base shadowShape = GetShadowShape();
-			Base maskShape = GetMaskShape();
+			LightShape.Base shadowShape = GetShadowShape();
+			LightShape.Base maskShape = GetMaskShape();
 
 			if (shadowShape != null)
 			{
@@ -171,14 +169,14 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 		public Rect GetWorldRect()
 		{
-			Base shadowShape = GetShadowShape();
+			LightShape.Base shadowShape = GetShadowShape();
 
 			if (shadowShape != null)
 			{
 				return(shadowShape.GetWorldRect());
 			}
 
-			Base maskShape = GetMaskShape();
+			LightShape.Base maskShape = GetMaskShape();
 
 			if (maskShape != null)
 			{
@@ -190,7 +188,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 		public int GetSortingOrder()
 		{
-			Base shadowShape = GetShadowShape();
+			LightShape.Base shadowShape = GetShadowShape();
 
 			if (shadowShape != null)
 			{
@@ -202,7 +200,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 				}
 			}
 
-			Base maskShape = GetMaskShape();
+			LightShape.Base maskShape = GetMaskShape();
 
 			if (maskShape != null)
 			{
@@ -219,7 +217,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 		public int GetSortingLayer()
 		{
-			Base shadowShape = GetShadowShape();
+			LightShape.Base shadowShape = GetShadowShape();
 
 			if (shadowShape != null)
 			{
@@ -231,7 +229,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 				}
 			}
 
-			Base maskShape = GetMaskShape();
+			LightShape.Base maskShape = GetMaskShape();
 
 			if (maskShape != null)
 			{
@@ -248,14 +246,14 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 		public Rect GetIsoWorldRect()
 		{
-			Base shadowShape = GetShadowShape();
+			LightShape.Base shadowShape = GetShadowShape();
 
 			if (shadowShape != null)
 			{
 				return(shadowShape.GetIsoWorldRect());
 			}
 
-			Base maskShape = GetMaskShape();
+			LightShape.Base maskShape = GetMaskShape();
 
 			if (maskShape != null)
 			{
@@ -267,7 +265,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 		public List<MeshObject> GetMeshes()
 		{
-			Base maskShape = GetMaskShape();
+			LightShape.Base maskShape = GetMaskShape();
 
 			if (maskShape != null)
 			{
@@ -279,7 +277,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 		public List<Polygon2> GetPolygonsLocal()
 		{
-			Base shadowShape = GetShadowShape();
+			LightShape.Base shadowShape = GetShadowShape();
 
 			if (shadowShape != null)
 			{
@@ -291,7 +289,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 		public List<Polygon2> GetPolygonsWorld()
 		{
-			Base shadowShape = GetShadowShape();
+			LightShape.Base shadowShape = GetShadowShape();
 
 			if (shadowShape != null)
 			{
@@ -303,36 +301,36 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 		public Vector2 GetPivotPoint()
 		{
-			Base shadowShape = GetShadowShape();
+			LightShape.Base shadowShape = GetShadowShape();
 
 			if (shadowShape != null)
 			{
 				switch(maskPivot)
 				{
-					case SmartLighting2D.Components.Light.LightCollider2D.MaskPivot.TransformCenter:
+					case LightCollider2D.MaskPivot.TransformCenter:
 						return(shadowShape.GetPivotPoint_TransformCenter());
 
-					case SmartLighting2D.Components.Light.LightCollider2D.MaskPivot.ShapeCenter:
+					case LightCollider2D.MaskPivot.ShapeCenter:
 						return(shadowShape.GetPivotPoint_ShapeCenter());
 
-					case SmartLighting2D.Components.Light.LightCollider2D.MaskPivot.LowestY:
+					case LightCollider2D.MaskPivot.LowestY:
 						return(shadowShape.GetPivotPoint_LowestY());
 				}
 			}
 
-			Base maskShape = GetMaskShape();
+			LightShape.Base maskShape = GetMaskShape();
 
 			if (maskShape != null) 
 			{
 				switch(maskPivot)
 				{
-					case SmartLighting2D.Components.Light.LightCollider2D.MaskPivot.TransformCenter:
+					case LightCollider2D.MaskPivot.TransformCenter:
 						return(maskShape.GetPivotPoint_TransformCenter());
 
-					case SmartLighting2D.Components.Light.LightCollider2D.MaskPivot.ShapeCenter:
+					case LightCollider2D.MaskPivot.ShapeCenter:
 						return(maskShape.GetPivotPoint_ShapeCenter());
 
-					case SmartLighting2D.Components.Light.LightCollider2D.MaskPivot.LowestY:
+					case LightCollider2D.MaskPivot.LowestY:
 						return(maskShape.GetPivotPoint_LowestY());
 				}
 			}
@@ -343,7 +341,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 		public bool IsEdgeCollider()
 		{
 			switch(shadowType) {
-				case SmartLighting2D.Components.Light.LightCollider2D.ShadowType.Collider2D:
+				case LightCollider2D.ShadowType.Collider2D:
 					return(collider2DShape.edgeCollider2D);
 			}
 			

@@ -1,18 +1,15 @@
-﻿using __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SpriteExtension;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using FunkyCode.LightingSettings;
+using FunkyCode.LightSettings;
 
-namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Day
+namespace FunkyCode
 {
 	[CanEditMultipleObjects]
 	[CustomEditor(typeof(DayLightCollider2D))]
-	public class DayLightCollider2DEditor : UnityEditor.Editor
+	public class DayLightCollider2DEditor : Editor
 	{
 		private DayLightCollider2D dayLightCollider2D;
 
@@ -21,6 +18,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Day
 
 		private SerializedProperty shadowDistance;
 		private SerializedProperty shadowThickness;
+		private SerializedProperty shadowEffect;
 		private SerializedProperty shadowSoftness;
 		private SerializedProperty shadowTranslucency;
 
@@ -33,13 +31,15 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Day
 		private SerializedProperty depthFalloff;
 
 		private SerializedProperty depthCustomValue;
-
+		
 		private void InitProperties()
 		{
 			shadowType = serializedObject.FindProperty("shadowType");
 			shadowLayer = serializedObject.FindProperty("shadowLayer");
 			shadowDistance = serializedObject.FindProperty("shadowDistance");
 			shadowTranslucency = serializedObject.FindProperty("shadowTranslucency");
+
+			shadowEffect = serializedObject.FindProperty("shadowEffect");
 			shadowSoftness = serializedObject.FindProperty("shadowSoftness");
 
 			shadowThickness = serializedObject.FindProperty("shadowThickness");
@@ -58,7 +58,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Day
 			dayLightCollider2D = target as DayLightCollider2D;
 
 			InitProperties();
-
+			
 			Undo.undoRedoPerformed += RefreshAll;
 		}
 
@@ -76,6 +76,13 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Day
 		{
 			DayLightCollider2D script = target as DayLightCollider2D;
 
+			if (!UsesShadows() && !UsesMask() && !UsesDepth())
+			{
+				EditorGUILayout.HelpBox("Day Layers are not included in Lightmap Presets \n", MessageType.Warning);
+				
+				return;
+			}
+
 			if (UsesShadows())
 			{
 				// Shadow Properties
@@ -85,12 +92,19 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Day
 				{
 					shadowLayer.intValue = EditorGUILayout.Popup("Shadow Layer (Day)", shadowLayer.intValue, Lighting2D.Profile.layers.dayLayers.GetNames());
 
+					if (script.mainShape.shadowType == DayLightCollider2D.ShadowType.SpritePhysicsShape || script.mainShape.shadowType == DayLightCollider2D.ShadowType.Collider2D || script.mainShape.shadowType == DayLightCollider2D.ShadowType.FillSpritePhysicsShape)
+					{
+						EditorGUILayout.PropertyField(shadowEffect, new GUIContent ("Shadow Effect"));
+
+						if (dayLightCollider2D.shadowEffect == DayLightCollider2D.ShadowEffect.Softness)
+						{
+							EditorGUILayout.PropertyField(shadowSoftness, new GUIContent ("Shadow Softness"));
+						}
+					}
+					
 					if (script.mainShape.shadowType != DayLightCollider2D.ShadowType.FillCollider2D && script.mainShape.shadowType != DayLightCollider2D.ShadowType.FillSpritePhysicsShape)
 					{
 						EditorGUILayout.PropertyField(shadowDistance, new GUIContent ("Shadow Distance"));
-
-
-						EditorGUILayout.PropertyField(shadowSoftness, new GUIContent ("Shadow Softness"));
 					}
 
 					if (script.mainShape.shadowType == DayLightCollider2D.ShadowType.SpriteProjection)
@@ -107,11 +121,11 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Day
 			if (UsesMask())
 			{
 				EditorGUILayout.PropertyField(maskType, new GUIContent ("Mask Type"));
-
+				
 				if (script.mainShape.maskType != DayLightCollider2D.MaskType.None)
 				{
 					maskLayer.intValue = EditorGUILayout.Popup("Mask Layer (Day)", maskLayer.intValue, Lighting2D.Profile.layers.dayLayers.GetNames());
-
+					
 					if (script.mainShape.maskType == DayLightCollider2D.MaskType.BumpedSprite)
 					{
 						GUIBumpMapMode.DrawDay(script.normalMapMode);
@@ -167,15 +181,15 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Day
 			}
 
 			serializedObject.ApplyModifiedProperties();
-
+			
 			if (GUILayout.Button("Update"))
 			{
-				PhysicsShapeManager.Clear();
+				SpriteExtension.PhysicsShapeManager.Clear();
 
 				foreach(UnityEngine.Object target in targets)
 				{
 					DayLightCollider2D daylightCollider2D = target as DayLightCollider2D;
-
+					
 					daylightCollider2D.mainShape.ResetLocal();
 
 					daylightCollider2D.Initialize();
@@ -197,7 +211,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Day
 
 				if (!EditorApplication.isPlaying)
 				{
-					EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+					EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 				}
 			}
 		}

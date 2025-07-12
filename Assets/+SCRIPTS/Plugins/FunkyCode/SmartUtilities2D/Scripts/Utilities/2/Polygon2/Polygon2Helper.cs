@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
 using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2
+namespace FunkyCode.Utilities
 {
 	public static class Polygon2Helper
 	{
-		static public Pair2 GetAxis(Polygon2 polygon, float rotation) {	
+		static public Pair2 GetAxis(Polygon2 polygon, float rotation)
+		{	
 			Pair2 pair = new Pair2(Vector2.zero, Vector2.zero);
 
-			if (polygon == null) {
+			if (polygon == null)
+			{
 				return(pair);
 			}
 
@@ -33,18 +33,19 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Poly
 				tid.x = Mathf.Cos(angle2) * dist2;
 				tid.y = Mathf.Sin(angle2) * dist2;
 
-				if (minX > tid.x) {
+				if (minX > tid.x)
+				{
 					minX = tid.x;
 
 					pair.A = id;
 				}
 
-				if (maxX < tid.x) {
+				if (maxX < tid.x)
+				{
 					maxX = tid.x;
 
 					pair.B = id;
 				}
-
 			}
 
 			return(pair);

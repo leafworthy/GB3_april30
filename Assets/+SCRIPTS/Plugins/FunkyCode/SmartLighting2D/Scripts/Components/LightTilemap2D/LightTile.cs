@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Sprite_Mesh;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
 using UnityEngine;
+using FunkyCode.LightTilemapCollider;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D
+namespace FunkyCode
 {
 	[System.Serializable]
 	public class LightTile
@@ -79,7 +77,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 			worldRotation = 0;
 		}
 
-		public void UpdateTransform(Base tilemap)
+		public void UpdateTransform(LightTilemapCollider.Base tilemap)
 		{
 			if (worldPosition != null)
 			{
@@ -92,7 +90,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 		}
 
 		// Remove
-		public Vector2 GetWorldPosition(Base tilemap)
+		public Vector2 GetWorldPosition(LightTilemapCollider.Base tilemap)
 		{
 			if (worldPosition == null)
 			{
@@ -109,7 +107,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 			this.localPolygons = localPolygons;
 		}
 
-		public List<Polygon2> GetWorldPolygons(Base tilemap)
+		public List<Polygon2> GetWorldPolygons(LightTilemapCollider.Base tilemap)
 		{
 			if (worldPolygons == null)
 			{
@@ -170,7 +168,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 			return(worldPolygons);
 		}
 
-		public List<Polygon2> GetLocalPolygons(Base tilemap)
+		public List<Polygon2> GetLocalPolygons(LightTilemapCollider.Base tilemap)
 		{
 			if (occluded)
 			{
@@ -261,7 +259,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 			return(shapeMesh);
 		}
 
-		public static MeshObject GetStaticMesh(Base tilemap)
+		public static MeshObject GetStaticMesh(LightTilemapCollider.Base tilemap)
 		{
 			switch(tilemap.TilemapType())
 			{

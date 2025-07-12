@@ -1,8 +1,8 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCollider2D;
+﻿
 using UnityEngine;
+using FunkyCode.LightSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
+namespace FunkyCode
 {
 	[System.Serializable]
 	public class LayerSetting
@@ -17,7 +17,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 		public int shadowEffectLayer = 0;
 
 		public LightLayerMaskLit maskLit = LightLayerMaskLit.AlwaysLit;
-		public float maskLitDistance = 10;
+		public float maskLitDistance = 1;
 
 		public int GetLayerID()
 		{
@@ -77,15 +77,15 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 					}
 						else
 					{
-						float y = position.y - position.x / 2;
+						float y = position.y - position.x / 2;	
 
 						return(LitAbove(y, layerSetting));
 					}
-
+				
 				case MaskLit.Custom:
 
 					return(new Color(maskLitCustom, maskLitCustom, maskLitCustom, 1));
-
+				
 				case MaskLit.LitAbove:
 
 					return(LitAbove(position.y, layerSetting));
@@ -102,8 +102,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 					return(Color.black);
 
 				default:
-
-					return(new Color(1, 1, 1, maskTranslucency));
+				
+					return(new Color(1, 1, 1, maskTranslucency));	
 			}
 		}
 
@@ -119,7 +119,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 			{
 				return(new Color(maskLitCustom, maskLitCustom, maskLitCustom, 1));
 			}
-
+			
 			if (layerSetting.maskLit == LightLayerMaskLit.AboveLit)
 			{
 				return(LitAbove(position.y, layerSetting));
@@ -127,7 +127,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 				else if (layerSetting.maskLit == LightLayerMaskLit.NeverLit)
 			{
 				return(Color.black);
-			}
+			} 
 				else
 			{
 				return(new Color(1, 1, 1, maskTranslucency));
@@ -136,13 +136,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 
 		public static Color LitAbove(float positionDistance, LayerSetting layerSetting)
 		{
-			//layerSetting.maskLitDistance
 			float effectDistance = layerSetting.maskLitDistance;
 			float q = (positionDistance + effectDistance / 1.5f) / effectDistance;
 
 			q = Mathf.Min(q, 1);
 			q = Mathf.Max(q, 0);
-
+			
 			return(new Color(q, q, q, 1));
 		}
 	}

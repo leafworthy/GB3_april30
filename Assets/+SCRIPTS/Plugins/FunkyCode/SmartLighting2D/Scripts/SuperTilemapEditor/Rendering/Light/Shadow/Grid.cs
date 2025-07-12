@@ -1,5 +1,6 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using FunkyCode.Utilities;
 
 #if (SUPER_TILEMAP_EDITOR)
 
@@ -32,12 +33,12 @@ using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
         }
     }
 
-#else
+#else 
 
-    namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SuperTilemapEditor.Rendering.Light.Shadow
+    namespace FunkyCode.SuperTilemapEditorSupport.Light.Shadow
     {
         public class Grid
-        {
+        { 
             static public void Draw(Light2D light, LightTilemapCollider2D id) {}
         }
     }

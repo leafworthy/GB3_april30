@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera
+namespace FunkyCode
 {
 	[System.Serializable]
 	public class LightingCameras
@@ -24,7 +24,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera
 		{
 			cameraSettings[id].id = id;
 			
-			return(cameraSettings[id]);
+			return cameraSettings[id];
 		}
 
 		public void Set(int id, CameraSettings settings)

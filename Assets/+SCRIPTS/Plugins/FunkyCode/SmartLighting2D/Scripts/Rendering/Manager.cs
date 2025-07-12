@@ -1,18 +1,16 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
+﻿using UnityEngine;
+using FunkyCode.LightingSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering
+namespace FunkyCode.Rendering.Manager
 {
     public static class Main
 	{
         public static void InternalUpdate()
         {
+			UpdateCameras();
+
+			CameraTransform.Update();
+			
             UpdateMaterials();
 
 			UpdateMainBuffers();
@@ -20,251 +18,282 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering
 
         public static void Render()
 		{
-			if (Lighting2D.disable)
+			if (Lighting2D.Disable)
 			{
 				return;
 			}
 
-            LightingCameras cameras = LightingManager2D.Get().cameras;
-
+            var cameras = LightingManager2D.Get().cameras;
 			if (cameras.Length < 1)
-			{
 				return;
-			}
 
 			UpdateLoop();
 			
-			if (LightBuffer2D.List.Count > 0)
-			{
-				foreach(LightBuffer2D buffer in LightBuffer2D.List)
-				{
-					buffer.Render();
-				}
-			}
-			
-			if (LightMainBuffer2D.List.Count > 0)
-			{
-				foreach(LightMainBuffer2D buffer in LightMainBuffer2D.List)
-				{
-					buffer.Render();
-				}
-			}
+			LightBuffer2D.List.ForEach(x => x.Render());
+			LightMainBuffer2D.List.ForEach(x => x.Render());
 		}
 
         private static void UpdateLoop()
 		{
-			// colliders
-
 			if (DayLightCollider2D.List.Count > 0)
-			{
 				for(int id = 0; id < DayLightCollider2D.List.Count; id++)
-				{
 					DayLightCollider2D.List[id].UpdateLoop();
-				}
-			}
 			
 			if (LightCollider2D.List.Count > 0)
-			{
 				for(int id = 0; id < LightCollider2D.List.Count; id++)
-				{
 					LightCollider2D.List[id].UpdateLoop();
-				}
-			}
-
-			// lights
 
 			if (LightSprite2D.List.Count > 0)
-			{
 				for(int id = 0; id < LightSprite2D.List.Count; id++)
-				{
 					LightSprite2D.List[id].UpdateLoop();
-				}
-			}
 			
 			if (Light2D.List.Count > 0)
-			{
 				for(int id = 0; id < Light2D.List.Count; id++)
-				{
 					Light2D.List[id].UpdateLoop();
-				}
-			}
-
-			// mesh renderers
-
+		
 			if (OnRenderMode.List.Count > 0)
-			{
 				for(int id = 0; id < OnRenderMode.List.Count; id++)
-				{
 					OnRenderMode.List[id].UpdateLoop();
-				}
-			}
 		}
 
-        public static void UpdateMainBuffers()
+        public static void UpdateCameras()
 		{
 			// should reset materials
-			LightmapMaterials.ResetShaders();
+			
+			LightmapShaders.ResetShaders();
 
 			LightmapMaterials.SetDayLight();
 
-            LightingCameras cameras = LightingManager2D.Get().cameras;
+			MaterialSystem.Clear();
+
+            var cameras = LightingManager2D.Get().cameras;
 
 			for(int i = 0; i < cameras.Length; i++)
 			{
-				CameraSettings cameraSetting = cameras.Get(i);
-
-				bool isSceneView = cameraSetting.cameraType == CameraSettings.CameraType.SceneView;
+				var cameraSetting = cameras.Get(i);
 
 				for(int b = 0; b < cameraSetting.Lightmaps.Length; b++)
 				{
-					CameraLightmap cameraLightmap = cameraSetting.GetLightmap(b);
-
+					var cameraLightmap = cameraSetting.GetLightmap(b);
 					if (cameraLightmap.presetId >= Lighting2D.LightmapPresets.Length)
-					{
 						continue;
-					}
 
-					LightmapPreset lightmapPreset = Lighting2D.LightmapPresets[cameraLightmap.presetId];
+					var lightmapPreset = Lighting2D.LightmapPresets[cameraLightmap.presetId];
+
+					var buffer = LightMainBuffer2D.Get(false, cameraSetting, cameraLightmap, lightmapPreset);
+
+					if (buffer != null)
+					{
+						var camera = cameraSetting.GetCamera();
+						CameraTransform.GetCamera(camera);
+
+						PassLightmap(false, buffer, cameraSetting, cameraLightmap, lightmapPreset);
+					}
 	
-					LightMainBuffer2D buffer = LightMainBuffer2D.Get(cameraSetting, cameraLightmap, lightmapPreset);
-
-					if (buffer == null)
+					if (cameraLightmap.sceneView == CameraLightmap.SceneView.Enabled)
 					{
-						continue;
-					}
+						var sceneSettings = cameraSetting;
+						sceneSettings.cameraType = CameraSettings.CameraType.SceneView;
+
+						buffer = LightMainBuffer2D.Get(true, sceneSettings, cameraLightmap, lightmapPreset);
+
+						if (buffer != null)
+						{
+							Camera camera = sceneSettings.GetCamera();
+							CameraTransform.GetCamera(camera);
 						
-					buffer.cameraLightmap.rendering = cameraLightmap.rendering;
-
-					buffer.cameraLightmap.overlay = cameraLightmap.overlay;
-
-					buffer.cameraLightmap.renderLayerId = cameraLightmap.renderLayerId;
-
-					if (buffer.cameraLightmap.customMaterial != cameraLightmap.customMaterial)
-					{
-						buffer.cameraLightmap.customMaterial = cameraLightmap.customMaterial;
-
-						buffer.ClearMaterial();
-					}
-
-					if (buffer.cameraLightmap.overlayMaterial != cameraLightmap.overlayMaterial)
-					{
-						buffer.cameraLightmap.overlayMaterial = cameraLightmap.overlayMaterial;
-
-						buffer.ClearMaterial();
-					}
-
-					if (cameraLightmap.rendering == CameraLightmap.Rendering.Disabled)
-					{
-						continue;
-					}
-
-					UnityEngine.Camera camera = cameraSetting.GetCamera();
-
-					switch(cameraLightmap.output)
-					{
-						case CameraLightmap.Output.Materials:
-
-							foreach(UnityEngine.Material material in cameraLightmap.GetMaterials().materials)
-							{
-								if (material == null)
-								{
-									continue;
-								}
-
-								// adding up // Get Free LightMap
-
-								// Get Free ID from material
-
-								// + is scene view
-							
-								LightmapMaterials.SetMaterial(1, material, camera, buffer.renderTexture);			
-							}
-
-						break;
-
-						case CameraLightmap.Output.Shaders:
-
-							// Get Free ID from shaders
-
-							LightmapMaterials.SetShaders(isSceneView, 1, camera, buffer.renderTexture);
-
-						break;
-
-						case CameraLightmap.Output.Pass1:
-
-							LightmapMaterials.SetShaders(isSceneView, 1, camera, buffer.renderTexture);
-
-						break;
-
-						case CameraLightmap.Output.Pass2:
-
-							LightmapMaterials.SetShaders(isSceneView, 2, camera, buffer.renderTexture);
-
-						break;
-
-						case CameraLightmap.Output.Pass3:
-
-							LightmapMaterials.SetShaders(isSceneView, 3, camera, buffer.renderTexture);
-
-						break;
-
-						case CameraLightmap.Output.Pass4:
-
-							LightmapMaterials.SetShaders(isSceneView, 4, camera, buffer.renderTexture);
-
-						break;
+							PassLightmap(true, buffer, sceneSettings, cameraLightmap, lightmapPreset);
+						}
 					}
 				}
 			}
 
-			// Update Main Buffers
-
-			if (LightMainBuffer2D.List.Count > 0)
+			if (MaterialSystem.Count > 0)
 			{
-				for(int i = 0; i < LightMainBuffer2D.List.Count; i++)
+				for(int i = 0; i < MaterialSystem.Count; i++)
 				{
-					LightMainBuffer2D buffer = LightMainBuffer2D.List[i];
+					var material = MaterialSystem.materialPasses[i].material;
 
-					if (buffer != null)
-					{
-						buffer.Update();
-					}
+					LightmapMaterials.ClearMaterial(material);
 				}
-
-				foreach(LightMainBuffer2D buffer in LightMainBuffer2D.List)
+				
+				for(int i = 0; i < MaterialSystem.Count; i++)
 				{
-					if (Lighting2D.disable)
-					{
-						buffer.updateNeeded = false;	
+					var pass = MaterialSystem.materialPasses[i];
 
-						return;
+					int passId = pass.passId;
+
+					if (passId == 0)
+					{
+						passId = 1; // incremental
 					}
 
-					CameraSettings cameraSettings = buffer.cameraSettings;
-					CameraLightmap cameraBufferPreset = buffer.cameraLightmap;
-					
-					bool render = cameraBufferPreset.rendering != CameraLightmap.Rendering.Disabled;
+					LightmapMaterials.SetMaterial(passId, pass);
+				}				
+			}
+		}
 
-					if (render && cameraSettings.GetCamera() != null)
+		public static void PassLightmap(bool isSceneView, LightMainBuffer2D buffer, CameraSettings cameraSetting, CameraLightmap cameraLightmap, LightmapPreset lightmapPreset)
+		{
+			// bool isSceneView = false; // bool isSceneView = cameraSetting.cameraType == CameraSettings.CameraType.SceneView;
+
+			buffer.cameraLightmap.rendering = cameraLightmap.rendering;
+
+			buffer.cameraLightmap.overlay = cameraLightmap.overlay;
+
+			buffer.cameraLightmap.renderLayerId = cameraLightmap.renderLayerId;
+
+			if (buffer.cameraLightmap.customMaterial != cameraLightmap.customMaterial)
+			{
+				buffer.cameraLightmap.customMaterial = cameraLightmap.customMaterial;
+
+				buffer.ClearMaterial();
+			}
+
+			if (buffer.cameraLightmap.overlayMaterial != cameraLightmap.overlayMaterial)
+			{
+				buffer.cameraLightmap.overlayMaterial = cameraLightmap.overlayMaterial;
+
+				buffer.ClearMaterial();
+			}
+
+			if (cameraLightmap.rendering == CameraLightmap.Rendering.Disabled)
+			{
+				return;
+			}
+
+			Camera camera = cameraSetting.GetCamera();
+
+			switch(cameraLightmap.output)
+			{
+				case CameraLightmap.Output.Materials:
+
+					foreach(Material material in cameraLightmap.GetMaterials().materials)
 					{
-						buffer.updateNeeded = true;
+						if (material == null)
+						{
+							continue;
+						}
+
+						int matPassId = 0;
+
+						switch(cameraLightmap.materialsType)
+						{
+							case CameraLightmap.MaterialType.Pass1: matPassId = 1; break;
+							case CameraLightmap.MaterialType.Pass2: matPassId = 2; break;
+							case CameraLightmap.MaterialType.Pass3: matPassId = 3; break;
+							case CameraLightmap.MaterialType.Pass4: matPassId = 4; break;
+							case CameraLightmap.MaterialType.Pass5: matPassId = 5; break;
+							case CameraLightmap.MaterialType.Pass6: matPassId = 6; break;
+							case CameraLightmap.MaterialType.Pass7: matPassId = 7; break;
+							case CameraLightmap.MaterialType.Pass8: matPassId = 8; break;
+						}
+						
+						MaterialSystem.Add(material, isSceneView, matPassId, camera, buffer.renderTexture, lightmapPreset);			
 					}
-						else
-					{
-						buffer.updateNeeded = false;
-					}
-				}
+
+				break;
+
+				case CameraLightmap.Output.Shaders:
+
+					// incremental ID
+
+					int passId = 1; // incremental
+
+					LightmapShaders.SetShaders(isSceneView, passId, camera, buffer.renderTexture, lightmapPreset);
+
+				break;
+
+				case CameraLightmap.Output.Pass1:
+
+					LightmapShaders.SetShaders(isSceneView, 1, camera, buffer.renderTexture, lightmapPreset);
+
+				break;
+
+				case CameraLightmap.Output.Pass2:
+
+					LightmapShaders.SetShaders(isSceneView, 2, camera, buffer.renderTexture, lightmapPreset);
+
+				break;
+
+				case CameraLightmap.Output.Pass3:
+
+					LightmapShaders.SetShaders(isSceneView, 3, camera, buffer.renderTexture, lightmapPreset);
+
+				break;
+
+				case CameraLightmap.Output.Pass4:
+
+					LightmapShaders.SetShaders(isSceneView, 4, camera, buffer.renderTexture, lightmapPreset);
+
+				break;
+
+				case CameraLightmap.Output.Pass5:
+
+					LightmapShaders.SetShaders(isSceneView, 5, camera, buffer.renderTexture, lightmapPreset);
+
+				break;
+
+				case CameraLightmap.Output.Pass6:
+
+					LightmapShaders.SetShaders(isSceneView, 6, camera, buffer.renderTexture, lightmapPreset);
+
+				break;
+
+				case CameraLightmap.Output.Pass7:
+
+					LightmapShaders.SetShaders(isSceneView, 7, camera, buffer.renderTexture, lightmapPreset);
+
+				break;
+
+				case CameraLightmap.Output.Pass8:
+
+					LightmapShaders.SetShaders(isSceneView, 8, camera, buffer.renderTexture, lightmapPreset);
+
+				break;
 			}
 		}
 		
 		public static void UpdateMaterials()
 		{
-			if (Lighting2D.materials.Initialize(Lighting2D.QualitySettings.HDR))
+			if (Lighting2D.Materials.Initialize())
 			{
 				LightMainBuffer2D.Clear();
 				LightBuffer2D.Clear();
 
 				Light2D.ForceUpdateAll();
+			}
+		}
+
+		public static void UpdateMainBuffers()
+		{
+			if (LightMainBuffer2D.List.Count <= 0)
+			{
+				return;
+			}
+
+			for(int i = 0; i < LightMainBuffer2D.List.Count; i++)
+			{
+				LightMainBuffer2D.List[i]?.Update();
+			}
+
+			for(int i = 0; i < LightMainBuffer2D.List.Count; i++)
+			{
+				var buffer = LightMainBuffer2D.List[i];
+
+				if (Lighting2D.Disable)
+				{
+					buffer.updateNeeded = false;	
+
+					continue;
+				}
+
+				var cameraSettings = buffer.cameraSettings;
+				var cameraLightmap = buffer.cameraLightmap;
+				
+				bool render = cameraLightmap.rendering != CameraLightmap.Rendering.Disabled;
+			
+				buffer.updateNeeded = (render && cameraSettings.GetCamera() != null);
 			}
 		}
     }

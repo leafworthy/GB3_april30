@@ -1,7 +1,6 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCollider2D
+namespace FunkyCode
 {
 	public class LightColliderTransform
 	{
@@ -13,9 +12,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 			set => update = value;
 		}
 
-		public Vector2 position = Vector2.zero;
-		public Vector2 scale = Vector3.zero;
-		public float rotation = 0;
+		public Vector2 Position {private set; get;}
+		public Vector2 Scale {private set; get;}
+		public float Rotation {private set; get;}
 		public float shadowHeight = 0;
 		public float shadowTranslucency = 0;
 
@@ -26,20 +25,27 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 		private LightColliderShape shape;
 
-		private SmartLighting2D.Components.Light.LightCollider2D lightCollider;
+		private LightCollider2D lightCollider;
 
-		public void SetShape(LightColliderShape shape, SmartLighting2D.Components.Light.LightCollider2D lightCollider)
+		public LightColliderTransform()
+		{
+			Position = Vector2.zero;
+			Rotation = 0;
+			Scale = Vector3.zero;
+		}
+
+		public void SetShape(LightColliderShape shape, LightCollider2D lightCollider)
 		{
 			this.shape = shape;
 
 			this.lightCollider = lightCollider;
 		}
 
-		public void  Reset()
+		public void Reset()
 		{
-			position = Vector2.zero;
-			rotation = 0;
-			scale = Vector3.zero;
+			Position = Vector2.zero;
+			Rotation = 0;
+			Scale = Vector3.zero;
 		}
 
 		private void UpdateTransform(Transform transform)
@@ -50,16 +56,16 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 			Vector2 scale2D = transform.lossyScale;
 			float rotation2D = LightingPosition.GetRotation2D(transform);
 
-			if (scale != scale2D)
+			if (Scale != scale2D)
 			{
-				scale = scale2D;
+				Scale = scale2D;
 
 				update = true;
 			}
 
-			if (rotation != rotation2D)
+			if (Rotation != rotation2D)
 			{
-				rotation = rotation2D;
+				Rotation = rotation2D;
 
 				update = true;
 			}
@@ -71,9 +77,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 				update = true;
 			}
 
-			if (position != position2D)
+			if (Position != position2D)
 			{
-				position = position2D;
+				Position = position2D;
 
 				update = true;
 			}
@@ -82,8 +88,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 		public void Update(bool force)
 		{
 			Transform transform = shape.transform;
-
-			if (transform == null)
+			if (!transform)
 			{
 				return;
 			}
@@ -100,21 +105,20 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 				shadowTranslucency = lightCollider.shadowTranslucency;
 
 				update = true;
-			}
+			}	
 
-			bool checkShapeSprite = shape.maskType == SmartLighting2D.Components.Light.LightCollider2D.MaskType.SpritePhysicsShape || shape.shadowType == SmartLighting2D.Components.Light.LightCollider2D.ShadowType.SpritePhysicsShape;
-			bool checkMaskSprite = shape.maskType == SmartLighting2D.Components.Light.LightCollider2D.MaskType.Sprite || shape.maskType == SmartLighting2D.Components.Light.LightCollider2D.MaskType.BumpedSprite;
+			bool checkShapeSprite = shape.maskType == LightCollider2D.MaskType.SpritePhysicsShape || shape.shadowType == LightCollider2D.ShadowType.SpritePhysicsShape;
+			bool checkMaskSprite = shape.maskType == LightCollider2D.MaskType.Sprite || shape.maskType == LightCollider2D.MaskType.BumpedSprite;
 
 			if (checkShapeSprite || checkMaskSprite)
 			{
-				SpriteRenderer spriteRenderer = shape.spriteShape.GetSpriteRenderer();
-
-				if (spriteRenderer != null)
+				var spriteRenderer = shape.spriteShape.GetSpriteRenderer();
+				if (spriteRenderer)
 				{
 					if (spriteRenderer.size != size)
 					{
 						size = spriteRenderer.size;
-
+						
 						update = true;
 					}
 
@@ -127,7 +131,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 
 						update = true;
 					}
-
+					
 					if (shape.spriteShape.GetOriginalSprite() != spriteRenderer.sprite)
 					{
 						shape.ResetLocal();
@@ -137,18 +141,17 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCo
 				}
 			}
 
-			bool checkShapeMesh = shape.maskType == SmartLighting2D.Components.Light.LightCollider2D.MaskType.MeshRenderer || shape.shadowType == SmartLighting2D.Components.Light.LightCollider2D.ShadowType.MeshRenderer;
+			bool checkShapeMesh = shape.maskType == LightCollider2D.MaskType.MeshRenderer || shape.shadowType == LightCollider2D.ShadowType.MeshRenderer;
 
 			if (checkShapeMesh)
 			{
-				MeshFilter meshFilter = shape.meshShape.GetMeshFilter();
-
-				if (meshFilter != null)
+				var meshFilter = shape.meshShape.GetMeshFilter();
+				if (meshFilter)
 				{
-					if (meshFilter.sharedMesh != shape.meshShape.mesh)
+					if (meshFilter.sharedMesh != shape.meshShape.Mesh)
 					{
 						shape.ResetLocal();
-
+						
 						update = true;
 					}
 				}

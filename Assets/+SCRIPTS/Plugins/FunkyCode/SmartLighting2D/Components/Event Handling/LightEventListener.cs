@@ -1,96 +1,104 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling;
-using UnityEngine;
+﻿using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Event_Handling
+namespace FunkyCode
 {
-	[ExecuteInEditMode]
-	public class LightEventListener : MonoBehaviour
-	{
-		public float visibility = 0;
+    [ExecuteInEditMode]
+    public class LightEventListener : MonoBehaviour
+    {
+        public bool useDistance = false;
 
-		public LightCollision2D? CollisionInfo = null;
+        public float visability = 0;
+        
+        public LightCollision2D? CollisionInfo = null;
 
-		private LightCollider2D lightCollider;
-		public LightCollision2D colliderrr;
+        private LightCollider2D lightCollider;
 
-		[SerializeField]
-		private Dictionary<Light2D, LightCollision2D> currentCollisions = new Dictionary<Light2D, LightCollision2D>();
+        private void OnEnable()
+        {
+            lightCollider = GetComponent<LightCollider2D>();
 
-		private List<LightCollision2D> collisionList = new List<LightCollision2D>();
+            lightCollider?.AddEvent(CollisionEvent);
+        }
 
-		private List<Light2D> toRemove = new List<Light2D>();
+        private void OnDisable()
+        {
+            lightCollider?.RemoveEvent(CollisionEvent);
+        }
 
-		private void OnEnable()
-		{
-			lightCollider = GetComponent<LightCollider2D>();
+        private void CollisionEvent(LightCollision2D collision)
+        {
+            if (collision.points != null)
+            {
+                if (CollisionInfo == null)
+                {
+                    CollisionInfo = collision;
+                }
+                    else
+                {
+                    if (CollisionInfo.Value.points != null)
+                    {
+                        if (collision.points.Count >= CollisionInfo.Value.points.Count)
+                        {
+                            CollisionInfo = collision;
+                        }
+                            else if (CollisionInfo.Value.light == collision.light)
+                        {
+                            CollisionInfo = collision;
+                        }
+                    }
+                }
 
-			lightCollider?.AddEvent(CollisionEvent);
-		}
+            }
+                else
+            {
+                CollisionInfo = null;
+            }
+        }
 
-		private void OnDisable()
-		{
-			currentCollisions.Clear();
-			lightCollider?.RemoveEvent(CollisionEvent);
-		}
+        private void Update()
+        {
+            visability = 0;
 
-		private void CollisionEvent(LightCollision2D collision)
-		{
-			if (currentCollisions.ContainsKey(collision.light))
-			{
-				currentCollisions[collision.light] = collision;
-				colliderrr = collision;
-				return;
-			}
+            if (CollisionInfo == null)
+            {
+                return;
+            }
 
-			currentCollisions.Add(collision.light, collision);
-			collisionList.Add(collision);
-			colliderrr = collision;
-		}
+            if (CollisionInfo.Value.points != null)
+            {
+                Polygon2 polygon = lightCollider.mainShape.GetPolygonsLocal()[0];
 
-		private void Update()
-		{
-			visibility = 0;
-			if (currentCollisions.Count <= 0) return;
-			foreach (var light2D in currentCollisions)
-			{
-				if (light2D.Key == null)
-				{
-					toRemove.Add(light2D.Key);
-					continue;
-				}
-				if ((light2D.Value.points == null) || (!light2D.Key.isActiveAndEnabled))
-				{
-					toRemove.Add(light2D.Key);
-					continue;
-				}
+                int pointsCount = polygon.points.Length;
+                int pointsInView = CollisionInfo.Value.points.Count;
 
-				if (light2D.Value.points.Count <= 0)
-				{
-					toRemove.Add(light2D.Key);
-					continue;
-				}
+                visability = (((float)pointsInView / pointsCount));
 
-				var distance = Vector2.Distance(light2D.Key.transform.position, transform.position);
-				if (distance > light2D.Key.size)
-				{
-					toRemove.Add(light2D.Key);
-					continue;
-				}
+                if (useDistance)
+                {
+                    if (CollisionInfo.Value.points.Count > 0)
+                    {
+                        float multiplier = 0;
 
-				visibility += Mathf.Max(0, light2D.Key.size - distance);
-			}
+                        for(int i = 0; i < CollisionInfo.Value.points.Count; i++)
+                        {
+                            Vector2 point = CollisionInfo.Value.points[i];
 
-			foreach (var key in toRemove)
-			{
-				currentCollisions.Remove(key);
-				var item = collisionList.FirstOrDefault((v) => v.light == key);
-				collisionList.Remove(item);
-			}
-			toRemove.Clear();
-		}
-	}
+                            float distance = Vector2.Distance(Vector2.zero, point);
+                            float pointMultipler = ( 1 - (distance / CollisionInfo.Value.light.size) ) * 2;
+
+                            pointMultipler = pointMultipler > 1 ? 1 : pointMultipler;
+                            pointMultipler = pointMultipler < 0 ? 0 : pointMultipler;
+    
+                            multiplier += pointMultipler;
+                        }
+
+                        visability *= ( multiplier / CollisionInfo.Value.points.Count );
+                    }
+                }
+            }
+        
+            CollisionInfo = null;
+        }
+    }
 }

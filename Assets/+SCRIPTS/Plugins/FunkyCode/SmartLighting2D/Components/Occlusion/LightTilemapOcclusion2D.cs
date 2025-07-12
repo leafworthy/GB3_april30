@@ -1,24 +1,21 @@
 ﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.Serialization;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightOcclusion2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemapOcclusion;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using SortingLayer = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.SortingLayer;
+using System.Reflection;
+using System.Runtime.Serialization;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Occlusion
-	{
+namespace FunkyCode
+{
 	[ExecuteInEditMode]
-	public class LightTilemapOcclusion2D : MonoBehaviour {
+	public class LightTilemapOcclusion2D : MonoBehaviour
+	{
 		public enum MapType {UnityEngineTilemapRectangle};
 
 		public MapType tilemapType = MapType.UnityEngineTilemapRectangle;
 
 		public bool onlyColliders = false;
 
-		public SortingLayer sortingLayer = new SortingLayer();
+		public LightingSettings.SortingLayer sortingLayer = new LightingSettings.SortingLayer();
 
 		private OcclusionMesh tilemapMesh = null;
 		private RectangleMap map = null;
@@ -30,20 +27,24 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Occlusion
 		MeshRenderer meshRenderer;
 		MeshFilter meshFilter;
 
-		private void OnEnable() {
+		private void OnEnable()
+		{
 			tilemap2D = GetComponent<Tilemap>();
 
 			Initialize();
 		}
 
-		public void Initialize() {
-			if (tilemap2D == null) {
+		public void Initialize()
+		{
+			if (tilemap2D == null)
+			{
 				return;
 			}
 			
 			SetupMap();
 
-			if (tileset == null) {
+			if (tileset == null)
+			{
 				tileset = OcclusionTileset.Load("Textures/OclussionMap");
 			}
 
@@ -52,17 +53,20 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Occlusion
 			ExportMesh();
 		}
 
-		public void Update() {
+		public void Update()
+		{
 			sortingLayer.ApplyToMeshRenderer(meshRenderer);
 		}
 
-		public void SetupMap() {
+		public void SetupMap()
+		{
 			map = new RectangleMap();
 
 			ITilemap tilemap = (ITilemap) FormatterServices.GetUninitializedObject(typeof(ITilemap));
 			typeof(ITilemap).GetField("m_Tilemap", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(tilemap, tilemap2D);
 
-			foreach (Vector3Int position in tilemap2D.cellBounds.allPositionsWithin) {
+			foreach (Vector3Int position in tilemap2D.cellBounds.allPositionsWithin)
+			{
 				TileData tileData = new TileData();
 
 				TileBase tilebase = tilemap2D.GetTile(position);
@@ -88,14 +92,18 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Occlusion
 			map.Init();
 		}
 
-		public void GenerateMesh() {
+		public void GenerateMesh()
+		{
 			tilemapMesh = new OcclusionMesh(tileset);
 
 			int x9y1, x1y9, x1y1, x0y1, x1y0, x9y9, x0y9, x9y0;
 
-			for(int x = 0; x < map.width; x++) {
-				for(int y = 0; y < map.height; y++) {
-					if (map.GetUnwalkableInt(x, y) == 1) {
+			for(int x = 0; x < map.width; x++)
+			{
+				for(int y = 0; y < map.height; y++)
+				{
+					if (map.GetUnwalkableInt(x, y) == 1)
+					{
 						continue;
 					}
 
@@ -324,13 +332,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Occlusion
 			meshRenderer = gameObject.GetComponent<MeshRenderer>();
 			if (meshRenderer == null) {
 
-				Material material = null;
-				if (Lighting2D.QualitySettings.HDR != HDR.Off) {
-					material = new Material(Shader.Find("Light2D/Internal/Multiply HDR"));
-				} else {
-					material = new Material(Shader.Find("Mobile/Particles/Multiply"));
-				}
-				
+				Material material = new Material(Shader.Find("Light2D/Internal/Multiply HDR"));
+			
 				material.mainTexture =  tileset.texture;
 
 				meshRenderer = gameObject.AddComponent<MeshRenderer>();

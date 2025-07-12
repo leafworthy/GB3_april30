@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
 using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Camera
+namespace FunkyCode
 {
     public class CameraTransform
     {
         public static List<CameraTransform> List = new List<CameraTransform>();
 
-        private UnityEngine.Camera camera = null;
+        private Camera camera = null;
         private Transform transform = null;
 
         private Polygon2 worldPolygon = null;
@@ -22,8 +21,27 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Camera
         private Vector2 scale = Vector2.one;
         private float size = 0;
 
+        public Camera Camera => camera;
+
+        public static void Update()
+        {
+            for(int id = 0; id < List.Count; id++)
+			{
+                var transform = List[id];
+
+                if (transform.Camera)
+                {
+                    transform.Update();
+                }
+                else
+                {
+                    List.Remove(transform);
+                }				
+			}
+        }
+
         // Change
-        public static float GetRadius(UnityEngine.Camera camera)
+        public static float GetRadius(Camera camera)
         {
             float cameraRadius = camera.orthographicSize;
 
@@ -37,29 +55,23 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Camera
             return(cameraRadius);
         }
 
-        public static Rect GetWorldRect(UnityEngine.Camera camera)
+        public static Rect GetWorldRect(Camera camera)
         {
-            CameraTransform cameraTransform = GetCamera(camera);
+            var cameraTransform = GetCamera(camera);
 
-            return(cameraTransform.WorldRect());
+            return cameraTransform.WorldRect();
         }
 
-        public static CameraTransform GetCamera(UnityEngine.Camera camera)
+        public static CameraTransform GetCamera(Camera camera)
         {
             if (camera == null)
-            {
-                UnityEngine.Debug.LogError("Camera == Null");
-            }
+                Debug.LogError("Camera == Null");
 
-            foreach(CameraTransform transform in List)
-            {
-                if (transform.camera == camera)
-                {
-                    return(transform);
-                }
-            }
+            CameraTransform cameraExists = List.Find(x => x.camera == camera);
+            if (cameraExists != null)
+                return cameraExists;
 
-            CameraTransform cameraTransform = new CameraTransform();
+            var cameraTransform = new CameraTransform();
             cameraTransform.camera = camera;
             cameraTransform.transform = camera.transform;
 
@@ -73,12 +85,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Camera
         public void Update(bool force = false)
         {
             if (camera == null)
-            {
                 return;
-            }
             
-            Transform transform = camera.transform;
-
+            var transform = camera.transform;
             if (transform.hasChanged || force)
             {
                 transform.hasChanged = false;
@@ -92,14 +101,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Camera
             }
         }
 
-        private Rect WorldRect()
+        public Rect WorldRect()
         {
             if (worldPolygon != null)
-            {
-                return(worldRect);
-            }
+                return worldRect;
 
-            return(WorldRectGenerate());
+            return WorldRectGenerate();
         }
 
         private Rect WorldRectGenerate()
@@ -147,7 +154,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Camera
                 polygon.points[3] = Vector2.zero;
             }
 
-            return(polygon);
+            return polygon;
         }
     }
 }

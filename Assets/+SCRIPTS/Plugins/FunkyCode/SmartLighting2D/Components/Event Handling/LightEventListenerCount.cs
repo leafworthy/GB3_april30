@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Event_Handling
+namespace FunkyCode
 {
     [ExecuteInEditMode]
     public class LightEventListenerCount : MonoBehaviour

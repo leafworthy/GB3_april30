@@ -1,14 +1,9 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemapRoom2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SuperTilemapEditor.Components;
 using UnityEngine;
+using FunkyCode.LightTilemapCollider;
+using FunkyCode.LightingSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
+namespace FunkyCode
 {
 	[ExecuteInEditMode]
 	public class LightTilemapRoom2D : MonoBehaviour
@@ -22,7 +17,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 		public ShaderType shaderType = ShaderType.ColorMask;
 		public Color color = Color.black;
 
-		public TilemapRoom2D superTilemapEditor = new TilemapRoom2D();
+		public SuperTilemapEditorSupport.TilemapRoom2D superTilemapEditor = new SuperTilemapEditorSupport.TilemapRoom2D();
 		public Rectangle rectangle = new Rectangle();
 
 		public LightingTilemapRoomTransform lightingTransform = new LightingTilemapRoomTransform();
@@ -46,7 +41,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 			List.Remove(this);
 		}
 
-		public Base GetCurrentTilemap()
+		public LightTilemapCollider.Base GetCurrentTilemap()
 		{
 			switch(mapType)
 			{
@@ -71,7 +66,6 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 
 			if (lightingTransform.UpdateNeeded)
 			{
-
 				GetCurrentTilemap().ResetWorld();
 
 				Light2D.ForceUpdateAll();
@@ -95,7 +89,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 
 		void OnDrawGizmosSelected()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Selected)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Selected)
 			{
 				return;
 			}
@@ -105,7 +99,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 
 		private void OnDrawGizmos()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Always)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Always)
 			{
 				return;
 			}
@@ -122,9 +116,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 
 			// Gizmos.color = new Color(1f, 0.5f, 0.25f);
 
-			Gizmos.color = new Color(0, 1f, 1f);
+			UnityEngine.Gizmos.color = new Color(0, 1f, 1f);
 
-			switch(Lighting2D.ProjectSettings.editorView.drawGizmosBounds)
+			switch(Lighting2D.ProjectSettings.gizmos.drawGizmosBounds)
 			{
 				case EditorGizmosBounds.Enabled:
 

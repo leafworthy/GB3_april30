@@ -1,11 +1,7 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
-using UnityEngine;
+﻿using UnityEngine;
+using FunkyCode.LightingSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
+namespace FunkyCode.Rendering
 {
     public class LightMainBuffer
     {
@@ -20,7 +16,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
                     return;
                 }
 
-                UnityEngine.Camera camera = buffer.cameraSettings.GetCamera();
+                Camera camera = buffer.cameraSettings.GetCamera();
 
                 if (buffer.renderTexture == null || screen.x == buffer.renderTexture.width && screen.y == buffer.renderTexture.height)
                 {
@@ -31,7 +27,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
                 {
                     case CameraType.Game:
 
-                        LightMainBuffer.InitializeRenderTexture(buffer);
+                        Rendering.LightMainBuffer.InitializeRenderTexture(buffer);
                     
                     break;
 
@@ -44,7 +40,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
                         
                         if (differenceX > 5 || differenceY > 5)
                         {
-                            LightMainBuffer.InitializeRenderTexture(buffer);
+                            Rendering.LightMainBuffer.InitializeRenderTexture(buffer);
                         }
                     
                     break;
@@ -71,16 +67,32 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
                    return(false);
                 }
 
-                if (cameraSetting.cameraType != buffer.cameraSettings.cameraType)
-                {
-                    return(false);
-                }
-
                 CameraLightmap cameraLightmap = cameraSetting.GetLightmap(bufferId);
 
                 if (cameraLightmap.presetId != buffer.cameraLightmap.presetId)
                 {
                     return(false);
+                }
+
+                switch(buffer.cameraLightmap.sceneView)
+                {
+                    case CameraLightmap.SceneView.Enabled:
+
+                        if (cameraLightmap.sceneView == CameraLightmap.SceneView.Disabled)
+                        {
+                            return(false);
+                        } 
+
+                    break;
+
+                    case CameraLightmap.SceneView.Disabled:
+
+                        if (cameraSetting.cameraType != buffer.cameraSettings.cameraType)
+                        {
+                            return(false);
+                        }
+
+                    break;
                 }
 
                 return(true);
@@ -97,20 +109,20 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
                 return;
             }
 
-            if (!LightMainBuffer.Check.CameraSettings(buffer))
+            if (!Rendering.LightMainBuffer.Check.CameraSettings(buffer))
             {
                 buffer.DestroySelf();
                 return;
             }
             
-            UnityEngine.Camera camera = buffer.cameraSettings.GetCamera();
+            Camera camera = buffer.cameraSettings.GetCamera();
 
             if (camera == null)
             {
                 return;
             }
 
-            LightMainBuffer.Check.RenderTexture(buffer);
+            Rendering.LightMainBuffer.Check.RenderTexture(buffer);
         }
 
         public static void DrawPost(LightMainBuffer2D buffer)
@@ -153,7 +165,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
         public static void Render(LightMainBuffer2D buffer)
         {
-            UnityEngine.Camera camera = buffer.cameraSettings.GetCamera();
+            Camera camera = buffer.cameraSettings.GetCamera();
             
             if (camera == null)
             {
@@ -216,16 +228,16 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
             if (lightmapPreset == null)
             {
-                UnityEngine.Debug.Log("lightmap preset null");
+                Debug.Log("lightmap preset null");
 
                 return(Vector2Int.zero);
             }
 
-            UnityEngine.Camera camera = buffer.cameraSettings.GetCamera();
+            Camera camera = buffer.cameraSettings.GetCamera();
 
             if (camera == null)
             {
-                UnityEngine.Debug.Log("camera null");
+                Debug.Log("camera null");
 
                 return(Vector2Int.zero);
             }
@@ -256,7 +268,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
                 idName = Lighting2D.LightmapPresets[bufferID].name + ", ";
             }
 
-            UnityEngine.Camera camera = buffer.cameraSettings.GetCamera();
+            Camera camera = buffer.cameraSettings.GetCamera();
 
             buffer.name = "Camera Buffer (" + idName + "" + buffer.type + ", Id: " + (bufferID  + 1) + ", Camera: " + camera.name + " )";
 
@@ -266,21 +278,21 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
             {
                 case LightMainBuffer2D.Type.RGB24:
 
-                    switch(Lighting2D.QualitySettings.HDR)
+                    switch(buffer.hdr)
                     {
-                        case HDR.Half:
+                        case LightingSettings.HDR.Half:
 
                             format = RenderTextureFormat.RGB111110Float;
 
                         break;
 
-                        case HDR.Float:
+                        case LightingSettings.HDR.Float:
 
                             format = RenderTextureFormat.DefaultHDR;
 
                         break;
 
-                        case HDR.Off:
+                        case LightingSettings.HDR.Off:
 
                             format = RenderTextureFormat.RGB565;
 
@@ -314,6 +326,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
             }
 
             buffer.renderTexture = new LightTexture (screen.x, screen.y, 0, format);
+            buffer.renderTexture.renderTexture.filterMode = Lighting2D.Profile.qualitySettings.lightmapFilterMode;
             buffer.renderTexture.Create ();
         }
     }

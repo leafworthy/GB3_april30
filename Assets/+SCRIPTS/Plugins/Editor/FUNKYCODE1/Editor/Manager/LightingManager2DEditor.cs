@@ -1,18 +1,11 @@
-﻿using __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using UnityEditor;
-using UnityEditor.SceneManagement;
+﻿using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEditor.SceneManagement;
 
-namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
+namespace FunkyCode
 {
 	[CustomEditor(typeof(LightingManager2D))]
-	public class LightingManager2DEditor : UnityEditor.Editor
+	public class LightingManager2DEditor : Editor
 	{
 		private static string[] sceneLayer = new string[]{"Scene Layer", "Unity Layer"};
 		private static string[] gameLayer = new string[]{"Game Layer", "Unity Layer"};
@@ -28,6 +21,25 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 		{
 			DrawProfile();
 
+			if (Lighting2D.ProjectSettings.shaderPreview == LightingSettings.ShaderPreview.Enabled)
+			{
+				EditorGUILayout.Space();
+
+				EditorGUILayout.HelpBox("Shader Preview Enabled", MessageType.Warning);
+
+				if (GUILayout.Button("Disable Shader Preview"))
+				{
+					LightingSettings.ProjectSettings projectSettings = Lighting2D.ProjectSettings;
+
+					projectSettings.shaderPreview = LightingSettings.ShaderPreview.Disabled;
+
+					LightingManager2D.ForceUpdate();
+					Lighting2D.UpdateByProfile(projectSettings.Profile);
+
+					EditorUtility.SetDirty(projectSettings);
+				}
+			}
+			
 			EditorGUILayout.Space();
 
 			ResizeCameras(lightingManager.cameras);
@@ -39,14 +51,14 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 			EditorGUILayout.Space();
 
 			EditorGUILayout.LabelField("version " + Lighting2D.VERSION_STRING);
-
+			
 			if (lightingManager.version < Lighting2D.VERSION)
 			{
 				Reinitialize(lightingManager);
 
 				return;
 			}
-
+			
 			if (GUILayout.Button("Re-Initialize"))
 			{
 				Lighting2DGizmoFiles.Initialize();
@@ -60,17 +72,16 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 				LightingManager2D.ForceUpdate();
 
 				if (!EditorApplication.isPlaying)
-				{
+				{	
 					EditorUtility.SetDirty(target);
-					EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+					EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());	
 				}
 			}
 		}
 
 		public void DrawProfile()
 		{
-			Profile newProfile = (Profile)EditorGUILayout.ObjectField("Profile", lightingManager.setProfile, typeof(Profile), true);
-
+			var newProfile = (LightingSettings.Profile)EditorGUILayout.ObjectField("Profile", lightingManager.setProfile, typeof(LightingSettings.Profile), true);
 			if (newProfile != lightingManager.setProfile)
 			{
 				lightingManager.setProfile = newProfile;
@@ -84,18 +95,18 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 
 		public void Reinitialize(LightingManager2D manager)
 		{
-			UnityEngine.Debug.Log("Lighting Manager 2D: reinitialized");
+			Debug.Log("Lighting Manager 2D: reinitialized");
 
 			if (manager.version > 0 && manager.version < Lighting2D.VERSION)
 			{
-				UnityEngine.Debug.Log("Lighting Manager 2D: version update from " + manager.version_string + " to " + Lighting2D.VERSION_STRING);
+				Debug.Log($"Lighting Manager 2D: version update from {manager.version_string} to {Lighting2D.VERSION_STRING}");
 			}
 
 			foreach(Transform transform in manager.transform)
 			{
 				DestroyImmediate(transform.gameObject);
 			}
-
+				
 			manager.version_string = Lighting2D.VERSION_STRING;
 			manager.version = Lighting2D.VERSION;
 
@@ -106,7 +117,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 			if (!EditorApplication.isPlaying)
 			{
 				EditorUtility.SetDirty(target);
-				EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+				EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 			}
 		}
 
@@ -114,7 +125,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 		{
 			int oldCount = cameras.Length;
 			int newCount = EditorGUILayout.IntSlider("Camera Count", oldCount, 0, 10);
-
+			
 			if (oldCount == newCount)
 			{
 				return;
@@ -145,7 +156,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 			{
 				CameraSettings cameraSetting = cameras.Get(id);
 
-				script.foldout_cameras[id] = EditorGUILayout.Foldout(script.foldout_cameras[id], "Camera " + (cameraSetting.id + 1) + " (" + cameraSetting.GetTypeName() + ")");
+				script.foldout_cameras[id] = EditorGUILayout.Foldout(script.foldout_cameras[id], "Camera " + (cameraSetting.id + 1) + " (" + cameraSetting.GetTypeName() + ")", true);
 
 				if (!script.foldout_cameras[id])
 				{
@@ -169,8 +180,8 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 
 				if (cameraSetting.cameraType == CameraSettings.CameraType.Custom)
 				{
-					UnityEngine.Camera oldCamera = cameraSetting.customCamera;
-					UnityEngine.Camera newCamera = (UnityEngine.Camera)EditorGUILayout.ObjectField(cameraSetting.customCamera, typeof(UnityEngine.Camera), true);
+					Camera oldCamera = cameraSetting.customCamera;
+					Camera newCamera = (Camera)EditorGUILayout.ObjectField(cameraSetting.customCamera, typeof(Camera), true);
 
 					if (oldCamera != newCamera)
 					{
@@ -197,7 +208,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 		public void ResizeLightmaps(LightingCameras cameras, int id, CameraSettings cameraSettings)
 		{
 			CameraLightmap[] cameraLightmaps = cameraSettings.Lightmaps;
-
+			
 			int oldCount = cameraLightmaps.Length;
 			int newCount = EditorGUILayout.IntSlider("Lightmap Count", oldCount, 0, 10);
 
@@ -242,7 +253,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 				{
 					string presetName = lightmapLayers[cameraLightmap.presetId];
 
-					script.foldout_lightmapPresets[id, index] = EditorGUILayout.Foldout(script.foldout_lightmapPresets[id, index], "Lightmap " + (cameraLightmap.id + 1) + " (" + presetName + ")");
+					script.foldout_lightmapPresets[id, index] = EditorGUILayout.Foldout(script.foldout_lightmapPresets[id, index], "Lightmap " + (cameraLightmap.id + 1) + " (" + presetName + ")", true);
 
 					if (!script.foldout_lightmapPresets[id, index])
 					{
@@ -254,14 +265,18 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 
 					EditorGUILayout.Space();
 
-					cameraLightmap.presetId = EditorGUILayout.Popup("Lightmap Preset", (int)cameraLightmap.presetId, Lighting2D.Profile.lightmapPresets.GetLightmapLayers());
+					cameraLightmap.presetId = EditorGUILayout.Popup("Lightmap", (int)cameraLightmap.presetId, Lighting2D.Profile.lightmapPresets.GetLightmapLayers());
 
 					EditorGUILayout.Space();
 
 					cameraLightmap.rendering = (CameraLightmap.Rendering)EditorGUILayout.EnumPopup("Rendering", cameraLightmap.rendering);
 
 					if (cameraLightmap.rendering == CameraLightmap.Rendering.Enabled)
-					{
+					{			
+						EditorGUILayout.Space();
+
+						cameraLightmap.sceneView = (CameraLightmap.SceneView)EditorGUILayout.EnumPopup("Scene View", cameraLightmap.sceneView);
+
 						EditorGUILayout.Space();
 
 						cameraLightmap.overlay = (CameraLightmap.Overlay)EditorGUILayout.EnumPopup("Overlay", cameraLightmap.overlay);
@@ -269,22 +284,22 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 						if (cameraLightmap.overlay == CameraLightmap.Overlay.Enabled)
 						{
 							cameraLightmap.overlayMaterial = (CameraLightmap.OverlayMaterial)EditorGUILayout.EnumPopup("Material", cameraLightmap.overlayMaterial);
-
+				
 							if (cameraLightmap.overlayMaterial == CameraLightmap.OverlayMaterial.Custom || cameraLightmap.overlayMaterial == CameraLightmap.OverlayMaterial.Reference)
 							{
-								cameraLightmap.customMaterial = (UnityEngine.Material)EditorGUILayout.ObjectField(cameraLightmap.customMaterial, typeof(UnityEngine.Material), true);
+								cameraLightmap.customMaterial = (Material)EditorGUILayout.ObjectField(cameraLightmap.customMaterial, typeof(Material), true);
 							}
-
+							
 							if (cameraSetting.cameraType == CameraSettings.CameraType.SceneView)
 							{
-								cameraLightmap.overlayLayerType = (CameraLightmap.OverlayLayerType)EditorGUILayout.Popup("Type", (int)cameraLightmap.overlayLayerType, sceneLayer);
+								cameraLightmap.overlayLayerType = (CameraLightmap.OverlayLayerType)EditorGUILayout.Popup("Type", (int)cameraLightmap.overlayLayerType, sceneLayer); 
 							}
 								else
 							{
-								cameraLightmap.overlayLayerType = (CameraLightmap.OverlayLayerType)EditorGUILayout.Popup("Type", (int)cameraLightmap.overlayLayerType, gameLayer);
+								cameraLightmap.overlayLayerType = (CameraLightmap.OverlayLayerType)EditorGUILayout.Popup("Type", (int)cameraLightmap.overlayLayerType, gameLayer); 
 							}
 
-							if (cameraLightmap.overlayLayerType == CameraLightmap.OverlayLayerType.UnityLayer)
+							if (cameraLightmap.overlayLayerType == CameraLightmap.OverlayLayerType.UnityLayer) 
 							{
 								cameraLightmap.renderLayerId = EditorGUILayout.LayerField("Layer", cameraLightmap.renderLayerId);
 							}
@@ -293,10 +308,10 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 
 							if (cameraLightmap.overlayPosition == CameraLightmap.OverlayPosition.Custom)
 							{
-								cameraLightmap.customPosition = EditorGUILayout.FloatField("Position", cameraLightmap.customPosition);
+								cameraLightmap.customPosition = EditorGUILayout.FloatField("Position", cameraLightmap.customPosition); 
 							}
 
-							EditorGUI.BeginDisabledGroup(Lighting2D.ProjectSettings.renderingMode != RenderingMode.OnRender);
+							EditorGUI.BeginDisabledGroup(Lighting2D.ProjectSettings.renderingMode != LightingSettings.RenderingMode.OnRender);
 
 							GUISortingLayer.Draw(cameraLightmap.sortingLayer, false);
 
@@ -311,12 +326,14 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 					switch(cameraLightmap.output)
 					{
 						case CameraLightmap.Output.Materials:
-
-							script.foldout_lightmapMaterials[id, index] = EditorGUILayout.Foldout(script.foldout_lightmapMaterials[id, index], "Materials");
+									
+							script.foldout_lightmapMaterials[id, index] = EditorGUILayout.Foldout(script.foldout_lightmapMaterials[id, index], "Materials", true);
 
 							if (script.foldout_lightmapMaterials[id, index])
 							{
 								EditorGUI.indentLevel++;
+
+								cameraLightmap.materialsType = (CameraLightmap.MaterialType)EditorGUILayout.EnumPopup("Type", cameraLightmap.materialsType);
 
 								LightmapMaterials materials = cameraLightmap.GetMaterials();
 
@@ -329,7 +346,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 
 								for(int i = 0; i < materials.materials.Length; i++)
 								{
-									materials.materials[i] = (UnityEngine.Material)EditorGUILayout.ObjectField(materials.materials[i], typeof(UnityEngine.Material), true);
+									materials.materials[i] = (Material)EditorGUILayout.ObjectField(materials.materials[i], typeof(Material), true);
 								}
 
 								EditorGUI.indentLevel--;
@@ -347,121 +364,6 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager
 			}
 
 			cameras.Set(id, cameraSetting);
-		}
-
-
-		static bool cameraFoldout = false;
-		static bool lightFoldout = false;
-
-		public static void Debugging()
-		{
-			EditorGUI.indentLevel++;
-
-			cameraFoldout = EditorGUILayout.Foldout(cameraFoldout, "Lightmaps (" + LightMainBuffer2D.List.Count + ")");
-
-			if (cameraFoldout)
-			{
-				EditorGUI.indentLevel++;
-
-				foreach(LightMainBuffer2D buffer in LightMainBuffer2D.List)
-				{
-					CameraSettings cameraSetting = buffer.cameraSettings;
-					CameraLightmap cameraLightmap = buffer.cameraLightmap;
-
-					EditorGUILayout.ObjectField("Camera Target (" +  cameraSetting.cameraType + ")", cameraSetting.GetCamera(), typeof(UnityEngine.Camera), true);
-
-					EditorGUILayout.Popup("Render Preset (" + cameraLightmap.id + ")", (int)cameraLightmap.presetId, Lighting2D.Profile.lightmapPresets.GetLightmapLayers());
-					EditorGUILayout.EnumPopup("Rendering", cameraLightmap.rendering);
-					EditorGUILayout.EnumPopup("Overlay", cameraLightmap.overlay);
-
-					EditorGUILayout.EnumPopup("Overlay Material Type", cameraLightmap.overlayMaterial);
-					EditorGUILayout.ObjectField("Overlay Material", buffer.GetMaterial(), typeof(UnityEngine.Material), true);
-					EditorGUILayout.EnumPopup("Render Texture Type", buffer.type);
-
-					if (buffer.renderTexture != null)
-					{
-						EditorGUILayout.ObjectField("Render Texture", buffer.renderTexture.renderTexture, typeof(Texture), true);
-					}
-
-					EditorGUILayout.Space();
-				}
-
-				EditorGUI.indentLevel--;
-
-				EditorGUILayout.Space();
-			}
-
-			int taken = 0;
-
-			foreach(LightBuffer2D buffer in LightBuffer2D.List)
-			{
-				if (!buffer.Free) {
-					taken += 1;
-				}
-			}
-
-			lightFoldout = EditorGUILayout.Foldout(lightFoldout, "Lights (" + taken + "/" + LightBuffer2D.List.Count + ")");
-
-			if (lightFoldout)
-			{
-				EditorGUI.indentLevel++;
-
-				foreach(LightBuffer2D buffer in LightBuffer2D.List)
-				{
-					EditorGUILayout.LabelField(buffer.name);
-
-					if (!buffer.Free)
-					{
-						EditorGUILayout.ObjectField("Source", buffer.Light, typeof(Light2D), true);
-					}
-
-					if ( buffer.renderTexture != null)
-					{
-						EditorGUILayout.ObjectField("Render Texture", buffer.renderTexture.renderTexture, typeof(Texture), true);
-					}
-
-					if (buffer.translucencyTexture != null)
-					{
-						EditorGUILayout.ObjectField("Translucency Texture", buffer.translucencyTexture.renderTexture, typeof(Texture), true);
-					}
-
-					/*
-
-					if (buffer.collisionTextureBlur != null)
-					{
-						EditorGUILayout.ObjectField("Collision Texture (Post)", buffer.collisionTextureBlur.renderTexture, typeof(Texture), true);
-					}
-
-					*/
-
-					if (buffer.freeFormTexture != null)
-					{
-						EditorGUILayout.ObjectField("Free Form Texture", buffer.freeFormTexture.renderTexture, typeof(Texture), true);
-					}
-
-					EditorGUILayout.Space();
-				}
-
-				EditorGUI.indentLevel--;
-
-				EditorGUILayout.Space();
-			}
-
-			EditorGUILayout.Space();
-
-			EditorGUI.indentLevel--;
-
-
-			/*
-
-			EditorGUILayout.Foldout(true, "Internal");
-
-			EditorGUI.indentLevel++;
-
-			EditorGUILayout.ObjectField("Mask Material", Lighting2D.materials.mask.GetMask(), typeof(Material), true);
-
-			EditorGUI.indentLevel--;
-			*/
 		}
 	}
 }

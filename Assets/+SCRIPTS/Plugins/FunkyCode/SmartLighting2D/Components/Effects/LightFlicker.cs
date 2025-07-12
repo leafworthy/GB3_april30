@@ -1,8 +1,9 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities.Misc;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Effects
+namespace FunkyCode
 {
     public class LightFlicker : MonoBehaviour
     {

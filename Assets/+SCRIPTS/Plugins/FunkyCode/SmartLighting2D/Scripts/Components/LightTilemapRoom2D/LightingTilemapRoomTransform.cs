@@ -1,9 +1,8 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Tilemaps;
+using FunkyCode.LightTilemapCollider;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemapRoom2D
+namespace FunkyCode
 {
 	public class LightingTilemapRoomTransform
 	{
@@ -20,7 +19,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 		public Vector3 tilemapCellSize = Vector3.zero;
 		public Vector3 tilemapGapSize = Vector3.zero;
 
-		public void Update(SmartLighting2D.Components.Night.LightTilemapRoom2D tilemapRoom2D) {
+		public void Update(LightTilemapRoom2D tilemapRoom2D) {
 			Transform transform = tilemapRoom2D.transform;
 
 			Vector2 position2D = LightingPosition.GetPosition2D(transform.position);
@@ -75,25 +74,29 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 			}
 		}
 		
-		Tilemap tilemap = null;
-		public Tilemap GetTilemap(GameObject gameObject) {
-			if (tilemap == null) {
-				tilemap = gameObject.GetComponent<Tilemap>();
-			}
-			return(tilemap);
+		private Tilemap tilemap = null;
+		public Tilemap GetTilemap(GameObject gameObject)
+		{
+			if (tilemap)
+				return tilemap;
+			
+			tilemap = gameObject.GetComponent<Tilemap>();
+			return tilemap;
 		}
 
-		Grid grid = null;
-		public Grid GetGrid(GameObject gameObject) {
-			if (grid == null) {
-				Tilemap tilemap = GetTilemap(gameObject);
+		private Grid grid = null;
+		public Grid GetGrid(GameObject gameObject)
+		{
+			if (grid)
+				return grid;
 
-				if (tilemap != null) {
-					grid = tilemap.layoutGrid;
-				}
-				
+			var tilemap = GetTilemap(gameObject);
+			if (tilemap)
+			{
+				grid = tilemap.layoutGrid;
 			}
-			return(grid);
+		
+			return grid;
 		}
 	}
 }

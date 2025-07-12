@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Triangulation;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D.Polygon
+namespace FunkyCode.Utilities
 {
 	public static class Polygon2DHelper
 	{

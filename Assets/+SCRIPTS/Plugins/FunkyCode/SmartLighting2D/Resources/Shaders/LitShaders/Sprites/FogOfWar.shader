@@ -2,20 +2,22 @@
 {
 	Properties
 	{
-		[HideInInspector] _MainTex ("Sprite Texture", 2D) = "white" {}
+		[HideInInspector] _MainTex ("Texture", 2D) = "white" {}
  
-		_Color ("Color", Color) = (1,1,1,1)
+		_Color ("Color", Color) = (1, 1, 1, 1)
+
+		[HideInInspector] _PassId ("Pass Id", Int) = 1
 	}
 
 	SubShader
 	{
 		Tags
 		{ 
-			"Queue"="Transparent" 
-			"IgnoreProjector"="True" 
-			"RenderType"="Transparent" 
-			"PreviewType"="Plane"
-			"CanUseSpriteAtlas"="True"
+			"Queue" = "Transparent" 
+			"IgnoreProjector" = "True" 
+			"RenderType" = "Transparent" 
+			"PreviewType" = "Plane"
+			"CanUseSpriteAtlas" = "True"
 		}
 
 		Cull Off
@@ -23,15 +25,17 @@
 		ZWrite Off
 		Blend One OneMinusSrcAlpha
 
-		Pass {
-
-		CGPROGRAM
+		Pass
+		{
+			CGPROGRAM
 
 			#pragma vertex vert
 			#pragma fragment frag
 
+			#pragma multi_compile SL2D_PASS_0 SL2D_PASS_1 SL2D_PASS_2 SL2D_PASS_3 SL2D_PASS_4 SL2D_PASS_5 SL2D_PASS_6 SL2D_PASS_7 SL2D_PASS_8
+
 			#include "UnityCG.cginc"
-			#include "../../LitShaders/LitCore.cginc"
+			#include "../../LitShaders/SL2D_ShaderPassLibrary.cginc"
 			
 			struct appdata_t
 			{
@@ -68,7 +72,9 @@
 			{
 				fixed4 spritePixel = tex2D (_MainTex, IN.texcoord) * IN.color;  
 
-				spritePixel.a *= SL2D_FogOfWar(IN.worldPos);
+				float fow = SL2D_FogOfWar(IN.worldPos);
+
+				spritePixel.a *= fow;
 
 				spritePixel.rgb *= spritePixel.a;
 
@@ -78,4 +84,6 @@
 		    ENDCG
 		}
 	}
+
+	CustomEditor "FunkyCode.PassShader"
 }

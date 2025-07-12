@@ -1,21 +1,18 @@
-﻿using __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SpriteExtension;
-using UnityEditor;
-using UnityEditor.SceneManagement;
+﻿using UnityEditor;
 using UnityEngine;
+using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+using FunkyCode.LightingSettings;
+using FunkyCode.LightSettings;
 
-namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
+namespace FunkyCode
 {
 	[CanEditMultipleObjects]
 	[CustomEditor(typeof(LightCollider2D))]
-	public class LightCollider2DEditor : UnityEditor.Editor
+	public class LightCollider2DEditor : Editor
 	{
 		private LightCollider2D lightCollider2D;
-		private SerializedProperty spriteAssigned;
+
 		private SerializedProperty shadowType;
 		private SerializedProperty shadowLayer;
 		private SerializedProperty shadowDistance;
@@ -34,49 +31,54 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 		public bool UsesShadows()
 		{
-			var presets = Lighting2D.Profile.lightPresets.Get();
+			LightPreset[] presets = Lighting2D.Profile.lightPresets.Get();
 
-			for (var i = 0; i < presets.Length; i++)
+			for(int i = 0; i < presets.Length; i++)
 			{
-				var lightPreset = presets[i];
+				LightPreset lightPreset = presets[i];
 
-				var layerSettings = lightPreset.layerSetting.Get();
+				LayerSetting[] layerSettings = lightPreset.layerSetting.Get();
 
-				for (var x = 0; x < layerSettings.Length; x++)
+				for(int x = 0; x < layerSettings.Length; x++)
 				{
-					var setting = layerSettings[x];
+					LayerSetting setting = layerSettings[x];
 
-					if (setting.type != LightLayerType.MaskOnly) return true;
+					if (setting.type != LightLayerType.MaskOnly)
+					{
+						return(true);
+					}
 				}
 			}
 
-			return false;
+			return(false);
 		}
 
 		public bool UsesMasks()
 		{
-			var presets = Lighting2D.Profile.lightPresets.Get();
+			LightPreset[] presets = Lighting2D.Profile.lightPresets.Get();
 
-			for (var i = 0; i < presets.Length; i++)
+			for(int i = 0; i < presets.Length; i++)
 			{
-				var lightPreset = presets[i];
+				LightPreset lightPreset = presets[i];
 
-				var layerSettings = lightPreset.layerSetting.Get();
+				LayerSetting[] layerSettings = lightPreset.layerSetting.Get();
 
-				for (var x = 0; x < layerSettings.Length; x++)
+				for(int x = 0; x < layerSettings.Length; x++)
 				{
-					var setting = layerSettings[x];
+					LayerSetting setting = layerSettings[x];
 
-					if (setting.type != LightLayerType.ShadowOnly) return true;
+					if (setting.type != LightLayerType.ShadowOnly)
+					{
+						return(true);
+					}
 				}
 			}
 
-			return false;
+			return(false);
 		}
 
 		private void InitProperties()
 		{
-			spriteAssigned = serializedObject.FindProperty("spriteForShape");
 			shadowType = serializedObject.FindProperty("shadowType");
 			shadowLayer = serializedObject.FindProperty("shadowLayer");
 			shadowDistance = serializedObject.FindProperty("shadowDistance");
@@ -108,14 +110,17 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 			Undo.undoRedoPerformed -= RefreshAll;
 		}
 
-		private void RefreshAll()
+		void RefreshAll()
 		{
 			LightCollider2D.ForceUpdateAll();
 		}
 
-		public override void OnInspectorGUI()
+		override public void OnInspectorGUI()
 		{
-			if (lightCollider2D == null) return;
+			if (lightCollider2D == null)
+			{
+				return;
+			}
 
 			// Warning
 			// Debug.Log(lightCollider2D.mainShape.spriteShape.GetOriginalSprite().packingMode);
@@ -124,28 +129,25 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 			if (UsesShadows())
 			{
-				EditorGUILayout.PropertyField(spriteAssigned, new GUIContent("Sprite Assigned"));
-				EditorGUILayout.PropertyField(shadowType, new GUIContent("Shadow Type"));
+				EditorGUILayout.PropertyField(shadowType, new GUIContent ("Shadow Type"));
 
 				if (shadowType.intValue != (int)LightCollider2D.ShadowType.None)
 				{
 					EditorGUI.BeginDisabledGroup(shadowType.intValue == (int)LightCollider2D.ShadowType.None);
 
-					shadowLayer.intValue = EditorGUILayout.Popup("Shadow Layer (Collider)", shadowLayer.intValue,
-						Lighting2D.Profile.layers.colliderLayers.GetNames());
+					shadowLayer.intValue = EditorGUILayout.Popup("Shadow Layer (Collider)", shadowLayer.intValue, Lighting2D.Profile.layers.colliderLayers.GetNames());
 
-					EditorGUILayout.PropertyField(shadowDistance, new GUIContent("Shadow Distance"));
+					EditorGUILayout.PropertyField(shadowDistance, new GUIContent ("Shadow Distance"));
 
 					if (shadowDistance.intValue > 0)
 					{
-						var minV = shadowDistanceMin.floatValue;
-						var maxV = shadowDistanceMax.floatValue;
+						float minV = shadowDistanceMin.floatValue;
+						float maxV = shadowDistanceMax.floatValue;
 
-						var min = (float)Mathf.Round(minV * 100f) / 100f;
-						var max = (float)Mathf.Round(maxV * 100f) / 100f;
+						float min = (float)Mathf.Round(minV * 100f) / 100f;
+						float max = (float)Mathf.Round(maxV * 100f) / 100f;
 
-						EditorGUILayout.MinMaxSlider("Shadow Length (" + min + ", " + max + ")", ref minV, ref maxV, 0,
-							80);
+						EditorGUILayout.MinMaxSlider("Shadow Length (" + min + ", " + max +")", ref minV, ref maxV, 0, 50);
 
 						shadowDistanceMin.floatValue = minV;
 						shadowDistanceMax.floatValue = maxV;
@@ -155,7 +157,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 					//EditorGUILayout.PropertyField(shadowDistanceMax, new GUIContent ("Shadow Distance (Max)"));
 
-					EditorGUILayout.PropertyField(shadowTranslucency, new GUIContent("Shadow Translucency"));
+					EditorGUILayout.PropertyField(shadowTranslucency, new GUIContent ("Shadow Translucency"));
 
 					EditorGUI.EndDisabledGroup();
 				}
@@ -167,35 +169,37 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 			if (UsesMasks())
 			{
-				EditorGUILayout.PropertyField(maskType, new GUIContent("Mask Type"));
+				EditorGUILayout.PropertyField(maskType, new GUIContent ("Mask Type"));
 
 				if (maskType.intValue != (int)LightCollider2D.MaskType.None)
 				{
 					EditorGUI.BeginDisabledGroup(maskType.intValue == (int)LightCollider2D.MaskType.None);
 
-					maskLayer.intValue = EditorGUILayout.Popup("Mask Layer (Collider)", maskLayer.intValue,
-						Lighting2D.Profile.layers.colliderLayers.GetNames());
+					maskLayer.intValue = EditorGUILayout.Popup("Mask Layer (Collider)", maskLayer.intValue, Lighting2D.Profile.layers.colliderLayers.GetNames());
 
-					if (lightCollider2D.maskLit == MaskLit.Custom)
+					if (lightCollider2D.maskLit == LightSettings.MaskLit.Custom)
 					{
 						EditorGUILayout.Space();
 
-						EditorGUILayout.PropertyField(maskLit, new GUIContent("Mask Lit"));
+						EditorGUILayout.PropertyField(maskLit, new GUIContent ("Mask Lit"));
 
-						EditorGUILayout.PropertyField(maskLitCustom, new GUIContent("Mask Lit Custom"));
+						EditorGUILayout.PropertyField(maskLitCustom, new GUIContent ("Mask Lit Custom"));
 
 						EditorGUILayout.Space();
 					}
-					else
-						EditorGUILayout.PropertyField(maskLit, new GUIContent("Mask Lit"));
+						else
+					{
+						EditorGUILayout.PropertyField(maskLit, new GUIContent ("Mask Lit"));
+					}
 
-					EditorGUILayout.PropertyField(maskPivot, new GUIContent("Mask Pivot"));
+					EditorGUILayout.PropertyField(maskPivot, new GUIContent ("Mask Pivot"));
 
 					EditorGUI.EndDisabledGroup();
 
-					if (lightCollider2D.maskType == LightCollider2D.MaskType.BumpedSprite ||
-					    lightCollider2D.maskType == LightCollider2D.MaskType.BumpedMeshRenderer)
+					if (lightCollider2D.maskType == LightCollider2D.MaskType.BumpedSprite || lightCollider2D.maskType == LightCollider2D.MaskType.BumpedMeshRenderer)
+					{
 						GUIBumpMapMode.Draw(serializedObject, lightCollider2D);
+					}
 				}
 
 				EditorGUILayout.Space();
@@ -207,11 +211,11 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 			if (GUILayout.Button("Update"))
 			{
-				PhysicsShapeManager.Clear();
+				SpriteExtension.PhysicsShapeManager.Clear();
 
-				foreach (var target in targets)
+				foreach(UnityEngine.Object target in targets)
 				{
-					var lightCollider2D = target as LightCollider2D;
+					LightCollider2D lightCollider2D = target as LightCollider2D;
 
 					lightCollider2D.Initialize();
 				}
@@ -221,16 +225,22 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 			if (GUI.changed)
 			{
-				foreach (var target in targets)
+				foreach(UnityEngine.Object target in targets)
 				{
-					var lightCollider2D = target as LightCollider2D;
+					LightCollider2D lightCollider2D = target as LightCollider2D;
 					lightCollider2D.Initialize();
 					lightCollider2D.UpdateNearbyLights();
 
-					if (!EditorApplication.isPlaying) EditorUtility.SetDirty(target);
+					if (!EditorApplication.isPlaying)
+					{
+						EditorUtility.SetDirty(target);
+					}
 				}
 
-				if (!EditorApplication.isPlaying) EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+				if (!EditorApplication.isPlaying)
+				{
+					EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+				}
 
 				LightingManager2D.ForceUpdate();
 			}

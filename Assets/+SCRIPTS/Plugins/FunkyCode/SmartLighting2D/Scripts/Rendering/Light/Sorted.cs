@@ -1,65 +1,51 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Mask;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Universal.Objects;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SuperTilemapEditor.Components;
-using UnityEngine;
-using Collider = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SuperTilemapEditor.Rendering.Light.Shadow.Collider;
-using Grid = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SuperTilemapEditor.Rendering.Light.Shadow.Grid;
-using Mesh = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Mask.Mesh;
-using Shape = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.ShadowEngine.Extensions.Shape;
-using Tile = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.ShadowEngine.Extensions.Tile;
-using TilemapCollider = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.ShadowEngine.Extensions.TilemapCollider;
-using UnityTilemap = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.ShadowEngine.Extensions.UnityTilemap;
+﻿using UnityEngine;
+using FunkyCode.LightTilemapCollider;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
+namespace FunkyCode.Rendering.Light
 {
     public static class Sorted
     {
-        public static void Draw(Pass pass) {
-            for(int i = 0; i < pass.sortPass.sortList.count; i ++) {
-                pass.sortPass.sortObject = pass.sortPass.sortList.list[i];
+        public static void Draw(Pass pass)
+        {
+            for(int i = 0; i < pass.sortPass.sortList.Count; i ++)
+            {
+                pass.sortPass.sortObject = pass.sortPass.sortList.List[i];
+                var sortObject = pass.sortPass.sortObject;
+                var lightObject = sortObject.LightObject;
 
-                switch (pass.sortPass.sortObject.type) {
-                    case Sorting.SortObject.Type.Collider:
-                        DrawCollider(pass);
-                    break;
-
-                    case Sorting.SortObject.Type.Tile:
-                        DrawTile(pass);
-                    break;
-
-                     case Sorting.SortObject.Type.TilemapMap:
-                        DrawTileMap(pass);
-                    break;
-
-                }
+                if (lightObject is LightCollider2D lightCollider)
+                    DrawCollider(lightCollider, pass);
+                else if (lightObject is LightTile lightTile)
+                    DrawTile(lightTile, sortObject.Tilemap,pass);
+                else if (lightObject is LightTilemapCollider2D lightTilemap)
+                    DrawTileMap(lightTilemap, pass);
             }
         }
 
-        private static void DrawCollider(Pass pass) {
-            LightCollider2D collider = (LightCollider2D)pass.sortPass.sortObject.lightObject;
-            UnityEngine.Material material;
+        private static void DrawCollider(LightCollider2D collider, Pass pass) 
+        {
+            Material material;
 
-            if (collider.shadowLayer == pass.layerID && pass.drawShadows) {
-
-                if (collider.ShadowDisabled() == false) {
-                    ShadowEngine.ShadowEngine.GetMaterial().SetPass(0);
+            if (collider.shadowLayer == pass.layerID && pass.drawShadows)
+            {	
+                if (!collider.ShadowDisabled())
+                {
+                    ShadowEngine.GetMaterial().SetPass(0);
 
                     GL.Begin(GL.TRIANGLES);
 
-                        Shape.Draw(pass.light, collider);
-
+                    FunkyCode.Rendering.Light.Shadow.Shape.Draw(pass.light, collider);
+        
                     GL.End();
                 }
 
             }
 
             // Masking
-            if (collider.maskLayer == pass.layerID && pass.drawMask) {
-
-                switch(collider.mainShape.maskType) {
+            if (collider.maskLayer == pass.layerID && pass.drawMask)
+            {
+                switch(collider.mainShape.maskType)
+                {
                     case LightCollider2D.MaskType.SpritePhysicsShape:
                     case LightCollider2D.MaskType.Collider2D:
                     case LightCollider2D.MaskType.Collider3D:
@@ -69,7 +55,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
                         pass.materialMask.SetPass(0);
 
                         GL.Begin(GL.TRIANGLES);
-                            Mask.Shape.Mask(pass.light, collider, pass.layer);
+                            Shape.Mask(pass.light, collider, pass.layer);
                         GL.End();
 
                     break;
@@ -77,21 +63,22 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
                     case LightCollider2D.MaskType.Sprite:
 
                         SpriteRenderer2D.currentTexture = null;
-
+                        
                         SpriteRenderer2D.Mask(pass.light, collider, pass.materialMask, pass.layer);
 
-                        if (SpriteRenderer2D.currentTexture != null) {
+                        if (SpriteRenderer2D.currentTexture != null)
+                        {
                             SpriteRenderer2D.currentTexture = null;
                             GL.End();
                         }
-
+                        
                         break;
 
                     case LightCollider2D.MaskType.BumpedSprite:
-
+                
                         material = collider.bumpMapMode.SelectMaterial(pass.materialNormalMap_PixelToLight, pass.materialNormalMap_ObjectToLight);
                         SpriteRenderer2D.MaskBumped(pass.light, collider, material, pass.layer);
-
+                        
                         break;
 
                     case LightCollider2D.MaskType.MeshRenderer:
@@ -129,167 +116,172 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
             }
         }
 
-        private static void DrawTile(Pass pass)
+        private static void DrawTile(LightTile tile, LightTilemapCollider2D tilemap, Pass pass)
         {
-            LightTile tile = (LightTile)pass.sortPass.sortObject.lightObject;
-            LightTilemapCollider2D tilemap = pass.sortPass.sortObject.tilemap;
-
             bool masksDisabled = tilemap.MasksDisabled();
             bool shadowsDisabled = tilemap.ShadowsDisabled();
+            
+            if (tilemap.shadowLayer == pass.layerID && pass.drawShadows && shadowsDisabled == false)
+            {
 
-            if (pass.sortPass.sortObject.tilemap.shadowLayer == pass.layerID && pass.drawShadows && shadowsDisabled == false) {
-
-                ShadowEngine.ShadowEngine.GetMaterial().SetPass(0);
+                ShadowEngine.GetMaterial().SetPass(0);
 
                 GL.Begin(GL.TRIANGLES);
 
-                    Tile.Draw(pass.light, tile, tilemap);
-
+                Shadow.Tile.Draw(pass.light, tile, tilemap);
+    
                 GL.End();
-
             }
 
             // sprite mask - but what about shape mask?
-            if (tilemap.maskLayer == pass.layerID && pass.drawMask && masksDisabled == false) {
+            if (tilemap.maskLayer == pass.layerID && pass.drawMask && masksDisabled == false)
+            {
                 GL.Begin(GL.QUADS);
 
-                    Mask.Tile.MaskSprite(tile, pass.layer, pass.materialMask, tilemap, pass.lightSizeSquared);
-
+                Tile.MaskSprite(tile, pass.layer, pass.materialMask, tilemap, pass.lightSizeSquared);
+                
                 GL.End();
-            }
+            }       
         }
 
-        private static void DrawTileMap(Pass pass)
+        private static void DrawTileMap(LightTilemapCollider2D tilemap, Pass pass)
         {
-            LightTilemapCollider2D tilemap = pass.sortPass.sortObject.tilemap;
-
             bool masksDisabled = tilemap.MasksDisabled();
             bool shadowsDisabled = tilemap.ShadowsDisabled();
-
-            if (tilemap.shadowLayer == pass.layerID && pass.drawShadows && shadowsDisabled == false) {
-
-                ShadowEngine.ShadowEngine.GetMaterial().SetPass(0);
-
+            
+            if (tilemap.shadowLayer == pass.layerID && pass.drawShadows && shadowsDisabled == false)
+            {	
+                ShadowEngine.GetMaterial().SetPass(0);
+                                    
                 GL.Begin(GL.TRIANGLES);
 
-                    switch(tilemap.mapType) {
+                    switch(tilemap.mapType)
+                    {
                     case MapType.UnityRectangle:
 
-                        switch(tilemap.rectangle.shadowType) {
+                        switch(tilemap.rectangle.shadowType)
+                        {
                             case ShadowType.Grid:
                             case ShadowType.SpritePhysicsShape:
-                                UnityTilemap.Draw(pass.light, tilemap);
+                                Shadow.UnityTilemap.Draw(pass.light, tilemap);
                             break;
 
                             case ShadowType.CompositeCollider:
-                                TilemapCollider.Rectangle.Draw(pass.light, tilemap);
+                                Shadow.TilemapCollider.Rectangle.Draw(pass.light, tilemap);
                             break;
                         }
-
+                        
                     break;
 
                     case MapType.UnityIsometric:
 
-                        switch(tilemap.isometric.shadowType) {
+                        switch(tilemap.isometric.shadowType)
+                        {
                             case ShadowType.Grid:
                             case ShadowType.SpritePhysicsShape:
-                                    UnityTilemap.Draw(pass.light, tilemap);
+                                    Shadow.UnityTilemap.Draw(pass.light, tilemap);
                             break;
                         }
-
+                        
                     break;
 
                     case MapType.UnityHexagon:
 
-                        switch(tilemap.hexagon.shadowType) {
+                        switch(tilemap.hexagon.shadowType)
+                        {
                             case ShadowType.Grid:
                             case ShadowType.SpritePhysicsShape:
-                                    UnityTilemap.Draw(pass.light, tilemap);
+                                    Shadow.UnityTilemap.Draw(pass.light, tilemap);
                             break;
                         }
-
+                        
                     break;
 
                     case MapType.SuperTilemapEditor:
 
-                        switch(tilemap.superTilemapEditor.shadowTypeSTE) {
+                        switch(tilemap.superTilemapEditor.shadowTypeSTE)
+                        {
 
-                            case TilemapCollider2D.ShadowType.TileCollider:
-                            case TilemapCollider2D.ShadowType.Grid:
-                                    Grid.Draw(pass.light, tilemap);
+                            case SuperTilemapEditorSupport.TilemapCollider2D.ShadowType.TileCollider:
+                            case SuperTilemapEditorSupport.TilemapCollider2D.ShadowType.Grid:
+                                    SuperTilemapEditorSupport.Light.Shadow.Grid.Draw(pass.light, tilemap);
                                 break;
-
-                            case TilemapCollider2D.ShadowType.Collider:
-                                    Collider.Draw(pass.light, tilemap);
+                                
+                            case SuperTilemapEditorSupport.TilemapCollider2D.ShadowType.Collider:
+                                    SuperTilemapEditorSupport.Light.Shadow.Collider.Draw(pass.light, tilemap);
                                 break;
                             }
-
+                        
                     break;
                 }
 
-                GL.End();
+                GL.End();  
             }
 
-            if (pass.sortPass.sortObject.tilemap.maskLayer == pass.layerID && pass.drawMask && masksDisabled == false) {
-                switch(tilemap.mapType) {
+            if (tilemap.maskLayer == pass.layerID && pass.drawMask && masksDisabled == false)
+            {
+                switch(tilemap.mapType)
+                {
                     case MapType.UnityRectangle:
 
-                        switch(tilemap.rectangle.maskType) {
-                            case MaskType.Sprite:
-                                Mask.UnityTilemap.Sprite(pass.light, tilemap, pass.materialMask, pass.layer);
+                        switch(tilemap.rectangle.maskType)
+                        {
+                            case LightTilemapCollider.MaskType.Sprite:
+                                UnityTilemap.Sprite(pass.light, tilemap, pass.materialMask, pass.layer);
                             break;
+                            
+                            case LightTilemapCollider.MaskType.BumpedSprite:
 
-                            case MaskType.BumpedSprite:
-
-                                UnityEngine.Material material = tilemap.bumpMapMode.SelectMaterial(pass.materialNormalMap_PixelToLight, pass.materialNormalMap_ObjectToLight);
-                                Mask.UnityTilemap.BumpedSprite(pass.light, tilemap, material, pass.layer);
-
+                                Material material = tilemap.bumpMapMode.SelectMaterial(pass.materialNormalMap_PixelToLight, pass.materialNormalMap_ObjectToLight);
+                                UnityTilemap.BumpedSprite(pass.light, tilemap, material, pass.layer);
+                        
                             break;
                         }
-
+                        
                     break;
 
                     case MapType.UnityIsometric:
 
-                        switch(tilemap.isometric.maskType) {
+                        switch(tilemap.isometric.maskType)
+                        {
                             case MaskType.Sprite:
-                                Mask.UnityTilemap.Sprite(pass.light, tilemap, pass.materialMask, pass.layer);
+                                UnityTilemap.Sprite(pass.light, tilemap, pass.materialMask, pass.layer);
                             break;
                         }
-
+                        
                     break;
 
                     case MapType.UnityHexagon:
 
-                        switch(tilemap.hexagon.maskType) {
+                        switch(tilemap.hexagon.maskType)
+                        {
                             case MaskType.Sprite:
                             //    TilemapHexagon.MaskSprite(pass.buffer, tilemap, pass.materialMask, pass.z);
                             break;
                         }
-
+                        
                     break;
 
                     case MapType.SuperTilemapEditor:
 
-                        switch(tilemap.superTilemapEditor.maskTypeSTE) {
-                            case SuperTilemapEditor.Components.TilemapCollider.MaskType.Sprite:
+                        switch(tilemap.superTilemapEditor.maskTypeSTE)
+                        {
+                            case SuperTilemapEditorSupport.TilemapCollider.MaskType.Sprite:
 
-                                SuperTilemapEditor.Rendering.Light.Mask.SpriteRenderer2D.Sprite(pass.light, tilemap, pass.materialMask);
-
+                                SuperTilemapEditorSupport.Light.Mask.SpriteRenderer2D.Sprite(pass.light, tilemap, pass.materialMask);
+                            
                             break;
+                            
+                            case SuperTilemapEditorSupport.TilemapCollider.MaskType.BumpedSprite:
 
-                            case SuperTilemapEditor.Components.TilemapCollider.MaskType.BumpedSprite:
-
-                                UnityEngine.Material material = tilemap.bumpMapMode.SelectMaterial(pass.materialNormalMap_PixelToLight, pass.materialNormalMap_ObjectToLight);
-                                SuperTilemapEditor.Rendering.Light.Mask.SpriteRenderer2D.BumpedSprite(pass.light, tilemap, material);
-
+                                Material material = tilemap.bumpMapMode.SelectMaterial(pass.materialNormalMap_PixelToLight, pass.materialNormalMap_ObjectToLight);
+                                SuperTilemapEditorSupport.Light.Mask.SpriteRenderer2D.BumpedSprite(pass.light, tilemap, material);
+                        
                             break;
                         }
 
-
-
                     break;
-                }
+                }   
             }
         }
     }

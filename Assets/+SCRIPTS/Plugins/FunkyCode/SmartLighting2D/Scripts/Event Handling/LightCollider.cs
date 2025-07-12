@@ -1,53 +1,42 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
 using UnityEngine;
+using FunkyCode.LightingSettings;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
+namespace FunkyCode.EventHandling
 {
     public class LightCollider : Base
     {
         static public void GetCollisions(List<LightCollision2D> collisions, Light2D lightingSource)
         {
-            List<LightCollider2D> colliderList = LightCollider2D.ListEventReceivers;
+           var colliderList = LightCollider2D.ListEventReceivers;
 
             // why all and not selected? + Specific layer
 
             for(int i = 0; i < colliderList.Count; i++)
             {
-                LightCollider2D id = colliderList[i];
+                var id = colliderList[i];
 
                 if (id.mainShape.shadowType == LightCollider2D.ShadowType.None)
-                {
                     continue;
-                }
 
                 if (!id.InLight(lightingSource))
-                {
                     continue;
-                }
 
-                List<Polygon2> polygons = id.mainShape.GetPolygonsWorld();
-
+                var polygons = id.mainShape.GetPolygonsWorld();
                 if (polygons.Count < 1)
-                {
                     continue;
-                }
 
-                Polygon2 polygon = polygons[0];
+                var polygon = polygons[0];
        
-                LightCollision2D collision = new LightCollision2D();
+                var collision = new LightCollision2D();
                 collision.light = lightingSource;
                 collision.collider = id;
                 collision.points = new List<Vector2>();
       
-                foreach(Vector2 point in polygon.points)
+                foreach(var point in polygon.points)
                 {
-                    Vector2 p = point;
+                    var p = point;
 
                     p.x -= lightingSource.transform.position.x;
                     p.y -= lightingSource.transform.position.y;
@@ -99,43 +88,37 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
             {
                 int layerId = eventPreset.layerSetting.list[iid].layerID;
 
-                List<LightCollider2D> colliderList = LightCollider2D.GetShadowList(layerId);
+                var colliderList = LightCollider2D.GetShadowList(layerId);
 
                 int colliderCount = colliderList.Count;
 
                 for(int ci = 0; ci < colliderCount; ci++)
                 {
-                    LightCollider2D id = colliderList[ci];
-
-                    if (id.InLight(light) == false) {
+                    var id = colliderList[ci];
+                    if (!id.InLight(light))
                         continue;
-                    }
 
                     if (id.mainShape.shadowType == LightCollider2D.ShadowType.None)
-                    {
                         continue;
-                    }
 
-                    List<Polygon2> polygons = id.mainShape.GetPolygonsWorld();
-
-                    if (polygons.Count < 1) {
+                    var polygons = id.mainShape.GetPolygonsWorld();
+                    if (polygons.Count < 1)
                         continue;
-                    }
                     
                     removePointsCollidingCount = 0;
                     removeCollisionsCount = 0;
                     
                     for(int i = 0; i < polygons.Count; i++)
                     {
-                        Vector2[] pointsList = polygons[i].points;
+                        var pointsList = polygons[i].points;
                         int pointsCount = pointsList.Length;
 
                         for(int x = 0; x < pointsCount; x++)
                         {
                             next = (x + 1) % pointsCount;
 
-                            Vector2 left = pointsList[x];
-                            Vector2 right = pointsList[next];
+                            var left = pointsList[x];
+                            var right = pointsList[next];
 
                             edgeLeft.x = left.x + lightPosition.x;
                             edgeLeft.y = left.y + lightPosition.y;
@@ -161,18 +144,16 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
 
                             for(int c = 0; c < collisionCount; c++)
                             {
-                                LightCollision2D col = collisions[c];
-
-                                if (col.collider == id) {
+                                var col = collisions[c];
+                                if (col.collider == id)
                                     continue;
-                                }
 
                                 // Check if event handling objects are inside shadow
                                 // Add it to remove list
                                 int pCount = col.points.Count;
                                 for(int p = 0; p < pCount; p++)
                                 {
-                                    Vector2 point = col.points[p];
+                                    var point = col.points[p];
 
                                     if (Math2D.PointInPoly(point, testPolygon))
                                     {

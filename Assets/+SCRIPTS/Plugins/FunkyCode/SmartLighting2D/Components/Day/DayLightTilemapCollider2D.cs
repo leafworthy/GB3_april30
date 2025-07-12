@@ -1,18 +1,10 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLightCollider2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SuperTilemapEditor.Components;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
 using UnityEngine;
+using FunkyCode.LightTilemapCollider;
+using FunkyCode.LightingSettings;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
+namespace FunkyCode
 {
 	public class DayLightingTile
 	{
@@ -30,29 +22,16 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 			return(rect);
 		}
 
-		public bool InAnyCamera()
+		public bool InCamera(Camera camera)
 		{
-			LightingManager2D manager = LightingManager2D.Get();
-			LightingCameras lightingCameras = manager.cameras;
+			Rect cameraRect = CameraTransform.GetWorldRect(camera);
+			Rect tileRect = GetDayRect();
 
-			for(int i = 0; i < lightingCameras.Length; i++)
+			if (cameraRect.Overlaps(tileRect))
 			{
-				Camera camera = manager.GetCamera(i);
-
-				if (camera == null)
-				{
-					continue;
-				}
-
-				Rect cameraRect = CameraTransform.GetWorldRect(camera);
-				Rect tileRect = GetDayRect();
-
-				if (cameraRect.Overlaps(tileRect))
-				{
-					return(true);
-				}
+				return(true);
 			}
-
+	
 			return(false);
 		}
 
@@ -84,7 +63,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 		public Isometric isometric = new Isometric();
 		public Hexagon hexagon = new Hexagon();
 
-		public TilemapCollider2D superTilemapEditor = new TilemapCollider2D();
+		public SuperTilemapEditorSupport.TilemapCollider2D superTilemapEditor = new SuperTilemapEditorSupport.TilemapCollider2D();
 
 		public List<DayLightingTile> dayTiles = new List<DayLightingTile>();
 	
@@ -136,7 +115,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 			}
 		}
 
-		public Base GetCurrentTilemap()
+		public LightTilemapCollider.Base GetCurrentTilemap()
 		{
 			switch(tilemapType) {
 				case MapType.SuperTilemapEditor:
@@ -164,8 +143,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 
 					switch(superTilemapEditor.shadowTypeSTE)
 					{
-						case TilemapCollider.ShadowType.Grid:
-						case TilemapCollider.ShadowType.TileCollider:
+						case SuperTilemapEditorSupport.TilemapCollider.ShadowType.Grid:
+						case SuperTilemapEditorSupport.TilemapCollider.ShadowType.TileCollider:
 							foreach(LightTile tile in GetTileList())
 							{
 							DayLightingTile dayTile = new DayLightingTile();
@@ -211,8 +190,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 
 					switch(rectangle.shadowType)
 					{
-						case ShadowType.Grid:
-						case ShadowType.SpritePhysicsShape:
+						case LightTilemapCollider.ShadowType.Grid:
+						case LightTilemapCollider.ShadowType.SpritePhysicsShape:
 
 							foreach(LightTile tile in GetTileList()) {
 								DayLightingTile dayTile = new DayLightingTile();
@@ -225,7 +204,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 
 						break;
 
-						case ShadowType.CompositeCollider:
+						case LightTilemapCollider.ShadowType.CompositeCollider:
 
 							foreach(Polygon2 polygon in rectangle.compositeColliders)
 							{
@@ -261,7 +240,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 
 		void OnDrawGizmosSelected()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Selected)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Selected)
 			{
 				return;
 			}
@@ -271,7 +250,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 
 		private void OnDrawGizmos()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Always)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Always)
 			{
 				return;
 			}
@@ -286,28 +265,30 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 				return;
 			}
 
-			Gizmos.color = new Color(1f, 0.5f, 0.25f);
+			UnityEngine.Gizmos.color = new Color(1f, 0.5f, 0.25f);
 
-			Base tilemap = GetCurrentTilemap();
+			LightTilemapCollider.Base tilemap = GetCurrentTilemap();
 
 			foreach(DayLightingTile dayTile in dayTiles)
 			{
 				GizmosHelper.DrawPolygons(dayTile.polygons, transform.position);
 			}
 			
-			switch(Lighting2D.ProjectSettings.editorView.drawGizmosBounds)
+			switch(Lighting2D.ProjectSettings.gizmos.drawGizmosBounds)
 			{
 				case EditorGizmosBounds.Enabled:
-					Gizmos.color = new Color(0, 1f, 1f, 0.25f);
+				
+					UnityEngine.Gizmos.color = new Color(0, 1f, 1f, 0.25f);
 
 					foreach(DayLightingTile dayTile in dayTiles)
 					{
 						GizmosHelper.DrawRect(Vector2.zero, dayTile.GetDayRect());
 					}
 
-					Gizmos.color = new Color(0, 1f, 1f, 0.5f);
+					UnityEngine.Gizmos.color = new Color(0, 1f, 1f, 0.5f);
 
 					GizmosHelper.DrawRect(transform.position, tilemap.GetRect());
+
 				break;
 			}
 		}

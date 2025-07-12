@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 2D points list connected by pairs
 /// </summary>
-namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D
+namespace FunkyCode.Utilities
 {
 	public class Pair2D
 	{
@@ -95,7 +95,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D
 
 
 
-	public class Pair2 {
+	public struct Pair2 {
 
 		/// <summary>
 		/// First vector of a pair

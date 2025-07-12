@@ -1,62 +1,22 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap.Objects;
-
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap
+﻿namespace FunkyCode.Rendering.Lightmap
 {
     public class Sorted
     {    
-         static public void Draw(Pass pass)
-         {
-             for(int id = 0; id < pass.sortList.count; id++)
-             {
-                Sorting.SortObject sortObject = pass.sortList.list[id];
+        static public void Draw(Pass pass)
+        {
+            for(int id = 0; id < pass.sortList.Count; id++)
+            {
+                var sortObject = pass.sortList.List[id];
+                object lightObject = sortObject.LightObject;
 
-                switch(sortObject.type)
-                {
-                     case Sorting.SortObject.Type.TilemapRoom:
-
-                        LightTilemapRoom2D tilemapRoom = (LightTilemapRoom2D)sortObject.lightObject;
-
-                        if (tilemapRoom != null)
-                        {
-                            TilemapRoom.Draw(tilemapRoom, pass.camera);                            
-                        }
-
-                    break;
-
-                    case Sorting.SortObject.Type.Room:
-
-                        LightRoom2D room = (LightRoom2D)sortObject.lightObject;
-
-                        if (room != null)
-                        {
-                            Room.Draw(room, pass.camera);
-                        }
-
-                    break;
-
-                    case Sorting.SortObject.Type.LightSprite:
-
-                        LightSprite2D lightSprite = (LightSprite2D)sortObject.lightObject;
-
-                        if (lightSprite != null)
-                        {
-                            LightSprite.Simple.Draw(lightSprite, pass.camera);
-                        }
-
-                    break;
-
-                    case Sorting.SortObject.Type.Light:
-
-                        Light2D light = (Light2D)sortObject.lightObject;
-
-                        if (light != null)
-                        {
-                            LightSource.Draw(light, pass.camera);
-                        }
-
-                    break;
-                }
+                if (sortObject.LightObject is LightTilemapRoom2D lightTilemapRoom)
+                    TilemapRoom.Draw(lightTilemapRoom, pass.camera);    
+                else if (sortObject.LightObject is LightRoom2D lightRoom)
+                    Room.Draw(lightRoom, pass.camera);
+                else if (sortObject.LightObject is LightSprite2D lightSprite)
+                    LightSprite.Simple.Draw(lightSprite, pass.camera);
+                else if (sortObject.LightObject is Light2D light)
+                    LightSource.Draw(light, pass.camera);
             }
         }
     }

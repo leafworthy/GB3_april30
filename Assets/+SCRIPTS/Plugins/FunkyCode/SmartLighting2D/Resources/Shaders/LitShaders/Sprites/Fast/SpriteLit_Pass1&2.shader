@@ -2,7 +2,7 @@
 {
 	Properties
 	{
-		[HideInInspector] _MainTex ("Sprite Texture", 2D) = "white" {}
+		[HideInInspector] _MainTex ("Texture", 2D) = "white" {}
 		_Color ("Color", Color) = (1,1,1,1)
 		_Lit ("Lit", Range(0,1)) = 1
 	}
@@ -11,7 +11,7 @@
 	{
 		Tags
 		{ 
-			"Queue"= "Transparent" 
+			"Queue" = "Transparent" 
 			"IgnoreProjector" = "True" 
 			"RenderType" = "Transparent" 
 			"PreviewType" = "Plane"
@@ -23,16 +23,16 @@
 		ZWrite Off
 		Blend One OneMinusSrcAlpha
 
-		Pass {
-
-		CGPROGRAM
+		Pass
+		{
+			CGPROGRAM
 
 			#pragma vertex vert
 			#pragma fragment frag
 
 			#include "UnityCG.cginc"
 
-			#include "../../../LitShaders/FastLitCore.cginc"
+			#include "../../../LitShaders/SL2D_ShaderFast.cginc"
 			// #include "Assets/FunkyCode/SmartLighting2D/Resources/Shaders/LitShaders/LitCore.cginc"
 
 			struct appdata_t
@@ -48,6 +48,9 @@
 				float2 texcoord  : TEXCOORD0;
 				fixed4 color    : COLOR;
                 float2 worldPos : TEXCOORD1;
+
+				float2 lightmap1_uv : TEXCOORD2;
+				float2 lightmap2_uv : TEXCOORD3;
 			};
 			
 			sampler2D _MainTex;
@@ -63,6 +66,9 @@
                 
                 OUT.worldPos = mul (unity_ObjectToWorld, IN.vertex);
 
+				OUT.lightmap1_uv = SL2D_FAST_LIGHTMAP_UV_1(OUT.worldPos);
+				OUT.lightmap2_uv = SL2D_FAST_LIGHTMAP_UV_2(OUT.worldPos);
+
 				return OUT;
 			}
 
@@ -70,7 +76,7 @@
 			{
 				fixed4 spritePixel = tex2D (_MainTex, IN.texcoord) * IN.color;
 
-				fixed3 light = max( SL2D_FAST_PASS_LIT_1(IN.worldPos), SL2D_FAST_PASS_LIT_2(IN.worldPos));
+				fixed3 light = max( SL2D_FAST_PASS_LIT_1(IN.lightmap1_uv), SL2D_FAST_PASS_LIT_2(IN.lightmap2_uv));
 
 				spritePixel.rgb *= light * spritePixel.a;
 

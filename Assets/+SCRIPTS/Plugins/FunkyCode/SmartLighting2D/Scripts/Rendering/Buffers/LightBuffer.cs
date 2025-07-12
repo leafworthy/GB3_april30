@@ -1,13 +1,7 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Light2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.ShadowEngine;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Universal.Objects;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2;
-using UnityEngine;
+﻿using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
+namespace FunkyCode.Rendering
 {
     public class LightBuffer
     {
@@ -19,26 +13,26 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
             if (light.IsPixelPerfect())
             {
-                UnityEngine.Camera camera = UnityEngine.Camera.main;
+                var camera = Camera.main;
 
                 float cameraRotation = LightingPosition.GetCameraRotation(camera);
                 Matrix4x4 matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, cameraRotation), Vector3.one);
 
                 float sizeY = camera.orthographicSize;
                 float sizeX = sizeY * ( (float)camera.pixelWidth / camera.pixelHeight);
-
+                
                 GL.LoadPixelMatrix(-sizeX, sizeX, -sizeY, sizeY);
             }
-                else
+            else
             {
                 GL.LoadPixelMatrix(-size, size, -size, size);
             }
-
+			
 			Rendering.Light.Main.Draw(light);
 
 			GL.PopMatrix();
 
-            light.drawingEnabled = ShadowEngine.continueDrawing;
+            light.drawingEnabled = Rendering.Light.ShadowEngine.continueDrawing;
 		}
 
         static public void RenderTranslucency(Light2D light)
@@ -49,28 +43,28 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
             if (light.IsPixelPerfect())
             {
-                UnityEngine.Camera camera = UnityEngine.Camera.main;
+                var camera = Camera.main;
 
                 float cameraRotation = LightingPosition.GetCameraRotation(camera);
                 Matrix4x4 matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, cameraRotation), Vector3.one);
 
                 float sizeY = camera.orthographicSize;
-                float sizeX = sizeY * ( (float)camera.pixelWidth / camera.pixelHeight );
-
+                float sizeX = sizeY * ((float)camera.pixelWidth / camera.pixelHeight );
+                
                 GL.LoadPixelMatrix( -sizeX, sizeX, -sizeY, sizeY );
             }
-                else
+            else
             {
-                GL.LoadPixelMatrix( -size, size, -size, size );
+                GL.LoadPixelMatrix( -size, size, -size, size ); 
             }
-
+			
 			Rendering.Light.Main.DrawTranslucency(light);
 
 			GL.PopMatrix();
 
-            light.drawingTranslucencyEnabled = ShadowEngine.continueDrawing;
+            light.drawingTranslucencyEnabled = Rendering.Light.ShadowEngine.continueDrawing;
 		}
-
+        
         static public void RenderFreeForm(Light2D light)
         {
             LightFreeForm freeForm = light.freeForm;
@@ -78,20 +72,17 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
             Vector2[] points = freeForm.polygon.points;
 
             int pointsCount = points.Length;
-
             if (pointsCount < 3)
-            {
                 return;
-            }
 
             float size = light.size;
-            GL.LoadPixelMatrix( -size, size, -size, size );
+            GL.LoadPixelMatrix( -size, size, -size, size ); 
 
             GL.PushMatrix();
 
             MeshObject meshObject = MeshObject.Get(freeForm.polygon.CreateMesh(Vector2.zero, Vector2.zero));
 
-            UnityEngine.Material material = Lighting2D.materials.GetAdditive();
+            Material material = Lighting2D.Materials.GetAdditive();
             material.mainTexture = null;
 
             GLExtended.color = Color.white;
@@ -108,7 +99,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
             {
                 float edgeSize = light.freeFormFalloff;
 
-                material = Lighting2D.materials.GetFreeFormEdgeLight();
+                material = Lighting2D.Materials.lights.GetFreeFormEdgeLight();
                 material.mainTexture = null;
                 material.SetFloat("_Strength", light.freeFormFalloffStrength);
 
@@ -125,7 +116,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
                     Vector2 p3 = nextPoint;
                     Vector2 p4 = point;
-
+            
                     Vector2 p1 = point;
                     p1.x += Mathf.Cos(direction - Mathf.PI / 2) * edgeSize;
                     p1.y += Mathf.Sin(direction - Mathf.PI / 2) * edgeSize;
@@ -133,7 +124,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
                     Vector2 p2 = nextPoint;
                     p2.x += Mathf.Cos(direction - Mathf.PI / 2) * edgeSize;
                     p2.y += Mathf.Sin(direction - Mathf.PI / 2) * edgeSize;
-
+                    
                     GL.Color(new Color(0, 0, 0, 0));
                     GL.Vertex3(p1.x, p1.y, 0);
                     GL.Vertex3(p2.x, p2.y, 0);
@@ -157,64 +148,28 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
                 GL.End();
             }
-
+    
 			GL.PopMatrix();
 		}
 
         static public void UpdateName(LightBuffer2D buffer)
         {
-            //return;
-            string freeString = "";
+            var freeString = string.Empty;
 
             if (buffer.Free)
-            {
                 freeString = "free";
-            }
-                else
-            {
+            else
                 freeString = "taken";
-            }
 
             if (buffer.renderTexture != null)
-            {
-                buffer.name = "Buffer (Id: " + (LightBuffer2D.List.IndexOf(buffer) + 1) + ", Size: " + buffer.renderTexture.width + ", " + freeString + ")";
-            }
-                else
-            {
-                buffer.name = "Buffer (Id: " + (LightBuffer2D.List.IndexOf(buffer) + 1) + ", No Texture, " + freeString + ")";
-            }
-
-            if (Lighting2D.QualitySettings.HDR != HDR.Off)
-            {
-                buffer.name = "HDR " + buffer.name;
-            }
+                buffer.name = $"Buffer (Id: {LightBuffer2D.List.IndexOf(buffer) + 1}, Size: {buffer.renderTexture.width}, {freeString})";
+            else
+                buffer.name = "Buffer (Id: {LightBuffer2D.List.IndexOf(buffer) + 1}, No Texture, {freeString})";
         }
 
         static public void InitializeRenderTexture(LightBuffer2D buffer, Vector2Int textureSize)
         {
-            RenderTextureFormat format = RenderTextureFormat.Default;
-
-            switch(Lighting2D.QualitySettings.HDR)
-            {
-                case HDR.Half:
-
-                    format = RenderTextureFormat.RHalf;
-
-                break;
-
-                case HDR.Float:
-
-                    format = RenderTextureFormat.DefaultHDR;
-
-                break;
-
-                case HDR.Off:
-
-                    format = RenderTextureFormat.R8;
-
-                break;
-            }
-
+            var format = RenderTextureFormat.R8;
             if (!SystemInfo.SupportsRenderTextureFormat(format))
             {
                 format = RenderTextureFormat.Default;
@@ -222,22 +177,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
             buffer.renderTexture = new LightTexture(textureSize.x, textureSize.y, 0, format);
             buffer.renderTexture.renderTexture.filterMode = Lighting2D.Profile.qualitySettings.lightFilterMode;
-
+ 
             UpdateName(buffer);
         }
-
-
-
-
-
-
-
-
-
+            
         static public void InitializeFreeFormTexture(LightBuffer2D buffer, Vector2Int textureSize)
         {
-            RenderTextureFormat format = RenderTextureFormat.R8;
-
+            var format = RenderTextureFormat.R8;
             if (!SystemInfo.SupportsRenderTextureFormat(format))
             {
                 format = RenderTextureFormat.Default;
@@ -245,35 +191,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
             buffer.freeFormTexture = new LightTexture(textureSize.x, textureSize.y, 0, format);
             buffer.freeFormTexture.renderTexture.filterMode = Lighting2D.Profile.qualitySettings.lightFilterMode;
-
+ 
             UpdateName(buffer);
         }
 
-
-
-
-
-
-
         static public void InitializeTranslucencyTexture(LightBuffer2D buffer, Vector2Int textureSize)
         {
-            RenderTextureFormat format = RenderTextureFormat.Default;
-
-            switch(Lighting2D.QualitySettings.HDR)
-            {
-                case HDR.Half:
-                    format = RenderTextureFormat.RHalf;
-                break;
-
-                case HDR.Float:
-                    format = RenderTextureFormat.DefaultHDR;
-                break;
-
-                case HDR.Off:
-                    format = RenderTextureFormat.R8;
-                break;
-            }
-
+            var format = RenderTextureFormat.R8;
             if (!SystemInfo.SupportsRenderTextureFormat(format))
             {
                 format = RenderTextureFormat.Default;

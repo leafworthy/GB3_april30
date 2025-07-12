@@ -1,88 +1,64 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day.Masks;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day.Shadow;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day
+namespace FunkyCode.Rendering.Day
 {
     public class Sorted
     {
         static public void Draw(Pass pass)
         {
-            for(int id = 0; id < pass.sortList.count; id++)
+            for(int id = 0; id < pass.sortList.Count; id++)
             {
-                Sorting.SortObject sortObject = pass.sortList.list[id];
+                var sortObject = pass.sortList.List[id];
+                var lightObject = sortObject.LightObject;
 
-                switch(sortObject.type)
+                if (lightObject is DayLightCollider2D dayCollider)
                 {
-                    case Sorting.SortObject.Type.Collider:
-
-                        DayLightCollider2D collider = (DayLightCollider2D)sortObject.lightObject;
-
-                        if (collider != null)
+                    if (!dayCollider.InAnyCamera()) 
+                        continue;
+                
+                    if (pass.drawShadows)
+                    {
+                        if (dayCollider.mainShape.shadowType == DayLightCollider2D.ShadowType.Collider2D || dayCollider.mainShape.shadowType == DayLightCollider2D.ShadowType.SpritePhysicsShape)
                         {
-                            if (!collider.InAnyCamera()) 
-                            {
-                                continue;
-                            }
+                            Lighting2D.Materials.shadow.GetDayCPUShadow().SetPass (0);
 
-                            if (pass.drawShadows)
-                            {
-                                if (collider.mainShape.shadowType == DayLightCollider2D.ShadowType.Collider2D || collider.mainShape.shadowType == DayLightCollider2D.ShadowType.SpritePhysicsShape)
-                                {
-                                    Lighting2D.materials.shadow.GetDayCPUShadow().SetPass (0);
-
-                                    GL.Begin(GL.TRIANGLES);
-
-                                    Shadow.Shadow.Draw(collider, pass.offset);  
-
-                                    GL.End(); 
-                                }
-
-                                SpriteRendererShadow.Begin(pass.offset);
-
-                                SpriteRendererShadow.DrawOffset(collider);
-
-                                SpriteRendererShadow.End();
-                            }
-
-                            if (pass.drawMask)
-                            {
-                                SpriteRenderer2D.Draw(collider, pass.offset);
-                            }
+                            GL.Begin(GL.TRIANGLES);
+                            Shadow.Draw(dayCollider, pass.offset);  
+                            GL.End(); 
                         }
 
-                    break;
+                        SpriteRendererShadow.Begin(pass.offset);
+                        SpriteRendererShadow.DrawOffset(dayCollider);
 
-                     case Sorting.SortObject.Type.TilemapCollider:
+                        SpriteRendererShadow.End();
+                    }
 
-                        DayLightTilemapCollider2D tilemap = (DayLightTilemapCollider2D)sortObject.lightObject;
-
-                        if (tilemap != null)
+                    if (pass.drawMask)
+                    {
+                        SpriteRenderer2D.Draw(dayCollider, pass.offset);
+                    }
+                }
+                else if (lightObject is DayLightTilemapCollider2D tilemapCollider)
+                {
+                    if (pass.drawShadows)
+                    {
+                        if (!tilemapCollider.ShadowsDisabled())
                         {
-                            if (pass.drawShadows)
-                            {
-                                if (!tilemap.ShadowsDisabled())
-                                {
-                                    Lighting2D.materials.shadow.GetDayCPUShadow().SetPass(0);
+                            Lighting2D.Materials.shadow.GetDayCPUShadow().SetPass(0);
 
-                                    GL.Begin(GL.TRIANGLES);
-                                        Shadow.Shadow.DrawTilemap(tilemap, pass.offset);            
-                                    GL.End(); 
-                                }
-                            }
-                           
-                            if (pass.drawMask)
-                            {
-                                if (!tilemap.MasksDisabled())
-                                {
-                                    SpriteRenderer2D.DrawTilemap(tilemap, pass.offset);
-                                }
-                            }
+                            GL.Begin(GL.TRIANGLES);
+                            Shadow.DrawTilemap(tilemapCollider, pass.offset, pass.camera);            
+                            GL.End(); 
                         }
-
-                    break;
+                    }
+                    
+                    if (pass.drawMask)
+                    {
+                        if (!tilemapCollider.MasksDisabled())
+                        {
+                            SpriteRenderer2D.DrawTilemap(tilemapCollider, pass.offset);
+                        }
+                    }
                 }
             }
         }

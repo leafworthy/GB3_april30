@@ -1,24 +1,22 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Material;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
-using UnityEngine;
+﻿using UnityEngine;
+using FunkyCode.LightingSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
+namespace FunkyCode
 {
 	public static class Lighting2D
 	{
-		public const int VERSION = 20211104;
-		public const string VERSION_STRING = "2021.11.4";
+		public const int VERSION = 20221100;
+		public const string VERSION_STRING = "2022.11.0";
 
-		static public Lighting2DMaterials materials = new Lighting2DMaterials();
-
-		// disable
-		static public bool disable => false;
+		static public Lighting2DMaterials Materials = new Lighting2DMaterials();
+		
+		static public bool Disable => false;
 
 		// lightmaps
 		static public LightmapPreset[] LightmapPresets => Profile.lightmapPresets.list;
 
 		// quality
-		static public QualitySettings QualitySettings => Profile.qualitySettings;
+		static public LightingSettings.QualitySettings QualitySettings => Profile.qualitySettings;
 		
 		// day lighting
 		static public DayLightingSettings DayLightingSettings => Profile.dayLightingSettings;
@@ -28,16 +26,24 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 		static public CoreAxis CoreAxis => Profile.qualitySettings.coreAxis;
 
 		// set & get
-		static public Color DarknessColor => LightmapPresets[0].darknessColor;
+		static public Color DarknessColor
+		{
+			set => LightmapPresets[0].darknessColor = value;
+			get => LightmapPresets[0].darknessColor;
+		}
 
-		static public float Resolution => LightmapPresets[0].resolution;
+		static public float Resolution
+		{
+			set => LightmapPresets[0].resolution = value;
+			get => LightmapPresets[0].resolution;
+		}
 
 		// methods
 		static public void UpdateByProfile(Profile setProfile)
 		{
 			if (setProfile == null)
 			{
-				UnityEngine.Debug.Log("Light 2D: Update Profile is Missing");
+				Debug.Log("Light 2D: Update Profile is Missing");
 				return;
 			}
 			
@@ -72,7 +78,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 
 					if (profile == null)
 					{
-						UnityEngine.Debug.LogError("Light 2D: Default Profile not found");
+						Debug.LogError("Light 2D: Default Profile not found");
 					}
 				}
 
@@ -91,22 +97,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 				}
 
 				projectSettings = Resources.Load("Settings/Project Settings") as ProjectSettings;
-
-				if (projectSettings == null)
-				{
-					UnityEngine.Debug.LogError("Light 2D: Project Settings not found");
-					return(null);
-				}
 			
-				return(projectSettings);
+				return projectSettings;
 			}
 		}
 	}
 }
-
-//MyScriptableObjectClass asset = ScriptableObject.CreateInstance<MyScriptableObjectClass>();
-
-//AssetDatabase.CreateAsset(asset, "Assets/NewScripableObject.asset");
-//AssetDatabase.SaveAssets();
-
-//EditorUtility.FocusProjectWindow();

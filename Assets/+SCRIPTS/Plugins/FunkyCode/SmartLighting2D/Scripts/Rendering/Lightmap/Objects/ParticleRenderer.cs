@@ -1,54 +1,39 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap.Objects
-{
+namespace FunkyCode.Rendering.Lightmap
+{        
     public class ParticleRenderer
 	{
-		static public void Draw(LightParticleSystem2D id, UnityEngine.Camera camera)
+		static public void Draw(LightParticleSystem2D id, Camera camera)
 		{
 			ParticleSystem.Particle particle;
 			Vector2 size, pos;
 
-			ParticleSystem particleSystem = id.GetParticleSystem();
-
+			var particleSystem = id.GetParticleSystem();
 			if (particleSystem == null)
-			{
 				return;
-			}
 
-			ParticleSystemRenderer particleSystemRenderer = id.GetParticleSystemRenderer();
-
+			var particleSystemRenderer = id.GetParticleSystemRenderer();
 			if (particleSystemRenderer == null)
-			{
 				return;
-			}
 
-			ParticleSystemSimulationSpace simulationSpace = particleSystem.main.simulationSpace;
-
+			var simulationSpace = particleSystem.main.simulationSpace;
 			if (id.particleArray == null || id.particleArray.Length < particleSystem.main.maxParticles)
-			{
 				id.particleArray = new ParticleSystem.Particle[particleSystem.main.maxParticles];
-			}
 
 			Texture texture;
-
 			if (id.customParticle)
 			{
 				texture = id.customParticle;
 			}
-				else
+			else
 			{
 				texture = particleSystemRenderer.sharedMaterial.mainTexture;
 			}
 
 			Vector2 pOffset = -camera.transform.position;
-
 			float rotation = id.transform.eulerAngles.z * Mathf.Deg2Rad;
-
 			Color color = id.color;
-
 			Vector3 localScale = id.transform.localScale;
 
 			switch(simulationSpace)
@@ -56,13 +41,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap
 				case ParticleSystemSimulationSpace.Local:
 					pOffset.x += id.transform.position.x;
 					pOffset.y += id.transform.position.y;
-				break;
+					break;
 			}
 
-			UnityEngine.Material material = Lighting2D.materials.GetAdditive();
+			var material = Lighting2D.Materials.GetAdditive();
 			material.mainTexture = texture;
-
-			material.SetPass (0);
+			
+			material.SetPass (0); 
 
 			GL.Begin (GL.QUADS);
 
@@ -85,7 +70,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap
 				switch(simulationSpace)
 				{
 					case ParticleSystemSimulationSpace.Local:
-
+					
 						pos = particle.position;
 
 						float angle = Mathf.Atan2(pos.y, pos.x) + rotation;
@@ -110,7 +95,6 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap
 						pos = Vector2.zero;
 
 						break;
-
 				}
 
 				pos.x += pOffset.x;
@@ -130,7 +114,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap
 				Particle.DrawPass(pos, size, particle.rotation);
 			}
 
-			GL.End ();
+			GL.End (); 
 		}
     }
 }

@@ -1,7 +1,7 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
-using UnityEngine;
+﻿using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
+namespace FunkyCode.EventHandling
 {
 	public class Base
 	{
@@ -14,7 +14,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
 			if (eventPoly == null) {
 				eventPoly = new Polygon2(4);
 			}
-
+			
 			return(eventPoly);
 		}
 	}

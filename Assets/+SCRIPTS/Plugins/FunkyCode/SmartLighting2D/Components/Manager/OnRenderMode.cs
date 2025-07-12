@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
+﻿using FunkyCode.LightingSettings;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
+namespace FunkyCode
 {
     [ExecuteInEditMode]
     public class OnRenderMode : LightingMonoBehaviour
@@ -24,7 +20,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 
         public void OnDisable()
         {
-            List.Remove(this);
+            List.Remove(this);   
         }
 
         public static OnRenderMode Get(LightMainBuffer2D buffer)
@@ -37,11 +33,6 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
                 }
             }
 
-            if (!Application.isPlaying)
-            {
-                return(null);
-            }
-
             GameObject meshRendererMode = new GameObject("On Render");
             OnRenderMode onRenderMode = meshRendererMode.AddComponent<OnRenderMode>();
 
@@ -49,12 +40,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
             onRenderMode.Initialize(buffer);
             onRenderMode.UpdateLayer();
 
-            if (Lighting2D.ProjectSettings.managerInternal == ManagerInternal.HideInHierarchy)
+            if (Lighting2D.ProjectSettings.managerInternal == LightingSettings.ManagerInternal.HideInHierarchy)
             {
                 meshRendererMode.hideFlags = meshRendererMode.hideFlags | HideFlags.HideInHierarchy;
             }
 
-            onRenderMode.name = "On Renduh: " + buffer.name;
+            onRenderMode.name = "On Render: " + buffer.name;
 
             return(onRenderMode);
         }
@@ -66,8 +57,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
                 Debug.Log("main buffer null");
             }
 
-           // gameObject.transform.parent = LightingManager2D.Get().transform;
-
+            gameObject.transform.parent = LightingManager2D.Get().transform;
+            
             meshRenderer = gameObject.AddComponent<MeshRenderer>();
             meshRenderer.sharedMaterial = mainBuffer.GetMaterial();
             meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
@@ -95,7 +86,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 
         private void Update()
         {
-            if (mainBuffer == null || !mainBuffer.IsActive())
+            if (mainBuffer == null || !mainBuffer.IsActive)
             {
                 DestroySelf();
                 return;
@@ -116,7 +107,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 
         public void UpdateLoop()
         {
-            if (mainBuffer == null || !mainBuffer.IsActive())
+            if (mainBuffer == null || !mainBuffer.IsActive)
             {
                 return;
             }
@@ -133,25 +124,25 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 
             UpdateLayer();
 
-            if (Lighting2D.disable)
+            if (Lighting2D.Disable)
             {
                 if (meshRenderer != null)
                 {
                     meshRenderer.enabled = false;
                 }
             }
-
+            
             if (mainBuffer.cameraLightmap.overlay != CameraLightmap.Overlay.Enabled)
             {
                 meshRenderer.enabled = false;
             }
-
+            
             if (mainBuffer.cameraLightmap.rendering != CameraLightmap.Rendering.Enabled)
             {
-
+                
                 meshRenderer.enabled = false;
             }
-
+        
             if (Lighting2D.RenderingMode == RenderingMode.OnRender)
             {
                 UpdatePosition();
@@ -166,7 +157,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
         public void UpdatePosition()
         {
             Camera camera = mainBuffer.cameraSettings.GetCamera();
-
+            
             if (camera == null)
             {
                 return;
@@ -186,10 +177,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 
                 break;
             }
-
+            
             transform.rotation = camera.transform.rotation;
 
-            // local scale - issues when lighting manager is scaled - not great not terrible
             transform.localScale = LightingRender2D.GetSize(camera);
         }
     }

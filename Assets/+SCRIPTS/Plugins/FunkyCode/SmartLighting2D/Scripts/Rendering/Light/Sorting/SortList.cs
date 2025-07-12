@@ -1,83 +1,55 @@
-﻿using System;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D;
+﻿using UnityEngine;
+using System;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sorting
+namespace FunkyCode.Rendering.Light.Sorting
 {
 	public class SortList
 	{
-		public SortObject[] list = new SortObject[1024];
-
-		public int count = 0;
+		public int Count {private set; get;}
+		public SortObject[] List = new SortObject[1024];
 
 		public SortList()
 		{
-			for(int i = 0; i < list.Length; i++)
-			{
-				list[i] = new SortObject();
-			}
+			Count = 0;
+
+			for(int i = 0; i < List.Length; i++)
+				List[i] = new SortObject();
 		}
 
-		public void Add(LightCollider2D collider2D, float dist)
+		public void Add(object collider, float dist)
 		{
-			if (count < list.Length)
+			if (Count < List.Length)
 			{
-				list[count].value = dist;
-
-				list[count].type = SortObject.Type.Collider;
-				list[count].lightObject = (object)collider2D;
-
-				count++;
+				List[Count] = new SortObject(dist, collider);
+				Count++;
 			}
-				else
+			else
 			{
-				UnityEngine.Debug.LogError("Collider Depth Overhead!");
-			}
-		}
-
-		public void AddTilemap(LightTilemapCollider2D tilemap, float value)
-		{
-			if (count < list.Length)
-			{
-				list[count].value = value;
-
-				list[count].type = SortObject.Type.TilemapMap;
-				list[count].tilemap = tilemap;
-
-				count++;
-			}
-				else
-			{
-				UnityEngine.Debug.LogError("Tile Depth Overhead!");
+				Debug.LogError("Collider Depth Overhead!");
 			}
 		}
 
 		public void Add(LightTilemapCollider2D tilemap, LightTile tile2D, float value)
 		{
-			if (count < list.Length)
+			if (Count < List.Length)
 			{
-				list[count].value = value;
-
-				list[count].type = SortObject.Type.Tile;
-				list[count].lightObject = tile2D;
-				list[count].tilemap = tilemap;
-
-				count++;
+				List[Count] = new SortObject(value, tile2D, tilemap);
+				Count++;
 			}
-				else
+			else
 			{
-				UnityEngine.Debug.LogError("Tile Depth Overhead!");
+				Debug.LogError("Tile Depth Overhead!");
 			}
 		}
 
 		public void Reset()
 		{
-			count = 0;
+			Count = 0;
 		}
 
 		public void Sort()
 		{
-			Array.Sort<SortObject>(list, 0, count, SortObject.Sort());
+			Array.Sort<SortObject>(List, 0, Count, SortObject.Sort());
 		}
 	}
 }

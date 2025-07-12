@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
 using UnityEngine;
+using FunkyCode.LightSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
+namespace FunkyCode.Rendering.Light
 {
     public class Pass
     {
@@ -25,9 +23,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
         public bool drawMask = false;
         public bool drawShadows = false;
 
-        public UnityEngine.Material materialMask;
-        public UnityEngine.Material materialNormalMap_PixelToLight;
-        public UnityEngine.Material materialNormalMap_ObjectToLight;
+        public Material materialMask;
+        public Material materialNormalMap_PixelToLight;
+        public Material materialNormalMap_ObjectToLight;
 
         public Sorting.SortPass sortPass = new Sorting.SortPass();
 
@@ -46,7 +44,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
             // Calculation Setup
             this.light = light;
             lightSizeSquared = Mathf.Sqrt(light.size * light.size + light.size * light.size);
-
+        
             colliderList = LightCollider2D.List;
 
             layerShadowList = LightCollider2D.GetShadowList(layerID);
@@ -56,7 +54,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
 
             tilemapShadowList = LightTilemapCollider2D.GetShadowList(layerID);
             tilemapMaskList = LightTilemapCollider2D.GetMaskList(layerID);
-
+    
             // Draw Mask & Shadows?
             drawMask = (layer.type != LightLayerType.ShadowOnly);
             drawShadows = (layer.type != LightLayerType.MaskOnly);
@@ -65,7 +63,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
 
             if (light.translucentLayer > 0)
             {
-                materialMask = Lighting2D.materials.mask.GetMaskTranslucency();
+                materialMask = Lighting2D.Materials.mask.GetMaskTranslucency();
 
                 if (light.Buffer.translucencyTexture != null)
                 {
@@ -76,10 +74,10 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
             }
                 else
             {
-                materialMask = Lighting2D.materials.mask.GetMask();
+                materialMask = Lighting2D.Materials.mask.GetMask();
             }
-
-            materialNormalMap_PixelToLight = Lighting2D.materials.bumpMask.GetNormalMapSpritePixelToLight();
+           
+            materialNormalMap_PixelToLight = Lighting2D.Materials.bumpMask.GetNormalMapSpritePixelToLight();
 
             if (materialNormalMap_PixelToLight != null)
             {
@@ -94,7 +92,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
                 }
             }
 
-            materialNormalMap_ObjectToLight = Lighting2D.materials.bumpMask.GetNormalMapSpriteObjectToLight();
+            materialNormalMap_ObjectToLight = Lighting2D.Materials.bumpMask.GetNormalMapSpriteObjectToLight();
 
             if (materialNormalMap_ObjectToLight != null)
             {
@@ -105,7 +103,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
                 }
                     else
                 {
-                    materialNormalMap_ObjectToLight.SetTexture("_SecTex", null);
+                    materialNormalMap_ObjectToLight.SetTexture("_SecTex", null); 
                 }
             }
 
@@ -118,7 +116,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
             materialNormalMap_ObjectToLight.SetFloat("_LightZ", light.bumpMap.depth);
 
             sortPass.pass = this;
-
+            
             // sort
             sortPass.Clear();
 

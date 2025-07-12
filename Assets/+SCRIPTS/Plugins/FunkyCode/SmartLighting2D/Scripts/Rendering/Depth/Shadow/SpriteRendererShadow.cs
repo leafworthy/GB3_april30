@@ -1,19 +1,14 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLightCollider2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Universal.Objects;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities;
-using UnityEngine;
-using Sprite = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Universal.Objects.Sprite;
+﻿using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth.Shadow
+namespace FunkyCode.Rendering.Depth
 {
     public static class SpriteRendererShadow
     {
         static VirtualSpriteRenderer virtualSpriteRenderer = new VirtualSpriteRenderer();
 
         public static Texture2D currentTexture;
-        public static UnityEngine.Material material;
+        public static Material material;
 
         public static Vector2 cameraOffset;
         public static float direction;
@@ -21,7 +16,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth.Sh
 
         static public void Begin(Vector2 offset)
         {
-            material = Lighting2D.materials.shadow.GetDepthDayShadow();
+            material = Lighting2D.Materials.shadow.GetDepthDayShadow();
             material.mainTexture = null;
 
             SpriteRendererShadow.currentTexture = null;
@@ -95,7 +90,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth.Sh
 
             GLExtended.color = new Color(depth, 0, 0, 1 - id.shadowTranslucency);
 
-            Sprite.Pass.Draw(id.spriteMeshObject, virtualSpriteRenderer, position, scale, id.transform.rotation.eulerAngles.z);
+            Universal.Sprite.Pass.Draw(id.spriteMeshObject, virtualSpriteRenderer, position, scale, id.transform.rotation.eulerAngles.z);
         }
     }
 }

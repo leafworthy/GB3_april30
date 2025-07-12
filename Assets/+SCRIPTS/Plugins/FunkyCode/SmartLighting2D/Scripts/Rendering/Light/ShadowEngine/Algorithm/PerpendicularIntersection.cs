@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.ShadowEngine.Algorithm
+namespace FunkyCode.Rendering.Light.Shadow
 {
     public static class PerpendicularIntersection
     {
@@ -44,10 +43,10 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
                 Vector2[] pointsList = polygons[i].points;
                 int pointsCount = pointsList.Length;
-
+            
                 for(int x = 0; x < pointsCount; x++) {
                     int next = (x + 1) % pointsCount;
-
+                    
                     pair.A = pointsList[x];
                     pair.B = pointsList[next];
 
@@ -67,7 +66,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                     float EdgeDirection = (Mathf.Atan2(edgeALocalY - edgeBLocalY, edgeALocalX - edgeBLocalX) * Mathf.Rad2Deg - 180 + 720) % 360;
 
                     lightDirection -= EdgeDirection;
-
+    
                     lightDirection = (lightDirection + 720) % 360;
 
                     angleA = (float)System.Math.Atan2 (edgeAWorldY, edgeAWorldX);
@@ -75,7 +74,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
                     rotA = angleA - Mathf.Deg2Rad * light.outerAngle;
                     rotB = angleB + Mathf.Deg2Rad * light.outerAngle;
-
+                                        
                     // Right Collision
                     vC.x = edgeAWorldX;
                     vC.y = edgeAWorldY;
@@ -110,7 +109,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
                     // Right Intersection
                     intersectionRight = LineIntersectPolygons(vC - offset, vA - offset,  polygons);
-
+                  
                     if (intersectionRight != null) {
                         if (intersectionRight.Value.y < 0) {
                             intersectionRight = null;
@@ -127,7 +126,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
                     // Left Intersection
                     intersectionLeft = LineIntersectPolygons(vD - offset, vB - offset, polygons);
-
+               
                     if (intersectionLeft != null) {
                         if (intersectionLeft.Value.y < 0) {
                             intersectionLeft = null;
@@ -139,7 +138,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
                             intersectionLeftOffset = intersectionLeft.Value;
                             intersectionLeftOffset.y += shadowDistance;
-                        }
+                        }     
                     }
 
                     GL.TexCoord3(fill.x0, fill.y0, 0);
@@ -221,7 +220,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                         result = intersection.Value;
                         distance = d;
                     }
-
+                    
                 }
             }
 
@@ -254,9 +253,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                         }
                     }
                 }
-
+                
             }
-
+            
             return(result);
         }
 

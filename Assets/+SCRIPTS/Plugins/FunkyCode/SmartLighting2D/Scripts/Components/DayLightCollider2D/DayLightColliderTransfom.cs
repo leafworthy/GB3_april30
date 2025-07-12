@@ -1,8 +1,8 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLightCollider2D
+namespace FunkyCode
 {
 	public class DayLightingColliderTransform
 	{
@@ -11,7 +11,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLigh
 		public Vector2 position = Vector2.zero;
 		public Vector2 scale = Vector3.zero;
 		public float rotation = 0;
-
+		
 		private bool flipX = false;
 		private bool flipY = false;
 
@@ -36,11 +36,11 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLigh
 			if (shape == null) {
 				return;
 			}
-
+			
 			if (shape.transform == null) {
 				return;
 			}
-
+			
 			Transform transform = shape.transform;
 
 			Vector2 scale2D = transform.lossyScale;
@@ -56,6 +56,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLigh
 				position = position2D;
 
 				// does not update shadow
+				updateNeeded = true;
 			}
 
 			if (sunDirection != Lighting2D.DayLightingSettings.direction) {
@@ -69,7 +70,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLigh
 
 				updateNeeded = true;
 			}
-
+					
 			if (scale != scale2D) {
 				scale = scale2D;
 
@@ -93,28 +94,33 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLigh
 				shape.height = 0.01f;
 			}
 
-			if (shape.shadowType == SmartLighting2D.Components.Day.DayLightCollider2D.ShadowType.SpritePhysicsShape) {
+			if (shape.shadowType == DayLightCollider2D.ShadowType.SpritePhysicsShape) {
 				if (spriteRenderer != null) {
 					if (spriteRenderer.flipX != flipX || spriteRenderer.flipY != flipY) {
 						flipX = spriteRenderer.flipX;
 						flipY = spriteRenderer.flipY;
 
 						updateNeeded = true;
-
+						
 						shape.ResetLocal(); // World
 					}
-
+					
 					/* Sprite frame change
 					if (shape.GetOriginalSprite() != spriteRenderer.sprite) {
 						shape.SetOriginalSprite(spriteRenderer.sprite);
 						shape.SetAtlasSprite(null); // Only For Sprite Mask?
 
 						moved = true;
-
+						
 						shape.Reset(); // Local
 					}
 					*/
 				}
+			}
+
+			if (updateNeeded)
+			{
+				shape.ResetWorld();
 			}
 
 			/* Sprite Frame Change
@@ -139,13 +145,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLigh
 		//public Vector2 position = Vector2.zero;
 		//public Vector2 scale = Vector3.zero;
 		//public float rotation = 0;
-
+		
 		private float height = 0;
 
 		private float sunDirection = 0;
 		private float sunHeight = 1;
 
-		public void Update(DayLightTilemapCollider2D id) {
+		public void Update(DayLightTilemapCollider2D id) {		
 			Transform transform = id.transform;
 
 			moved = false;

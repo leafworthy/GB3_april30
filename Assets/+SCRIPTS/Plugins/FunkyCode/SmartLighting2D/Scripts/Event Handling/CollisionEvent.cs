@@ -1,5 +1,5 @@
 ﻿
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
+namespace FunkyCode.EventHandling
 {
     public delegate void CollisionEvent2D(LightCollision2D collision);
 }

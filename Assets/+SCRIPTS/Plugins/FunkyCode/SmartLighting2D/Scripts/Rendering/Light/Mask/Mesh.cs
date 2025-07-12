@@ -1,136 +1,111 @@
-﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Universal.Objects;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using UnityEngine;
-using Texture = UnityEngine.Texture;
+﻿using UnityEngine;
+using FunkyCode.LightSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Mask
+namespace FunkyCode.Rendering.Light
 {
     public class Mesh
 	{
-        public static void Mask(Light2D light, LightCollider2D id, UnityEngine.Material material, LayerSetting layerSetting)
+        public static void Mask(Light2D light, LightCollider2D id, Material material, LayerSetting layerSetting)
 		{
 			if (!id.InLight(light))
-			{
 				return;
-			}
 
-			MeshRenderer meshRenderer = id.mainShape.meshShape.GetMeshRenderer();
-
-			if (meshRenderer == null) {
+			var meshRenderer = id.mainShape.meshShape.GetMeshRenderer();
+			if (!meshRenderer)
 				return;
-			}
 
-			List<MeshObject> meshObjects = id.mainShape.GetMeshes();
-
-			if (meshObjects == null) {
+			var meshObjects = id.mainShape.GetMeshes();
+			if (meshObjects == null)
 				return;
-			}
 
-			if (meshRenderer.sharedMaterial != null) {
+			if (meshRenderer.sharedMaterial != null)
 				material.mainTexture = meshRenderer.sharedMaterial.mainTexture;
-			} else {
+			else
 				material.mainTexture = null;
-			}
 
-			Vector2 position = id.mainShape.transform2D.position - light.transform2D.position;
-
+			Vector2 position = id.mainShape.transform2D.Position - light.transform2D.position;
 			Vector2 pivotPosition = id.mainShape.GetPivotPoint() - light.transform2D.position;
 			GLExtended.color = LayerSettingColor.Get(pivotPosition, layerSetting, id.maskLit, 1, id.maskLitCustom);
-
+			
 			material.SetPass(0);
-
-			GLExtended.DrawMesh(meshObjects, position, id.mainShape.transform2D.scale, id.mainShape.transform2D.rotation);
-
-			material.mainTexture = null;
+		
+			GLExtended.DrawMesh(meshObjects, position, id.mainShape.transform2D.Scale, id.mainShape.transform2D.Rotation);
+			
+			material.mainTexture = null;	
 		}
 
-		public static void MaskNormalMap(Light2D light, LightCollider2D id, UnityEngine.Material material, LayerSetting layerSetting) {
-			if (id.InLight(light) == false) {
+		public static void MaskNormalMap(Light2D light, LightCollider2D id, Material material, LayerSetting layerSetting)
+		{
+			if (!id.InLight(light)) 
 				return;
-			}
 
-			Texture normalTexture = id.bumpMapMode.GetBumpTexture();
-
-            if (normalTexture == null) {
+			var normalTexture = id.bumpMapMode.GetBumpTexture();
+            if (normalTexture == null)
                 return;
-            }
 
 			float rotation;
 
             material.SetTexture("_Bump", normalTexture);
 
-			MeshRenderer meshRenderer = id.mainShape.meshShape.GetMeshRenderer();
-
-			if (meshRenderer == null) {
+			var meshRenderer = id.mainShape.meshShape.GetMeshRenderer();
+			if (!meshRenderer) 
 				return;
-			}
 
-			List<MeshObject> meshObjects = id.mainShape.GetMeshes();
-
-			if (meshObjects == null) {
+			var meshObjects = id.mainShape.GetMeshes();
+			if (meshObjects == null)
 				return;
-			}
 
-			if (meshRenderer.sharedMaterial != null) {
+			if (meshRenderer.sharedMaterial)
 				material.mainTexture = meshRenderer.sharedMaterial.mainTexture;
-			} else {
+			else
 				material.mainTexture = null;
-			}
 
-			Vector2 position = id.mainShape.transform2D.position - light.transform2D.position;
-
+			Vector2 position = id.mainShape.transform2D.Position - light.transform2D.position;
 			Vector2 pivotPosition = id.mainShape.GetPivotPoint() - light.transform2D.position;
 			material.color = LayerSettingColor.Get(pivotPosition, layerSetting, id.maskLit, 1, id.maskLitCustom);
 
 			float color = material.color.r;
 
-			switch(id.bumpMapMode.type) {
+			switch(id.bumpMapMode.type)
+			{
 				case NormalMapType.ObjectToLight:
-					rotation = Mathf.Atan2(light.transform2D.position.y - id.mainShape.transform2D.position.y, light.transform2D.position.x - id.mainShape.transform2D.position.x);
-					rotation -= Mathf.Deg2Rad * (id.mainShape.transform2D.rotation);
 
+					rotation = Mathf.Atan2(light.transform2D.position.y - id.mainShape.transform2D.Position.y, light.transform2D.position.x - id.mainShape.transform2D.Position.x);
+					rotation -= Mathf.Deg2Rad * (id.mainShape.transform2D.Rotation);
+					
 					material.SetFloat("_LightRX", Mathf.Cos(rotation) * 2);
 					material.SetFloat("_LightRY", Mathf.Sin(rotation) * 2);
 					material.SetFloat("_LightColor",  color);
 
-				break;
+					break;
 
 				case NormalMapType.PixelToLight:
+
 					material.SetFloat("_LightColor",  color);
+				
+					rotation = id.mainShape.transform2D.Rotation * Mathf.Deg2Rad;
 
-					rotation = id.mainShape.transform2D.rotation * Mathf.Deg2Rad;
-
-					Vector2 sc = id.mainShape.transform2D.scale;
+					Vector2 sc = id.mainShape.transform2D.Scale;
 					sc = sc.normalized;
 
-					material.SetFloat("_LightX", Mathf.Cos(rotation) * sc.x );
-					material.SetFloat("_LightY", Mathf.Cos(rotation) * sc.y );
+					material.SetFloat("_LightX", Mathf.Cos(rotation) * sc.x);
+					material.SetFloat("_LightY", Mathf.Cos(rotation) * sc.y);
 
 					material.SetFloat("_Depth", id.bumpMapMode.depth);
 
-					if (id.bumpMapMode.invertX) {
-						material.SetFloat("_InvertX", -1);
-					} else {
-						material.SetFloat("_InvertX", 1);
-					}
+					float invertX = id.bumpMapMode.invertX ? -1 : 1;
+					material.SetFloat("_InvertX", invertX);
 
-					if (id.bumpMapMode.invertY) {
-						material.SetFloat("_InvertY", -1);
-					} else {
-						material.SetFloat("_InvertY", 1);
-					}
-
-				break;
+					float invertY = id.bumpMapMode.invertY ? -1 : 1;
+					material.SetFloat("_InvertY", invertY);
+				
+					break;
 			}
 
 			material.SetPass(0);
-
-			GLExtended.DrawMesh(meshObjects, position, id.mainShape.transform2D.scale, id.mainShape.transform2D.rotation);
-
+		
+			GLExtended.DrawMesh(meshObjects, position, id.mainShape.transform2D.Scale, id.mainShape.transform2D.Rotation);
+			
 			material.mainTexture = null;
 		}
     }

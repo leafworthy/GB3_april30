@@ -1,19 +1,16 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth.Shadow;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth
+namespace FunkyCode.Rendering.Depth
 {
 	public static class Rendering
 	{
 		public static void Draw(Pass pass)
 		{
-			Shadow.Shadow.Begin(); // quads
+			Depth.Shadow.Begin(); // quads
 
 			DrawCollider(pass);
 
-			Shadow.Shadow.End();
+			Depth.Shadow.End();
 
 			DrawColliderFill(pass); // triangles
 
@@ -66,7 +63,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth
 					case DayLightCollider2D.ShadowType.SpritePhysicsShape:
 					case DayLightCollider2D.ShadowType.Collider2D:
 
-						Shadow.Shadow.Draw(id, pass.offset);  
+						Depth.Shadow.Draw(id, pass.offset);  
 
 					break;
 				}             
@@ -75,7 +72,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth
 
 		public static void DrawColliderFill(Pass pass)
 		{
-			Lighting2D.materials.shadow.GetDepthDayShadow().SetPass(0);
+			Lighting2D.Materials.shadow.GetDepthDayShadow().SetPass(0);
 			GL.Begin(GL.TRIANGLES);
 
 			for(int i = 0; i < pass.colliderCount; i++)
@@ -92,7 +89,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth
 					case DayLightCollider2D.ShadowType.FillCollider2D:
 					case DayLightCollider2D.ShadowType.FillSpritePhysicsShape:
 
-						Shadow.Shadow.DrawFill(id, pass.offset); 
+						Depth.Shadow.DrawFill(id, pass.offset); 
 
 					break;
 				}             

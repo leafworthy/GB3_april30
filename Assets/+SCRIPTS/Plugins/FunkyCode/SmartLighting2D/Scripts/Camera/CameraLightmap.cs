@@ -1,6 +1,6 @@
-using SortingLayer = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.SortingLayer;
+using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera
+namespace FunkyCode
 {
 	[System.Serializable]
 	public struct CameraLightmap
@@ -32,23 +32,36 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera
 		};
 
 		public enum OverlayLayerType { LightingLayer, UnityLayer };
+
+		public enum SceneView
+		{
+			Disabled,
+			Enabled
+		}
 		
-		public enum Output {None, Shaders, Materials, Pass1, Pass2, Pass3, Pass4}
+		public enum Output {None, Shaders, Materials, Pass1, Pass2, Pass3, Pass4, Pass5, Pass6, Pass7, Pass8}
+
+		public enum MaterialType {Incremental, Pass1, Pass2, Pass3, Pass4, Pass5, Pass6, Pass7, Pass8}
 
 		public Rendering rendering;
+
+		public SceneView sceneView;
 
 		public Overlay overlay;
 		public OverlayLayerType overlayLayerType;
 		public OverlayMaterial overlayMaterial;
 		public OverlayPosition overlayPosition;
-
+	
 		public Output output;
 		
-		public SortingLayer sortingLayer;
+		public LightingSettings.SortingLayer sortingLayer;
 
-		public UnityEngine.Material customMaterial;
-		public UnityEngine.Material customMaterialInstance;
+		public Material customMaterial;
+		public Material customMaterialInstance;
 
+
+		// Output Materials
+		public MaterialType materialsType;
 		public LightmapMaterials materials;
 
 		public int renderLayerId;
@@ -85,7 +98,11 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera
 			
 			this.materials = new LightmapMaterials();
 
-			this.sortingLayer = new SortingLayer();
+			this.sortingLayer = new LightingSettings.SortingLayer();
+
+			this.materialsType = MaterialType.Incremental;
+
+			this.sceneView = SceneView.Enabled;
 
 			this.customPosition = 0;
 		}
@@ -93,24 +110,17 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera
 		public LightmapMaterials GetMaterials()
 		{
 			if (materials == null)
-			{
 				materials = new LightmapMaterials();
-			}
-
-			return(materials);
+	
+			return materials;
 		}
 
-		public UnityEngine.Material GetMaterial()
+		public Material GetMaterial()
 		{
-			if (customMaterialInstance == null)
-			{
-				if (customMaterial != null)
-				{
-					customMaterialInstance = new UnityEngine.Material(customMaterial);
-				}
-			}
+			if (!customMaterialInstance && customMaterial)
+				customMaterialInstance = new Material(customMaterial);
 
-			return(customMaterialInstance);
+			return customMaterialInstance;
 		}
 	}
 }

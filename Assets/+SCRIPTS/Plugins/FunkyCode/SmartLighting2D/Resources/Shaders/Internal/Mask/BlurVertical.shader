@@ -51,8 +51,7 @@
 
                 float sy = _MainTex_TexelSize.y * _Strength; 
 
-                // slow #define GRABPIXEL_Y(kernely) tex2D( _MainTex, float2(i.texcoord.x, i.texcoord.y + kernely*sy))  
-                #define GRABPIXEL_Y(kernely) tex2Dproj(_MainTex, UNITY_PROJ_COORD(float4(i.texcoord.x, i.texcoord.y + kernely * sy, 1, 1)))
+                #define GRABPIXEL_Y(kernely) tex2Dproj(_MainTex, float4(i.texcoord.x, i.texcoord.y + kernely * sy, 1, 1))
    
                 sum += GRABPIXEL_Y(-4.0) * 0.05;
                 sum += GRABPIXEL_Y(-3.0) * 0.09;

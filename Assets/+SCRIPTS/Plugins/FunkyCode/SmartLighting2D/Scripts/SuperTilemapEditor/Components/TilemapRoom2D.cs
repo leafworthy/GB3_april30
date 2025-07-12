@@ -1,4 +1,6 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 #if (SUPER_TILEMAP_EDITOR)
 
@@ -14,9 +16,9 @@
 
 #else
 
-    namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SuperTilemapEditor.Components
+    namespace FunkyCode.SuperTilemapEditorSupport
     {
-        public class TilemapRoom2D : Base
+        public class TilemapRoom2D : LightTilemapCollider.Base
         {
             public override void Initialize() {}
         }

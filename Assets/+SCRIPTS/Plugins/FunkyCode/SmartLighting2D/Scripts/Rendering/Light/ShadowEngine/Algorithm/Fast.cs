@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
 using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.ShadowEngine.Algorithm
+namespace FunkyCode.Rendering.Light.Shadow
 {
     public static class Fast
     {
@@ -18,7 +17,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
             }
 
             Vector2 position = ShadowEngine.lightOffset;
-
+  
             int PolygonCount = polygons.Count;
 
             for(int i = 0; i < PolygonCount; i++)
@@ -30,14 +29,14 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                 {
                     // change to sides of vertices?
                     if (Math2D.PointInPoly(-position, polygons[i]))
-                    {
+                    { 
                         continue;
                     }
                 }
                     else if (ShadowEngine.dontdrawInside)
                 {
                     if (Math2D.PointInPoly(-position, polygons[i]))
-                    {
+                    { 
                         ShadowEngine.continueDrawing = false;
                         return;
                     }
@@ -46,7 +45,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                 for(int x = 0; x < pointsCount; x++)
                 {
                     int next = (x + 1) % pointsCount;
-
+                    
                     pair.A = pointsList[x];
                     pair.B = pointsList[next];
 

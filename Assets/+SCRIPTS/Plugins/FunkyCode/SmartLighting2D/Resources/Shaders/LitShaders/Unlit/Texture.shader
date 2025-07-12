@@ -21,7 +21,7 @@
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
-            #include "../../LitShaders/LitCore.cginc"
+            #include "../../LitShaders/SL2D_ShaderLibrary.cginc"
 
             struct appdata_t
             {
@@ -44,6 +44,7 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            float _Lit;
 
             v2f vert (appdata_t v)
             {

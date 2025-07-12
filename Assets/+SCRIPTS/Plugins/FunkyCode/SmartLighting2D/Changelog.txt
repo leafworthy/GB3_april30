@@ -1,18 +1,58 @@
 ﻿--- Todo
 
-Lighting Manager 2D: easier scene view? toogle - draw in scene property? (no priority)
 Lighting Manager 2D: scene profile (no priority)
 Lighting Manager 2D: sorting layer / unity layer Lighting Pipeline (no priority)
-Lighting Manager 2D: efficiently disabling lighting (batch mode)
-Lighting Manager 2D: compiler directive - disable lighting? (for batch mode?)
+Lighting Manager 2D: compiler directive - disable lighting? (no priority) (for batch mode?)
+
 Light2D: line light type (no priority)
 
-Light2D: cleanup light texture size logics (priority)
-Lightmap Preset: separate hdr property for each lightmaps (priority)
-Light2D: invoke Events / Add Event(Collider, CollisionInfo) (priority?)
+Light2D: issues when editing multiple "Light2D" components
+Asset: Fog Of War with angle demo / screenshot
+Tilemap: Cell Size does not work
+-- Light2D: cleanup light texture size logics (priority)
+-- use material blocks to improve performance of batches/setpass calls?
+
+--- 2022.11.0 [15.11.2022]
+Added: Shader off-screen lit option
+Changed: Core code refactored
+Fixed: Light overlay supporting angle and freeform
+
+--- 2022.4.0 [12.04.2022]
+Fixed: Pass Material: new instance did not work until modifying pass id
+Fixed: Light 2D: Sprite flipX & flipY did not affect result
+
+
+--- 2021.12.1 [06.12.2021]
+Added: Light2D: AddEvent method
+Added: Lightmap Preset: separate hdr property for each lightmaps
+Added: Day Lighting: Shadow Color
+Added: Lighting Manager 2D: Shader Graph Preview Mode
+Fixed: Bumped material reacting only to red channel
+Fixed: Light2D shader line flickering
+Changed: improved light source performance
+Changed: improved day lighting performance
+
+
+--- 2021.12.0 [03.12.2021]
+Added: Day Light Collider: shadow falloff
+Added: Day Light Collider: help messages
+Added: [5-8] passes for material System
+Fixed: clickable foldouts
+Fixed: Scene camera culling
+Fixed: Overexposed Free Form blending darkened lightmap
+Changed: Improved shader performance
+
+
+--- 2021.11.5 [29.11.2021]
+Added: Lighting Manager 2D: lightmap scene view property
+Added: Material System: new pass SL2D shader pass library allows to select pass in material
+Added: Lightmap pass debugging (tools/lighting2D/debugging)
+Fixed: Light Spite2D: mesh mode, now is called overlay
+
 
 --- 2021.11.4 [17.11.2021]
 Added: Light2D: scene handles to organize spot angle, size and rotation
+Changed: Light2D: default free form shape is triangle
 Fixed: Light2D: custom spot angle broke light 2D additive blend
 
 
@@ -38,7 +78,7 @@ Removed: affect children option for LightCollider2D and Day LightCollider2D
 Added: Light2D: "point" light type
 Added: DayLightCollider2D: shadow softness
 Fixed: Light2D: shadow translucency for shadows with custom length
-Fixed: : disabling rendering did not disabled overlay
+Fixed: LightingManager2D: disabling rendering did not disabled overlay
 Fixed: day lighting translucency overlap
 
 
@@ -167,7 +207,7 @@ Changed: Shadow Casting performance improvements
 Added: Light Tilemap: Optimization option
 Added: New Material System
 Added: New & more robust Fog of War System
-Added: Material: Sprite Lit
+Added: Material: Sprite Lit 
 Added: Material: Sprite Fog Of War
 Added: Material: UI Fog of War
 Added: Material: Text Mesh Pro Fog Of War
@@ -197,7 +237,7 @@ Fixed: Light Sprite 2D: Glow Mode
 Added: Light Preset: Sorting "Sorting Layer and Order"
 Added: Light2D: Lit Mode "Isometric"
 Added: Light2D: "Mask Translucency" works with bump mode
-Added: Scriptable "Light Sprite 2D"
+Added: Scriptable "Light Sprite 2D" 
 Changed: Lighting Manager 2D: custom material creates a new material instance
 
 
@@ -237,7 +277,7 @@ Added: Core Axis: XZ / XZFlipped / XYFlipped
 Added: Fog of War (RT): Output camera selections in Lighting Manager 2D
 Added: Fog of War (RT): Fog Of War Tilemap Component
 Changed: Handling System Overhaul
-
+ 
 
 ### Beta 1.2.2 [17.11.2020]
 Changed: "Lighting Source 2D changed to "Light 2D"
@@ -255,7 +295,7 @@ Added: Fog Of War (RT): Objects Sorting
 Added: Fog Of War (RT): Filter mode
 Added: Light Settings: Window Scrollbar
 Added: Light Sprite: Serialization (undo + multi edit)
-Added: Super Tilemap Editor: "Tile Collider" shadow type
+Added: Super Tilemap Editor: "Tile Collider" shadow type 
 Added: Isometric Tilemap: Z as Y option
 Fixed: Custom headless build errors
 Changed: "Lighting Sprite Renderer 2D" changed to "Light Sprite 2D"
@@ -279,7 +319,7 @@ Changed: "Lighting Sprite Renderer 2D" changed to "Light Sprite 2D"
 ### Beta 1.1.8 - 22.10.2020
  [ADDED] Light components now can display bounds
  [ADDED] Event handling takes tilemaps in account
- [ADDED] Lighting Setting: Manager instance
+ [ADDED] Lighting Setting: Manager instance 
  [FIXED] Tilemap rotation when using lighting components
  [FIXED] Day lighting tilemaps
  [CHANGED] Tilemaps stability
@@ -318,8 +358,8 @@ Changed: "Lighting Sprite Renderer 2D" changed to "Light Sprite 2D"
 
 
 ### Beta 1.1.5 - 12.10.2020
- [ADDED] Lighting Source: Mask Lit Mode
- [ADDED] Lighting Source: Z Axis Sorting
+ [ADDED] Lighting Source: Mask Lit Mode 
+ [ADDED] Lighting Source: Z Axis Sorting 
  [ADDED] LightingCollider: Composite Collider shadow & mask type
  [ADDED] LightingCollider: Apply To Children
  [ADDED] Lighting Tilemap Collider: Hexagon tilemap support
@@ -401,7 +441,7 @@ Changed: "Lighting Sprite Renderer 2D" changed to "Light Sprite 2D"
  [FIXED] Issues when creating object with no scene view
  [FIXED] Tilemap Shape Masking
  [CHANGED] Improved lighting atlas initialization time
- [CHANGED] Improved performance for day lighting
+ [CHANGED] Improved performance for day lighting 
  [CHANGED] Improved performance for collider Shape
 
 
@@ -416,7 +456,7 @@ Changed: "Lighting Sprite Renderer 2D" changed to "Light Sprite 2D"
  [ADDED] Lighting Sprite Renderer: Sorting Layer for additive shader
  [ADDED] Lighting Collider: Invisible Masking Mode For Light Sources
  [ADDED] LightingTilemapRoom2D Component
- [ADDED] Tilemap Tiles Supports Multiple Custom Physics Shapes
+ [ADDED] Tilemap Tiles Supports Multiple Custom Physics Shapes 
  [ADDED] Mesh2D: Update Mesh button
  [ADDED] ColliderLineRenderer2D: Update Renderer button
  [CHANGED] Rendering Mode from "Mesh Renderer" to "OnRender"
@@ -497,4 +537,4 @@ Changed: "Lighting Sprite Renderer 2D" changed to "Light Sprite 2D"
 
 
 ### Beta 1.0.0 - 05.11.2018
- [INFO] Initial beta release
+ [INFO] Initial beta release 

@@ -1,15 +1,11 @@
 using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
 using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
+namespace FunkyCode
 {
-	[ExecuteInEditMode]
 	public class LightBuffer2D
 	{
-		public string name = "unknown";
+		public string name = "Unknown";
 
 		private Light2D light;
 
@@ -21,11 +17,11 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 			{
 				light = value;
 
-				LightBuffer.UpdateName(this);
+				Rendering.LightBuffer.UpdateName(this);
 			}
 		}
 
-		public bool Free => light == null;
+		public bool Free => !light;
 
 		public LightTexture renderTexture;
 
@@ -45,7 +41,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
 		public static void Clear()
 		{
-			foreach(LightBuffer2D buffer in new List<LightBuffer2D>(List))
+			foreach(var buffer in new List<LightBuffer2D>(List))
 			{
 				if (buffer.light)
 				{
@@ -74,17 +70,17 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 				
 			if (Application.isPlaying)
 			{
-				UnityEngine.Object.Destroy (renderTexture.renderTexture);
+				UnityEngine.Object.Destroy(renderTexture.renderTexture);
 			}
 				else
 			{
-				UnityEngine.Object.DestroyImmediate (renderTexture.renderTexture);
+				UnityEngine.Object.DestroyImmediate(renderTexture.renderTexture);
 			}
 		}
 
 		public void Initiate(Vector2Int textureSize)
 		{
-			LightBuffer.InitializeRenderTexture(this, textureSize);
+			Rendering.LightBuffer.InitializeRenderTexture(this, textureSize);
 		}
 
 		public void Render()
@@ -112,7 +108,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 				{
 					Vector2Int effectTextureSize = LightingRender2D.GetTextureSize(Lighting2D.Profile.qualitySettings.lightEffectTextureSize);
 					
-					LightBuffer.InitializeTranslucencyTexture(this, effectTextureSize);
+					Rendering.LightBuffer.InitializeTranslucencyTexture(this, effectTextureSize);
 				}
 				
 				if (translucencyTexture != null)
@@ -123,7 +119,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
 					GL.Clear(false, true, Color.black);
 			
-					LightBuffer.RenderTranslucency(light);
+					Rendering.LightBuffer.RenderTranslucency(light);
 
 					RenderTexture.active = previous2;
 
@@ -131,7 +127,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
 					float time = Time.realtimeSinceStartup;
 
-					UnityEngine.Material material;
+					Material material;
 
 					float textureSize = (float)translucencyTextureBlur.renderTexture.width / 128;
 
@@ -143,7 +139,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
 							// vertical pass
 
-							material = Lighting2D.materials.GetMaskBlurVertical();
+							material = Lighting2D.Materials.GetMaskBlurVertical();
 
 							material.SetFloat("_Strength", strength);
 
@@ -159,7 +155,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 					
 							// horizontal pass
 
-							material = Lighting2D.materials.GetMaskBlurHorizontal();
+							material = Lighting2D.Materials.GetMaskBlurHorizontal();
 
 							material.SetFloat("_Strength", strength);
 
@@ -179,7 +175,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
 							// vertical pass
 
-							material = Lighting2D.materials.GetMaskBlurVertical();
+							material = Lighting2D.Materials.GetMaskBlurVertical();
 
 							material.SetFloat("_Strength", strength);
 
@@ -191,7 +187,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 					
 							// horizontal pass
 
-							material = Lighting2D.materials.GetMaskBlurHorizontal();
+							material = Lighting2D.Materials.GetMaskBlurHorizontal();
 
 							material.SetFloat("_Strength", strength);
 
@@ -208,7 +204,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
 							// vertical
 		
-							material = Lighting2D.materials.GetMaskBlurVertical();
+							material = Lighting2D.Materials.GetMaskBlurVertical();
 
 							material.SetFloat("_Strength", strength);
 
@@ -216,7 +212,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
 							// horizontal
 
-							material = Lighting2D.materials.GetMaskBlurHorizontal();
+							material = Lighting2D.Materials.GetMaskBlurHorizontal();
 
 							material.SetFloat("_Strength", strength);
 
@@ -231,7 +227,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 			{
 				if (freeFormTexture == null)
 				{
-					LightBuffer.InitializeFreeFormTexture(this, new Vector2Int(renderTexture.width, renderTexture.height));
+					Rendering.LightBuffer.InitializeFreeFormTexture(this, new Vector2Int(renderTexture.width, renderTexture.height));
 				}
 
 				// render only if there are free form changes
@@ -242,13 +238,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 					{
 						light.freeForm.UpdateNeeded = false;
 
-						RenderTexture previous3 = RenderTexture.active;
+						var previous3 = RenderTexture.active;
 
 						RenderTexture.active = freeFormTexture.renderTexture;
 
 						GL.Clear(false, true, Color.black);
 				
-						LightBuffer.RenderFreeForm(light);
+						Rendering.LightBuffer.RenderFreeForm(light);
 
 						RenderTexture.active = previous3;
 					}
@@ -257,13 +253,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
 			if (light.lightLayer >= 0)
 			{
-				RenderTexture previous = RenderTexture.active;
+				var previous = RenderTexture.active;
 
 				RenderTexture.active = renderTexture.renderTexture;
 
 				GL.Clear(false, true, Color.black);
 
-				LightBuffer.Render(light);
+				Rendering.LightBuffer.Render(light);
 
 				RenderTexture.active = previous;
 			}

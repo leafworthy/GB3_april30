@@ -1,8 +1,9 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D
+namespace FunkyCode
 {
 	public class TilemapEvents
 	{
@@ -24,7 +25,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 
 			#endif
 		}
-
+		
 		#if UNITY_EDITOR
 			#if UNITY_2019_4_OR_NEWER
 				public static void Events(Tilemap tilemap, Tilemap.SyncTile[] s) {
@@ -35,8 +36,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 					foreach(LightTilemapCollider2D tilemap2D in LightTilemapCollider2D.List) {
 						tilemap2D.Initialize();
 					}
-
-					SmartLighting2D.Components.Night.Light2D.ForceUpdateAll();
+					
+					Light2D.ForceUpdateAll();
 				}
 			#endif
 		#endif

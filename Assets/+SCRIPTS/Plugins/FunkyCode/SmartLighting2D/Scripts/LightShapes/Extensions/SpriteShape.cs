@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
 using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extensions
-{
+namespace FunkyCode.LightShape
+{		
 	public class SpriteShape : Base
 	{
 		private Sprite originalSprite;
@@ -38,7 +36,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 
 				if (spriteRenderer == null)
 				{
-					UnityEngine.Debug.LogWarning("Light Collider 2D: Cannot access sprite renderer (Sprite Shape Local)", transform.gameObject);
+					Debug.LogWarning("Light Collider 2D: Cannot access sprite renderer (Sprite Shape Local)", transform.gameObject);
 					return(LocalPolygons);
 				}
 
@@ -67,7 +65,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 					Vector2 position = Vector3.zero;
 					Vector2 scale = transform.localScale;
 					float rotation = transform.eulerAngles.z;
-
+		
 					SpriteTransform spriteTransform = new SpriteTransform(virtualSpriteRenderer, position, scale, rotation);
 
 					float rot = spriteTransform.rotation;
@@ -84,7 +82,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 					v3 = new Vector2(pos.x + Mathf.Cos(rectAngle + Mathf.PI + rot) * dist, pos.y + Mathf.Sin(rectAngle + Mathf.PI + rot) * dist);
 					v4 = new Vector2(pos.x + Mathf.Cos(-rectAngle + Mathf.PI + rot) * dist, pos.y + Mathf.Sin(-rectAngle + Mathf.PI + rot) * dist);
 				}
-
+		
 				Polygon2 polygon = new Polygon2(4);
 
 				polygon.points[0] = v1;
@@ -110,7 +108,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 
 					if (spriteRenderer == null)
 					{
-						//UnityEngine.Debug.LogWarning("Light Collider 2D: Cannot access sprite renderer (Sprite Shape)", transform.gameObject);
+						Debug.LogWarning("Light Collider 2D: Cannot access sprite renderer (Sprite Shape)", transform.gameObject);
 
 						return(null);
 					}
@@ -138,7 +136,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 						Vector2 position = transform.position;
 						Vector2 scale = transform.lossyScale;
 						float rotation = transform.eulerAngles.z;
-
+			
 						SpriteTransform spriteTransform = new SpriteTransform(virtualSpriteRenderer, position, scale, rotation);
 
 						float rot = spriteTransform.rotation;
@@ -154,7 +152,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 						v2 = new Vector2(pos.x + Mathf.Cos(-rectAngle + rot) * dist, pos.y + Mathf.Sin(-rectAngle + rot) * dist);
 						v3 = new Vector2(pos.x + Mathf.Cos(rectAngle + Mathf.PI + rot) * dist, pos.y + Mathf.Sin(rectAngle + Mathf.PI + rot) * dist);
 						v4 = new Vector2(pos.x + Mathf.Cos(-rectAngle + Mathf.PI + rot) * dist, pos.y + Mathf.Sin(-rectAngle + Mathf.PI + rot) * dist);
-
+					
 						WorldCache = WorldPolygons;
 					}
 
@@ -173,7 +171,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 					WorldPolygons = WorldCache;
 
 					if (spriteRenderer.drawMode == SpriteDrawMode.Tiled && spriteRenderer.tileMode == SpriteTileMode.Continuous) {
-
+						
 						Vector2 size = transform.lossyScale * spriteRenderer.size * 0.5f;
 						Vector2 pos = transform.position;
 
@@ -195,7 +193,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 						Vector2 position = transform.position;
 						Vector2 scale = transform.lossyScale;
 						float rotation = transform.eulerAngles.z;
-
+			
 						SpriteTransform spriteTransform = new SpriteTransform(virtualSpriteRenderer, position, scale, rotation);
 
 						Vector2 size = spriteTransform.scale;
@@ -214,12 +212,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 					}
 
 					Polygon2 polygon = WorldPolygons[0];
-
+						
 					polygon.points[0] = v1;
 					polygon.points[1] = v2;
 					polygon.points[2] = v3;
 					polygon.points[3] = v4;
-				}
+				}	
 			}
 
 			return(WorldPolygons);
@@ -232,18 +230,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 			originalSprite = null;
 		}
 
-		public SpriteRenderer GetSpriteRenderer(SpriteRenderer assign = null)
+		public SpriteRenderer GetSpriteRenderer()
 		{
-			if (assign != null)
-			{
-				spriteRenderer = assign;
-				return (spriteRenderer);
-			}
 			if (spriteRenderer != null)
 			{
 				return(spriteRenderer);
 			}
-
+			
 			if (transform == null)
 			{
 				return(spriteRenderer);
@@ -251,9 +244,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 
 			if (spriteRenderer == null)
 			{
-				spriteRenderer = transform.GetComponentInParent<SpriteRenderer>();
+				spriteRenderer = transform.GetComponent<SpriteRenderer>();
 			}
-
+			
 			return(spriteRenderer);
 		}
 
@@ -267,7 +260,6 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 				{
                     originalSprite = spriteRenderer.sprite;
                 }
-	               
             }
 			return(originalSprite);
 		}

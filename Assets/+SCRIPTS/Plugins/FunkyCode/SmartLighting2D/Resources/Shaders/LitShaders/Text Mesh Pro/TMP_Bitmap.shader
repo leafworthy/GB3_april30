@@ -53,7 +53,7 @@ Shader "Light2D/TextMeshPro/BitmapFogOfWar"
 			#pragma multi_compile __ UNITY_UI_ALPHACLIP
 
 			#include "UnityCG.cginc"
-			#include "../../LitShaders/LitCore.cginc"
+			#include "../../LitShaders/SL2D_ShaderLibrary.cginc"
 
 			struct appdata_t {
 				float4 vertex		: POSITION;

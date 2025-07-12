@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Triangulation;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using FunkyCode.LightShape;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extensions
+namespace FunkyCode.LightShape
 {
     public class CompositeCollider2DShape : Base
 	{
@@ -96,7 +96,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 			LocalPolygons = Polygon2Collider2D.CreateFromCompositeCollider(compositeCollider);	
 
 			if (LocalPolygons.Count <= 0) {
-				UnityEngine.Debug.LogWarning("SmartLighting2D: LightingCollider2D object is missing CompositeCollider2D Component", transform.gameObject);
+				Debug.LogWarning("SmartLighting2D: LightingCollider2D object is missing CompositeCollider2D Component", transform.gameObject);
 			}
 		
 			return(LocalPolygons);

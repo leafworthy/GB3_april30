@@ -1,8 +1,8 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Sprite_Mesh.Simple;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Sprite_Mesh.Tiled
+namespace FunkyCode
     {
     public class SpriteTiledMesh {
         private MeshBrush brush;
@@ -17,7 +17,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Sprite_Mesh.Tiled
             brush = new MeshBrush();
             spriteMesh = new SpriteMesh();
         }
-
+        
         public MeshObject GetMesh(SpriteRenderer spriteRenderer) {
             if (cacheSize.Equals(spriteRenderer.size) == false || cacheSprite.Equals(spriteRenderer.sprite) == false) {
                 cacheMesh = Generate(spriteRenderer);
@@ -92,7 +92,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Sprite_Mesh.Tiled
                         }
 
                         offset_y += (fullY / 2) * stretchY * spriteRatioY;
-
+                        
                         borderY0 = spriteRenderer.sprite.border.y / spriteRect.height;
                         fullY = 1f - borderY1 - borderY0;
                     }
@@ -123,7 +123,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Sprite_Mesh.Tiled
 
                         offset_y += (fullY / 2) * stretchY * spriteRatioY;
 
-
+                        
                         borderY0 = spriteRenderer.sprite.border.y / spriteRect.height;
                         fullY = 1f - borderY1 - borderY0;
                     }

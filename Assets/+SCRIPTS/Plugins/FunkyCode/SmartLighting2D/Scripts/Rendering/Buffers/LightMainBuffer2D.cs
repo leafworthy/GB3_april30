@@ -1,13 +1,9 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
 using UnityEngine;
+using FunkyCode.LightingSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
+namespace FunkyCode
 {
-	[ExecuteInEditMode] 
 	public class LightMainBuffer2D
 	{
 		public enum Type
@@ -20,31 +16,37 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
 		public string name = "Uknown";
 
-		private UnityEngine.Material material = null;
+		private Material material = null;
 
 		public bool updateNeeded = false;
 
 		public Type type;
+		public HDR hdr;
 
 		public LightTexture renderTexture;
 		public CameraSettings cameraSettings;
 		public CameraLightmap cameraLightmap;
+		public bool sceneView;
 
 		public static List<LightMainBuffer2D> List = new List<LightMainBuffer2D>();
 
-		public LightMainBuffer2D(Type type, CameraSettings cameraSettings, CameraLightmap cameraLightmap)
+		public bool IsActive => List.IndexOf(this) > -1;
+
+		public LightMainBuffer2D(bool sceneView, Type type, HDR hdr, CameraSettings cameraSettings, CameraLightmap cameraLightmap)
 		{
 			this.type = type;
+			this.hdr = hdr;
 
 			this.cameraLightmap = cameraLightmap;
 			this.cameraSettings = cameraSettings;
+			this.sceneView = sceneView;
 
 			List.Add(this);
 		}
 
 		public static void Clear()
 		{
-			foreach(LightMainBuffer2D buffer in new List<LightMainBuffer2D>(List))
+			foreach(var buffer in new List<LightMainBuffer2D>(List))
 			{
 				buffer.DestroySelf();
 			}
@@ -56,14 +58,17 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 		{
 			if (renderTexture != null)
 			{
-				if (renderTexture.renderTexture != null)
+				if (renderTexture.renderTexture)
 				{
 					if (Application.isPlaying)
 					{
 						UnityEngine.Object.Destroy (renderTexture.renderTexture);
 					}
-						else
+					else
 					{
+						renderTexture.renderTexture.Release();
+						renderTexture.renderTexture.DiscardContents();
+						
 						UnityEngine.Object.DestroyImmediate (renderTexture.renderTexture);
 					}
 				}
@@ -72,52 +77,48 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 			List.Remove(this);
 		}
 
-		public bool IsActive()
-		{
-			return(List.IndexOf(this) > -1);
-		}
-
-		static public LightMainBuffer2D Get(CameraSettings cameraSettings, CameraLightmap lightmap, LightmapPreset lightmapPreset)
+		static public LightMainBuffer2D Get(bool sceneView, CameraSettings cameraSettings, CameraLightmap lightmap, LightmapPreset lightmapPreset)
 		{
 			Type type = (Type)lightmapPreset.type;
+			HDR hdr = (HDR)lightmapPreset.hdr;
 
 			if (cameraSettings.GetCamera() == null)
 			{
-				return(null);
+				return null;
 			}
 
-			foreach(LightMainBuffer2D mainBuffer in List)
-			{
-				if (mainBuffer.type == type &&  mainBuffer.cameraSettings.GetCamera() == cameraSettings.GetCamera() && mainBuffer.cameraLightmap.presetId == lightmap.presetId)
-				{
-					return(mainBuffer);
-				}
-			}
+			foreach(var mainBuffer in List)
+				if (mainBuffer.hdr == hdr
+					&& mainBuffer.type == type
+					&& mainBuffer.sceneView == sceneView
+					&& mainBuffer.cameraSettings.GetCamera() == cameraSettings.GetCamera()
+					&& mainBuffer.cameraLightmap.presetId == lightmap.presetId)
+					return mainBuffer;
 
 			if (Lighting2D.LightmapPresets.Length <= lightmap.presetId)
 			{
-				UnityEngine.Debug.LogWarning("Lighting2D: Not enough buffer settings initialized");
+				Debug.LogWarning("Lighting2D: Not enough buffer settings initialized");
 
-				return(null);
+				return null;
 			}
 
-			LightMainBuffer2D buffer = new LightMainBuffer2D(type, cameraSettings, lightmap);
+			var buffer = new LightMainBuffer2D(sceneView, type, hdr, cameraSettings, lightmap);
 
-			LightMainBuffer.InitializeRenderTexture(buffer);
+			Rendering.LightMainBuffer.InitializeRenderTexture(buffer);
 
-			return(buffer);
+			return buffer;
 		}
 
 		public LightmapPreset GetLightmapPreset()
 		{
 			if (Lighting2D.LightmapPresets.Length <= cameraLightmap.presetId)
 			{
-				UnityEngine.Debug.LogWarning("Lighting2D: Not enough buffer settings initialized");
+				Debug.LogWarning("Lighting2D: Not enough buffer settings initialized");
 
-				return(null);
+				return null;
 			}
 
-			return(Lighting2D.LightmapPresets[cameraLightmap.presetId]);
+			return Lighting2D.LightmapPresets[cameraLightmap.presetId];
 		}
 
 		public void ClearMaterial()
@@ -125,7 +126,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 			material = null;
 		}
 
-		public UnityEngine.Material GetMaterial()
+		public Material GetMaterial()
 		{
 			if (material == null)
 			{
@@ -133,48 +134,44 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 				{
 					case CameraLightmap.OverlayMaterial.Multiply:
 					
-						material = new UnityEngine.Material(Shader.Find("Light2D/Internal/Multiply"));
-						
-					break;
+						material = new Material(Shader.Find("Light2D/Internal/Multiply"));	
+						break;
 
 					case CameraLightmap.OverlayMaterial.Additive:
 						
-						material = new UnityEngine.Material(Shader.Find("Legacy Shaders/Particles/Additive")); // use light 2D shader?
-						
-					break;
+						material = new Material(Shader.Find("Legacy Shaders/Particles/Additive")); // use light 2D shader?	
+						break;
 
 					case CameraLightmap.OverlayMaterial.Custom:
 
-						material = new UnityEngine.Material(cameraLightmap.GetMaterial());
-
-					break;
+						material = new Material(cameraLightmap.GetMaterial());
+						break;
 
 					case CameraLightmap.OverlayMaterial.Reference:
 
 						material = cameraLightmap.customMaterial;
-
-					break;
+						break;
 				}
 			}
 			
-			if (material != null)
+			if (material)
 			{
 				if (renderTexture != null)
 				{
 					material.mainTexture = renderTexture.renderTexture;
 				}
-					else
+				else
 				{
-					UnityEngine.Debug.LogWarning("render texture null");
+					Debug.LogWarning("render texture null");
 				}
 			}
 			
-			return(material);
+			return material;
 		}
 
 		public void Update()
 		{
-			LightMainBuffer.Update(this);
+			Rendering.LightMainBuffer.Update(this);
 		}
 
 		public void Render()
@@ -186,39 +183,29 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers
 
 			if (updateNeeded)
 			{
-				UnityEngine.Camera camera = UnityEngine.Camera.current;
-
-				if (camera != null)
+				var camera = Camera.current;
+				if (camera)
 				{
 					// return;	
 				}
-			
-				RenderTexture previous = RenderTexture.active;
 
 				if (renderTexture != null)
 				{
+					var previous = RenderTexture.active;
+
 					RenderTexture.active = renderTexture.renderTexture;
 
-					LightMainBuffer.Render(this);
+					Rendering.LightMainBuffer.Render(this);
+
+					RenderTexture.active = previous;
 				}
-					else
+				else
 				{
-					UnityEngine.Debug.LogWarning("null render texture in buffer " + cameraSettings.id + " " + cameraLightmap.presetId);
+					Debug.LogWarning($"null render texture in buffer {cameraSettings.id}:{ cameraLightmap.presetId}:{sceneView}");
 				}
-
-				RenderTexture.active = previous;
 			}
 
-			LightMainBuffer.DrawOn(this);
-		}
-
-		// apply render to specified camera (post render mode)
-		public void OnRenderObject()
-		{
-			if (Lighting2D.disable)
-			{
-				return;
-			}
+			Rendering.LightMainBuffer.DrawOn(this);
 		}
 	}
 }

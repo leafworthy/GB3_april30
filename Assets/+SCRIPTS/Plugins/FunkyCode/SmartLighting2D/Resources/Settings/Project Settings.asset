@@ -12,21 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f131485c03f13c48a9a1c3520e76149, type: 3}
   m_Name: Project Settings
   m_EditorClassIdentifier: 
-  renderingMode: 1
+  renderingMode: 0
   editorView:
+    sceneViewLayer: 27
+    gameViewLayer: 26
+  gizmos:
     drawGizmos: 1
     drawGizmosBounds: 0
     drawGizmosChunks: 0
-    drawGizmosShadowCasters: 1
-    drawIcons: 1
-    sceneViewLayer: 27
-    gameViewLayer: 26
+    drawGizmosShadowCasters: 0
+    drawIcons: 0
+    sceneViewLayer: 0
+    gameViewLayer: 0
   chunks:
     enabled: 0
     chunkSize: 10
   colorSpace: 0
+  managerInternal: 1
   managerInstance: 2
-  managerInternal: 0
-  MaxLightSize: 712
+  shaderPreview: 0
+  MaxLightSize: 401
+  materialOffScreen: 0
   disable: 0
-  profile: {fileID: 11400000, guid: 6180ad30ee9c2484e807c1f577ef1bdf, type: 2}
+  profile: {fileID: 11400000, guid: 744af7d72c977154f8a4489ba6ae519d, type: 2}

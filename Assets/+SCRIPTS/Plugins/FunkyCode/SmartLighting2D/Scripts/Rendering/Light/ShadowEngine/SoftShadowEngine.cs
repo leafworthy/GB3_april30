@@ -1,8 +1,10 @@
-﻿using System;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.ShadowEngine
+namespace FunkyCode
 {
     public class EdgePass
     {
@@ -27,8 +29,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
             var_2 = edgePosition.y;
             var_3 = edgeRotation;
             var_4 = edgeSize;
-            var_5 = ShadowEngine.drawOffset.x;
-            var_6 = ShadowEngine.drawOffset.y;
+            var_5 = Rendering.Light.ShadowEngine.drawOffset.x;
+            var_6 = Rendering.Light.ShadowEngine.drawOffset.y;
             var_7 = shadowTranslucency;
             // + shadow depth?
         }
@@ -83,38 +85,38 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
             leftCoreOut.y = Mathf.Sin(leftOuterCore) * coreSize;
             leftCoreOut.x = 0;
             leftCoreOut.y = 0;
-
+        
             leftOuterToEdge = Mathf.Atan2(leftEdge.y - leftCoreOut.y, leftEdge.x - leftCoreOut.x);
             leftCoreOutToEdge = leftCoreOut; // middle
             leftCoreOutToEdge.x += Mathf.Cos(leftOuterToEdge) * lightSize;
             leftCoreOutToEdge.y += Mathf.Sin(leftOuterToEdge) * lightSize;
-
+        
             leftInnerCore = Mathf.Atan2(leftEdge.y, leftEdge.x) - Mathf.PI / 2;;
             leftCoreIn.x = Mathf.Cos(leftInnerCore) * coreSize;
             leftCoreIn.y = Mathf.Sin(leftInnerCore) * coreSize;
-
+            
             leftInnerToEdge = Mathf.Atan2(leftEdge.y - leftCoreIn.y, leftEdge.x - leftCoreIn.x);
             leftCoreInToEdge = leftCoreIn; // middle
             leftCoreInToEdge.x += Mathf.Cos(leftInnerToEdge) * lightSize;
             leftCoreInToEdge.y += Mathf.Sin(leftInnerToEdge) * lightSize;
-
+            
             // right outer
             rightOuterCore = Mathf.Atan2(rightEdge.y, rightEdge.x) + Mathf.PI / 2;;
             rightCoreOut.x = Mathf.Cos(rightOuterCore) * coreSize;
             rightCoreOut.y = Mathf.Sin(rightOuterCore) * coreSize;
-
+        
             rightOuterToEdge = Mathf.Atan2(rightEdge.y - rightCoreOut.y, rightEdge.x - rightCoreOut.x);
             rightCoreOutToEdge = rightCoreOut; // middle
             rightCoreOutToEdge.x += Mathf.Cos(rightOuterToEdge) * lightSize;
             rightCoreOutToEdge.y += Mathf.Sin(rightOuterToEdge) * lightSize;
-
+            
             rightInnerCore = Mathf.Atan2(rightEdge.y, rightEdge.x) - Mathf.PI / 2;;
             rightCoreIn.x = Mathf.Cos(rightInnerCore) * coreSize;
             rightCoreIn.y = Mathf.Sin(rightInnerCore) * coreSize;
             rightCoreIn.x = 0;
             rightCoreIn.y = 0;
-
-
+        
+        
             rightInnerToEdge = Mathf.Atan2(rightEdge.y - rightCoreIn.y, rightEdge.x - rightCoreIn.x);
             rightCoreInToEdge = rightCoreIn; // middle
             rightCoreInToEdge.x += Mathf.Cos(rightInnerToEdge) * lightSize;
@@ -127,7 +129,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
             Vector2 closestPoint = Math2D.ClosestPointOnLine(Vector2.zero, leftCoreOutToEdge, rightCoreInToEdge);
             float rotM = (float)System.Math.Atan2 (closestPoint.y, closestPoint.x);
             projectedMiddle.x = (leftEdge.x + rightEdge.x) / 2 + Mathf.Cos(rotM) * lightSize;
-            projectedMiddle.y = (leftEdge.y + rightEdge.y) / 2 + Mathf.Sin(rotM) * lightSize;
+            projectedMiddle.y = (leftEdge.y + rightEdge.y) / 2 + Mathf.Sin(rotM) * lightSize; 
         }
 
         public void Draw() {
@@ -145,8 +147,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
             lightDirection -= EdgeDirection;
             lightDirection = (lightDirection + 720) % 360;
-
-
+            
+        
             if (lightDirection > 180) {
                 GL.Vertex3(projectedMiddle.x, projectedMiddle.y, 0);
                 GL.Vertex3(edgeMiddle.x, edgeMiddle.y, 0);
@@ -165,8 +167,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                 GL.Vertex3(rightCoreInToEdge.x, rightCoreInToEdge.y, 0);
                 GL.Vertex3(leftCoreOutToEdge.x, leftCoreOutToEdge.y, 0);
 
-            }
-            else
+            } 
+            else 
             {
                 Vector2? leftResult = Math2D.GetPointLineIntersectLine3(edgeMiddle, projectedMiddle, rightEdge, rightCoreInToEdge);
                 if (leftResult != null) {
@@ -186,9 +188,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                     GL.Vertex3(projectedMiddle.x, projectedMiddle.y, 0);
                     GL.Vertex3(leftCoreOutToEdge.x, leftCoreOutToEdge.y, 0);
                     GL.Vertex3(leftResult.Value.x, leftResult.Value.y, 0);
-
-                }
-                else
+                
+                } 
+                else 
                 {
                     Vector2? rightResult = Math2D.GetPointLineIntersectLine3(edgeMiddle, projectedMiddle, leftEdge, leftCoreOutToEdge);
 
@@ -218,7 +220,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                             GL.Vertex3(leftCoreOutToEdge.x, leftCoreOutToEdge.y, 0);
                             GL.Vertex3(leftEdge.x, leftEdge.y, 0);
                         }
-                    }
+                    }   
                 }
             }
         }

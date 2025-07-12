@@ -16,7 +16,7 @@
             "PreviewType" = "Plane"
         }
         
-        Blend One OneMinusSrcAlpha
+        Blend One One
         Cull Off
         Lighting Off
         ZWrite Off
@@ -26,14 +26,14 @@
             Pass
             {
                 CGPROGRAM
+
                 #pragma vertex vert
                 #pragma fragment frag
         
                 #include "UnityCG.cginc"
 
                 sampler2D _MainTex;
-                float4 _MainTex_ST;
-
+  
                 float _Point;
                 
                 struct appdata_t
@@ -47,7 +47,8 @@
                 {
                     float4 vertex : SV_POSITION;
                     fixed4 color : COLOR;
-                    float2 texcoord : TEXCOORD0;
+                    float4 texcoord : TEXCOORD0;
+                    float2 xy : TEXCOORD1;
                 };
 
                 v2f vert (appdata_t v)
@@ -56,34 +57,25 @@
 
                     o.vertex = UnityObjectToClipPos(v.vertex);
                     o.color = v.color;
-                    o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
+                    o.texcoord = float4(v.texcoord.x, v.texcoord.y, 1, 1);
+                    o.xy = float2(v.texcoord.x - 0.5, v.texcoord.y - 0.5);
 
                     return o;
                 }
 
                 fixed4 frag (v2f i) : SV_Target
                 {
-                    fixed4 tex = tex2D(_MainTex, i.texcoord);
+                    fixed4 tex = tex2Dproj(_MainTex, i.texcoord);
 
-                    fixed4 col = tex * 2.0f;
-                    col.a = (1 - tex.a);
+                    float distance = lerp(1, 1 - sqrt(i.xy.x * i.xy.x + i.xy.y * i.xy.y) * 2, _Point);
 
-                    col.r *= i.color.a * 2;
+                    fixed4 col = float4(tex.r * 2, tex.g * 2, tex.b * 2, 1 - tex.a);
 
-                    float x = i.texcoord.x - 0.5;
-                    float y = i.texcoord.y - 0.5;
-
-                    float distance = lerp(1, 1 - sqrt(x * x + y * y) * 2, _Point);
-
-                    col.r *= distance;
-
-                    col.g = col.r;
-                    col.b = col.r;    
-
-                    col.rgb *= i.color;
+                    col.rgb = col.r * distance * i.color.a * 2 * i.color;
                 
                     return col;
                 }
+
                 ENDCG
             }
         }

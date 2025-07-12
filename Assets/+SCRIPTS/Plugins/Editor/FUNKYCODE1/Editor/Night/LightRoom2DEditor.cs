@@ -1,15 +1,14 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
-namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Night
+namespace FunkyCode
 	{
 	[CustomEditor(typeof(LightRoom2D))]
-	public class LightRoom2DEditor : UnityEditor.Editor {
+	public class LightRoom2DEditor : Editor {
 		override public void OnInspectorGUI() {
 			LightRoom2D script = target as LightRoom2D;
 
@@ -19,12 +18,12 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Night
 
 			script.color = EditorGUILayout.ColorField("Color", script.color);
 
-			Update();
+			Update(); 
 
 			if (GUI.changed) {
 				if (EditorApplication.isPlaying == false) {
 					EditorUtility.SetDirty(script);
-					EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+					EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 
 					LightingManager2D.ForceUpdate();
 				}

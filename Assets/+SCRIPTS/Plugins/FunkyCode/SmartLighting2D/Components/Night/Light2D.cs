@@ -1,18 +1,9 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Light2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Buffers;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
 using UnityEngine;
-using Object = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling.Object;
-
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
+using FunkyCode.LightingSettings;
+using FunkyCode.LightSettings;
+using FunkyCode.EventHandling;
+namespace FunkyCode
 {
 	[ExecuteInEditMode]
 	public class Light2D : LightingMonoBehaviour
@@ -20,7 +11,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 		public enum LightType
 		{
 			Point,
-			Sprite,
+			Sprite, 
 			FreeForm,
 		}
 
@@ -35,12 +26,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 		// settings
 		public int lightPresetId = 0;
 		public int eventPresetId = 0;
-
+		
 		// light layer
 		public int lightLayer = 0;
 		public int occlusionLayer = 0;
 		public int translucentLayer = 0;
-
+		
 		public int translucentPresetId = 0;
 
 		public Color color = new Color(.5f, .5f, .5f, 1);
@@ -65,7 +56,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 		public float shadowDistanceFar = 5;
 
 		public MaskTranslucencyQuality maskTranslucencyQuality = MaskTranslucencyQuality.LowQuality;
-		public float maskTranslucencyStrength = 0;
+		public float maskTranslucencyStrength = 0.5f;
 
 		public Rotation applyRotation = Rotation.Disabled;
 
@@ -94,14 +85,14 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 		[System.Serializable]
 		public class LightEventHandling
 		{
-			public Object eventHandlingObject = new Object();
+			public EventHandling.Object eventHandlingObject = new EventHandling.Object();
 		}
 
 		// Internal
 		private List<LightCollider2D> collidersInside = new List<LightCollider2D>();
 		private List<LightCollider2D> collidersInsideRemove = new List<LightCollider2D>();
 
-		public static List<Light2D> List = new List<Light2D>();
+		public static List<Light2D> List = new List<Light2D>();	
 		private bool inScreen = false;
 		public bool drawingEnabled = false;
 		public bool drawingTranslucencyEnabled = false;
@@ -114,6 +105,11 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 			set => buffer = value;
 		}
 
+		public void AddEvent(CollisionEvent2D collisionEvent)
+		{
+			eventHandling.eventHandlingObject.collisionEvents += collisionEvent;
+		}
+	
 		public void AddCollider(LightCollider2D id)
 		{
 			if (collidersInside.Contains(id))
@@ -122,7 +118,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 				{
 					id.lightOnEnter?.Invoke(this);
 				}
-
+				
 				collidersInside.Add(id);
 			}
 		}
@@ -133,66 +129,67 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 			public float intensity = 1;
 			public float depth = 1;
 		}
-				public LayerSetting[] GetLightPresetLayers()
+
+		public LayerSetting[] GetLightPresetLayers()
 		{
-
-		LightPresetList presetList = Lighting2D.Profile.lightPresets;
-
+			var presetList = Lighting2D.Profile.lightPresets;
+			
 			if (lightPresetId >= presetList.list.Length)
 			{
-				return(null);
+				return null;
 			}
 
-			LightPreset lightPreset = presetList.Get()[lightPresetId];
+			var lightPreset = presetList.Get()[lightPresetId];
 
-			return(lightPreset.layerSetting.Get());
+			return lightPreset.layerSetting.Get();
 		}
 
 		public LayerSetting[] GetTranslucencyPresetLayers()
 		{
-			LightPresetList presetList = Lighting2D.Profile.lightPresets;
-
+			var presetList = Lighting2D.Profile.lightPresets;
+			
 			if (translucentPresetId >= presetList.list.Length)
 			{
-				return(null);
+				return null;
 			}
 
-			LightPreset lightPreset = presetList.Get()[translucentPresetId];
+			var lightPreset = presetList.Get()[translucentPresetId];
 
-			return(lightPreset.layerSetting.Get());
+			return lightPreset.layerSetting.Get();
 		}
 
 		public EventPreset GetEventPreset()
 		{
-			EventPresetList presetList = Lighting2D.Profile.eventPresets;
-
+			var presetList = Lighting2D.Profile.eventPresets;
+			
 			if (eventPresetId >= presetList.list.Length)
 			{
-				return(null);
+				return null;
 			}
 
-			EventPreset lightPreset = presetList.Get()[eventPresetId];
+			var lightPreset = presetList.Get()[eventPresetId];
 
-			return(lightPreset);
+			return lightPreset;
 		}
 
 		static public Sprite GetDefaultSprite()
 		{
-			if (defaultSprite == null || defaultSprite.texture == null)
+			if (!defaultSprite || !defaultSprite.texture)
 			{
-				defaultSprite = Resources.Load <Sprite> ("Sprites/gfx_light");
+				defaultSprite = Resources.Load<Sprite>("Sprites/gfx_light");
 			}
-
-			return(defaultSprite);
+			
+			return defaultSprite;
 		}
 
 		public Sprite GetSprite()
 		{
-			if (sprite == null || sprite.texture == null)
+			if (!sprite || !sprite.texture)
 			{
 				sprite = GetDefaultSprite();
 			}
-			return(sprite);
+			
+			return sprite;
 		}
 
 		public void ForceUpdate()
@@ -209,7 +206,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 
 		static public void ForceUpdateAll()
 		{
-			foreach(Light2D light in Light2D.List)
+			foreach(var light in Light2D.List)
 			{
 				light.ForceUpdate();
 			}
@@ -245,122 +242,123 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 
 		public void Free()
 		{
-			Scripts.Rendering.Buffers.Manager.FreeBuffer(buffer);
+			Buffers.Manager.FreeBuffer(buffer);
 
 			inScreen = false;
 		}
 
+		// used to check if camera is used in the system
+
 		public bool InCameras()
 		{
-			LightingManager2D manager = LightingManager2D.Get();
-			LightingCameras lightingCameras = manager.cameras;
+			var lightingCameras = CameraTransform.List;
+			var lightRect = transform2D.WorldRect;
 
-			Rect lightRect = transform2D.WorldRect;
-
-			for(int i = 0; i < lightingCameras.Length; i++)
+			for(int i = 0; i < lightingCameras.Count; i++)
 			{
-				Camera camera = manager.GetCamera(i);
-
-				if (camera == null)
-				{
+				var cameraTransform = lightingCameras[i];
+				var camera = cameraTransform.Camera;
+				if (!camera)
 					continue;
-				}
 
-				Rect cameraRect = CameraTransform.GetWorldRect(camera);
-
+				var cameraRect = cameraTransform.WorldRect();
 				if (cameraRect.Overlaps(lightRect))
 				{
-					return(true);
+					return true;
 				}
 			}
 
-			return(false);
+			return false;
+		}
+
+		// to check if light is rendered for specific lightmap
+
+		public bool InCamera(Camera camera)
+		{
+			var lightRect = transform2D.WorldRect;
+			var cameraRect = CameraTransform.GetWorldRect(camera);
+
+			return cameraRect.Overlaps(lightRect);
 		}
 
 		// light 2D should know what layers id's it is supposed to draw? (include in array)
 
 		public bool IfDrawLightCollider(LightCollider2D lightCollider)
-		{
-			LayerSetting[] layerSetting = GetLightPresetLayers();
-
+		{	
+			var layerSetting = GetLightPresetLayers();
 			if (layerSetting == null)
 			{
-				return(false);
+				return false;
 			}
 
 			for(int i = 0; i < layerSetting.Length; i++)
 			{
-				if (layerSetting[i] == null)
-				{
+				var setting = layerSetting[i];
+				if (setting == null)
 					continue;
-				}
 
-				int layerID = layerSetting[i].layerID;
-
-				switch(layerSetting[i].type)
+				int layerID = setting.layerID;
+				switch(setting.type)
 				{
 					case LightLayerType.ShadowAndMask:
 
 						if (layerID == lightCollider.shadowLayer || layerID == lightCollider.maskLayer)
 						{
-							return(true);
+							return true;
 						}
-
-					break;
+						break;
 
 					case LightLayerType.MaskOnly:
 
 						if (layerID == lightCollider.maskLayer)
 						{
-							return(true);
+							return true;
 						}
-
-					break;
+						break;
 
 					case LightLayerType.ShadowOnly:
 
 						if (layerID == lightCollider.shadowLayer)
 						{
-							return(true);
-						}
-
-					break;
+							return true;
+						}	
+						break;
 				}
 			}
 
-			return(false);
+			return false;
 		}
 
 		public Vector2Int GetTextureSize()
 		{
-			Vector2Int textureSize2D = LightingRender2D.GetTextureSize(textureSize);
+			var textureSize2D = LightingRender2D.GetTextureSize(textureSize);
 
-			if (Lighting2D.Profile.qualitySettings.lightTextureSize != LightingSourceTextureSize.Custom)
+			if (Lighting2D.Profile.qualitySettings.lightTextureSize != LightingSettings.LightingSourceTextureSize.Custom)
 			{
 				textureSize2D = LightingRender2D.GetTextureSize(Lighting2D.Profile.qualitySettings.lightTextureSize);
 			}
 
-			return(textureSize2D);
+			return textureSize2D;
 		}
-
+		
 		public bool IsPixelPerfect()
 		{
-			if (Lighting2D.Profile.qualitySettings.lightTextureSize != LightingSourceTextureSize.Custom)
+			if (Lighting2D.Profile.qualitySettings.lightTextureSize != LightingSettings.LightingSourceTextureSize.Custom)
 			{
-				return(Lighting2D.Profile.qualitySettings.lightTextureSize == LightingSourceTextureSize.PixelPerfect);
+				return(Lighting2D.Profile.qualitySettings.lightTextureSize == LightingSettings.LightingSourceTextureSize.PixelPerfect);
 			}
 
-			return (textureSize == LightingSourceTextureSize.PixelPerfect);
+			return textureSize == LightingSourceTextureSize.PixelPerfect;
 		}
 
 		public LightBuffer2D GetBuffer()
 		{
 			if (buffer == null)
-			{
-				buffer = Scripts.Rendering.Buffers.Manager.PullBuffer (this);
+			{ 
+				buffer = Buffers.Manager.PullBuffer (this);
 			}
-
-			return(buffer);
+			
+			return buffer;
 		}
 
 		public void UpdateLoop()
@@ -377,15 +375,14 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 			{
 				transform2D.ForceUpdate();
 			}
-
+			
 			UpdateBuffer();
 
 			DrawMeshMode();
 
 			if (eventPresetId > 0)
 			{
-				EventPreset eventPreset = GetEventPreset();
-
+				var eventPreset = GetEventPreset();
 				if (eventPreset != null)
 				{
 					eventHandling.eventHandlingObject.Update(this, eventPreset);
@@ -397,22 +394,20 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 		{
 			transform2D.ClearUpdate();
 
-			if (Lighting2D.disable)
+			if (Lighting2D.Disable)
 			{
 				return;
 			}
 
 			if (buffer == null)
-			{
 				return;
-			}
-
+			
 			buffer.updateNeeded = true;
 		}
 
 		void UpdateCollidersInside()
 		{
-			foreach(LightCollider2D collider in collidersInside)
+			foreach(var collider in collidersInside)
 			{
 				if (collider == null)
 				{
@@ -432,20 +427,16 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 				}
 			}
 
-			foreach(LightCollider2D collider in collidersInsideRemove)
+			foreach(var collider in collidersInsideRemove)
 			{
 				collidersInside.Remove(collider);
-
-				transform2D.ForceUpdate();
+				transform2D.ForceUpdate(); 
 
 				if (eventPresetId > 0)
 				{
-					if (collider != null)
+					if (collider)
 					{
-						if (collider.lightOnExit != null)
-						{
-							collider.lightOnExit.Invoke(this);
-						}
+						collider.lightOnExit?.Invoke(this);
 					}
 				}
 			}
@@ -456,7 +447,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 		void UpdateBuffer()
 		{
 			UpdateCollidersInside();
-
+			
 			if (InCameras())
 			{
 				if (GetBuffer() == null)
@@ -475,9 +466,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 			{
 				if (buffer != null)
 				{
-					Scripts.Rendering.Buffers.Manager.FreeBuffer(buffer);
+					Buffers.Manager.FreeBuffer(buffer);
 				}
-
+				
 				inScreen = false;
 			}
 		}
@@ -503,38 +494,37 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 			{
 				return;
 			}
-
-			LightingMeshRenderer lightingMesh = MeshRendererManager.Pull(this);
-
-			if (lightingMesh != null)
+			
+			var lightingMesh = MeshRendererManager.Pull(this);
+			if (lightingMesh)
 			{
 				lightingMesh.UpdateLight(this, meshMode);
-			}
+			}	
 		}
 
 		void OnDrawGizmosSelected()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Selected)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Selected)
 			{
 				return;
 			}
-
+			
 			Draw();
 		}
 
 		private void OnDrawGizmos()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos == EditorDrawGizmos.Disabled)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos == EditorDrawGizmos.Disabled)
 			{
 				return;
 			}
 
-			if (Lighting2D.ProjectSettings.editorView.drawIcons == EditorIcons.Enabled)
+			if (Lighting2D.ProjectSettings.gizmos.drawIcons == EditorIcons.Enabled)
 			{
-				Gizmos.DrawIcon(transform.position, "light_v2", true);
+				UnityEngine.Gizmos.DrawIcon(transform.position, "light_v2", true);
 			}
 
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Always)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Always)
 			{
 				return;
 			}
@@ -548,9 +538,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 			{
 				return;
 			}
-
-			Gizmos.color = new Color(1f, 0.5f, 0.25f);
-
+			
+			UnityEngine.Gizmos.color = new Color(1f, 0.5f, 0.25f);
+		
 			if (applyRotation != Rotation.Disabled)
 			{
 				GizmosHelper.DrawCircle(transform.position, transform2D.rotation, 360, size); // spotAngle
@@ -560,14 +550,14 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 				GizmosHelper.DrawCircle(transform.position, 0, 360, size); // spotAngle
 			}
 
-			Gizmos.color = new Color(0, 1f, 1f);
-
-			switch(Lighting2D.ProjectSettings.editorView.drawGizmosBounds)
+			UnityEngine.Gizmos.color = new Color(0, 1f, 1f);
+			
+			switch(Lighting2D.ProjectSettings.gizmos.drawGizmosBounds)
 			{
 				case EditorGizmosBounds.Enabled:
 
 					GizmosHelper.DrawRect(transform.position, transform2D.WorldRect);
-
+					
 				break;
 			}
 		}

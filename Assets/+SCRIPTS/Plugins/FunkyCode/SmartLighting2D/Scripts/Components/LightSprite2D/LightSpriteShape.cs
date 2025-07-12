@@ -1,9 +1,9 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightSprite2D
+namespace FunkyCode
 {
 	[System.Serializable]
 	public class LightSpriteTransform
@@ -12,7 +12,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightSp
 
 		public Vector2 scale = new Vector2(1, 1);
 		public float rotation = 0;
-		public Vector2 position = new Vector2(0, 0);
+		public Vector2 position = new Vector2(0, 0);	
 	}
 
 	[System.Serializable]
@@ -20,7 +20,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightSp
 		private LightSpriteTransform lightSpriteTransform;
 		private VirtualSpriteRenderer spriteRenderer;
 		private Transform transform;
-
+		
 
 
 		public bool update = false;
@@ -43,7 +43,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightSp
 			if (transform == null) {
 				return;
 			}
-
+			
 			Vector2 position2D = lightSpriteTransform.position;
 			position2D += LightingPosition.GetPosition2D(transform.position);
 
@@ -130,9 +130,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightSp
 			Vector2 v2 = new Vector2(pos.x + Mathf.Cos(-rectAngle + rot) * dist, pos.y + Mathf.Sin(-rectAngle + rot) * dist);
 			Vector2 v3 = new Vector2(pos.x + Mathf.Cos(rectAngle + Mathf.PI + rot) * dist, pos.y + Mathf.Sin(rectAngle + Mathf.PI + rot) * dist);
 			Vector2 v4 = new Vector2(pos.x + Mathf.Cos(-rectAngle + Mathf.PI + rot) * dist, pos.y + Mathf.Sin(-rectAngle + Mathf.PI + rot) * dist);
-
+		
 			worldPolygon = GetPolygon();
-
+			
 			worldPolygon.points[0].x = v1.x;
 			worldPolygon.points[0].y = v1.y;
 

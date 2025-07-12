@@ -1,35 +1,26 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Universal.Objects;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities;
-using UnityEngine;
+﻿using UnityEngine;
+using FunkyCode.LightTilemapCollider;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap.Objects
+namespace FunkyCode.Rendering.Lightmap
 {
     public class TilemapRoom
     {
-        static public void Draw(LightTilemapRoom2D id, UnityEngine.Camera camera)
+        static public void Draw(LightTilemapRoom2D id, Camera camera)
         {
-            UnityEngine.Material materialColormask = Lighting2D.materials.room.GetRoomMask();
-            UnityEngine.Material materialMultiply = Lighting2D.materials.room.GetRoomMultiply();
+            var materialColormask = Lighting2D.Materials.room.GetRoomMask();
+            var materialMultiply = Lighting2D.Materials.room.GetRoomMultiply();
 
-            UnityEngine.Material material = null;
+            Material material = null;
 
             switch(id.shaderType)
             {
                 case LightTilemapRoom2D.ShaderType.ColorMask:
-
                     material = materialColormask;
-
                     break;
 
                 case LightTilemapRoom2D.ShaderType.MultiplyTexture:
-
                     material = materialMultiply;
-
                     break;
             }
 
@@ -42,16 +33,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap
                         case MapType.UnityRectangle:
 
                             GLExtended.color = id.color;
-                            
                             Sprite.Draw(camera, id, material);
-
-                        break;	
+                            break;	
 
                         case MapType.SuperTilemapEditor:
 
-                            SuperTilemapEditor.Rendering.Night.Room.DrawTiles(camera, id, material);
-
-                        break;
+                            SuperTilemapEditorSupport.Lightmap.Room.DrawTiles(camera, id, material);
+                            break;
                     }
                     
                 break;
@@ -62,13 +50,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap
         {
             public static VirtualSpriteRenderer spriteRenderer = new VirtualSpriteRenderer();
 
-            public static void Draw(UnityEngine.Camera camera, LightTilemapRoom2D id, UnityEngine.Material material)
+            public static void Draw(Camera camera, LightTilemapRoom2D id, Material material)
             {
                 Vector2 cameraPosition = -camera.transform.position;
 
                 float cameraRadius = CameraTransform.GetRadius(camera);
 
-                Base tilemapCollider = id.GetCurrentTilemap();
+                var tilemapCollider = id.GetCurrentTilemap();
 
                 material.mainTexture = null; 
 
@@ -80,28 +68,21 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap
 
                 for(int i = 0; i < count; i++)
                 {
-                    LightTile tile = tilemapCollider.chunkManager.display[i];
-
+                    var tile = tilemapCollider.chunkManager.display[i];
                     if (tile.GetSprite() == null)
-                    {
                        continue;
-                    }
 
-                    Vector2 tilePosition = tile.GetWorldPosition(tilemapCollider);
+                    var tilePosition = tile.GetWorldPosition(tilemapCollider);
 
                     tilePosition += cameraPosition;
 
                     if (tile.NotInRange(tilePosition, cameraRadius))
-                    {
                        continue;
-                    }
 
                     spriteRenderer.sprite = tile.GetSprite();
 
                     if (spriteRenderer.sprite.texture == null)
-                    {
                         continue;
-                    }
                     
                     if (currentTexture != spriteRenderer.sprite.texture)
                     {
@@ -111,7 +92,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap
                         material.SetPass(0);
                     }
         
-                    Universal.Objects.Sprite.Pass.Draw(tile.spriteMeshObject, spriteRenderer, tilePosition, tile.worldScale, tile.worldRotation);
+                    Universal.Sprite.Pass.Draw(tile.spriteMeshObject, spriteRenderer, tilePosition, tile.worldScale, tile.worldRotation);
                 }
 
                 GL.End();

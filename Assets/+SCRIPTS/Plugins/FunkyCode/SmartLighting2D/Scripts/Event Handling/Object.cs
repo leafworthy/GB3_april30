@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
+using FunkyCode.LightingSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
+namespace FunkyCode.EventHandling
 {
     public class Object
 	{
         public List<LightCollider2D> listenersCache = new List<LightCollider2D>();
-
+		
 		public List<LightCollision2D> listenersInLight = new List<LightCollision2D>();
 		public List<LightCollider2D> listenersInLightColliders = new List<LightCollider2D>();
+
+		public event CollisionEvent2D collisionEvents;
 
 		public void Update(Light2D light, EventPreset eventPreset)
 		{
@@ -27,13 +27,15 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
 			{
 				for(int i = 0; i < listenersCache.Count; i++)
 				{
-					LightCollider2D collider = listenersCache[i];
-
-					LightCollision2D collision = new LightCollision2D();
+					var collider = listenersCache[i];
+					
+					var collision = new LightCollision2D();
 					collision.light = light;
 					collision.collider = collider;
 					collision.points = null;
 					collision.state = LightCollision2D.State.OnCollisionExit;
+
+					collisionEvents?.Invoke(collision);
 
 					collider.CollisionEvent(collision);
 				}
@@ -42,21 +44,21 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
 
 				return;
 			}
-
+				
 			listenersInLightColliders.Clear();
 
-			foreach(LightCollision2D collision in listenersInLight)
+			foreach(var collision in listenersInLight)
 			{
 				listenersInLightColliders.Add(collision.collider);
 			}
 
 			for(int i = 0; i < listenersCache.Count; i++)
 			{
-				LightCollider2D collider = listenersCache[i];
+				var collider = listenersCache[i];
 
 				if (!listenersInLightColliders.Contains(collider))
 				{
-					LightCollision2D collision = new LightCollision2D();
+					var collision = new LightCollision2D();
 					collision.light = light;
 					collision.collider = collider;
 					collision.points = null;
@@ -64,25 +66,29 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling
 
 					collider.CollisionEvent(collision);
 
+					collisionEvents?.Invoke(collision);
+					
 					listenersCache.Remove(collider);
 				}
 			}
 
 			for(int i = 0; i < listenersInLight.Count; i++)
 			{
-				LightCollision2D collision = listenersInLight[i];
-
+				var collision = listenersInLight[i];
+				
 				if (listenersCache.Contains(collision.collider))
 				{
 					collision.state = LightCollision2D.State.OnCollision;
 				}
-					else
+				else
 				{
 					collision.state = LightCollision2D.State.OnCollisionEnter;
 					listenersCache.Add(collision.collider);
 				}
-
+			
 				collision.collider.CollisionEvent(collision);
+
+				collisionEvents?.Invoke(collision);
 			}
 		}
 	}

@@ -1,40 +1,23 @@
-﻿namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap.Sorting
+﻿namespace FunkyCode.Rendering.Lightmap.Sorting
 {
 	public struct SortObject : System.Collections.Generic.IComparer<SortObject>
 	{
-		public enum Type {Light, Room, LightSprite, TilemapRoom};
+		public float Distance;
 
-		public float distance;
+		public object LightObject;
 
-		public object lightObject;
-		public Type type;
-
-		public SortObject(int a)
+		public SortObject(float distance, object lightObject)
 		{
-			distance = 0;
-
-			type = Type.Light;
-			lightObject = null;
+			this.Distance = distance;
+			this.LightObject = lightObject;
 		}
 
 		public int Compare(SortObject a, SortObject b)
 		{
-			SortObject c1 = (SortObject)a;
-			SortObject c2 = (SortObject)b;
-
-			if (c1.distance > c2.distance)
-			{
+			if (a.Distance > b.Distance)
 				return 1;
-			}
 		
-			if (c1.distance < c2.distance)
-			{
-				return -1;
-			}
-				else
-			{
-				return 0;
-			}
+			return a.Distance < b.Distance ? -1 : 0;
 		}
 
 		public static System.Collections.Generic.IComparer<SortObject> Sort()

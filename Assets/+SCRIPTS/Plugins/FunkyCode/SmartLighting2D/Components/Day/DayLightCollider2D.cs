@@ -1,22 +1,15 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLightCollider2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Sprite_Mesh;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
 using UnityEngine;
+using FunkyCode.LightingSettings;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
+namespace FunkyCode
 {
 	[ExecuteInEditMode]
 	public class DayLightCollider2D : MonoBehaviour
 	{
-		public enum ShadowType {None, SpritePhysicsShape, Collider2D, SpriteOffset, SpriteProjection, SpriteProjectionShape, SpriteProjectionCollider, FillCollider2D, FillSpritePhysicsShape};
+		public enum ShadowType {None, SpritePhysicsShape, Collider2D, SpriteOffset, SpriteProjection, SpriteProjectionShape, SpriteProjectionCollider, FillCollider2D, FillSpritePhysicsShape}; 
+		public enum ShadowEffect {Softness, Falloff}
 		public enum MaskType {None, Sprite, BumpedSprite};
 		public enum MaskLit {Lit, LitAbove}
 		public enum Depth {None, SortingOrder, ZPosition, YPosition, Custom}
@@ -27,6 +20,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 
 		public ShadowType shadowType = ShadowType.SpritePhysicsShape;
 		public MaskType maskType = MaskType.None;
+
+		public ShadowEffect shadowEffect = ShadowEffect.Softness;
 
 		[Min(0)]
 		public float shadowDistance = 1;
@@ -107,14 +102,17 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 			return(0);
 		}
 
-		public bool InAnyCamera()
+		public bool InAnyCamera() // camera transform
 		{
-			LightingManager2D manager = LightingManager2D.Get();
-			LightingCameras cameras = manager.cameras;
+			List<CameraTransform> lightingCameras = CameraTransform.List;
 
-			for(int i = 0; i < cameras.Length; i++)
+			// Rect lightRect = transform2D.WorldRect;
+
+			for(int i = 0; i < lightingCameras.Count; i++)
 			{
-				Camera camera = manager.GetCamera(i);
+				CameraTransform cameraTransform = lightingCameras[i];
+
+				Camera camera = cameraTransform.Camera;
 
 				if (camera == null)
 				{
@@ -126,7 +124,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 
 				// 5 = size
 				// why not using rect overlap?
-				float radius = cameraRadius + 5;
+				float radius = cameraRadius + 5; 
 
 				if (distance < radius)
 				{
@@ -145,7 +143,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 			}
 		}
 
-		public void ForceUpdate()
+		public void ForceUpdate() 
 		{
 			Initialize();
 
@@ -158,7 +156,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 			{
 				return;
 			}
-
+			
 			mainShape.transform2D.Update();
 
 			// ???
@@ -186,21 +184,21 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 
 		void OnDrawGizmosSelected()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Selected)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Selected)
 			{
 				return;
 			}
-
+			
 			DrawGizmos();
 		}
 
 		private void OnDrawGizmos()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Always)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Always)
 			{
 				return;
 			}
-
+			
 			DrawGizmos();
 		}
 
@@ -208,8 +206,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 		{
 			if (mainShape.shadowType != DayLightCollider2D.ShadowType.None)
 			{
-				Gizmos.color = new Color(1f, 0.5f, 0.25f);
-
+				UnityEngine.Gizmos.color = new Color(1f, 0.5f, 0.25f);
+			
 				switch(mainShape.shadowType)
 				{
 					case DayLightCollider2D.ShadowType.SpriteProjection:
@@ -223,7 +221,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 
 						pair.B = pos + pair.B.Push(-rot - Mathf.PI / 2, shadowThickness);
 
-						Gizmos.DrawLine(pair.A, pair.B);
+						UnityEngine.Gizmos.DrawLine(pair.A, pair.B);
 
 					break;
 
@@ -242,25 +240,25 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 						}
 
 						if (mainShape.shadowType == DayLightCollider2D.ShadowType.SpriteProjectionShape)
-						{
+						{	
 							float direcion = Lighting2D.DayLightingSettings.direction * Mathf.Deg2Rad;
 
 							foreach(Polygon2 polygon in polygons)
 							{
 								Pair2 axis = Polygon2Helper.GetAxis(polygon, direcion);
 
-								Gizmos.DrawLine(axis.A, axis.B);
+								UnityEngine.Gizmos.DrawLine(axis.A, axis.B);
 							}
 						}
 
 					break;
 				}
 
-				switch(Lighting2D.ProjectSettings.editorView.drawGizmosBounds)
+				switch(Lighting2D.ProjectSettings.gizmos.drawGizmosBounds)
 				{
 					case EditorGizmosBounds.Enabled:
 
-						Gizmos.color = new Color(0, 1f, 1f, 0.25f);
+						UnityEngine.Gizmos.color = new Color(0, 1f, 1f, 0.25f);
 
 						switch(mainShape.shadowType)
 						{
@@ -269,10 +267,10 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day
 
 								Rect bound = mainShape.GetShadowBounds();
 								GizmosHelper.DrawRect(transform.position, bound);
-
+						
 							break;
 						}
-
+							
 					break;
 				}
 			}

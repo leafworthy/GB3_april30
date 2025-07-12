@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SpriteExtension
+namespace FunkyCode.SpriteExtension
 {
 	public static class PhysicsShapeManager
 	{
@@ -74,8 +74,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SpriteExtension
 				return(null);
 			}
 
-			PhysicsShape shape = new PhysicsShape();
-			shape.SetSprite(sprite);
+			PhysicsShape shape = new PhysicsShape(sprite);
 
 			return(shape);
 		}

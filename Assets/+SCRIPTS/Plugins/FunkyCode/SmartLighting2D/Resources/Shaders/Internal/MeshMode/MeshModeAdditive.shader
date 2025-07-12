@@ -2,9 +2,14 @@
 {
     Properties
     {
-        _MainTex ("Lightmap Texture", 2D) = "white" {}
+        _Lightmap ("Lightmap", 2D) = "black" {}
         _Sprite ("Sprite Texture", 2D) = "white" {}
-        _Color ("Color", Color) = (0.5, 0.5, 0.5, 0.5)
+        _Color ("Color", Color) = (1, 1, 1, 1)
+        _Invert("Invert", Float) = 0
+        _Outer("Outer", Float) = 0
+        _Inner("Inner", Float) = 0
+        _Rotation("Rotation", Float) = 0
+        _Freeform("Freeform", 2D) = "white" {}
     }
 
     Category
@@ -34,14 +39,18 @@
 
                 #include "UnityCG.cginc"
 
-                sampler2D _MainTex;
+                sampler2D _Lightmap;
                 sampler2D _Sprite;
-                fixed4 _Color;
+                sampler2D _Freeform;
+                float4 _Color;
+                float _Invert;
+                float _Outer;
+                float _Inner;
+                float _Rotation;
                 
                 struct appdata_t
                 {
                     float4 vertex : POSITION;
-                    fixed4 color : COLOR;
                     float2 texcoord : TEXCOORD0;
                 };
 
@@ -50,37 +59,42 @@
                     float4 vertex : SV_POSITION;
                     fixed4 color : COLOR;
                     float2 texcoord : TEXCOORD0;
+                    float3 xy : TEXCOORD1;        
                 };
-
-                float4 _MainTex_ST;
-
+     
                 v2f vert (appdata_t v)
                 {
                     v2f o;
 
                     o.vertex = UnityObjectToClipPos(v.vertex);
-                    o.color = v.color;
-                    o.texcoord = TRANSFORM_TEX(v.texcoord,_MainTex);
-            
+                    o.color = _Color;
+                    o.texcoord = v.texcoord;
+                    o.xy.xy = float2(v.texcoord.x - 0.5, v.texcoord.y - 0.5);
+                    o.xy.z = _Inner >= 359;
                     return o;
                 }
 
                 fixed4 frag (v2f i) : SV_Target
                 {
-                    fixed4 tex = tex2D(_MainTex, i.texcoord);
-                    tex.r = 1 - tex.r;
+                    float alpha = 1 - tex2D(_Lightmap, i.texcoord).r;
+                    float4 sprite = tex2D(_Sprite, i.texcoord);
+                    float4 freeForm = tex2D(_Freeform, i.texcoord);
 
-                    tex.r *= _Color.a;
-                    tex.g = tex.r;
-                    tex.b = tex.r;
+                    float4 color = float4(1, 1, 1, 1);
 
-                    fixed4 col;
-                    col.rgb = _Color.rgb * tex.rgb * i.color.rgb;
+                    float dir = ((atan2(i.xy.y, i.xy.x) - _Rotation) * 57.2958 + 810) % 360;
 
-                    col *= tex2D(_Sprite, i.texcoord);
-                    col.a = tex.a;
-                
-                    return col;
+                    float distance = sqrt(i.xy.x * i.xy.x + i.xy.y * i.xy.y);
+                    float pointValue = max(0, (1 - distance * 2));
+                    pointValue *= lerp(max(0, min(1, (_Inner * 0.5 - abs(dir - 180) + _Outer) / _Outer)), 1, i.xy.z);
+
+                    pointValue = pointValue, pointValue * pointValue * pointValue;
+
+                    color.rgb *= sprite.rgb * sprite.a * i.color.rgb * i.color.a * alpha * pointValue;
+
+                    color *= freeForm;
+
+                    return color;
                 }
                 
                 ENDCG

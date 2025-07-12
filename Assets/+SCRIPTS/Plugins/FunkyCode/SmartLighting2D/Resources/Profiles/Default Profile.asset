@@ -16,14 +16,12 @@ MonoBehaviour:
     list:
     - name: Default
       type: 0
-      darknessColor: {r: 0.039159846, g: 0.039159846, b: 0.14901961, a: 1}
+      hdr: 1
+      darknessColor: {r: 0, g: 0, b: 0, a: 1}
       depth: -100
       resolution: 1
       dayLayers:
-        list:
-        - id: 0
-          type: 0
-          sorting: 0
+        list: []
       lightLayers:
         list:
         - id: 0
@@ -35,7 +33,7 @@ MonoBehaviour:
       layerSetting:
         list:
         - layerID: 0
-          type: 1
+          type: 0
           sorting: 0
           sortingIgnore: 0
           shadowEffect: 2
@@ -48,35 +46,33 @@ MonoBehaviour:
       layerSetting:
         list:
         - layerID: 0
-    - name: Basic Events
+    - name: 'Preset (Id: 1)'
       layerSetting:
         list:
         - layerID: 0
   qualitySettings:
-    HDR: 2
-    lightTextureSize: 1
-    lightEffectTextureSize: 1
-    lightFilterMode: 0
+    lightTextureSize: 3
+    lightEffectTextureSize: 3
+    lightFilterMode: 1
+    lightmapFilterMode: 1
     updateMethod: 0
     coreAxis: 0
     projection: 0
   dayLightingSettings:
-    alpha: 1
-    direction: 246
-    height: 7.57
+    direction: 322
+    ShadowColor: {r: 0, g: 0, b: 0, a: 1}
+    height: 2.84
     bumpMap:
-      height: 2.81
-      strength: 1
+      height: 0.89
+      strength: 1.55
   layers:
     colliderLayers:
       names:
-      - ShadowLayer
+      - Default
     lightLayers:
       names:
       - Default
-      - Light Layer 1
-      - Shadows
+      - O
     dayLayers:
       names:
       - Default
-      - Day Layer 1

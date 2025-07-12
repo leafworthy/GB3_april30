@@ -1,44 +1,42 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Lightmap.Sorting
+namespace FunkyCode.Rendering.Lightmap.Sorting
 {
     public class SortList
     {
-        public SortObject[] list = new SortObject[1024];
-
-        public int count = 0;
+        public int Count {private set; get;}
+        public SortObject[] List = new SortObject[1024];
 
         public SortList()
         {
-            for(int i = 0; i < list.Length; i++)
-            {
-                list[i] = new SortObject();
-            }
+            Count = 0;
+
+            for(int i = 0; i < List.Length; i++)
+                List[i] = new SortObject();
         }
 
-        public void Add(object lightObject, SortObject.Type objectType, float dist)
+        public void Add(object lightObject, float dist)
         {
-            if (count + 1 < list.Length)
+            if (Count + 1 < List.Length)
             {
-                list[count].lightObject = lightObject;
-                list[count].type = objectType;
-                list[count].distance = dist;
-                count++;
+                List[Count] = new SortObject(dist, lightObject);
+                Count++;
             }
-                else
+            else
             {
-                UnityEngine.Debug.LogError("Collider Depth Overhead!");
+                Debug.LogError("Collider Depth Overhead!");
             }
         }
 
         public void Reset()
         {
-            count = 0;
+            Count = 0;
         }
 
         public void Sort()
         {
-            Array.Sort<SortObject>(list, 0, count, SortObject.Sort());
+            Array.Sort<SortObject>(List, 0, Count, SortObject.Sort());
         }
     }
 }

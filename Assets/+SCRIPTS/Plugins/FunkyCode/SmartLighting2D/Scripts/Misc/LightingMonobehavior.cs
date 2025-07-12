@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc
+namespace FunkyCode
 {
 	public class LightingMonoBehaviour : MonoBehaviour
 	{
@@ -12,7 +12,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc
 			}
 				else
 			{
-				if (this != null && this.gameObject != null)
+				if (this && this.gameObject)
 				{
 					DestroyImmediate(this.gameObject);
 				}

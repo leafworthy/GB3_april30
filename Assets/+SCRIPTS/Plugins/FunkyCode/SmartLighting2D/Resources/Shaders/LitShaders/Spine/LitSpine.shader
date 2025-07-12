@@ -57,10 +57,11 @@
 			#pragma fragment frag
 			#include "UnityCG.cginc"
 
-			#include "../../LitShaders/LitCore.cginc"
-			// #include "Assets/FunkyCode/SmartLighting2D/Resources/Shaders/LitShaders/LitCore.cginc"
+			#include "../../LitShaders/SL2D_ShaderLibrary.cginc"
+			// #include "Assets/FunkyCode/SmartLighting2D/Resources/Shaders/LitShaders/SL2D_ShaderLibrary.cginc"
 
 			sampler2D _MainTex;
+			float _Lit;
 
 			struct VertexInput {
 				float4 vertex : POSITION;
@@ -87,7 +88,7 @@
 			float4 frag(VertexOutput i) : SV_Target {
 				float4 texColor = tex2D(_MainTex, i.uv);
 
-				texColor.rgb *= SL2D_Lit(i.worldPos);
+				texColor.rgb *= SL2D_Blend_Lit(SL2D_Light(i.worldPos), _Lit);
 
 				#if defined(_STRAIGHT_ALPHA_INPUT)
 

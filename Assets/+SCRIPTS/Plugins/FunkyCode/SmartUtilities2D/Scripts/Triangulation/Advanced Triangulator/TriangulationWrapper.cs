@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
+using System.Collections.Generic;
+using FunkyCode.Utilities.Polygon2DTriangulation;
+using System.Linq;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Triangulation.Advanced_Triangulator
+namespace FunkyCode.Utilities
 	{
 	public static class TriangulationWrapper {
 		public class Polygon {
@@ -69,10 +72,10 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Triangulation.Adv
 
 			Dictionary <uint, Vector2> codeToPosition = new Dictionary <uint, Vector2>();
 
-			Advanced_Triangulator.Polygon poly = new Advanced_Triangulator.Polygon(ConvertPoints(polygon.outside, codeToPosition));
+			Polygon2DTriangulation.Polygon poly = new Polygon2DTriangulation.Polygon(ConvertPoints(polygon.outside, codeToPosition));
 
 			foreach (List<Vector2> hole in polygon.holes) 
-				poly.AddHole(new Advanced_Triangulator.Polygon(ConvertPoints(hole, codeToPosition)));
+				poly.AddHole(new Polygon2DTriangulation.Polygon(ConvertPoints(hole, codeToPosition)));
 
 			try {
 				DTSweepContext tcx = new DTSweepContext();

@@ -1,8 +1,7 @@
-﻿using __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Manager;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
-namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Settings
+namespace FunkyCode
 {
 	public class Light2DWindow : EditorWindow
 	{
@@ -56,7 +55,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Settings
 
 				case 2:
 
-					LightingManager2DEditor.Debugging();
+					DebuggingEditor.Debugging();
 
 				break;
 			}

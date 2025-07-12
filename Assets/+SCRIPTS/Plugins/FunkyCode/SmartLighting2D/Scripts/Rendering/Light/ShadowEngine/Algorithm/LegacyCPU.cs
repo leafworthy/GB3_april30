@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
 using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.ShadowEngine.Algorithm
+namespace FunkyCode.Rendering.Light.Shadow
 {
     public static class LegacyCPU
     {
@@ -20,7 +18,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
         public static Vector2 middle;
 
         public static float sqrt;
-
+ 
         public static void Draw(List<Polygon2> polygons, float shadowDistanceMin, float shadowDistanceMax, float translucency)
         {
             if (polygons == null)
@@ -68,23 +66,23 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                 {
                     // change to sides of vertices, improve performance
                     if (Math2D.PointInPoly(-position, polygons[i]))
-                    {
+                    { 
                         continue;
                     }
-                }
+                } 
                     else if (dontDrawInside)
                 {
                     if (Math2D.PointInPoly(-position, polygons[i]))
-                    {
+                    { 
                         ShadowEngine.continueDrawing = false;
                         return;
                     }
                 }
-
+            
                 for(int x = 0; x < pointsCount; x++)
                 {
                     int next = (x + 1) % pointsCount;
-
+                    
                     pair.A = pointsList[x];
                     pair.B = pointsList[next];
 
@@ -99,7 +97,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
                     edgeBWorld.x = edgeBLocal.x + position.x;
                     edgeBWorld.y = edgeBLocal.y + position.y;
-
+  
                     float mx = (edgeAWorld.x + edgeBWorld.x) / 2;
                     float my = (edgeAWorld.y + edgeBWorld.y) / 2;
 
@@ -108,7 +106,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
                     // Need to test it
                     closestPoint = Math2D.ClosestPointOnLine(edgeAWorld, edgeBWorld);
-
+                
                     if (closestPoint.x * closestPoint.x > lightSizeSquare || closestPoint.y * closestPoint.y > lightSizeSquare)
                     {
                         continue;
@@ -123,7 +121,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
                     //lightDirection -= EdgeDirection;
                     //lightDirection = (lightDirection + 720) % 360;
-
+                    
                     // Culling only if outside
                     /*
                     if (culling && drawInside == false) {
@@ -154,7 +152,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                         angleB = (float)System.Math.Atan2 (edgeBWorld.y, edgeBWorld.x);
 
                         rotA = angleA - outerAngle;
-                        rotB = angleB + outerAngle;
+                        rotB = angleB + outerAngle; 
 
                         outerRight.x = edgeAWorld.x + Mathf.Cos(rotA) * shadowLength;
                         outerRight.y = edgeAWorld.y + Mathf.Sin(rotA) * shadowLength;
@@ -168,17 +166,17 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
                         GL.TexCoord3(1, 0, 0);
                         GL.Vertex3(draw.x + outerRight.x, draw.y + outerRight.y, 0);
-
+                        
                         GL.TexCoord3(0, 1, 0);
                         GL.Vertex3(draw.x + projectedRight.x, draw.y + projectedRight.y, 0);
-
+                        
                         // left penumbra
                         GL.TexCoord3(0, 0, 0);
                         GL.Vertex3(draw.x + edgeBWorld.x, draw.y + edgeBWorld.y, 0);
 
                         GL.TexCoord3(1, 0, 0);
                         GL.Vertex3(draw.x + outerLeft.x, draw.y + outerLeft.y, 0);
-
+                        
                         GL.TexCoord3(0, 1, 0);
                         GL.Vertex3(draw.x + projectedLeft.x, draw.y + projectedLeft.y, 0);
                     }
@@ -189,7 +187,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                     GL.Vertex3(draw.x + projectedLeft.x, draw.y + projectedLeft.y, 0);
                     GL.Vertex3(draw.x + projectedRight.x, draw.y + projectedRight.y, 0);
                     GL.Vertex3(draw.x + edgeAWorld.x, draw.y + edgeAWorld.y, 0);
-
+                    
                     // Left Fin
                     GL.Vertex3(draw.x + edgeAWorld.x, draw.y + edgeAWorld.y, 0);
                     GL.Vertex3(draw.x + edgeBWorld.x, draw.y + edgeBWorld.y, 0);
@@ -203,12 +201,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                     closestPoint.y = closestPoint.y / sqrt;
 
                     projectedMiddle.x = middle.x + closestPoint.x * shadowLength;
-                    projectedMiddle.y = middle.y + closestPoint.y *shadowLength;
-
+                    projectedMiddle.y = middle.y + closestPoint.y *shadowLength;                        
+                                
                     // Middle Fin
                     GL.Vertex3(draw.x + projectedLeft.x, draw.y + projectedLeft.y, 0);
                     GL.Vertex3(draw.x + projectedRight.x, draw.y + projectedRight.y, 0);
-                    GL.Vertex3(draw.x + projectedMiddle.x, draw.y + projectedMiddle.y, 0);
+                    GL.Vertex3(draw.x + projectedMiddle.x, draw.y + projectedMiddle.y, 0); 
                 }
             }
 

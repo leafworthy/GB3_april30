@@ -1,16 +1,13 @@
-﻿using __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
+﻿using UnityEngine;
 using UnityEditor;
-using UnityEngine;
+using FunkyCode.LightingSettings;
+using FunkyCode.LightSettings;
 
-namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Settings
+namespace FunkyCode
 {
 	public class ProfileEditor
 	{
-		public static void DrawProfile(Profile profile)
+		public static void DrawProfile(LightingSettings.Profile profile)
 		{
 			EditorGUI.BeginChangeCheck ();
 
@@ -36,8 +33,6 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Settings
 
 			DayLighting.Draw(profile);
 			
-			EditorGUILayout.Space();
-
 			EditorGUILayout.Space();
 
 			// Lightmap Presets
@@ -85,10 +80,10 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Settings
 		
 		public static void Draw()
 		{
-			Profile profile = Lighting2D.Profile;
+			LightingSettings.Profile profile = Lighting2D.Profile;
 
 			EditorGUI.BeginDisabledGroup(true);
-			EditorGUILayout.ObjectField("Current Profile", profile, typeof(Profile), true);
+			EditorGUILayout.ObjectField("Current Profile", profile, typeof(LightingSettings.Profile), true);
 			EditorGUI.EndDisabledGroup();
 
 			EditorGUILayout.Space();
@@ -398,6 +393,8 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Settings
 
 					lightmapPreset.type = (LightmapPreset.Type)EditorGUILayout.EnumPopup ("Type", lightmapPreset.type);
 
+					lightmapPreset.hdr = (LightmapPreset.HDR)EditorGUILayout.EnumPopup ("HDR", lightmapPreset.hdr);
+
 					switch(lightmapPreset.type)
 					{
 						case LightmapPreset.Type.RGB24:
@@ -448,7 +445,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Settings
 
 		public class Layers
 		{
-			public static void Draw(Profile profile)
+			public static void Draw(LightingSettings.Profile profile)
 			{
 				bool foldout = GUIFoldoutHeader.Begin("Layers", profile.layers);
 		
@@ -477,7 +474,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Settings
 				GUIFoldoutHeader.End();
 			}
 
-			public static void DrawList(LayersList layerList, string name, string singular)
+			public static void DrawList(LightingSettings.LayersList layerList, string name, string singular)
 			{
 				bool foldout = GUIFoldout.Draw(name, layerList);
 
@@ -513,7 +510,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Settings
 
 		public class QualitySettings
 		{
-			public static void Draw(Profile profile)
+			public static void Draw(LightingSettings.Profile profile)
 			{
 				bool foldout = GUIFoldoutHeader.Begin( "Quality", profile.qualitySettings);
 
@@ -531,15 +528,15 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Settings
 							
 					profile.qualitySettings.coreAxis = (CoreAxis)EditorGUILayout.EnumPopup("Core Axis", profile.qualitySettings.coreAxis);
 
-					profile.qualitySettings.updateMethod = (UpdateMethod)EditorGUILayout.EnumPopup("Update Method", profile.qualitySettings.updateMethod);
+					profile.qualitySettings.updateMethod = (LightingSettings.UpdateMethod)EditorGUILayout.EnumPopup("Update Method", profile.qualitySettings.updateMethod);
 
-					profile.qualitySettings.lightTextureSize = (LightingSourceTextureSize)EditorGUILayout.Popup("Light Resolution", (int)profile.qualitySettings.lightTextureSize, Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.QualitySettings.LightingSourceTextureSizeArray);
-					
-					profile.qualitySettings.lightEffectTextureSize = (LightingSourceTextureSize)EditorGUILayout.Popup("Translucent Resolution", (int)profile.qualitySettings.lightEffectTextureSize, Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.QualitySettings.LightingSourceTextureSizeArray);
+					profile.qualitySettings.lightTextureSize = (LightingSourceTextureSize)EditorGUILayout.Popup("Light Resolution", (int)profile.qualitySettings.lightTextureSize, LightingSettings.QualitySettings.LightingSourceTextureSizeArray);
 
 					profile.qualitySettings.lightFilterMode = (FilterMode)EditorGUILayout.EnumPopup("Light Filter Mode", profile.qualitySettings.lightFilterMode);
-					
-					profile.qualitySettings.HDR = (HDR)EditorGUILayout.EnumPopup("Light HDR", profile.qualitySettings.HDR);
+						
+					profile.qualitySettings.lightEffectTextureSize = (LightingSourceTextureSize)EditorGUILayout.Popup("Translucent Resolution", (int)profile.qualitySettings.lightEffectTextureSize, LightingSettings.QualitySettings.LightingSourceTextureSizeArray);
+
+					profile.qualitySettings.lightmapFilterMode = (FilterMode)EditorGUILayout.EnumPopup("Lightmap Filter Mode", profile.qualitySettings.lightmapFilterMode);
 
 				EditorGUI.indentLevel--;
 
@@ -549,7 +546,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Settings
 
 		public class DayLighting
 		{
-			public static void Draw(Profile profile)
+			public static void Draw(LightingSettings.Profile profile)
 			{
 				bool foldout = GUIFoldoutHeader.Begin( "Day Lighting", profile.dayLightingSettings);
 
@@ -563,8 +560,10 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Settings
 
 					EditorGUILayout.Space();
 
-					profile.dayLightingSettings.alpha = EditorGUILayout.Slider("Alpha", profile.dayLightingSettings.alpha, 0, 1);
+					profile.dayLightingSettings.ShadowColor = EditorGUILayout.ColorField("Shadow Color", profile.dayLightingSettings.ShadowColor);
 
+					profile.dayLightingSettings.ShadowColor.a = EditorGUILayout.Slider("Shadow Alpha", profile.dayLightingSettings.ShadowColor.a, 0, 1);
+					
 					profile.dayLightingSettings.direction = EditorGUILayout.Slider("Direction", profile.dayLightingSettings.direction, 0 , 360);
 
 					profile.dayLightingSettings.height = EditorGUILayout.Slider("Height", profile.dayLightingSettings.height, 0.1f, 10);
@@ -578,7 +577,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Settings
 
 			public class NormalMap
 			{
-				public static void Draw(Profile profile)
+				public static void Draw(LightingSettings.Profile profile)
 				{
 					profile.dayLightingSettings.bumpMap.height = EditorGUILayout.Slider("Bump Height", profile.dayLightingSettings.bumpMap.height, 0, 5);
 					profile.dayLightingSettings.bumpMap.strength = EditorGUILayout.Slider("Bump Strength", profile.dayLightingSettings.bumpMap.strength, 0, 5);

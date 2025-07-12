@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Triangulation;
 using UnityEngine;
+using FunkyCode.LightingSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D.Polygon {
+namespace FunkyCode.Utilities {
 
 	public class Polygon2D  {
 		public List<Vector2D> pointsList = new List<Vector2D>();
@@ -295,7 +294,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D.Pol
 			}
 
 			collider.pathCount = (1 + holesList.Count);
-			Debug.Log("here in polygon");
+
 			collider.enabled = false;
 
 			collider.SetPath(0, points.ToArray());

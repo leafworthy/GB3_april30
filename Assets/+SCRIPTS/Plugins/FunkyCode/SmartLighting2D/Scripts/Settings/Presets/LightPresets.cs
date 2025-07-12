@@ -1,4 +1,8 @@
-﻿namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace FunkyCode.LightingSettings
 {
 	[System.Serializable]
 	public class LightPresetList

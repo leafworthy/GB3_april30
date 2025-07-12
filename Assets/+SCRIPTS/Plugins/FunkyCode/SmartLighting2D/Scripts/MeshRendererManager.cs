@@ -1,8 +1,6 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts
+namespace FunkyCode
 {
 	[ExecuteInEditMode]
 	public class MeshRendererManager
@@ -10,53 +8,41 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts
 		// management
 		static public LightingMeshRenderer AddBuffer(UnityEngine.Object source)
 		{
-			GameObject meshRenderer = new GameObject ("Mesh Renderer (Id :" + (LightingMeshRenderer.GetCount() + 1) + ")");
+			var meshRenderer = new GameObject ("Mesh Renderer (Id :" + (LightingMeshRenderer.GetCount() + 1) + ")");
 			meshRenderer.transform.parent = LightingManager2D.Get().transform;
 
-			if (Lighting2D.ProjectSettings.managerInternal == ManagerInternal.HideInHierarchy)
-			{
+			if (Lighting2D.ProjectSettings.managerInternal == LightingSettings.ManagerInternal.HideInHierarchy)
 				meshRenderer.hideFlags = HideFlags.HideInHierarchy;
-			}
-				else
-			{
+			else
 				meshRenderer.hideFlags = HideFlags.None;
-			}
 
-			LightingMeshRenderer LightBuffer2D = meshRenderer.AddComponent<LightingMeshRenderer>();
-			
-			LightBuffer2D.Initialize ();
-
+			var LightBuffer2D = meshRenderer.AddComponent<LightingMeshRenderer>();
+			LightBuffer2D.Initialize();
 			LightBuffer2D.owner = source;
-			LightBuffer2D.free = false;
 
-			return(LightBuffer2D);
+			return LightBuffer2D;
 		}
 
 		public static LightingMeshRenderer Pull(UnityEngine.Object source)
 		{
-			foreach (LightingMeshRenderer id in LightingMeshRenderer.List)
+			var sameExists = LightingMeshRenderer.List.Find(x => x.owner == source);
+			if (sameExists)
 			{
-				if (id.owner == source)
-				{
-					id.gameObject.SetActive(true);
+				sameExists.gameObject.SetActive(true);
 
-					return(id);
-				}
+				return sameExists;
 			}
 
-			foreach (LightingMeshRenderer id in LightingMeshRenderer.List)
+			var freeExists = LightingMeshRenderer.List.Find(x => x.Free);
+			if (freeExists)
 			{
-				if (id.free)
-				{
-					id.free = false;
-					id.owner = source;
-					id.gameObject.SetActive(true);
+				freeExists.owner = source;
+				freeExists.gameObject.SetActive(true);
 
-					return(id);
-				}
+				return freeExists;
 			}
 				
-			return(AddBuffer(source));		
+			return AddBuffer(source);		
 		}
 	}
 }

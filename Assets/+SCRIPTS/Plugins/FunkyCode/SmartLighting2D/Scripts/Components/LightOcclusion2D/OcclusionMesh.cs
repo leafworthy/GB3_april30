@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemapOcclusion;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightOcclusion2D
+namespace FunkyCode
     {
     public class OcclusionMesh
     {

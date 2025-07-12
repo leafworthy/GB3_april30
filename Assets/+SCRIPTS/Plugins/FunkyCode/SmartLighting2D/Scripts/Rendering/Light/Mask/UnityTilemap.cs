@@ -1,32 +1,25 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Universal.Objects;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities;
-using UnityEngine;
-using Texture = UnityEngine.Texture;
+﻿using UnityEngine;
+using FunkyCode.LightSettings;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Mask
+namespace FunkyCode.Rendering.Light
 {
     public class UnityTilemap
     {
         public static VirtualSpriteRenderer virtualSpriteRenderer = new VirtualSpriteRenderer();
-
-        static public void Sprite(Light2D light, LightTilemapCollider2D id, UnityEngine.Material material, LayerSetting layerSetting) {
+        
+        static public void Sprite(Light2D light, LightTilemapCollider2D id, Material material, LayerSetting layerSetting) {
             Vector2 lightPosition = -light.transform.position;
 
-            Base tilemap = id.GetCurrentTilemap();
+            LightTilemapCollider.Base tilemap = id.GetCurrentTilemap();
             Vector2 scale = tilemap.TileWorldScale();
             Vector2 localScale = Vector2.zero;
             float rotation = id.transform.eulerAngles.z;
-
+            
             int count = tilemap.chunkManager.GetTiles(light.transform2D.WorldRect);
 
             Texture2D currentTexture = null;
-
+            
             for(int i = 0; i < count; i++) {
                 LightTile tile = tilemap.chunkManager.display[i];
 
@@ -50,7 +43,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Ma
                 if (texture == null) {
                     continue;
                 }
-
+                
                 if (currentTexture != texture) {
                     if (currentTexture != null) {
                         GL.End();
@@ -67,8 +60,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Ma
 
                 localScale.x = scale.x * tile.scale.x;
                 localScale.y = scale.y * tile.scale.y;
-
-                Universal.Objects.Sprite.Pass.Draw(tile.spriteMeshObject, virtualSpriteRenderer, tilePosition, localScale, rotation + tile.rotation);
+    
+                Universal.Sprite.Pass.Draw(tile.spriteMeshObject, virtualSpriteRenderer, tilePosition, localScale, rotation + tile.rotation);
             }
 
             if (currentTexture != null) {
@@ -78,7 +71,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Ma
             material.mainTexture = null;
         }
 
-        static public void BumpedSprite(Light2D light, LightTilemapCollider2D id, UnityEngine.Material material, LayerSetting layerSetting) {
+        static public void BumpedSprite(Light2D light, LightTilemapCollider2D id, Material material, LayerSetting layerSetting) {
             Texture bumpTexture = id.bumpMapMode.GetBumpTexture();
 
             if (bumpTexture == null) {
@@ -89,7 +82,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Ma
 
             Vector2 lightPosition = -light.transform.position;
 
-            Base tilemap = id.GetCurrentTilemap();
+            LightTilemapCollider.Base tilemap = id.GetCurrentTilemap();
             Vector2 scale = tilemap.TileWorldScale();
 
             Texture2D currentTexture = null;
@@ -129,8 +122,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Ma
                 }
 
                 GLExtended.color = LayerSettingColor.Get(tilePosition, layerSetting, MaskLit.Lit, 1, 1); // 1
-
-                Universal.Objects.Sprite.FullRect.Simple.Draw(tile.spriteMeshObject, virtualSpriteRenderer, tilePosition, scale, tile.worldRotation);
+    
+                Universal.Sprite.FullRect.Simple.Draw(tile.spriteMeshObject, virtualSpriteRenderer, tilePosition, scale, tile.worldRotation);
             }
 
             GL.End();
@@ -140,8 +133,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Ma
 
         static public void MaskShape(Light2D light, LightTilemapCollider2D id, LayerSetting layerSetting) {
             Vector2 lightPosition = -light.transform.position;
-
-            Base tilemap = id.GetCurrentTilemap();
+         
+            LightTilemapCollider.Base tilemap = id.GetCurrentTilemap();
 
             bool isGrid = !tilemap.IsPhysicsShape();
 
@@ -149,8 +142,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Ma
 
             float rotation = id.transform.eulerAngles.z;
 
-            MeshObject tileMesh = null;
-
+            MeshObject tileMesh = null;	
+            
             if (isGrid) {
                 tileMesh = LightTile.GetStaticMesh(tilemap);
             }
@@ -163,7 +156,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Ma
                 Vector2 tilePosition = tilemap.TileWorldPosition(tile);
 
                 tilePosition += lightPosition;
-
+                
                 if (tile.NotInRange(tilePosition, light.size)) {
                     continue;
                 }
@@ -179,7 +172,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Ma
 
                 GLExtended.color = LayerSettingColor.Get(tilePosition, layerSetting, MaskLit.Lit, 1, 1); // 1?
 
-                GLExtended.DrawMeshPass(tileMesh, tilePosition, scale, rotation + tile.rotation);
+                GLExtended.DrawMeshPass(tileMesh, tilePosition, scale, rotation + tile.rotation);		
             }
 
             GL.Color(Color.white);

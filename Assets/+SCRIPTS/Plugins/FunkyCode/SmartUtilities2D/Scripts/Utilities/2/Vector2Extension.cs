@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2
+namespace FunkyCode.Utilities
 {
 	public static class Vector2Extensions
 	{

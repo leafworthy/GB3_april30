@@ -1,21 +1,16 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCollider2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Event_Handling;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Sprite_Mesh;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
 using UnityEngine;
 using UnityEngine.Events;
+using FunkyCode.LightSettings;
+using FunkyCode.Utilities;
+using FunkyCode.LightingSettings;
+using FunkyCode.EventHandling;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
+namespace FunkyCode
 {
 	[ExecuteInEditMode]
 	public class LightCollider2D : MonoBehaviour
 	{
-		public SpriteRenderer spriteForShape;
 		public enum ShadowType {None, SpritePhysicsShape, CompositeCollider2D, Collider2D, Collider3D, MeshRenderer, SkinnedMeshRenderer};
 		public enum MaskType {None, Sprite, BumpedSprite,  SpritePhysicsShape, CompositeCollider2D, Collider2D, Collider3D, MeshRenderer, BumpedMeshRenderer, SkinnedMeshRenderer};
 		public enum MaskPivot {TransformCenter, ShapeCenter, LowestY};
@@ -112,7 +107,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 
 		public static void ForceUpdateAll()
 		{
-			foreach (LightCollider2D lightCollider2D in LightCollider2D.List)
+			foreach (var lightCollider2D in LightCollider2D.List)
 			{
 				lightCollider2D.Initialize();
 			}
@@ -130,7 +125,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 
 			UpdateNearbyLights();
 
-			bumpMapMode.SetSpriteRenderer(mainShape.spriteShape.GetSpriteRenderer(spriteForShape));
+			bumpMapMode.SetSpriteRenderer(mainShape.spriteShape.GetSpriteRenderer());
 		}
 
 		private void OnDisable()
@@ -144,7 +139,6 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 
 		private void OnDestroy()
 		{
-			if (!Application.isPlaying) return;
 			List.Remove(this);
 			
 			if (ListEventReceivers.Count > 0)
@@ -177,10 +171,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 
 		public void CollisionEvent(LightCollision2D collision)
 		{
-			if (collisionEvents != null)
-			{
-				collisionEvents(collision);
-			}
+			collisionEvents?.Invoke(collision);
 		}
 
 		public bool InLight(Light2D light) => mainShape.RectOverlap(light.transform2D.WorldRect);
@@ -251,7 +242,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 
 		void OnDrawGizmosSelected()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Selected)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Selected)
 			{
 				return;
 			}
@@ -261,7 +252,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 
 		private void OnDrawGizmos()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Always)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Always)
 			{
 				return;
 			}
@@ -276,11 +267,11 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 				return;
 			}
 
-			switch(Lighting2D.ProjectSettings.editorView.drawGizmosShadowCasters)
+			switch(Lighting2D.ProjectSettings.gizmos.drawGizmosShadowCasters)
 			{
 				case EditorShadowCasters.Enabled:
 
-					Gizmos.color = new Color(1f, 0.5f, 0.25f);
+					UnityEngine.Gizmos.color = new Color(1f, 0.5f, 0.25f);
 		
 					if (mainShape.shadowType != LightCollider2D.ShadowType.None)
 					{
@@ -292,25 +283,25 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 				break;
 			}
 
-			switch(Lighting2D.ProjectSettings.editorView.drawGizmosBounds)
+			switch(Lighting2D.ProjectSettings.gizmos.drawGizmosBounds)
 			{
 				case EditorGizmosBounds.Enabled:
 				
 					if (maskLit == MaskLit.Isometric)
 					{
-						Gizmos.color = Color.green;
+						UnityEngine.Gizmos.color = Color.green;
 						GizmosHelper.DrawIsoRect(transform.position, mainShape.GetIsoWorldRect());
 					}
-						else
+					else
 					{
-						Gizmos.color = new Color(0, 1f, 1f, 0.5f);
+						UnityEngine.Gizmos.color = new Color(0, 1f, 1f, 0.5f);
 						GizmosHelper.DrawRect(transform.position, mainShape.GetWorldRect());
 					}
 					
 				break;
 			}
 
-			if (Lighting2D.ProjectSettings.editorView.drawIcons == EditorIcons.Enabled)
+			if (Lighting2D.ProjectSettings.gizmos.drawIcons == EditorIcons.Enabled)
 			{
 				Vector2? pivotPoint = mainShape.GetPivotPoint();
 
@@ -320,7 +311,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 					pos.x = pivotPoint.Value.x;
 					pos.y = pivotPoint.Value.y;
 
-					Gizmos.DrawIcon(pos, "circle_v2", true);
+					UnityEngine.Gizmos.DrawIcon(pos, "circle_v2", true);
 				}
 			}
 		}

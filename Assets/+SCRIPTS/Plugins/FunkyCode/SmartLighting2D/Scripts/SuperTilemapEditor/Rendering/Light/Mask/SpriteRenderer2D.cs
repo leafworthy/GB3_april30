@@ -1,12 +1,11 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
+﻿using UnityEngine;
 
-#if (SUPER_TILEMAP_EDITOR)
+ #if (SUPER_TILEMAP_EDITOR)
 
     namespace FunkyCode.SuperTilemapEditorSupport.Light.Mask
     {
         public static class SpriteRenderer2D
-        {
+        {   
             static public void Sprite(Light2D light, LightTilemapCollider2D id, Material material)
             {
                 Vector2 lightPosition = -light.transform.position;
@@ -19,10 +18,10 @@ using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
                         material.mainTexture = id.superTilemapEditor.tilemap.Tileset.AtlasTexture;
                     }
                 }
-
-                material.SetPass (0);
+            
+                material.SetPass (0); 
                 GL.Begin (GL.QUADS);
-
+    
                 int count = tilemapCollider.chunkManager.GetTiles(light.transform2D.WorldRect);
 
                 for(int i = 0; i < count; i++)
@@ -30,7 +29,7 @@ using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
                     LightTile tile = tilemapCollider.chunkManager.display[i];
 
                     tile.UpdateTransform(tilemapCollider);
-
+                    
                     Vector2 tilePosition = tile.GetWorldPosition(tilemapCollider);
                     tilePosition += lightPosition;
 
@@ -40,7 +39,7 @@ using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
                     }
 
                     Vector2 scale = tile.worldScale * 0.5f * tile.scale;
-
+                
                     Rendering.Universal.Texture.Quad.STE.DrawPass(tilePosition, scale, tile.uv, tile.worldRotation);
                 }
 
@@ -59,7 +58,7 @@ using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
                 }
 
                 material.SetTexture("_Bump", bumpTexture);
-
+                
                 Vector2 lightPosition = -light.transform.position;
                 LightTilemapCollider.Base tilemapCollider = id.GetCurrentTilemap();
 
@@ -70,14 +69,14 @@ using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
                         material.mainTexture = id.superTilemapEditor.tilemap.Tileset.AtlasTexture;
                     }
                 }
-
-                material.SetPass (0);
+            
+                material.SetPass (0); 
                 GL.Begin (GL.QUADS);
-
+    
                 foreach(LightTile tile in id.superTilemapEditor.MapTiles)
                 {
                     tile.UpdateTransform(tilemapCollider);
-
+                    
                     Vector2 tilePosition = tile.GetWorldPosition(tilemapCollider);
                     tilePosition += lightPosition;
 
@@ -98,14 +97,14 @@ using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
         }
     }
 
-#else
+#else  
 
-    namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SuperTilemapEditor.Rendering.Light.Mask
-    {
+    namespace FunkyCode.SuperTilemapEditorSupport.Light.Mask
+    { 
         public class SpriteRenderer2D
         {
-            static public void Sprite(Light2D light, LightTilemapCollider2D id, UnityEngine.Material material) {}
-            static public void BumpedSprite(Light2D light, LightTilemapCollider2D id, UnityEngine.Material material) {}
+            static public void Sprite(Light2D light, LightTilemapCollider2D id, Material material) {}
+            static public void BumpedSprite(Light2D light, LightTilemapCollider2D id, Material material) {}
         }
     }
 

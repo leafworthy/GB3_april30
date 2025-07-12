@@ -1,10 +1,9 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
+﻿using UnityEngine;
 
-#if (SUPER_TILEMAP_EDITOR)
+ #if (SUPER_TILEMAP_EDITOR)
 
     namespace FunkyCode.SuperTilemapEditorSupport.Light.Mask
-    {
+    { 
         public static class Grid
         {
             static public void Draw(Light2D light, LightTilemapCollider2D id)
@@ -16,7 +15,7 @@ using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
 
                 Vector2 lightPosition = -light.transform.position;
                 MeshObject tileMesh = LightTile.Rectangle.GetStaticMesh();
-
+          
                 GL.Color(Color.white);
 
                 LightTilemapCollider.Base tilemapBase = id.GetCurrentTilemap();
@@ -25,23 +24,23 @@ using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
                 {
                     Vector2 tilePosition = tile.GetWorldPosition(tilemapBase);
                     tilePosition += lightPosition;
-
+                    
                     if (tile.NotInRange(tilePosition, light.size))
                     {
                         continue;
                     }
 
-                    GLExtended.DrawMeshPass(tileMesh, tilePosition, tile.worldScale, tile.worldRotation);
+                    GLExtended.DrawMeshPass(tileMesh, tilePosition, tile.worldScale, tile.worldRotation);		
                 }
             }
 
         }
     }
 
-#else
+#else  
 
-    namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SuperTilemapEditor.Rendering.Light.Mask
-    {
+    namespace FunkyCode.SuperTilemapEditorSupport.Light.Mask
+    { 
         public class Grid
         {
             static public void Draw(Light2D light, LightTilemapCollider2D id) {}

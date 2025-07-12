@@ -1,16 +1,16 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Effects
-    {
+namespace FunkyCode
+{
     [System.Serializable]
-    public class LightCycleBuffer {
+    public class LightCycleBuffer
+    {
         public Gradient gradient = new Gradient();
     }
 
     [System.Serializable]
-    public class LightDayProperties {
+    public class LightDayProperties
+    {
         [Range(0, 360)]
         public float shadowOffset = 0;
 
@@ -20,26 +20,30 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Effects
     }
 
     [ExecuteInEditMode]
-    public class LightCycle : MonoBehaviour {
+    public class LightCycle : MonoBehaviour
+    {
         [Range(0, 1)]
         public float time = 0;
 
         public LightDayProperties dayProperties = new LightDayProperties();
 
-        public LightCycleBuffer[] nightProperties = new LightCycleBuffer[1];
+        public LightCycleBuffer[] nightProperties = new LightCycleBuffer[1]; // lightmap
 
-        public void SetTime(float setTime) {
+        public void SetTime(float setTime)
+        {
             time = setTime;
         }
 
-        void LateUpdate() {
-            LightmapPresetList lightmapPresets = Lighting2D.Profile.lightmapPresets;
+        void LateUpdate()
+        {
+            LightingSettings.LightmapPresetList lightmapPresets = Lighting2D.Profile.lightmapPresets;
 
-            if (lightmapPresets == null) {
+            if (lightmapPresets == null)
+            {
                 return;
             }
         
-        /*
+            /*
             if (Input.GetMouseButton(0)&& Input.touchCount > 1) { // 
                 time += Time.deltaTime * 0.05f;
 
@@ -52,20 +56,19 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Effects
             float height = dayProperties.shadowHeight.Evaluate(time);
             float alpha = dayProperties.shadowAlpha.Evaluate(time);
 
-            if (height < 0.01f) {
+            if (height < 0.01f)
+            {
                 height = 0.01f;
             }
 
-            if (alpha < 0) {
+            if (alpha < 0)
+            {
                 alpha = 0;
             }
 
             Lighting2D.DayLightingSettings.height = height;
-            Lighting2D.DayLightingSettings.alpha = alpha;
+            Lighting2D.DayLightingSettings.ShadowColor.a = alpha;
             Lighting2D.DayLightingSettings.direction = time360 + dayProperties.shadowOffset;
-
-
-
 
             // Dynamic Properties
             for(int i = 0; i < nightProperties.Length; i++) {
@@ -81,7 +84,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Effects
 
                 Color color = buffer.gradient.Evaluate(time);
 
-                LightmapPreset lightmapPreset = lightmapPresets.list[i];
+                LightingSettings.LightmapPreset lightmapPreset = lightmapPresets.list[i];
                 lightmapPreset.darknessColor = color;
             }
         }

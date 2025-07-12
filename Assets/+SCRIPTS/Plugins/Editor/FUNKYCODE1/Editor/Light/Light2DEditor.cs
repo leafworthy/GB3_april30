@@ -1,19 +1,17 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
-using QualitySettings = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.QualitySettings;
+using FunkyCode.LightingSettings;
+using FunkyCode.LightSettings;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
+namespace FunkyCode
 {
 	[CanEditMultipleObjects]
 	[CustomEditor(typeof(Light2D))]
-	public class Light2DEditor : UnityEditor.Editor
+	public class Light2DEditor : Editor
 	{
 		private Light2D light2D;
 
@@ -76,7 +74,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 			size = serializedObject.FindProperty("size");
 			spotAngleInner = serializedObject.FindProperty("spotAngleInner");
 			spotAngleOuter = serializedObject.FindProperty("spotAngleOuter");
-
+			
 			outerAngle = serializedObject.FindProperty("outerAngle");
 
 			shadowDistanceClose = serializedObject.FindProperty("shadowDistanceClose");
@@ -89,8 +87,8 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 			spriteFlipY = serializedObject.FindProperty("spriteFlipY");
 			sprite = serializedObject.FindProperty("sprite");
 
-
-
+			
+			
 			maskTranslucencyType = serializedObject.FindProperty("maskTranslucencyQuality");
 			maskTranslucencyStrength = serializedObject.FindProperty("maskTranslucencyStrength");
 
@@ -110,7 +108,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 			light2D = target as Light2D;
 
 			InitProperties();
-
+			
 			Undo.undoRedoPerformed += RefreshAll;
 		}
 
@@ -144,11 +142,11 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 			}
 		}
 
-		public UnityEngine.Camera GetSceneCamera()
+		public Camera GetSceneCamera()
 		{
-			SceneView sceneView = SceneView.lastActiveSceneView;
-
-			UnityEngine.Camera camera = null;
+			UnityEditor.SceneView sceneView = UnityEditor.SceneView.lastActiveSceneView;
+			
+			Camera camera = null;
 
 			if (sceneView != null)
 			{
@@ -165,7 +163,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 		private bool OnScene_FreeForm()
 		{
-			UnityEngine.Camera camera = GetSceneCamera();
+			Camera camera = GetSceneCamera();
 
 			if (camera == null)
 			{
@@ -176,7 +174,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 			float cameraSize = camera.orthographicSize;
 
-			Handles.color = new Color(1, 0.4f, 0);
+			Handles.color = new Color(1, 0.4f, 0);	
 
 			List<Vector2> points = light2D.freeFormPoints.points;
 
@@ -200,7 +198,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 				Handles.DrawLine(point, nextPoint);
 
-				var fmh_202_52_637877936725085490 = Quaternion.identity; Vector3 result = Handles.FreeMoveHandle(point, 0.05f * cameraSize, Vector2.zero, Handles.CylinderHandleCap);
+				var fmh_201_52_638878578866887090 = Quaternion.identity; Vector3 result = Handles.FreeMoveHandle(point, 0.05f * cameraSize, Vector2.zero, Handles.CylinderHandleCap);
 
 				if (point != result)
 				{
@@ -211,7 +209,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 					cPoints[i] = result;
 
-					if (Math2D.PolygonIntersectItself(cPoints))
+					if (Utilities.Math2D.PolygonIntersectItself(cPoints))
 					{
 						intersect = true;
 					}
@@ -234,7 +232,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 		private bool OnScene_Point()
 		{
-			UnityEngine.Camera camera = GetSceneCamera();
+			Camera camera = GetSceneCamera();
 
 			if (camera == null)
 			{
@@ -243,7 +241,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 			bool changed = false;
 
-			Handles.color = new Color(1, 0.4f, 0);
+			Handles.color = new Color(1, 0.4f, 0);	
 
 			float cameraSize = camera.orthographicSize;
 
@@ -252,10 +250,9 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 			float rotation = (light2D.transform.localRotation.eulerAngles.z + 90) * Mathf.Deg2Rad;
 
 			point.x += Mathf.Cos(rotation) * light2D.size;
-
 			point.y += Mathf.Sin(rotation) * light2D.size;
-
-			var fmh_257_51_637877936725107960 = Quaternion.identity; Vector3 result = Handles.FreeMoveHandle(point, 0.05f * cameraSize, Vector2.zero, Handles.CylinderHandleCap);
+			
+			var fmh_255_51_638878578867230060 = Quaternion.identity; Vector3 result = Handles.FreeMoveHandle(point, 0.05f * cameraSize, Vector2.zero, Handles.CylinderHandleCap);
 
 			float moveDistance = Vector2.Distance(point, result);
 
@@ -275,7 +272,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 			rotateAngle = Math2D.NormalizeRotation(rotateAngle);
 			originAngle = Math2D.NormalizeRotation(originAngle);
 
-			if (Mathf.Abs(rotateAngle - originAngle) > 0.1)
+			if (Mathf.Abs(rotateAngle - originAngle) > 0.001f)
 			{
 				Quaternion QRotation = light2D.transform.localRotation;
 
@@ -287,7 +284,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 				changed = true;
 			}
-
+			
 			Vector3 innerPoint = light2D.transform.position;
 
 			float innerValue = light2D.spotAngleInner / 180 - 1;
@@ -297,28 +294,29 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 			innerPoint.y -= Mathf.Sin(rotation) * light2D.size * innerValue;
 
 			Handles.color = new Color(1f, 0.5f, 0.5f);
-
-			var fmh_300_61_637877936725110720 = Quaternion.identity; Vector3 innerHandle = Handles.FreeMoveHandle(innerPoint, 0.05f * cameraSize, Vector2.zero, Handles.CylinderHandleCap);
+	
+			var fmh_298_61_638878578867233660 = Quaternion.identity; Vector3 innerHandle = Handles.FreeMoveHandle(innerPoint, 0.05f * cameraSize, Vector2.zero, Handles.CylinderHandleCap);
 
 			if (Vector2.Distance(innerHandle, innerPoint) > 0.001f)
 			{
-				float pdistance = Vector2.Distance(innerHandle, point) / light2D.size;
+				float nextInnerAngle = Vector2.Distance(innerHandle, point) / light2D.size;
 
-				pdistance = Math2D.Range(pdistance * 180, 0, 360);
+				nextInnerAngle = Math2D.Range(nextInnerAngle * 180, 0, 360);
 
 				if (Vector2.Distance(innerHandle, light2D.transform.position) > light2D.size)
 				{
 					float a = Vector2.Distance(innerHandle, light2D.transform.position);
 					float b = Vector2.Distance(innerHandle, point);
-
-					pdistance = (b < a) ? 0 : 360;
+					
+					nextInnerAngle = (b < a) ? 0 : 360;
 				}
 
-				light2D.spotAngleOuter = pdistance + (light2D.spotAngleOuter - light2D.spotAngleInner);
+				float nextOuterAngle = nextInnerAngle + (light2D.spotAngleOuter - light2D.spotAngleInner);
+				nextOuterAngle = Math2D.Range(Mathf.Max(nextInnerAngle, nextOuterAngle), 0, 360);
 
-				light2D.spotAngleOuter = Math2D.Range(Mathf.Max(light2D.spotAngleInner, light2D.spotAngleOuter), 0, 360);
+				light2D.spotAngleOuter = nextOuterAngle;
 
-				light2D.spotAngleInner = pdistance;
+				light2D.spotAngleInner = nextInnerAngle;
 
 				changed = true;
 			}
@@ -335,16 +333,16 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 				outerPointLeft.y += Mathf.Sin(rotation + outerValue) * light2D.size;
 
-				var fmh_337_70_637877936725113310 = Quaternion.identity; Vector3 outerHandleLeft = Handles.FreeMoveHandle(outerPointLeft, 0.05f * cameraSize, Vector2.zero, Handles.CylinderHandleCap);
+				var fmh_336_70_638878578867236810 = Quaternion.identity; Vector3 outerHandleLeft = Handles.FreeMoveHandle(outerPointLeft, 0.05f * cameraSize, Vector2.zero, Handles.CylinderHandleCap);
 
 				float transformRotation = light2D.transform.rotation.eulerAngles.z;
 
-				if (Vector2.Distance(outerPointLeft, outerHandleLeft) > 0.01f)
+				if (Vector2.Distance(outerPointLeft, outerHandleLeft) > 0.001f)
 				{
 					originAngle = 90f + (int)(Mathf.Atan2 (light2D.transform.position.y - outerPointLeft.y, light2D.transform.position.x - outerPointLeft.x) * Mathf.Rad2Deg);
 					originAngle -= transformRotation;
 					originAngle = Math2D.NormalizeRotation(originAngle);
-
+					
 					rotateAngle = 90f + (int)(Mathf.Atan2 (light2D.transform.position.y - outerHandleLeft.y, light2D.transform.position.x - outerHandleLeft.x) * Mathf.Rad2Deg);
 					rotateAngle -= transformRotation;
 					rotateAngle = Math2D.NormalizeRotation(rotateAngle);
@@ -361,14 +359,14 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 				outerPointRight.y += Mathf.Sin(rotation - outerValue) * light2D.size;
 
-				var fmh_363_72_637877936725115650 = Quaternion.identity; Vector3 outerHandleRight = Handles.FreeMoveHandle(outerPointRight, 0.05f * cameraSize, Vector2.zero, Handles.CylinderHandleCap);
+				var fmh_362_72_638878578867239720 = Quaternion.identity; Vector3 outerHandleRight = Handles.FreeMoveHandle(outerPointRight, 0.05f * cameraSize, Vector2.zero, Handles.CylinderHandleCap);
 
 				if (Vector2.Distance(outerPointRight, outerHandleRight) > 0.01f)
 				{
 					originAngle = -90f - (int)(Mathf.Atan2 (light2D.transform.position.y - outerPointRight.y, light2D.transform.position.x - outerPointRight.x) * Mathf.Rad2Deg);
 					originAngle += transformRotation;
 					originAngle = Math2D.NormalizeRotation(originAngle);
-
+					
 					rotateAngle = -90f - (int)(Mathf.Atan2 (light2D.transform.position.y - outerHandleRight.y, light2D.transform.position.x - outerHandleRight.x) * Mathf.Rad2Deg);
 					rotateAngle += transformRotation;
 					rotateAngle = Math2D.NormalizeRotation(rotateAngle);
@@ -413,8 +411,8 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 				if (!EditorApplication.isPlaying)
 				{
 					EditorUtility.SetDirty(target);
-
-					EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+	
+					EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 				}
 			}
 		}
@@ -431,55 +429,46 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 			EditorGUILayout.Space();
 
 			lightPresetId.intValue = EditorGUILayout.Popup("Light Preset", lightPresetId.intValue, Lighting2D.Profile.lightPresets.GetPresetNames());
-
+			
 			eventPresetId.intValue = EditorGUILayout.Popup("Event Preset", eventPresetId.intValue, Lighting2D.Profile.eventPresets.GetBufferLayers());
 
 			EditorGUILayout.Space();
 
 			int value = lightLayer.intValue + 1;
 
-			value = EditorGUILayout.Popup("Layer (Light)", value, Lighting2D.Profile.layers.lightLayers.GetOcclusionNames());
+			value = EditorGUILayout.Popup("Shadows (Light)", value, Lighting2D.Profile.layers.lightLayers.GetOcclusionNames());		
 
 			lightLayer.intValue = value - 1;
 
-			occlusionLayer.intValue = EditorGUILayout.Popup("Occlusion (Light)", occlusionLayer.intValue, Lighting2D.Profile.layers.lightLayers.GetOcclusionNames());
+			occlusionLayer.intValue = EditorGUILayout.Popup("Occlusion (Light)", occlusionLayer.intValue, Lighting2D.Profile.layers.lightLayers.GetOcclusionNames());		
 
-			translucentLayer.intValue = EditorGUILayout.Popup("Translucency (Light)", translucentLayer.intValue, Lighting2D.Profile.layers.lightLayers.GetTranslucencyNames());
-
+			translucentLayer.intValue = EditorGUILayout.Popup("Translucency (Light)", translucentLayer.intValue, Lighting2D.Profile.layers.lightLayers.GetTranslucencyNames());		
+		
 			EditorGUILayout.Space();
-
+					
 			light2D.applyRotation = (Light2D.Rotation)EditorGUILayout.EnumPopup("Rotation", light2D.applyRotation);
 
 			EditorGUILayout.PropertyField(whenInsideCollider, new GUIContent ("When Inside Collider"));
-
+			
 			bool customSize = Lighting2D.Profile.qualitySettings.lightTextureSize == LightingSourceTextureSize.Custom;
 
 			EditorGUI.BeginDisabledGroup(!customSize);
 
 			if (customSize)
 			{
-				textureSize.intValue = EditorGUILayout.Popup("Resolution", (int)light2D.textureSize, QualitySettings.LightingSourceTextureSizeArray);
+				textureSize.intValue = EditorGUILayout.Popup("Resolution", (int)light2D.textureSize, LightingSettings.QualitySettings.LightingSourceTextureSizeArray);
 			}
 				else
 			{
-				EditorGUILayout.Popup("Resolution", (int)Lighting2D.Profile.qualitySettings.lightTextureSize, QualitySettings.LightingSourceTextureSizeArray);
+				EditorGUILayout.Popup("Resolution", (int)Lighting2D.Profile.qualitySettings.lightTextureSize, LightingSettings.QualitySettings.LightingSourceTextureSizeArray);
 			}
 
 			EditorGUI.EndDisabledGroup();
-
+		
 			EditorGUILayout.Space();
 
-			Color colorValue = color.colorValue;
-
-			if (Lighting2D.QualitySettings.HDR != HDR.Off)
-			{
-				colorValue = EditorGUILayout.ColorField(new GUIContent("Color"), colorValue, true, true, true);
-			}
-				else
-			{
-				colorValue = EditorGUILayout.ColorField("Color", colorValue);
-			}
-
+			Color colorValue = EditorGUILayout.ColorField(new GUIContent("Color"), color.colorValue, true, true, true);
+	
 			colorValue.a = EditorGUILayout.Slider("Alpha", colorValue.a, 0, 1);
 
 			color.colorValue = colorValue;
@@ -497,13 +486,16 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 			float inner = spotAngleInner.floatValue;
 			float outer = spotAngleOuter.floatValue;
 
+			double roundInner = System.Math.Round(inner, 2);
+			double roundOuter = System.Math.Round(outer, 2);
+
 			if (light2D.lightLayer >= 0 || light2D.translucentLayer > 0|| light2D.occlusionLayer > 0)
 			{
 				switch(light2D.lightType)
 				{
 					case Light2D.LightType.Sprite:
 
-						EditorGUILayout.MinMaxSlider("Spot Angle (" + (int)inner + ", " + (int)outer + ")", ref inner, ref outer, 0f, 360f);
+						EditorGUILayout.MinMaxSlider("Spot Angle (" + roundInner + ", " + roundOuter + ")", ref inner, ref outer, 0f, 360f);
 
 						spotAngleInner.floatValue = inner;
 						spotAngleOuter.floatValue = outer;
@@ -512,7 +504,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 					case Light2D.LightType.Point:
 
-						EditorGUILayout.MinMaxSlider("Spot Angle (" + (int)inner + ", " + (int)outer + ")", ref inner, ref outer, 0f, 360f);
+						EditorGUILayout.MinMaxSlider("Spot Angle (" + roundInner + ", " + roundOuter + ")", ref inner, ref outer, 0f, 360f);
 
 						spotAngleInner.floatValue = inner;
 						spotAngleOuter.floatValue = outer;
@@ -560,7 +552,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 			{
 				case Light2D.LightType.Sprite:
 
-					foldoutSprite = EditorGUILayout.Foldout(foldoutSprite, "Sprite" );
+					foldoutSprite = EditorGUILayout.Foldout(foldoutSprite, "Sprite", true);
 
 					if (foldoutSprite)
 					{
@@ -569,12 +561,12 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 						EditorGUILayout.PropertyField(lightSprite, new GUIContent ("Type"));
 
 						//script.lightSprite = (Light2D.LightSprite)EditorGUILayout.EnumPopup("Light Sprite", script.lightSprite);
-
+				
 						if (light2D.lightSprite == Light2D.LightSprite.Custom)
 						{
 							EditorGUILayout.PropertyField(spriteFlipX, new GUIContent ("Flip X"));
 							EditorGUILayout.PropertyField(spriteFlipY, new GUIContent ("Flip Y"));
-
+							
 							sprite.objectReferenceValue = (Sprite)EditorGUILayout.ObjectField("", sprite.objectReferenceValue, typeof(Sprite), true);
 						}
 							else
@@ -584,15 +576,17 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 								light2D.sprite = Light2D.GetDefaultSprite();
 							}
 						}
-
+					
 						EditorGUI.indentLevel--;
 					}
+
+					EditorGUILayout.Space();
 
 				break;
 
 				case Light2D.LightType.FreeForm:
 
-					foldoutFreeForm = EditorGUILayout.Foldout(foldoutFreeForm, "Free Form" );
+					foldoutFreeForm = EditorGUILayout.Foldout(foldoutFreeForm, "Free Form", true);
 
 					if (foldoutFreeForm)
 					{
@@ -611,13 +605,14 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 						EditorGUI.indentLevel--;
 					}
 
+					EditorGUILayout.Space();
+
 				break;
 			}
-
-
+		
 			if (light2D.translucentLayer > 0)
 			{
-				foldoutTranslucency = EditorGUILayout.Foldout(foldoutTranslucency, "Translucency" );
+				foldoutTranslucency = EditorGUILayout.Foldout(foldoutTranslucency, "Translucency", true);
 
 				if (foldoutTranslucency)
 				{
@@ -626,15 +621,14 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 					translucentPresetId.intValue = EditorGUILayout.Popup("Light Preset", translucentPresetId.intValue, Lighting2D.Profile.lightPresets.GetPresetNames());
 
 					EditorGUILayout.PropertyField(maskTranslucencyType, new GUIContent ("Quality"));
-
+					
 					maskTranslucencyStrength.floatValue = EditorGUILayout.Slider("Strength", maskTranslucencyStrength.floatValue, 0, 1);
-
+					
 					EditorGUI.indentLevel--;
 				}
+
+				EditorGUILayout.Space();
 			}
-
-
-			EditorGUILayout.Space();
 
 			GUIMeshMode.Draw(serializedObject, light2D.meshMode);
 
@@ -642,7 +636,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 			if (UsesMasks())
 			{
-				foldoutBumpMap = EditorGUILayout.Foldout(foldoutBumpMap, "Bump Map" );
+				foldoutBumpMap = EditorGUILayout.Foldout(foldoutBumpMap, "Bump Map", true);
 
 				if (foldoutBumpMap)
 				{
@@ -659,7 +653,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 			EditorGUILayout.Space();
 
-			serializedObject.ApplyModifiedProperties();
+			serializedObject.ApplyModifiedProperties();	
 
 			if (GUI.changed)
 			{
@@ -676,7 +670,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 					{
 						continue;
 					}
-
+					
 					light2D.ForceUpdate();
 
 					if (!EditorApplication.isPlaying)
@@ -687,7 +681,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 				if (!EditorApplication.isPlaying)
 				{
-					EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+					EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 				}
 			}
 		}
@@ -720,7 +714,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Light
 
 			return(false);
 		}
-
+		
 		public bool UsesSoftDefaultShadows()
 		{
 			LayerSetting[] layerSettings = light2D.GetLightPresetLayers();

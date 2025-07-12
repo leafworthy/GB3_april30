@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extensions;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
 using UnityEngine;
+using FunkyCode.LightShape;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLightCollider2D
+namespace FunkyCode
 {
 	[System.Serializable]
 	public class DayLightColliderShape
 	{
-		public SmartLighting2D.Components.Day.DayLightCollider2D.ShadowType shadowType = SmartLighting2D.Components.Day.DayLightCollider2D.ShadowType.SpritePhysicsShape;
+		public DayLightCollider2D.ShadowType shadowType = DayLightCollider2D.ShadowType.SpritePhysicsShape;
 		
-		public SmartLighting2D.Components.Day.DayLightCollider2D.MaskType maskType = SmartLighting2D.Components.Day.DayLightCollider2D.MaskType.Sprite;
+		public DayLightCollider2D.MaskType maskType = DayLightCollider2D.MaskType.Sprite;
 
 		public Transform transform;
 	
@@ -58,11 +57,11 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLigh
 			switch(shadowType)
 			{
 
-				case SmartLighting2D.Components.Day.DayLightCollider2D.ShadowType.FillCollider2D:
+				case DayLightCollider2D.ShadowType.FillCollider2D:
 
 					return(colliderShape.GetMeshes());
 
-				case SmartLighting2D.Components.Day.DayLightCollider2D.ShadowType.FillSpritePhysicsShape:
+				case DayLightCollider2D.ShadowType.FillSpritePhysicsShape:
 
 					return(spritePhysicsShape.GetMeshes());
 			}
@@ -74,13 +73,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLigh
 		{
 			switch(shadowType)
 			{
-				case SmartLighting2D.Components.Day.DayLightCollider2D.ShadowType.SpritePhysicsShape:
-				case SmartLighting2D.Components.Day.DayLightCollider2D.ShadowType.FillSpritePhysicsShape:
+				case DayLightCollider2D.ShadowType.SpritePhysicsShape:
+				case DayLightCollider2D.ShadowType.FillSpritePhysicsShape:
 
 					return(spritePhysicsShape.GetPolygonsLocal());
 
-				case SmartLighting2D.Components.Day.DayLightCollider2D.ShadowType.Collider2D:
-				case SmartLighting2D.Components.Day.DayLightCollider2D.ShadowType.FillCollider2D:
+				case DayLightCollider2D.ShadowType.Collider2D:
+				case DayLightCollider2D.ShadowType.FillCollider2D:
 
 					return(colliderShape.GetPolygonsLocal());
 			}
@@ -92,13 +91,15 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLigh
 		{
 			switch(shadowType)
 			{
-				case SmartLighting2D.Components.Day.DayLightCollider2D.ShadowType.SpritePhysicsShape:
-				case SmartLighting2D.Components.Day.DayLightCollider2D.ShadowType.SpriteProjectionShape:
+				case DayLightCollider2D.ShadowType.SpritePhysicsShape:
+				case DayLightCollider2D.ShadowType.SpriteProjectionShape:
+				case DayLightCollider2D.ShadowType.FillSpritePhysicsShape:
 
 					return(spritePhysicsShape.GetPolygonsWorld());
 					
-				case SmartLighting2D.Components.Day.DayLightCollider2D.ShadowType.Collider2D:
-				case SmartLighting2D.Components.Day.DayLightCollider2D.ShadowType.SpriteProjectionCollider:
+				case DayLightCollider2D.ShadowType.Collider2D:
+				case DayLightCollider2D.ShadowType.SpriteProjectionCollider:
+				case DayLightCollider2D.ShadowType.FillCollider2D:
 
 					return(colliderShape.GetPolygonsWorld());
 			}

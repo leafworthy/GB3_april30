@@ -1,7 +1,4 @@
 ﻿
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-
 #if (SUPER_TILEMAP_EDITOR)
 
     namespace FunkyCode.SuperTilemapEditorSupport.Light.Shadow
@@ -15,12 +12,12 @@ using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
         }
     }
 
-#else
+#else 
 
-    namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SuperTilemapEditor.Rendering.Light.Shadow
+    namespace FunkyCode.SuperTilemapEditorSupport.Light.Shadow
     {
         public class Collider
-        {
+        { 
             static public void Draw(Light2D light, LightTilemapCollider2D id) {}
         }
     }

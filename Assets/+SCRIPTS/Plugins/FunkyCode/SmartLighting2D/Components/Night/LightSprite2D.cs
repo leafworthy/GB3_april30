@@ -1,15 +1,8 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Camera;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightSprite2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Sprite_Mesh;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities;
 using UnityEngine;
+using FunkyCode.LightingSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
+namespace FunkyCode
 {
 	[ExecuteInEditMode]
 	public class LightSprite2D : MonoBehaviour
@@ -36,7 +29,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 
 		public GlowMode glowMode = new GlowMode();
 
-		public VirtualSpriteRenderer spriteRenderer = new VirtualSpriteRenderer();
+		public Utilities.VirtualSpriteRenderer spriteRenderer = new Utilities.VirtualSpriteRenderer();
 
 		public SpriteMeshObject spriteMeshObject = new SpriteMeshObject();
 
@@ -56,7 +49,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 			List.Remove(this);
 		}
 
-		public bool InCamera(Camera camera) {
+		public bool InCamera(Camera camera)
+		{
 			Rect cameraRect = CameraTransform.GetWorldRect(camera);
 
 			return(cameraRect.Overlaps(lightSpriteShape.GetWorldRect()));
@@ -70,6 +64,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 			{
 				defaultSprite = Resources.Load <Sprite> ("Sprites/gfx_light");
 			}
+			
 			return(defaultSprite);
 		}
 
@@ -165,7 +160,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 
 		void OnDrawGizmosSelected()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Selected)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Selected)
 			{
 				return;
 			}
@@ -175,14 +170,14 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 
 		private void OnDrawGizmos()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos == EditorDrawGizmos.Disabled)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos == EditorDrawGizmos.Disabled)
 			{
 				return;
 			}
 			
 			// Gizmos.DrawIcon(transform.position, "light", true);
 
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Always)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Always)
 			{
 				return;
 			}
@@ -197,13 +192,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night
 				return;
 			}
 			
-			Gizmos.color = new Color(1f, 0.5f, 0.25f);
+			UnityEngine.Gizmos.color = new Color(1f, 0.5f, 0.25f);
 
 			GizmosHelper.DrawPolygon(lightSpriteShape.GetSpriteWorldPolygon(), transform.position);
 
-			Gizmos.color = new Color(0, 1f, 1f);
+			UnityEngine.Gizmos.color = new Color(0, 1f, 1f);
 
-			switch(Lighting2D.ProjectSettings.editorView.drawGizmosBounds)
+			switch(Lighting2D.ProjectSettings.gizmos.drawGizmosBounds)
 			{
 				case EditorGizmosBounds.Enabled:
 				

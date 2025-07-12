@@ -1,10 +1,8 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Tilemaps;
+using FunkyCode.LightTilemapCollider;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D
+namespace FunkyCode
 {
 	public class LightTilemapTransform
 	{
@@ -132,7 +130,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTi
 		}
 
 		Grid grid = null;
-
+		
 		public Grid GetGrid(GameObject gameObject)
 		{
 			if (grid == null)

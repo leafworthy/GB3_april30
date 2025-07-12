@@ -1,55 +1,50 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Material;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
 using UnityEngine;
-#if UNITY_EDITOR
-#endif
+using FunkyCode.LightingSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
+namespace FunkyCode
 {
 	[ExecuteInEditMode]
 	public class LightingMeshRenderer : LightingMonoBehaviour
 	{
-		public static List<LightingMeshRenderer> list = new List<LightingMeshRenderer>();
+		public static List<LightingMeshRenderer> List => list;
+		private static List<LightingMeshRenderer> list = new List<LightingMeshRenderer>();
+		
+		public bool Free => !owner;
 
-		public bool free = true;
-		public UnityEngine.Object owner = null;
-
-		public MeshRenderer meshRenderer = null;
-		public MeshFilter meshFilter = null;
-
-		private Material[] materials = new Material[1];
-
-		public MeshModeShader meshModeShader = MeshModeShader.Additive;
-		public Material[] meshModeMaterial = null;
+		[SerializeField] public UnityEngine.Object owner = null;
+		[SerializeField] private MeshRenderer meshRenderer = null;
+		[SerializeField] private MeshFilter meshFilter = null;
+		[SerializeField] private Material[] materials = new Material[1]; 
+		[SerializeField] private MeshModeShader meshModeShader = MeshModeShader.Additive;
+		private Material[] meshModeMaterial = null;
 
 		public Material[] GetMaterials()
 		{
 			if (materials == null)
 			{
-				materials = new Material[1];
+				materials = new Material[1]; 
 			}
 
 			if (materials.Length < 1)
 			{
-				materials = new Material[1];
+				materials = new Material[1]; 
 			}
 
-			switch(meshModeShader) {
+			switch(meshModeShader)
+			{
 				case MeshModeShader.Additive:
 
-					if (materials[0] == null)
+					if (!materials[0])
 					{
 						materials[0] = LightingMaterial.Load("Light2D/Internal/MeshModeAdditive").Get();
 					}
-
+					
 				break;
 
 				case MeshModeShader.Alpha:
 
-					if (materials[0] == null)
+					if (!materials[0])
 					{
 						materials[0] = LightingMaterial.Load("Light2D/Internal/MeshModeAlpha").Get();
 					}
@@ -62,13 +57,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 
 				break;
 			}
-
-			return(materials);
+			
+			return materials;
 		}
 
 		static public int GetCount()
 		{
-			return(list.Count);
+			return list.Count;
 		}
 
 		public void OnEnable()
@@ -81,37 +76,38 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 			list.Remove(this);
 		}
 
-		static public List<LightingMeshRenderer> List => list;
-
 		public void Initialize()
 		{
 			meshFilter = gameObject.AddComponent<MeshFilter>();
 
+			Debug.Log("initialize");
+		
 			// Mesh System?
 			meshRenderer = gameObject.AddComponent<MeshRenderer>();
 			meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 			meshRenderer.receiveShadows = false;
 			meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
 			meshRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
-			meshRenderer.allowOcclusionWhenDynamic = false;
+			meshRenderer.allowOcclusionWhenDynamic = false;	
 		}
 
-		public void Free()
+		public void Reset()
 		{
 			owner = null;
-			free = true;
 
 			meshRenderer.enabled = false;
 
-			if (meshRenderer.sharedMaterial != null)
+			if (meshRenderer.sharedMaterial)
 			{
 				meshRenderer.sharedMaterial.mainTexture = null;
 			}
 		}
 
-		public void LateUpdate() {
-			if (owner == null) {
-				Free();
+		public void LateUpdate()
+		{
+			if (!owner)
+			{
+				Reset();
 				return;
 			}
 
@@ -119,41 +115,21 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 			{
 				meshRenderer.enabled = true;
 			}
-				else
+			else
 			{
-				Free();
+				Reset();
 				meshRenderer.enabled = false;
 			}
 		}
 
 		public bool IsRendered()
 		{
-			string type = owner.GetType().ToString();
+			if (owner is FunkyCode.Light2D light)
+				return light.meshMode.enable && light.isActiveAndEnabled && light.InCameras();
+			if (owner is FunkyCode.LightSprite2D lightSprite)
+				return lightSprite.meshMode.enable && lightSprite.isActiveAndEnabled;
 
-			switch(type)
-			{
-				case "Light2D":
-
-					Light2D light = (Light2D)owner;
-					if (light)
-					{
-						return(light.meshMode.enable && light.isActiveAndEnabled && light.InCameras());
-					}
-
-				break;
-
-				case "LightSprite2D":
-
-					LightSprite2D sprite = (LightSprite2D)owner;
-					if (sprite)
-					{
-						return(sprite.meshMode.enable && sprite.isActiveAndEnabled);
-					}
-
-				break;
-			}
-
-			return(false);
+			return false;
 		}
 
 		public void ClearMaterial()
@@ -178,7 +154,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 				ClearMaterial();
 			}
 
-			Material[] materials = GetMaterials();
+			var materials = GetMaterials();
 
 			if (materials == null)
 			{
@@ -187,10 +163,10 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 
 			if (id.IsPixelPerfect())
 			{
-				Camera camera = Camera.main;
+				var camera = Camera.main;
 
-				Vector2 cameraSize = LightingRender2D.GetSize(camera);
-				Vector2 cameraPosition = LightingPosition.GetPosition2D(-camera.transform.position);
+				var cameraSize = LightingRender2D.GetSize(camera);
+				var cameraPosition = LightingPosition.GetPosition2D(-camera.transform.position);
 
 				transform.position = new Vector3(cameraPosition.x, cameraPosition.y, id.transform.position.z);
 
@@ -206,22 +182,48 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 			transform.rotation = Quaternion.Euler(0, 0, 0);
 			// transform.rotation = id.transform.rotation; // only if rotation enabled
 
-			if (id.Buffer != null && meshRenderer != null)
+			if (id.Buffer != null && meshRenderer)
 			{
-				Color lightColor = id.color;
+				var lightColor = id.color;
 				lightColor.a = id.meshMode.alpha;
 
 				for(int i = 0; i < materials.Length; i++)
 				{
-					if (materials[i] == null) {
+					var material = materials[i];
+					if (!material)
 						continue;
+					
+					material.color = lightColor;
+					material.SetColor ("_Color", lightColor);
+					material.SetFloat("_Inverted", 1);
+
+					if (id.lightType == Light2D.LightType.Sprite)
+						material.SetTexture("_Sprite", id.GetSprite().texture);
+					else
+						material.SetTexture("_Sprite", null);
+
+					if (id.lightType == Light2D.LightType.FreeForm)
+					{
+						material.SetFloat("_Outer", 0);
+                    	material.SetFloat("_Inner", 360);
+
+						LightTexture tex = id.GetBuffer().freeFormTexture;
+						if (tex != null)
+						{
+							material.SetTexture("_Freeform", tex.renderTexture);
+						}
+						else
+							material.SetTexture("_Freeform", null);
 					}
-
-					materials[i].SetColor ("_Color", lightColor);
-					materials[i].color = lightColor;
-					materials[i].SetTexture("_Sprite", id.GetSprite().texture);
-
-					materials[i].mainTexture = id.Buffer.renderTexture.renderTexture;
+					else
+					{
+						material.SetFloat("_Outer", id.spotAngleOuter - id.spotAngleInner);
+                    	material.SetFloat("_Inner", id.spotAngleInner);
+						material.SetTexture("_Freeform", null);
+					}
+				
+					material.SetTexture("_Lightmap", id.Buffer.renderTexture.renderTexture);	
+					material.SetFloat("_Rotation", id.transform2D.rotation * 0.0174533f);
 				}
 
 				id.meshMode.sortingLayer.ApplyToMeshRenderer(meshRenderer);
@@ -236,9 +238,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 
 		public void UpdateLightSprite(LightSprite2D id, MeshMode meshMode)
 		{
-			if (id.GetSprite() == null)
+			if (!id.GetSprite())
 			{
-				Free();
+				Reset();
 				return;
 			}
 
@@ -256,30 +258,29 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 				ClearMaterial();
 			}
 
-			Material[] material = GetMaterials();
-
+			var material = GetMaterials();
 			if (material == null)
 			{
 				return;
 			}
 
-			float rotation = id.lightSpriteTransform.rotation;
+			var rotation = id.lightSpriteTransform.rotation;
 			if (id.lightSpriteTransform.applyRotation)
 			{
 				rotation += id.transform.rotation.eulerAngles.z;
 			}
 
 			////////////////////// Scale
-			Vector2 scale = Vector2.zero;
+			var scale = Vector2.zero;
 
-			Sprite sprite = id.GetSprite();
+			var sprite = id.GetSprite();
 
-			Rect spriteRect = sprite.textureRect;
+			var spriteRect = sprite.textureRect;
 
 			scale.x = (float)sprite.texture.width / spriteRect.width;
 			scale.y = (float)sprite.texture.height / spriteRect.height;
 
-			Vector2 size = id.lightSpriteTransform.scale;
+			var size = id.lightSpriteTransform.scale;
 
 			size.x *= 2;
 			size.y *= 2;
@@ -289,38 +290,40 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 
 			size.x *= (float)sprite.texture.width / (sprite.pixelsPerUnit * 2);
 			size.y *= (float)sprite.texture.height / (sprite.pixelsPerUnit * 2);
-
-			if (id.spriteRenderer.flipX) {
+			
+			if (id.spriteRenderer.flipX)
+			{
 				size.x = -size.x;
 			}
 
-			if (id.spriteRenderer.flipY) {
+			if (id.spriteRenderer.flipY)
+			{
 				size.y = -size.y;
 			}
 
 			////////////////////// PIVOT
-			Rect rect = spriteRect;
-			Vector2 pivot = sprite.pivot;
+			var rect = spriteRect;
+			var pivot = sprite.pivot;
 
 			pivot.x /= spriteRect.width;
 			pivot.y /= spriteRect.height;
 			pivot.x -= 0.5f;
 			pivot.y -= 0.5f;
-
-
+			
+		
 			pivot.x *= size.x;
 			pivot.y *= size.y;
 
+		
+			var pivotDist = Mathf.Sqrt(pivot.x * pivot.x + pivot.y * pivot.y);
+			var pivotAngle = Mathf.Atan2(pivot.y, pivot.x);
 
-			float pivotDist = Mathf.Sqrt(pivot.x * pivot.x + pivot.y * pivot.y);
-			float pivotAngle = Mathf.Atan2(pivot.y, pivot.x);
+			var rot = rotation * Mathf.Deg2Rad + Mathf.PI;
 
-			float rot = rotation * Mathf.Deg2Rad + Mathf.PI;
-
-			Vector2 position = Vector2.zero;
+			var position = Vector2.zero;
 
 			// Pivot Pushes Position
-
+			
 			position.x += Mathf.Cos(pivotAngle + rot) * pivotDist * id.transform.lossyScale.x;
 			position.y += Mathf.Sin(pivotAngle + rot) * pivotDist * id.transform.lossyScale.y;
 			position.x += id.transform.position.x;
@@ -332,38 +335,45 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 			pos.z = id.transform.position.z - 0.1f;
 			transform.position = pos;
 
-			Vector3 scale2 = id.transform.lossyScale;
+			var scale2 = id.transform.lossyScale;
 
 			scale2.x *= size.x;
 			scale2.y *= size.y;
 
-
 			scale2.x /= 2;
 			scale2.y /= 2;
-
+		
 			scale2.z = 1;
 
 			transform.localScale = scale2;
 			transform.rotation = Quaternion.Euler(0, 0, rotation);
 
-			Rect uvRect = new Rect();
+			var uvRect = new Rect();
 			uvRect.x = rect.x / sprite.texture.width;
 			uvRect.y = rect.y / sprite.texture.height;
 			uvRect.width = rect.width / sprite.texture.width + uvRect.x;
 			uvRect.height = rect.height / sprite.texture.height + uvRect.y;
-
-			if (meshRenderer != null) {
-				Color lightColor = id.color;
+		
+			if (meshRenderer)
+			{
+				var lightColor = id.color;
 				lightColor.a = id.meshMode.alpha;
 
-				for(int i = 0; i < materials.Length; i++) {
-					if (materials[i] == null) {
+				for(int i = 0; i < materials.Length; i++)
+				{
+					var mat = materials[i];
+					if (!mat)
 						continue;
-					}
 
-					materials[i].SetColor ("_Color", lightColor);
-					materials[i].color = lightColor;
-					materials[i].mainTexture = id.GetSprite().texture;
+					mat.color = lightColor;
+					mat.SetColor ("_Color", lightColor);
+					mat.SetFloat("_Inverted", 0);
+					mat.SetTexture("_Sprite", id.GetSprite().texture);
+					mat.SetTexture("_Lightmap", null);
+					
+					mat.SetFloat("_Outer", 0);
+                    mat.SetFloat("_Inner", 360);
+					mat.SetFloat("_Rotation", 0);
 				}
 
 				id.meshMode.sortingLayer.ApplyToMeshRenderer(meshRenderer);
@@ -371,10 +381,10 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 				meshRenderer.sharedMaterials = materials;
 
 				meshRenderer.enabled = true;
+			
+				var mesh = GetMeshSprite();
 
-				Mesh mesh = GetMeshSprite();
-
-				Vector2[] uvs = mesh.uv;
+				var uvs = mesh.uv;
 				uvs[0].x = uvRect.x;
 				uvs[0].y = uvRect.y;
 
@@ -393,36 +403,38 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager
 			}
 		}
 
-
-		// Light Sprite Renderer
 		public Mesh getSpriteMesh = null;
-		public Mesh GetMeshSprite() {
-			if (getSpriteMesh == null) {
-				Mesh mesh = new Mesh();
+		public Mesh GetMeshSprite()
+		{
+			if (getSpriteMesh)
+				return getSpriteMesh;
 
-				mesh.vertices = new Vector3[]{new Vector3(-1, -1), new Vector3(1, -1), new Vector3(1, 1), new Vector3(-1, 1)};
-				mesh.triangles = new int[]{2, 1, 0, 0, 3, 2};
-				mesh.uv = new Vector2[]{new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1)};
+			var mesh = new Mesh();
 
-				getSpriteMesh = mesh;
-			}
-			return(getSpriteMesh);
+			mesh.vertices = new Vector3[]{new Vector3(-1, -1), new Vector3(1, -1), new Vector3(1, 1), new Vector3(-1, 1)};
+			mesh.triangles = new int[]{2, 1, 0, 0, 3, 2};
+			mesh.uv = new Vector2[]{new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1)};
+
+			getSpriteMesh = mesh;
+
+			return getSpriteMesh;
 		}
 
-		// Light Source
 		public Mesh getMeshLight = null;
-		public Mesh GetMeshLight() {
-			if (getMeshLight == null) {
-				Mesh mesh = new Mesh();
+		public Mesh GetMeshLight()
+		{
+			if (getMeshLight)
+				return getMeshLight;
+		
+			var mesh = new Mesh();
 
-				mesh.vertices = new Vector3[]{new Vector3(-1, -1), new Vector3(1, -1), new Vector3(1, 1), new Vector3(-1, 1)};
-				mesh.triangles = new int[]{2, 1, 0, 0, 3, 2};
-				mesh.uv = new Vector2[]{new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1)};
+			mesh.vertices = new Vector3[]{new Vector3(-1, -1), new Vector3(1, -1), new Vector3(1, 1), new Vector3(-1, 1)};
+			mesh.triangles = new int[]{2, 1, 0, 0, 3, 2};
+			mesh.uv = new Vector2[]{new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1)};
 
-				getMeshLight = mesh;
-			}
-			return(getMeshLight);
+			getMeshLight = mesh;
+		
+			return getMeshLight;
 		}
-
 	}
 }

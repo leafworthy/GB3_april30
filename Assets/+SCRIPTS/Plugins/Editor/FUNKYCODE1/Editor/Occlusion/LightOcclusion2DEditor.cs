@@ -1,14 +1,15 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Occlusion;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
-namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Occlusion
+namespace FunkyCode
 	{
 	[CanEditMultipleObjects]
 	[CustomEditor(typeof(LightOcclusion2D))]
-	public class LightOcclusion2DEditor : UnityEditor.Editor {
+	public class LightOcclusion2DEditor : Editor {
 
 		override public void OnInspectorGUI() {
 			LightOcclusion2D script = target as LightOcclusion2D;
@@ -28,7 +29,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Occlusion
 
 				if (EditorApplication.isPlaying == false) {
 					EditorUtility.SetDirty(target);
-					EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+					EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 				}
 			}
 		}

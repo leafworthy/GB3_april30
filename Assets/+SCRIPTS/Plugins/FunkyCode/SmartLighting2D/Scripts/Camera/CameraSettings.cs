@@ -1,12 +1,12 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using UnityEditor;
-using UnityEngine;
-#if UNITY_EDITOR
+﻿using UnityEngine;
 
-#endif
+//#if UNITY_EDITOR
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera
+//    using UnityEditor;
+
+//#endif
+
+namespace FunkyCode
 {
 	[System.Serializable]
 	public struct CameraSettings
@@ -33,8 +33,8 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera
 				{
 					lightmaps = new CameraLightmap[1];
 
-					LightingManager2D manager = LightingManager2D.Get();
-					LightingCameras cameras = manager.cameras;
+					var manager = LightingManager2D.Get();
+					var cameras = manager.cameras;
 
 					cameras.Set(id, this);
 				}
@@ -47,13 +47,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera
 
 		public CameraLightmap GetLightmap(int index)
 		{
-			CameraLightmap buffer = lightmaps[index];
+			var buffer = lightmaps[index];
 			buffer.id = index;
 			return(buffer);
 		}
 
 		public CameraType cameraType;
-		public UnityEngine.Camera customCamera;
+		public Camera customCamera;
 
 		public string GetTypeName()
 		{
@@ -79,23 +79,23 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera
 
 		public int GetLayerId(int bufferId)
 		{
-			CameraLightmap lightmap = GetLightmap(bufferId);
+			var lightmap = GetLightmap(bufferId);
 
 			if (lightmap.overlayLayerType == CameraLightmap.OverlayLayerType.UnityLayer)
 			{
-				return(lightmap.renderLayerId);
+				return lightmap.renderLayerId;
 			}
-				else
+			else
 			{
-				UnityEngine.Camera camera = GetCamera();
+				var camera = GetCamera();
 
 				if (camera != null && cameraType == CameraType.SceneView)
 				{
-					return(Lighting2D.ProjectSettings.editorView.sceneViewLayer);
+					return Lighting2D.ProjectSettings.editorView.sceneViewLayer;
 				}
-					else
+				else
 				{
-					return(Lighting2D.ProjectSettings.editorView.gameViewLayer);
+					return Lighting2D.ProjectSettings.editorView.gameViewLayer;
 				}
 			}
 		}
@@ -115,61 +115,47 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera
 			initCount ++;
 		}
 
-		public UnityEngine.Camera GetCamera()
+		public Camera GetCamera()
 		{
-			UnityEngine.Camera camera = null;
+			Camera camera = null;
 
 			switch(cameraType)
 			{
 				case CameraType.MainCamera:
 
-					camera = UnityEngine.Camera.main;
+					camera = Camera.main;
+					if (camera && !camera.orthographic)
+							return null;
 
-					if (camera != null)
-					{
-						if (!camera.orthographic)
-						{
-							return(null);
-						}
-					}
-
-					return(UnityEngine.Camera.main);
+					return(camera);
 
 				case CameraType.Custom:
-
 					camera = customCamera;
-
-					if (camera != null)
-					{
-						if (!camera.orthographic)
-						{
-							return(null);
-						}
-					}
-
+					if (camera && !camera.orthographic)
+						return null;
+				
 					return(customCamera);
-
 
 				case CameraType.SceneView:
 				
 					#if UNITY_EDITOR
 
-						SceneView sceneView = SceneView.lastActiveSceneView;
+						var sceneView = UnityEditor.SceneView.lastActiveSceneView;
 
 						if (sceneView != null)
 						{
-							camera = sceneView.camera;
+							camera = sceneView.camera; // .GetComponent<Camera>();
 
 							#if UNITY_2019_1_OR_NEWER
 							
-								if (!SceneView.lastActiveSceneView.sceneLighting)
+								if (!UnityEditor.SceneView.lastActiveSceneView.sceneLighting)
 								{
 									camera = null;
 								}
 
 							#else
 							
-								if (!SceneView.lastActiveSceneView.m_SceneLighting)
+								if (!UnityEditor.SceneView.lastActiveSceneView.m_SceneLighting)
 								{
 									camera = null;
 								}
@@ -178,35 +164,20 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Camera
 						}
 		
 						if (camera != null && !camera.orthographic)
-						{
 							camera = null;
-						}
 
-						if (camera != null)
-						{
-							if (!camera.orthographic)
-							{
-								return(null);
-							}
-						}
-
-						return(camera);
+						return camera;
 
 					#else
 					
-						return(null);
+						return null;
 
 					#endif
 					
 			}
 
-			return(null);
+			return null;
 		}
-
-		/*
-		public bool Equals(CameraSettings obj) {
-			return this.bufferID == obj.bufferID && this.customCamera == obj.customCamera && this.cameraType == obj.cameraType;
-		}*/
 
 		public override int GetHashCode()
 		{

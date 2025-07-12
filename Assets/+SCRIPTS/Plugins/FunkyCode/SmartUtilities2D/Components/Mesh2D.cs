@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Triangulation;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D.Polygon;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Components
+namespace FunkyCode.Utilities
 {
 	[ExecuteInEditMode]
 	public class Mesh2D : MonoBehaviour {

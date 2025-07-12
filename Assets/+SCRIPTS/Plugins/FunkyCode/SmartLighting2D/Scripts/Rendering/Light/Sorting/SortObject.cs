@@ -1,44 +1,33 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sorting
+﻿namespace FunkyCode.Rendering.Light.Sorting
 {
 	public struct SortObject : System.Collections.Generic.IComparer<SortObject>
 	{
-		public enum Type {Collider, Tile, TilemapMap};
+		public float Value; // value
 
-		public Type type;
-		public float value; // value
+		public object LightObject;
 
-		public object lightObject;
+		public LightTilemapCollider2D Tilemap;
 
-		public LightTilemapCollider2D tilemap;
-
-		public SortObject(int a)
+		public SortObject(float value, object lightObject, LightTilemapCollider2D tilemap = null)
 		{
-			type = Type.Collider;
-
-			value = 0;
-
-			lightObject = null;
-
-			tilemap = null;
+			this.Value = value;
+			this.LightObject = lightObject;
+			this.Tilemap = tilemap;
 		}
 
 		public int Compare(SortObject a, SortObject b)
 		{
-			if (a.value > b.value)
-			{
+			if (a.Value > b.Value)
 				return 1;
-			}
 
-			return a.value < b.value ? -1 : 0;
+			return a.Value < b.Value ? -1 : 0;
 		}
 
 		private static System.Collections.Generic.IComparer<SortObject> comparer = (System.Collections.Generic.IComparer<SortObject>) new SortObject();
 
 		public static System.Collections.Generic.IComparer<SortObject> Sort()
-		{
-			return (comparer);
+		{ 
+			return comparer;
 		}
 	}
 }

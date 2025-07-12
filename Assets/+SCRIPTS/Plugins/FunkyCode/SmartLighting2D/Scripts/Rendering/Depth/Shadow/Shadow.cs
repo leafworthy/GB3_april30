@@ -1,13 +1,8 @@
 using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLightCollider2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Universal.Objects;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
 using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth.Shadow
+namespace FunkyCode.Rendering.Depth
 {
     public static class Shadow
     {
@@ -20,7 +15,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth.Sh
 
         static public void Begin()
         {
-            Lighting2D.materials.shadow.GetDepthDayShadow().SetPass(0);
+            Lighting2D.Materials.shadow.GetDepthDayShadow().SetPass(0);
 
             GL.Begin(GL.QUADS);
 
@@ -42,7 +37,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth.Sh
             {
                 return;
             }
-
+        
             if (!id.InAnyCamera())
             {
                 return;
@@ -94,7 +89,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth.Sh
 
                     pointAOffset.x = pointA.x + cosShadow;
                     pointAOffset.y = pointA.y + sinShadow;
-
+    
                     pointBOffset.x = pointB.x + cosShadow;
                     pointBOffset.y = pointB.y + sinShadow;
 
@@ -113,7 +108,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth.Sh
 
                     GL.Vertex3(pointAOffset.x, pointAOffset.y, 0);
                     GL.Vertex3(pointBOffset.x, pointBOffset.y, 0);
-                }
+                }   
             }
         }
 
@@ -137,7 +132,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Depth.Sh
             pos += position;
             Vector2 scale = id.mainShape.transform2D.scale;
             float rotation = id.mainShape.transform2D.rotation;
-
+        
             DayLightColliderShape shape = id.mainShape;
 
             if (!shape.isStatic)

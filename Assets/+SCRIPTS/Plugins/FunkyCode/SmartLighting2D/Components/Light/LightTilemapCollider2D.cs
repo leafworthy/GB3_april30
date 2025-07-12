@@ -1,16 +1,9 @@
 using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Chunks.Tilemap;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCollider2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SuperTilemapEditor.Components;
 using UnityEngine;
+using FunkyCode.LightingSettings;
+using FunkyCode.LightTilemapCollider;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
+namespace FunkyCode
 {
 	public enum ShadowTileType {AllTiles, ColliderOnly};
 
@@ -21,9 +14,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 
 		public int shadowLayer = 0;
 		public int maskLayer = 0;
-
+		
 		public float shadowTranslucency = 0;
-
+		
 		public ShadowTileType shadowTileType = ShadowTileType.AllTiles;
 
 		public BumpMapMode bumpMapMode = new BumpMapMode();
@@ -32,7 +25,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 		public Isometric isometric = new Isometric();
 		public Hexagon hexagon = new Hexagon();
 
-		public TilemapCollider2D superTilemapEditor = new TilemapCollider2D();
+		public SuperTilemapEditorSupport.TilemapCollider2D superTilemapEditor = new SuperTilemapEditorSupport.TilemapCollider2D();
 
 		public LightTilemapTransform lightingTransform = new LightTilemapTransform();
 
@@ -58,7 +51,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 		{
 			layerManagerMask.Remove(listMaskLayer, this);
 			layerManagerCollision.Remove(listCollisionLayer, this);
-
+		
 			listMaskLayer = -1;
 			listCollisionLayer = -1;
 		}
@@ -162,7 +155,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 		//	return(false);
 		//}
 
-		public Base GetCurrentTilemap()
+		public LightTilemapCollider.Base GetCurrentTilemap()
 		{
 			switch(mapType)
 			{
@@ -205,17 +198,17 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 
 		void OnDrawGizmosSelected()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Selected)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Selected)
 			{
 				return;
 			}
-
+			
 			DrawGizmos();
 		}
 
 		private void OnDrawGizmos()
 		{
-			if (Lighting2D.ProjectSettings.editorView.drawGizmos != EditorDrawGizmos.Always)
+			if (Lighting2D.ProjectSettings.gizmos.drawGizmos != EditorDrawGizmos.Always)
 			{
 				return;
 			}
@@ -230,13 +223,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 				return;
 			}
 
-			Base tilemap = GetCurrentTilemap();
+			LightTilemapCollider.Base tilemap = GetCurrentTilemap();
 
-			switch(Lighting2D.ProjectSettings.editorView.drawGizmosShadowCasters)
+			switch(Lighting2D.ProjectSettings.gizmos.drawGizmosShadowCasters)
 			{
 				case EditorShadowCasters.Enabled:
 
-					Gizmos.color = new Color(1f, 0.5f, 0.25f);
+					UnityEngine.Gizmos.color = new Color(1f, 0.5f, 0.25f);
 
 					foreach(LightTile tile in GetTileList())
 					{
@@ -248,41 +241,41 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light
 				break;
 			}
 
-			switch(Lighting2D.ProjectSettings.editorView.drawGizmosChunks)
+			switch(Lighting2D.ProjectSettings.gizmos.drawGizmosChunks)
 			{
 				case EditorChunks.Enabled:
 
-					Gizmos.color = new Color(1, 0.5f, 0.75f);
+					UnityEngine.Gizmos.color = new Color(1, 0.5f, 0.75f);
 
 					Rect rect = GetCurrentTilemap().GetRect();
 
-					Vector2Int pos0 = TilemapManager.TransformBounds(new Vector2(rect.x, rect.y));
-					Vector2Int pos1 = TilemapManager.TransformBounds(new Vector2(rect.x + rect.width, rect.y + rect.height));
+					Vector2Int pos0 = Chunks.TilemapManager.TransformBounds(new Vector2(rect.x, rect.y));
+					Vector2Int pos1 = Chunks.TilemapManager.TransformBounds(new Vector2(rect.x + rect.width, rect.y + rect.height));
 
 					// Lighting2D.ProjectSettings.chunks.chunkSize
-					int chunkSize = TilemapManager.ChunkSize;
+					int chunkSize = Chunks.TilemapManager.ChunkSize;
 
 					for(int i = pos0.x; i <= pos1.x + 1; i++ ) {
 						Vector2 lineA = new Vector2(i * chunkSize, pos0.y * chunkSize);
 						Vector2 lineB = new Vector2(i * chunkSize, (pos1.y + 1) * chunkSize);
-						Gizmos.DrawLine(lineA, lineB);
+						UnityEngine.Gizmos.DrawLine(lineA, lineB);
 					}
 
 					for(int i = pos0.y; i <= pos1.y + 1; i++ ) {
 						Vector2 lineA = new Vector2(pos0.x * chunkSize, i * chunkSize);
 						Vector2 lineB = new Vector2((pos1.x + 1) * chunkSize, i * chunkSize);
-						Gizmos.DrawLine(lineA, lineB);
+						UnityEngine.Gizmos.DrawLine(lineA, lineB);
 					}
 
 				break;
 			}
 
-			switch(Lighting2D.ProjectSettings.editorView.drawGizmosBounds)
+			switch(Lighting2D.ProjectSettings.gizmos.drawGizmosBounds)
 			{
 				case EditorGizmosBounds.Enabled:
 
-					Gizmos.color = new Color(0, 1f, 1f);
-
+					UnityEngine.Gizmos.color = new Color(0, 1f, 1f);
+		
 					Rect rect = GetCurrentTilemap().GetRect();
 
 					GizmosHelper.DrawRect(transform.position, rect);

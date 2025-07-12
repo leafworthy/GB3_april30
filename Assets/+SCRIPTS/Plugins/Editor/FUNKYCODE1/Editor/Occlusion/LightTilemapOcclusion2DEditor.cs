@@ -1,15 +1,15 @@
-﻿using __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Occlusion;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
-namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Occlusion
+namespace FunkyCode
 	{
 	[CanEditMultipleObjects]
 	[CustomEditor(typeof(LightTilemapOcclusion2D))]
-	public class LightTilemap2DEditor : UnityEditor.Editor {
+	public class LightTilemap2DEditor : Editor {
 
 		override public void OnInspectorGUI() {
 			LightTilemapOcclusion2D script = target as LightTilemapOcclusion2D;
@@ -29,7 +29,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Occlusion
 
 				if (EditorApplication.isPlaying == false) {
 					EditorUtility.SetDirty(target);
-					EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+					EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 				}
 			}
 		}

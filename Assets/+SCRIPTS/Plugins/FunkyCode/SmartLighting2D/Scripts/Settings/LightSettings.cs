@@ -1,7 +1,6 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
+namespace FunkyCode.LightSettings
 {
 	public class LightEvent : UnityEvent <Light2D> {}
 
@@ -21,8 +20,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 	public enum NormalMapTextureType
 	{
 		Texture,
-		Sprite,
-		SecondaryTexture
+		Sprite
 	}
 
 	public enum NormalMapType

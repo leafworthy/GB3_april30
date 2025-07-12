@@ -1,7 +1,6 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Light2D
+namespace FunkyCode
 {
 	public class LightTransform
 	{
@@ -38,7 +37,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Light2D
 			update = false;
 		}
 
-		public void Update(SmartLighting2D.Components.Night.Light2D light)
+		public void Update(Light2D light)
 		{
 			if (light.gameObject == null)
 			{
@@ -58,13 +57,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.Light2D
 
 			switch(light.applyRotation)
 			{
-				case SmartLighting2D.Components.Night.Light2D.Rotation.Local:
+				case Light2D.Rotation.Local:
 
 					rotation2D = transform.localRotation.eulerAngles.z;
 			
 				break;
 
-				case SmartLighting2D.Components.Night.Light2D.Rotation.World:
+				case Light2D.Rotation.World:
 			
 					rotation2D = transform.rotation.eulerAngles.z;
 			

@@ -20,16 +20,12 @@
             Pass
             {
                 CGPROGRAM
+                
                 #pragma vertex vert
                 #pragma fragment frag
         
                 #include "UnityCG.cginc"
 
-                sampler2D _MainTex;
-            
-                float4 _MainTex_ST;
-
-                
                 float _Strength;
 
                 struct appdata_t
@@ -42,6 +38,7 @@
                 {
                     float4 vertex : SV_POSITION;
                     fixed4 color : COLOR;
+                    float2 xy : TEXCOORD0;
                 };
 
                 v2f vert (appdata_t v)
@@ -50,6 +47,7 @@
 
                     o.vertex = UnityObjectToClipPos(v.vertex);
                     o.color = v.color;
+                    o.xy = float2(v.color.x - 0.5, v.color.y - 0.5);
 
                     return o;
                 }
@@ -61,11 +59,7 @@
                     if (i.color.a > 0)
                     {
                         // point
-
-                        float x = i.color.x - 0.5;
-                        float y = i.color.y - 0.5;
-
-                        color = 1 - sqrt(x * x + y * y) * 2;
+                        color = 1 - sqrt(i.xy.x * i.xy.x + i.xy.y * i.xy.y) * 2;
 
                         float draw = step(0, color);
 
@@ -84,6 +78,7 @@
                     
                     return color;
                 }
+
                 ENDCG
             }
         }

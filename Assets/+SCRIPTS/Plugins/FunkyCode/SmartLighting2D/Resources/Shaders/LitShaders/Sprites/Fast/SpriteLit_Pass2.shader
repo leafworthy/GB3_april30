@@ -2,7 +2,7 @@
 {
 	Properties
 	{
-		[HideInInspector] _MainTex ("Sprite Texture", 2D) = "white" {}
+		[HideInInspector] _MainTex ("Texture", 2D) = "white" {}
 		_Color ("Color", Color) = (1, 1, 1, 1)
 		_Lit ("Lit", Range(0, 1)) = 1
 	}
@@ -31,7 +31,7 @@
 
 			#include "UnityCG.cginc"
 
-			#include "../../../LitShaders/FastLitCore.cginc"
+			#include "../../../LitShaders/SL2D_ShaderFast.cginc"
 			// #include "Assets/FunkyCode/SmartLighting2D/Resources/Shaders/LitShaders/LitCore.cginc"
 			
 			struct appdata_t
@@ -47,6 +47,8 @@
 				float2 texcoord  : TEXCOORD0;
 				fixed4 color    : COLOR;
                 float2 worldPos : TEXCOORD1;
+
+				float2 lightmap_uv : TEXCOORD2;
 			};
 			
 			sampler2D _MainTex;
@@ -59,8 +61,10 @@
 				OUT.vertex = UnityObjectToClipPos(IN.vertex);
 				OUT.texcoord = IN.texcoord;
 				OUT.color = IN.color * _Color;
-                
+
                 OUT.worldPos = mul (unity_ObjectToWorld, IN.vertex);
+
+				OUT.lightmap_uv = SL2D_FAST_LIGHTMAP_UV_2(OUT.worldPos);
 
 				return OUT;
 			}
@@ -69,7 +73,7 @@
 			{
 				fixed4 spritePixel = tex2D (_MainTex, IN.texcoord) * IN.color;
 
-				spritePixel.rgb *= SL2D_FAST_PASS_LIT_2(IN.worldPos) * spritePixel.a;
+				spritePixel.rgb *= SL2D_FAST_PASS_LIT_2(IN.lightmap_uv) * spritePixel.a;
 
 				return spritePixel;
 			}

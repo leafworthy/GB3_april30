@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCollider2D
+namespace FunkyCode
 {
 	public class LightColliderLayer<T>
 	{

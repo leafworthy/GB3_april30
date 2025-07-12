@@ -1,7 +1,7 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
+﻿using FunkyCode.LightSettings;
+using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
+namespace FunkyCode.Rendering.Light
 {
 	public static class Main
 	{
@@ -9,7 +9,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
 
 		public static void Draw(Light2D light)
 		{
-			ShadowEngine.ShadowEngine.Prepare(light);
+			ShadowEngine.Prepare(light);
 
             LayerSetting[] layerSettings = light.GetLightPresetLayers();
 
@@ -37,7 +37,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
 					continue;
 				}
 
-				ShadowEngine.ShadowEngine.SetPass(light, layerSetting);
+				ShadowEngine.SetPass(light, layerSetting);
 
 				if (layerSetting.sorting == LightLayerSorting.None)
 				{
@@ -53,10 +53,10 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
 
 			// LightSource.Angle.Draw(light, 0);
 		}
-
+		
 		public static void DrawTranslucency(Light2D light)
 		{
-			ShadowEngine.ShadowEngine.Prepare(light);
+			ShadowEngine.Prepare(light);
 
             LayerSetting[] layerSettings = light.GetTranslucencyPresetLayers();
 
@@ -84,7 +84,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light
 					continue;
 				}
 
-				ShadowEngine.ShadowEngine.SetPass(light, layerSetting);
+				ShadowEngine.SetPass(light, layerSetting);
 
 				NoSort.Shadows.Draw(pass);
 			}

@@ -1,11 +1,17 @@
 ﻿
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
+namespace FunkyCode.LightingSettings
 {
 	public enum RenderingMode
 	{
 		OnRender = 2,
 		OnPostRender = 1,
-		OnPreRender = 0
+		OnPreRender = 0	
+	}
+
+	public enum MaterialOffScreen
+	{
+		Unlit,
+		Lit
 	}
 
 	public enum CoreAxis {
@@ -21,16 +27,16 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 
 	public enum LightingSourceTextureSize {
 		Custom,
-		px2048,
-		px1024,
-		px512,
-		px256,
+		px2048, 
+		px1024, 
+		px512, 
+		px256, 
 		px128,
 		PixelPerfect
 	}
 
 	public enum ColorSpace {
-		Gamma,
+		Gamma, 
 		Linear
 	}
 }

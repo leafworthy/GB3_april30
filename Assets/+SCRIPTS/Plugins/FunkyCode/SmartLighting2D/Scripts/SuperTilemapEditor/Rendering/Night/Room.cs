@@ -1,13 +1,13 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
+﻿using UnityEngine;
 
 #if (SUPER_TILEMAP_EDITOR)
 
-    namespace FunkyCode.SuperTilemapEditorSupport.Night
-     {
-
-        public class Room {
-
-            public static void DrawTiles(Camera camera, LightTilemapRoom2D id, Material material) {
+    namespace FunkyCode.SuperTilemapEditorSupport.Lightmap
+    {
+        public class Room
+        {
+            public static void DrawTiles(Camera camera, LightTilemapRoom2D id, Material material)
+            {
                 Vector2 cameraPosition = -camera.transform.position;
 
                 float cameraRadius = CameraTransform.GetRadius(camera);
@@ -23,7 +23,7 @@
                 GLExtended.color = id.color;
                 LightTilemapCollider.Base tilemapCollider = id.GetCurrentTilemap();
 
-                material.SetPass (0);
+                material.SetPass (0); 
                 GL.Begin (GL.QUADS);
 
                 int count = id.superTilemapEditor.chunkManager.GetTiles( CameraTransform.GetWorldRect(camera) );
@@ -32,7 +32,7 @@
                     LightTile tile = id.superTilemapEditor.chunkManager.display[i];
 
                     Vector2 tilePosition = tile.GetWorldPosition(tilemapCollider);
-
+                    
                     tilePosition += cameraPosition;
 
                     if (tile.NotInRange(tilePosition, cameraRadius)) {
@@ -40,7 +40,7 @@
                     }
 
                     Vector2 scale = tile.worldScale * 0.5f * tile.scale;
-
+                
                     Rendering.Universal.Texture.Quad.STE.DrawPass(tilePosition, scale, tile.uv, tile.worldRotation);
                 }
 
@@ -51,12 +51,12 @@
         }
     }
 
-#else
+#else 
 
-    namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SuperTilemapEditor.Rendering.Night
+    namespace FunkyCode.SuperTilemapEditorSupport.Lightmap
     {
         public class Room {
-            public static void DrawTiles(UnityEngine.Camera camera, LightTilemapRoom2D id, UnityEngine.Material materia) {}
+            public static void DrawTiles(Camera camera, LightTilemapRoom2D id, Material materia) {}
         }
     }
 

@@ -1,47 +1,33 @@
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightCollider2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Universal.Objects;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
 using UnityEngine;
-using Sprite = UnityEngine.Sprite;
-using Texture = UnityEngine.Texture;
+using FunkyCode.LightSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Mask
+namespace FunkyCode.Rendering.Light
 {
     public static class SpriteRenderer2D
     {
         static public Texture2D currentTexture = null;
 
-        public static void Mask(Light2D light, LightCollider2D id, UnityEngine.Material material, LayerSetting layerSetting)
+        public static void Mask(Light2D light, LightCollider2D id, Material material, LayerSetting layerSetting)
         {
             if (!id.InLight(light))
-            {
                 return;
-            }
 
-            Vector2 localPosition;
+            var shape = id.mainShape;
+            var spriteRenderer = shape.spriteShape.GetSpriteRenderer();
 
-            LightColliderShape shape = id.mainShape;
-
-            UnityEngine.SpriteRenderer spriteRenderer = shape.spriteShape.GetSpriteRenderer();
-
-            Sprite sprite = shape.spriteShape.GetOriginalSprite();
-
-            if (sprite == null || spriteRenderer == null)
-            {
+            var sprite = shape.spriteShape.GetOriginalSprite();
+            if (!sprite || !spriteRenderer)
                 return;
-            }
 
-            Texture2D texture = sprite.texture;
-
+            var texture = sprite.texture;
             if (texture == null)
-            {
                 return;
-            }
 
-            localPosition.x = shape.transform2D.position.x - light.transform2D.position.x;
-            localPosition.y = shape.transform2D.position.y - light.transform2D.position.y;
+            var localPosition = new Vector2()
+            {
+                x = shape.transform2D.Position.x - light.transform2D.position.x,
+                y = shape.transform2D.Position.y - light.transform2D.position.y
+            };
 
             if (currentTexture != texture)
             {
@@ -49,7 +35,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Ma
                 {
                     GL.End();
                 }
-
+    
                 currentTexture = texture;
                 material.mainTexture = currentTexture;
 
@@ -58,63 +44,51 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Ma
             }
 
             GLExtended.color = LayerSettingColor.Get(shape, localPosition, layerSetting, id.maskLit, 1, id.maskLitCustom);
-
-            Universal.Objects.Sprite.Pass.Draw(id.spriteMeshObject, spriteRenderer, localPosition, shape.transform2D.scale, shape.transform2D.rotation);
+            
+            Rendering.Universal.Sprite.Pass.Draw(id.spriteMeshObject, spriteRenderer, localPosition, shape.transform2D.Scale, shape.transform2D.Rotation);	
 		}
 
-        public static void MaskBumped(Light2D light, LightCollider2D id, UnityEngine.Material material, LayerSetting layerSetting)
+        public static void MaskBumped(Light2D light, LightCollider2D id, Material material, LayerSetting layerSetting)
         {
             if (!id.InLight(light))
-            {
                 return;
-            }
 
-            Texture normalTexture = id.bumpMapMode.GetBumpTexture();
-
-            if (normalTexture == null)
-            {
+            var normalTexture = id.bumpMapMode.GetBumpTexture();
+            if (!normalTexture)
                 return;
-            }
 
             float rotation;
 
             material.SetTexture("_Bump", normalTexture);
 
-            LightColliderShape shape = id.mainShape;
-
-            UnityEngine.SpriteRenderer spriteRenderer = shape.spriteShape.GetSpriteRenderer();
-
+            var shape = id.mainShape;
+            var spriteRenderer = shape.spriteShape.GetSpriteRenderer();
             if (spriteRenderer == null)
             {
                 return;
             }
 
-            Sprite sprite = shape.spriteShape.GetOriginalSprite();
-
+            var sprite = shape.spriteShape.GetOriginalSprite();
             if (sprite == null)
-            {
                 return;
-            }
 
             if (sprite.texture == null)
-            {
                 return;
-            }
-
-            Vector2 position = shape.transform2D.position - light.transform2D.position;
+            
+            Vector2 position = shape.transform2D.Position - light.transform2D.position;
 
             material.mainTexture = sprite.texture;
             GLExtended.color = LayerSettingColor.Get(position, layerSetting, id.maskLit, 1, id.maskLitCustom);
-
+            
             float color = GLExtended.color.r;
-
+            
             switch(id.bumpMapMode.type)
             {
                 case NormalMapType.ObjectToLight:
 
-                    rotation = Mathf.Atan2(light.transform2D.position.y - shape.transform2D.position.y, light.transform2D.position.x - shape.transform2D.position.x);
-                    rotation -= Mathf.Deg2Rad * (shape.transform2D.rotation);
-
+                    rotation = Mathf.Atan2(light.transform2D.position.y - shape.transform2D.Position.y, light.transform2D.position.x - shape.transform2D.Position.x);
+                    rotation -= Mathf.Deg2Rad * (shape.transform2D.Rotation);
+                    
                     material.SetFloat("_LightRX", Mathf.Cos(rotation) * 2);
                     material.SetFloat("_LightRY", Mathf.Sin(rotation) * 2);
                     material.SetFloat("_LightColor",  color);
@@ -124,36 +98,28 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Ma
                 case NormalMapType.PixelToLight:
 
                     material.SetFloat("_LightColor",  color);
+                
+                    rotation = shape.transform2D.Rotation * Mathf.Deg2Rad;
 
-                    rotation = shape.transform2D.rotation * Mathf.Deg2Rad;
+                    Vector2 sc = shape.transform2D.Scale.normalized;
 
-                    Vector2 sc = shape.transform2D.scale.normalized;
-
-                    material.SetFloat("_LightX", Mathf.Cos(rotation) * sc.x );
-                    material.SetFloat("_LightY", Mathf.Cos(rotation) * sc.y );
+                    material.SetFloat("_LightX", Mathf.Cos(rotation) * sc.x);
+                    material.SetFloat("_LightY", Mathf.Cos(rotation) * sc.y);
 
                     material.SetFloat("_Depth", id.bumpMapMode.depth);
 
-                    if (id.bumpMapMode.invertX)
-                    {
-                        material.SetFloat("_InvertX", -1);
-                    } else {
-                        material.SetFloat("_InvertX", 1);
-                    }
+                    float invertX = id.bumpMapMode.invertX ? -1 : 1;
+                    material.SetFloat("_InvertX", invertX);
 
-                    if (id.bumpMapMode.invertY)
-                    {
-                        material.SetFloat("_InvertY", -1);
-                    } else {
-                        material.SetFloat("_InvertY", 1);
-                    }
-
+                    float invertY = id.bumpMapMode.invertY ? -1 : 1;
+                    material.SetFloat("_InvertY", invertY);
+          
                 break;
             }
 
             material.SetPass(0);
-
-            Universal.Objects.Sprite.Draw(id.spriteMeshObject, spriteRenderer, position, shape.transform2D.scale, shape.transform2D.rotation);
+    
+            Rendering.Universal.Sprite.Draw(id.spriteMeshObject, spriteRenderer, position, shape.transform2D.Scale, shape.transform2D.Rotation); 
         }
     }
 }

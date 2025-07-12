@@ -1,4 +1,6 @@
-﻿namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Material.Extended
+﻿using UnityEngine;
+
+namespace FunkyCode.Lighting2DMaterial
 {
 	[System.Serializable]
 	public class Room
@@ -16,14 +18,14 @@
 			GetRoomMultiply();
 		}
 
-		public UnityEngine.Material GetRoomMask() {
+		public Material GetRoomMask() {
 			if (roomMask == null || roomMask.Get() == null) {
 				roomMask = LightingMaterial.Load("Light2D/Internal/RoomMask");
 			}
 			return(roomMask.Get());
 		}
 
-		public UnityEngine.Material GetRoomMultiply() {
+		public Material GetRoomMultiply() {
 			if (roomMultiply == null ||roomMultiply.Get() == null) {
 			
 				roomMultiply = LightingMaterial.Load("Light2D/Internal/RoomMultiply");

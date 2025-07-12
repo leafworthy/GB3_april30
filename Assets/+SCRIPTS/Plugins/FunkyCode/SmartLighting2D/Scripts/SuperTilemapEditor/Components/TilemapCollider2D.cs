@@ -1,4 +1,6 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 #if (SUPER_TILEMAP_EDITOR)
 
@@ -12,7 +14,7 @@
 
 #else
 
-    namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.SuperTilemapEditor.Components
+    namespace FunkyCode.SuperTilemapEditorSupport
     {
         [System.Serializable]
         public class TilemapCollider2D : TilemapCollider
@@ -20,7 +22,7 @@
             
         }
 
-        public class TilemapCollider : Base
+        public class TilemapCollider : LightTilemapCollider.Base
         {
             public enum ShadowType {None, Grid, TileCollider, Collider};
             public enum MaskType {None, Grid, Sprite, BumpedSprite};

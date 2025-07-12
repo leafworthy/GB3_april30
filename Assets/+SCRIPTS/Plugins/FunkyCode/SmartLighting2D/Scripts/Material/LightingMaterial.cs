@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Material
+namespace FunkyCode
 {
     [System.Serializable]
     public class LightingMaterial
@@ -8,44 +8,42 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Material
         private string path = "";
         private Texture texture = null;
 
-        private UnityEngine.Material material = null;
+        private Material material = null;
 
-        static public LightingMaterial Load(UnityEngine.Material material)
+        static public LightingMaterial Load(Material material)
         {
-            LightingMaterial lightingMaterial = new LightingMaterial();
+            var lightingMaterial = new LightingMaterial();
 
             //lightingMaterial.path = material.name;
 
             lightingMaterial.material = material;
             
-            return(lightingMaterial);
+            return lightingMaterial;
         }
 
         static public LightingMaterial Load(string path)
         {
-            LightingMaterial lightingMaterial = new LightingMaterial();
-
+            var lightingMaterial = new LightingMaterial();
             lightingMaterial.path = path;
 
-            Shader shader = Shader.Find (path);
-
-            if (shader == null)
+            var shader = Shader.Find (path);
+            if (!shader)
             {
-                UnityEngine.Debug.LogError("Smart Lighting: Shader Not Found '" + path + "'");
+                Debug.LogError($"Smart Lighting: Shader Not Found '{path}'");
             }
                 else
             {
-                lightingMaterial.material = new UnityEngine.Material (shader);
+                lightingMaterial.material = new Material(shader);
             }
 
-            return(lightingMaterial);
+            return lightingMaterial;
         }
 
         public void SetTexture(string path)
         {
             texture = Resources.Load (path) as Texture;
 
-            if (material != null)
+            if (material)
             {
                 material.mainTexture = texture;
             }
@@ -61,25 +59,22 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Material
             }
         }
 
-        public UnityEngine.Material Get()
+        public Material Get()
         {
-            if (material == null)
+            if (!material)
             {
-                Shader shader = Shader.Find (path);
-
-                if (shader != null)
+                var shader = Shader.Find (path);
+                if (shader)
                 {
-                // Debug.Log("Smart Lighting: Reloading Material '" + path + "'");
-
-                    material = new UnityEngine.Material (shader);
-
-                    if (texture != null)
+                    material = new Material(shader);
+                    if (texture)
                     {
                         material.mainTexture = texture;
                     }
                 }
             }
-            return(material);
+            
+            return material;
         }
     }
 }

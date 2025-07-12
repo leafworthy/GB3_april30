@@ -1,25 +1,26 @@
-﻿Shader "Light2D/Sprites/Bumped_Pass3"
+﻿Shader "Light2D/Sprites/Bump/Bumped_Pass3"
 {
 	Properties
 	{
-		[HideInInspector] _MainTex ("Sprite Texture", 2D) = "white" {}
+		[HideInInspector] _MainTex ("Texture", 2D) = "white" {}
         _NormalMap("NormalMap", 2D) = "white" {}
 		_Color ("Color", Color) = (1,1,1,1)
-		_Lit ("Lit", Range(0,1)) = 1
-
-        _OcclusionOffset ("Occlusion Offset", Range(0.1, 2)) = 1
-        _OcclusionDepth("Occlusion Depth", Range(1, 20)) = 1
+		_Lit ("Lit", Range(0, 1)) = 1
+		
+		_Specular ("Specular", Range(0, 1)) = 1
+        _OcclusionOffset ("Occlusion Offset", Range(0.01, 1)) = 1
+        _OcclusionDepth("Occlusion Depth;", Range(1, 20)) = 1
 	}
 
 	SubShader
 	{
 		Tags
 		{ 
-			"Queue"="Transparent" 
-			"IgnoreProjector"="True" 
-			"RenderType"="Transparent" 
-			"PreviewType"="Plane"
-			"CanUseSpriteAtlas"="True"
+			"Queue" = "Transparent" 
+			"IgnoreProjector" = "True" 
+			"RenderType" = "Transparent" 
+			"PreviewType" = "Plane"
+			"CanUseSpriteAtlas" = "True"
 		}
 
 		Cull Off
@@ -27,18 +28,15 @@
 		ZWrite Off
 		Blend One OneMinusSrcAlpha
 
-		Pass {
-
-		CGPROGRAM
+		Pass
+		{
+			CGPROGRAM
 
 			#pragma vertex vert
 			#pragma fragment frag
 
 			#include "UnityCG.cginc"
-
-			#include "../../../LitShaders/LitCore.cginc"
-			// #include "Assets/FunkyCode/SmartLighting2D/Resources/Shaders/LitShaders/LitCore.cginc"
-
+			#include "../../../LitShaders/SL2D_ShaderFast.cginc"
 			
 			struct appdata_t
 			{
@@ -54,7 +52,7 @@
 				fixed4 color    : COLOR;
                 float2 worldPos : TEXCOORD1;
 			};
-			
+
 			fixed4 _Color;
 	
 			sampler2D _MainTex;
@@ -71,13 +69,12 @@
 
 				return OUT;
 			}
-        
+
 			fixed4 frag(v2f IN) : SV_Target
 			{
 				fixed4 spritePixel = tex2D (_MainTex, IN.texcoord) * IN.color;
 
-				spritePixel.rgb *= lerp(float3(1, 1, 1), SL2D_Bump_Pass(3, IN.worldPos, IN.texcoord), _Lit);
-				spritePixel.rgb *= spritePixel.a; 
+				spritePixel.rgb *= lerp(SL2D_FAST_BUMP_PASS_3(IN.worldPos, IN.texcoord), 1, 1 - _Lit) * spritePixel.a;
 
 				return spritePixel;
 			}

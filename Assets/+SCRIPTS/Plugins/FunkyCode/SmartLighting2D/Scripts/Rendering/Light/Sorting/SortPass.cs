@@ -1,10 +1,8 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using UnityEngine;
+﻿using UnityEngine;
+using FunkyCode.LightTilemapCollider;
+using FunkyCode.LightSettings;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sorting
+namespace FunkyCode.Rendering.Light.Sorting
 {
     public class SortPass
     {
@@ -14,12 +12,13 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.So
 
         public void Clear()
         {
-            sortList.count = 0;
+            sortList.Reset();
         }
         
         public void SortObjects()
         {
-            if (pass == null) {
+            if (pass == null)
+            {
                 return;
             }
             
@@ -36,8 +35,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.So
         {
             for(int id = 0; id < pass.colliderList.Count; id++)
             {
-                LightCollider2D collider = pass.colliderList[id]; 
-
+                var collider = pass.colliderList[id]; 
                 if (collider.shadowLayer != pass.layerID && collider.maskLayer != pass.layerID)
                 {
                     continue;
@@ -133,8 +131,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.So
         {
             for(int id = 0; id < pass.tilemapList.Count; id++)
             {
-                LightTilemapCollider2D tilemap = pass.tilemapList[id];
-
+                var tilemap = pass.tilemapList[id];
                 if (tilemap.shadowLayer != pass.layerID && tilemap.maskLayer != pass.layerID)
                 {
                     continue;
@@ -166,32 +163,32 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.So
                     switch(pass.layer.sorting)
                     {
                         case LightLayerSorting.SortingLayerAndOrder:
-                            sortList.AddTilemap(id, id.lightingTransform.sortingOrder + id.lightingTransform.sortingLayerID * 1000 );
-                        break;
+                            sortList.Add(id, id.lightingTransform.sortingOrder + id.lightingTransform.sortingLayerID * 1000);
+                            break;
                         
                         case LightLayerSorting.ZAxisLower:
-                            sortList.AddTilemap(id, -id.transform.position.z);
-                        break;
+                            sortList.Add(id, -id.transform.position.z);
+                            break;
 
                         case LightLayerSorting.ZAxisHigher:
-                            sortList.AddTilemap(id, id.transform.position.z);
-                        break;
+                            sortList.Add(id, id.transform.position.z);
+                            break;
                         
                         case LightLayerSorting.YAxisLower:
-                            sortList.AddTilemap(id, -id.transform.position.y);
-                        break;
+                            sortList.Add(id, -id.transform.position.y);
+                            break;
 
                         case LightLayerSorting.YAxisHigher:
-                            sortList.AddTilemap(id, id.transform.position.y);
-                        break;
+                            sortList.Add(id, id.transform.position.y);
+                            break;
 
                         case LightLayerSorting.DistanceToLight:
-                            sortList.AddTilemap(id,  -Vector2.Distance(id.transform.position, pass.light.transform.position));
-                        break;
+                            sortList.Add(id,  -Vector2.Distance(id.transform.position, pass.light.transform.position));
+                            break;
 
                         case LightLayerSorting.YDistanceToLight:
-                        //     sortList.Add(id, tile,  -Mathf.Abs(tilePosition.y - pass.light.transform.position.y));
-                        break;
+                            //     sortList.Add(id, tile,  -Mathf.Abs(tilePosition.y - pass.light.transform.position.y));
+                            break;
                     }	
 
                 break;
@@ -203,9 +200,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.So
         {
             Vector2 lightPosition = - pass.light.transform2D.position;
 
-            Base tilemapBase = id.GetCurrentTilemap();
+            var tilemapBase = id.GetCurrentTilemap();
 
-            foreach(LightTile tile in id.GetTileList())
+            foreach(var tile in id.GetTileList())
             {
                 if (tile.GetSprite() == null)
                 {
@@ -213,7 +210,6 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.So
                 }
 
                 Vector2 tilePosition = tile.GetWorldPosition(tilemapBase);
-
                 if (tile.NotInRange(tilePosition + lightPosition, pass.light.size))
                 {
                     continue;

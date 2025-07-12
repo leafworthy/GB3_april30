@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Triangulation;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
 using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extensions
+namespace FunkyCode.LightShape
 {
     public class SpritePhysicsShape : Base
 	{
@@ -17,9 +15,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
         override public void ResetLocal()
 		{
 			LocalPolygonsCache = LocalPolygons;
-
+			
             base.ResetLocal();
-
+            
             physicsShape = null;
 
 			sprite = null;
@@ -39,7 +37,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 
 			return(sprite);
 		}
-
+        
 		public SpriteRenderer GetSpriteRenderer()
 		{
 			if (spriteRenderer != null)
@@ -93,7 +91,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 						}
 
 						Mesh mesh = PolygonTriangulator2.Triangulate (poly, Vector2.zero, Vector2.zero, PolygonTriangulator2.Triangulation.Advanced);
-
+						
 						if (mesh)
 						{
 							MeshObject meshObject = MeshObject.Get(mesh);
@@ -120,7 +118,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 			Vector2 scale = new Vector2();
 
 			List<Polygon2> localPolygons = GetPolygonsLocal();
-
+		
 			if (WorldCache != null)
 			{
 				WorldPolygons = WorldCache;
@@ -136,7 +134,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 					wPoly = WorldPolygons[i];
 
 					bool invert = false;
-
+					
 					for(int p = 0; p < poly.points.Length; p++)
 					{
 						wPoly.points[p] = poly.points[p];
@@ -162,7 +160,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 
 								invert = !invert;
 							}
-
+						
 							wPoly.ToScaleSelf(scale);
 						}
 					}
@@ -213,7 +211,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 							polygon.ToScaleSelf(scale);
 						}
 					}
-
+					
 					polygon.ToWorldSpaceSelfUNIVERSAL(transform);
 
 					if (invert)
@@ -236,9 +234,9 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.LightShapes.Extens
 			{
 				return(LocalPolygons);
 			}
-
+	
 			physicsShape = GetPhysicsShape();
-
+		
 			if (physicsShape != null)
 			{
 				LocalPolygons = physicsShape.Get();

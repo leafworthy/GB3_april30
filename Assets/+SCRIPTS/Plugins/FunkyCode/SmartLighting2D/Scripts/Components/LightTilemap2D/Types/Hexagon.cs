@@ -1,9 +1,11 @@
-﻿using System.Reflection;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.LightTilemap2D.Types
+namespace FunkyCode.LightTilemapCollider
 {
 	[System.Serializable]
     public class Hexagon : Base {

@@ -1,28 +1,23 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Effects;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Light;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Manager;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Occlusion;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
+
 using UnityEngine.Tilemaps;
 
-namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
+namespace FunkyCode
 {
 	public class EditorGameObjects : MonoBehaviour
 	{
-		static public UnityEngine.Camera GetCamera()
+		static public Camera GetCamera()
 		{
-			UnityEngine.Camera camera = null;
+			Camera camera = null;
 
-			if (SceneView.lastActiveSceneView != null && SceneView.lastActiveSceneView.camera != null)
+			if (UnityEditor.SceneView.lastActiveSceneView != null && UnityEditor.SceneView.lastActiveSceneView.camera != null)
 			{
-				camera = SceneView.lastActiveSceneView.camera;
+				camera = UnityEditor.SceneView.lastActiveSceneView.camera;
 			}
-				else if (UnityEngine.Camera.main != null)
+				else if (Camera.main != null)
 			{
-				camera = UnityEngine.Camera.main;
+				camera = Camera.main;
 			}
 			
 			return(camera);
@@ -32,7 +27,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
 		{
 			Vector3 pos = Vector3.zero;
 
-			UnityEngine.Camera camera = GetCamera();
+			Camera camera = GetCamera();
 
 			if (camera != null)
 			{
@@ -42,7 +37,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
 			}
 				else
 			{
-				UnityEngine.Debug.LogError("Scene Camera Not Found");
+				Debug.LogError("Scene Camera Not Found");
 			}
 
 			return(pos);
@@ -91,7 +86,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
 			GameObject newGameObject = new GameObject("Light Sprite 2D");
 			
 			LightSprite2D spriteRenderer2D = newGameObject.AddComponent<LightSprite2D>();
-			spriteRenderer2D.sprite = UnityEngine.Resources.Load<Sprite>("Sprites/gfx_light");
+			spriteRenderer2D.sprite = Resources.Load<Sprite>("Sprites/gfx_light");
 
 			newGameObject.transform.position = GetCameraPoint();
 		}
@@ -101,7 +96,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
 			GameObject newGameObject = new GameObject("Light Texture 2D ");
 			
 			LightTexture2D textureRenderer = newGameObject.AddComponent<LightTexture2D>();
-			textureRenderer.texture = UnityEngine.Resources.Load<Texture>("Sprites/gfx_light");
+			textureRenderer.texture = Resources.Load<Texture>("Sprites/gfx_light");
 
 			newGameObject.transform.position = GetCameraPoint();
 		}

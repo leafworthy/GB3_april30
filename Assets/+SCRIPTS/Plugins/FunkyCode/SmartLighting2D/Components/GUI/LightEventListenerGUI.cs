@@ -1,7 +1,6 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Event_Handling;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.GUI
+namespace FunkyCode
 {
     [ExecuteInEditMode]
     public class LightEventListenerGUI : MonoBehaviour
@@ -14,7 +13,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.GUI
         {
             lightEventReceiver = GetComponent<LightEventListener>();
         }
-
+    
         static private Texture GetPointTexture()
         {
             if (pointTexture == null)
@@ -31,12 +30,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.GUI
             {
                 return;
             }
-
+            
             Vector2 middlePoint = Camera.main.WorldToScreenPoint(transform.position);
 
-            UnityEngine.GUI.skin.label.alignment = TextAnchor.MiddleCenter;
-
-            string display = ((int)(lightEventReceiver.visibility)).ToString();
+            GUI.skin.label.alignment = TextAnchor.MiddleCenter;
+            
+            string display = ((int)(lightEventReceiver.visability * 100)).ToString();
 
             GUIStyle style = new GUIStyle();
             int size = Screen.height / 20;
@@ -46,7 +45,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.GUI
 
             int pointSize = Screen.height / 80;
 
-            UnityEngine.GUI.Label(new Rect(middlePoint.x - 50, Screen.height - middlePoint.y - 50, 100, 100), display + "%", style);
+            GUI.Label(new Rect(middlePoint.x - 50, Screen.height - middlePoint.y - 50, 100, 100), display + "%", style);
 
             if (lightEventReceiver.CollisionInfo == null)
             {
@@ -60,7 +59,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.GUI
                     Vector2 pos = lightEventReceiver.CollisionInfo.Value.light.transform.position;
                     Vector2 screenPoint = Camera.main.WorldToScreenPoint(point + pos);
 
-                    UnityEngine.GUI.DrawTexture(new Rect(screenPoint.x - pointSize, Screen.height - screenPoint.y - pointSize, pointSize * 2, pointSize * 2), GetPointTexture());
+                    GUI.DrawTexture(new Rect(screenPoint.x - pointSize, Screen.height - screenPoint.y - pointSize, pointSize * 2, pointSize * 2), GetPointTexture());
                 }
             }
         }

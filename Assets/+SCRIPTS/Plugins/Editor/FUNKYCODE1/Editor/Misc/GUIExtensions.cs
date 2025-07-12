@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
+﻿using System.Collections.Generic;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
-using SortingLayer = __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.SortingLayer;
+using FunkyCode.LightingSettings;
+using UnityEditorInternal;
+using System.Reflection;
+using System;
+using FunkyCode.LightSettings;
 
-namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
+namespace FunkyCode
 {
 	public class GUIFoldout
 	{
@@ -38,7 +38,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
 
 		static public bool Draw(string name, object Object)
 		{
-			bool value = EditorGUILayout.Foldout(GetValue(Object), name);
+			bool value = EditorGUILayout.Foldout(GetValue(Object), name, true);
 
 			SetValue(Object, value);
 
@@ -77,7 +77,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
 			#if UNITY_2019_1_OR_NEWER
 				bool value = EditorGUILayout.BeginFoldoutHeaderGroup(GetValue(Object), name);
 			#else
-				bool value = EditorGUILayout.Foldout(GetValue(Object), name);
+				bool value = EditorGUILayout.Foldout(GetValue(Object), name, true);
 			#endif
 
 			SetValue(Object, value);
@@ -111,23 +111,16 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
 			return (int[])sortingLayerUniqueIDsProperty.GetValue(null, new object[0]);
 		}
 
-		static public void Draw(SerializedObject serializedObject, SortingLayer sortingLayer, string serializationDepth = "")
+		static public void Draw(SerializedObject serializedObject, LightingSettings.SortingLayer sortingLayer, string serializationDepth = "")
 		{
-			bool value = GUIFoldout.Draw("Sorting Layer", sortingLayer);
-			
-			if (!value)
-			{
-				return;
-			}
-
+	
 			SerializedProperty order = serializedObject.FindProperty(serializationDepth + "sortingLayer.Order");
 			SerializedProperty name = serializedObject.FindProperty(serializationDepth + "sortingLayer.name");
 
-			EditorGUI.indentLevel++;
-
+		
 				string[] sortingLayerNames = GetSortingLayerNames();
 				int id = Array.IndexOf(sortingLayerNames, sortingLayer.Name);
-				int newId = EditorGUILayout.Popup("Name", id, sortingLayerNames);
+				int newId = EditorGUILayout.Popup("Sorting Layer", id, sortingLayerNames);
 
 				if (newId > -1 && newId < sortingLayerNames.Length)
 				{
@@ -139,12 +132,11 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
 					}
 				}
 				
-				EditorGUILayout.PropertyField(order, new GUIContent ("Order"));
-		
-			EditorGUI.indentLevel--;
+				EditorGUILayout.PropertyField(order, new GUIContent ("Order in Layer"));
+
 		}
 
-		static public void Draw(SortingLayer sortingLayer, bool drawFoldout)
+		static public void Draw(LightingSettings.SortingLayer sortingLayer, bool drawFoldout)
 		{
 			if (drawFoldout)
 			{
@@ -185,7 +177,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
 	{
 		public static void Draw(SerializedObject serializedObject, MeshMode meshMode)
 		{
-			bool value = GUIFoldout.Draw("Mesh Mode", meshMode);
+			bool value = GUIFoldout.Draw("Overlay", meshMode);
 			
 			if (!value)
 			{
@@ -202,7 +194,7 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
 
 			meshModeAlpha.floatValue = EditorGUILayout.Slider("Alpha", meshModeAlpha.floatValue, 0, 1);
 
-			EditorGUILayout.PropertyField(meshModeShader, new GUIContent ("Shader"));
+			EditorGUILayout.PropertyField(meshModeShader, new GUIContent ("Material"));
 
 			if (meshModeShader.intValue == (int)MeshModeShader.Custom)
 			{
@@ -222,9 +214,9 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
 
 					for(int id = 0; id < meshMode.materials.Length; id++)
 					{
-						UnityEngine.Material material = meshMode.materials[id];
+						Material material = meshMode.materials[id];
 
-						material = (UnityEngine.Material)EditorGUILayout.ObjectField("Material", material, typeof(UnityEngine.Material), true);
+						material = (Material)EditorGUILayout.ObjectField("Material", material, typeof(Material), true);
 
 						meshMode.materials[id] = material;
 					}
@@ -285,20 +277,6 @@ namespace __SCRIPTS.Plugins.Editor.FUNKYCODE1.Editor.Misc
 				case (int)NormalMapTextureType.Sprite:
 
 					bumpSprite.objectReferenceValue = (Sprite)EditorGUILayout.ObjectField("Sprite", bumpSprite.objectReferenceValue, typeof(Sprite), true);
-
-				break;
-
-				case (int)NormalMapTextureType.SecondaryTexture:
-
-					MaterialPropertyBlock matBlock = new MaterialPropertyBlock();
-					sr.GetPropertyBlock(matBlock);
-					Texture secondaryTexture = matBlock.GetTexture("_SecondaryTex");
-
-					EditorGUI.BeginDisabledGroup(true);
-
-					EditorGUILayout.ObjectField("Sprite", secondaryTexture, typeof(Sprite), true);
-
-					EditorGUI.EndDisabledGroup();
 
 				break;
 			}

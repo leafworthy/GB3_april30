@@ -1,37 +1,26 @@
-﻿namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day.Sorting
+﻿namespace FunkyCode.Rendering.Day.Sorting
 {
 	public struct SortObject : System.Collections.Generic.IComparer<SortObject>
 	{
-		public enum Type {Collider, TilemapCollider};
+		public float Distance;
+		public object LightObject;
 
-		public float distance;
-
-		public object lightObject;
-		public Type type;
-
-		public SortObject(int a) {
-			distance = 0;
-
-			type = Type.Collider;
-			lightObject = null;
+		public SortObject(float distance, object lightObject)
+		{
+			this.Distance = distance;
+			this.LightObject = lightObject;
 		}
 
-		public int Compare(SortObject a, SortObject b) {
-			SortObject c1 = (SortObject)a;
-			SortObject c2 = (SortObject)b;
-
-			if (c1.distance > c2.distance) {
+		public int Compare(SortObject a, SortObject b)
+		{
+			if (a.Distance > b.Distance)
 				return 1;
-			}
-
-			if (c1.distance < c2.distance) {
-				return -1;
-			} else {
-				return 0;
-			}
+	
+			return a.Distance < b.Distance ? -1 : 0;
 		}
 
-		public static System.Collections.Generic.IComparer<SortObject> Sort() {
+		public static System.Collections.Generic.IComparer<SortObject> Sort()
+		{      
 			return (System.Collections.Generic.IComparer<SortObject>) new SortObject();
 		}
 	}

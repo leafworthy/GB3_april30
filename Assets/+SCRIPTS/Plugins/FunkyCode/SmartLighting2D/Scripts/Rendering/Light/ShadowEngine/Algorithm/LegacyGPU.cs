@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Night;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.ShadowEngine.Algorithm
+namespace FunkyCode.Rendering.Light.Shadow
 {
     public static class LegacyGPU
     {
@@ -22,11 +21,11 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
 
             Vector2 position = ShadowEngine.lightOffset;
             position.x += ShadowEngine.objectOffset.x;
-            position.y += ShadowEngine.objectOffset.y;
+            position.y += ShadowEngine.objectOffset.y; 
 
             float outerAngle = Mathf.Deg2Rad * light.outerAngle;
             float shadowDistance = ShadowEngine.lightSize;
-
+  
             int PolygonCount = polygons.Count;
 
             bool ignoreInside = ShadowEngine.ignoreInside;
@@ -49,35 +48,35 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Light.Sh
                 {
                     // change to sides of vertices?
                     if (Math2D.PointInPoly(-position, polygons[i]))
-                    {
+                    { 
                         continue;
                     }
                 }
                     else if (dontdrawInside)
                 {
                     if (Math2D.PointInPoly(-position, polygons[i]))
-                    {
+                    { 
                         ShadowEngine.continueDrawing = false;
                         return;
                     }
                 }
-
+            
                 for(int x = 0; x < pointsCount; x++)
                 {
                     int next = (x + 1) % pointsCount;
-
+                    
                     pair.A = pointsList[x];
                     pair.B = pointsList[next];
-
+ 
                     edgeAWorld.x = pair.A.x + position.x;
                     edgeAWorld.y = pair.A.y + position.y;
 
                     edgeBWorld.x = pair.B.x + position.x;
                     edgeBWorld.y = pair.B.y + position.y;
-
+    
                     GL.Vertex3(draw.x + edgeAWorld.x, draw.y + edgeAWorld.y, 0);
                     GL.Vertex3(draw.x + edgeBWorld.x, draw.y + edgeBWorld.y, 0);
-                    GL.Vertex3(shadowDistance, outerAngle, translucency);
+                    GL.Vertex3(shadowDistance, outerAngle, translucency); 
                 }
             }
         }

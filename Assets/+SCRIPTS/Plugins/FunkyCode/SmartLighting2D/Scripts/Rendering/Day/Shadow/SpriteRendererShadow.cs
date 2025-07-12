@@ -1,32 +1,27 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Components.Day;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Components.DayLightCollider2D;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Misc;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Universal.Objects;
-using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2.Polygon2;
-using __SCRIPTS.Plugins.FunkyCode.SmartUtilities2D.Scripts.Utilities._2D;
 using UnityEngine;
-using Sprite = UnityEngine.Sprite;
+using FunkyCode.Utilities;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day.Shadow
+namespace FunkyCode.Rendering.Day
 {
     public static class SpriteRendererShadow
     {
         static VirtualSpriteRenderer virtualSpriteRenderer = new VirtualSpriteRenderer();
 
         public static Texture2D currentTexture;
-        public static UnityEngine.Material material;
+        public static Material material;
 
         public static Vector2 cameraOffset;
         public static float direction;
         public static float shadowDistance;
 
+        public static Pair2 pair = Pair2.Zero();
+
         static public void Begin(Vector2 offset)
         {
-            material = Lighting2D.materials.shadow.GetSpriteShadow();
+            material = Lighting2D.Materials.shadow.GetSpriteShadow();
+            material.SetColor("_Darkness", Lighting2D.DayLightingSettings.ShadowColor);
+            
             material.mainTexture = null;
 
             SpriteRendererShadow.currentTexture = null;
@@ -98,7 +93,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day.Shad
 
             GLExtended.color = new Color(0, 0, 0, 1 - id.shadowTranslucency);
 
-            Universal.Objects.Sprite.Pass.Draw(id.spriteMeshObject, virtualSpriteRenderer, position, scale, id.transform.rotation.eulerAngles.z);
+            Universal.Sprite.Pass.Draw(id.spriteMeshObject, virtualSpriteRenderer, position, scale, id.transform.rotation.eulerAngles.z);
         }
 
         static public void DrawProjection(DayLightCollider2D id)
@@ -149,6 +144,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day.Shad
                 material.mainTexture = currentTexture;
 
                 material.SetPass(0);
+               
                 GL.Begin(GL.QUADS);
             }
         
@@ -160,8 +156,10 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day.Shad
             pivotY = uv.y + pivotY;
 
             float pivotX = (float)sprite.pivot.x / sprite.texture.width;
-            
-            Pair2 pair = Pair2.Zero();
+
+            pair.A = Vector2.zero;
+            pair.B = Vector2.zero;
+     
             pair.A = pos + pair.A.Push(direction + Mathf.PI / 2, id.shadowThickness);
             pair.B = pos + pair.B.Push(direction - Mathf.PI / 2, id.shadowThickness);
 
@@ -263,7 +261,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Rendering.Day.Shad
 
             float pivotX = (float)sprite.pivot.x / sprite.texture.width;
             
-            Pair2 pair = Polygon2Helper.GetAxis(polygon, direction);
+            pair = Polygon2Helper.GetAxis(polygon, direction);
             pair.A += cameraOffset;
             pair.B += cameraOffset;
 

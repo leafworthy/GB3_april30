@@ -1,9 +1,8 @@
-﻿using __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings.Presets;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
+namespace FunkyCode.LightingSettings
 {
-	[CreateAssetMenu(fileName = "Data", menuName = "Light 2D/Profile", order = 1)]
+	[CreateAssetMenu(fileName = "LightingProfile", menuName = "Light 2D/Profile", order = 1)]
 
 	public class Profile : ScriptableObject
 	{
@@ -21,13 +20,12 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 
 		public Color DarknessColor
 		{
-			get => lightmapPresets.list[0].darknessColor;
-
 			set => lightmapPresets.list[0].darknessColor = value;
+			get => lightmapPresets.list[0].darknessColor;
 		}
 
 		public Profile() {
-
+			
 			layers = new Layers();
 
 			qualitySettings = new QualitySettings();
@@ -42,7 +40,7 @@ namespace __SCRIPTS.Plugins.FunkyCode.SmartLighting2D.Scripts.Settings
 			eventPresets = new EventPresetList();
 			eventPresets.list[0] = new EventPreset(0);
 			eventPresets.list[1] = new EventPreset(1);
-
+			
 			dayLightingSettings = new DayLightingSettings();
 		}
 	}
