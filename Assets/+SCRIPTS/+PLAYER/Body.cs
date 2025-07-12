@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class DoableArms : DoableActivityDoer
+	public class DoableArms : DoableBodyPart
 	{
+
 	}
 
-	public class DoableLegs : DoableActivityDoer
+	public class DoableLegs : DoableBodyPart
 	{
 	}
 

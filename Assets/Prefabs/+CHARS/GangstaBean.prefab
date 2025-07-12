@@ -496,7 +496,6 @@ GameObject:
   - component: {fileID: 2381929228146834292}
   - component: {fileID: 2279997984956709696}
   - component: {fileID: 7033340165896196128}
-  - component: {fileID: 2290509523864868912}
   - component: {fileID: 7588817595896598098}
   - component: {fileID: 5892735826027873934}
   - component: {fileID: 4040534153244162535}
@@ -514,6 +513,7 @@ GameObject:
   - component: {fileID: 2569835813408618068}
   - component: {fileID: 5636858269508795379}
   - component: {fileID: 1547629825238236334}
+  - component: {fileID: 6438088722743322343}
   m_Layer: 6
   m_Name: GangstaBean
   m_TagString: Player
@@ -778,19 +778,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0dd3d5961e41c681249726e477d1da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2290509523864868912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 015103bd6b654543a8752e91787830ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  teleport: 0
 --- !u!114 &7588817595896598098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1072,6 +1059,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4292d3ea9a9b432ab0feb06b3d835a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6438088722743322343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 515facb9872f4120ba98fc418327e202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashAnimationClip: {fileID: 7400000, guid: fe7d378efbd3f4623be03cdd452b4bd1, type: 2}
+  teleport: 0
 --- !u!1 &3833892834326608145
 GameObject:
   m_ObjectHideFlags: 0

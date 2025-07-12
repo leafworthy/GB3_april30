@@ -11,5 +11,7 @@ namespace __SCRIPTS
             canvas.worldCamera = CursorManager.GetCamera();
         }
 
+
+
     }
 }

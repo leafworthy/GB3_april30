@@ -1,15 +1,11 @@
 using System;
 using GangstaBean.Core;
-using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace __SCRIPTS
 {
-
-	public class DoableJumpAbility : ServiceUser, IDoableActivity, INeedPlayer
+	public class DoableJumpAbility : ServiceAbility, INeedPlayer
 	{
-		private Body body;
 		private float verticalVelocity;
 
 		public AnimationClip jumpingAnimationClip;
@@ -20,7 +16,7 @@ namespace __SCRIPTS
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnJump;
 
-		public bool isResting;
+		private bool isResting;
 		private bool isOverLandable;
 		private float currentLandableHeight;
 		private bool isJumping;
@@ -32,25 +28,40 @@ namespace __SCRIPTS
 		private float maxFlyTime = 2.5f;
 
 		private Life life;
-		private Animations anim;
 		private bool isFlying;
 
-		public string VerbName => "Jump";
+		public override bool requiresArms => false;
+		public override bool requiresLegs => true;
 
-		public bool canDo() => isResting && !life.IsDead() && pauseManager.IsPaused;
+		public override string VerbName => "Jump";
 
-		public bool canStop() => false;
-
-		public bool Do()
+		public override bool canDo()
 		{
-			Jump(body.GetCurrentLandableHeight(), life.JumpSpeed, 99);
-			return true;
+			if (!base.canDo())
+			{
+				Debug.Log("Cannot jump, base canDo failed");
+				return false;
+			}
+			if (body.doableArms.IsActive)
+			{
+				Debug.Log("Cannot jump, arms are active");
+				return false;
+			}
+
+			return isResting && !life.IsDead() && !pauseManager.IsPaused;
 		}
 
-		public void ForceStop()
+		public override bool canStop() => false;
+
+		public override void Do()
 		{
-			CancelInvoke(nameof(StartResting));
-			StartResting();
+			Debug.Log( "Jumping");
+			Jump(body.GetCurrentLandableHeight(), life.JumpSpeed, 99);
+		}
+
+		public override void Stop(IDoableActivity activityToStop)
+		{
+			base.Stop(this);
 
 			body.canLand = false;
 			body.SetDistanceToGround(body.GetCurrentLandableHeight());
@@ -58,8 +69,7 @@ namespace __SCRIPTS
 
 		private void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
 		{
-
-			anim.Play(isFlying? flyingAnimationClip.name : jumpingAnimationClip.name,0,0);
+			anim.Play(isFlying ? flyingAnimationClip.name : jumpingAnimationClip.name, 0, 0);
 			isFlying = false;
 			airTimer = 0;
 			minBounceVelocity = minBounce;
@@ -71,7 +81,6 @@ namespace __SCRIPTS
 
 			body.SetDistanceToGround(startingHeight);
 			body.ChangeLayer(Body.BodyLayer.jumping);
-
 		}
 
 		public void SetPlayer(Player _player)
@@ -81,33 +90,19 @@ namespace __SCRIPTS
 
 			_player.Controller.Jump.OnPress += Controller_Jump;
 
-			anim = GetComponent<Animations>();
-			body = GetComponent<Body>();
 			body.OnFallFromLandable += FallFromHeight;
 
 			FallFromHeight(FallInDistance);
 		}
 
-
 		private void Controller_Jump(NewControlButton newControlButton)
 		{
-			if (pauseManager.IsPaused) return;
-			if (!body.doableArms.CanDoerDo(this) || !body.doableLegs.CanDoerDo(this)) return;
-			SetActive(true);
-		}
-
-		private void SetActive(bool _active)
-		{
-			if(_active)
+			if (!canDo())
 			{
-				body.doableArms.DoSafely(this);
-				body.doableLegs.DoSafely(this);
+				Debug.Log("Cannot jump, not resting or dead or paused or arms active");
+				return;
 			}
-			else
-			{
-				body.doableArms.Stop(this);
-				body.doableLegs.Stop(this);
-			}
+			Do();
 		}
 
 		private void Life_OnDying(Player arg1, Life arg2)
@@ -115,7 +110,6 @@ namespace __SCRIPTS
 			isFlying = true;
 			Jump();
 		}
-
 
 		private void OnDisable()
 		{
@@ -131,7 +125,7 @@ namespace __SCRIPTS
 			body.SetDistanceToGround(fallHeight);
 			isJumping = true;
 			isResting = false;
-			anim.Play(fallingAnimationClip.name,0,0);
+			anim.Play(fallingAnimationClip.name, 0, 0);
 			airTimer = 0;
 		}
 
@@ -181,7 +175,7 @@ namespace __SCRIPTS
 			body.SetDistanceToGround(currentLandableHeight);
 			if (body != null) body.ChangeLayer(body.isOverLandable ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
 			verticalVelocity = 0;
-			Invoke(nameof(StartResting), landingAnimationClip.length);
+			PlayAnimationClip(landingAnimationClip);
 		}
 
 		private void Bounce()
@@ -191,14 +185,14 @@ namespace __SCRIPTS
 			verticalVelocity *= velocity;
 		}
 
-		public void StartResting()
+		protected override void AnimationComplete()
 		{
 			verticalVelocity = 0;
 			isResting = true;
 			isJumping = false;
 			body.canLand = false;
 			body.SetCanMove(true);
-			SetActive(false);
+			Stop(this);
 		}
 	}
 }

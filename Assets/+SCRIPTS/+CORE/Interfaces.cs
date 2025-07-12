@@ -18,8 +18,8 @@ namespace GangstaBean.Core
         string VerbName { get; }
        bool canDo();
         bool canStop();
-        bool Do();
-        void ForceStop();
+        void Do();
+        void Stop(IDoableActivity activity);
     }
 
     public enum ActivityRequirements
