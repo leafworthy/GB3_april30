@@ -1,8 +1,16 @@
+using System;
 using __SCRIPTS._ENEMYAI;
 using __SCRIPTS.Cursor;
 using __SCRIPTS.HUD_Displays;
 using GangstaBean.Core;
 using UnityEngine;
+
+public interface IMove
+{
+	event Action<Vector2> OnMoveInDirection;
+	event Action OnStopMoving;
+	bool BornOnAggro { get; set; }
+}
 
 namespace __SCRIPTS
 {
@@ -19,7 +27,7 @@ namespace __SCRIPTS
 		private float damagePushMultiplier = 1;
 		private Animations anim;
 		private bool isWounded;
-		private EnemyAI ai;
+		private IMove ai;
 		public void SetPlayer(Player _player)
 		{
 			anim = GetComponent<Animations>();
@@ -65,7 +73,7 @@ namespace __SCRIPTS
 			}
 			else
 			{
-				ai = GetComponent<EnemyAI>();
+				ai = GetComponent<IMove>();
 				if (ai == null)
 				{
 					return;

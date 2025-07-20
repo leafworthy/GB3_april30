@@ -76,12 +76,12 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
             if (GUILayout.Button("Sort Visible Scene"))
             {
-                // IsoSpriteSorting.SortScene();
+                 IsoSpriteSorting.UpdateSorters();
             }
 
-            if (GUILayout.Button("Get Renderers"))
+            if (GUILayout.Button("Get Renderersu"))
             {
-                // myScript.GetRenderers();
+                 myScript.GetRenderers();
             }
         }
     }

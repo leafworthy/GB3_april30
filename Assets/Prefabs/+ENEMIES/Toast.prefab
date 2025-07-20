@@ -727,7 +727,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stopMovingOnAttack: 1
-  BornOnAggro: 0
 --- !u!114 &7431454428826219941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -735,7 +734,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7431454428826219940}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b8960fe6731f6340b129e39e485df8c, type: 3}
   m_Name: 
@@ -824,7 +823,6 @@ MonoBehaviour:
   FootPoint: {fileID: 2974996309260671882}
   RotateWithAim: []
   AimCenter: {fileID: 7431454428623212982}
-  AirThrowPoint: {fileID: 0}
   ThrowPoint: {fileID: 0}
   TopScaleObject: {fileID: 0}
   BottomScaleObject: {fileID: 5859870553395041908}
@@ -861,7 +859,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa06a83324c4ef5b39e8910fbcb88ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animEvents: {fileID: 510000239306211940}
   animator: {fileID: 4330567752162112080}
 --- !u!114 &7668832580322677999
 MonoBehaviour:

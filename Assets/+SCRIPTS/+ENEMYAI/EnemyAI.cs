@@ -1,7 +1,7 @@
 using System;
 using __SCRIPTS._ENEMYAI.EnemyAI_States;
-using UnityEngine;
 using GangstaBean.Core;
+using UnityEngine;
 
 namespace __SCRIPTS._ENEMYAI
 {
@@ -27,12 +27,10 @@ namespace __SCRIPTS._ENEMYAI
 		void UpdateState();
 	}
 
-	public class EnemyAI : ServiceUser, IAI, IPoolable
+	public class EnemyAI : ServiceUser, IAI, IPoolable, IMove, IAttack
 	{
 		public bool stopMovingOnAttack = true;
 		private IAIState currentState;
-
-		public bool BornOnAggro;
 
 		private EnemyThoughts _thoughts;
 		private Animator _animator;
@@ -52,6 +50,7 @@ namespace __SCRIPTS._ENEMYAI
 		public event Action<Life> OnAttack;
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;
+		public bool BornOnAggro { get; set; }
 
 		private void Awake()
 		{
@@ -77,6 +76,7 @@ namespace __SCRIPTS._ENEMYAI
 		{
 			if (Pathmaker != null) Pathmaker.OnNewDirection -= HandleNewDirection;
 		}
+
 		private void FixedUpdate()
 		{
 			if (pauseManager.IsPaused || Life.IsDead())
@@ -91,8 +91,6 @@ namespace __SCRIPTS._ENEMYAI
 			currentState = newState;
 			currentState.OnEnterState(this);
 		}
-
-
 
 		public void StopMoving()
 		{

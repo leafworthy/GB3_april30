@@ -19,7 +19,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
             }
             else if (_instance != this)
             {
-                DestroyImmediate(gameObject);
+                DestroyImmediate(this);
             }
         }
 

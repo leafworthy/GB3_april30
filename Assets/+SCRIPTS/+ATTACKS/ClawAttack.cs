@@ -1,6 +1,14 @@
 ﻿using System;
+using __SCRIPTS;
 using __SCRIPTS._ENEMYAI;
 using UnityEngine;
+
+
+public interface IAttack
+{
+	event Action<Life> OnAttack;
+}
+
 
 namespace __SCRIPTS
 {
@@ -10,7 +18,7 @@ namespace __SCRIPTS
 		private float currentCooldownTime;
 		private Life currentTargetLife;
 
-		private EnemyAI ai;
+		private IAttack ai;
 		private Animations anim;
 		private Body body;
 		public float extraPush = .2f;
@@ -24,7 +32,7 @@ namespace __SCRIPTS
 			body = GetComponent<Body>();
 			anim = GetComponent<Animations>();
 			targetter = GetComponent<Targetter>();
-			ai = GetComponent<EnemyAI>();
+			ai = GetComponent<IAttack>();
 
 			ai.OnAttack += AI_Attack;
 			anim.animEvents.OnAttackHit += OnAttackHit;
