@@ -159,7 +159,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 89d91152eb4854eeaa6ae0ddc3c1cb19, type: 2}
+  - {fileID: 2100000, guid: a352cbfbf94364268af325aed32ab73f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -491,6 +491,7 @@ GameObject:
   - component: {fileID: 3025189939797585559}
   - component: {fileID: 5668455432631234438}
   - component: {fileID: 7594583681699860136}
+  - component: {fileID: 6129626247479662832}
   m_Layer: 7
   m_Name: Toast
   m_TagString: Untagged
@@ -943,6 +944,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 369b58c66d724fa6bccf56c8d634508e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6129626247479662832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7431454428826219940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd748a8e8c6541bc8a0a93a01251830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pallettes:
+  - {fileID: 2100000, guid: a352cbfbf94364268af325aed32ab73f, type: 2}
+  - {fileID: 2100000, guid: 55d73fdec6a3c446c817ee2b4eb8e71d, type: 2}
+  - {fileID: 2100000, guid: 9c22e92884a3e41b8ad8067c182c1188, type: 2}
+  - {fileID: 2100000, guid: fdae30f0854b54b158616aa60955364b, type: 2}
+  spriteRenderer: {fileID: 4330567752162112095}
 --- !u!1 &8681001409653053418
 GameObject:
   m_ObjectHideFlags: 0

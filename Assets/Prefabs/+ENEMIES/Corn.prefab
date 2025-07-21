@@ -232,7 +232,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 89d91152eb4854eeaa6ae0ddc3c1cb19, type: 2}
+  - {fileID: 2100000, guid: 2ac3b84af52a94602a54bc139783a231, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -505,6 +505,7 @@ GameObject:
   - component: {fileID: -389476094525104034}
   - component: {fileID: 4259043095036619887}
   - component: {fileID: 5664718955461414284}
+  - component: {fileID: 1195145717861597566}
   m_Layer: 7
   m_Name: Corn
   m_TagString: Untagged
@@ -908,6 +909,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 369b58c66d724fa6bccf56c8d634508e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1195145717861597566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5317405891896899284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd748a8e8c6541bc8a0a93a01251830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pallettes:
+  - {fileID: 2100000, guid: 6ebdbafe16c224eed9ebe66b34737571, type: 2}
+  - {fileID: 2100000, guid: 2ac3b84af52a94602a54bc139783a231, type: 2}
+  - {fileID: 2100000, guid: c0053c1e0e5d44d058cabce14c61b358, type: 2}
+  - {fileID: 2100000, guid: 2ded6403ebefe4f74acc5ea0694b7997, type: 2}
+  - {fileID: 2100000, guid: 09db2b44b1dea438d998b72fc2d0454a, type: 2}
+  spriteRenderer: {fileID: 3592491263529795654}
 --- !u!1 &5317405892234367686
 GameObject:
   m_ObjectHideFlags: 0

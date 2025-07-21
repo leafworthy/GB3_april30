@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Toast_White Pink
+  m_Shader: {fileID: -6465566751694194690, guid: a2162e671c5994e539103c3ab950b2a9, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 729fe508a483e42a7a87f669ab3f2db6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Fuzziness: 0.1
+    - _FuzzinessColorA: 0.2
+    - _FuzzinessColorB: 0.02
+    - _Fuzziness_1: 0
+    - _Fuzziness_A: 0.01
+    - _Fuzziness_B: 0.12
+    - _Fuzziness_C: 0.06
+    - _Fuzziness_D: 0
+    - _Fuzziness_E: 0
+    - _Fuzziness_F: 0
+    - _Fuzziness_G: 0.39
+    - _Fuzziness_H: 0
+    - _Range: -0.41
+    - _RangeColorA: 0.08
+    - _RangeColorB: 0.08
+    - _Range_1: 0.12
+    - _Range_A: 0
+    - _Range_B: 0.03
+    - _Range_C: 0.05
+    - _Range_D: 0
+    - _Range_E: 0
+    - _Range_F: 0
+    - _Range_G: 0.006
+    - _Range_H: 0
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _NewColorA: {r: 0.9009434, g: 1, b: 0.9037524, a: 1}
+    - _NewColorB: {r: 0.15477037, g: 0.42755955, b: 0.8867924, a: 1}
+    - _NewColorC: {r: 0.040939845, g: 0.2365872, b: 0.3773585, a: 1}
+    - _NewColorD: {r: 1, g: 0.96711457, b: 0.16509432, a: 1}
+    - _NewColorE: {r: 0.9811321, g: 0.9811321, b: 0.46742615, a: 1}
+    - _NewColorF: {r: 1, g: 0.96862745, b: 0.16078432, a: 1}
+    - _NewColorG: {r: 1, g: 0, b: 0.94352436, a: 1}
+    - _NewColorH: {r: 1, g: 0, b: 0.58040804, a: 1}
+    - _OriginalColorA: {r: 1, g: 0.3529412, b: 0.5254902, a: 1}
+    - _OriginalColorB: {r: 0.46666667, g: 0.2509804, b: 0.4117647, a: 1}
+    - _Original_color_A: {r: 0.16470589, g: 0.105882354, b: 0.05882353, a: 1}
+    - _Original_color_B: {r: 0.6156863, g: 0.5058824, b: 0.4509804, a: 1}
+    - _Original_color_C: {r: 0.34901962, g: 0.29411766, b: 0.21960784, a: 1}
+    - _Original_color_D: {r: 0.32941177, g: 0.64705884, b: 0.003921569, a: 1}
+    - _Original_color_E: {r: 0.8, g: 0.6156863, b: 0.16078432, a: 1}
+    - _Original_color_F: {r: 0.99607843, g: 0.89411765, b: 0.12941177, a: 1}
+    - _Original_color_G: {r: 0.4552912, g: 0.8490566, b: 0, a: 1}
+    - _Original_color_H: {r: 0.517647, g: 0, b: 0, a: 1}
+    - _PlayerColor: {r: 0.43669748, g: 0.8867924, b: 0.3722855, a: 1}
+    - _ReplacementColorA: {r: 1, g: 0.32040966, b: 0, a: 1}
+    - _ReplacementColorB: {r: 0.7264151, g: 0.21990114, b: 0.14733891, a: 1}
+    - _Tint: {r: 0.22821632, g: 1, b: 0, a: 0}
+    - _hat_color: {r: 0.9150943, g: 0, b: 0.73875004, a: 1}
+    - _original_color: {r: 1, g: 0.3529412, b: 0.5254902, a: 1}
+    - _original_color_B: {r: 0.517647, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!114 &1147096375347842523
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 9

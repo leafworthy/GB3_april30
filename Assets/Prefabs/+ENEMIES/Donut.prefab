@@ -94,7 +94,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 89d91152eb4854eeaa6ae0ddc3c1cb19, type: 2}
+  - {fileID: 2100000, guid: ebe76b4c9758d4d8788a56f43fd04d5a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -366,6 +366,7 @@ GameObject:
   - component: {fileID: 8468380082729349932}
   - component: {fileID: 7433541532888936559}
   - component: {fileID: 4576851402562854117}
+  - component: {fileID: 8147908301402637061}
   m_Layer: 7
   m_Name: Donut
   m_TagString: Untagged
@@ -768,6 +769,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 369b58c66d724fa6bccf56c8d634508e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8147908301402637061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019382462400588572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd748a8e8c6541bc8a0a93a01251830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pallettes:
+  - {fileID: 2100000, guid: 235f4913e33484f34bb0d694e1773723, type: 2}
+  - {fileID: 2100000, guid: 178b9b6d55da942fda1bb43ddd7d91fc, type: 2}
+  - {fileID: 2100000, guid: ebe76b4c9758d4d8788a56f43fd04d5a, type: 2}
+  - {fileID: 2100000, guid: 73ba2b8856dc74af8a713b378c5ced67, type: 2}
+  spriteRenderer: {fileID: 5753234950461873550}
 --- !u!1 &4019382462604234510
 GameObject:
   m_ObjectHideFlags: 0
