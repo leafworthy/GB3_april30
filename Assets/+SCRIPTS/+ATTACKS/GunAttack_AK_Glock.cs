@@ -33,20 +33,6 @@ namespace __SCRIPTS
 		private AmmoInventory ammoInventory;
 		public override string VerbName => "Shooting";
 
-		public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
-		{
-			switch (reason)
-			{
-				case GangstaBean.Core.CompletionReason.AnimationInterrupt:
-					if (isReloading)
-					{
-						StopReloading();
-						return true;
-					}
-					break;
-			}
-			return false;
-		}
 		private float attackRate => isGlocking ? attacker.UnlimitedAttackRate : attacker.PrimaryAttackRate;
 
 		private float currentDamage =>
@@ -60,7 +46,6 @@ namespace __SCRIPTS
 		private bool isPressing;
 		private bool isEmpty;
 		private bool isGlockingOnPurpose;
-		private string ReloadVerb => isGlocking ? "ReloadGlock" : "ReloadAK";
 		public event Action OnEmpty;
 
 		public override void SetPlayer(Player player)

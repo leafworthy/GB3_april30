@@ -65,7 +65,8 @@ namespace __SCRIPTS
 			if (howMuchLoot >= 0) return;
 			hideRevealObjects.Set(2);
 			FinishInteraction(player);
-			player.RemoveInteractable(this);
+			var selector = player.SpawnedPlayerGO.GetComponent<InteractableSelector>();
+			selector.RemoveInteractable(this);
 		}
 
 		private void PlayLootOpenSound()

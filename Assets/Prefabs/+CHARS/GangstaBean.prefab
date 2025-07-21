@@ -514,6 +514,7 @@ GameObject:
   - component: {fileID: 5636858269508795379}
   - component: {fileID: 1547629825238236334}
   - component: {fileID: 6438088722743322343}
+  - component: {fileID: -7255834867476403094}
   m_Layer: 6
   m_Name: GangstaBean
   m_TagString: Player
@@ -1073,6 +1074,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dashAnimationClip: {fileID: 7400000, guid: fe7d378efbd3f4623be03cdd452b4bd1, type: 2}
   teleport: 0
+--- !u!114 &-7255834867476403094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abe685c168484ceeb1d7d2cd1251bc1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactables: []
 --- !u!1 &3833892834326608145
 GameObject:
   m_ObjectHideFlags: 0
@@ -1866,7 +1880,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteForShape: {fileID: 0}
   shadowType: 3
   shadowLayer: 0
   shadowDistance: 1

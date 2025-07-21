@@ -172,7 +172,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteForShape: {fileID: 0}
   shadowType: 3
   shadowLayer: 0
   shadowDistance: 1
@@ -363,7 +362,6 @@ GameObject:
   - component: {fileID: 2529326439228072115}
   - component: {fileID: 3903255842230928706}
   - component: {fileID: 6592188322250801185}
-  - component: {fileID: 2616197682723396777}
   - component: {fileID: 2533911705013539851}
   - component: {fileID: 8468380082729349932}
   - component: {fileID: 7433541532888936559}
@@ -551,7 +549,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stopMovingOnAttack: 0
-  BornOnAggro: 1
 --- !u!114 &2505822213530538088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,7 +633,6 @@ MonoBehaviour:
   FootPoint: {fileID: 8768275385289164082}
   RotateWithAim: []
   AimCenter: {fileID: 4019382462604234510}
-  AirThrowPoint: {fileID: 0}
   ThrowPoint: {fileID: 0}
   TopScaleObject: {fileID: 0}
   BottomScaleObject: {fileID: 7854039214064336566}
@@ -686,20 +682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa06a83324c4ef5b39e8910fbcb88ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animEvents: {fileID: 6583416402285002910}
   animator: {fileID: 5692530825665302989}
---- !u!114 &2616197682723396777
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4019382462400588572}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73c5ae5e07fd403294109a43339a7433, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2533911705013539851
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 2835559526434000434}
   - component: {fileID: 8932575119027580578}
   - component: {fileID: 8546300430613841500}
+  - component: {fileID: -6767198448172107484}
   m_Layer: 6
   m_Name: Tmato
   m_TagString: Player
@@ -313,7 +314,6 @@ MonoBehaviour:
   - {fileID: 8937796698369178377}
   - {fileID: 8341188158330025904}
   AimCenter: {fileID: 8341188158330025904}
-  AirThrowPoint: {fileID: 3556136585836396036}
   ThrowPoint: {fileID: 3556136585836396036}
   TopScaleObject: {fileID: 7839403582694613209}
   BottomScaleObject: {fileID: 3207809036836687279}
@@ -494,7 +494,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa06a83324c4ef5b39e8910fbcb88ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animEvents: {fileID: 4083886098966080273}
   animator: {fileID: 6993900716997869252}
 --- !u!114 &8885707532850852582
 MonoBehaviour:
@@ -783,6 +782,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-6767198448172107484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081200535837487843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abe685c168484ceeb1d7d2cd1251bc1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactables: []
 --- !u!1 &1215287345263444361
 GameObject:
   m_ObjectHideFlags: 0
@@ -1939,7 +1951,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteForShape: {fileID: 0}
   shadowType: 3
   shadowLayer: 0
   shadowDistance: 1

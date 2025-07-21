@@ -12,7 +12,8 @@ namespace __SCRIPTS
 		[SerializeField] public List<PlayerData> playerPresets = new();
 
 		private PlayerInputManager _inputManager;
-		public Player enemyPlayer;
+		private Player _enemyPlayer;
+		public Player enemyPlayer => _enemyPlayer ?? CreateEnemyPlayer();
 		public List<Player> AllJoinedPlayers = new();
 		private PlayerInput testPlayerInput;
 		private Player testPlayer;
@@ -33,12 +34,17 @@ namespace __SCRIPTS
 			_inputManager.onPlayerJoined += Input_OnPlayerJoins;
 
 			// Create enemy player
-			var enemy = new GameObject("EnemyPlayer");
-			enemyPlayer = enemy.AddComponent<Player>();
-			enemyPlayer.Join(null, EnemyPlayerData, 5);
+			CreateEnemyPlayer();
 			SetActionMaps(UIActionMap);
 		}
 
+		private Player CreateEnemyPlayer()
+		{
+			var enemy = new GameObject("EnemyPlayer");
+			_enemyPlayer = enemy.AddComponent<Player>();
+			_enemyPlayer.Join(null, EnemyPlayerData, 5);
+			return _enemyPlayer;
+		}
 
 		// Properly clean up event subscriptions
 		private void OnDisable()

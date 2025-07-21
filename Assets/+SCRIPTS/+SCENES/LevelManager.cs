@@ -110,6 +110,7 @@ namespace __SCRIPTS
 			if (restartedLevelScene == null)
 			{
 				// Fallback to the main starting scene if we lost the restart reference
+				Debug.Log("loading starting scene because restartedLevelScene is null");
 				LoadLevel(assets.Scenes.startingScene);
 				return;
 			}

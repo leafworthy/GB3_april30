@@ -31,12 +31,10 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 			target = ai.Targets.GetClosestAttackablePlayer();
 			if (target != null)
 			{
-				ai.Thoughts.Think("Attacking Player!" + target.name);
 				ai.Attack(target);
 			}
 			else
 			{
-				ai.Thoughts.Think("no targets, going aggro!");
 				ai.TransitionToState(new AggroState());
 			}
 		}
@@ -57,7 +55,6 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 			var player = ai.Targets.GetClosestPlayer();
 			if(player == null)
 			{
-				ai.Thoughts.Think("No more player, wander time");
 				ai.TransitionToState(new WanderState());
 				return;
 			}
@@ -69,20 +66,17 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 				float distance = Vector2.Distance(ai.transform.position, target.transform.position);
 				if (distance <= ai.Life.PrimaryAttackRange)
 				{
-					ai.Thoughts.Think("Attacking Door!");
 					ai.Attack(target);
 				}
 				else
 				{
 					// Door is too far away now, go back to chasing player
-					ai.Thoughts.Think("Door too far, going back to aggro");
 					ai.TransitionToState(new AggroState());
 				}
 			}
 			else
 			{
 				// Door is destroyed or no longer attackable - return to player targeting
-				ai.Thoughts.Think("Door cleared, Going back to aggro");
 				ai.TransitionToState(new AggroState());
 			}
 		}

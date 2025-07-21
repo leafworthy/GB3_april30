@@ -81,7 +81,14 @@ namespace __SCRIPTS
 		{
 			if (pauseManager.IsPaused) return;
 
-			if (isMoving && IsActive) AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
+			if (isMoving && IsActive)
+			{
+				AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
+			}
+			else
+			{
+				if(life != null && !life.IsPlayer) Debug.Log("isMoving: "+ isMoving + " IsActive: " + IsActive);
+			}
 
 			ApplyVelocity();
 			DecayVelocity();
@@ -113,14 +120,20 @@ namespace __SCRIPTS
 
 		public void MoveInDirection(Vector2 direction, float newSpeed)
 		{
-			if (!IsActive) return;
+			if (!IsActive)
+			{
+				Debug.Log("not active");
+				return;
+			}
 			moveDir = direction.normalized;
 			moveSpeed = newSpeed;
+			if(!life.IsPlayer)Debug.Log("moving true");
 			isMoving = true;
 		}
 
 		private void AddMoveVelocity(Vector2 tempVel)
 		{
+			Debug.Log(tempVel + " " + moveVelocity);
 			tempVel += moveVelocity;
 			moveVelocity = tempVel;
 		}
@@ -136,9 +149,13 @@ namespace __SCRIPTS
 			rb = GetComponent<Rigidbody2D>();
 			if (pauseManager.IsPaused) return;
 			if (rb != null)
+			{
 				rb.MovePosition(destination);
+			}
 			else
+			{
 				transform.position = destination;
+			}
 		}
 
 		public void SetDragging(bool isNowDragging)
@@ -156,6 +173,8 @@ namespace __SCRIPTS
 
 		public void StopMoving()
 		{
+
+			if(!life.IsPlayer)Debug.Log("stop moving");
 			isMoving = false;
 			moveVelocity = Vector2.zero;
 		}

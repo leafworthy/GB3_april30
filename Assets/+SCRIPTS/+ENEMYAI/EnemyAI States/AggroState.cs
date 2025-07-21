@@ -16,7 +16,6 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 
 			if (target == null)
 			{
-				ai.Thoughts.Think("No target found, going idle");
 				ai.TransitionToState(new IdleState());
 				return;
 			}
@@ -53,7 +52,7 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 			}
 
 			// Try pathfinding first, but have fallback to direct movement
-			
+
 			// If we have line of sight, walk directly (this avoids pathfinding issues)
 			if (ai.Targets.HasLineOfSightWith(target.transform.position))
 			{
@@ -64,9 +63,9 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 				// Try pathfinding (will fallback to direct movement if pathfinding fails)
 				ai.Pathmaker.SetTargetPosition(target.transform.position);
 			}
-			
+
 			// If close enough to attack, switch to attack state
-			if (CloseEnoughToAttack()) 
+			if (CloseEnoughToAttack())
 			{
 				ai.TransitionToState(new AttackPlayerState());
 				return;

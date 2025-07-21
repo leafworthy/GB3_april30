@@ -8,7 +8,8 @@ public class ParallaxEffect : MonoBehaviour
     public bool enableYAxis = true; // Toggle Y-axis parallax
 
     // Private fields for tracking
-    private Vector3 previousCameraPosition; // Track camera's last position
+    private Vector3 worldOrigin; // Fixed reference point for camera
+    private Vector3 objectOrigin; // Original position of this object
     private Camera mainCamera; // Cache camera reference
 
 
@@ -18,10 +19,11 @@ public class ParallaxEffect : MonoBehaviour
         // Re-acquire camera reference when object is enabled (handles scene changes)
         mainCamera = __SCRIPTS.Cursor.CursorManager.GetCamera();
 
-        // Update the camera position reference
+        // Store original positions as reference points
         if (mainCamera != null)
         {
-            previousCameraPosition = mainCamera.transform.position;
+            worldOrigin = mainCamera.transform.position;
+            objectOrigin = transform.position;
         }
         else
         {
@@ -37,28 +39,24 @@ public class ParallaxEffect : MonoBehaviour
             return;
         }
 
-        // Calculate camera movement delta
-        Vector3 currentCameraPosition = mainCamera.transform.position;
-        Vector3 cameraDelta = currentCameraPosition - previousCameraPosition;
+        // Calculate total camera offset from world origin
+        Vector3 totalCameraOffset = mainCamera.transform.position - worldOrigin;
 
-        // Apply parallax offset based on delta and multiplier
+        // Calculate parallax position based on total offset
         Vector3 parallaxOffset = Vector3.zero;
 
         // Respect axis enable flags when applying movement
         if (enableXAxis)
         {
-            parallaxOffset.x = cameraDelta.x * parallaxMultiplier;
+            parallaxOffset.x = totalCameraOffset.x * parallaxMultiplier;
         }
 
         if (enableYAxis)
         {
-            parallaxOffset.y = cameraDelta.y * parallaxMultiplier;
+            parallaxOffset.y = totalCameraOffset.y * parallaxMultiplier;
         }
 
-        // Apply the parallax offset to this object's position
-        transform.position += parallaxOffset;
-
-        // Update previous camera position
-        previousCameraPosition = currentCameraPosition;
+        // Set position based on object origin plus parallax offset
+        transform.position = objectOrigin + parallaxOffset;
     }
 }

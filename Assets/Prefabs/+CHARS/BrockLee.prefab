@@ -519,7 +519,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteForShape: {fileID: 0}
   shadowType: 3
   shadowLayer: 0
   shadowDistance: 1
@@ -1237,6 +1236,7 @@ GameObject:
   - component: {fileID: 4296806838304676772}
   - component: {fileID: 7156676400399751533}
   - component: {fileID: 8599869547717981097}
+  - component: {fileID: -1083667063699672963}
   m_Layer: 6
   m_Name: BrockLee
   m_TagString: Player
@@ -1477,7 +1477,6 @@ MonoBehaviour:
   - {fileID: 1185514298249318940}
   - {fileID: 1185514299381938426}
   AimCenter: {fileID: 1185514299381938426}
-  AirThrowPoint: {fileID: 4926030850895483108}
   ThrowPoint: {fileID: 4908606974526057423}
   TopScaleObject: {fileID: 0}
   BottomScaleObject: {fileID: 1185514298097354204}
@@ -1720,7 +1719,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa06a83324c4ef5b39e8910fbcb88ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animEvents: {fileID: 1665155936750670451}
   animator: {fileID: 5168781308437090969}
 --- !u!114 &7156676400399751533
 MonoBehaviour:
@@ -1746,6 +1744,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35383621ba1e4cd7a6d3854f8c12a542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-1083667063699672963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3924160363998699687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abe685c168484ceeb1d7d2cd1251bc1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactables: []
 --- !u!1 &4583028489892907819
 GameObject:
   m_ObjectHideFlags: 0

@@ -32,7 +32,6 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 			wanderTime += Time.deltaTime;
 			if (ai.Targets.GetClosestPlayer() != null)
 			{
-				ai.Thoughts.Think("Found target, going aggro");
 				ai.TransitionToState(new AggroState());
 				return;
 			}
@@ -52,12 +51,7 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 					StartWandering();
 					return;
 				}
-				ai.Thoughts.Think("At wander point, going idle: " + wanderPosition);
 				ai.TransitionToState(new IdleState());
-			}
-			else
-			{
-				ai.Thoughts.Think("Wandering to position: " + wanderPosition);
 			}
 		}
 

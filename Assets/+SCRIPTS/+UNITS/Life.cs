@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Text.RegularExpressions;
-using __SCRIPTS.HUD_Displays;
+using GangstaBean.Core;
 using UnityEngine;
 using VInspector;
-using GangstaBean.Core;
-using Unity.VisualScripting;
 using IPoolable = GangstaBean.Core.IPoolable;
 
 namespace __SCRIPTS
 {
-
 	public class Life : ServiceUser, INeedPlayer, IPoolable
 	{
 		[HideInInspector] public Player player;
@@ -67,49 +63,39 @@ namespace __SCRIPTS
 		public float JumpSpeed => unitData.jumpSpeed;
 		public float AggroRange => unitData.aggroRange;
 
+		private bool playerSet;
 		public void SetPlayer(Player _player)
 		{
+			if (playerSet) return;
+			playerSet = true;
 			player = _player;
 			OnPlayerSet?.Invoke(player);
-			// Don't immediately fetch stats - let GetCachedStats() handle it
+			var playerComponents = gameObject.GetComponents<INeedPlayer>();
+			foreach (var playerComponent in playerComponents)
+			{
+				playerComponent?.SetPlayer(player);
+			}
 		}
 
-		private void OnEnable()
-		{
-			// Don't immediately fetch stats - let GetCachedStats() handle it lazily
-		}
-
-		/// <summary>
-		/// Get cached stats with version checking to avoid repeated database lookups
-		/// </summary>
 		private UnitStatsData GetCachedStats()
 		{
+			if (_unitData != null) return _unitData;
+			_unitData = GetStats();
+			_cachedStatsVersion = unitStatsManager.CacheVersion;
 
-
-			// Check if we need to refresh the cache
-			if (_unitData == null)
-			{
-				_unitData = GetStats();
-				_cachedStatsVersion = unitStatsManager.CacheVersion;
-
-
-			}
 			return _unitData;
 		}
 
-		[Button()]
-		public UnitStatsData GetStats()
+		[Button]
+		private UnitStatsData GetStats()
 		{
 			var original = gameObject.name;
 			_unitData = unitStatsManager.GetUnitStats(original);
 			return _unitData;
 		}
 
-
-
 		public bool cantDie;
 		public bool isInvincible;
-
 
 		public event Action<Attack, Life> OnAttackShielded;
 		public event Action<Attack, Life> OnAttackHit;
@@ -139,7 +125,6 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
-
 			// Ensure stats are loaded before initializing
 			GetCachedStats();
 
@@ -175,11 +160,9 @@ namespace __SCRIPTS
 
 		private void ResetHealthToMax()
 		{
-			float maxHealth = HealthMax;
+			var maxHealth = HealthMax;
 			if (maxHealth > 0)
-			{
 				Health = maxHealth;
-			}
 			else
 			{
 				// Fallback value if HealthMax is invalid
@@ -193,12 +176,13 @@ namespace __SCRIPTS
 			if (attack.DestinationLife.isInvincible) return;
 			// Check if this unit is invincible from the data
 			if (unitData.isInvincible) return;
-			if(isShielded)
+			if (isShielded)
 			{
 				// If shielded, do not take damage but still invoke the hit event
 				OnAttackShielded?.Invoke(attack, this);
 				return;
 			}
+
 			OnDamaged?.Invoke(attack);
 			ChangeHealth(attack);
 
@@ -220,8 +204,6 @@ namespace __SCRIPTS
 			Health = 0;
 			StartDying(attack);
 		}
-
-
 
 		private void DrawX(Vector2 pos, float size, Color color)
 		{

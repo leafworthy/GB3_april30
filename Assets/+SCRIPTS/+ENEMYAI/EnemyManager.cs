@@ -1,33 +1,32 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
 	public class EnemyManager : MonoBehaviour, IService
 	{
-		private static List<Life> _allEnemies = new();
+		private List<Life> _allEnemies = new();
 		public event Action<Player, Life> OnPlayerKillsEnemy;
 		public event Action<Player, Life> OnEnemyDying;
 		private LevelManager _levelManager;
 		private LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
-
-
+		private Players _players;
+		private Players players => _players ?? ServiceLocator.Get<Players>();
 
 		public void StartService()
 		{
 			levelManager.OnStopLevel += ClearEnemies;
 		}
 
-		public void CollectEnemy(GameObject enemy)
+		private void CollectEnemy(GameObject enemy)
 		{
 			var enemyDefence = enemy.gameObject.GetComponent<Life>();
 
 			if (enemyDefence == null) return;
 			if (_allEnemies.Contains(enemyDefence)) return;
 			enemyDefence.OnKilled += EnemyKilled;
-			enemyDefence.OnDying += EnemyDying;;
+			enemyDefence.OnDying += EnemyDying;
 			_allEnemies.Add(enemyDefence);
 		}
 
@@ -43,15 +42,26 @@ namespace __SCRIPTS
 				enemy.OnKilled -= EnemyKilled;
 				enemy.OnDying -= EnemyDying;
 			}
+
 			_allEnemies.Clear();
 		}
 
-
-
-		private  void EnemyKilled(Player killer, Life life)
+		private void EnemyKilled(Player killer, Life life)
 		{
 			OnPlayerKillsEnemy?.Invoke(killer, life);
 		}
 
+		public void ConfigureNewEnemy(GameObject enemy)
+		{
+			// Set up the Life component
+			var life = enemy.GetComponent<Life>();
+			if (life != null)
+			{
+				life.SetPlayer(players.enemyPlayer);
+				life.AddHealth(life.HealthMax);
+			}
+
+			CollectEnemy(enemy);
+		}
 	}
 }

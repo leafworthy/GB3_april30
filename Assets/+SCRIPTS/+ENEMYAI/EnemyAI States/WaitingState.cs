@@ -16,7 +16,6 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 		{
 			if (ai.Targets.GetClosestPlayer() != null)
 			{
-				ai.Thoughts.Think("Found target, going aggro.");
 				ai.TransitionToState(new AggroState());
 				return;
 			}

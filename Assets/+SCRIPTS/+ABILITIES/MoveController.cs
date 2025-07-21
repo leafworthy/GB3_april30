@@ -30,6 +30,7 @@ namespace __SCRIPTS
 		private IMove ai;
 		public void SetPlayer(Player _player)
 		{
+			Debug.Log("player set");
 			anim = GetComponent<Animations>();
 
 			mover = GetComponent<MoveAbility>();
@@ -63,25 +64,26 @@ namespace __SCRIPTS
 			life.OnWounded += Life_OnWounded;
 			life.OnDying += Life_OnDead;
 
-			if (life.IsPlayer)
+			if (owner.IsPlayer())
 			{
-
-				owner = life.player;
 				owner.Controller.MoveAxis.OnChange += Player_MoveInDirection;
 				owner.Controller.MoveAxis.OnInactive += Player_StopMoving;
 				CanMove = true;
 			}
 			else
 			{
+				Debug.Log("AI move controller initialized");
 				ai = GetComponent<IMove>();
 				if (ai == null)
 				{
+					Debug.Log("no ai component");
 					return;
 				}
 
 				ai.OnMoveInDirection += AI_MoveInDirection;
 				ai.OnStopMoving += AI_StopMoving;
-				CanMove = !ai.BornOnAggro;
+				CanMove = true;
+				Debug.Log("registered ai move controller");
 			}
 		}
 
@@ -173,9 +175,20 @@ namespace __SCRIPTS
 
 		private void AI_MoveInDirection(Vector2 direction)
 		{
+			Debug.Log("ai try move in direction");
 			if (pauseManager.IsPaused) return;
-			if (!CanMove) return;
-			if (body.arms.isActive) return;
+			if (!CanMove)
+			{
+				Debug.Log("can't move");
+				return;
+			}
+			if (body.arms.isActive)
+			{
+				Debug.Log("ai arms busy");
+				return;
+			}
+
+			Debug.Log("ai move in direction");
 			StartMoving(direction);
 		}
 		private void Player_StopMoving(IControlAxis controlAxis)
@@ -185,10 +198,12 @@ namespace __SCRIPTS
 
 		private void AI_StopMoving()
 		{
+			Debug.Log("ai stop moving");
 			StopMoving();
 		}
 		private void StartMoving(Vector2 direction)
 		{
+			if (!life.IsPlayer) Debug.Log("start moving: " + life.MoveSpeed);
 			MoveDir = direction;
 			if (direction.x != 0) body.BottomFaceDirection(direction.x > 0);
 			mover.MoveInDirection(direction, life.MoveSpeed);

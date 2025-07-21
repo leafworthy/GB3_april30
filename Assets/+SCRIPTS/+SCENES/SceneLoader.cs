@@ -169,8 +169,9 @@ namespace __SCRIPTS
 		private void StartLoadingSceneAsync()
 		{
 			isLoading = true;
+			Debug.Log(loadingScene?.sceneName + " is loading async");
 			loadingOperation = SceneManager.LoadSceneAsync(loadingScene.SceneName);
-			loadingOperation.allowSceneActivation = !loadingScene.requiresButtonPressToLoad;
+			Debug.Log("Starting async load for scene: " + loadingScene?.SceneName);
 		}
 
 		private float UpdateLoadingProgress()

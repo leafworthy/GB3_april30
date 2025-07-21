@@ -9,7 +9,6 @@ namespace __SCRIPTS._ENEMYAI
 	{
 		void GetBornIfBornOnAggro();
 		Targetter Targets { get; }
-		EnemyThoughts Thoughts { get; }
 		AstarPathfinder Pathmaker { get; }
 		Transform transform { get; }
 		Life Life { get; }
@@ -32,7 +31,6 @@ namespace __SCRIPTS._ENEMYAI
 		public bool stopMovingOnAttack = true;
 		private IAIState currentState;
 
-		private EnemyThoughts _thoughts;
 		private Animator _animator;
 
 		public AstarPathfinder Pathmaker { get; set; }
@@ -41,11 +39,7 @@ namespace __SCRIPTS._ENEMYAI
 		public float idleCoolDownMax { get; set; } = 2f;
 
 		public Targetter Targets { get; set; }
-		public EnemyThoughts Thoughts
-		{
-			get => _thoughts;
-			set => _thoughts = value;
-		}
+
 
 		public event Action<Life> OnAttack;
 		public event Action<Vector2> OnMoveInDirection;
@@ -57,7 +51,7 @@ namespace __SCRIPTS._ENEMYAI
 			Pathmaker = GetComponent<AstarPathfinder>();
 			Life = GetComponent<Life>();
 			Targets = GetComponent<Targetter>();
-			_thoughts = GetComponent<EnemyThoughts>();
+
 			_animator = GetComponentInChildren<Animator>();
 		}
 

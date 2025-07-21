@@ -11,6 +11,7 @@ public class SorterPoint : MonoBehaviour
 	[VInspector.Button]
 	public static void SortScene()
 	{
+		Debug.Log("scene sorted");
 		var sorterPoints = FindObjectsByType<SorterPoint>(FindObjectsSortMode.None);
 		foreach (var sorterPoint in sorterPoints)
 		{
@@ -30,7 +31,15 @@ public class SorterPoint : MonoBehaviour
 					continue;
 				}
 
-				renderer.sortingOrder = sorterPoint.sorterPosition-1000;
+				var sorterModifier = renderer.GetComponent<SorterPointDepthModifier>();
+				if (sorterModifier != null)
+				{
+					renderer.sortingOrder = sorterPoint.sorterPosition+sorterModifier.SorterPointDepthModification - 1000;
+				}
+				else
+				{
+					renderer.sortingOrder = sorterPoint.sorterPosition - 1000;
+				}
 			}
 		}
 	}

@@ -63,7 +63,7 @@ namespace __SCRIPTS
 
 		private void OnSelect(NewControlButton obj)
 		{
-			if (SelectButtonIsPressedFromJoining()) return;
+
 			if (hasSelected)
 			{
 				ChooseCharacter();

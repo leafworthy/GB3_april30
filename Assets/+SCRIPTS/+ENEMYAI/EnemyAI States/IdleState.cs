@@ -24,15 +24,12 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 		{
 			if (ai.Targets.GetClosestPlayer() != null)
 			{
-				ai.Thoughts.Think("Found target, going aggro.");
 				ai.TransitionToState(new AggroState());
 				return;
 			}
 
 			idleCooldown -= Time.deltaTime;
 			if (!(idleCooldown <= 0)) return;
-			ai.Thoughts.Think("Wander time.");
-			ai.TransitionToState(new WanderState());
 		}
 	}
 }

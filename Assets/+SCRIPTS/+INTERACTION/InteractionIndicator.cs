@@ -72,7 +72,8 @@ namespace __SCRIPTS
 		private void PlayerExits(Player player)
 		{
 			if (indicator == null) return;
-			player.RemoveInteractable(interactable);
+			var selector = player.SpawnedPlayerGO.GetComponent<InteractableSelector>();
+			selector.RemoveInteractable(interactable);
 		}
 
 
@@ -82,7 +83,9 @@ namespace __SCRIPTS
 			if (indicator == null) return;
 			if(player == null) return;
 			SetIndicatorColor(player);
-			player.AddInteractable(interactable);
+			var selector = player.SpawnedPlayerGO.GetComponent<InteractableSelector>();
+			selector.RemoveInteractable(interactable);
+			selector.AddInteractable(interactable);
 		}
 
 		private void SetIndicatorColor(Player player)
