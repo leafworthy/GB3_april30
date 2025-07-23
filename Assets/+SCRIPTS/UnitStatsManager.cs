@@ -37,12 +37,8 @@ namespace __SCRIPTS
 		private bool isInitialized = false;
 
 		private Dictionary<string, UnitStatsData> unitStatsLookup = new();
-		private Dictionary<string, string> nameCleaningCache = new();
 		private Coroutine autoRefreshCoroutine;
 
-		// Cache version to invalidate cached stats in Life components
-		private int cacheVersion = 0;
-		public int CacheVersion => cacheVersion;
 
 		public event System.Action<bool> OnDataLoaded; // bool = success
 		public bool IsLoading => database != null && database.isLoading;
@@ -103,8 +99,6 @@ namespace __SCRIPTS
 		private void BuildLookupDictionary()
 		{
 			unitStatsLookup.Clear();
-			nameCleaningCache.Clear();
-			cacheVersion++; // Increment cache version to invalidate cached stats
 
 			if (database?.allUnits != null)
 			{
@@ -269,11 +263,8 @@ namespace __SCRIPTS
 		{
 			if (string.IsNullOrEmpty(unitName)) return unitName;
 
-			// Check cache first
-			if (nameCleaningCache.TryGetValue(unitName, out var cachedResult))
-			{
-				return cachedResult;
-			}
+
+
 
 			string cleanedName = unitName;
 
@@ -289,8 +280,6 @@ namespace __SCRIPTS
 			// Trim whitespace
 			cleanedName = cleanedName.Trim();
 
-			// Cache the result
-			nameCleaningCache[unitName] = cleanedName;
 
 			return cleanedName;
 		}

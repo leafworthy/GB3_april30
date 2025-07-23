@@ -12,7 +12,6 @@ namespace __SCRIPTS
 		public UnitStatsData unitData => GetCachedStats();
 
 		[SerializeField] private UnitStatsData _unitData;
-		private int _cachedStatsVersion = -1; // Track cache version
 		public float ExtraMaxHealthFactor;
 		public float ExtraMaxSpeedFactor;
 		public float ExtraMaxDamageFactor;
@@ -79,9 +78,7 @@ namespace __SCRIPTS
 
 		private UnitStatsData GetCachedStats()
 		{
-			if (_unitData != null) return _unitData;
 			_unitData = GetStats();
-			_cachedStatsVersion = unitStatsManager.CacheVersion;
 
 			return _unitData;
 		}
