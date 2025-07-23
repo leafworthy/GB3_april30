@@ -7,8 +7,8 @@ namespace __SCRIPTS
 	public class ExplosionAttack : Attacks
 	{
 		private Life currentTargetLife;
-
-		private EnemyAI ai;
+		private EnemyAI _ai;
+		private EnemyAI ai => _ai ??= GetComponent<EnemyAI>();
 		private Animations anim;
 		private float explosionRadius = 5;
 		public override string VerbName => "ExplosionAttack";
@@ -25,7 +25,6 @@ namespace __SCRIPTS
 			}
 			else
 			{
-				ai = GetComponent<EnemyAI>();
 				ai.OnAttack += AI_Attack;
 			}
 		}

@@ -27,7 +27,7 @@ public class MyParticleSystem : ServiceUser
 	{
 		var originDelta = origin.transform.position - lastPos;
 		var speed = originDelta.magnitude / Time.deltaTime;
-		var rateSpeed = rate + speed;
+		var rateSpeed = rate * speed+ rate;
 		rateSpeed = Mathf.Min( rateSpeed, max );
 		currentTime += Time.deltaTime * (rateSpeed);
 		if (currentTime >= lifeTime)
