@@ -1,4 +1,5 @@
 using System;
+using Gaskellgames;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -10,37 +11,65 @@ namespace __SCRIPTS
 
 		public event Action<GameLevel> OnStopLevel;
 		public event Action<GameLevel> OnStartLevel;
-		public event Action<Player> OnPlayerSpawned;
+		public event Action<Player> OnLevelSpawnedPlayer;
 		public event Action OnGameOver;
 		public event Action OnWinGame;
 		private float gameStartTime;
 		public bool loadInGame;
+		public bool canJoinInGame;
 
 		public void StartService()
 		{
 			Debug.Log("start wtf");
 			gameObject.SetActive(true);
 			sceneLoader.OnSceneReadyToStartLevel += SceneLoaderSceneReadyToStartLevel;
+			canJoinInGame = false;
+			Debug.Log("join in game false");
 			if (loadInGame) StartGame(GetFirstLevelToLoad());
 		}
 
 		public void StartGame(SceneDefinition startingScene)
 		{
-			Debug.Log("start game");
+			Debug.Log("LEVEL MANAGER: StartGame with scene: " + startingScene.sceneName);
 			sceneLoader.GoToScene(startingScene);
 		}
 
 		private void StartLevel(GameLevel newLevel)
 		{
+			canJoinInGame = true;
 			playerManager.SetActionMaps(Players.PlayerActionMap);
 			currentLevel = newLevel;
 			currentLevel.OnGameOver += newLevel_GameOver;
-			currentLevel.OnPlayerSpawned += p => OnPlayerSpawned?.Invoke(p);
-			currentLevel.StartLevel();
+			Debug.Log("LEVEL MANAGER: OnStartLevel");
+			SpawnPlayersIntoLevel(currentLevel.defaultTravelPoint);
+			OnStartLevel?.Invoke(currentLevel);
 
 			gameStartTime = Time.time;
-			Debug.Log("on level starting");
-			OnStartLevel?.Invoke(currentLevel);
+		}
+
+
+		private void SpawnPlayersIntoLevel(TravelPoint travelPoint)
+		{
+			Debug.Log("LEVEL MANAGER: joined players count: " + playerManager.AllJoinedPlayers.Count);
+			if (travelPoint == null)
+			{
+				Debug.Log("travel point is null");
+				return;
+			}
+
+			foreach (var player in playerManager.AllJoinedPlayers)
+			{
+				Debug.Log("trying to spawn" + player?.name + " at " + travelPoint.name);
+				SpawnPlayerFromInGame(player);
+			}
+		}
+
+		public void SpawnPlayerFromInGame(Player player)
+		{
+			playerManager.SetActionMaps(Players.PlayerActionMap);
+			player.Spawn(currentLevel.defaultTravelPoint.transform.position, currentLevel.defaultTravelPoint.fallFromSky);
+			Debug.Log("LEVEL MANAGER: OnLevelSpawnedPlayer: " + player.name);
+			OnLevelSpawnedPlayer?.Invoke(player);
 		}
 
 		private void newLevel_GameOver()
@@ -63,10 +92,10 @@ namespace __SCRIPTS
 
 		private void SceneLoaderSceneReadyToStartLevel(SceneDefinition newScene)
 		{
-			Debug.Log("scene loader ready to start level: " + newScene.sceneName);
+			Debug.Log("LEVEL MANAGER: scene loader ready to start level: " + newScene.sceneName);
 			var gameLevel = FindFirstObjectByType<GameLevel>();
 			if (gameLevel == null) return;
-
+			canJoinInGame = true;
 			StartLevel(gameLevel);
 		}
 
@@ -74,7 +103,7 @@ namespace __SCRIPTS
 		{
 			if (currentLevel == null) return;
 			restartedLevelScene = currentLevel.scene;
-
+			canJoinInGame = false;
 			currentLevel.StopLevel();
 			currentLevel.OnGameOver -= newLevel_GameOver;
 			currentLevel = null;
@@ -84,7 +113,6 @@ namespace __SCRIPTS
 		private void StopGame()
 		{
 			StopLevel();
-			sceneLoader.OnSceneReadyToStartLevel -= SceneLoaderSceneReadyToStartLevel;
 		}
 
 		public void RestartLevel()
@@ -118,16 +146,17 @@ namespace __SCRIPTS
 			LoadLevel(restartedLevelScene);
 		}
 
-		public void SpawnPlayerFromInGame(Player owner)
-		{
-			Debug.Log("Spawning player from in-game: " + owner);
-			currentLevel.SpawnPlayer(owner);
-		}
+
 
 		public void QuitGame()
 		{
-			sceneLoader.QuitGame();
+#if UNITY_EDITOR
+			UnityEditor.EditorApplication.isPlaying = false;
+#else
+			Application.Quit();
+#endif
 		}
+
 
 		public void WinGame()
 		{
@@ -153,7 +182,5 @@ namespace __SCRIPTS
 			if (!loadInGame) return assets.Scenes.startingScene;
 			return assets.Scenes.testScene;
 		}
-
-
 	}
 }

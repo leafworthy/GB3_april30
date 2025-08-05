@@ -105,7 +105,7 @@ namespace __SCRIPTS._ENEMYAI
 			if (BornOnAggro)
 			{
 				// Use a constant (or cached) trigger name to avoid allocating strings.
-				_animator.SetTrigger(Animations.AggroTrigger);
+				_animator.SetTrigger(UnitAnimations.AggroTrigger);
 			}
 		}
 

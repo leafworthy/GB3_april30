@@ -19,7 +19,7 @@ namespace __SCRIPTS
 		private Life currentTargetLife;
 
 		private IAttack ai;
-		private Animations anim;
+		private UnitAnimations anim;
 		private Body body;
 		public float extraPush = .2f;
 		private Targetter targetter;
@@ -30,7 +30,7 @@ namespace __SCRIPTS
 		{
 			base.SetPlayer(_player);
 			body = GetComponent<Body>();
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			targetter = GetComponent<Targetter>();
 			ai = GetComponent<IAttack>();
 
@@ -81,7 +81,7 @@ namespace __SCRIPTS
 			// Face the target only when starting a new attack
 			FaceTarget();
 
-			anim.SetTrigger(Animations.Attack1Trigger);
+			anim.SetTrigger(UnitAnimations.Attack1Trigger);
 		}
 
 		private void FaceTarget()

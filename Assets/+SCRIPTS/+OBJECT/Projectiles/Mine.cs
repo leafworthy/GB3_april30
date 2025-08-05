@@ -27,7 +27,7 @@ public class Mine : ServiceUser
 			if (otherLife == null) return;
 		}
 
-		if (otherLife.isEnemyOf(player.spawnedPlayerDefence))
+		if (otherLife.IsEnemyOf(player.spawnedPlayerDefence))
 		{
 			OnSelfDetonate?.Invoke(this);
 			Explode();

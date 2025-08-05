@@ -8,7 +8,7 @@ public class TertiaryAttack_Knife : Attacks
 	{
 		private Player player;
 		private Body body;
-		private Animations anim;
+		private UnitAnimations anim;
 		public override string VerbName => "Knife-Attack";
 		private string AnimationClipName = "Top-Bean_Knife_Attack";
 
@@ -27,7 +27,7 @@ public class TertiaryAttack_Knife : Attacks
 					// Handle graceful completion
 					isAttacking = false;
 					isPressing = false;
-					anim.SetBool(Animations.IsBobbing, true);
+					anim.SetBool(UnitAnimations.IsBobbing, true);
 					return true;
 			}
 			return false;
@@ -36,7 +36,7 @@ public class TertiaryAttack_Knife : Attacks
 		public override void SetPlayer(Player _player)
 		{
 			 base.SetPlayer(_player);
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			body = GetComponent<Body>();
 			player = _player;
 			Debug.Log("[Knife] SetPlayer called, connecting input events");
@@ -58,7 +58,7 @@ public class TertiaryAttack_Knife : Attacks
 		private void Anim_AttackStop(int obj)
 		{
 
-			anim.SetBool(Animations.IsBobbing, true);
+			anim.SetBool(UnitAnimations.IsBobbing, true);
 			body.arms.Stop(this);
 			isAttacking = false;
 			if (!isPressing) return;
@@ -102,8 +102,8 @@ public class TertiaryAttack_Knife : Attacks
 			isAttacking = true;
 
 			anim.Play(AnimationClipName, 1, 0);
-			anim.SetTrigger(Animations.KnifeTrigger);
-			anim.SetBool(Animations.IsBobbing, false);
+			anim.SetTrigger(UnitAnimations.KnifeTrigger);
+			anim.SetBool(UnitAnimations.IsBobbing, false);
 		}
 
 		private GameObject FindClosestHit()

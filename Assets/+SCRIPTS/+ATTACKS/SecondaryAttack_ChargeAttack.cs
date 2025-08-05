@@ -6,7 +6,7 @@ namespace __SCRIPTS
 	public class SecondaryAttack_ChargeAttack : Attacks
 	{
 		private AnimationEvents animEvents;
-		private Animations anim;
+		private UnitAnimations anim;
 		private Body body;
 		private MoveAbility move;
 		private AimAbility aim;
@@ -31,7 +31,7 @@ namespace __SCRIPTS
 			base.SetPlayer(_player);
 			move = GetComponent<MoveAbility>();
 			body = GetComponent<Body>();
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
 			ammo = GetComponent<AmmoInventory>();
 			aim = GetComponent<AimAbility>();
@@ -104,8 +104,8 @@ namespace __SCRIPTS
 			isFullyCharged = false;
 			OnChargePress?.Invoke();
 
-			anim.SetTrigger(Animations.ChargeStartTrigger);
-			anim.SetBool(Animations.IsCharging, true);
+			anim.SetTrigger(UnitAnimations.ChargeStartTrigger);
+			anim.SetBool(UnitAnimations.IsCharging, true);
 		}
 
 		private void Player_ChargeRelease(NewControlButton newControlButton)
@@ -120,12 +120,12 @@ namespace __SCRIPTS
 			{
 
 				ammo.secondaryAmmo.UseAmmo(1000);
-				anim.SetTrigger(Animations.ChargeAttackTrigger);
-				anim.SetBool(Animations.IsCharging, false);
+				anim.SetTrigger(UnitAnimations.ChargeAttackTrigger);
+				anim.SetBool(UnitAnimations.IsCharging, false);
 			}
 			else
 			{
-				anim.SetBool(Animations.IsCharging, false);
+				anim.SetBool(UnitAnimations.IsCharging, false);
 				ammo.secondaryAmmo.UseAmmo(1000);
 				body.arms.Stop(this);
 				body.legs.Stop(this);
@@ -158,7 +158,7 @@ namespace __SCRIPTS
 			foreach (var raycastHit2D in raycast)
 			{
 				var otherLife = raycastHit2D.collider.GetComponent<Life>();
-				if (!otherLife.isEnemyOf(attacker) || otherLife.cantDie || otherLife.IsObstacle) return;
+				if (!otherLife.IsEnemyOf(attacker) || otherLife.cantDie || otherLife.IsObstacle) return;
 				HitTarget(life.SecondaryAttackDamageWithExtra, otherLife, 3);
 			}
 
@@ -169,7 +169,7 @@ namespace __SCRIPTS
 			{
 				var otherLife = hit2D.gameObject.GetComponent<Life>();
 				if (otherLife == null) continue;
-				if (!otherLife.isEnemyOf(attacker) || otherLife.cantDie || otherLife.IsObstacle) return;
+				if (!otherLife.IsEnemyOf(attacker) || otherLife.cantDie || otherLife.IsObstacle) return;
 				HitTarget(otherLife.SecondaryAttackDamageWithExtra, otherLife, 2);
 				connect = true;
 				objectMaker.Make( assets.FX.hits.GetRandom(), hit2D.transform.position);

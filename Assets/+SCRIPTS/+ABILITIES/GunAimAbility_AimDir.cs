@@ -9,7 +9,7 @@ namespace __SCRIPTS
 {
 	public class GunAimAbility_Simple : AimAbility
 	{
-		private Animations anim;
+		private UnitAnimations anim;
 		private bool isAttacking;
 		private IAimableGun aimableGun;
 
@@ -40,7 +40,7 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player player)
 		{
 			base.SetPlayer(player);
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			aimableGun = GetComponent<IAimableGun>();
 			anim.animEvents.OnAnimationComplete += Anim_OnComplete;
 			aimableGun.OnShotHitTarget += AimableGunOnShoot;

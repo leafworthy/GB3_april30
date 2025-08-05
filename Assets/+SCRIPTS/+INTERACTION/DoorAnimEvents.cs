@@ -3,7 +3,6 @@ using UnityEngine.Serialization;
 
 namespace __SCRIPTS
 {
-    [ExecuteInEditMode]
     public class DoorAnimEvents : MonoBehaviour
     {
         [FormerlySerializedAs("door")] public DoorInteraction doorInteraction;
@@ -13,7 +12,7 @@ namespace __SCRIPTS
             doorInteraction = GetComponentInParent<DoorInteraction>();
         }
 
-  
+
 
         public void DoorOpenFinish()
         {

@@ -18,7 +18,7 @@ namespace __SCRIPTS
 		private GunAimAbility_Simple aim;
 		private Arms arms;
 		private Body body;
-		private Animations anim;
+		private UnitAnimations anim;
 		private AmmoInventory ammoInventory;
 		public override string VerbName => "Shotgunning";
 		private float currentDamage => attacker.PrimaryAttackDamageWithExtra;
@@ -34,7 +34,7 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player player)
 		{
 			ammoInventory = GetComponent<AmmoInventory>();
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			anim.animEvents.OnAnimationComplete += Anim_OnComplete;
 
 			body = GetComponent<Body>();
@@ -131,7 +131,7 @@ namespace __SCRIPTS
 			if (!arms.Do(this)) return;
 
 			isShooting = true;
-			anim.SetTrigger(Animations.ShootingTrigger);
+			anim.SetTrigger(UnitAnimations.ShootingTrigger);
 			for (var i = 0; i < numberOfShots; i++)
 			{
 				var randomSpread = new Vector3(UnityEngine.Random.Range(-spread, spread),

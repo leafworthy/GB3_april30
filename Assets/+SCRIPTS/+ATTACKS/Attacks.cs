@@ -18,7 +18,7 @@ namespace __SCRIPTS
 		protected void HitTarget(float attackDamage, Life targetLife, float extraPush = 0)
 		{
 			if (targetLife == null) return;
-			if(targetLife.isInvincible) return;
+			if(targetLife.IsInvincible) return;
 
 			var newAttack = new Attack(attacker, targetLife, attackDamage);
 			targetLife.TakeDamage(newAttack);

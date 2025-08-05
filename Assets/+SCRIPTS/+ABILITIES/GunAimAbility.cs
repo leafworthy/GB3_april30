@@ -15,7 +15,7 @@ namespace __SCRIPTS
 {
 	public class GunAimAbility : AimAbility
 	{
-		private Animations anim;
+		private UnitAnimations anim;
 		private bool isAttacking;
 		public Vector2 CorrectForGlockOffset = new(-0.37f, 0);
 		public Vector2 OriginalTopSpritePosition;
@@ -60,7 +60,7 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player player)
 		{
 			base.SetPlayer(player);
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			aimableGun = GetComponent<IAimableGun>();
 			akClips.AddMany(E, EEN, EN, NE, NW, WN, WWN, W, WWS, WS, SW, SE, ES, EES);
 			glockClips.AddMany(Glock_E, Glock_EEN, Glock_EN, Glock_NE, Glock_NW, Glock_WN, Glock_WWN, Glock_W,
@@ -99,7 +99,7 @@ namespace __SCRIPTS
 			if (attack.Owner != owner) return;
 			isAttacking = true;
 			anim.animator.speed = 1;
-			anim.SetFloat(Animations.ShootSpeed, 1);
+			anim.SetFloat(UnitAnimations.ShootSpeed, 1);
 			anim.Play(GetAnimationClipNameFromDegrees(GetDegrees()), 1, .25f);
 			if (aimableGun.isGlocking)
 			{
@@ -195,7 +195,7 @@ namespace __SCRIPTS
 				if (akClips[whichOne] != null) anim.Play(akClips[whichOne].name, 1, 0);
 			}
 
-			anim.SetFloat(Animations.ShootSpeed, 0);
+			anim.SetFloat(UnitAnimations.ShootSpeed, 0);
 		}
 
 		private Vector2 GetClampedAimDir()

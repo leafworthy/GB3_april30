@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace __SCRIPTS
 {
 	/// <summary>
@@ -5,21 +7,23 @@ namespace __SCRIPTS
 	/// </summary>
 	public class GameSceneMainMenu : GameScene
 	{
-		private ASSETS assets;
 		private Players players;
-		private void Start()
+		private void OnEnable()
 		{
 			players = ServiceLocator.Get<Players>();
 			players.ClearAllJoinedPlayers();
 			players.OnPlayerJoins += PlayerOnJoins;
 			players.SetActionMaps(Players.UIActionMap);
-			assets = ServiceLocator.Get<ASSETS>();
 		}
 
+		private void OnDisable()
+		{
+			players.OnPlayerJoins -= PlayerOnJoins;
+		}
 
 		private void PlayerOnJoins(Player player)
 		{
-			// Player has joined, go to character selection
+			Debug.Log("GAME SCENE MAIN MENU: Player " + player.name + " has joined the main menu scene.");
 			playerManager.OnPlayerJoins -= PlayerOnJoins;
 			sfx.sounds.press_start_sounds.PlayRandom();
 			sceneLoader.GoToScene(assets.Scenes.characterSelect);

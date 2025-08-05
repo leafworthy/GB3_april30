@@ -9,16 +9,12 @@ namespace __SCRIPTS
 	public enum SpawnPointType
 	{
 		Entry,
-		Exit, 
+		Exit,
 		Both
 	}
 
 
 
-	/// <summary>
-	/// Defines a spawn point in a scene, used for level transitions and player positioning
-	/// </summary>
-	[ExecuteInEditMode]
 	public class TravelPoint : MonoBehaviour
 	{
 

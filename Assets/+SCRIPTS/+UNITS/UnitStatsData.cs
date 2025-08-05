@@ -37,11 +37,13 @@ namespace __SCRIPTS
 		public float attack4Rate;
 		public float attack4Range;
 
+		public bool hasData = false;
+
 		// Constructor for creating from CSV data
 		public  UnitStatsData(Dictionary<string, string> csvRow)
 		{
 			unitName = csvRow["Name"];
-
+			hasData = true;
 			// Parse category
 			if (System.Enum.TryParse<UnitCategory>(csvRow["Category"], out var cat))
 				category = cat;

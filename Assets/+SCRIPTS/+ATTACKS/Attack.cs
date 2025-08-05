@@ -4,11 +4,19 @@ using UnityEngine.Serialization;
 
 namespace __SCRIPTS
 {
+	public interface ICanAttack
+	{
+		float AttackHeight { get; }
+		Transform transform { get; }
+		Player player { get; }
+		DebrisType DebrisType { get;  }
+	}
+
 	[Serializable]
 	public class Attack
 	{
-	
-		public Attack(Life attacker, Life defender, float damageAmount)
+
+		public Attack(ICanAttack attacker, ICanAttack defender, float damageAmount)
 		{
 			DestinationLife = defender;
 			OriginLife = attacker;
@@ -17,7 +25,7 @@ namespace __SCRIPTS
 				OriginHeight = attacker.AttackHeight;
 				OriginFloorPoint = attacker.transform.position;
 				Owner = attacker.player;
-				
+
 				//
 				Owner = attacker.player;
 			}
@@ -31,7 +39,7 @@ namespace __SCRIPTS
 			DamageAmount = damageAmount;
 		}
 
-		public Attack(Life attacker, Vector2 attackFloorPoint, Vector2 destinationFloorPoint, Life defender, float damageAmount)
+		public Attack(ICanAttack attacker, Vector2 attackFloorPoint, Vector2 destinationFloorPoint, ICanAttack defender, float damageAmount)
 		{
 			OriginFloorPoint = attackFloorPoint;
 			OriginLife = attacker;
@@ -40,23 +48,23 @@ namespace __SCRIPTS
 				OriginHeight = attacker.AttackHeight;
 				Owner = attacker.player;
 			}
-		
+
 			DestinationFloorPoint = destinationFloorPoint;
 			if(defender != null)
 			{
 				DestinationLife = defender;
 				DestinationHeight = defender.AttackHeight;
 			}
-		
+
 			DamageAmount = damageAmount;
 		}
 
-	
 
 
 
-		public Life OriginLife;
-		public Life DestinationLife;
+
+		public ICanAttack OriginLife;
+		public ICanAttack DestinationLife;
 		public Vector2 Direction => DestinationFloorPoint - OriginFloorPoint;
 
 		public Vector2 FlippedDirection => OriginFloorPoint -DestinationFloorPoint;
@@ -73,10 +81,10 @@ namespace __SCRIPTS
 		public float OriginHeight;
 		public float DestinationHeight;
 		public float DamageAmount;
-		public bool IsPoison; 
-	
-		[FormerlySerializedAs("DestinationFlootPoint"),FormerlySerializedAs("Destination")] public Vector2 DestinationFloorPoint;
-		[FormerlySerializedAs("Origin")] public Vector2 OriginFloorPoint;
+		public bool IsPoison;
+
+		public Vector2 DestinationFloorPoint;
+		public Vector2 OriginFloorPoint;
 		public Player Owner;
 		public Color color = Color.red;
 		public bool IsWounding;

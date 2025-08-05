@@ -54,11 +54,11 @@ namespace __SCRIPTS
 		public void ConfigureNewEnemy(GameObject enemy)
 		{
 			// Set up the Life component
-			var life = enemy.GetComponent<Life>();
+			var life = enemy.GetComponent<UnitHealth>();
 			if (life != null)
 			{
 				life.SetPlayer(players.enemyPlayer);
-				life.AddHealth(life.HealthMax);
+				life.AddHealth(life.MaxHealth);
 			}
 
 			CollectEnemy(enemy);

@@ -5,11 +5,11 @@ namespace __SCRIPTS
 	public class Toast_SFX : ServiceUser
 	{
 		private AnimationEvents animEvents;
-		private Animations anim;
+		private UnitAnimations anim;
 
 		private void OnEnable()
 		{
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			animEvents = anim.animEvents;
 			animEvents.OnAttackHit += Anim_OnAttackHit;
 			animEvents.OnStep += Anim_OnStep;

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 namespace __SCRIPTS.HUD_Displays
 {
-	[ExecuteInEditMode]
 	public class HUDHealthDisplay : MonoBehaviour, INeedPlayer {
 
 		[FormerlySerializedAs("bar")] public Bar_FX barFX;
@@ -23,7 +22,7 @@ namespace __SCRIPTS.HUD_Displays
 				playerDefence.OnFractionChanged -= UpdateDisplay;
 			}
 			playerDefence = _player.SpawnedPlayerGO.GetComponentInChildren<Life>();
-			
+
 
 			if (barFX.fastBarImage != null)
 			{
@@ -31,7 +30,7 @@ namespace __SCRIPTS.HUD_Displays
 			}
 
 			playerDefence.OnFractionChanged += UpdateDisplay;
-			
+
 			UpdateDisplay(0);
 		}
 

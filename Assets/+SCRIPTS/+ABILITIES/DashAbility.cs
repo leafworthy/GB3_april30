@@ -13,7 +13,7 @@ namespace __SCRIPTS
 		private Player owner;
 		private JumpAbility jumps;
 		private Body body;
-		private Animations anim;
+		private UnitAnimations anim;
 		public string VerbName => "Dash";
 		public bool teleport;
 		private string verbName;
@@ -40,7 +40,7 @@ namespace __SCRIPTS
 		public void SetPlayer(Player _player)
 		{
 			move = GetComponent<MoveAbility>();
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			body = GetComponent<Body>();
 			jumps = GetComponent<JumpAbility>();
 			moveController = GetComponent<MoveController>();
@@ -131,7 +131,7 @@ namespace __SCRIPTS
 				// Ensure IsShielding is cleared in case ShieldAbility left it stuck
 				if (anim != null)
 				{
-					anim.SetBool(Animations.IsShielding, false);
+					anim.SetBool(UnitAnimations.IsShielding, false);
 
 				}
 
@@ -170,7 +170,7 @@ namespace __SCRIPTS
 				}
 			}
 
-			anim.SetTrigger(Animations.DashTrigger);
+			anim.SetTrigger(UnitAnimations.DashTrigger);
 			if (!teleport)
 			{
 				moveController.Push(moveController.MoveDir, life.DashSpeed);

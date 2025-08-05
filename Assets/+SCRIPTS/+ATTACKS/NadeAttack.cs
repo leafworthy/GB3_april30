@@ -36,7 +36,7 @@ namespace __SCRIPTS
 		private Player player;
 		private Life life;
 		private Body body;
-		private Animations anim;
+		private UnitAnimations anim;
 
 		private bool IsAiming;
 		private float currentCooldownTime;
@@ -55,31 +55,10 @@ namespace __SCRIPTS
 		public event Action<Vector2, Vector2> OnAimAt;
 		public event Action<Vector2, Vector2> OnAimInDirection;
 
-		public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
-		{
-			switch (reason)
-			{
-				case GangstaBean.Core.CompletionReason.AnimationInterrupt:
-					if (isThrowingGrenade)
-					{
-						isThrowingGrenade = false;
-						OnHideAiming?.Invoke();
-						return true;
-					}
-					if (IsAiming)
-					{
-						IsAiming = false;
-						OnHideAiming?.Invoke();
-						return true;
-					}
-					break;
-			}
-			return false;
-		}
 
 		public void SetPlayer(Player _player)
 		{
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			animationEvents = anim.animEvents;
 			body = GetComponent<Body>();
 			life = GetComponent<Life>();
@@ -88,7 +67,6 @@ namespace __SCRIPTS
 
 			ammo = GetComponent<AmmoInventory>();
 			aim = GetComponent<GunAimAbility>();
-			Debug.Log("[Grenade] SetPlayer called, connecting input events");
 			ListenToPlayer();
 		}
 

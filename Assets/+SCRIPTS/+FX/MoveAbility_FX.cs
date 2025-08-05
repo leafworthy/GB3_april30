@@ -6,13 +6,13 @@ namespace __SCRIPTS
 	{
 		private Body body;
 		private AnimationEvents animEvents;
-		private Animations anim;
+		private UnitAnimations anim;
 		private MoveAbility mover;
 
 		private void OnEnable()
 		{
 			mover = GetComponent<MoveAbility>();
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			animEvents = anim.animEvents;
 			animEvents.OnStep += Anim_OnStep;
 			body = GetComponent<Body>();

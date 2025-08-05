@@ -25,26 +25,9 @@ namespace __SCRIPTS
 		{
 			CleanUp();
 			playerManager.OnPlayerJoins += PlayerStartsSelecting;
-			foreach (var player in playerManager.AllJoinedPlayers) PlayerStartsSelectingFromMainMenu(player);
-
+			foreach (var player in playerManager.AllJoinedPlayers) PlayerStartsSelecting(player);
 			foreach (var button in Buttons) button.SetPlayerColors();
-
-
 			isActive = true;
-			//Debug.Log("Character Selection Start");
-		}
-
-		private void PlayerStartsSelectingFromMainMenu(Player player)
-		{
-			if (playersBeingListenedTo.Contains(player)) return;
-			//Debug.Log(player.PlayerName + player.playerIndex + "has joined character selection");
-
-			player.SetState(Player.State.SelectingCharacter);
-			player.CurrentButton = Buttons[0];
-			player.CurrentButton.HighlightButton(player);
-			//OnPlayerStartsSelecting?.Invoke();
-			ListenToPlayer(player);
-			HideGoGoGo();
 		}
 
 		private void OnDisable()
@@ -55,7 +38,6 @@ namespace __SCRIPTS
 		private void CleanUp()
 		{
 			foreach (var button in Buttons) button.CleanUp();
-
 			HideGoGoGo();
 			playersAllChosen = false;
 			playersBeingListenedTo.Clear();
@@ -64,8 +46,7 @@ namespace __SCRIPTS
 		private void PlayerStartsSelecting(Player player)
 		{
 			if (playersBeingListenedTo.Contains(player)) return;
-			//Debug.Log(player.PlayerName + player.playerIndex + "has joined character selection");
-
+			Debug.Log("GAME SCENE CHARACTER SELECTION: Player " + player.name + " has started selecting a character.");
 			player.SetState(Player.State.SelectingCharacter);
 			player.CurrentButton = Buttons[0];
 			player.CurrentButton.HighlightButton(player);
@@ -78,7 +59,6 @@ namespace __SCRIPTS
 		{
 			if (!playersBeingListenedTo.Contains(player)) return;
 
-			//Debug.Log(player.PlayerName + " HAS UNJOINED");
 			player.SetState(Player.State.Unjoined);
 			player.CurrentButton.UnHighlightButton(player);
 			player.CurrentButton = null;
@@ -86,7 +66,6 @@ namespace __SCRIPTS
 			StopListeningToPlayer(player);
 			player.Controller.Select.OnPress += OnUnjoinedPlayerPressSelect;
 			playerManager.AllJoinedPlayers.Remove(player);
-			//player.gameObject.SetActive(false);
 		}
 
 		private void OnUnjoinedPlayerPressSelect(NewControlButton obj)
@@ -94,7 +73,6 @@ namespace __SCRIPTS
 			var player = obj.owner;
 			player.Controller.Select.OnPress -= OnUnjoinedPlayerPressSelect;
 
-			// Add player back to AllJoinedPlayers when rejoining
 			if (!playerManager.AllJoinedPlayers.Contains(player))
 			{
 				playerManager.AllJoinedPlayers.Add(player);
@@ -193,13 +171,19 @@ namespace __SCRIPTS
 		private void TryToStartGame(Player player)
 		{
 			CheckIfPlayersAllSelected();
-			if (!playersAllChosen) return;
-			OnTryToStartGame?.Invoke();
+			if (!playersAllChosen)
+			{
+				Debug.Log( "Not all players have selected characters yet.");
+				return;
+			}
+			OnTryToStartGame?.Invoke(); //SFX
 			titlePressStart.gameObject.SetActive(false);
 			StopListeningToPlayers();
 			ClearAllPlayerButtons();
 			isActive = false;
 			playerManager.OnPlayerJoins -= PlayerStartsSelecting;
+			Debug.Log("GAME SCENE CHARACTER SELECTION: All players have selected characters, starting the game.");
+			Debug.Log("Characters joining: " + playerManager.AllJoinedPlayers.Count);
 			levelManager.StartGame(levelManager.GetFirstLevelToLoad());
 		}
 
@@ -242,8 +226,7 @@ namespace __SCRIPTS
 
 		private void CheckIfPlayersAllSelected()
 		{
-			var playersStillSelecting =
-				playerManager.AllJoinedPlayers.Where(t => t.state == Player.State.SelectingCharacter).ToList();
+			var playersStillSelecting = playerManager.AllJoinedPlayers.Where(t => t.state == Player.State.SelectingCharacter).ToList();
 			if (playersStillSelecting.Count > 0)
 			{
 				HideGoGoGo();

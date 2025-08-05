@@ -23,14 +23,14 @@ namespace __SCRIPTS
 
 		public void StartService()
 		{
-			levelManager.OnPlayerSpawned += ListenToJoinedPlayer;
+			levelManager.OnLevelSpawnedPlayer += ListenToJoinedLevelSpawnedPlayer;
 
 			// Hide menu graphic initially
 			if (graphic != null)
 				graphic.SetActive(false);
 		}
 
-		private void ListenToJoinedPlayer(Player newPlayer)
+		private void ListenToJoinedLevelSpawnedPlayer(Player newPlayer)
 		{
 			if (playersBeingListenedTo.Contains(newPlayer)) return;
 			Debug.Log("Listening to joined player");
@@ -47,7 +47,7 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			StopListeningToJoinedPlayers();
-			levelManager.OnPlayerSpawned -= ListenToJoinedPlayer;
+			levelManager.OnLevelSpawnedPlayer -= ListenToJoinedLevelSpawnedPlayer;
 		}
 
 		private void StopListeningToJoinedPlayers()

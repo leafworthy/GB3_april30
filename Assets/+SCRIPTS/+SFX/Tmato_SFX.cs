@@ -5,7 +5,7 @@ namespace __SCRIPTS
 	public class Tmato_SFX : ServiceUser
 	{
 
-		private Animations anim;
+		private UnitAnimations anim;
 		private AnimationEvents animEvents;
 		private Life life;
 		private JumpAbility jump;
@@ -17,7 +17,7 @@ namespace __SCRIPTS
 
 		private void OnEnable()
 		{
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
 			jump = GetComponent<JumpAbility>();
 			shotgunAttack = GetComponent<GunAttack_Shotgun>();

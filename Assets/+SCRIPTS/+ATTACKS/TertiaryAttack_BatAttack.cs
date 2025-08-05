@@ -9,7 +9,7 @@ namespace __SCRIPTS
 	{
 		private AnimationEvents animEvents;
 		private JumpAbility jumps;
-		private Animations anim;
+		private UnitAnimations anim;
 		private Body body;
 		public override string VerbName => "Bat-Attack";
 		private bool isCharging;
@@ -28,7 +28,7 @@ namespace __SCRIPTS
 		{
 			base.SetPlayer(_player);
 			body = GetComponent<Body>();
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
 			owner = life.player;
 			jumps = GetComponent<JumpAbility>();
@@ -71,8 +71,8 @@ namespace __SCRIPTS
 
 			if (attackType == 0)
 			{
-				anim.ResetTrigger(Animations.ChargeAttackTrigger);
-				anim.ResetTrigger(Animations.ChargeStartTrigger);
+				anim.ResetTrigger(UnitAnimations.ChargeAttackTrigger);
+				anim.ResetTrigger(UnitAnimations.ChargeStartTrigger);
 			}
 
 			if (isPressingAttack) Player_AttackPress(null);
@@ -92,7 +92,7 @@ namespace __SCRIPTS
 			{
 				if (col == null) return;
 				var _life = col.gameObject.GetComponent<Life>();
-				if (!_life.isEnemyOf(attacker) || _life.cantDie) return;
+				if (!_life.IsEnemyOf(attacker) || _life.cantDie) return;
 				if (attacker.IsPlayer && _life.IsObstacle) return;
 				HitTarget(GetAttackDamage(attackType), _life, extraPush);
 				OnHit?.Invoke(col.gameObject.transform.position);
@@ -149,13 +149,13 @@ namespace __SCRIPTS
 			switch (randomAttack)
 			{
 				case 1:
-					anim.SetTrigger(Animations.Attack1Trigger);
+					anim.SetTrigger(UnitAnimations.Attack1Trigger);
 					break;
 				case 2:
-					anim.SetTrigger(Animations.Attack2Trigger);
+					anim.SetTrigger(UnitAnimations.Attack2Trigger);
 					break;
 				default:
-					anim.SetTrigger(Animations.Attack3Trigger);
+					anim.SetTrigger(UnitAnimations.Attack3Trigger);
 					break;
 			}
 
@@ -167,7 +167,7 @@ namespace __SCRIPTS
 			if (isAttacking) return;
 			OnSwing?.Invoke();
 			isAttacking = true;
-			anim.SetTrigger(Animations.JumpAttackTrigger);
+			anim.SetTrigger(UnitAnimations.JumpAttackTrigger);
 		}
 	}
 }

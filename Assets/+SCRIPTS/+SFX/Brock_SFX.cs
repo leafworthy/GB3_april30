@@ -4,7 +4,7 @@ namespace __SCRIPTS
 {
 	public class Brock_SFX : ServiceUser
 	{
-		private Animations anim;
+		private UnitAnimations anim;
 		private AnimationEvents animEvents;
 		private Life life;
 		private JumpAbility jump;
@@ -15,7 +15,7 @@ namespace __SCRIPTS
 
 		private void OnEnable()
 		{
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
 			jump = GetComponent<JumpAbility>();
 			meleeAttack = GetComponent<TertiaryAttack_BatAttack>();

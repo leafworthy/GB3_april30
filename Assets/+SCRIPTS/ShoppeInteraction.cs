@@ -26,7 +26,6 @@ namespace __SCRIPTS
 		{
 			if (!playersInShoppe.Contains(player)) playersInShoppe.Add(player);
 			animator.SetBool(IsOpen, true);
-			playerManager.PlayerOpensShoppe(player);
 		}
 
 		private void PlayerClosesShoppe(Player player)

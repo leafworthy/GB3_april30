@@ -11,7 +11,7 @@ namespace __SCRIPTS
 
 		private Life life;
 		private Body body;
-		private Animations anim;
+		private UnitAnimations anim;
 		private EnemyAI ai;
 		private Life currentTarget;
 
@@ -19,7 +19,7 @@ namespace __SCRIPTS
 		{
 			life = GetComponent<Life>();
 			body = GetComponent<Body>();
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 
 			ai = GetComponent<EnemyAI>();
 
@@ -50,7 +50,7 @@ namespace __SCRIPTS
 			// Face the target only when starting a new attack
 			FaceTarget();
 
-			anim.SetTrigger(Animations.Attack1Trigger);
+			anim.SetTrigger(UnitAnimations.Attack1Trigger);
 		}
 
 		private void FaceTarget()

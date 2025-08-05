@@ -11,7 +11,7 @@ namespace __SCRIPTS
 		private AnimationEvents animationEvents;
 
 		private AimAbility aim;
-		private Animations anim;
+		private UnitAnimations anim;
 		private Body body;
 		private AmmoInventory ammoInventory;
 		public string VerbName => "Throw-Kunai";
@@ -29,7 +29,7 @@ namespace __SCRIPTS
 					// Handle graceful completion
 					isPressing = false;
 					body.arms.Stop(this);
-					anim.ResetTrigger(Animations.ThrowTrigger);
+					anim.ResetTrigger(UnitAnimations.ThrowTrigger);
 					return true;
 			}
 			return false;
@@ -39,7 +39,7 @@ namespace __SCRIPTS
 		{
 			ammoInventory = GetComponent<AmmoInventory>();
 			body = GetComponent<Body>();
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			aim = GetComponent<AimAbility>();
 
 
@@ -60,7 +60,7 @@ namespace __SCRIPTS
 			if (!isPressing) return;
 			isPressing = false;
 			body.arms.Stop(this);
-			anim.ResetTrigger(Animations.ThrowTrigger);
+			anim.ResetTrigger(UnitAnimations.ThrowTrigger);
 		}
 
 		private void OnDisable()
@@ -114,7 +114,7 @@ namespace __SCRIPTS
 				return;
 			}
 
-			anim.SetTrigger(Animations.ThrowTrigger);
+			anim.SetTrigger(UnitAnimations.ThrowTrigger);
 
 		}
 	}

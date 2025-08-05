@@ -133,7 +133,6 @@ namespace __SCRIPTS
 
 		private void AddMoveVelocity(Vector2 tempVel)
 		{
-			Debug.Log(tempVel + " " + moveVelocity);
 			tempVel += moveVelocity;
 			moveVelocity = tempVel;
 		}

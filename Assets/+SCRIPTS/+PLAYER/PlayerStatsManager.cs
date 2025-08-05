@@ -19,7 +19,7 @@ namespace __SCRIPTS
 
 		public void StartService()
 		{
-			levelManager.OnPlayerSpawned += Players_OnPlayerJoins;
+			levelManager.OnLevelSpawnedPlayer += LevelSpawnedPlayersOnLevelSpawnedPlayerJoins;
 		}
 
 		public float GetStatAmount(Player player, PlayerStat.StatType statType)
@@ -60,7 +60,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void Players_OnPlayerJoins(Player player)
+		private void LevelSpawnedPlayersOnLevelSpawnedPlayerJoins(Player player)
 		{
 			var stats = player.GetComponent<PlayerStats>();
 			if (stats == null) return;

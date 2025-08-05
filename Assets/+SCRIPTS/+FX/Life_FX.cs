@@ -7,7 +7,7 @@ using GangstaBean.Core;
 
 namespace __SCRIPTS
 {
-	public class Life_FX : ServiceUser, IPoolable
+	public class Life_FX : ServiceUser, IPoolable, INeedPlayer
 	{
 
 
@@ -32,32 +32,28 @@ namespace __SCRIPTS
 
 		private float targetFill;
 		private float smoothingFactor = .25f;
-		private Life _life;
+		private UnitHealth _health;
+		private UnitHealth health  => _health ??= GetComponentInParent<UnitHealth>();
+		private UnitStats _stats;
+		private UnitStats stats => _stats ??= GetComponentInParent<UnitStats>();
 		public GameObject healthBar;
 		public bool BlockTint;
 
-		public void OnEnable()
+		public void Start()
 		{
 			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
-			_life = GetComponentInParent<Life>();
-			if (_life == null) return;
-			_life.OnDamaged += Life_Damaged;
-			_life.OnFractionChanged += DefenceOnDefenceChanged;
-			_life.OnDying += DefenceOnDead;
-			_life.OnPlayerSet += OnPlayerSet;
-			_life.OnAttackShielded += DefenceOnAttackShielded;
-			if (_life.unitData != null && _life.unitData.showLifeBar) return;
+			if (health == null) return;
+			health.OnDamaged += HealthDamaged;
+			health.OnFractionChanged += DefenceOnDefenceChanged;
+			health.OnDying += DefenceOnDying;
+			if (stats != null && stats.Data.showLifeBar) return;
 			if (healthBar != null) healthBar.SetActive(false);
 		}
 
-		private void DefenceOnAttackShielded(Attack attack, Life defence)
-		{
-
-		}
-
-		private void OnPlayerSet(Player player)
+		public void SetPlayer(Player player)
 		{
 			if (!player.IsPlayer()) return;
+			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
 			Debug.Log("on player set" + player.playerColor);
 			foreach (var r in renderersToTint)
 			{
@@ -67,11 +63,11 @@ namespace __SCRIPTS
 
 		public void OnDisable()
 		{
-			if (_life == null) return;
-			_life.OnDamaged -= Life_Damaged;
-			_life.OnFractionChanged -= DefenceOnDefenceChanged;
-			_life.OnDying -= DefenceOnDead;
-			_life.OnPlayerSet -= OnPlayerSet;
+			if (health == null) return;
+			health.OnDamaged -= HealthDamaged;
+			health.OnFractionChanged -= DefenceOnDefenceChanged;
+			health.OnDying -= DefenceOnDying;
+
 		}
 
 		public void StartTint(Color tintColor)
@@ -87,9 +83,9 @@ namespace __SCRIPTS
 
 
 
-		private void Life_Damaged(Attack attack)
+		private void HealthDamaged(Attack attack)
 		{
-			if (_life.isShielded)
+			if (health.IsShielded)
 			{
 				StartTint(Color.yellow);
 			}
@@ -110,7 +106,7 @@ namespace __SCRIPTS
 		private void MakeHitMark(Attack attack)
 		{
 
-			var hitList = assets.FX.GetBulletHits(_life.DebrisType);
+			var hitList = assets.FX.GetBulletHits(stats.DebrisType);
 
 			if (hitList == null) return;
 
@@ -136,7 +132,7 @@ namespace __SCRIPTS
 		{
 			if (attack.IsPoison) return;
 			MakeDebree(attack);
-			if (_life.DebrisType != DebrisType.blood) return;
+			if (stats.DebrisType != DebrisType.blood) return;
 			CreateBloodSpray(attack);
 		}
 
@@ -150,19 +146,19 @@ namespace __SCRIPTS
 		}
 		private void MakeDebree(Attack attack)
 		{
-			if (_life.DebrisType == DebrisType.none) return;
+			if (stats.DebrisType == DebrisType.none) return;
 			var randAmount = Random.Range(2, 4);
 			for (var j = 0; j < randAmount; j++)
 			{
 				//----->
-				var forwardDebree = objectMaker.Make( assets.FX.GetDebree(_life.DebrisType), attack.DestinationFloorPoint);
+				var forwardDebree = objectMaker.Make( assets.FX.GetDebree(stats.DebrisType), attack.DestinationFloorPoint);
 
 				forwardDebree.GetComponent<FallToFloor>().Fire(attack);
 				objectMaker.Unmake(forwardDebree, 3);
 
 				//<-----
-				var flippedAttack = new Attack(_life, attack.OriginLife, attack.DamageAmount);
-				var backwardDebree = objectMaker.Make( assets.FX.GetDebree(_life.DebrisType), attack.DestinationFloorPoint);
+				var flippedAttack = new Attack(health, attack.OriginLife, attack.DamageAmount);
+				var backwardDebree = objectMaker.Make( assets.FX.GetDebree(stats.DebrisType), attack.DestinationFloorPoint);
 				backwardDebree.GetComponent<FallToFloor>().Fire(flippedAttack);
 				objectMaker.Unmake(backwardDebree, 3);
 
@@ -178,7 +174,7 @@ namespace __SCRIPTS
 		private void CreateDamageRisingText(Attack attack)
 		{
 			if (attack.DamageAmount <= 0) return;
-			if (_life.cantDie) return;
+			if (!health.CanDie) return;
 			var roundedDamage = Mathf.Round(attack.DamageAmount);
 			risingText.CreateRisingText("-" + roundedDamage, attack.DestinationWithHeight, Color.red);
 		}
@@ -187,15 +183,15 @@ namespace __SCRIPTS
 			UpdateBarFill();
 		}
 
-		private void DefenceOnDead(Player player, Life life)
+		private void DefenceOnDying(Player player, ICanAttack unitHealth)
 		{
-			_life.OnFractionChanged -= DefenceOnDefenceChanged;
-			_life.OnDying -= DefenceOnDead;
+			_health.OnFractionChanged -= DefenceOnDefenceChanged;
+			_health.OnDying -= DefenceOnDying;
 		}
 
 		private void UpdateGradient()
 		{
-			var time = _life == null ? targetFill : _life.GetFraction();
+			var time = _health == null ? targetFill : health.GetFraction;
 			if (colorMode == ColorMode.Gradient)
 				fastBarImage.color = barGradient.Evaluate(time);
 		}
@@ -213,11 +209,11 @@ namespace __SCRIPTS
 
 		private void UpdateBarFill()
 		{
-			if (_life == null) return;
+			if (_health == null) return;
 			if (healthBar == null) return;
 
-			if (_life.unitData == null || !_life.unitData.showLifeBar) return;
-			targetFill = _life.GetFraction();
+			if (stats.Data == null || !stats.Data.showLifeBar) return;
+			targetFill = _health.GetFraction;
 			if (targetFill > .9f || targetFill <= 0)
 				healthBar.SetActive(false);
 			else
@@ -282,13 +278,10 @@ namespace __SCRIPTS
 		public void OnPoolDespawn()
 		{
 			// Clean up event subscriptions when despawning
-			if (_life != null)
-			{
-				_life.OnDamaged -= Life_Damaged;
-				_life.OnFractionChanged -= DefenceOnDefenceChanged;
-				_life.OnDying -= DefenceOnDead;
-				_life.OnPlayerSet -= OnPlayerSet;
-			}
+			if (_health == null) return;
+			_health.OnDamaged -= HealthDamaged;
+			_health.OnFractionChanged -= DefenceOnDefenceChanged;
+			_health.OnDying -= DefenceOnDying;
 		}
 	}
 }

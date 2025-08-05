@@ -12,7 +12,7 @@ namespace __SCRIPTS
 		private void Start()
 		{
 
-			levelManager.OnPlayerSpawned += AddMembersToCameraFollowTargetGroup;
+			levelManager.OnLevelSpawnedPlayer += AddMembersToCameraFollowTargetGroup;
 			playerManager.OnPlayerDies += Player_PlayerDies;
 			levelManager.OnStopLevel += LevelManager_OnStopLevel;
 

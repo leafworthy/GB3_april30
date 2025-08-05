@@ -1,350 +1,139 @@
 ﻿using System;
 using GangstaBean.Core;
 using UnityEngine;
-using VInspector;
 using IPoolable = GangstaBean.Core.IPoolable;
 
 namespace __SCRIPTS
 {
-	public class Life : ServiceUser, INeedPlayer, IPoolable
+[RequireComponent(typeof(UnitStats), typeof(UnitHealth))]
+	public class Life : ServiceUser, ICanAttack, INeedPlayer
 	{
-		[HideInInspector] public Player player;
-		public UnitStatsData unitData => GetCachedStats();
+		// Core components
+		private UnitStats unitStats => _unitStats ??= GetComponent<UnitStats>();
+		private UnitStats _unitStats;
+		private UnitHealth unitHealth => _unitHealth ??= GetComponent<UnitHealth>();
+		private UnitHealth _unitHealth;
 
-		[SerializeField] private UnitStatsData _unitData;
-		public float ExtraMaxHealthFactor;
-		public float ExtraMaxSpeedFactor;
-		public float ExtraMaxDamageFactor;
 
-		public float AttackHeight => 5f; // Default value since not in CSV
+		public UnitStatsData unitData => unitStats?.Data;
+		public float Health => unitHealth?.CurrentHealth ?? 0f;
+		public float HealthMax => unitHealth?.MaxHealth ?? 100f;
+		public bool IsDead() => unitHealth?.IsDead ?? false;
+		public bool cantDie => unitHealth?.CanDie == false;
 
-		public float PrimaryAttackDamageWithExtra =>
-			unitData.attack1Damage + ExtraMaxDamageFactor * unitData.attack1Damage;
+		public bool IsInvincible => unitHealth?.IsInvincible ?? false;
 
-		public float PrimaryAttackRange => unitData.attack1Range;
-		public float PrimaryAttackRate => unitData.attack1Rate;
+		public float ExtraMaxDamageFactor => unitStats?.ExtraDamageFactor ?? 0f;
 
-		public float SecondaryAttackDamageWithExtra =>
-			unitData.attack2Damage + ExtraMaxDamageFactor * unitData.attack2Damage;
+		public float ExtraMaxSpeedFactor => unitStats?.ExtraSpeedFactor ?? 0f;
 
-		public float SecondaryAttackRange => unitData.attack2Range;
-		public float SecondaryAttackRate => unitData.attack2Rate;
+		public float PrimaryAttackDamageWithExtra => unitStats?.GetAttackDamage(1) ?? 0f;
+		public float PrimaryAttackRange => unitStats?.GetAttackRange(1) ?? 0f;
+		public float PrimaryAttackRate => unitStats?.GetAttackRate(1) ?? 0f;
 
-		public float TertiaryAttackDamageWithExtra =>
-			unitData.attack3Damage + ExtraMaxDamageFactor * unitData.attack3Damage;
+		public float SecondaryAttackDamageWithExtra => unitStats?.GetAttackDamage(2) ?? 0f;
+		public float SecondaryAttackRange => unitStats?.GetAttackRange(2) ?? 0f;
+		public float SecondaryAttackRate => unitStats?.GetAttackRate(2) ?? 0f;
 
-		public float TertiaryAttackRange => unitData.attack3Range;
-		public float TertiaryAttackRate => unitData.attack3Rate;
+		public float TertiaryAttackDamageWithExtra => unitStats?.GetAttackDamage(3) ?? 0f;
+		public float TertiaryAttackRange => unitStats?.GetAttackRange(3) ?? 0f;
+		public float TertiaryAttackRate => unitStats?.GetAttackRate(3) ?? 0f;
 
-		public float UnlimitedAttackDamageWithExtra =>
-			unitData.attack4Damage + ExtraMaxDamageFactor * unitData.attack4Damage;
+		public float UnlimitedAttackDamageWithExtra => unitStats?.GetAttackDamage(4) ?? 0f;
+		public float UnlimitedAttackRange => unitStats?.GetAttackRange(4) ?? 0f;
+		public float UnlimitedAttackRate => unitStats?.GetAttackRate(4) ?? 0f;
 
-		public float UnlimitedAttackRange => unitData.attack4Range;
-		public float UnlimitedAttackRate => unitData.attack4Rate;
+		// Other legacy properties
+		public float MoveSpeed => unitStats?.MoveSpeed ?? 0f;
+		public float DashSpeed => unitStats?.DashSpeed ?? 0f;
+		public float JumpSpeed => unitStats?.JumpSpeed ?? 0f;
+		public float AggroRange => unitStats?.AggroRange ?? 0f;
+		public float AttackHeight => unitStats?.AttackHeight ?? 5f;
+		public bool IsObstacle => unitStats?.IsObstacle ?? false;
+		public bool IsPlayerAttackable => unitStats?.IsPlayerAttackable ?? false;
+		public Player player => _player;
+		private Player _player;
+		public DebrisType DebrisType => unitStats?.DebrisType ?? default;
 
-		public float HealthMax => unitData != null ? unitData.healthMax + ExtraMaxHealthFactor * unitData.healthMax : 100f;
-		public float MoveSpeed => unitData.moveSpeed + ExtraMaxSpeedFactor * unitData.moveSpeed;
-		public float DashSpeed => unitData.dashSpeed + ExtraMaxSpeedFactor * unitData.dashSpeed;
-
-		public bool IsPlayer => IsThisAPlayer();
-
-		public bool isEnemyOf(Life otherLife) => IsPlayer != otherLife.IsPlayer;
-
-		private bool IsThisAPlayer() => player != null && player.IsPlayer();
-
-		// Note: isObstacle not directly available - inferring from category
-		public bool IsObstacle => unitData.category == UnitCategory.Obstacle;
-
-		// Note: isPlayerAttackable mapped to isPlayerSwingHittable (inverted logic)
-		public bool IsPlayerAttackable => unitData.isPlayerSwingHittable;
-
-		public DebrisType DebrisType => unitData.debrisType;
-		public float JumpSpeed => unitData.jumpSpeed;
-		public float AggroRange => unitData.aggroRange;
-
-		private bool playerSet;
-		public void SetPlayer(Player _player)
-		{
-			if (playerSet) return;
-			playerSet = true;
-			player = _player;
-			OnPlayerSet?.Invoke(player);
-			var playerComponents = gameObject.GetComponents<INeedPlayer>();
-			foreach (var playerComponent in playerComponents)
-			{
-				playerComponent?.SetPlayer(player);
-			}
-		}
-
-		private UnitStatsData GetCachedStats()
-		{
-			_unitData = GetStats();
-
-			return _unitData;
-		}
-
-		[Button]
-		private UnitStatsData GetStats()
-		{
-			var original = gameObject.name;
-			_unitData = unitStatsManager.GetUnitStats(original);
-			return _unitData;
-		}
-
-		public bool cantDie;
-		public bool isInvincible;
-
-		public event Action<Attack, Life> OnAttackShielded;
 		public event Action<Attack, Life> OnAttackHit;
 		public event Action<Attack> OnDamaged;
 		public event Action<float> OnFractionChanged;
 		public event Action<Player, Life> OnDying;
 		public event Action<Player, Life> OnKilled;
 		public event Action<Player> OnDead;
-		public event Action<Player> OnResurrected;
 		public event Action<Attack> OnWounded;
 
-		private AnimationEvents animationEvents;
-		private Animations anim;
-		private bool isDead;
-		private LayerMask originalLayer;
 
-		[HideInInspector] public float Health;
-		private Color backgroundColor;
-		public bool isShielded;
-		public event Action<Player> OnPlayerSet;
+		public bool IsPlayer => player != null && player.IsPlayer();
 
-		public float GetFraction()
+		public void SetPlayer(Player newPlayer)
 		{
-			if (HealthMax <= 0) return 0;
-			return Health / HealthMax;
-		}
+			Debug.Log( "Setting player for Life component: " + newPlayer?.name);
+			_player = newPlayer;
 
-		private void Start()
-		{
-			// Ensure stats are loaded before initializing
-			GetCachedStats();
-
-			// Only initialize if we have valid stats or can work without them
-			InitializeLife();
-		}
-
-		private void InitializeLife()
-		{
-			anim = GetComponent<Animations>();
-			if (anim != null)
+			// Notify other components that need the player
+			foreach (var component in GetComponents<INeedPlayer>())
 			{
-				anim.animEvents.OnDieStop += Die;
-				anim.animEvents.OnInvincible += SetInvincible;
+				if (component != this)
+					component.SetPlayer(player);
 			}
-
-			originalLayer = gameObject.layer;
-			ResetHealthToMax();
-			isDead = false;
-			isInvincible = false;
-			OnFractionChanged?.Invoke(GetFraction());
-
-			// Ensure colliders are enabled
-			EnableAllColliders();
-			// Reset layer if it was changed to Dead
-			gameObject.layer = originalLayer;
 		}
 
-		private void SetInvincible(bool _isInvincible)
+		public bool IsEnemyOf(Life other) => IsPlayer != other.IsPlayer;
+		private void Awake()
 		{
-			isInvincible = _isInvincible;
+			SetupEventForwarding();
 		}
 
-		private void ResetHealthToMax()
+		private void SetupEventForwarding()
 		{
-			var maxHealth = HealthMax;
-			if (maxHealth > 0)
-				Health = maxHealth;
-			else
-			{
-				// Fallback value if HealthMax is invalid
-				Health = 100f;
-			}
+			unitHealth.OnDamaged += attack => OnDamaged?.Invoke(attack);
+			unitHealth.OnFractionChanged += fraction => OnFractionChanged?.Invoke(fraction);
+			unitHealth.OnDying += (p, u) => OnDead?.Invoke(p);
 		}
 
 		public void TakeDamage(Attack attack)
 		{
-			if (IsDead()) return;
-			if (attack.DestinationLife.isInvincible) return;
-			// Check if this unit is invincible from the data
-			if (unitData.isInvincible) return;
-			if (isShielded)
+			unitHealth?.TakeDamage(attack);
+
+			// Fire additional legacy events
+			if (!unitHealth.IsDead)
+				OnAttackHit?.Invoke(attack, this);
+
+			if (unitHealth.CurrentHealth <= 0)
 			{
-				// If shielded, do not take damage but still invoke the hit event
-				OnAttackShielded?.Invoke(attack, this);
-				return;
-			}
-
-			OnDamaged?.Invoke(attack);
-			ChangeHealth(attack);
-
-			CameraShaker.ShakeCamera(transform.position, CameraShaker.ShakeIntensityType.normal);
-			if (anim != null)
-			{
-				anim.SetTrigger(Animations.HitTrigger);
-				if (attack.IsWounding)
-				{
-					//OnWounded?.Invoke(attack);
-					//do damaging hit
-				}
-			}
-
-			OnAttackHit?.Invoke(attack, this);
-			//should be different based on material
-
-			if (!(Health <= 0)) return;
-			Health = 0;
-			StartDying(attack);
-		}
-
-		private void DrawX(Vector2 pos, float size, Color color)
-		{
-			var topLeft = new Vector2(pos.x - size, pos.y - size);
-			var topRight = new Vector2(pos.x + size, pos.y - size);
-			var bottomLeft = new Vector2(pos.x - size, pos.y + size);
-			var bottomRight = new Vector2(pos.x + size, pos.y + size);
-		}
-
-		private void ChangeHealth(Attack attack)
-		{
-			Health -= attack.DamageAmount;
-			OnFractionChanged?.Invoke(Health / HealthMax);
-		}
-
-		private void StartDying(Attack attack)
-		{
-			if (cantDie) return;
-
-			if (isDead) return;
-			OnWounded?.Invoke(attack);
-			OnDying?.Invoke(attack.Owner, this);
-
-			if (attack.Owner != null) OnKilled?.Invoke(attack.Owner, this);
-			if (anim != null)
-			{
-				anim.SetTrigger(Animations.DeathTrigger);
-				anim.SetBool(Animations.IsDead, true);
-			}
-
-			DisableCollidersLayerAndHealth();
-		}
-
-		private void DisableCollidersLayerAndHealth()
-		{
-			DisableAllColliders();
-			gameObject.layer = LayerMask.NameToLayer("Dead");
-			isDead = true;
-			SetHealth(0);
-		}
-
-		private void Die()
-		{
-			if (cantDie) return;
-			OnDead?.Invoke(player);
-			objectMaker.Unmake(gameObject);
-		}
-
-		private void SetHealth(float newHealth)
-		{
-			Health = Mathf.Min(newHealth, HealthMax);
-			OnFractionChanged?.Invoke(Health / HealthMax);
-		}
-
-		private void DisableAllColliders()
-		{
-			if (cantDie) return;
-			var colliders = GetComponents<Collider2D>();
-			foreach (var col in colliders)
-			{
-				col.enabled = false;
-			}
-
-			var moreColliders = GetComponentsInChildren<Collider2D>();
-			foreach (var col in moreColliders)
-			{
-				col.enabled = false;
+				OnWounded?.Invoke(attack);
+				OnDying?.Invoke(attack.Owner, this);
+				if (attack.Owner != null)
+					OnKilled?.Invoke(attack.Owner, this);
 			}
 		}
 
-		public bool IsDead() => isDead;
-
-		public void AddHealth(float amount)
-		{
-			Health += amount;
-			Health = Math.Min(Health, HealthMax);
-			OnFractionChanged?.Invoke(GetFraction());
-			if (!isDead) return;
-			isDead = false;
-			gameObject.layer = originalLayer;
-			ResetHealthToMax();
-			OnResurrected?.Invoke(player);
-		}
-
-		public void Resurrect()
-		{
-			AddHealth(HealthMax);
-		}
-
-		public void DieNow()
-		{
-			DisableCollidersLayerAndHealth();
-		}
-
-		public void SetExtraMaxHealthFactor(float newExtraMaxHealth)
-		{
-			ExtraMaxHealthFactor = newExtraMaxHealth;
-			OnFractionChanged?.Invoke(GetFraction());
-		}
-
-		public void SetExtraMaxDamageFactor(float newIncreaseMaxDamage)
-		{
-			ExtraMaxDamageFactor = newIncreaseMaxDamage;
-		}
-
-		public void SetExtraMaxSpeedFactor(float newExtraMaxSpeed)
-		{
-			ExtraMaxSpeedFactor = newExtraMaxSpeed;
-		}
-
-		private void EnableAllColliders()
-		{
-			var colliders = GetComponents<Collider2D>();
-			foreach (var col in colliders)
-			{
-				col.enabled = true;
-			}
-
-			var moreColliders = GetComponentsInChildren<Collider2D>();
-			foreach (var col in moreColliders)
-			{
-				col.enabled = true;
-			}
-		}
-
-		public void OnPoolSpawn()
-		{
-			// Reinitialize life when spawned from pool
-			InitializeLife();
-		}
-
-		public void OnPoolDespawn()
-		{
-			// Clean up when returning to pool
-			if (anim != null)
-			{
-				anim.animEvents.OnDieStop -= Die;
-				anim.animEvents.OnInvincible -= SetInvincible;
-			}
-		}
+		public void AddHealth(float amount) => unitHealth?.AddHealth(amount);
+		public void Resurrect() => unitHealth?.Resurrect();
+		public void DieNow() => unitHealth?.KillInstantly();
+		public float GetFraction() => unitHealth?.GetFraction ?? 0f;
 
 		public void SetShielding(bool isOn)
 		{
-			isShielded = isOn;
+			if (unitHealth != null) unitHealth.IsShielded = isOn;
 		}
+
+		// Factor methods (same math as original)
+		public void SetExtraMaxHealthFactor(float factor)
+		{
+			if (unitStats != null) unitStats.ExtraHealthFactor = factor;
+		}
+
+		public void SetExtraMaxDamageFactor(float factor)
+		{
+			if (unitStats != null) unitStats.ExtraDamageFactor = factor;
+		}
+
+		public void SetExtraMaxSpeedFactor(float factor)
+		{
+			if (unitStats != null) unitStats.ExtraSpeedFactor = factor;
+		}
+
 	}
 }

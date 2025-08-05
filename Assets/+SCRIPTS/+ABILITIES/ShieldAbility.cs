@@ -27,7 +27,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 	private JumpAbility jumps;
 	private JumpController jumpController;
 	private Body body;
-	private Animations anim;
+	private UnitAnimations anim;
 	private bool isDashing;
 	private bool isShielding;
 	public AnimationClip shieldOutClip;
@@ -58,7 +58,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 
 	public void SetPlayer(Player _player)
 	{
-		anim = GetComponent<Animations>();
+		anim = GetComponent<UnitAnimations>();
 		body = GetComponent<Body>();
 		jumps = GetComponent<JumpAbility>();
 		jumpController = GetComponent<JumpController>();
@@ -82,7 +82,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 		foreach (var hit in hits)
 		{
 			var _life = hit.GetComponent<Life>();
-			if (_life != null && _life.isEnemyOf(life))
+			if (_life != null && _life.IsEnemyOf(life))
 			{
 
 				var movement = hit.GetComponent<MoveAbility>();
@@ -181,7 +181,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 	{
 
 		isDashing = isOn;
-		if (isOn) anim.SetTrigger(Animations.DashTrigger);
+		if (isOn) anim.SetTrigger(UnitAnimations.DashTrigger);
 		else body.legs.Stop(shieldDashActivity);
 	}
 
@@ -193,7 +193,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 			body.arms.Stop(this);
 		}
 		isShielding = isOn;
-		anim.SetBool(Animations.IsShielding, isOn);
+		anim.SetBool(UnitAnimations.IsShielding, isOn);
 		life.SetShielding(isOn);
 
 	}

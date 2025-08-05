@@ -29,6 +29,4 @@ public class ServiceUser : MonoBehaviour
 	protected ASSETS assets => _assets ?? ServiceLocator.Get<ASSETS>();
 	private RisingTextCreator _risingText;
 	protected RisingTextCreator risingText => _risingText ?? ServiceLocator.Get<RisingTextCreator>();
-	private UnitStatsManager _unitStatsManager;
-	protected UnitStatsManager unitStatsManager => _unitStatsManager ?? ServiceLocator.Get<UnitStatsManager>();
 }

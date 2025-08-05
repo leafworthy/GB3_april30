@@ -6,6 +6,7 @@ using __SCRIPTS._ENEMYAI;
 public class CrimsonAnimations : StateMachine<CrimsonAnimations>
 {
 	private static readonly int IsRunning = Animator.StringToHash("IsRunning");
+
 	public Animator animator => _animator ??= GetComponentInChildren<Animator>();
 	private Animator _animator;
 	public List<GameObject> patrolPoints = new();
@@ -25,6 +26,10 @@ public class CrimsonAnimations : StateMachine<CrimsonAnimations>
 	protected override void Start()
 	{
 		base.Start();
+
+		var enemyManager = ServiceLocator.Get<EnemyManager>();
+			enemyManager.ConfigureNewEnemy(gameObject);
+
 		idleState = new IdleState();
 		runToPointState = new RunToPointState();
 		SwitchState(idleState);

@@ -29,7 +29,7 @@ namespace __SCRIPTS
 		private GunAimAbility aim;
 		private Arms arms;
 		private Body body;
-		private Animations anim;
+		private UnitAnimations anim;
 		private AmmoInventory ammoInventory;
 		public override string VerbName => "Shooting";
 
@@ -51,7 +51,7 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player player)
 		{
 			ammoInventory = GetComponent<AmmoInventory>();
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			body = GetComponent<Body>();
 			arms = body.arms;
 			aim = GetComponent<GunAimAbility>();
@@ -89,7 +89,7 @@ namespace __SCRIPTS
 			arms.Stop( reloadActivity);
 			if (!isPressing)
 			{
-				anim.SetBool(Animations.IsBobbing, true);
+				anim.SetBool(UnitAnimations.IsBobbing, true);
 				return;
 			}
 
@@ -173,8 +173,8 @@ namespace __SCRIPTS
 		private void StartShooting()
 		{
 			isShooting = true;
-			anim.SetBool(Animations.IsShooting, true);
-			anim.SetBool(Animations.IsBobbing, false);
+			anim.SetBool(UnitAnimations.IsShooting, true);
+			anim.SetBool(UnitAnimations.IsBobbing, false);
 		}
 
 		private void StopShooting()
@@ -185,8 +185,8 @@ namespace __SCRIPTS
 
 
 			if (anim == null) return;
-			anim.SetBool(Animations.IsShooting, false);
-			anim.SetBool(Animations.IsBobbing, true);
+			anim.SetBool(UnitAnimations.IsShooting, false);
+			anim.SetBool(UnitAnimations.IsBobbing, true);
 		}
 
 		private void PlayerControllerShootRelease(NewControlButton newControlButton)
@@ -310,8 +310,8 @@ namespace __SCRIPTS
 			}
 
 			if (!arms.Do(reloadActivity)) return;
-			anim.SetBool(Animations.IsShooting, false);
-			anim.SetBool(Animations.IsBobbing, false);
+			anim.SetBool(UnitAnimations.IsShooting, false);
+			anim.SetBool(UnitAnimations.IsBobbing, false);
 			isReloading = true;
 			if (isGlocking)
 				anim.Play(aim.AimDir.x > 0 ? ReloadGlockAnimationClip.name : ReloadGlockAnimationLeftClip.name, 1, 0);

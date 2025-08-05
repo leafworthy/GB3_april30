@@ -68,11 +68,11 @@ namespace __SCRIPTS
 			spawnedPlayerGO.transform.position = position;
 			SetSpawnedPlayerGO(spawnedPlayerGO);
 
-			var animations = spawnedPlayerGO.GetComponentInChildren<Animations>();
-			if (animations != null) animations.SetBool(Animations.IsFallingFromSky, fallFromSky);
+			var animations = spawnedPlayerGO.GetComponentInChildren<UnitAnimations>();
+			if (animations != null) animations.SetBool(UnitAnimations.IsFallingFromSky, fallFromSky);
 
 			if (playerUpgrades != null) playerUpgrades.ApplyUpgrades(this);
-
+			Debug.Log("PLAYER: Player spawned: " + spawnedPlayerGO.name);
 			return spawnedPlayerGO;
 		}
 
@@ -86,10 +86,9 @@ namespace __SCRIPTS
 
 			spawnedPlayerDefence.OnDead += OnPlayerDied;
 
-			var needPlayerComponents = newGO.GetComponents<INeedPlayer>();
-			foreach (var component in needPlayerComponents)
+			foreach (var needPlayer in SpawnedPlayerGO.GetComponentsInChildren<INeedPlayer>(true))
 			{
-				component?.SetPlayer(this);
+				needPlayer.SetPlayer(this);
 			}
 		}
 
@@ -116,7 +115,7 @@ namespace __SCRIPTS
 			sayer.Say(message, sayTimeInSeconds);
 		}
 
-		public void Join(PlayerInput playerInput, PlayerData playerData, int index)
+		public void ConnectPlayerToController(PlayerInput playerInput, PlayerData playerData, int index)
 		{
 			if (playerData == null) return;
 
@@ -142,7 +141,10 @@ namespace __SCRIPTS
 			if (Controller == null) return;
 
 			Controller.InitializeAndLinkToPlayer(this);
+		}
 
+		public void StartSelectingCharacter()
+		{
 			SetState(State.SelectingCharacter);
 		}
 

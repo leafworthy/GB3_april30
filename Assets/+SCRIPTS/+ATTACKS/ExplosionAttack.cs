@@ -9,14 +9,14 @@ namespace __SCRIPTS
 		private Life currentTargetLife;
 		private EnemyAI _ai;
 		private EnemyAI ai => _ai ??= GetComponent<EnemyAI>();
-		private Animations anim;
+		private UnitAnimations anim;
 		private float explosionRadius = 5;
 		public override string VerbName => "ExplosionAttack";
 
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			anim.animEvents.OnAttackHit += AttackHit;
 			if (attacker.IsPlayer)
 			{
@@ -63,7 +63,7 @@ namespace __SCRIPTS
 			if (attacker.IsDead()) return;
 			var move = GetComponent<MoveAbility>();
 			currentTargetLife = newTarget;
-			anim.SetTrigger(Animations.Attack1Trigger);
+			anim.SetTrigger(UnitAnimations.Attack1Trigger);
 			move.Push(currentTargetLife.transform.position - transform.position, 4);
 		}
 
@@ -78,7 +78,7 @@ namespace __SCRIPTS
 
 			currentTargetLife = hitObject.collider.gameObject.GetComponent<Life>();
 			if (currentTargetLife == null) return;
-			anim.SetTrigger(Animations.Attack1Trigger);
+			anim.SetTrigger(UnitAnimations.Attack1Trigger);
 		}
 
 

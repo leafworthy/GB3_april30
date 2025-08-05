@@ -4,12 +4,12 @@ namespace __SCRIPTS
 {
     public class Donut_SFX : ServiceUser
     {
-        private Animations anim;
+        private UnitAnimations anim;
         private AnimationEvents animEvents;
 
         private void OnEnable()
         {
-            anim = GetComponent<Animations>();
+            anim = GetComponent<UnitAnimations>();
             animEvents = anim.animEvents;
             animEvents.OnAttackHit += Anim_OnAttackHit;
             animEvents.OnStep += Anim_OnStep;

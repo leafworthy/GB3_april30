@@ -23,7 +23,7 @@ namespace __SCRIPTS
 		private Life life;
 		private Body body;
 		private Arms arms => body.arms;
-		private Animations anim;
+		private UnitAnimations anim;
 		private AnimationEvents animationEvents;
 
 		private bool isPressing;
@@ -47,7 +47,7 @@ namespace __SCRIPTS
 
 		public void SetPlayer(Player _player)
 		{
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			animationEvents = anim.animEvents;
 			body = GetComponent<Body>();
 			life = GetComponent<Life>();

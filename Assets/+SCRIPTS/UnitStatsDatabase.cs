@@ -1,150 +1,204 @@
- using System;
- using System.Collections;
- using System.Collections.Generic;
- using __SCRIPTS;
- using UnityEngine;
- using UnityEngine.Networking;
- using VInspector;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using __SCRIPTS;
+using UnityEngine;
+using UnityEngine.Networking;
 
- [CreateAssetMenu(menuName = "My Assets/UnitStatsDatabase")]
-    public class UnitStatsDatabase : ScriptableObject
-    {
-        [Header("Google Sheets Configuration")]
-        public GoogleSheetsConfig googleSheetsConfig = new GoogleSheetsConfig();
+[CreateAssetMenu(menuName = "My Assets/UnitStatsDatabase")]
+public class UnitStatsDatabase : ScriptableObject
+{
+	[Header("Google Sheets Configuration")]
+	public GoogleSheetsConfig googleSheetsConfig = new();
 
-        [Header("Database")]
-        public List<UnitStatsData> allUnits = new List<UnitStatsData>();
+	[Header("Database")] public List<UnitStatsData> allUnits = new();
 
-        [Header("Status")]
-        public bool isLoading = false;
-        public string lastLoadTime = "";
-        public string lastError = "";
+	[Header("Status")] public bool isLoading;
+	public string lastLoadTime = "";
+	public string lastError = "";
 
-        public event System.Action<bool> OnDataLoaded; // bool = success
+	public event Action<bool> OnDataLoaded; // bool = success
 
-        public void LoadFromGoogleSheets(MonoBehaviour coroutineRunner)
-        {
-            if (string.IsNullOrEmpty(googleSheetsConfig.documentId))
-            {
-                Debug.LogError("Google Sheets Document ID is not set!");
-                return;
-            }
+	// Internal coroutine runner - singleton pattern
+	private static CoroutineRunner coroutineRunner;
 
-            coroutineRunner.StartCoroutine(LoadDataCoroutine());
-        }
+	private static CoroutineRunner GetCoroutineRunner()
+	{
+		if (coroutineRunner == null)
+		{
+			var runnerObject = new GameObject("UnitStatsDatabase_CoroutineRunner");
+			coroutineRunner = runnerObject.AddComponent<CoroutineRunner>();
+		}
 
+		return coroutineRunner;
+	}
 
-        private IEnumerator LoadDataCoroutine()
-        {
-            isLoading = true;
-            lastError = "";
+	// Overloaded method - backwards compatible
+	public void LoadFromGoogleSheets(MonoBehaviour coroutineRunner = null)
+	{
+		if (string.IsNullOrEmpty(googleSheetsConfig.documentId))
+		{
+			Debug.LogError("Google Sheets Document ID is not set!");
+			OnDataLoaded?.Invoke(false);
+			return;
+		}
 
-            string url = googleSheetsConfig.GetCSVUrl();
-            Debug.Log($"Loading data from: {url}");
+		// Use provided runner or create our own
+		if (coroutineRunner != null)
+			coroutineRunner.StartCoroutine(LoadDataCoroutine());
+		else
+			GetCoroutineRunner().StartCoroutine(LoadDataCoroutine());
+	}
 
-            using (UnityWebRequest request = UnityWebRequest.Get(url))
-            {
-                // Set timeout
-                request.timeout = 30;
+	// New self-sufficient method
+	public void LoadFromGoogleSheets()
+	{
+		LoadFromGoogleSheets(null);
+	}
 
-                yield return request.SendWebRequest();
+	private IEnumerator LoadDataCoroutine()
+	{
+		isLoading = true;
+		lastError = "";
 
-                if (request.result == UnityWebRequest.Result.Success)
-                {
-                    try
-                    {
-                        ParseCSVData(request.downloadHandler.text);
-                        lastLoadTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                        Debug.Log($"Successfully loaded {allUnits.Count} units from Google Sheets");
-                        OnDataLoaded?.Invoke(true);
-                    }
-                    catch (System.Exception e)
-                    {
-                        lastError = $"Parse error: {e.Message}";
-                        Debug.LogError($"Error parsing CSV data: {e.Message}");
-                        OnDataLoaded?.Invoke(false);
-                    }
-                }
-                else
-                {
-                    lastError = $"Network error: {request.error}";
-                    Debug.LogError($"Error loading from Google Sheets: {request.error}");
-                    OnDataLoaded?.Invoke(false);
-                }
-            }
+		var url = googleSheetsConfig.GetCSVUrl();
+		Debug.Log($"Loading data from: {url}");
 
-            isLoading = false;
-        }
+		using (var request = UnityWebRequest.Get(url))
+		{
+			// Set timeout
+			request.timeout = 30;
 
-        private void ParseCSVData(string csvText)
-        {
-            allUnits.Clear();
+			yield return request.SendWebRequest();
 
-            string[] lines = csvText.Split('\n');
-            if (lines.Length <= 1) return;
+			if (request.result == UnityWebRequest.Result.Success)
+			{
+				try
+				{
+					ParseCSVData(request.downloadHandler.text);
+					lastLoadTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+					Debug.Log($"Successfully loaded {allUnits.Count} units from Google Sheets");
+					OnDataLoaded?.Invoke(true);
+				}
+				catch (Exception e)
+				{
+					lastError = $"Parse error: {e.Message}";
+					Debug.LogError($"Error parsing CSV data: {e.Message}");
+					OnDataLoaded?.Invoke(false);
+				}
+			}
+			else
+			{
+				lastError = $"Network error: {request.error}";
+				Debug.LogError($"Error loading from Google Sheets: {request.error}");
+				OnDataLoaded?.Invoke(false);
+			}
+		}
 
-            // Parse header
-            string[] headers = ParseCSVLine(lines[0]);
+		isLoading = false;
+	}
 
-            // Parse data rows
-            for (int i = 1; i < lines.Length; i++)
-            {
-                if (string.IsNullOrWhiteSpace(lines[i])) continue;
+	private void ParseCSVData(string csvText)
+	{
+		allUnits.Clear();
 
-                string[] values = ParseCSVLine(lines[i]);
-                if (values.Length < headers.Length)
-                {
-                    // Pad with empty strings if row is shorter
-                    Array.Resize(ref values, headers.Length);
-                    for (int j = 0; j < values.Length; j++)
-                    {
-                        if (values[j] == null) values[j] = "";
-                    }
-                }
+		var lines = csvText.Split('\n');
+		if (lines.Length <= 1) return;
 
-                // Create dictionary for this row
-                Dictionary<string, string> rowData = new Dictionary<string, string>();
-                for (int j = 0; j < headers.Length && j < values.Length; j++)
-                {
-                    rowData[headers[j].Trim()] = values[j]?.Trim() ?? "";
-                }
+		// Parse header
+		var headers = ParseCSVLine(lines[0]);
 
-                // Skip rows without a name
-                if (!rowData.ContainsKey("Name") || string.IsNullOrEmpty(rowData["Name"]))
-                    continue;
+		// Parse data rows
+		for (var i = 1; i < lines.Length; i++)
+		{
+			if (string.IsNullOrWhiteSpace(lines[i])) continue;
 
-                // Create UnitStatsData
-                UnitStatsData unitStats = new UnitStatsData(rowData);
-                allUnits.Add(unitStats);
-            }
-        }
+			var values = ParseCSVLine(lines[i]);
+			if (values.Length < headers.Length)
+			{
+				// Pad with empty strings if row is shorter
+				Array.Resize(ref values, headers.Length);
+				for (var j = 0; j < values.Length; j++)
+				{
+					if (values[j] == null)
+						values[j] = "";
+				}
+			}
 
-        private string[] ParseCSVLine(string line)
-        {
-            List<string> result = new List<string>();
-            bool inQuotes = false;
-            string currentField = "";
+			// Create dictionary for this row
+			var rowData = new Dictionary<string, string>();
+			for (var j = 0; j < headers.Length && j < values.Length; j++)
+				rowData[headers[j].Trim()] = values[j]?.Trim() ?? "";
 
-            for (int i = 0; i < line.Length; i++)
-            {
-                char c = line[i];
+			// Skip rows without a name
+			if (!rowData.ContainsKey("Name") || string.IsNullOrEmpty(rowData["Name"]))
+				continue;
 
-                if (c == '"')
-                {
-                    inQuotes = !inQuotes;
-                }
-                else if (c == ',' && !inQuotes)
-                {
-                    result.Add(currentField);
-                    currentField = "";
-                }
-                else
-                {
-                    currentField += c;
-                }
-            }
+			// Create UnitStatsData
+			var unitStats = new UnitStatsData(rowData);
+			allUnits.Add(unitStats);
+		}
+	}
 
-            result.Add(currentField);
-            return result.ToArray();
-        }
-    }
+	private string[] ParseCSVLine(string line)
+	{
+		var result = new List<string>();
+		var inQuotes = false;
+		var currentField = "";
+
+		for (var i = 0; i < line.Length; i++)
+		{
+			var c = line[i];
+
+			if (c == '"')
+				inQuotes = !inQuotes;
+			else if (c == ',' && !inQuotes)
+			{
+				result.Add(currentField);
+				currentField = "";
+			}
+			else
+				currentField += c;
+		}
+
+		result.Add(currentField);
+		return result.ToArray();
+	}
+
+	// Clean up when the application quits
+	private void OnDestroy()
+	{
+		if (coroutineRunner == null) return;
+		if (Application.isPlaying) DestroyImmediate(coroutineRunner.gameObject);
+		coroutineRunner = null;
+	}
+
+	private class CoroutineRunner : MonoBehaviour
+	{
+		private void Awake()
+		{
+			// Hide in hierarchy to reduce clutter
+			gameObject.hideFlags = HideFlags.HideInHierarchy;
+		}
+	}
+
+#if UNITY_EDITOR
+	// Editor utility methods
+	[UnityEditor.MenuItem("Tools/UnitStats/Force Reload All Databases")]
+	private static void ForceReloadAllDatabases()
+	{
+		var databases = Resources.FindObjectsOfTypeAll<UnitStatsDatabase>();
+		foreach (var database in databases)
+		{
+			database.LoadFromGoogleSheets();
+		}
+	}
+
+	// Context menu for individual database assets
+	[ContextMenu("Reload from Google Sheets")]
+	private void ReloadFromGoogleSheets()
+	{
+		LoadFromGoogleSheets();
+	}
+#endif
+}

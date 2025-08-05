@@ -158,17 +158,17 @@ namespace __SCRIPTS
 			parent.CancelInvoke();
 
 			// Get common components that abilities use
-			var animations = parent.GetComponent<Animations>();
+			var animations = parent.GetComponent<UnitAnimations>();
 			var body = parent.GetComponent<Body>();
 
 			// Reset common animation states
 			if (animations != null)
 			{
-				animations.SetBool(Animations.IsAttacking, false);
-				animations.SetBool(Animations.IsShooting, false);
-				animations.SetBool(Animations.IsCharging, false);
-				animations.SetBool(Animations.IsShielding, false);
-				animations.SetBool(Animations.IsBobbing, true); // Default bobbing state
+				animations.SetBool(UnitAnimations.IsAttacking, false);
+				animations.SetBool(UnitAnimations.IsShooting, false);
+				animations.SetBool(UnitAnimations.IsCharging, false);
+				animations.SetBool(UnitAnimations.IsShielding, false);
+				animations.SetBool(UnitAnimations.IsBobbing, true); // Default bobbing state
 			}
 
 			// Body part cleanup is handled by the body parts themselves via StopSafely()

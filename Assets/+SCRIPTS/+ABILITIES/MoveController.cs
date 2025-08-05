@@ -25,13 +25,13 @@ namespace __SCRIPTS
 		private MoveAbility mover;
 		private Player owner;
 		private float damagePushMultiplier = 1;
-		private Animations anim;
+		private UnitAnimations anim;
 		private bool isWounded;
 		private IMove ai;
 		public void SetPlayer(Player _player)
 		{
 			Debug.Log("player set");
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 
 			mover = GetComponent<MoveAbility>();
 			body = GetComponent<Body>();
@@ -92,6 +92,7 @@ namespace __SCRIPTS
 			if (life == null) return;
 			if (life.IsPlayer)
 			{
+				Debug.Log("disable here");
 				owner.Controller.MoveAxis.OnChange -= Player_MoveInDirection;
 				owner.Controller.MoveAxis.OnInactive -= Player_StopMoving;
 			}
@@ -208,13 +209,13 @@ namespace __SCRIPTS
 			if (direction.x != 0) body.BottomFaceDirection(direction.x > 0);
 			mover.MoveInDirection(direction, life.MoveSpeed);
 
-			anim.SetBool(Animations.IsMoving, true);
+			anim.SetBool(UnitAnimations.IsMoving, true);
 		}
 
 		private void StopMoving()
 		{
 			if (pauseManager.IsPaused) return;
-			anim.SetBool(Animations.IsMoving, false);
+			anim.SetBool(UnitAnimations.IsMoving, false);
 			mover.StopMoving();
 		}
 

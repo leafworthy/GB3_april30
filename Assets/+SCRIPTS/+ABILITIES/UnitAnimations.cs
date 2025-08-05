@@ -4,7 +4,7 @@ using GangstaBean.Core;
 
 namespace __SCRIPTS
 {
-	public class Animations : MonoBehaviour, IPoolable
+	public class UnitAnimations : MonoBehaviour, IPoolable
 	{
 		public AnimationEvents animEvents => _animEvents ??= GetComponentInChildren<AnimationEvents>();
 		private AnimationEvents _animEvents;

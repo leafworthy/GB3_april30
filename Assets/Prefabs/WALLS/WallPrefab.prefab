@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5303026099407855822}
   - component: {fileID: 3652207356314461258}
   - component: {fileID: 1094585311617268850}
-  - component: {fileID: 7517398321939239877}
   m_Layer: 10
   m_Name: Graphic
   m_TagString: Untagged
@@ -102,7 +101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteForShape: {fileID: 0}
   shadowType: 3
   shadowLayer: 0
   shadowDistance: 0
@@ -122,12 +120,12 @@ MonoBehaviour:
     invertX: 0
     invertY: 0
     depth: 1
-    spriteRenderer: {fileID: 0}
+    spriteRenderer: {fileID: 5303026099407855822}
   mainShape:
     shadowType: 3
     maskType: 1
     maskPivot: 0
-    transform: {fileID: 5390168292169276757}
+    transform: {fileID: 4818401725009083567}
 --- !u!60 &1094585311617268850
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -179,21 +177,6 @@ PolygonCollider2D:
       - {x: 0.33768082, y: -0.029081345}
       - {x: 12.364405, y: 6.1125197}
   m_UseDelaunayMesh: 0
---- !u!114 &7517398321939239877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4974529809545408936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b509a8d54db546588531d5753c1fdd84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  direction: 0
-  hasWindow: 0
-  hasDoor: 0
 --- !u!1 &5748701407442039464
 GameObject:
   m_ObjectHideFlags: 0

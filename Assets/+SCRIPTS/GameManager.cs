@@ -4,10 +4,13 @@ namespace __SCRIPTS
 {
 	public class GameManager : Singleton<GameManager>
 	{
+		static bool hasInitialized;
 		protected override void OnEnable()
 		{
+			if(hasInitialized)return;
 			base.OnEnable();
-			Debug.Log("GameManager started");
+			hasInitialized = true;
+			Debug.Log("GAME MANAGER: GameManager started");
 			DontDestroyOnLoad(gameObject);
 		}
 	}

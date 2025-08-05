@@ -15,7 +15,7 @@ namespace __SCRIPTS
 	{
 		private Life life;
 		private JumpAbility jumpAbility;
-		private Animations anim;
+		private UnitAnimations anim;
 		private AnimationEvents animEvents;
 		private Body body;
 		private float FallInDistance = 80;
@@ -28,7 +28,7 @@ namespace __SCRIPTS
 			life.OnWounded += Life_Wounded;
 			life.player.Controller.Jump.OnPress += Controller_Jump;
 
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			animEvents = anim.animEvents;
 			animEvents.OnRoar += AnimEvents_OnRoar;
 			animEvents.OnLandingStop += AnimEvents_OnLandingStop;
@@ -78,21 +78,21 @@ namespace __SCRIPTS
 
 		private void Life_Wounded(Attack attack)
 		{
-			anim.ResetTrigger(Animations.LandTrigger);
-			anim.SetTrigger(Animations.FlyingTrigger);
+			anim.ResetTrigger(UnitAnimations.LandTrigger);
+			anim.SetTrigger(UnitAnimations.FlyingTrigger);
 			jumpAbility.Jump(body.GetCurrentLandableHeight(), life.JumpSpeed, 99);
 		}
 
 		private void Jump_OnFall(Vector2 obj)
 		{
-			anim.SetBool(Animations.IsFalling, true);
+			anim.SetBool(UnitAnimations.IsFalling, true);
 		}
 
 		private void Jump_OnResting(Vector2 obj)
 		{
 			body.arms.Stop(landingActivity);
 			body.legs.Stop(landingActivity);
-			anim.SetBool(Animations.IsFalling, false);
+			anim.SetBool(UnitAnimations.IsFalling, false);
 		}
 
 		public void Jump()
@@ -102,16 +102,16 @@ namespace __SCRIPTS
 			if (!body.arms.Do(jumpAbility)) return;
 			if (!jumpAbility.isResting) return;
 
-			anim.ResetTrigger(Animations.LandTrigger);
-			anim.SetTrigger(Animations.JumpTrigger);
+			anim.ResetTrigger(UnitAnimations.LandTrigger);
+			anim.SetTrigger(UnitAnimations.JumpTrigger);
 			jumpAbility.Jump(body.GetCurrentLandableHeight(), life.JumpSpeed, 99);
 		}
 
 		private void Land(Vector2 pos)
 		{
-			anim.ResetTrigger(Animations.JumpTrigger);
-			anim.SetTrigger(Animations.LandTrigger);
-			anim.SetBool(Animations.IsFalling, false);
+			anim.ResetTrigger(UnitAnimations.JumpTrigger);
+			anim.SetTrigger(UnitAnimations.LandTrigger);
+			anim.SetBool(UnitAnimations.IsFalling, false);
 			body.legs.StopCurrentActivity();
 			body.arms.StopCurrentActivity();
 			body.arms.Do(landingActivity);

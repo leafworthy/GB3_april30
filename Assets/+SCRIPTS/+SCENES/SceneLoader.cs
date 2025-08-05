@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -32,24 +31,13 @@ namespace __SCRIPTS
 		private SceneDefinition currentlyLoadedScene;
 		private SceneDefinition loadingScene;
 
-
 		public event Action<SceneDefinition> OnSceneReadyToStartLevel;
 
 		#region Lifecycle Methods
 
-
-
-		public void QuitGame()
-		{
-#if UNITY_EDITOR
-			UnityEditor.EditorApplication.isPlaying = false;
-#else
-			Application.Quit();
-#endif
-		}
-
 		public void StartService()
 		{
+			Debug.Log("SCENE LOADER: START SERVICE");
 			SceneManager.sceneLoaded += SceneManager_OnSceneLoaded;
 			pressAnyButtonText.gameObject.SetActive(false);
 			StartFadingIn();
@@ -65,54 +53,41 @@ namespace __SCRIPTS
 			if (!isLoading) return;
 			var progressValue = UpdateLoadingProgress();
 			if (!loadingOperation.allowSceneActivation || !(progressValue >= 1.0f)) return;
-			Debug.Log(  "Scene load complete, fading out now: " + loadingScene?.sceneName);
+			Debug.Log("SCENE LOADER: Scene load complete, fading out now: " + loadingScene?.sceneName);
 			isLoading = false;
 			FadeOut();
 		}
-
-
 
 		#endregion
 
 		#region Public Scene Loading Methods
 
-
 		public void GoToScene(SceneDefinition sceneDefinition)
 		{
-			Debug.Log("go to scene" + sceneDefinition?.sceneName);
-			//FROM LEVEL MANAGER
+			Debug.Log("SCENE LOADER: go to scene " + sceneDefinition?.sceneName);
 			if (sceneDefinition == null || !sceneDefinition.IsValid())
 			{
 				Debug.Log("Invalid scene definition provided, cannot load scene: " + sceneDefinition?.sceneName);
 				return;
 			}
 
-			// Store the destination
-			Debug.Log("loading scene, fade in begins" + sceneDefinition.sceneName);
+			Debug.Log("SCENE LOADER: loading scene, fade in begins" + sceneDefinition.sceneName);
 			loadingScene = sceneDefinition;
-
-			// Start the transition
 			StartFadingIn();
 		}
 
 		#endregion
 
-
 		private void SetCurrentSceneReady(SceneDefinition scene)
 		{
 			if (scene == null) return;
-
 			currentlyLoadedScene = scene;
-
-			OnSceneReadyToStartLevel?.Invoke(currentlyLoadedScene);
 			loadingScene = null;
+			OnSceneReadyToStartLevel?.Invoke(currentlyLoadedScene);
+			Debug.Log("SCENE LOADER: Scene is ready to start level: " + currentlyLoadedScene?.sceneName);
 		}
 
-		#region Animation Callbacks
 
-		/// <summary>
-		/// Called by the fade-in animation when complete
-		/// </summary>
 		public void FadeInComplete()
 		{
 			StartLoadingSceneAsync();
@@ -125,7 +100,6 @@ namespace __SCRIPTS
 				levelTransitionScreen.SetActive(false);
 		}
 
-		#endregion
 
 		#region Private Methods
 
@@ -133,16 +107,14 @@ namespace __SCRIPTS
 		{
 			if (scene.name == assets.Scenes.gameManager)
 			{
-				Debug.Log("game manager scene loaded");
+				Debug.Log("SCENE LOADER: game manager scene loaded");
 				return;
 			}
 
-			Debug.Log("Scene loaded: " + scene.name);
+			Debug.Log("SCENE LOADER: Scene loaded: " + scene.name);
 			isLoading = false;
-
 			SetCurrentSceneReady(assets.Scenes.GetByName(scene.name));
 		}
-
 
 		private void StartFadingIn()
 		{
@@ -164,14 +136,11 @@ namespace __SCRIPTS
 			percentLoadedText.gameObject.SetActive(true);
 		}
 
-
-
 		private void StartLoadingSceneAsync()
 		{
 			isLoading = true;
-			Debug.Log(loadingScene?.sceneName + " is loading async");
 			loadingOperation = SceneManager.LoadSceneAsync(loadingScene.SceneName);
-			Debug.Log("Starting async load for scene: " + loadingScene?.SceneName);
+			Debug.Log("SCENE LOADER: Starting async load for scene: " + loadingScene?.SceneName);
 		}
 
 		private float UpdateLoadingProgress()
@@ -188,7 +157,6 @@ namespace __SCRIPTS
 			return progressValue;
 		}
 
-
 		private void FadeOut()
 		{
 			faderAnimator.SetBool(IsFadedIn, false);
@@ -198,7 +166,5 @@ namespace __SCRIPTS
 		}
 
 		#endregion
-
-
 	}
 }

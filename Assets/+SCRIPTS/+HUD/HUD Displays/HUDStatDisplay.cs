@@ -18,11 +18,11 @@ namespace __SCRIPTS.HUD_Displays
 		private void Start()
 		{
 			levelManager.OnStartLevel += (t) => UpdateDisplay();
-			levelManager.OnPlayerSpawned += (t) => UpdateDisplay();
+			levelManager.OnLevelSpawnedPlayer += (t) => UpdateDisplay();
 		}
 
 
-		public virtual void SetPlayer(Player _player)
+		public void SetPlayer(Player _player)
 		{
 			owner = _player;
 			var playerStats = owner.GetComponent<PlayerStats>();

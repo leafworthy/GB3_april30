@@ -9,7 +9,7 @@ namespace __SCRIPTS
 	{
 		private Player player;
 		private Body body;
-		private Animations anim;
+		private UnitAnimations anim;
 
 		public override string VerbName => "Chainsaw-Attack";
 
@@ -29,7 +29,7 @@ namespace __SCRIPTS
 
 		public override void SetPlayer(Player _player)
 		{
-			anim = GetComponent<Animations>();
+			anim = GetComponent<UnitAnimations>();
 			body = GetComponent<Body>();
 			player = _player;
 			player.Controller.Attack3Circle.OnPress += PlayerChainsawPress;
@@ -60,7 +60,7 @@ namespace __SCRIPTS
 		private void StartAttacking()
 		{
 			isAttacking = true;
-			anim.SetBool(Animations.IsAttacking, isAttacking);
+			anim.SetBool(UnitAnimations.IsAttacking, isAttacking);
 
 			OnStartAttacking(transform.position);
 		}
@@ -68,7 +68,7 @@ namespace __SCRIPTS
 		private void StopAttacking()
 		{
 			isAttacking = false;
-			anim.SetBool(Animations.IsAttacking, isAttacking);
+			anim.SetBool(UnitAnimations.IsAttacking, isAttacking);
 			OnStopAttacking(transform.position);
 		}
 
@@ -194,7 +194,7 @@ namespace __SCRIPTS
 			{
 				isChainsawing = true;
 				anim.Play(chainsawClip.name, 1, 0);
-				anim.SetBool(Animations.IsChainsawing, isChainsawing);
+				anim.SetBool(UnitAnimations.IsChainsawing, isChainsawing);
 				OnStartChainsawing?.Invoke(transform.position);
 			}
 		}
@@ -204,7 +204,7 @@ namespace __SCRIPTS
 			if (!isChainsawing) return;
 			if (isAttacking) return;
 			isChainsawing = false;
-			anim.SetBool(Animations.IsChainsawing, isChainsawing);
+			anim.SetBool(UnitAnimations.IsChainsawing, isChainsawing);
 			body.arms.Stop(this);
 			OnStopChainsawing?.Invoke(transform.position);
 		}

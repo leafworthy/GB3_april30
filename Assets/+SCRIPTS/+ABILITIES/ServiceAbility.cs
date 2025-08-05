@@ -4,8 +4,8 @@ using UnityEngine;
 
 public abstract class ServiceAbility : ServiceUser, IDoableActivity
 {
-	private Animations _anim;
-	protected Animations anim => _anim ?? GetComponent<Animations>();
+	private UnitAnimations _anim;
+	protected UnitAnimations anim => _anim ?? GetComponent<UnitAnimations>();
 	private Body _body;
 	protected Body body => _body ?? GetComponent<Body>();
 	public virtual string VerbName => "Generic Ability";

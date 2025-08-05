@@ -250,9 +250,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2598685119374461621}
+  - component: {fileID: 490584010678003131}
   - component: {fileID: 2097775054827556840}
   - component: {fileID: 2395760759599966101}
-  - component: {fileID: 490584010678003131}
   - component: {fileID: 811867133497324569}
   - component: {fileID: 2598685119374461622}
   m_Layer: 0
@@ -559,7 +559,6 @@ MonoBehaviour:
   sfxManager: {fileID: 8497809243768134904}
   pauseManager: {fileID: 1561707946}
   risingTextManager: {fileID: 2616225905856126391}
-  unitStatsManager: {fileID: 3420169345749506159}
 --- !u!114 &2616225905856126391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,20 +644,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a792b055f89fc5f4dbb4e07e313063af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3420169345749506159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6996643311950819980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f50fcafa5d0444299886f807acccd863, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  database: {fileID: 11400000, guid: bf6ea19043f4748d8b8005fa1f10255a, type: 2}
-  isInitialized: 1
 --- !u!114 &3570976834653433150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2408,6 +2393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentLevel: {fileID: 0}
   loadInGame: 1
+  canJoinInGame: 0
 --- !u!4 &4601340493314312580
 Transform:
   m_ObjectHideFlags: 0
@@ -2925,7 +2911,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7739533299446252653}
   - component: {fileID: 4988086921415921645}
-  - component: {fileID: 3420169345749506159}
   m_Layer: 0
   m_Name: EnemyManager
   m_TagString: Untagged
@@ -3000,7 +2985,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7c0cc3dfa695f4b88bf2ef48c63080f1, type: 2}
   - {fileID: 11400000, guid: f96f5bc802d4b4dafb0dc310b3eb2628, type: 2}
   - {fileID: 11400000, guid: b379a74beffe44690a8bfcbb2e375f95, type: 2}
-  enemyPlayer: {fileID: 0}
   AllJoinedPlayers: []
 --- !u!114 &7722900124837980853
 MonoBehaviour:

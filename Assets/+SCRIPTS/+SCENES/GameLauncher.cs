@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using __SCRIPTS;
 using __SCRIPTS.RisingText;
 using UnityEngine;
@@ -26,11 +25,10 @@ public class GameLauncher : MonoBehaviour
 	[SerializeField] private SFX sfxManager;
 	[SerializeField] private PauseManager pauseManager;
 	[SerializeField] private RisingTextCreator risingTextManager;
-	[SerializeField] private UnitStatsManager unitStatsManager;
 
 	protected void OnEnable()
 	{
-		Debug.Log("SingletonManager: Initializing services...");
+		Debug.Log("GAME LAUNCHER: Initializing services...");
 		sceneLoader.StartService();
 		ServiceLocator.Register(sceneLoader);
 
@@ -40,8 +38,6 @@ public class GameLauncher : MonoBehaviour
 		sfxManager.StartService();
 		ServiceLocator.Register(sfxManager);
 
-		unitStatsManager.StartService();
-		ServiceLocator.Register(unitStatsManager);
 
 		playersManager.StartService();
 		ServiceLocator.Register(playersManager);
@@ -82,47 +78,26 @@ public class GameLauncher : MonoBehaviour
 
 
 
-		Debug.Log("SingletonManager: All services registered successfully.");
+		Debug.Log("GAME LAUNCHER: All services registered successfully.");
 	}
 
 	public static class LoadGameManager
 	{
-		private static bool gameManagerLoaded;
 		private static string SceneName => "0_GameManagerScene";
+
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void LoadGameManagerAtStart()
 		{
-			if (gameManagerLoaded) return;
-			Debug.Log("loading game manager scene: " + SceneName);
-			SceneManager.LoadScene(SceneName, LoadSceneMode.Single);
-			gameManagerLoaded = true;
+			Debug.Log("GAME LAUNCHER: LoadGameManagerAtStart()");
+			var manager = FindFirstObjectByType<GameManager>();
+			if (manager == null)
+			{
+				Debug.Log("GAME LAUNCHER: loading game manager scene: " + SceneName);
+				SceneManager.LoadScene(SceneName, LoadSceneMode.Single);
+			}
+
 		}
 
 	}
-}
-
-public static class ServiceLocator
-{
-	private static readonly Dictionary<Type, object> _services = new();
-
-	public static void Register<T>(T instance) where T : class
-	{
-		var type = typeof(T);
-		if (_services.ContainsKey(type)) Debug.LogWarning($"ServiceLocator: Service of type {type.Name} is already registered. Overwriting...");
-
-		_services[type] = instance;
-		Debug.Log($"ServiceLocator: Service of type {type.Name} registered successfully.");
-	}
-
-	public static T Get<T>() where T : class
-	{
-		var type = typeof(T);
-
-		if (_services.TryGetValue(type, out var service)) return (T) service;
-
-		throw new InvalidOperationException($"ServiceLocator: Service of type {type.Name} is not registered.");
-	}
-
-
 }

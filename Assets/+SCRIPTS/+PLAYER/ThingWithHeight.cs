@@ -4,7 +4,6 @@ using __SCRIPTS;
 using __SCRIPTS.Plugins._ISOSORT;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class ThingWithHeight : ServiceUser
 {
 	public bool isOverLandable;

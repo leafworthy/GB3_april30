@@ -11,30 +11,24 @@ namespace __SCRIPTS
 
 		public GameObject Vignette;
 
-		public bool canJoin;
 
 		private LevelManager _levelManager;
 		private LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
 		private Players _playerManager;
 		private Players playerManager => _playerManager ?? ServiceLocator.Get<Players>();
-
+		private bool isInGame;
 
 		public void StartService()
 		{
 			Vignette.SetActive(false);
 			levelManager.OnStartLevel += LevelSceneOnStartLevel;
-			levelManager.OnPlayerSpawned += LevelScene_OnPlayerSpawned;
+			levelManager.OnLevelSpawnedPlayer += LevelSceneOnLevelSpawnedPlayer;
 			levelManager.OnGameOver += Level_OnGameOver;
 			levelManager.OnWinGame += Level_OnGameOver;
 			levelManager.OnStopLevel += t => Level_OnGameOver();
 
-			playerManager.OnPlayerJoins += JoinInGame;
-			playerManager.OnPlayerGetUpgrades += OpenUpgradePanel;
-			Debug.Log("huds has registered events");
-			canJoin = true;
+			playerManager.OnPlayerJoins += PlayerOnPlayerJoins;
 			DisableAllHUDSlots();
-			Debug.Log("HUDS enabled and ready for players to join.");
-
 		}
 
 
@@ -42,65 +36,57 @@ namespace __SCRIPTS
 		private void Level_OnGameOver()
 		{
 			Vignette.SetActive(false);
-			canJoin = false;
 			playerManager.SetActionMaps(Players.UIActionMap);
+			isInGame = false;
 			DisableAllHUDSlots();
-			//gameObject.SetActive(false);
 		}
 
 		private void OnDisable()
 		{
-			canJoin = false;
-			playerManager.OnPlayerJoins -= JoinInGame;
-			playerManager.OnPlayerGetUpgrades -= OpenUpgradePanel;
+			levelManager.OnStartLevel -= LevelSceneOnStartLevel;
+			levelManager.OnLevelSpawnedPlayer -= LevelSceneOnLevelSpawnedPlayer;
+			playerManager.OnPlayerJoins -= PlayerOnPlayerJoins;
+			levelManager.OnGameOver -= Level_OnGameOver;
+			levelManager.OnWinGame -= Level_OnGameOver;
+
 			playerManager.SetActionMaps(Players.UIActionMap);
 			Vignette.SetActive(false);
 		}
 
-		private void LevelScene_OnPlayerSpawned(Player player)
+		private void PlayerOnPlayerJoins(Player player)
 		{
-			Debug.Log("hud" + player.name + " is trying to join in-game with input " + player.input.playerIndex);
+			if (!isInGame) return;
+			var playerStats = player.GetComponent<PlayerStats>();
+			if (playerStats != null) playerStats.ResetStats();
+			SetHUDSlotPlayer(player, true);
+
+		}
+
+		private void LevelSceneOnLevelSpawnedPlayer(Player player)
+		{
+			Debug.Log("HUD MANAGER: " + player.name + player.input.playerIndex + " has spawned in-game, setting HUD slot." );
+			var playerStats = player.GetComponent<PlayerStats>();
+			if (playerStats != null) playerStats.ResetStats();
 			SetHUDSlotPlayer(player);
 		}
 
 		private void LevelSceneOnStartLevel(GameLevel gameLevel)
 		{
-			Debug.Log("creating HUD for players, event registering");
+			Debug.Log("HUD MANAGER: OnStart() creating HUD for players, event registering");
+			isInGame = true;
 			CreateHUDForPlayers(playerManager.AllJoinedPlayers);
 
 			Vignette.SetActive(true);
-			canJoin = true;
 		}
 
-		private void OpenUpgradePanel(Player player)
-		{
-			var slot = currentHUDSlots[player.input.playerIndex];
-			slot.gameObject.SetActive(true);
-			slot.OpenUpgradeSelectMenu(player);
-		}
 
 		private void CreateHUDForPlayers(List<Player> players)
 		{
 			foreach (var player in players)
 			{
+				Debug.Log( "HUD MANAGER: Creating HUD for player: " + player.name + " with input " + player.input.playerIndex);
 				SetHUDSlotPlayer(player);
 			}
-		}
-
-		private void JoinInGame(Player player)
-		{
-			Debug.Log("Player " + player.name + " is trying to join in-game with input " + player.input.playerIndex);
-			if (!canJoin)
-			{
-				Debug.Log("cant join");
-				return;
-			}
-
-			// Ensure player stats are properly initialized before setting up HUD
-			var playerStats = player.GetComponent<PlayerStats>();
-			if (playerStats != null) playerStats.ResetStats(); // Initialize stats for mid-game join
-
-			SetHUDSlotPlayer(player, true);
 		}
 
 		private void SetHUDSlotPlayer(Player player, bool withMenu = false)
