@@ -9,17 +9,6 @@ namespace __SCRIPTS
 	public class NadeAimActivity : IActivity
 	{
 		public string VerbName => "Nade-Aim";
-
-		public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
-		{
-			switch (reason)
-			{
-				case GangstaBean.Core.CompletionReason.AnimationInterrupt:
-				case GangstaBean.Core.CompletionReason.NewActivity:
-					return true;
-			}
-			return false;
-		}
 	}
 	public class NadeAttack : ServiceUser, INeedPlayer, IActivity
 	{
@@ -58,6 +47,7 @@ namespace __SCRIPTS
 
 		public void SetPlayer(Player _player)
 		{
+			StopListeningToPlayer();
 			anim = GetComponent<UnitAnimations>();
 			animationEvents = anim.animEvents;
 			body = GetComponent<Body>();
@@ -75,13 +65,18 @@ namespace __SCRIPTS
 			StopListeningToPlayer();
 		}
 
+		private void OnDestroy()
+		{
+			StopListeningToPlayer();
+		}
+
 		private void StopListeningToPlayer()
 		{
-			if (player == null) return;
-			if (player.Controller == null) return;
 			if (anim == null) return;
 			animationEvents.OnThrow -= Anim_Throw;
 			animationEvents.OnThrowStop -= Anim_ThrowStop;
+			if (player == null) return;
+			if (player.Controller == null) return;
 			player.Controller.AimAxis.OnChange -= Player_OnAim;
 			player.Controller.Attack2LeftTrigger.OnPress -= Player_NadePress;
 			player.Controller.Attack2LeftTrigger.OnRelease -= Player_NadeRelease;
@@ -110,6 +105,7 @@ namespace __SCRIPTS
 		{
 			if (IsAiming)
 			{
+				Debug.Log("Is aiming, should show markers");
 				if (player.isUsingMouse) AimAt(CursorManager.GetMousePosition());
 				else Aim();
 				OnShowAiming?.Invoke();

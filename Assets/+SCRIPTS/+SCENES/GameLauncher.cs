@@ -25,9 +25,13 @@ public class GameLauncher : MonoBehaviour
 	[SerializeField] private SFX sfxManager;
 	[SerializeField] private PauseManager pauseManager;
 	[SerializeField] private RisingTextCreator risingTextManager;
+	private static bool hasLaunched;
+	private static bool servicesStarted;
 
 	protected void OnEnable()
 	{
+		if (servicesStarted) return;
+		servicesStarted = true;
 		Debug.Log("GAME LAUNCHER: Initializing services...");
 		sceneLoader.StartService();
 		ServiceLocator.Register(sceneLoader);
@@ -37,7 +41,6 @@ public class GameLauncher : MonoBehaviour
 
 		sfxManager.StartService();
 		ServiceLocator.Register(sfxManager);
-
 
 		playersManager.StartService();
 		ServiceLocator.Register(playersManager);
@@ -67,7 +70,6 @@ public class GameLauncher : MonoBehaviour
 		ServiceLocator.Register(lootTable);
 
 
-
 		//REQUIRES levelManager
 		pauseManager.StartService();
 		ServiceLocator.Register(pauseManager);
@@ -86,15 +88,22 @@ public class GameLauncher : MonoBehaviour
 		private static string SceneName => "0_GameManagerScene";
 
 
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 		private static void LoadGameManagerAtStart()
 		{
+			if (hasLaunched) return;
+			hasLaunched = true;
 			Debug.Log("GAME LAUNCHER: LoadGameManagerAtStart()");
 			var manager = FindFirstObjectByType<GameManager>();
 			if (manager == null)
 			{
 				Debug.Log("GAME LAUNCHER: loading game manager scene: " + SceneName);
+
 				SceneManager.LoadScene(SceneName, LoadSceneMode.Single);
+			}
+			else
+			{
+				Debug.Log("manager found");
 			}
 
 		}

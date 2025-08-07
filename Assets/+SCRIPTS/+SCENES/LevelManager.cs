@@ -26,6 +26,7 @@ namespace __SCRIPTS
 			canJoinInGame = false;
 			Debug.Log("join in game false");
 			if (loadInGame) StartGame(GetFirstLevelToLoad());
+			else StartGame(assets.Scenes.mainMenu);
 		}
 
 		public void StartGame(SceneDefinition startingScene)

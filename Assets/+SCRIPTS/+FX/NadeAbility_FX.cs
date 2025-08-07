@@ -14,7 +14,7 @@ namespace __SCRIPTS
 		private bool isShowingAiming;
 		private const int _numberOfMarkers = 10;
 		private const float _throwHeight = 8f;
-		private void OnEnable()
+		private void Start()
 		{
 			nade = GetComponent<NadeAttack>();
 			body = GetComponent<Body>();
@@ -32,8 +32,8 @@ namespace __SCRIPTS
 			nade.OnAimAt += Nade_OnAimAt;
 			nade.OnAimInDirection += Nade_OnAimInDirection;
 
-			Nade_OnHideAiming();
 			SpawnTrajectoryMarkers();
+			Nade_OnHideAiming();
 		}
 
 		private void OnDisable()
@@ -65,8 +65,7 @@ namespace __SCRIPTS
 
 		private void Nade_OnHideAiming()
 		{
-			if (!isShowingAiming) return;
-			isShowingAiming = false;
+
 			Debug.Log("NadeAbility_FX: hide aiming plz");
 			if (currentArrowHead != null) currentArrowHead.SetActive(false);
 			if (_trajectoryMarkersContainer.Count <= 0) return;
@@ -80,8 +79,7 @@ namespace __SCRIPTS
 
 		private void Nade_OnShowAiming()
 		{
-			if (isShowingAiming) return;
-			isShowingAiming = true;
+
 			Debug.Log("NadeAbility_FX: show aiming plz");
 			if (currentArrowHead != null) currentArrowHead.SetActive(true);
 			if (_trajectoryMarkersContainer.Count <= 0)
@@ -114,7 +112,7 @@ namespace __SCRIPTS
 			currentArrowHead = objectMaker.Make( assets.FX.nadeTargetPrefab);
 			if (currentArrowHead != null)
 			{
-				currentArrowHead.SetActive(false);
+				currentArrowHead.SetActive(true);
 				Debug.Log("Created nade target arrow");
 			}
 
@@ -124,6 +122,7 @@ namespace __SCRIPTS
 				if (marker != null)
 				{
 					_trajectoryMarkersContainer.Add(marker);
+					marker.SetActive(true);
 				}
 			}
 

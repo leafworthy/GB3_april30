@@ -5,7 +5,7 @@ namespace __SCRIPTS
 	public class GameManager : Singleton<GameManager>
 	{
 		static bool hasInitialized;
-		protected override void OnEnable()
+		protected void Start()
 		{
 			if(hasInitialized)return;
 			base.OnEnable();

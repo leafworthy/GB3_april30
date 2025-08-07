@@ -28,10 +28,7 @@ namespace __SCRIPTS
 		public event Action<Player> OnPlayerJoins;
 		public event Action<Player> OnPlayerDies;
 
-		private void Update()
-		{
-			Debug.Log(AllJoinedPlayers.Count);
-		}
+
 
 		public void StartService()
 		{

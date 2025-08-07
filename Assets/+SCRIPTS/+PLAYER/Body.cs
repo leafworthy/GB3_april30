@@ -73,6 +73,7 @@ namespace __SCRIPTS
 
 		public void BottomFaceDirection(bool faceRight)
 		{
+			if (this == null || gameObject == null) return;
 			if (BottomIsFacingRight == faceRight) return;
 			BottomIsFacingRight = faceRight;
 			FlipBottom(faceRight);
@@ -88,6 +89,7 @@ namespace __SCRIPTS
 
 		private void FlipBottom(bool toTheRight)
 		{
+
 			var localScale = BottomScaleObject.transform.localScale;
 			var currentScale = localScale;
 

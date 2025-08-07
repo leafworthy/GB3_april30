@@ -22,6 +22,8 @@ public class CrimsonAnimations : StateMachine<CrimsonAnimations>
 	private Targetter _targets;
 	private IdleState idleState;
 	private RunToPointState runToPointState;
+	private static PauseManager _pauseManager;
+	private static PauseManager pauseManager => _pauseManager ??= ServiceLocator.Get<PauseManager>();
 
 	protected override void Start()
 	{
@@ -115,6 +117,7 @@ public class CrimsonAnimations : StateMachine<CrimsonAnimations>
 		public override void Update(CrimsonAnimations machine)
 		{
 
+			if (pauseManager.IsPaused) return;
 
 			if (Vector2.Distance(machine.transform.position, currentTargetPosition) < machine.closeEnoughDistance)
 			{

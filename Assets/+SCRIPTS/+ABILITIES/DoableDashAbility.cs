@@ -52,8 +52,18 @@ namespace __SCRIPTS
 			Dash();
 		}
 
+		private void UnsubscribeFromEvents()
+		{
+			// These won't throw exceptions even if not subscribed
+			if (owner?.Controller != null)
+				owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
+
+			if (animEvents != null)
+				animEvents.OnTeleport -= Anim_Teleport;
+		}
 		public void SetPlayer(Player _player)
 		{
+			UnsubscribeFromEvents();
 			move = GetComponent<MoveAbility>();
 
 			jumps = GetComponent<DoableJumpAbility>();
@@ -73,7 +83,7 @@ namespace __SCRIPTS
 			if (owner.Controller == null) return;
 			if (animEvents != null) animEvents.OnTeleport -= Anim_Teleport;
 			owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
-			Stop(this);
+			//Stop(this);
 		}
 
 		private void Anim_Teleport()
