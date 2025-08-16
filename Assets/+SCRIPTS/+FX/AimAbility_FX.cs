@@ -4,6 +4,7 @@ using UnityEngine.Rendering.Universal;
 
 namespace __SCRIPTS
 {
+	[DisallowMultipleComponent]
 	public class AimAbility_FX : ServiceUser
 	{
 		private AimAbility aimAbility;

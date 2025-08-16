@@ -129,7 +129,7 @@ namespace __SCRIPTS
 				return;
 			}
 			currentLandableHeight = thing.GetCurrentLandableHeight();
-			verticalVelocity -= (assets.Vars.Gravity.y) * Time.fixedDeltaTime;
+			verticalVelocity -= (AssetManager.Vars.Gravity.y) * Time.fixedDeltaTime;
 			if ((thing.GetDistanceToGround() + verticalVelocity <= currentLandableHeight) && (verticalVelocity < 0))
 			{
 				Land();

@@ -59,8 +59,8 @@ namespace __SCRIPTS
         /// </summary>
         public bool IsValid() => !string.IsNullOrEmpty(sceneName);
 
-        private ASSETS _assets;
-        private ASSETS assets => _assets ?? ServiceLocator.Get<ASSETS>();
+        private AssetManager assetManager;
+        private AssetManager AssetManager => assetManager ?? ServiceLocator.Get<AssetManager>();
 
 
 

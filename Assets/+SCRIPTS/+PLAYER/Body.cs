@@ -30,20 +30,10 @@ namespace __SCRIPTS
 		[HideInInspector] public bool BottomIsFacingRight = true;
 		[HideInInspector] public bool TopIsFacingRight = true;
 		public DoableArms doableArms = new();
-		public DoableArms doableLegs = new();
+		public DoableLegs doableLegs = new();
 		private bool canMove;
-		public event Action<bool> OnCanMove;
-		public bool CanMove
-		{
-			get => canMove;
-			private set => canMove = value;
-		}
 
-		public void SetCanMove(bool _canMove)
-		{
-			canMove = _canMove;
-			OnCanMove?.Invoke(_canMove);
-		}
+
 
 		public void ChangeLayer(BodyLayer bodyLayer)
 		{
@@ -51,13 +41,13 @@ namespace __SCRIPTS
 			switch (bodyLayer)
 			{
 				case BodyLayer.jumping:
-					layerValue = assets.LevelAssets.JumpingLayer;
+					layerValue = AssetManager.LevelAssets.JumpingLayer;
 					break;
 				case BodyLayer.landed:
-					layerValue = assets.LevelAssets.LandedLayer;
+					layerValue = AssetManager.LevelAssets.LandedLayer;
 					break;
 				case BodyLayer.grounded:
-					layerValue = assets.LevelAssets.GroundedLayer;
+					layerValue = AssetManager.LevelAssets.GroundedLayer;
 					break;
 			}
 

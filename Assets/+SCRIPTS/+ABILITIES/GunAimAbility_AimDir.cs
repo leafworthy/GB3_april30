@@ -37,9 +37,9 @@ namespace __SCRIPTS
 		};
 
 
-		public override void SetPlayer(Player player)
+		public override void SetPlayer(Player _player)
 		{
-			base.SetPlayer(player);
+			base.SetPlayer(_player);
 			anim = GetComponent<UnitAnimations>();
 			aimableGun = GetComponent<IAimableGun>();
 			anim.animEvents.OnAnimationComplete += Anim_OnComplete;
@@ -70,7 +70,7 @@ namespace __SCRIPTS
 		private void AimableGunOnShoot(Attack attack, Vector2 vector2)
 		{
 			if (attack.Owner != owner) return;
-			if (body.arms.isActive) return;
+			if (body.doableArms.IsActive) return;
 			isAttacking = true;
 			anim.Play("Shoot", 1, 0);
 		}
@@ -90,7 +90,7 @@ namespace __SCRIPTS
 			body.TopFaceDirection(GetClampedAimDir().x >= 0);
 
 
-			if (!isAttacking && !aimableGun.isReloading && !body.arms.isActive)
+			if (!isAttacking && !aimableGun.isReloading && !body.doableArms.IsActive)
 			{
 				anim.Play(GetAnimationClipNameFromDegrees(GetDegrees()), 1, 0);
 

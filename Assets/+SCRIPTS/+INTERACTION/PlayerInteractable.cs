@@ -74,7 +74,7 @@ namespace __SCRIPTS
 		{
 			if (interactionIndicator == null) return true;
 
-			var hits = Physics2D.LinecastAll(playerPosition, interactionPosition, assets.LevelAssets.BuildingLayer);
+			var hits = Physics2D.LinecastAll(playerPosition, interactionPosition, AssetManager.LevelAssets.BuildingLayer);
 			//Debug.DrawLine( playerPosition, interactionPosition, Color.blue, 1f);
 
 			if(hits.Length == 0)

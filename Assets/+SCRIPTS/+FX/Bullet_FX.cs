@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
+	[DisallowMultipleComponent]
 	public class Bullet_FX : ServiceUser
 	{
 		private int shotTime = 1;

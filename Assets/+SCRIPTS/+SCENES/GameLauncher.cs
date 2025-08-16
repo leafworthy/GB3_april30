@@ -13,7 +13,7 @@ public interface IService
 [Serializable]
 public class GameLauncher : MonoBehaviour
 {
-	[SerializeField] private ASSETS assetsManager;
+	[FormerlySerializedAs("assetsManager"),SerializeField] private AssetManager assetManagerManager;
 	[SerializeField] private HUDManager hudManagerManager;
 	[SerializeField] private EnemyManager enemyManager;
 	[SerializeField] private LevelManager levelManager;
@@ -36,8 +36,8 @@ public class GameLauncher : MonoBehaviour
 		sceneLoader.StartService();
 		ServiceLocator.Register(sceneLoader);
 
-		assetsManager.StartService();
-		ServiceLocator.Register(assetsManager);
+		assetManagerManager.StartService();
+		ServiceLocator.Register(assetManagerManager);
 
 		sfxManager.StartService();
 		ServiceLocator.Register(sfxManager);

@@ -38,10 +38,10 @@ public class TertiaryAttack_Knife : Attacks
 			 base.SetPlayer(_player);
 			anim = GetComponent<UnitAnimations>();
 			body = GetComponent<Body>();
-			player = _player;
+			this.player = _player;
 			Debug.Log("[Knife] SetPlayer called, connecting input events");
-			player.Controller.Attack3Circle.OnPress += PlayerKnifePress;
-			player.Controller.Attack3Circle.OnRelease += PlayerKnifeRelease;
+			this.player.Controller.Attack3Circle.OnPress += PlayerKnifePress;
+			this.player.Controller.Attack3Circle.OnRelease += PlayerKnifeRelease;
 			anim.animEvents.OnAttackHit += Anim_AttackHit;
 			anim.animEvents.OnAttackStop += Anim_AttackStop;
 		}
@@ -109,7 +109,7 @@ public class TertiaryAttack_Knife : Attacks
 		private GameObject FindClosestHit()
 		{
 
-			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange, assets.LevelAssets.EnemyLayer)
+			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange, AssetManager.LevelAssets.EnemyLayer)
 			                          .ToList();
 			if (circleCast.Count <= 0) return null;
 

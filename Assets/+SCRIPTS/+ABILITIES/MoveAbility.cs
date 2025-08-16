@@ -187,6 +187,5 @@ namespace __SCRIPTS
 
 		public bool IsIdle() => life.player.Controller.MoveAxis.currentMagnitudeIsTooSmall();
 
-
 	}
 }

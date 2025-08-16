@@ -50,14 +50,14 @@ namespace __SCRIPTS
 			if (healthBar != null) healthBar.SetActive(false);
 		}
 
-		public void SetPlayer(Player player)
+		public void SetPlayer(Player _player)
 		{
-			if (!player.IsPlayer()) return;
+			if (!_player.IsPlayer()) return;
 			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
-			Debug.Log("on player set" + player.playerColor);
+			Debug.Log("on player set" + _player.playerColor);
 			foreach (var r in renderersToTint)
 			{
-				r.material.SetColor(ColorReplaceColor, player.playerColor);
+				r.material.SetColor(ColorReplaceColor, _player.playerColor);
 			}
 		}
 
@@ -106,7 +106,7 @@ namespace __SCRIPTS
 		private void MakeHitMark(Attack attack)
 		{
 
-			var hitList = assets.FX.GetBulletHits(stats.DebrisType);
+			var hitList = AssetManager.FX.GetBulletHits(stats.DebrisType);
 
 			if (hitList == null) return;
 
@@ -138,7 +138,7 @@ namespace __SCRIPTS
 
 		private void CreateBloodSpray(Attack attack)
 		{
-			var blood = objectMaker.Make( assets.FX.bloodspray.GetRandom(), attack.DestinationFloorPoint);
+			var blood = objectMaker.Make( AssetManager.FX.bloodspray.GetRandom(), attack.DestinationFloorPoint);
 			if (attack.Direction.x < 0)
 			{
 				blood.transform.localScale = new Vector3(-blood.transform.localScale.x, blood.transform.localScale.y, 0);
@@ -151,14 +151,14 @@ namespace __SCRIPTS
 			for (var j = 0; j < randAmount; j++)
 			{
 				//----->
-				var forwardDebree = objectMaker.Make( assets.FX.GetDebree(stats.DebrisType), attack.DestinationFloorPoint);
+				var forwardDebree = objectMaker.Make( AssetManager.FX.GetDebree(stats.DebrisType), attack.DestinationFloorPoint);
 
 				forwardDebree.GetComponent<FallToFloor>().Fire(attack);
 				objectMaker.Unmake(forwardDebree, 3);
 
 				//<-----
 				var flippedAttack = new Attack(health, attack.OriginLife, attack.DamageAmount);
-				var backwardDebree = objectMaker.Make( assets.FX.GetDebree(stats.DebrisType), attack.DestinationFloorPoint);
+				var backwardDebree = objectMaker.Make( AssetManager.FX.GetDebree(stats.DebrisType), attack.DestinationFloorPoint);
 				backwardDebree.GetComponent<FallToFloor>().Fire(flippedAttack);
 				objectMaker.Unmake(backwardDebree, 3);
 

@@ -9,7 +9,6 @@ public interface IMove
 {
 	event Action<Vector2> OnMoveInDirection;
 	event Action OnStopMoving;
-	bool BornOnAggro { get; set; }
 }
 
 namespace __SCRIPTS
@@ -35,7 +34,6 @@ namespace __SCRIPTS
 
 			mover = GetComponent<MoveAbility>();
 			body = GetComponent<Body>();
-			body.OnCanMove += Body_OnCanMove;
 			owner = _player;
 
 			InitializeLife();

@@ -157,9 +157,9 @@ namespace __SCRIPTS
 
 		private void OnDestroy() => CleanupEvents();
 
-		public void SetPlayer(Player p)
+		public void SetPlayer(Player _player)
 		{
-			 _player  = p;
+			 this._player  = _player;
 			 ResetHealth();
 			 SetupAnimationEvents();
 		}

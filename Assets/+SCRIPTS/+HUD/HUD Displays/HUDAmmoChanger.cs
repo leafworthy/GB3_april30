@@ -15,8 +15,8 @@ namespace __SCRIPTS.HUD_Displays
 	
 		public void SetPlayer(Player _player)
 		{
-			player = _player;
-			if (player.CurrentCharacter != Character.Bean) return;
+			this.player = _player;
+			if (this.player.CurrentCharacter != Character.Bean) return;
 			
 			// Cache the component reference once during setup
 			if (_player.SpawnedPlayerGO != null)

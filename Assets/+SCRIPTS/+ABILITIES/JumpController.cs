@@ -8,8 +8,7 @@ namespace __SCRIPTS
 	{
 		public string VerbName => "Landing";
 
-		public bool TryCompleteGracefully(CompletionReason reason, IActivity newActivity = null) => false;
-	}
+}
 
 	public class JumpController : ServiceUser, INeedPlayer
 	{
@@ -20,7 +19,6 @@ namespace __SCRIPTS
 		private Body body;
 		private float FallInDistance = 80;
 		private LandingActivity landingActivity = new();
-		public string VerbName => "Jumping";
 
 		public void SetPlayer(Player _player)
 		{

@@ -86,13 +86,13 @@ public class ThingWithHeight : ServiceUser
 
 	private Landable GetCurrentLandable()
 	{
-		var raycastHit = Physics2D.Raycast(transform.position, Vector3.down, 1, assets.LevelAssets.LandableLayer);
+		var raycastHit = Physics2D.Raycast(transform.position, Vector3.down, 1, AssetManager.LevelAssets.LandableLayer);
 		return raycastHit.collider != null ? raycastHit.collider.gameObject.GetComponentInChildren<Landable>() : null;
 	}
 
 	public Landable GetLandableAtPosition(Vector2 position)
 	{
-		var raycastHit = Physics2D.Raycast(position, Vector3.down, 1, assets.LevelAssets.LandableLayer);
+		var raycastHit = Physics2D.Raycast(position, Vector3.down, 1, AssetManager.LevelAssets.LandableLayer);
 		return raycastHit.collider != null ? raycastHit.collider.gameObject.GetComponentInChildren<Landable>() : null;
 	}
 

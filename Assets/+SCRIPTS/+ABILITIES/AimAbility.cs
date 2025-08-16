@@ -19,14 +19,14 @@ namespace __SCRIPTS
 
 		private MoveAbility moveAbility;
 
-		public virtual void SetPlayer(Player player)
+		public virtual void SetPlayer(Player _player)
 		{
 			moveAbility = GetComponent<MoveAbility>();
 			body = GetComponent<Body>();
 			life = GetComponent<Life>();
 			if (life == null) return;
 
-			owner = player;
+			owner = _player;
 
 			if (owner == null) return;
 			AimDir = Vector2.right;
@@ -72,7 +72,7 @@ namespace __SCRIPTS
 		{
 			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
 				life.PrimaryAttackRange,
-				 assets.LevelAssets.BuildingLayer);
+				 AssetManager.LevelAssets.BuildingLayer);
 
 			return raycastHit;
 		}

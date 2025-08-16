@@ -26,7 +26,7 @@ namespace __SCRIPTS._ENEMYAI
 		void UpdateState();
 	}
 
-	public class EnemyAI : ServiceUser, IAI, IPoolable, IMove, IAttack
+		public class EnemyAI : ServiceUser, IAI, IPoolable, IMove, IAttack
 	{
 		public bool stopMovingOnAttack = true;
 		private IAIState currentState;

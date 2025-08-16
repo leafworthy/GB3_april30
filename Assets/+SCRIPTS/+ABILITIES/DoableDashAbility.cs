@@ -1,92 +1,30 @@
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class DoableDashAbility : ServiceAbility, INeedPlayer
+	[DisallowMultipleComponent]
+	public class DoableDashAbility : ServiceAbility
 	{
 		public AnimationClip dashAnimationClip;
-		private AnimationEvents animEvents;
-		private MoveController moveController;
-		private Life life;
-		private MoveAbility move;
-		private Player owner;
-		private DoableJumpAbility jumps;
+		private DoableJumpAbility jumpAbility => _jumpAbility ??= GetComponent<DoableJumpAbility>();
+		private DoableJumpAbility _jumpAbility;
 
 		public bool teleport;
 		public override string VerbName => "Dash";
 
-		public override bool requiresArms => false;
-		public override bool requiresLegs => true;
+		protected override bool requiresArms() => false;
+		protected override bool requiresLegs() => false;
 
-		public override bool canDo()
-		{
-			if (!base.canDo())
-			{
-				Debug.Log("Base canDo failed for " + VerbName + " ability");
-				return false;
-			}
-			if (pauseManager.IsPaused)
-			{
-				Debug.Log("Paused, cannot do " + VerbName + " ability");
-				return false;
-			}
-			if (!jumps.canDo())
-			{
-				Debug.Log("Cannot do jumps, cannot do " + VerbName + " ability");
-				return false;
-			}
-			if (body.doableArms.IsActive)
-			{
-				Debug.Log("Arms are active, cannot do " + VerbName + " ability");
-				return false;
-			}
-			return true;
-		}
+		public override bool canDo() => base.canDo() && jumpAbility.canDo();
 
 		public override bool canStop() => false;
 
-		public override void Do()
+		public override void StartActivity()
 		{
-			Debug.Log("do");
 			Dash();
 		}
 
-		private void UnsubscribeFromEvents()
-		{
-			// These won't throw exceptions even if not subscribed
-			if (owner?.Controller != null)
-				owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
-
-			if (animEvents != null)
-				animEvents.OnTeleport -= Anim_Teleport;
-		}
-		public void SetPlayer(Player _player)
-		{
-			UnsubscribeFromEvents();
-			move = GetComponent<MoveAbility>();
-
-			jumps = GetComponent<DoableJumpAbility>();
-			moveController = GetComponent<MoveController>();
-
-			life = GetComponent<Life>();
-			owner = _player;
-
-			animEvents = anim.animEvents;
-			owner.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
-			animEvents.OnTeleport += Anim_Teleport;
-		}
-
-		private void OnDisable()
-		{
-			if (owner == null) return;
-			if (owner.Controller == null) return;
-			if (animEvents != null) animEvents.OnTeleport -= Anim_Teleport;
-			owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
-			//Stop(this);
-		}
-
-		private void Anim_Teleport()
+		public void Teleport()
 		{
 			var teleportDirection = moveController.MoveDir;
 			if (teleportDirection.magnitude < 0.1f)
@@ -105,20 +43,10 @@ namespace __SCRIPTS
 			transform.position = newPoint;
 		}
 
-		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
-		{
-			if (!canDo())
-			{
-				Debug.Log("cant do" + VerbName + " ability" );
-				return;
-			}
-			Dash();
-		}
-
 		protected override void AnimationComplete()
 		{
 			body.ChangeLayer(body.isOverLandable ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
-			Stop(this);
+			StopActivity();
 		}
 
 		private void Dash()

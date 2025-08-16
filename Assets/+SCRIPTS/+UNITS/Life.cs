@@ -66,16 +66,16 @@ namespace __SCRIPTS
 
 		public bool IsPlayer => player != null && player.IsPlayer();
 
-		public void SetPlayer(Player newPlayer)
+		public void SetPlayer(Player _player)
 		{
-			Debug.Log( "Setting player for Life component: " + newPlayer?.name);
-			_player = newPlayer;
+			Debug.Log( "Setting player for Life component: " + _player?.name);
+			this._player = _player;
 
 			// Notify other components that need the player
 			foreach (var component in GetComponents<INeedPlayer>())
 			{
 				if (component != this)
-					component.SetPlayer(player);
+					component.SetPlayer(this.player);
 			}
 		}
 

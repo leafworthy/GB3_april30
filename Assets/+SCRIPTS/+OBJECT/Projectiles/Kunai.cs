@@ -96,14 +96,14 @@ namespace __SCRIPTS.Projectiles
 			mover.StopMoving();
 			sfx.sounds.kunai_hit_sounds.PlayRandomAt(transform.position);
 
-			objectMaker.Make( assets.FX.hit5_xstrike, transform.position);
+			objectMaker.Make( AssetManager.FX.hit5_xstrike, transform.position);
 			Fire(attack, true);
 			objectMaker.Unmake(gameObject, 3);
 		}
 
 		private Life CheckForCollisions(Vector2 target)
 		{
-			var lineCast = Physics2D.LinecastAll(transform.position, target, assets.LevelAssets.EnemyLayer);
+			var lineCast = Physics2D.LinecastAll(transform.position, target, AssetManager.LevelAssets.EnemyLayer);
 			foreach (var hit2D in lineCast)
 			{
 				if (hit2D.collider == null) continue;

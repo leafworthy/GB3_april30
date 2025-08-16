@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 
 namespace __SCRIPTS.Plugins._ISOSORT
 {
-	[ExecuteInEditMode]
+	//[ExecuteInEditMode]
 	public class IsoSpriteSorting : MonoBehaviour
 	{
 		public bool isMovable;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	[ExecuteInEditMode]
+
 	public class EnemyAIDebugVisualizer : MonoBehaviour
 	{
 		public Color aggroRangeColor = new Color(1f, 0f, 0f, 0.3f); // Red

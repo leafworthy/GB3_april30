@@ -1,4 +1,3 @@
-using __SCRIPTS.HUD_Displays;
 using GangstaBean.Core;
 using UnityEngine;
 
@@ -14,27 +13,19 @@ namespace __SCRIPTS
 		private JumpAbility jumps;
 		private Body body;
 		private UnitAnimations anim;
-		public string VerbName => "Dash";
 		public bool teleport;
 		private string verbName;
+		public string VerbName => "Dash";
+		public bool canDo() => false;
 
-		public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
+		public bool canStop() => false;
+
+		public void DoSafely()
 		{
-			switch (reason)
-			{
-				case GangstaBean.Core.CompletionReason.AnimationInterrupt:
-					CancelInvoke(nameof(SafetyArmRelease));
-					RefreshAimingSystem();
-					return true;
-				case GangstaBean.Core.CompletionReason.NewActivity:
-					if (newActivity?.VerbName == "Shooting")
-					{
-						CancelInvoke(nameof(SafetyArmRelease));
-						return true;
-					}
-					break;
-			}
-			return false;
+		}
+
+		public void Stop()
+		{
 		}
 
 		public void SetPlayer(Player _player)
@@ -68,16 +59,13 @@ namespace __SCRIPTS
 
 			// Clean up any pending invokes and ensure arms are freed
 			CancelInvoke(nameof(SafetyArmRelease));
-			if (body != null && body.arms.currentActivity?.VerbName == VerbName)
-			{
-				body.arms.Stop(this);
-			}
+			if (body != null && body.arms.currentActivity?.VerbName == VerbName) body.arms.Stop(this);
 		}
 
 		private void Anim_Teleport()
 		{
 			// Get the current movement direction for teleport
-			Vector2 teleportDirection = moveController.MoveDir;
+			var teleportDirection = moveController.MoveDir;
 
 			// If not moving, use the last movement direction or default to facing direction
 			if (teleportDirection.magnitude < 0.1f)
@@ -91,11 +79,9 @@ namespace __SCRIPTS
 			}
 
 			// Calculate teleport distance (adjust this value as needed)
-			float teleportDistance = life.DashSpeed; // You can adjust this value
-			Vector2 teleportOffset = teleportDirection.normalized * teleportDistance;
-			Vector2 newPoint = (Vector2)transform.position + teleportOffset;
-
-
+			var teleportDistance = life.DashSpeed; // You can adjust this value
+			var teleportOffset = teleportDirection.normalized * teleportDistance;
+			var newPoint = (Vector2) transform.position + teleportOffset;
 
 			var landable = body.GetLandableAtPosition(newPoint);
 			body.ChangeLayer(landable != null ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
@@ -105,19 +91,15 @@ namespace __SCRIPTS
 
 		private void Anim_DashStop()
 		{
-
-
 			// Cancel safety release since animation event fired properly
 			CancelInvoke(nameof(SafetyArmRelease));
 
 			body.ChangeLayer(body.isOverLandable ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
-			body.legs.Stop(this);
+			body.arms.Stop(this);
 			body.arms.Stop(this);
 
 			// Force refresh of aiming system after dash completes
 			RefreshAimingSystem();
-
-
 		}
 
 		private void RefreshAimingSystem()
@@ -126,27 +108,16 @@ namespace __SCRIPTS
 			var aimAbility = GetComponent<AimAbility>();
 			if (aimAbility != null && owner != null)
 			{
-
-
 				// Ensure IsShielding is cleared in case ShieldAbility left it stuck
-				if (anim != null)
-				{
-					anim.SetBool(UnitAnimations.IsShielding, false);
-
-				}
+				if (anim != null) anim.SetBool(UnitAnimations.IsShielding, false);
 
 				// Force the aim direction to update
 				if (!owner.isUsingMouse && owner.Controller != null)
 				{
 					var currentAim = owner.Controller.AimAxis.GetCurrentAngle();
 
-
 					// Force refresh by setting the aim direction directly if controller has input
-					if (currentAim.magnitude > 0.2f)
-					{
-						aimAbility.AimDir = currentAim.normalized;
-
-					}
+					if (currentAim.magnitude > 0.2f) aimAbility.AimDir = currentAim.normalized;
 				}
 			}
 		}
@@ -157,18 +128,8 @@ namespace __SCRIPTS
 			if (pauseManager.IsPaused) return;
 			if (!jumps.isResting) return;
 
-
-
 			if (!body.arms.Do(this)) return;
-			if (!teleport)
-			{
-				if (!body.legs.Do(this))
-				{
-					// If legs fail but arms succeeded, clean up arms
-					body.arms.Stop(this);
-					return;
-				}
-			}
+			if (!body.arms.Do(this) && !teleport) return;
 
 			anim.SetTrigger(UnitAnimations.DashTrigger);
 			if (!teleport)
@@ -190,12 +151,9 @@ namespace __SCRIPTS
 		{
 			if (body.arms.currentActivity?.VerbName == VerbName)
 			{
-
 				body.arms.Stop(this);
 				RefreshAimingSystem();
 			}
 		}
-
-
 	}
 }

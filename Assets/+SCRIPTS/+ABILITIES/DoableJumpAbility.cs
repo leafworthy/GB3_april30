@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class DoableJumpAbility : ServiceAbility, INeedPlayer
+	[DisallowMultipleComponent, RequireComponent(typeof(DoableJumpAbility))]
+	public class DoableJumpAbility : ServiceAbility
 	{
 		private float verticalVelocity;
 
@@ -26,51 +27,37 @@ namespace __SCRIPTS
 		private float bounceVelocityDragFactor = .2f;
 		private float airTimer;
 		private float maxFlyTime = 2.5f;
+		private bool canJump;
 
-		private Life life;
-		private bool isFlying;
-
-		public override bool requiresArms => false;
-		public override bool requiresLegs => true;
 
 		public override string VerbName => "Jump";
+		protected override bool requiresArms() => true;
 
-		public override bool canDo()
-		{
-			if (!base.canDo())
-			{
-				Debug.Log("Cannot jump, base canDo failed");
-				return false;
-			}
-			if (body.doableArms.IsActive)
-			{
-				Debug.Log("Cannot jump, arms are active");
-				return false;
-			}
+		protected override bool requiresLegs() => false;
 
-			return isResting && !life.IsDead() && !pauseManager.IsPaused;
-		}
+		public override bool canDo() => base.canDo() && isResting && canJump;
 
 		public override bool canStop() => false;
 
-		public override void Do()
+
+		public override void StartActivity()
 		{
-			Debug.Log( "Jumping");
 			Jump(body.GetCurrentLandableHeight(), life.JumpSpeed, 99);
+
 		}
 
-		public override void Stop(IDoableActivity activityToStop)
+		public override void StopActivity()
 		{
-			base.Stop(this);
-
+			base.StopActivity();
 			body.canLand = false;
 			body.SetDistanceToGround(body.GetCurrentLandableHeight());
 		}
 
-		private void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
+		private void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1, bool isFlying = false)
 		{
+			//anim.ResetTrigger(UnitAnimations.LandTrigger);
+			//anim.SetTrigger(UnitAnimations.JumpTrigger);
 			anim.Play(isFlying ? flyingAnimationClip.name : jumpingAnimationClip.name, 0, 0);
-			isFlying = false;
 			airTimer = 0;
 			minBounceVelocity = minBounce;
 			isJumping = true;
@@ -83,46 +70,21 @@ namespace __SCRIPTS
 			body.ChangeLayer(Body.BodyLayer.jumping);
 		}
 
-		public void SetPlayer(Player _player)
-		{
-			life = GetComponent<Life>();
-			life.OnDying += Life_OnDying;
-
-			_player.Controller.Jump.OnPress += Controller_Jump;
-
-			body.OnFallFromLandable += FallFromHeight;
-
-			FallFromHeight(FallInDistance);
-		}
-
 		private void Controller_Jump(NewControlButton newControlButton)
 		{
-			if (!canDo())
-			{
-				Debug.Log("Cannot jump, not resting or dead or paused or arms active");
-				return;
-			}
-			Do();
+			if (!canDo()) return;
+			DoSafely();
 		}
 
 		private void Life_OnDying(Player arg1, Life arg2)
 		{
-			isFlying = true;
 			Jump();
 		}
 
-		private void OnDisable()
+		public void FallFromLandable()
 		{
-			if (body != null) body.OnFallFromLandable -= FallFromHeight;
-			if (life == null) return;
-			if (life.player == null) return;
-			life.player.Controller.Jump.OnPress -= Controller_Jump;
-			life.OnDying -= Life_OnDying;
-		}
-
-		private void FallFromHeight(float fallHeight)
-		{
-			body.SetDistanceToGround(fallHeight);
+			anim.SetBool(UnitAnimations.IsFalling, true);
+			body.SetDistanceToGround(FallInDistance);
 			isJumping = true;
 			isResting = false;
 			anim.Play(fallingAnimationClip.name, 0, 0);
@@ -148,7 +110,7 @@ namespace __SCRIPTS
 			}
 
 			currentLandableHeight = body.GetCurrentLandableHeight();
-			verticalVelocity -= assets.Vars.Gravity.y * Time.fixedDeltaTime;
+			verticalVelocity -= assetManager.Vars.Gravity.y * Time.fixedDeltaTime;
 			if (body.GetDistanceToGround() + verticalVelocity <= currentLandableHeight && verticalVelocity < 0)
 				Land();
 			else
@@ -171,7 +133,7 @@ namespace __SCRIPTS
 			anim.Play(landingAnimationClip.name, 0, 0);
 
 			body.canLand = false;
-			body.SetCanMove(false);
+			moveController.SetCanMove(false);
 			body.SetDistanceToGround(currentLandableHeight);
 			if (body != null) body.ChangeLayer(body.isOverLandable ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
 			verticalVelocity = 0;
@@ -189,10 +151,16 @@ namespace __SCRIPTS
 		{
 			verticalVelocity = 0;
 			isResting = true;
+			anim.SetBool(UnitAnimations.IsFalling, false);
 			isJumping = false;
 			body.canLand = false;
-			body.SetCanMove(true);
-			Stop(this);
+			moveController.SetCanMove(true);
+			StopActivity();
+		}
+
+		public void SetCanJump(bool on)
+		{
+			canJump = on;
 		}
 	}
 }

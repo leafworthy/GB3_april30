@@ -57,9 +57,9 @@ namespace __SCRIPTS
 		private IAimableGun aimableGun;
 		private bool Reloading;
 
-		public override void SetPlayer(Player player)
+		public override void SetPlayer(Player _player)
 		{
-			base.SetPlayer(player);
+			base.SetPlayer(_player);
 			anim = GetComponent<UnitAnimations>();
 			aimableGun = GetComponent<IAimableGun>();
 			akClips.AddMany(E, EEN, EN, NE, NW, WN, WWN, W, WWS, WS, SW, SE, ES, EES);
@@ -129,27 +129,25 @@ namespace __SCRIPTS
 			}
 
 			// Only aim if we're in nade aiming mode, not throwing
-			if (body.arms.currentActivity?.VerbName == "Nade-Aim")
+			if (body.doableArms.currentActivity?.VerbName == "Nade-Aim")
 			{
 				AimInDirection(GetDegrees());
 			}
 
 			// Check what the arms are currently doing
-			string currentActivity = body.arms.currentActivity?.VerbName;
-			
+			var currentActivity = body.doableArms.currentActivity?.VerbName;
+
 			// Don't aim during special attacks that use animations on layer 1
-			bool shouldBlockAiming = currentActivity == "Knife-Attack" || 
+			var shouldBlockAiming = currentActivity == "Knife-Attack" ||
 			                        currentActivity == "Nade-Attack";
-			
-			
+
+
 			// Only aim when appropriate
-			if (!isAttacking && !aimableGun.isReloading && !shouldBlockAiming)
+			if (isAttacking || aimableGun.isReloading || shouldBlockAiming) return;
+			// Only aim if arms are truly free OR not doing conflicting activities
+			if (!body.doableArms.IsActive || currentActivity == null)
 			{
-				// Only aim if arms are truly free OR not doing conflicting activities
-				if (!body.arms.isActive || currentActivity == null)
-				{
-					AimInDirection(GetDegrees());
-				}
+				AimInDirection(GetDegrees());
 			}
 		}
 

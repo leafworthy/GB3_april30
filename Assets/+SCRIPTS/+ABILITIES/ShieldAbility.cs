@@ -78,7 +78,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 
 	private void ShieldPush()
 	{
-		var hits = Physics2D.OverlapCircleAll(transform.position, 30, assets.LevelAssets.EnemyLayer);
+		var hits = Physics2D.OverlapCircleAll(transform.position, 30, AssetManager.LevelAssets.EnemyLayer);
 		foreach (var hit in hits)
 		{
 			var _life = hit.GetComponent<Life>();

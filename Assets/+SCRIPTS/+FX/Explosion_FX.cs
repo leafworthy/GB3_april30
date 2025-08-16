@@ -1,13 +1,13 @@
 using UnityEngine;
 
 namespace __SCRIPTS
-{
+{	[DisallowMultipleComponent]
 	public class Explosion_FX: MonoBehaviour
 	{
 
 		public static void Explode(Vector3 explosionPosition, float explosionRadius, float explosionDamage, Player _owner)
 		{
-			var assets = ServiceLocator.Get<ASSETS>();
+			var assets = ServiceLocator.Get<AssetManager>();
 			var pushFactor = 10;
 			var objectMaker = ServiceLocator.Get<ObjectMaker>();
 			objectMaker.Make( assets.FX.explosions.GetRandom(), explosionPosition);

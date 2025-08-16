@@ -48,7 +48,7 @@ namespace __SCRIPTS
 		private bool isGlockingOnPurpose;
 		public event Action OnEmpty;
 
-		public override void SetPlayer(Player player)
+		public override void SetPlayer(Player _player)
 		{
 			ammoInventory = GetComponent<AmmoInventory>();
 			anim = GetComponent<UnitAnimations>();
@@ -221,7 +221,7 @@ namespace __SCRIPTS
 			var missPosition = (Vector2) body.FootPoint.transform.position +
 			                   aim.AimDir.normalized * attacker.PrimaryAttackRange;
 			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, aim.AimDir.normalized,
-				attacker.PrimaryAttackRange, assets.LevelAssets.BuildingLayer);
+				attacker.PrimaryAttackRange, AssetManager.LevelAssets.BuildingLayer);
 			if (raycastHit) missPosition = raycastHit.point;
 			var newAttack = new Attack(attacker, body.FootPoint.transform.position, missPosition, null, 0);
 
@@ -243,14 +243,14 @@ namespace __SCRIPTS
 			if (body.isOverLandable)
 			{
 				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
-					attacker.PrimaryAttackRange, assets.LevelAssets.EnemyLayerOnLandable);
+					attacker.PrimaryAttackRange, AssetManager.LevelAssets.EnemyLayerOnLandable);
 
 				return raycastHit;
 			}
 			else
 			{
 				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
-					attacker.PrimaryAttackRange, assets.LevelAssets.EnemyLayer);
+					attacker.PrimaryAttackRange, AssetManager.LevelAssets.EnemyLayer);
 				return raycastHit;
 			}
 		}

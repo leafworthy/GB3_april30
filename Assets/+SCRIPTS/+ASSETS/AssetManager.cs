@@ -4,7 +4,7 @@ using UnityEngine;
 namespace __SCRIPTS
 {
 	[ExecuteInEditMode]
-	public class ASSETS : MonoBehaviour, IService
+	public class AssetManager : MonoBehaviour, IService
 	{
 		// Level Assets
 		private LevelAssets _levels;

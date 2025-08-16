@@ -32,7 +32,7 @@ namespace __SCRIPTS
 		protected RaycastHit2D RaycastToObject(Life currentTargetLife)
 		{
 			var position = attacker.transform.position;
-			var layer = attacker.IsPlayer ? assets.LevelAssets.EnemyLayer : assets.LevelAssets.PlayerLayer;
+			var layer = attacker.IsPlayer ? AssetManager.LevelAssets.EnemyLayer : AssetManager.LevelAssets.PlayerLayer;
 			var direction = (currentTargetLife.transform.position - position).normalized;
 			var distance = Vector3.Distance(position, currentTargetLife.transform.position);
 			return Physics2D.Raycast(position, direction, distance, layer);

@@ -50,7 +50,7 @@ namespace __SCRIPTS
 			{
 				// Create loading bar slightly above the interaction object
 				Vector3 barPosition = transform.position + Vector3.up * 1.5f;
-				loadingBar = objectMaker.Make( assets.FX.loadingBarPrefab, barPosition);
+				loadingBar = objectMaker.Make( AssetManager.FX.loadingBarPrefab, barPosition);
 				
 				// Set up proper world space positioning
 				var canvas = loadingBar.GetComponent<Canvas>();

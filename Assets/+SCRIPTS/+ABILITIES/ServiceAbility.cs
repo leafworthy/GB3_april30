@@ -2,45 +2,82 @@ using __SCRIPTS;
 using GangstaBean.Core;
 using UnityEngine;
 
-public abstract class ServiceAbility : ServiceUser, IDoableActivity
+public abstract class ServiceAbility : MonoBehaviour, IDoableActivity
 {
-	private UnitAnimations _anim;
 	protected UnitAnimations anim => _anim ?? GetComponent<UnitAnimations>();
-	private Body _body;
+	private UnitAnimations _anim;
 	protected Body body => _body ?? GetComponent<Body>();
+	private Body _body;
+	protected Life life => _life ??= GetComponent<Life>();
+	private Life _life;
+	protected PauseManager pauseManager => _pauseManager ??= ServiceLocator.Get<PauseManager>();
+	private PauseManager _pauseManager;
+	protected AssetManager assetManager => _assetManager ??= ServiceLocator.Get<AssetManager>();
+	private AssetManager _assetManager;
+
+	protected DoableMoveController moveController => _moveController ??= GetComponent<DoableMoveController>();
+	private DoableMoveController _moveController;
+	protected MoveAbility move => _move ??= GetComponent<MoveAbility>();
+	private MoveAbility _move;
+
+	protected Player _player;
 	public virtual string VerbName => "Generic Ability";
 
-	public virtual bool requiresArms => false;
+	protected abstract bool requiresArms();
 
-	public virtual bool requiresLegs => false;
+	protected abstract bool requiresLegs();
 
 	public virtual bool canDo() => BodyCanDo(this);
 
 	public virtual bool canStop() => false;
 
-	public abstract void Do();
-
-	public virtual void Stop(IDoableActivity activityToStop)
+	public void DoSafely()
 	{
-		if (requiresArms) body.doableArms.Stop(activityToStop);
-		if (requiresLegs) body.doableLegs.Stop(activityToStop);
+		if (requiresArms()) body.doableArms.DoActivity(this);
+		if (requiresLegs()) body.doableLegs.DoActivity(this);
+	}
+
+	public abstract void StartActivity();
+
+	public virtual void StopActivity()
+	{
+		if (requiresArms()) body.doableArms.StopActivity(this);
+		if (requiresLegs()) body.doableLegs.StopActivity(this);
 		CancelInvoke(nameof(AnimationComplete));
 	}
 
-	protected bool BodyCanDo(IDoableActivity activityToDo)
+	private bool BodyCanDo(IDoableActivity activityToDo)
 	{
-		if (requiresArms && !body.doableArms.CanDoActivity(activityToDo)) return false;
-		if (requiresLegs && !body.doableLegs.CanDoActivity(activityToDo)) return false;
+		if (pauseManager.IsPaused) return false;
+		if (life.IsDead()) return false;
+		if (requiresArms() && !body.doableArms.CanDoActivity(activityToDo)) return false;
+		if (requiresLegs() && !body.doableLegs.CanDoActivity(activityToDo)) return false;
 		return true;
 	}
 
 	protected virtual void AnimationComplete()
 	{
+		StopActivity();
 	}
 
-	protected void PlayAnimationClip(AnimationClip clip)
+	protected void PlayAnimationClip(string clipName, int layer = 0)
 	{
-		anim.Play(clip.name, 0, 0);
+		var clips = anim.animator.runtimeAnimatorController.animationClips;
+		AnimationClip desiredClip = null;
+		foreach (var clip in clips)
+		{
+			if (clip.name != clipName) continue;
+			desiredClip = clip;
+			break;
+		}
+
+		PlayAnimationClip(desiredClip, layer);
+	}
+
+	protected void PlayAnimationClip(AnimationClip clip, int layer = 0)
+	{
+		if (clip == null) Debug.LogWarning("[ServiceAbility] Animation clip not found: " + clip.name);
+		anim.Play(clip.name, layer, 0);
 		Invoke(nameof(AnimationComplete), clip.length);
 	}
 }

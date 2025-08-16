@@ -33,7 +33,7 @@ namespace __SCRIPTS
 
 		private void CreateBullet(Attack attack, Vector2 attackStartPosition)
 		{
-			var newBullet = objectMaker.Make( assets.FX.BulletPrefab, attack.OriginFloorPoint);
+			var newBullet = objectMaker.Make( AssetManager.FX.BulletPrefab, attack.OriginFloorPoint);
 
 			var bulletScript = newBullet.GetComponent<Bullet_FX>();
 			bulletScript.Fire(attack, attackStartPosition);
@@ -42,7 +42,7 @@ namespace __SCRIPTS
 
 		private void MakeBulletShell(Attack attack)
 		{
-			var newBulletShell = objectMaker.Make( assets.FX.bulletShellPrefab, (Vector2) attack.OriginFloorPoint);
+			var newBulletShell = objectMaker.Make( AssetManager.FX.bulletShellPrefab, (Vector2) attack.OriginFloorPoint);
 			newBulletShell.GetComponent<FallToFloor>()
 			              .Fire(attack, true);
 
@@ -53,7 +53,7 @@ namespace __SCRIPTS
 		{
 			var heightCorrectionForDepth = new Vector2(0,-1.25f);
 
-			var newBulletHitAnimation = objectMaker.Make( assets.FX.bulletHitAnimPrefab, attack.DestinationFloorPoint + heightCorrectionForDepth);
+			var newBulletHitAnimation = objectMaker.Make( AssetManager.FX.bulletHitAnimPrefab, attack.DestinationFloorPoint + heightCorrectionForDepth);
 
 			Debug.DrawLine( attack.DestinationFloorPoint, attack.DestinationFloorPoint + heightCorrectionForDepth, Color.magenta, 5);
 

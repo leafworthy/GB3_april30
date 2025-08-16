@@ -55,7 +55,7 @@ namespace __SCRIPTS
 
 		private bool HasKey() => DoAnyPlayersHaveAKey();
 
-		private bool HasEnoughGas() => GetTotalGasFromAllJoinedPlayers() >= assets.Vars.GasGoal;
+		private bool HasEnoughGas() => GetTotalGasFromAllJoinedPlayers() >= AssetManager.Vars.GasGoal;
 
 		private bool DoAnyPlayersHaveAKey()
 		{
@@ -79,13 +79,13 @@ namespace __SCRIPTS
 			return totalGas;
 		}
 
-		private bool HasSomeGas() => GetTotalGasFromAllJoinedPlayers() > 0 && GetTotalGasFromAllJoinedPlayers() < assets.Vars.GasGoal;
+		private bool HasSomeGas() => GetTotalGasFromAllJoinedPlayers() > 0 && GetTotalGasFromAllJoinedPlayers() < AssetManager.Vars.GasGoal;
 
 		private void Interactable_OnTimeComplete(Player player)
 		{
 			if (!HasEnoughGas() || gasFilled) return;
 			gasFilled = true;
-			playerStatsManager.ChangeStat(player,PlayerStat.StatType.Gas, -assets.Vars.GasGoal);
+			playerStatsManager.ChangeStat(player,PlayerStat.StatType.Gas, -AssetManager.Vars.GasGoal);
 		Interactable_OnPlayerEnters(player);
 		}
 

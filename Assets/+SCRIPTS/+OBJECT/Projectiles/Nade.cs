@@ -18,7 +18,7 @@ namespace __SCRIPTS.Projectiles
 			owner = _owner;
 			currentRotationSpeed = rotationSpeed;
 			timeLeft = _throwTime*Time.fixedDeltaTime;
-			jumpVel.y = timeLeft * assets.Vars.Gravity.y/2;
+			jumpVel.y = timeLeft * AssetManager.Vars.Gravity.y/2;
 			jumpObject.transform.localPosition = new Vector3(0, 1.24f,0);
 			transform.position = _start;
 			velocity = startingVelocity;
@@ -41,7 +41,7 @@ namespace __SCRIPTS.Projectiles
 			jumpObject.transform.localEulerAngles += new Vector3(0, 0, currentRotationSpeed * Time.fixedDeltaTime);
 			currentRotationSpeed *= .99f;
 			jumpObject.transform.localPosition = jumpObject.transform.localPosition + jumpVel;
-			jumpVel.y -= assets.Vars.Gravity.y * Time.fixedDeltaTime;
+			jumpVel.y -= AssetManager.Vars.Gravity.y * Time.fixedDeltaTime;
 			if (jumpObject.transform.localPosition.y < 0)
 			{
 				jumpObject.transform.localPosition = new Vector3(0, 1, 0);

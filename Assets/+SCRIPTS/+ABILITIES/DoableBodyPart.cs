@@ -10,26 +10,20 @@ namespace __SCRIPTS
 		public bool IsActive => currentActivity != null;
 		public IDoableActivity currentActivity;
 
-		public void Stop(IDoableActivity activityToStop)
+		public void StopActivity(IDoableActivity activityToStop)
 		{
 			if (currentActivity == null) return;
 			if (currentActivity != activityToStop) return;
-			currentActivity.Stop(activityToStop);
+			currentActivity.StopActivity();
 			currentActivity = null;
 		}
 
-		public bool UseBodyPart(IDoableActivity newActivity)
+		public bool DoActivity(IDoableActivity newActivity)
 		{
-			if (currentActivity != null)
-			{
-				if (!currentActivity.canStop())
-					return false;
-			}
-
 			if (CanDoActivity(newActivity))
 			{
 				currentActivity = newActivity;
-				currentActivity.Do();
+				currentActivity.StartActivity();
 				return true;
 			}
 
@@ -44,9 +38,8 @@ namespace __SCRIPTS
 
 		public bool CanDoActivity(IDoableActivity newActivity)
 		{
-			if (newActivity == null) return false;
-			if (IsActive) return false;
-			return !ActivitiesAreTheSame(newActivity, currentActivity);
+			if (IsActive && !currentActivity.canStop()) return false;
+			return !ActivitiesAreTheSame(newActivity, currentActivity) && newActivity.canDo();
 		}
 	}
 }

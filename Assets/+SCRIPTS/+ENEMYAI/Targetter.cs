@@ -54,7 +54,7 @@ namespace __SCRIPTS._ENEMYAI
 		//private Life GetClosest(List<Life> targets) => targets.OrderBy(t => Vector2.Distance(t.transform.position, transform.position)).FirstOrDefault();
 		public Life GetClosestAttackableObstacle()
 		{
-			var obstacles = GetValidObstaclesInRange( assets.LevelAssets.DoorLayer, targetterLife.PrimaryAttackRange);
+			var obstacles = GetValidObstaclesInRange( AssetManager.LevelAssets.DoorLayer, targetterLife.PrimaryAttackRange);
 			var closest = GetClosest(obstacles);
 
 			// Debug logging to help identify door targeting issues
@@ -64,8 +64,8 @@ namespace __SCRIPTS._ENEMYAI
 
 			return closest;
 		}
-		public Life GetClosestAttackablePlayer() => GetClosest(GetAttackableTargetsInRange( assets.LevelAssets.PlayerLayer, targetterLife.PrimaryAttackRange));
-		public Life GetClosestPlayerInAggroRange() => GetClosest(GetAggroTargets( assets.LevelAssets.PlayerLayer));
+		public Life GetClosestAttackablePlayer() => GetClosest(GetAttackableTargetsInRange( AssetManager.LevelAssets.PlayerLayer, targetterLife.PrimaryAttackRange));
+		public Life GetClosestPlayerInAggroRange() => GetClosest(GetAggroTargets( AssetManager.LevelAssets.PlayerLayer));
 		public Life GetClosestPlayer() => GetClosest(GetPlayers());
 
 		private List<Life> GetPlayers()
@@ -121,7 +121,7 @@ namespace __SCRIPTS._ENEMYAI
 
 		private bool buildingIsInTheWay(Vector2 position)
 		{
-			var hit = Physics2D.Linecast(transform.position, position, assets.LevelAssets.EnemyUnwalkableLayers);
+			var hit = Physics2D.Linecast(transform.position, position, AssetManager.LevelAssets.EnemyUnwalkableLayers);
 			if (!hit) return false;
 			return hit.collider != null;
 		}

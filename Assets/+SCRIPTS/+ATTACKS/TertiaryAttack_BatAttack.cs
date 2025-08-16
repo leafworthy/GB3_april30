@@ -86,7 +86,7 @@ namespace __SCRIPTS
 
 		private void RegularAttackHit(int attackType)
 		{
-			var circleCast = Physics2D.OverlapCircleAll(transform.position, GetHitRange(attackType), assets.LevelAssets.EnemyLayer);
+			var circleCast = Physics2D.OverlapCircleAll(transform.position, GetHitRange(attackType), AssetManager.LevelAssets.EnemyLayer);
 			var closest2 = circleCast.OrderBy(item => Vector2.Distance(item.gameObject.transform.position, transform.position)).Take(2);
 			foreach (var col in closest2)
 			{

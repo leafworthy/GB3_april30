@@ -48,9 +48,9 @@ namespace __SCRIPTS
 		public void SetPlayer(Player _player)
 		{
 			if (_player == null) return;
-			player = _player;
-			player.Controller.Attack1RightTrigger.OnPress += StartPress;
-			player.Controller.Attack1RightTrigger.OnRelease += StopPressing;
+			this.player = _player;
+			this.player.Controller.Attack1RightTrigger.OnPress += StartPress;
+			this.player.Controller.Attack1RightTrigger.OnRelease += StopPressing;
 			animationEvents = anim.animEvents;
 			animationEvents.OnThrow += Anim_Throw;
 			animationEvents.OnThrowStop += Anim_ThrowStop;
@@ -79,7 +79,7 @@ namespace __SCRIPTS
 			ammoInventory.primaryAmmo.UseAmmo( 1);
 
 			var throwHeight = body.ThrowPoint.transform.position.y - transform.position.y;
-			var newProjectile = objectMaker.Make(assets.FX.kunaiPrefab, transform.position);
+			var newProjectile = objectMaker.Make(AssetManager.FX.kunaiPrefab, transform.position);
 			var kunaiScript = newProjectile.GetComponent<Kunai>();
 			kunaiScript.Throw(aim.AimDir, transform.position, throwHeight, player.spawnedPlayerDefence);
 			OnThrow?.Invoke(aim.AimDir, transform.position, throwHeight, player.spawnedPlayerDefence, false);

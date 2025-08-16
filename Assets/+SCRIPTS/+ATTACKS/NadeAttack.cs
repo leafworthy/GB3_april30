@@ -52,7 +52,7 @@ namespace __SCRIPTS
 			animationEvents = anim.animEvents;
 			body = GetComponent<Body>();
 			life = GetComponent<Life>();
-			player = _player;
+			this.player = _player;
 			move = GetComponent<MoveAbility>();
 
 			ammo = GetComponent<AmmoInventory>();
@@ -105,7 +105,6 @@ namespace __SCRIPTS
 		{
 			if (IsAiming)
 			{
-				Debug.Log("Is aiming, should show markers");
 				if (player.isUsingMouse) AimAt(CursorManager.GetMousePosition());
 				else Aim();
 				OnShowAiming?.Invoke();
@@ -125,21 +124,18 @@ namespace __SCRIPTS
 		private void Player_NadePress(NewControlButton newControlButton)
 		{
 			if (pauseManager.IsPaused) return;
-			Debug.Log("[Grenade] Player pressed grenade button");
 
 			if (!ammo.secondaryAmmo.hasReserveAmmo())
 			{
-				Debug.Log("[Grenade] BLOCKED: No ammo for grenade");
 				return;
 			}
 
 			if (!arms.Do(aimActivity))
 			{
-				Debug.Log("[Grenade] BLOCKED: Arms busy, cannot start aiming");
+				Debug.Log("[Grenade] BLOCKED: Arms busy with: " +   (arms.currentActivity?.VerbName ?? "nothing"));
 				return;
 			}
 
-			Debug.Log("[Grenade] SUCCESS: Started aiming");
 			IsAiming = true;
 			OnShowAiming?.Invoke();
 		}
@@ -153,18 +149,15 @@ namespace __SCRIPTS
 
 			if (!ammo.secondaryAmmo.hasReserveAmmo())
 			{
-				Debug.Log("[Grenade] BLOCKED: No ammo");
 				arms.Stop(aimActivity);
 				return;
 			}
 
 			if (arms.currentActivity == aimActivity)
 			{
-				Debug.Log("[Grenade] Stopping aim activity and starting throw");
 
 				if (arms.DoWithCompletion(this, GangstaBean.Core.CompletionReason.NewActivity))
 				{
-					Debug.Log("[Grenade] SUCCESS: Starting throw animation");
 					isThrowingGrenade = true;
 					throwStartTime = Time.time;
 					anim.Play(AnimationName, 1, 0);

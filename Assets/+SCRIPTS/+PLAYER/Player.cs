@@ -97,13 +97,13 @@ namespace __SCRIPTS
 			switch (player.CurrentCharacter)
 			{
 				case Character.Karrot:
-					return assets.Players.GangstaBeanPlayerPrefab;
+					return AssetManager.Players.GangstaBeanPlayerPrefab;
 				case Character.Bean:
-					return assets.Players.GangstaBeanPlayerPrefab;
+					return AssetManager.Players.GangstaBeanPlayerPrefab;
 				case Character.Brock:
-					return assets.Players.BrockLeePlayerPrefab;
+					return AssetManager.Players.BrockLeePlayerPrefab;
 				case Character.Tmato:
-					return assets.Players.TMatoPlayerPrefab;
+					return AssetManager.Players.TMatoPlayerPrefab;
 			}
 
 			return null;
@@ -180,5 +180,6 @@ namespace __SCRIPTS
 		{
 			OnPlayerLeavesUpgradeSetupMenu?.Invoke(this);
 		}
+
 	}
 }

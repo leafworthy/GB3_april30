@@ -75,7 +75,7 @@ public class InteractableSelector : MonoBehaviour, INeedPlayer
 
 	public void SetPlayer(Player _player)
 	{
-		player = _player;
+		this.player = _player;
 		aimAbility = GetComponentInChildren<AimAbility>();
 	}
 }

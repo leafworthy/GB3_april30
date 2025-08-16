@@ -21,7 +21,7 @@ namespace __SCRIPTS
 
 		private void TertiaryAttackKnifeOnHit(Vector2 pos)
 		{
-			objectMaker.Make( assets.FX.hit5_xstrike, pos);
+			objectMaker.Make( AssetManager.FX.hit5_xstrike, pos);
 			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);
 		}
 

@@ -3,10 +3,11 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
+	[DisallowMultipleComponent]
 	public class AK_GunAttacks_FX : ServiceUser
 	{
 		private GunAttack_AK_Glock gunAttackAkGlock;
-		private GameObject bulletPrefab => assets.FX.BulletPrefab;
+		private GameObject bulletPrefab => AssetManager.FX.BulletPrefab;
 
 		private void OnEnable()
 		{
@@ -45,7 +46,7 @@ namespace __SCRIPTS
 
 		private void MakeBulletShell(Attack attack)
 		{
-			var newBulletShell = objectMaker.Make( assets.FX.bulletShellPrefab, (Vector2) attack.OriginFloorPoint);
+			var newBulletShell = objectMaker.Make( AssetManager.FX.bulletShellPrefab, (Vector2) attack.OriginFloorPoint);
 			newBulletShell.GetComponent<FallToFloor>()
 			              .Fire(attack, true);
 
@@ -56,7 +57,7 @@ namespace __SCRIPTS
 		{
 			var heightCorrectionForDepth = new Vector2(0,-1.25f);
 
-			var newBulletHitAnimation = objectMaker.Make( assets.FX.bulletHitAnimPrefab, attack.DestinationFloorPoint + heightCorrectionForDepth);
+			var newBulletHitAnimation = objectMaker.Make( AssetManager.FX.bulletHitAnimPrefab, attack.DestinationFloorPoint + heightCorrectionForDepth);
 
 			Debug.DrawLine( attack.DestinationFloorPoint, attack.DestinationFloorPoint + heightCorrectionForDepth, Color.magenta, 5);
 

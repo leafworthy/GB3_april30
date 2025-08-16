@@ -31,16 +31,16 @@ namespace __SCRIPTS
 		{
 			anim = GetComponent<UnitAnimations>();
 			body = GetComponent<Body>();
-			player = _player;
-			player.Controller.Attack3Circle.OnPress += PlayerChainsawPress;
-			player.Controller.Attack3Circle.OnRelease += PlayerChainsawRelease;
-			player.Controller.Attack1RightTrigger.OnPress += PlayerPrimaryPress;
-			player.Controller.MoveAxis.OnChange += Player_MoveInDirection;
+			this.player = _player;
+			this.player.Controller.Attack3Circle.OnPress += PlayerChainsawPress;
+			this.player.Controller.Attack3Circle.OnRelease += PlayerChainsawRelease;
+			this.player.Controller.Attack1RightTrigger.OnPress += PlayerPrimaryPress;
+			this.player.Controller.MoveAxis.OnChange += Player_MoveInDirection;
 
 			// Listen for actions that should cancel chainsawing
-			player.Controller.Attack2LeftTrigger.OnPress += PlayerMinePress;
-			player.Controller.Jump.OnPress += PlayerJumpPress;
-			player.Controller.DashRightShoulder.OnPress += PlayerDashPress;
+			this.player.Controller.Attack2LeftTrigger.OnPress += PlayerMinePress;
+			this.player.Controller.Jump.OnPress += PlayerJumpPress;
+			this.player.Controller.DashRightShoulder.OnPress += PlayerDashPress;
 
 			anim.animEvents.OnAttackStop += Anim_OnAttackStop;
 		}
@@ -221,13 +221,13 @@ namespace __SCRIPTS
 		private List<Life> FindClosestHits()
 		{
 			// Null checks
-			if (attackPoint == null || attacker == null || assets.LevelAssets == null)
+			if (attackPoint == null || attacker == null || AssetManager.LevelAssets == null)
 			{
 				return new List<Life>();
 			}
 
 			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange,
-				 assets.LevelAssets.EnemyLayer).ToList();
+				 AssetManager.LevelAssets.EnemyLayer).ToList();
 			if (circleCast.Count <= 0) return new List<Life>();
 
 			var enemies = new List<Life>();

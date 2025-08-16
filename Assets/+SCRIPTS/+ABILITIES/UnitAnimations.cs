@@ -9,7 +9,6 @@ namespace __SCRIPTS
 		public AnimationEvents animEvents => _animEvents ??= GetComponentInChildren<AnimationEvents>();
 		private AnimationEvents _animEvents;
 		[SerializeField] public Animator animator;
-		private Body body;
 
 		#region animation hashes
 
@@ -63,7 +62,6 @@ namespace __SCRIPTS
 		private void InitializeAnimations()
 		{
 			animator = GetComponentInChildren<Animator>();
-			body = GetComponent<Body>();
 			CacheParameterHashes();
 			ResetAnimatorState();
 		}

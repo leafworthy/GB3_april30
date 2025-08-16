@@ -41,22 +41,22 @@ namespace __SCRIPTS
 
 		public HideRevealObjects CharIcon;
 
-		public void SetPlayer(Player newPlayer)
+		public void SetPlayer(Player _player)
 		{
 			gameObject.SetActive(true);
 
-			_currentAmmoInventory = newPlayer.SpawnedPlayerGO.GetComponent<AmmoInventory>();
+			_currentAmmoInventory = _player.SpawnedPlayerGO.GetComponent<AmmoInventory>();
 			if (primaryAmmoDisplay != null) primaryAmmoDisplay.SetAmmo(_currentAmmoInventory.primaryAmmo);
 			if (secondaryAmmoDisplay != null) secondaryAmmoDisplay.SetAmmo(_currentAmmoInventory.secondaryAmmo);
 			if (tertiaryAmmoDisplay != null) tertiaryAmmoDisplay.SetAmmo(_currentAmmoInventory.tertiaryAmmo);
 
-			var playerAmmo = newPlayer.SpawnedPlayerGO.GetComponent<AmmoInventory>();
+			var playerAmmo = _player.SpawnedPlayerGO.GetComponent<AmmoInventory>();
 
 			primaryWeaponIcon.Set((int)playerAmmo.primaryAmmo.weaponType);
 			secondaryWeaponIcon.Set((int) playerAmmo.secondaryAmmo.weaponType);
 			tertiaryWeaponIcon.Set((int) playerAmmo.tertiaryAmmo.weaponType);
 
-			CharIcon.Set((int)newPlayer.CurrentCharacter); // Set to the first character icon by default
+			CharIcon.Set((int)_player.CurrentCharacter); // Set to the first character icon by default
 		}
 
 

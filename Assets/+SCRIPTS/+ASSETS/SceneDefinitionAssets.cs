@@ -72,7 +72,7 @@ namespace __SCRIPTS
 				return;
 
 			// Add to name map, using scene name as key
-			if (!string.IsNullOrEmpty(scene.SceneName) && !_nameMap.ContainsKey(scene.SceneName)) _nameMap[scene.SceneName] = scene;
+			if (!string.IsNullOrEmpty(scene.SceneName)) _nameMap.TryAdd(scene.SceneName, scene);
 		}
 
 
@@ -80,18 +80,21 @@ namespace __SCRIPTS
 		{
 			if (string.IsNullOrEmpty(sceneName))
 			{
-				Debug.Log("Scene name is null or empty");
+				Debug.LogWarning("Scene name is null or empty");
 				return null;
 			}
 
 			if (_nameMap == null)
 				Initialize();
+			Debug.Log("Scene keys in dictionary: " + string.Join(", ", _nameMap.Keys));
+			if (_nameMap.TryGetValue(sceneName, out var scene))
+			{
+				Debug.Log("Got scene by name: " + sceneName);
+				return scene;
+			}
 
-			var scene = _nameMap[sceneName];
-			if (scene == null) Debug.Log("can't find scene");
-
-			Debug.Log("got scene by name: " + sceneName);
-			return scene;
+			Debug.LogWarning($"Scene '{sceneName}' not found in SceneDefinitionAssets.");
+			return null;
 		}
 
 		/// <summary>

@@ -51,7 +51,7 @@ namespace __SCRIPTS
 			animationEvents = anim.animEvents;
 			body = GetComponent<Body>();
 			life = GetComponent<Life>();
-			player = _player;
+			this.player = _player;
 			jump = GetComponent<JumpAbility>();
 			move = GetComponent<MoveAbility>();
 			ammo = GetComponent<AmmoInventory>();
@@ -153,7 +153,7 @@ namespace __SCRIPTS
 			startPoint = transform.position;
 			OnThrow?.Invoke(startPoint, life.player);
 
-			var newProjectile = objectMaker.Make( assets.FX.minePrefab, startPoint);
+			var newProjectile = objectMaker.Make( AssetManager.FX.minePrefab, startPoint);
 			var newMine = newProjectile.GetComponent<Mine>();
 			newMine.Launch(startPoint, player);
 			newMine.OnSelfDetonate += RemoveMine;

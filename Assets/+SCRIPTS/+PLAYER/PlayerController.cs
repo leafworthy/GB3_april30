@@ -23,12 +23,10 @@ namespace __SCRIPTS
 		public NewControlButton Unpause;
 
 		private bool initialized;
-
 		private void Start()
 		{
 			SetAxes();
 		}
-
 		public void InitializeAndLinkToPlayer(Player player)
 		{
 			if (initialized) return;
@@ -72,5 +70,7 @@ namespace __SCRIPTS
 			UIAxis = new NewInputAxis(controls.UI.Movement, owner);
 			MoveAxis = new NewInputAxis(controls.PlayerMovement.Movement, owner);
 		}
+
+
 	}
 }
