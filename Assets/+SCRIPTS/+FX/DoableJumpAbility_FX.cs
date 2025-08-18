@@ -1,15 +1,15 @@
 using __SCRIPTS;
 using UnityEngine;
 
-[RequireComponent(typeof(DoableJumpAbility)),DisallowMultipleComponent]
+[RequireComponent(typeof(JumpAbility)),DisallowMultipleComponent]
 public class DoableJumpAbility_FX : ServiceUser
 {
-	private DoableJumpAbility jump;
+	private JumpAbility jump;
 	private Body body;
 
 	private void OnEnable()
 	{
-		jump = GetComponent<DoableJumpAbility>();
+		jump = GetComponent<JumpAbility>();
 		if (jump == null) return;
 		jump.OnJump += Jump_OnJump;
 		jump.OnLand += Jump_OnLand;

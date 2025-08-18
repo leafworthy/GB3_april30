@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	[DisallowMultipleComponent, RequireComponent(typeof(DoableNadeAttackAbility))]
+	[DisallowMultipleComponent, RequireComponent(typeof(NadeAttack))]
 	public class DoableNadeAbility_FX : ServiceUser
 	{
-		private DoableNadeAttackAbility nade;
+		private NadeAttack nade;
 		private Body body;
 		private GameObject currentArrowHead;
 		private List<GameObject> _trajectoryMarkersContainer = new();
@@ -17,7 +17,7 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
-			nade = GetComponent<DoableNadeAttackAbility>();
+			nade = GetComponent<NadeAttack>();
 			body = GetComponent<Body>();
 
 			nade.OnThrow += Nade_OnThrow;

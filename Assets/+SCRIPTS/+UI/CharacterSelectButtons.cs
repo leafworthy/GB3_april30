@@ -20,10 +20,10 @@ namespace __SCRIPTS
 			//Debug.Log("buttons initialized");
 			hasSelected = false;
 			_player = player;
-			player.Controller.UIAxis.OnLeft += OnLeft;
-			player.Controller.UIAxis.OnRight += OnRight;
-			player.Controller.Select.OnPress += OnSelect;
-			player.Controller.Cancel.OnPress += OnCancel;
+			player.Controller.OnUIAxis_Left += OnLeft;
+			player.Controller.OnUIAxis_Right += OnRight;
+			player.Controller.OnSelect_Pressed += OnSelect;
+			player.Controller.OnCancel_Pressed += OnCancel;
 			buttons[0] = DefaultButton;
 			DeselectAllButtons();
 			currentlySelectedButton = DefaultButton;
@@ -36,10 +36,10 @@ namespace __SCRIPTS
 			hasSelected = false;
 			hasJoined = false;
 			if(_player == null) return;
-			_player.Controller.UIAxis.OnLeft -= OnLeft;
-			_player.Controller.UIAxis.OnRight -= OnRight;
-			_player.Controller.Select.OnPress -= OnSelect;
-			_player.Controller.Cancel.OnPress -= OnCancel;
+			_player.Controller.OnUIAxis_Left -= OnLeft;
+			_player.Controller.OnUIAxis_Right -= OnRight;
+			_player.Controller.OnSelect_Pressed -= OnSelect;
+			_player.Controller.OnCancel_Pressed -= OnCancel;
 
 		}
 

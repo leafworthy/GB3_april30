@@ -9,11 +9,8 @@ namespace __SCRIPTS
 	{
 		private AnimationEvents animEvents;
 		private JumpAbility jumps;
-		private UnitAnimations anim;
-		private Body body;
 		public override string VerbName => "Bat-Attack";
 		private bool isCharging;
-		private Life life;
 
 		private bool isFullyCharged;
 		private bool isPressingAttack;
@@ -27,16 +24,13 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
-			body = GetComponent<Body>();
-			anim = GetComponent<UnitAnimations>();
-			life = GetComponent<Life>();
 			owner = life.player;
 			jumps = GetComponent<JumpAbility>();
 
 			if (owner == null) return;
-			owner.Controller.Attack3Circle.OnPress += Player_AttackPress;
-			owner.Controller.Attack3Circle.OnRelease += Player_AttackRelease;
-			owner.Controller.MoveAxis.OnChange += Player_MoveInDirection;
+			owner.Controller.OnAttack3_Pressed += Player_AttackPress;
+			owner.Controller.OnAttack3_Released += Player_AttackRelease;
+			owner.Controller.OnMoveAxis_Change += Player_MoveInDirection;
 			animEvents = anim.animEvents;
 			animEvents.OnAttackHit += Anim_AttackHit;
 			animEvents.OnAttackStop += Anim_AttackStop;
@@ -45,15 +39,15 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			if (owner == null) return;
-			owner.Controller.Attack3Circle.OnPress -= Player_AttackPress;
-			owner.Controller.Attack3Circle.OnRelease -= Player_AttackRelease;
-			owner.Controller.MoveAxis.OnChange -= Player_MoveInDirection;
+			owner.Controller.OnAttack3_Pressed -= Player_AttackPress;
+			owner.Controller.OnAttack3_Released -= Player_AttackRelease;
+			owner.Controller.OnMoveAxis_Change -= Player_MoveInDirection;
 			if (animEvents == null) return;
 			animEvents.OnAttackHit -= Anim_AttackHit;
 			animEvents.OnAttackStop -= Anim_AttackStop;
 		}
 
-		private void Player_MoveInDirection(NewInputAxis arg1, Vector2 dir)
+		private void Player_MoveInDirection(Vector2 dir)
 		{
 			moveDir = dir;
 		}
@@ -66,8 +60,8 @@ namespace __SCRIPTS
 		private void Anim_AttackStop(int attackType)
 		{
 			isAttacking = false;
-			body.arms.Stop(this);
-			body.legs.Stop(this);
+			body.doableArms.Stop(this);
+			body.doableLegs.Stop(this);
 
 			if (attackType == 0)
 			{
@@ -86,7 +80,7 @@ namespace __SCRIPTS
 
 		private void RegularAttackHit(int attackType)
 		{
-			var circleCast = Physics2D.OverlapCircleAll(transform.position, GetHitRange(attackType), AssetManager.LevelAssets.EnemyLayer);
+			var circleCast = Physics2D.OverlapCircleAll(transform.position, GetHitRange(attackType), assetManager.LevelAssets.EnemyLayer);
 			var closest2 = circleCast.OrderBy(item => Vector2.Distance(item.gameObject.transform.position, transform.position)).Take(2);
 			foreach (var col in closest2)
 			{
@@ -108,7 +102,7 @@ namespace __SCRIPTS
 
 		private float GetAttackDamage(int attackType)
 		{
-			var extraDamageFactor = owner.spawnedPlayerDefence.ExtraMaxDamageFactor;
+			var extraDamageFactor = owner.spawnedPlayerLife.ExtraMaxDamageFactor;
 			return attackType switch
 			       {
 				       1 => 50 + 50 * extraDamageFactor,
@@ -135,13 +129,7 @@ namespace __SCRIPTS
 
 		private void StartRandomAttack()
 		{
-			if (!body.arms.Do(this))
-			{
-				if ((JumpAbility) body.arms.currentActivity != jumps)
-					return;
-			}
 
-			if (!body.legs.Do(this)) return;
 			if (isAttacking) return;
 			isAttacking = true;
 

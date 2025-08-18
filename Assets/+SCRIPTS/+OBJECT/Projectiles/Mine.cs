@@ -27,7 +27,7 @@ public class Mine : ServiceUser
 			if (otherLife == null) return;
 		}
 
-		if (otherLife.IsEnemyOf(player.spawnedPlayerDefence))
+		if (otherLife.IsEnemyOf(player.spawnedPlayerLife))
 		{
 			OnSelfDetonate?.Invoke(this);
 			Explode();
@@ -36,8 +36,8 @@ public class Mine : ServiceUser
 
 	private void Explode()
 	{
-		Explosion_FX.Explode(transform.position, player.spawnedPlayerDefence.SecondaryAttackRange,
-			player.spawnedPlayerDefence.SecondaryAttackDamageWithExtra, player);
+		Explosion_FX.Explode(transform.position, player.spawnedPlayerLife.SecondaryAttackRange,
+			player.spawnedPlayerLife.SecondaryAttackDamageWithExtra, player);
 		objectMaker.Unmake(gameObject);
 
 	}

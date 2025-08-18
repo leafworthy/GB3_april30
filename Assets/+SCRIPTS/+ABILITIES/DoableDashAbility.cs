@@ -3,11 +3,11 @@ using UnityEngine;
 namespace __SCRIPTS
 {
 	[DisallowMultipleComponent]
-	public class DoableDashAbility : ServiceAbility
+	public class DoableDashAbility : DoableActivity
 	{
 		public AnimationClip dashAnimationClip;
-		private DoableJumpAbility jumpAbility => _jumpAbility ??= GetComponent<DoableJumpAbility>();
-		private DoableJumpAbility _jumpAbility;
+		private JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
+		private JumpAbility _jumpAbility;
 
 		public bool teleport;
 		public override string VerbName => "Dash";

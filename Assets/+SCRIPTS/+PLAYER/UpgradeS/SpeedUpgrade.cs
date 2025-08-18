@@ -12,7 +12,7 @@ namespace __SCRIPTS.UpgradeS
 		{
 			base.CauseEffect(player);
 
-			player.spawnedPlayerDefence.SetExtraMaxSpeedFactor(.1f * level);
+			player.spawnedPlayerLife.SetExtraMaxSpeedFactor(.1f * level);
 		}
 	}
 }

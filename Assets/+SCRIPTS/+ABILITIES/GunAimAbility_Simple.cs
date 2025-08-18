@@ -1,21 +1,16 @@
-using System;
-using System.Collections.Generic;
-using __SCRIPTS;
 using __SCRIPTS.Cursor;
 using UnityEngine;
-
 
 namespace __SCRIPTS
 {
 	public class GunAimAbility_Simple : AimAbility
 	{
-		private UnitAnimations anim;
 		private bool isAttacking;
 		private IAimableGun aimableGun;
+		private bool IsAimingRight() => aimDir.normalized.x >= 0;
 
-		private static  string[] AnimationClips =
+		private static string[] AnimationClips =
 		{
-
 			"E",
 			"EES",
 			"ES",
@@ -33,14 +28,12 @@ namespace __SCRIPTS
 			"NNE",
 			"NE",
 			"EN",
-			"EEN",
+			"EEN"
 		};
-
 
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
-			anim = GetComponent<UnitAnimations>();
 			aimableGun = GetComponent<IAimableGun>();
 			anim.animEvents.OnAnimationComplete += Anim_OnComplete;
 			aimableGun.OnShotHitTarget += AimableGunOnShoot;
@@ -58,8 +51,8 @@ namespace __SCRIPTS
 
 		protected override Vector3 GetRealAimDir()
 		{
-			if (owner.isUsingMouse) return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
-			return owner.Controller.AimAxis.GetCurrentAngle();
+			if (player.isUsingMouse) return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
+			return player.Controller.GetAimAxisAngle();
 		}
 
 		private void Anim_OnComplete()
@@ -69,16 +62,16 @@ namespace __SCRIPTS
 
 		private void AimableGunOnShoot(Attack attack, Vector2 vector2)
 		{
-			if (attack.Owner != owner) return;
-			if (body.doableArms.IsActive) return;
+			if (attack.Owner != player) return;
+			if (body.doableArms.isActive) return;
 			isAttacking = true;
 			anim.Play("Shoot", 1, 0);
 		}
 
 		private float GetDegrees()
 		{
-			float radians = Mathf.Atan2(-AimDir.y, AimDir.x); // NEGATE y-axis
-			float degrees = radians * Mathf.Rad2Deg;
+			var radians = Mathf.Atan2(-aimDir.y, aimDir.x); // NEGATE y-axis
+			var degrees = radians * Mathf.Rad2Deg;
 			if (degrees < 0)
 				degrees += 360f;
 			return degrees;
@@ -87,14 +80,9 @@ namespace __SCRIPTS
 		protected override void Update()
 		{
 			base.Update();
-			body.TopFaceDirection(GetClampedAimDir().x >= 0);
+			body.TopFaceDirection(IsAimingRight());
 
-
-			if (!isAttacking && !aimableGun.isReloading && !body.doableArms.IsActive)
-			{
-				anim.Play(GetAnimationClipNameFromDegrees(GetDegrees()), 1, 0);
-
-			}
+			if (!isAttacking && !aimableGun.isReloading && !body.doableArms.isActive) anim.Play(GetAnimationClipNameFromDegrees(GetDegrees()), 1, 0);
 		}
 
 		private string GetAnimationClipNameFromDegrees(float degrees)
@@ -108,41 +96,23 @@ namespace __SCRIPTS
 		private static int GetDirectionPortion(float degrees)
 		{
 			// Normalize the degrees to be within [0, 360)
-			float normalizedDegrees = degrees % 360;
-			if (normalizedDegrees < 0)
-			{
-				normalizedDegrees += 360;
-			}
+			var normalizedDegrees = degrees % 360;
+			if (normalizedDegrees < 0) normalizedDegrees += 360;
 
 			// Offset by 10° (half of a portion) to make east straddle a portion
 			// rather than being at a boundary
-			float offsetDegrees = (normalizedDegrees + 10) % 360;
+			var offsetDegrees = (normalizedDegrees + 10) % 360;
 
 			// Each portion is 20° wide (360° ÷ 18)
 			const float portionWidth = 20f;
 
 			// Calculate the portion number (1-18)
-			int portionNumber = Mathf.FloorToInt(offsetDegrees / portionWidth);
+			var portionNumber = Mathf.FloorToInt(offsetDegrees / portionWidth);
 			portionNumber = Mathf.Clamp(portionNumber, 0, AnimationClips.Length - 1);
 
 			return portionNumber;
 		}
 
 
-		private Vector2 GetClampedAimDir()
-		{
-			var clampedDir = AimDir.normalized;
-			if (clampedDir.x <= .25f && clampedDir.x >= 0)
-			{
-				clampedDir.x = .25f;
-				if (AimDir.y > 0)
-					clampedDir.y = 1f;
-				else
-					clampedDir.y = -1;
-			}
-
-			if (clampedDir.x < 0 && clampedDir.x > -.25) clampedDir.x = -.25f;
-			return clampedDir;
-		}
 	}
 }

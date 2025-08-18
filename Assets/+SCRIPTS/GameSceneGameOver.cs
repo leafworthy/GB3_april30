@@ -20,7 +20,7 @@ public class GameSceneGameOver : GameScene
 			    Debug.Log("stats for player " + playerManager.AllJoinedPlayers[i].playerIndex);
 			    displays[i].gameObject.SetActive(true);
 			    displays[i].SetPlayer(playerManager.AllJoinedPlayers[i]);
-			    playerManager.AllJoinedPlayers[i].Controller.Select.OnPress += ContinuePress;
+			    playerManager.AllJoinedPlayers[i].Controller.OnSelect_Pressed += ContinuePress;
 
 
 	    }
@@ -31,7 +31,7 @@ public class GameSceneGameOver : GameScene
     {
 	    foreach (var player in playerManager.AllJoinedPlayers)
 	    {
-			player.Controller.Select.OnPress -= ContinuePress;
+			player.Controller.OnSelect_Pressed -= ContinuePress;
 	    }
 
 	    // Use the original level manager system

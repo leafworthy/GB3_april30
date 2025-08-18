@@ -22,7 +22,6 @@ namespace __SCRIPTS
 		private JumpAbility jump;
 		private Life life;
 		private Body body;
-		private Arms arms => body.arms;
 		private UnitAnimations anim;
 		private AnimationEvents animationEvents;
 
@@ -71,10 +70,10 @@ namespace __SCRIPTS
 			if (anim == null) return;
 			animationEvents.OnThrow -= Anim_Throw;
 			animationEvents.OnThrowStop -= Anim_ThrowStop;
-			player.Controller.Attack2LeftTrigger.OnPress -= Player_ThrowPress;
-			player.Controller.Attack2LeftTrigger.OnRelease -= Player_ThrowRelease;
-			player.Controller.ReloadTriangle.OnPress -= Player_DetonatePress;
-			player.Controller.ReloadTriangle.OnRelease -= Player_DetonateRelease;
+			player.Controller.OnAttack2_Pressed -= Player_ThrowPress;
+			player.Controller.OnAttack2_Released -= Player_ThrowRelease;
+			player.Controller.OnReload_Pressed -= Player_DetonatePress;
+			player.Controller.OnReload_Released -= Player_DetonateRelease;
 		}
 
 		private void ListenToPlayer()
@@ -83,10 +82,10 @@ namespace __SCRIPTS
 			animationEvents = anim.animEvents;
 			animationEvents.OnThrow += Anim_Throw;
 			animationEvents.OnThrowStop += Anim_ThrowStop;
-			player.Controller.Attack2LeftTrigger.OnPress += Player_ThrowPress;
-			player.Controller.Attack2LeftTrigger.OnRelease += Player_ThrowRelease;
-			player.Controller.ReloadTriangle.OnPress += Player_DetonatePress;
-			player.Controller.ReloadTriangle.OnRelease += Player_DetonateRelease;
+			player.Controller.OnAttack2_Pressed += Player_ThrowPress;
+			player.Controller.OnAttack2_Released += Player_ThrowRelease;
+			player.Controller.OnReload_Pressed += Player_DetonatePress;
+			player.Controller.OnReload_Released += Player_DetonateRelease;
 		}
 
 		private void Player_DetonateRelease(NewControlButton obj)
@@ -107,7 +106,6 @@ namespace __SCRIPTS
 
 		private void Anim_ThrowStop()
 		{
-			arms.Stop(this);
 			if (isPressing) Player_ThrowPress(null);
 		}
 
@@ -122,19 +120,7 @@ namespace __SCRIPTS
 				return;
 			}
 
-			if (!arms.Do(this))
-			{
-				if ((jump.IsJumping))
-				{
-					if (arms.currentActivity?.VerbName == VerbName) return;
-					arms.StopCurrentActivity();
-					arms.Do(this);
-				}
-				else
-				{
-					return;
-				}
-			}
+		//throw
 
 			isPressing = true;
 

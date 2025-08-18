@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class PickupAbility : MonoBehaviour
+	public class PickupGatherer : MonoBehaviour
 	{
 		private List<PickupEffect> currentEffects = new List<PickupEffect>();
 		private List<PickupEffect> effectsToRemove = new List<PickupEffect>();

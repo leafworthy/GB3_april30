@@ -64,14 +64,14 @@ namespace __SCRIPTS
 			player.CurrentButton = null;
 			OnPlayerUnjoins?.Invoke();
 			StopListeningToPlayer(player);
-			player.Controller.Select.OnPress += OnUnjoinedPlayerPressSelect;
+			player.Controller.OnSelect_Pressed += OnUnjoinedPlayerPressSelect;
 			playerManager.AllJoinedPlayers.Remove(player);
 		}
 
 		private void OnUnjoinedPlayerPressSelect(NewControlButton obj)
 		{
 			var player = obj.owner;
-			player.Controller.Select.OnPress -= OnUnjoinedPlayerPressSelect;
+			player.Controller.OnSelect_Pressed -= OnUnjoinedPlayerPressSelect;
 
 			if (!playerManager.AllJoinedPlayers.Contains(player))
 			{
@@ -83,19 +83,19 @@ namespace __SCRIPTS
 
 		private void ListenToPlayer(Player player)
 		{
-			player.Controller.Select.OnPress += PlayerPressSelect;
-			player.Controller.Cancel.OnPress += PlayerPressCancel;
-			player.Controller.UIAxis.OnRight += PlayerMoveRight;
-			player.Controller.UIAxis.OnLeft += PlayerMoveLeft;
+			player.Controller.OnSelect_Pressed += PlayerPressSelect;
+			player.Controller.OnCancel_Pressed += PlayerPressCancel;
+			player.Controller.OnUIAxis_Right += PlayerMoveRight;
+			player.Controller.OnUIAxis_Left += PlayerMoveLeft;
 			playersBeingListenedTo.Add(player);
 		}
 
 		private void StopListeningToPlayer(Player player)
 		{
-			player.Controller.Select.OnPress -= PlayerPressSelect;
-			player.Controller.Cancel.OnPress -= PlayerPressCancel;
-			player.Controller.UIAxis.OnRight -= PlayerMoveRight;
-			player.Controller.UIAxis.OnLeft -= PlayerMoveLeft;
+			player.Controller.OnSelect_Pressed -= PlayerPressSelect;
+			player.Controller.OnCancel_Pressed -= PlayerPressCancel;
+			player.Controller.OnUIAxis_Right -= PlayerMoveRight;
+			player.Controller.OnUIAxis_Left -= PlayerMoveLeft;
 			playersBeingListenedTo.Remove(player);
 		}
 

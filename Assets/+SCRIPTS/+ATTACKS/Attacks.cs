@@ -4,16 +4,19 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class Attacks : ServiceUser, INeedPlayer, IActivity
+	public class Attacks : DoableActivity
 	{
 		private Life _attacker;
 		protected Life attacker => _attacker?? GetComponent<Life>();
-		public virtual string VerbName => "Generic-Attack";
+		public override string VerbName => "Generic-Attack";
+		protected override bool requiresArms() => false;
 
-		public virtual bool TryCompleteGracefully(CompletionReason reason, IActivity newActivity = null)
+		protected override bool requiresLegs() => false;
+
+			public override void StartActivity()
 		{
-			return false; // Default: no special completion handling
 		}
+
 
 		protected void HitTarget(float attackDamage, Life targetLife, float extraPush = 0)
 		{
@@ -32,7 +35,7 @@ namespace __SCRIPTS
 		protected RaycastHit2D RaycastToObject(Life currentTargetLife)
 		{
 			var position = attacker.transform.position;
-			var layer = attacker.IsPlayer ? AssetManager.LevelAssets.EnemyLayer : AssetManager.LevelAssets.PlayerLayer;
+			var layer = attacker.IsPlayer ? assetManager.LevelAssets.EnemyLayer : assetManager.LevelAssets.PlayerLayer;
 			var direction = (currentTargetLife.transform.position - position).normalized;
 			var distance = Vector3.Distance(position, currentTargetLife.transform.position);
 			return Physics2D.Raycast(position, direction, distance, layer);

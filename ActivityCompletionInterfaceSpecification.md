@@ -11,12 +11,12 @@ This specification defines how to extend the existing IActivity system with comp
 - **ActivityHandler Class**: Located in `/Assets/++SCRIPTS/+ABILITIES/ActivityHandler.cs`
   - Manages `Arms` and `Legs` activity handlers
   - Methods: `Do()`, `StopSafely()`, `StopCurrentActivity()`
-- **Body Class**: Contains `arms` and `legs` ActivityHandler instances
+- **Body Class**: Contains `doableArms` and `doableLegs` ActivityHandler instances
 
 ### Current Activity Patterns
 1. Activities implement `IActivity` with `VerbName` property
-2. Activities call `body.arms.Do(this)` or `body.legs.Do(this)` to start
-3. Activities call `body.arms.StopSafely(this)` or `body.legs.StopSafely(this)` to stop
+2. Activities call `body.doableArms.Do(this)` or `body.doableLegs.Do(this)` to start
+3. Activities call `body.doableArms.StopSafely(this)` or `body.doableLegs.StopSafely(this)` to stop
 4. ActivityHandler validates activity ownership before stopping
 
 ## Interface Design
@@ -160,19 +160,19 @@ public class ActivityHandler
 ```csharp
 public class Body : ThingWithHeight
 {
-    // Existing arms and legs remain unchanged
-    public Arms arms = new();
-    public Legs legs = new();
+    // Existing doableArms and doableLegs remain unchanged
+    public Arms doableArms = new();
+    public Legs doableLegs = new();
     
     // Optional convenience methods for completion
     public bool CompleteArmsActivity(CompletionReason reason, IActivity newActivity = null)
     {
-        return arms.CompleteCurrentActivity(reason, newActivity);
+        return doableArms.CompleteCurrentActivity(reason, newActivity);
     }
     
     public bool CompleteLegsActivity(CompletionReason reason, IActivity newActivity = null)
     {
-        return legs.CompleteCurrentActivity(reason, newActivity);
+        return doableLegs.CompleteCurrentActivity(reason, newActivity);
     }
 }
 ```
@@ -266,17 +266,17 @@ public override bool CompleteActivity(CompletionReason reason, IActivity newActi
 ### Basic Animation Interruption
 ```csharp
 // In animation system
-if (body.arms.isActive)
+if (body.doableArms.isActive)
 {
     // Try completion first, fall back to normal stop
-    body.arms.CompleteCurrentActivity(CompletionReason.AnimationInterrupt);
+    body.doableArms.CompleteCurrentActivity(CompletionReason.AnimationInterrupt);
 }
 ```
 
 ### Smart Activity Starting
 ```csharp
 // In attack system - try completing current activity before starting
-if (!body.arms.DoWithCompletion(shootingActivity, CompletionReason.NewActivity))
+if (!body.doableArms.DoWithCompletion(shootingActivity, CompletionReason.NewActivity))
 {
     // Could not start shooting (current activity refused to complete)
     return false;

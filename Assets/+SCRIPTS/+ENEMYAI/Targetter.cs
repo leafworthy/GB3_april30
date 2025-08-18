@@ -70,8 +70,8 @@ namespace __SCRIPTS._ENEMYAI
 
 		private List<Life> GetPlayers()
 		{
-			var playersWithGOs = playerManager.AllJoinedPlayers.Where(x => (x.spawnedPlayerDefence != null)).ToList();
-			var playerLives = playersWithGOs.Select(x => x.spawnedPlayerDefence).Where(x => !x.IsDead()).ToList();
+			var playersWithGOs = playerManager.AllJoinedPlayers.Where(x => (x.spawnedPlayerLife != null)).ToList();
+			var playerLives = playersWithGOs.Select(x => x.spawnedPlayerLife).Where(x => !x.IsDead()).ToList();
 
 
 			return playerLives;

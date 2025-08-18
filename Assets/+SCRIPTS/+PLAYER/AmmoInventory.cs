@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -35,10 +33,9 @@ namespace __SCRIPTS
 				case AmmoType.Unlimited:
 					unlimitedAmmo.AddAmmoToReserve(amount);
 					break;
-				default:
-
-					break;
 			}
 		}
+
+		public Ammo GetCorrectAmmoType(bool isUnlimited) => isUnlimited ? unlimitedAmmo : primaryAmmo;
 	}
 }

@@ -46,7 +46,7 @@ namespace __SCRIPTS
 			if (hasBeenPickedUp) return;
 			animator ??= GetComponentInChildren<Animator>();
 
-			var pickupHandler = other.GetComponent<PickupAbility>();
+			var pickupHandler = other.GetComponent<PickupGatherer>();
 			if (pickupHandler is null) return;
 			pickupHandler.PickUp(this);
 			hasBeenPickedUp = true;

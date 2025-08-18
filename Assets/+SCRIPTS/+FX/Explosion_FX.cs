@@ -30,7 +30,7 @@ namespace __SCRIPTS
 				var otherMove = defence.GetComponent<MoveAbility>();
 				if (otherMove != null)
 					otherMove.Push(explosionPosition - defence.transform.position, pushFactor * ratio);
-				var newAttack = new Attack(_owner.spawnedPlayerDefence, explosionPosition, defence.transform.position,
+				var newAttack = new Attack(_owner.spawnedPlayerLife, explosionPosition, defence.transform.position,
 					defence, explosionDamage * ratio);
 				//newAttack.IsWounding = true;
 				defence.TakeDamage(newAttack);

@@ -10,6 +10,8 @@ namespace __SCRIPTS
 		private AnimationEvents animEvents;
 		private Life life;
 		private JumpAbility jump;
+		private ReloadAbility reloader  => _reloader ??= GetComponent<ReloadAbility>();
+		private ReloadAbility _reloader;
 		private GunAttack_AK_Glock gunAttackAkGlock;
 		private TertiaryAttack_Knife tertiaryAttackKnife;
 		private NadeAttack nadeAttack;
@@ -42,7 +44,7 @@ namespace __SCRIPTS
 
 			gunAttackAkGlock.OnShotHitTarget += GunAttackAkGlockOnOnShotHitTarget;
 			gunAttackAkGlock.OnShotMissed += GunAttackAkGlockOnShotMissed;
-			gunAttackAkGlock.OnReload += GunAttackAkGlockOnReload;
+			reloader.OnReload += GunAttackAkGlockOnReload;
 			gunAttackAkGlock.OnEmpty += GunAttackAkGlockOnEmpty;
 			tertiaryAttackKnife.OnMiss += TertiaryAttackKnifeOnMiss;
 			tertiaryAttackKnife.OnHit += TertiaryAttackKnifeOnHit;
@@ -72,7 +74,7 @@ namespace __SCRIPTS
 
 			gunAttackAkGlock.OnShotHitTarget -= GunAttackAkGlockOnOnShotHitTarget;
 			gunAttackAkGlock.OnShotMissed -= GunAttackAkGlockOnShotMissed;
-			gunAttackAkGlock.OnReload -= GunAttackAkGlockOnReload;
+			reloader.OnReload -= GunAttackAkGlockOnReload;
 			tertiaryAttackKnife.OnMiss -= TertiaryAttackKnifeOnMiss;
 			tertiaryAttackKnife.OnHit -= TertiaryAttackKnifeOnHit;
 			nadeAttack.OnThrow -= NadeAttackOnThrow;

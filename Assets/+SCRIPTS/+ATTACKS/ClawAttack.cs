@@ -43,7 +43,7 @@ namespace __SCRIPTS
 
 		private void OnAttackStop(int obj)
 		{
-			body.arms.Stop(this);
+			body.doableArms.Stop(this);
 		}
 
 		private void OnDisable()

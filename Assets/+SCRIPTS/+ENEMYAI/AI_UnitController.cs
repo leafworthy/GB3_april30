@@ -5,7 +5,27 @@ using UnityEngine;
 
 namespace __SCRIPTS._ENEMYAI
 {
-	public class AIUnitController : MonoBehaviour, IAI, IPoolable, IAttack, IMove
+	public interface IAI
+	{
+		void GetBornIfBornOnAggro();
+		Targetter Targets { get; }
+		AstarPathfinder Pathmaker { get; }
+		Transform transform { get; }
+		Life Life { get; }
+		float idleCoolDownMax { get; }
+		void TransitionToState(IAIState state);
+		void Attack(Life target);
+		void StopMoving();
+		void MoveWithoutPathing(Vector2 randomDirection);
+	}
+
+	public interface IAIState
+	{
+		void OnEnterState(IAI ai);
+		void OnExitState();
+		void UpdateState();
+	}
+	public class AI_UnitController : MonoBehaviour, IAI, IPoolable, IAttack, IControlMove
 	{
 		public bool stopMovingOnAttack = true;
 		private IAIState currentState;
@@ -28,6 +48,8 @@ namespace __SCRIPTS._ENEMYAI
 
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;
+		public bool IsMoving() => false;
+
 		private void Awake()
 		{
 			Pathmaker = GetComponent<AstarPathfinder>();

@@ -31,23 +31,23 @@ namespace __SCRIPTS
 		{
 			anim = GetComponent<UnitAnimations>();
 			body = GetComponent<Body>();
-			this.player = _player;
-			this.player.Controller.Attack3Circle.OnPress += PlayerChainsawPress;
-			this.player.Controller.Attack3Circle.OnRelease += PlayerChainsawRelease;
-			this.player.Controller.Attack1RightTrigger.OnPress += PlayerPrimaryPress;
-			this.player.Controller.MoveAxis.OnChange += Player_MoveInDirection;
+			player = _player;
+			player.Controller.OnAttack3_Pressed += PlayerChainsawPress;
+			player.Controller.OnAttack3_Released += PlayerChainsawRelease;
+			player.Controller.OnAttack1_Pressed += PlayerPrimaryPress;
+			player.Controller.OnMoveAxis_Change += Player_MoveInDirection;
 
 			// Listen for actions that should cancel chainsawing
-			this.player.Controller.Attack2LeftTrigger.OnPress += PlayerMinePress;
-			this.player.Controller.Jump.OnPress += PlayerJumpPress;
-			this.player.Controller.DashRightShoulder.OnPress += PlayerDashPress;
+			player.Controller.OnAttack2_Pressed += PlayerMinePress;
+			player.Controller.OnJump_Pressed += PlayerJumpPress;
+			player.Controller.OnDash_Pressed += PlayerDashPress;
 
 			anim.animEvents.OnAttackStop += Anim_OnAttackStop;
 		}
 
 		private void Anim_OnAttackStop(int attack)
 		{
-			body.arms.Stop(this);
+			body.doableArms.Stop(this);
 		}
 
 		private void PlayerPrimaryPress(NewControlButton obj)
@@ -79,43 +79,34 @@ namespace __SCRIPTS
 			isAttacking = false;
 			isChainsawing = false;
 			isPressingChainsawButton = false;
-			player.Controller.Attack3Circle.OnPress -= PlayerChainsawPress;
-			player.Controller.Attack3Circle.OnRelease -= PlayerChainsawRelease;
-			player.Controller.MoveAxis.OnChange -= Player_MoveInDirection;
+			player.Controller.OnAttack3_Pressed -= PlayerChainsawPress;
+			player.Controller.OnAttack3_Released -= PlayerChainsawRelease;
+			player.Controller.OnMoveAxis_Change -= Player_MoveInDirection;
 
 			// Unsubscribe from cancel actions
-			player.Controller.Attack2LeftTrigger.OnPress -= PlayerMinePress;
-			player.Controller.Jump.OnPress -= PlayerJumpPress;
-			player.Controller.DashRightShoulder.OnPress -= PlayerDashPress;
+			player.Controller.OnAttack2_Pressed -= PlayerMinePress;
+			player.Controller.OnJump_Pressed -= PlayerJumpPress;
+			player.Controller.OnDash_Pressed -= PlayerDashPress;
 		}
 
-		private void Player_MoveInDirection(NewInputAxis arg1, Vector2 dir)
+		private void Player_MoveInDirection(Vector2 dir)
 		{
 			moveDir = dir;
 		}
 
 		private void PlayerMinePress(NewControlButton obj)
 		{
-			if (isChainsawing || isAttacking)
-			{
-				CancelChainsawing();
-			}
+			if (isChainsawing || isAttacking) CancelChainsawing();
 		}
 
 		private void PlayerJumpPress(NewControlButton obj)
 		{
-			if (isChainsawing || isAttacking)
-			{
-				CancelChainsawing();
-			}
+			if (isChainsawing || isAttacking) CancelChainsawing();
 		}
 
 		private void PlayerDashPress(NewControlButton obj)
 		{
-			if (isChainsawing || isAttacking)
-			{
-				CancelChainsawing();
-			}
+			if (isChainsawing || isAttacking) CancelChainsawing();
 		}
 
 		private void CancelChainsawing()
@@ -130,16 +121,10 @@ namespace __SCRIPTS
 			if (pauseManager.IsPaused) return;
 
 			// Handle facing direction while chainsawing
-			if (isChainsawing && moveDir != Vector2.zero && body != null)
-			{
-				body.BottomFaceDirection(moveDir.x > 0);
-			}
+			if (isChainsawing && moveDir != Vector2.zero && body != null) body.BottomFaceDirection(moveDir.x > 0);
 
 			// Auto-start attacking if chainsawing but not attacking and button still pressed
-			if (isChainsawing && !isAttacking && isPressingChainsawButton)
-			{
-				StartAttacking();
-			}
+			if (isChainsawing && !isAttacking && isPressingChainsawButton) StartAttacking();
 
 			if (isAttacking && attacker != null)
 			{
@@ -182,10 +167,10 @@ namespace __SCRIPTS
 		{
 			if (isChainsawing) return; // Already chainsawing
 
-			if (!body.arms.Do(this)) return;
-			// Don't occupy legs - allow movement while chainsawing
+			if (!body.doableArms.DoActivity(this)) return;
+			// Don't occupy doableLegs - allow movement while chainsawing
 
-			if (body.arms.isActive && body.arms.currentActivity?.VerbName != VerbName)
+			if (body.doableArms.isActive && body.doableArms.currentActivity?.VerbName != VerbName)
 			{
 				StopAttacking();
 				StopChainsawing();
@@ -205,11 +190,9 @@ namespace __SCRIPTS
 			if (isAttacking) return;
 			isChainsawing = false;
 			anim.SetBool(UnitAnimations.IsChainsawing, isChainsawing);
-			body.arms.Stop(this);
+			body.doableArms.Stop(this);
 			OnStopChainsawing?.Invoke(transform.position);
 		}
-
-
 
 		private void PlayerChainsawPress(NewControlButton newControlButton)
 		{
@@ -221,13 +204,10 @@ namespace __SCRIPTS
 		private List<Life> FindClosestHits()
 		{
 			// Null checks
-			if (attackPoint == null || attacker == null || AssetManager.LevelAssets == null)
-			{
-				return new List<Life>();
-			}
+			if (attackPoint == null || attacker == null || assetManager.LevelAssets == null) return new List<Life>();
 
-			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange,
-				 AssetManager.LevelAssets.EnemyLayer).ToList();
+			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange, assetManager.LevelAssets.EnemyLayer)
+			                          .ToList();
 			if (circleCast.Count <= 0) return new List<Life>();
 
 			var enemies = new List<Life>();

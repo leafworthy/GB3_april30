@@ -32,9 +32,9 @@ namespace __SCRIPTS
 
 		private void CheckForEnemiesInRange()
 		{
-			var enemies = Physics2D.OverlapCircleAll(transform.position, attacker.PrimaryAttackRange, AssetManager.LevelAssets.PlayerLayer)
+			var enemies = Physics2D.OverlapCircleAll(transform.position, attacker.PrimaryAttackRange, assetManager.LevelAssets.PlayerLayer)
 			                       .ToList();
-			enemies.AddRange(Physics2D.OverlapCircleAll(transform.position, attacker.PrimaryAttackRange, AssetManager.LevelAssets.DoorLayer).ToList());
+			enemies.AddRange(Physics2D.OverlapCircleAll(transform.position, attacker.PrimaryAttackRange, assetManager.LevelAssets.DoorLayer).ToList());
 			if (enemies.Count <= 0) return;
 			foreach (var enemy in enemies)
 			{
@@ -65,7 +65,7 @@ namespace __SCRIPTS
 			var otherJump = other.GetComponentInChildren<JumpAbility>();
 			if (otherJump != null)
 			{
-				if(!otherJump.isResting) return;
+				if(otherJump.IsJumping) return;
 			}
 			if (otherDefence == null) return;
 			if (otherDefence.IsObstacle)

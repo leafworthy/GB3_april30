@@ -24,10 +24,10 @@ namespace __SCRIPTS.UpgradeS
 			hasInit = true;
 			ResetButtons();
 
-			player.Controller.UIAxis.OnLeft += OnLeft;
-			player.Controller.UIAxis.OnRight += OnRight;
-			player.Controller.Select.OnPress += OnSelect;
-			player.Controller.Cancel.OnPress += OnCancel;
+			player.Controller.OnUIAxis_Left += OnLeft;
+			player.Controller.OnUIAxis_Right += OnRight;
+			player.Controller.OnSelect_Pressed += OnSelect;
+			player.Controller.OnCancel_Pressed += OnCancel;
 		}
 
 		private void ResetButtons()
@@ -69,10 +69,10 @@ namespace __SCRIPTS.UpgradeS
 		{
 			if (!hasInit) return;
 			hasInit = false;
-			_player.Controller.UIAxis.OnLeft -= OnLeft;
-			_player.Controller.UIAxis.OnRight -= OnRight;
-			_player.Controller.Select.OnPress -= OnSelect;
-			_player.Controller.Cancel.OnPress -= OnCancel;
+			_player.Controller.OnUIAxis_Left -= OnLeft;
+			_player.Controller.OnUIAxis_Right -= OnRight;
+			_player.Controller.OnSelect_Pressed -= OnSelect;
+			_player.Controller.OnCancel_Pressed -= OnCancel;
 		}
 
 		private void DeselectAllButtons()

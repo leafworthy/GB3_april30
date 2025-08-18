@@ -31,7 +31,7 @@ namespace __SCRIPTS.Projectiles
 			Move();
 			timeLeft -= Time.fixedDeltaTime;
 			if (!(timeLeft <= 0)) return;
-			Explosion_FX.Explode(transform.position, owner.spawnedPlayerDefence.SecondaryAttackRange, owner.spawnedPlayerDefence.SecondaryAttackDamageWithExtra,owner);
+			Explosion_FX.Explode(transform.position, owner.spawnedPlayerLife.SecondaryAttackRange, owner.spawnedPlayerLife.SecondaryAttackDamageWithExtra,owner);
 			objectMaker.Unmake(transform.gameObject);
 		}
 
