@@ -16,6 +16,9 @@ namespace __SCRIPTS
 
 		private float currentCooldownTime;
 		private GunAimAbility_Simple aim;
+		private Arms arms;
+		private Body body;
+		private UnitAnimations anim;
 		private AmmoInventory ammoInventory;
 		public override string VerbName => "Shotgunning";
 		private float currentDamage => attacker.PrimaryAttackDamageWithExtra;
@@ -31,16 +34,20 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player _player)
 		{
 			ammoInventory = GetComponent<AmmoInventory>();
+			anim = GetComponent<UnitAnimations>();
 			anim.animEvents.OnAnimationComplete += Anim_OnComplete;
 
+			body = GetComponent<Body>();
+			arms = body.arms;
 			aim = GetComponent<GunAimAbility_Simple>();
 			ListenToPlayer();
 		}
 
-
 		private void Anim_OnComplete()
 		{
 			StopShooting();
+			arms.Stop(this);
+
 		}
 
 		private void OnDisable()
@@ -59,8 +66,8 @@ namespace __SCRIPTS
 			var player = attacker.player;
 			if (player == null) return;
 			attacker.OnDying += OnDead;
-			player.Controller.OnAttack1_Pressed += PlayerControllerShootPress;
-			player.Controller.OnAttack1_Released += PlayerControllerShootRelease;
+			player.Controller.Attack1RightTrigger.OnPress += PlayerControllerShootPress;
+			player.Controller.Attack1RightTrigger.OnRelease += PlayerControllerShootRelease;
 		}
 
 		private void StopListeningToPlayer()
@@ -68,8 +75,8 @@ namespace __SCRIPTS
 			var player = attacker.player;
 			if (player == null) return;
 			attacker.OnDying -= OnDead;
-			player.Controller.OnAttack1_Pressed -= PlayerControllerShootPress;
-			player.Controller.OnAttack1_Released -= PlayerControllerShootRelease;
+			player.Controller.Attack1RightTrigger.OnPress -= PlayerControllerShootPress;
+			player.Controller.Attack1RightTrigger.OnRelease -= PlayerControllerShootRelease;
 		}
 
 		private void FixedUpdate()
@@ -92,7 +99,11 @@ namespace __SCRIPTS
 			if (anim == null) return;
 			if (!GetCorrectAmmoType().hasAmmoInClip())
 			{
-				if (!GetCorrectAmmoType().hasAmmoInReserveOrClip()) StopShooting();
+				if (!GetCorrectAmmoType().hasAmmoInReserveOrClip())
+				{
+					StopShooting();
+
+				}
 
 				if (isEmpty) return;
 				OnEmpty?.Invoke();
@@ -117,12 +128,14 @@ namespace __SCRIPTS
 
 		private void ShootTarget(Vector3 targetPosition)
 		{
+			if (!arms.Do(this)) return;
 
 			isShooting = true;
 			anim.SetTrigger(UnitAnimations.ShootingTrigger);
 			for (var i = 0; i < numberOfShots; i++)
 			{
-				var randomSpread = new Vector3(UnityEngine.Random.Range(-spread, spread), UnityEngine.Random.Range(-spread, spread), 0);
+				var randomSpread = new Vector3(UnityEngine.Random.Range(-spread, spread),
+					UnityEngine.Random.Range(-spread, spread), 0);
 				ShootBullet(targetPosition + randomSpread);
 			}
 		}
@@ -140,9 +153,10 @@ namespace __SCRIPTS
 
 		private void ShotMissed()
 		{
-			var missPosition = (Vector2) body.FootPoint.transform.position + (Vector2) aim.AimDir.normalized * attacker.PrimaryAttackRange;
-			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, aim.AimDir.normalized, attacker.PrimaryAttackRange,
-				assetManager.LevelAssets.BuildingLayer);
+			var missPosition = (Vector2) body.FootPoint.transform.position +
+			                   aim.AimDir.normalized * attacker.PrimaryAttackRange;
+			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, aim.AimDir.normalized,
+				attacker.PrimaryAttackRange, AssetManager.LevelAssets.BuildingLayer);
 			if (raycastHit) missPosition = raycastHit.point;
 			var newAttack = new Attack(attacker, body.FootPoint.transform.position, missPosition, null, 0);
 
@@ -153,16 +167,27 @@ namespace __SCRIPTS
 		{
 			var target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
 			if (target == null) return;
-			var newAttack = new Attack(attacker, body.FootPoint.transform.position, hitObject.point, target, currentDamage);
+			var newAttack = new Attack(attacker, body.FootPoint.transform.position, hitObject.point, target,
+				currentDamage);
 			OnShotHitTarget?.Invoke(newAttack, body.AttackStartPoint.transform.position);
 			target.TakeDamage(newAttack);
 		}
 
 		private RaycastHit2D CheckRaycastHit(Vector2 targetDirection)
 		{
-			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, attacker.PrimaryAttackRange,
-				body.isOverLandable ? assetManager.LevelAssets.EnemyLayerOnLandable : assetManager.LevelAssets.EnemyLayer);
-			return raycastHit;
+			if (body.isOverLandable)
+			{
+				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
+					attacker.PrimaryAttackRange, AssetManager.LevelAssets.EnemyLayerOnLandable);
+
+				return raycastHit;
+			}
+			else
+			{
+				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
+					attacker.PrimaryAttackRange, AssetManager.LevelAssets.EnemyLayer);
+				return raycastHit;
+			}
 		}
 	}
 }

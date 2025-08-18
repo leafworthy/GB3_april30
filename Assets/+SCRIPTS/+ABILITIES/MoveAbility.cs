@@ -51,7 +51,7 @@ namespace __SCRIPTS
 		{
 			if (life.player.isUsingMouse) return moveDir;
 
-			return life.player.Controller.GetAimAxisAngle();
+			return life.player.Controller.MoveAxis.GetCurrentAngle();
 		}
 
 		private void OnEnable()
@@ -185,7 +185,7 @@ namespace __SCRIPTS
 
 		public bool IsMoving() => isMoving;
 
-		public bool IsIdle() => life.player.Controller.GetMoveAxisInactive();
+		public bool IsIdle() => life.player.Controller.MoveAxis.currentMagnitudeIsTooSmall();
 
 	}
 }

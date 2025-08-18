@@ -12,7 +12,7 @@ namespace __SCRIPTS
 
 		protected override void ListenToPlayer()
 		{
-			player.Controller.OnDash_Pressed += ControllerDashPress;
+			player.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
 			animEvents.OnTeleport += Anim_Teleport;
 		}
 
@@ -24,13 +24,13 @@ namespace __SCRIPTS
 		protected override void StopListeningToPlayer()
 		{
 			if (player?.Controller != null)
-				player.Controller.OnDash_Pressed -= ControllerDashPress;
+				player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 
 			if (animEvents != null)
 				animEvents.OnTeleport -= Anim_Teleport;
 		}
 
-		private void ControllerDashPress(NewControlButton newControlButton)
+		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 		{
 			ability.DoSafely();
 		}

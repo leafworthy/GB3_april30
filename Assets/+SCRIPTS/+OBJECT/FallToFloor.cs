@@ -8,7 +8,6 @@ namespace __SCRIPTS
 	{
 		public SpriteRenderer spriteRendererToTint;
 		protected JumpAbility jumper;
-		protected JumpController jumpController => GetComponent<JumpController>();
 		protected MoveAbility mover;
 		private bool componentsInitialized = false;
 		protected float rotationRate = 100;
@@ -21,15 +20,15 @@ namespace __SCRIPTS
 		protected void InitializeComponents()
 		{
 			if (componentsInitialized) return;
-
+			
 			// Cache component references - these are required components
 			jumper = GetComponent<JumpAbility>();
 			mover = GetComponent<MoveAbility>();
-
+			
 			// Validate required components
 			Debug.Assert(jumper != null, $"JumpAbility required on {gameObject.name}");
 			Debug.Assert(mover != null, $"MoveAbility required on {gameObject.name}");
-
+			
 			componentsInitialized = true;
 		}
 
@@ -37,11 +36,11 @@ namespace __SCRIPTS
 		{
 			// Ensure components are cached before use
 			InitializeComponents();
-
+			
 			RotationRate = Random.Range(0, rotationRate);
 			jumper.OnBounce += Jumper_OnBounce;
 			jumper.OnResting += Jumper_OnResting;
-			jumper.StartActivity();
+			jumper.Jump(height, jumpSpeed, bounceSpeed);
 			mover.SetDragging(false);
 			mover.Push(shootAngle, Random.Range(0, PushSpeed));
 			spriteRendererToTint.color = color;
@@ -68,7 +67,8 @@ namespace __SCRIPTS
 			jumper.OnBounce += Jumper_OnBounce;
 			jumper.OnResting += Jumper_OnResting;
 			mover = GetComponent<MoveAbility>();
-			jumpController.Jump(attack.OriginHeight);
+			var verticalSpeed = Random.Range(0, bounceSpeed);
+			jumper.Jump(attack.OriginHeight, 0);
 			mover.SetDragging(false);
 			mover.Push(isFlipped ? attack.FlippedDirection : attack.Direction.normalized + new Vector2(Random.Range(-.4f, .4f), Random.Range(-.4f, .4f)),
 				Random.Range(0, PushSpeed));
@@ -78,9 +78,9 @@ namespace __SCRIPTS
 		{
 			// Ensure components are initialized (no GetComponent calls in FixedUpdate!)
 			InitializeComponents();
-
+			
 			base.FixedUpdate();
-
+			
 			// Use cached references - components are guaranteed to exist due to RequireComponent
 			if (jumper.IsJumping && !_freezeRotation)
 				Rotate(RotationRate);

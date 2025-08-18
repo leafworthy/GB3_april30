@@ -8,7 +8,7 @@
 		public override void CauseEffect(Player player)
 		{
 			base.CauseEffect(player);
-			player.spawnedPlayerLife.SetExtraMaxHealthFactor(.1f*level);
+			player.spawnedPlayerDefence.SetExtraMaxHealthFactor(.1f*level);
 		}
 
 		

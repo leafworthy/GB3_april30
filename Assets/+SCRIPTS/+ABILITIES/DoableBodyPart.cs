@@ -7,10 +7,10 @@ namespace __SCRIPTS
 	[Serializable]
 	public class DoableBodyPart
 	{
-		public bool isActive => currentActivity != null;
+		public bool IsActive => currentActivity != null;
 		public IDoableActivity currentActivity;
 
-		public void Stop(IDoableActivity activityToStop)
+		public void StopActivity(IDoableActivity activityToStop)
 		{
 			if (currentActivity == null) return;
 			if (currentActivity != activityToStop) return;
@@ -38,7 +38,7 @@ namespace __SCRIPTS
 
 		public bool CanDoActivity(IDoableActivity newActivity)
 		{
-			if (isActive && !currentActivity.canStop()) return false;
+			if (IsActive && !currentActivity.canStop()) return false;
 			return !ActivitiesAreTheSame(newActivity, currentActivity) && newActivity.canDo();
 		}
 	}

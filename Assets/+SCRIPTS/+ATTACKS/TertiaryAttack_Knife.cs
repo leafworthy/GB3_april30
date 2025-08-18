@@ -40,8 +40,8 @@ public class TertiaryAttack_Knife : Attacks
 			body = GetComponent<Body>();
 			this.player = _player;
 			Debug.Log("[Knife] SetPlayer called, connecting input events");
-			this.player.Controller.OnAttack3_Pressed += PlayerKnifePress;
-			this.player.Controller.OnAttack3_Released += PlayerKnifeRelease;
+			this.player.Controller.Attack3Circle.OnPress += PlayerKnifePress;
+			this.player.Controller.Attack3Circle.OnRelease += PlayerKnifeRelease;
 			anim.animEvents.OnAttackHit += Anim_AttackHit;
 			anim.animEvents.OnAttackStop += Anim_AttackStop;
 		}
@@ -50,8 +50,8 @@ public class TertiaryAttack_Knife : Attacks
 		{
 			if (player == null) return;
 			if (anim == null) return;
-			player.Controller.OnAttack3_Pressed -= PlayerKnifePress;
-			player.Controller.OnAttack3_Released -= PlayerKnifeRelease;
+			player.Controller.Attack3Circle.OnPress -= PlayerKnifePress;
+			player.Controller.Attack3Circle.OnRelease -= PlayerKnifeRelease;
 			anim.animEvents.OnAttackHit -= Anim_AttackHit;
 			anim.animEvents.OnAttackStop -= Anim_AttackStop;
 		}
@@ -59,7 +59,7 @@ public class TertiaryAttack_Knife : Attacks
 		{
 
 			anim.SetBool(UnitAnimations.IsBobbing, true);
-			body.doableArms.Stop(this);
+			body.arms.Stop(this);
 			isAttacking = false;
 			if (!isPressing) return;
 
@@ -93,7 +93,11 @@ public class TertiaryAttack_Knife : Attacks
 				Debug.Log("[Knife] BLOCKED: Already attacking");
 				return;
 			}
-
+			if (!body.arms.DoWithCompletion(this, GangstaBean.Core.CompletionReason.NewActivity))
+			{
+				Debug.Log("[Knife] BLOCKED: Arms busy, cannot start knife attack");
+				return;
+			}
 			Debug.Log("[Knife] SUCCESS: Starting knife attack");
 			isAttacking = true;
 
@@ -105,7 +109,7 @@ public class TertiaryAttack_Knife : Attacks
 		private GameObject FindClosestHit()
 		{
 
-			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange, assetManager.LevelAssets.EnemyLayer)
+			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange, AssetManager.LevelAssets.EnemyLayer)
 			                          .ToList();
 			if (circleCast.Count <= 0) return null;
 

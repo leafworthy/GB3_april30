@@ -1,16 +1,16 @@
 using System;
+using GangstaBean.Core;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace __SCRIPTS
 {
-	public class JumpAbility : DoableActivity
+	public class JumpAbility : ServiceUser, IActivity
 	{
+		private Body body;
+		public bool isResting;
 		private float verticalVelocity;
 
-		public AnimationClip jumpingAnimationClip;
-		public AnimationClip fallingAnimationClip;
-		public AnimationClip landingAnimationClip;
-		public AnimationClip flyingAnimationClip;
 
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnResting;
@@ -18,107 +18,129 @@ namespace __SCRIPTS
 		public event Action<Vector2> OnFall;
 		public event Action OnBounce;
 
-		public bool isResting;
 		private bool isOverLandable;
+		[FormerlySerializedAs("isInAir")] public bool IsJumping;
+		private ThingWithHeight thing;
 		private float currentLandableHeight;
+		private bool isActive = true;
 		private bool isJumping;
-
-		private float FallInDistance = 80;
+		private bool initiated;
 		private float minBounceVelocity = 1000;
 		private float bounceVelocityDragFactor = .2f;
-		private float airTimer;
+		private float landTimer;
 		private float maxFlyTime = 2.5f;
-		private bool canJump;
+		public string VerbName => "Jump";
 
-		public override string VerbName => "Jump";
-		public bool IsJumping=> isJumping;
-		protected override bool requiresArms() => true;
-
-		protected override bool requiresLegs() => false;
-
-		public override bool canDo() => base.canDo() && isResting && canJump;
-
-		public override bool canStop() => false;
-
-		public override void StartActivity()
+		public bool TryCompleteGracefully(CompletionReason reason, IActivity newActivity = null)
 		{
-			Jump(body.GetCurrentLandableHeight(), life.JumpSpeed, 99);
+			return false; // Jump activities complete naturally
 		}
 
-		public override void StopActivity()
+		public void SetActive(bool active)
 		{
-			base.StopActivity();
-			body.canLand = false;
-			body.SetDistanceToGround(body.GetCurrentLandableHeight());
+			isActive = active;
 		}
 
-		private void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1, bool isFlying = false)
+		public void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
 		{
-			//anim.ResetTrigger(UnitAnimations.LandTrigger);
-			//anim.SetTrigger(UnitAnimations.JumpTrigger);
-			anim.Play(isFlying ? flyingAnimationClip.name : jumpingAnimationClip.name, 0, 0);
-			airTimer = 0;
+			landTimer = 0;
 			minBounceVelocity = minBounce;
-			isJumping = true;
+			IsJumping = true;
 			isResting = false;
-			OnJump?.Invoke(transform.position + new Vector3(0, startingHeight, 0));
+			OnJump?.Invoke(transform.position+ new Vector3(0,startingHeight,0));
 
 			verticalVelocity = verticalSpeed;
 
-			body.SetDistanceToGround(startingHeight);
+			thing = GetComponent<ThingWithHeight>();
+			thing.SetDistanceToGround(startingHeight);
+
+			body = GetComponent<Body>();
+			if (body == null) return;
 			body.ChangeLayer(Body.BodyLayer.jumping);
 		}
 
-		private void Controller_Jump(NewControlButton newControlButton)
+		private void Start()
 		{
-			if (!canDo()) return;
-			DoSafely();
+			Init();
 		}
 
-		private void Life_OnDying(Player arg1, Life arg2)
+		private void Init()
 		{
-			Jump();
+			if (initiated) return;
+			initiated = true;
+			thing = GetComponent<ThingWithHeight>();
+			body = GetComponent<Body>();
+			thing.OnFallFromLandable += FallFromHeight;
 		}
 
-		public void FallFromLandable()
+		private void OnEnable()
 		{
-			anim.SetBool(UnitAnimations.IsFalling, true);
-			body.SetDistanceToGround(FallInDistance);
-			isJumping = true;
+			Init();
+
+		}
+
+		private void OnDisable()
+		{
+			if (thing != null) thing.OnFallFromLandable -= FallFromHeight;
+		}
+
+		public void FallFromHeight(float fallHeight)
+		{
+			Init();
+
+
+			if (body != null)
+			{
+				if (body.ShadowObject != null) body.ShadowObject.transform.localPosition = new Vector3(0,
+					thing.GetCurrentLandableHeight(),0);
+			}
+
+			thing.SetDistanceToGround(fallHeight);
+			IsJumping = true;
 			isResting = false;
-			anim.Play(fallingAnimationClip.name, 0, 0);
-			airTimer = 0;
 			OnFall?.Invoke(transform.position);
+			landTimer = 0;
+
 		}
+
+
 
 		protected void FixedUpdate()
 		{
 			if (pauseManager.IsPaused) return;
 			if (isResting) return;
-			if (!isJumping) return;
+			if (!isActive) return;
+			if (!IsJumping) return;
 
 			Fly();
+
 		}
+
+
 
 		private void Fly()
 		{
-			airTimer += Time.fixedDeltaTime;
-			if (airTimer > maxFlyTime)
+			landTimer += Time.fixedDeltaTime;
+			if(landTimer> maxFlyTime)
 			{
+				//Debug.Log("time out");
+
 				Land();
 				return;
 			}
-
-			currentLandableHeight = body.GetCurrentLandableHeight();
-			verticalVelocity -= assetManager.Vars.Gravity.y * Time.fixedDeltaTime;
-			if (body.GetDistanceToGround() + verticalVelocity <= currentLandableHeight && verticalVelocity < 0)
+			currentLandableHeight = thing.GetCurrentLandableHeight();
+			verticalVelocity -= (AssetManager.Vars.Gravity.y) * Time.fixedDeltaTime;
+			if ((thing.GetDistanceToGround() + verticalVelocity <= currentLandableHeight) && (verticalVelocity < 0))
+			{
 				Land();
+			}
 			else
 			{
-				body.canLand = verticalVelocity < 0;
-				body.SetDistanceToGround(body.GetDistanceToGround() + verticalVelocity);
+				thing.canLand = verticalVelocity < 0;
+				thing.SetDistanceToGround(thing.GetDistanceToGround() + verticalVelocity);
 			}
 		}
+
 
 		private void Land()
 		{
@@ -127,17 +149,14 @@ namespace __SCRIPTS
 				Bounce();
 				return;
 			}
+			IsJumping = false;
+			OnLand?.Invoke(transform.position+new Vector3(0, currentLandableHeight,0));
+			thing.canLand = false;
+			thing.SetDistanceToGround(currentLandableHeight);
 
-			isJumping = false;
-			OnLand?.Invoke(transform.position + new Vector3(0, currentLandableHeight, 0));
-			anim.Play(landingAnimationClip.name, 0, 0);
+			if (body != null) body.ChangeLayer(thing.isOverLandable ?  Body.BodyLayer.landed : Body.BodyLayer.grounded);
 
-			body.canLand = false;
-			moveController.SetCanMove(false);
-			body.SetDistanceToGround(currentLandableHeight);
-			if (body != null) body.ChangeLayer(body.isOverLandable ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
 			verticalVelocity = 0;
-			PlayAnimationClip(landingAnimationClip);
 		}
 
 		private void Bounce()
@@ -148,26 +167,30 @@ namespace __SCRIPTS
 			OnBounce?.Invoke();
 		}
 
-		protected override void AnimationComplete()
+
+		public void StartResting()
 		{
-			verticalVelocity = 0;
 			isResting = true;
 			OnResting?.Invoke(transform.position);
-			anim.SetBool(UnitAnimations.IsFalling, false);
-			isJumping = false;
-			body.canLand = false;
-			moveController.SetCanMove(true);
-			StopActivity();
+			if (body == null) return;
+			body.legs.Stop(this);
+			body.arms.Stop(this);
+			thing.canLand = false;
 		}
 
-		public void SetCanJump(bool on)
+		public void StopResting()
 		{
-			canJump = on;
+			isResting = false;
+			Debug.Log("[Jump] Stopped resting - character can move again");
 		}
 
-		public void SetDistanceToGround(float attackOriginHeight)
+		// Safety method to force stop resting if stuck
+		public void ForceStopResting()
 		{
-			body.SetDistanceToGround(attackOriginHeight);
+			CancelInvoke(nameof(StopResting));
+			isResting = false;
+			Debug.Log("[Jump] FORCE stopped resting - character unstuck");
 		}
+
 	}
 }

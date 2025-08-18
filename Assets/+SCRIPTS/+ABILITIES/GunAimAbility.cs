@@ -8,19 +8,8 @@ public interface IAimableGun
 {
 	event Action<Attack, Vector2> OnShotHitTarget;
 	event Action<Attack, Vector2> OnShotMissed;
-
+	bool isGlocking { get;  }
 	bool isReloading { get; }
-}
-
-public interface IAimAndGlock : IAimableGun, IGlock
-{
-
-	public event Action OnAutoReload;
-}
-
-public interface IGlock
-{
-	bool isGlocking { get; }
 }
 namespace __SCRIPTS
 {
@@ -31,6 +20,7 @@ namespace __SCRIPTS
 		public Vector2 CorrectForGlockOffset = new(-0.37f, 0);
 		public Vector2 OriginalTopSpritePosition;
 		public GameObject TopSprite;
+		private NadeAttack nadeAttack;
 
 		[Header("AK Clips")] public AnimationClip E;
 		public AnimationClip EEN;
@@ -64,14 +54,14 @@ namespace __SCRIPTS
 
 		private List<AnimationClip> akClips = new();
 		private List<AnimationClip> glockClips = new();
-		private IAimAndGlock aimableGun;
+		private IAimableGun aimableGun;
 		private bool Reloading;
 
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
 			anim = GetComponent<UnitAnimations>();
-			aimableGun = GetComponent<IAimAndGlock>();
+			aimableGun = GetComponent<IAimableGun>();
 			akClips.AddMany(E, EEN, EN, NE, NW, WN, WWN, W, WWS, WS, SW, SE, ES, EES);
 			glockClips.AddMany(Glock_E, Glock_EEN, Glock_EN, Glock_NE, Glock_NW, Glock_WN, Glock_WWN, Glock_W,
 				Glock_WWS, Glock_WS, Glock_SW,
@@ -80,7 +70,7 @@ namespace __SCRIPTS
 			anim.animEvents.OnAnimationComplete += Anim_OnComplete;
 			aimableGun.OnShotHitTarget += AimableGunOnShoot;
 			aimableGun.OnShotMissed += AimableGunOnShoot;
-			GetComponent<NadeAttack>();
+			nadeAttack = GetComponent<NadeAttack>();
 		}
 
 		private void OnDisable()
@@ -94,9 +84,9 @@ namespace __SCRIPTS
 
 		protected override Vector3 GetRealAimDir()
 		{
-			if (player.isUsingMouse) return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
+			if (owner.isUsingMouse) return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
 
-			return player.Controller.GetAimAxisAngle();
+			return owner.Controller.AimAxis.GetCurrentAngle();
 		}
 
 		private void Anim_OnComplete()
@@ -106,7 +96,7 @@ namespace __SCRIPTS
 
 		private void AimableGunOnShoot(Attack attack, Vector2 vector2)
 		{
-			if (attack.Owner != player) return;
+			if (attack.Owner != owner) return;
 			isAttacking = true;
 			anim.animator.speed = 1;
 			anim.SetFloat(UnitAnimations.ShootSpeed, 1);
@@ -121,8 +111,8 @@ namespace __SCRIPTS
 
 		private float GetDegrees()
 		{
-			var degrees = Vector2.Angle(aimDir, Vector2.right);
-			if (aimDir.y < 0) degrees -= 360;
+			var degrees = Vector2.Angle(AimDir, Vector2.right);
+			if (AimDir.y < 0) degrees -= 360;
 
 			return degrees;
 		}
@@ -144,7 +134,7 @@ namespace __SCRIPTS
 				AimInDirection(GetDegrees());
 			}
 
-			// Check what the doableArms are currently doing
+			// Check what the arms are currently doing
 			var currentActivity = body.doableArms.currentActivity?.VerbName;
 
 			// Don't aim during special attacks that use animations on layer 1
@@ -154,8 +144,8 @@ namespace __SCRIPTS
 
 			// Only aim when appropriate
 			if (isAttacking || aimableGun.isReloading || shouldBlockAiming) return;
-			// Only aim if doableArms are truly free OR not doing conflicting activities
-			if (!body.doableArms.isActive || currentActivity == null)
+			// Only aim if arms are truly free OR not doing conflicting activities
+			if (!body.doableArms.IsActive || currentActivity == null)
 			{
 				AimInDirection(GetDegrees());
 			}
@@ -208,11 +198,11 @@ namespace __SCRIPTS
 
 		private Vector2 GetClampedAimDir()
 		{
-			var clampedDir = aimDir.normalized;
+			var clampedDir = AimDir.normalized;
 			if (clampedDir.x <= .25f && clampedDir.x >= 0)
 			{
 				clampedDir.x = .25f;
-				if (aimDir.y > 0)
+				if (AimDir.y > 0)
 					clampedDir.y = 1f;
 				else
 					clampedDir.y = -1;

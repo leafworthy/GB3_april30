@@ -20,7 +20,7 @@ namespace __SCRIPTS
 			anim.animEvents.OnAttackHit += AttackHit;
 			if (attacker.IsPlayer)
 			{
-				attacker.player.Controller.OnAttack1_Pressed += Player_Attack;
+				attacker.player.Controller.Attack1RightTrigger.OnPress += Player_Attack;
 
 			}
 			else
@@ -33,7 +33,7 @@ namespace __SCRIPTS
 		{
 			if (attacker.IsPlayer)
 			{
-				attacker.player.Controller.OnAttack1_Pressed -= Player_Attack;
+				attacker.player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
 			}
 			else
 			{

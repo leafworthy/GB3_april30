@@ -9,9 +9,7 @@ namespace __SCRIPTS
 		private UnitAnimations anim;
 		private Body body;
 		private MoveAbility move;
-		private IAimAbility aim;
-		private ObjectMaker objectMaker => _objectMaker ??= ServiceLocator.Get<ObjectMaker>();
-		private ObjectMaker _objectMaker;
+		private AimAbility aim;
 
 		private bool isCharging;
 
@@ -36,12 +34,12 @@ namespace __SCRIPTS
 			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
 			ammo = GetComponent<AmmoInventory>();
-			aim = GetComponent<IAimAbility>();
+			aim = GetComponent<AimAbility>();
 
 			if (attacker != null)
 			{
-				attacker.player.Controller.OnAttack2_Pressed += Player_ChargePress;
-				attacker.player.Controller.OnAttack2_Released += Player_ChargeRelease;
+				attacker.player.Controller.Attack2LeftTrigger.OnPress += Player_ChargePress;
+				attacker.player.Controller.Attack2LeftTrigger.OnRelease += Player_ChargeRelease;
 			}
 
 			animEvents = anim.animEvents;
@@ -54,8 +52,8 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			if (attacker != null) return;
-			attacker.player.Controller.OnAttack2_Pressed -= Player_ChargePress;
-			attacker.player.Controller.OnAttack2_Released -= Player_ChargeRelease;
+			attacker.player.Controller.Attack2LeftTrigger.OnPress -= Player_ChargePress;
+			attacker.player.Controller.Attack2LeftTrigger.OnRelease -= Player_ChargeRelease;
 			if (animEvents != null) return;
 			animEvents = anim.animEvents;
 			animEvents.OnFullyCharged -= Anim_FullyCharged;
@@ -76,7 +74,7 @@ namespace __SCRIPTS
 
 		private void SpawnFX()
 		{
-			currentArrowHead = objectMaker.Make( assetManager.FX.nadeTargetPrefab);
+			currentArrowHead = objectMaker.Make(AssetManager.FX.nadeTargetPrefab);
 			currentArrowHead.SetActive(false);
 		}
 
@@ -94,6 +92,13 @@ namespace __SCRIPTS
 		private void Player_ChargePress(NewControlButton newControlButton)
 		{
 			if (pauseManager.IsPaused) return;
+			if (!body.arms.Do(this)) return;
+
+			if (!body.legs.Do(this))
+			{
+				body.arms.Stop(this);
+				return;
+			}
 
 			isCharging = true;
 			isFullyCharged = false;
@@ -122,8 +127,8 @@ namespace __SCRIPTS
 			{
 				anim.SetBool(UnitAnimations.IsCharging, false);
 				ammo.secondaryAmmo.UseAmmo(1000);
-				body.doableArms.Stop(this);
-				body.doableLegs.Stop(this);
+				body.arms.Stop(this);
+				body.legs.Stop(this);
 			}
 		}
 
@@ -145,8 +150,8 @@ namespace __SCRIPTS
 
 			var connect = false;
 			SpecialAttackDistance = Vector2.Distance(position, targetPoint);
-			body.doableArms.Stop(this);
-			body.doableLegs.Stop(this);
+			body.arms.Stop(this);
+			body.legs.Stop(this);
 			MoveIfDidCollideWithBuilding(position, targetPoint, out var raycast);
 			OnSpecialAttackHit?.Invoke();
 
@@ -167,7 +172,7 @@ namespace __SCRIPTS
 				if (!otherLife.IsEnemyOf(attacker) || otherLife.cantDie || otherLife.IsObstacle) return;
 				HitTarget(otherLife.SecondaryAttackDamageWithExtra, otherLife, 2);
 				connect = true;
-				objectMaker.Make( assetManager.FX.hits.GetRandom(), hit2D.transform.position);
+				objectMaker.Make( AssetManager.FX.hits.GetRandom(), hit2D.transform.position);
 			}
 
 			if (!connect) return;
@@ -176,11 +181,11 @@ namespace __SCRIPTS
 
 		private void MoveIfDidCollideWithBuilding(Vector3 position, Vector3 targetPoint, out RaycastHit2D[] raycast)
 		{
-			var hitObstacle = Physics2D.Linecast(position, targetPoint, assetManager.LevelAssets.BuildingLayer);
+			var hitObstacle = Physics2D.Linecast(position, targetPoint, AssetManager.LevelAssets.BuildingLayer);
 			if (hitObstacle) targetPoint = hitObstacle.point;
 
 			raycast = Physics2D.CircleCastAll(position, SpecialAttackWidth, move.MoveAimDir, SpecialAttackDistance,
-				 assetManager.LevelAssets.EnemyLayer);
+				 AssetManager.LevelAssets.EnemyLayer);
 			transform.position = targetPoint;
 		}
 

@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using UnityEngine;
 
 namespace __SCRIPTS
 {
@@ -10,7 +10,6 @@ namespace __SCRIPTS
 		public event Action<Player> OnCarAccessActionPressed;
 
 		private bool gasFilled;
-		private List<Player> playersWithKey = new();
 
 		protected override void OnEnable()
 		{
@@ -24,8 +23,9 @@ namespace __SCRIPTS
 		{
 			base.OnDisable();
 			OnPlayerEnters -= Interactable_OnPlayerEnters;
-			OnPlayerExits -= Interactable_OnPlayerExits;
-			OnTimeComplete -= Interactable_OnTimeComplete;
+			 OnPlayerExits -= Interactable_OnPlayerExits;
+			  OnTimeComplete -= Interactable_OnTimeComplete;
+
 		}
 
 		protected override void InteractableOnActionPress(Player player)
@@ -34,11 +34,11 @@ namespace __SCRIPTS
 			{
 				//if (HasKey())
 				//{
-				OnCarAccessActionPressed?.Invoke(player);
-				FinishInteraction(player);
+					OnCarAccessActionPressed?.Invoke(player);
+					FinishInteraction(player);
 				//}
 				//else
-				//player.Say("Need a key...", 0);
+					//player.Say("Need a key...", 0);
 			}
 			else
 			{
@@ -53,17 +53,28 @@ namespace __SCRIPTS
 			}
 		}
 
+		private bool HasKey() => DoAnyPlayersHaveAKey();
 
 		private bool HasEnoughGas() => GetTotalGasFromAllJoinedPlayers() >= AssetManager.Vars.GasGoal;
 
+		private bool DoAnyPlayersHaveAKey()
+		{
+			foreach (var player in playerManager.AllJoinedPlayers)
+			{
+				if (player.hasKey) return true;
+			}
+
+			return false;
+		}
 
 		private int GetTotalGasFromAllJoinedPlayers()
 		{
 			var totalGas = 0;
 			foreach (var player in playerManager.AllJoinedPlayers)
 			{
-				totalGas += (int) playerStatsManager.GetStatAmount(player, PlayerStat.StatType.Gas);
+				totalGas += (int)playerStatsManager.GetStatAmount(player,PlayerStat.StatType.Gas);
 			}
+
 
 			return totalGas;
 		}
@@ -74,17 +85,18 @@ namespace __SCRIPTS
 		{
 			if (!HasEnoughGas() || gasFilled) return;
 			gasFilled = true;
-			playerStatsManager.ChangeStat(player, PlayerStat.StatType.Gas, -AssetManager.Vars.GasGoal);
-			Interactable_OnPlayerEnters(player);
+			playerStatsManager.ChangeStat(player,PlayerStat.StatType.Gas, -AssetManager.Vars.GasGoal);
+		Interactable_OnPlayerEnters(player);
 		}
 
 		private void Interactable_OnPlayerEnters(Player player)
 		{
+
 			if (gasFilled)
 			{
 				//if (HasKey())
 				//{
-				player.Say("Let's go!", 0);
+					player.Say("Let's go!", 0);
 
 				//}
 				//else

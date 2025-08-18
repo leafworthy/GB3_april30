@@ -25,8 +25,8 @@ namespace __SCRIPTS
 		public GameObject TopScaleObject;
 		public GameObject BottomScaleObject;
 
-		//public Arms doableArms = new();
-		//public Legs doableLegs = new();
+		public Arms arms = new();
+		public Legs legs = new();
 		[HideInInspector] public bool BottomIsFacingRight = true;
 		[HideInInspector] public bool TopIsFacingRight = true;
 		public DoableArms doableArms = new();

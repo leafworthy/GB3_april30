@@ -129,7 +129,7 @@ namespace __SCRIPTS.Cursor
 			if (cursor.owner.SpawnedPlayerGO == null) return;
 			var aim = cursor.aimAbility;
 			if (aim == null) return;
-			if(cursor.aimAbility.IsAiming() )
+			if(cursor.aimAbility.hasEnoughMagnitude() )
 			{
 				cursor.gameObject.SetActive(true);
 				cursor.gameObject.transform.position = cursor.aimAbility.GetAimPoint();

@@ -7,7 +7,7 @@ namespace __SCRIPTS
 	[DisallowMultipleComponent]
 	public class AimAbility_FX : ServiceUser
 	{
-		private IAimAbility aimAbility;
+		private AimAbility aimAbility;
 		private Body body;
 		public Light2D flashlightLight;
 		private Life life;
@@ -16,14 +16,14 @@ namespace __SCRIPTS
 		{
 			life = GetComponent<Life>();
 			if(life == null) return;
-			aimAbility = GetComponent<IAimAbility>();
+			aimAbility = GetComponent<AimAbility>();
 			body = GetComponent<Body>();
 		}
 
 		private void Update()
 		{
 			if (pauseManager.IsPaused) return;
-			if(aimAbility.IsAiming())
+			if(aimAbility.hasEnoughMagnitude())
 			{
 				AimFlashlight();
 			}
@@ -33,7 +33,7 @@ namespace __SCRIPTS
 		private void AimFlashlight()
 		{
 
-			var hitPoint = aimAbility.CheckRaycastHit();
+			var hitPoint = aimAbility.CheckRaycastHit(aimAbility.AimDir);
 			if (hitPoint.collider != null)
 			{
 				Debug.DrawLine(body.FootPoint.transform.position, hitPoint.point, Color.white);

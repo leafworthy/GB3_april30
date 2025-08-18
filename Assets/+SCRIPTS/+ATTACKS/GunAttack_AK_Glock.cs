@@ -1,123 +1,35 @@
 ﻿using System;
-using __SCRIPTS;
+using GangstaBean.Core;
 using UnityEngine;
 
-public class ReloadAbilityController : AbilityController
+public class ReloadActivity : IActivity
 {
-	private ReloadAbility ability => _ability ??= GetComponent<ReloadAbility>();
-	private ReloadAbility _ability;
+	public string VerbName => "Reloading";
 
-	protected override void StopListeningToPlayer()
+	public bool TryCompleteGracefully(CompletionReason reason, IActivity newActivity = null)
 	{
-		if (anim == null) return;
-		anim.animEvents.OnReload -= Anim_OnReload;
+		return false; // Reload activities complete naturally
 	}
-
-	protected override void ListenToPlayer()
-	{
-		if (anim == null) return;
-		anim.animEvents.OnReload += Anim_OnReload;
-		player.spawnedPlayerLife.OnDying += Player_OnDead;
-	}
-
-	private void Player_OnDead(Player _player, Life _life)
-	{
-		ability.StopActivity();
-	}
-
-	private void Anim_OnReload()
-	{
-		ability.Reload();
-	}
-}
-public class ReloadAbility : DoableActivity
-{
-	public event Action OnReload;
-	private IAimAbility aim;
-
-	public AnimationClip ReloadAKAnimationClip;
-	public AnimationClip ReloadGlockAnimationClip;
-	public AnimationClip ReloadGlockAnimationLeftClip;
-
-	private bool isReloading;
-	private IAimAndGlock reloader => _reloader ??= GetComponent<IAimAndGlock>();
-	private IAimAndGlock _reloader;
-	private AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
-	private AmmoInventory _ammoInventory;
-	public override string VerbName => "Reloading";
-	protected override bool requiresArms() => true;
-
-	protected override bool requiresLegs() => false;
-
-	public override void StopActivity()
-	{
-		isReloading = false;
-		base.StopActivity();
-	}
-
-	public override void StartActivity()
-	{
-		PlayAnimationClip(ReloadGlockAnimationClip);
-		isReloading = true;
-	}
-
-	public void Reload()
-	{
-		if (!isReloading) return;
-		if (ammoInventory.GetCorrectAmmoType(reloader.isGlocking).clipIsFull()) return;
-
-		if (!ammoInventory.GetCorrectAmmoType(reloader.isGlocking).hasReserveAmmo()) return;
-
-		anim.SetBool(UnitAnimations.IsShooting, false);
-		anim.SetBool(UnitAnimations.IsBobbing, false);
-
-		if (reloader.isGlocking)
-			anim.Play(aim.AimDir.x > 0 ? ReloadGlockAnimationClip.name : ReloadGlockAnimationLeftClip.name, 1, 0);
-		else
-			anim.Play(ReloadAKAnimationClip.name, 1, 0);
-
-		OnReload?.Invoke();
-	}
-
-	protected override void AnimationComplete()
-	{
-		if (!isReloading) return;
-		isReloading = false;
-
-		anim.SetBool(UnitAnimations.IsBobbing, true);
-		base.AnimationComplete();
-	}
-
 }
 
 namespace __SCRIPTS
 {
 	[Serializable]
-	public class GunAttack_AK_Glock_Ability : Attacks, IAimAndGlock
+	public class GunAttack_AK_Glock : Attacks, IAimableGun, IActivity
 	{
 		public event Action<Attack, Vector2> OnShotHitTarget;
 		public event Action<Attack, Vector2> OnShotMissed;
-		public bool isReloading { get; set; }
-		public bool isGlocking { get; set; }
-		public bool isShooting;
-		private float currentCooldownTime;
-		private float attackRate => isGlocking ? attacker.UnlimitedAttackRate : attacker.PrimaryAttackRate;
-
-		public event Action OnAutoReload;
-	}
-
-	[Serializable]
-	public class GunAttack_AK_Glock : Attacks, IAimAndGlock
-	{
-		public event Action<Attack, Vector2> OnShotHitTarget;
-		public event Action<Attack, Vector2> OnShotMissed;
+		public event Action OnReload;
 		public bool isGlocking { get; private set; }
 		public bool isReloading { get; private set; }
 		public bool isShooting;
 		private float currentCooldownTime;
+		private ReloadActivity reloadActivity = new();
 
 		private GunAimAbility aim;
-		private DoableArms doableArms;
+		private Arms arms;
+		private Body body;
+		private UnitAnimations anim;
 		private AmmoInventory ammoInventory;
 		public override string VerbName => "Shooting";
 
@@ -126,6 +38,7 @@ namespace __SCRIPTS
 		private float currentDamage =>
 			isGlocking ? attacker.UnlimitedAttackDamageWithExtra : attacker.PrimaryAttackDamageWithExtra;
 
+		public Ammo GetCorrectAmmoType() => isGlocking ? ammoInventory.unlimitedAmmo : ammoInventory.primaryAmmo;
 		public AnimationClip ReloadAKAnimationClip;
 		public AnimationClip ReloadGlockAnimationClip;
 		public AnimationClip ReloadGlockAnimationLeftClip;
@@ -133,28 +46,54 @@ namespace __SCRIPTS
 		private bool isPressing;
 		private bool isEmpty;
 		private bool isGlockingOnPurpose;
-		public event Action OnAutoReload;
 		public event Action OnEmpty;
 
-		public override void SetPlayer(Player player)
+		public override void SetPlayer(Player _player)
 		{
-			base.SetPlayer(player);
 			ammoInventory = GetComponent<AmmoInventory>();
+			anim = GetComponent<UnitAnimations>();
+			body = GetComponent<Body>();
+			arms = body.arms;
 			aim = GetComponent<GunAimAbility>();
+
+			anim.animEvents.OnReload += Anim_OnReload;
+			anim.animEvents.OnReloadStop += Anim_OnReloadStop;
+
 			ListenToPlayer();
 		}
 
+		private void Anim_OnReloadStop()
+		{
 
+			StopReloading();
+		}
 
 		private void OnDisable()
 		{
+			anim.animEvents.OnReload -= Anim_OnReload;
+			anim.animEvents.OnReloadStop -= Anim_OnReloadStop;
 			StopListeningToPlayer();
 		}
 
 		private void OnDead(Player player, Life life)
 		{
 			StopShooting();
+			StopReloading();
 			StopListeningToPlayer();
+		}
+
+		private void StopReloading()
+		{
+			if (!isReloading) return;
+			isReloading = false;
+			arms.Stop( reloadActivity);
+			if (!isPressing)
+			{
+				anim.SetBool(UnitAnimations.IsBobbing, true);
+				return;
+			}
+
+			TryShooting();
 		}
 
 		private void ListenToPlayer()
@@ -162,9 +101,10 @@ namespace __SCRIPTS
 			var player = attacker.player;
 			if (player == null) return;
 			attacker.OnDying += OnDead;
-			player.Controller.OnAttack1_Pressed += PlayerControllerShootPress;
-			player.Controller.OnAttack1_Released += PlayerControllerShootRelease;
-			player.Controller.OnSwapWeapon_Pressed += Player_SwapWeapon;
+			player.Controller.Attack1RightTrigger.OnPress += PlayerControllerShootPress;
+			player.Controller.Attack1RightTrigger.OnRelease += PlayerControllerShootRelease;
+			player.Controller.ReloadTriangle.OnPress += Player_Reload;
+			player.Controller.SwapWeaponSquare.OnPress += Player_SwapWeapon;
 		}
 
 		private void StopListeningToPlayer()
@@ -172,15 +112,16 @@ namespace __SCRIPTS
 			var player = attacker.player;
 			if (player == null) return;
 			attacker.OnDying -= OnDead;
-			player.Controller.OnAttack1_Pressed -= PlayerControllerShootPress;
-			player.Controller.OnAttack1_Released -= PlayerControllerShootRelease;
-			player.Controller.OnSwapWeapon_Pressed -= Player_SwapWeapon;
+			player.Controller.Attack1RightTrigger.OnPress -= PlayerControllerShootPress;
+			player.Controller.Attack1RightTrigger.OnRelease -= PlayerControllerShootRelease;
+			player.Controller.ReloadTriangle.OnPress -= Player_Reload;
+			player.Controller.SwapWeaponSquare.OnPress -= Player_SwapWeapon;
 		}
 
 		private void FixedUpdate()
 		{
 			if (pauseManager.IsPaused) return;
-			if (doableArms.currentActivity?.VerbName != VerbName) isShooting = false;
+			if (arms.currentActivity?.VerbName != this.VerbName) isShooting = false;
 
 			if (isPressing) TryShooting();
 			if (isShooting) ShootWithCooldown(aim.AimDir);
@@ -195,12 +136,16 @@ namespace __SCRIPTS
 
 		private void TryShooting()
 		{
-			if (isReloading) return;
+			if (isReloading)
+			{
+
+				return;
+			}
 
 			UseCorrectWeapon();
-			if (!ammoInventory.GetCorrectAmmoType(isGlocking).hasAmmoInClip())
+			if (!GetCorrectAmmoType().hasAmmoInClip())
 			{
-				if (!ammoInventory.GetCorrectAmmoType(isGlocking).hasAmmoInReserveOrClip())
+				if (!GetCorrectAmmoType().hasAmmoInReserveOrClip())
 				{
 					StopShooting();
 
@@ -211,12 +156,15 @@ namespace __SCRIPTS
 					return;
 				}
 
-				OnAutoReload?.Invoke();
+
+				StartReloading();
 				if (isEmpty) return;
 				OnEmpty?.Invoke();
 				isEmpty = true;
 				return;
 			}
+
+			if (!arms.Do(this)) return;
 
 
 			StartShooting();
@@ -233,7 +181,8 @@ namespace __SCRIPTS
 		{
 			isShooting = false;
 
-			doableArms.Stop(this);
+			arms.Stop(this);
+
 
 			if (anim == null) return;
 			anim.SetBool(UnitAnimations.IsShooting, false);
@@ -269,9 +218,10 @@ namespace __SCRIPTS
 
 		private void ShotMissed()
 		{
-			var missPosition = (Vector2) body.FootPoint.transform.position + (Vector2) aim.AimDir.normalized * attacker.PrimaryAttackRange;
-			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, aim.AimDir.normalized, attacker.PrimaryAttackRange,
-				assetManager.LevelAssets.BuildingLayer);
+			var missPosition = (Vector2) body.FootPoint.transform.position +
+			                   aim.AimDir.normalized * attacker.PrimaryAttackRange;
+			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, aim.AimDir.normalized,
+				attacker.PrimaryAttackRange, AssetManager.LevelAssets.BuildingLayer);
 			if (raycastHit) missPosition = raycastHit.point;
 			var newAttack = new Attack(attacker, body.FootPoint.transform.position, missPosition, null, 0);
 
@@ -282,7 +232,8 @@ namespace __SCRIPTS
 		{
 			var target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
 			if (target == null) return;
-			var newAttack = new Attack(attacker, body.FootPoint.transform.position, hitObject.point, target, currentDamage);
+			var newAttack = new Attack(attacker, body.FootPoint.transform.position, hitObject.point, target,
+				currentDamage);
 			OnShotHitTarget?.Invoke(newAttack, body.AttackStartPoint.transform.position);
 			target.TakeDamage(newAttack);
 		}
@@ -291,14 +242,15 @@ namespace __SCRIPTS
 		{
 			if (body.isOverLandable)
 			{
-				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, attacker.PrimaryAttackRange,
-					assetManager.LevelAssets.EnemyLayerOnLandable);
+				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
+					attacker.PrimaryAttackRange, AssetManager.LevelAssets.EnemyLayerOnLandable);
 
 				return raycastHit;
 			}
 			else
 			{
-				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, attacker.PrimaryAttackRange, assetManager.LevelAssets.EnemyLayer);
+				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
+					attacker.PrimaryAttackRange, AssetManager.LevelAssets.EnemyLayer);
 				return raycastHit;
 			}
 		}
@@ -309,21 +261,21 @@ namespace __SCRIPTS
 
 			if (!(Time.time >= currentCooldownTime)) return;
 
-			if (!ammoInventory.GetCorrectAmmoType(isGlocking).hasAmmoInClip())
+			if (!GetCorrectAmmoType().hasAmmoInClip())
 			{
 				StopShooting();
-				OnAutoReload?.Invoke();
+				StartReloading();
 				return;
 			}
 
-			ammoInventory.GetCorrectAmmoType(isGlocking).UseAmmo(1);
+			GetCorrectAmmoType().UseAmmo(1);
 			currentCooldownTime = Time.time + attackRate;
 			ShootTarget(targetDir);
 		}
 
 		private void Player_SwapWeapon(NewControlButton newControlButton)
 		{
-			if (!doableArms.isActive) StartSwapping();
+			if (!arms.isActive) StartSwapping();
 		}
 
 		private void StartSwapping()
@@ -332,9 +284,46 @@ namespace __SCRIPTS
 			isGlockingOnPurpose = isGlocking;
 		}
 
+		private void Player_Reload(NewControlButton newControlButton)
+		{
+			StartReloading();
+		}
 
+		private void StartReloading()
+		{
+			if (isReloading)
+			{
 
+				return;
+			}
 
+			if (GetCorrectAmmoType().clipIsFull())
+			{
 
+				return;
+			}
+
+			if (!GetCorrectAmmoType().hasReserveAmmo())
+			{
+
+				return;
+			}
+
+			if (!arms.Do(reloadActivity)) return;
+			anim.SetBool(UnitAnimations.IsShooting, false);
+			anim.SetBool(UnitAnimations.IsBobbing, false);
+			isReloading = true;
+			if (isGlocking)
+				anim.Play(aim.AimDir.x > 0 ? ReloadGlockAnimationClip.name : ReloadGlockAnimationLeftClip.name, 1, 0);
+			else
+				anim.Play(ReloadAKAnimationClip.name, 1, 0);
+		}
+
+		private void Anim_OnReload()
+		{
+			OnReload?.Invoke();
+			GetCorrectAmmoType().Reload();
+			isEmpty = false;
+		}
 	}
 }

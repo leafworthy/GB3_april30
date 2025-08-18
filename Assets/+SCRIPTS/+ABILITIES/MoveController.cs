@@ -5,74 +5,101 @@ using __SCRIPTS.HUD_Displays;
 using GangstaBean.Core;
 using UnityEngine;
 
-public interface IControlMove
+public interface IMove
 {
 	event Action<Vector2> OnMoveInDirection;
 	event Action OnStopMoving;
 }
 
-public interface IMove
-{
-	bool IsMoving();
-}
-
 namespace __SCRIPTS
 {
-	public class MoveController : AbilityController
+	public class MoveController : ServiceUser, INeedPlayer, IPoolable
 	{
+		public bool CanMove { get; set; }
+
 		public Vector2 MoveDir { get; private set; }
-		private DoableMoveAbility ability  => _ability ??= GetComponent<DoableMoveAbility>();
-		public bool CanMove=> ability.CanMove;
-		private DoableMoveAbility _ability;
 
+		private Life life;
+		private Body body;
+		private MoveAbility mover;
+		private Player owner;
+		private float damagePushMultiplier = 1;
+		private UnitAnimations anim;
 		private bool isWounded;
-		private IControlMove mover;
-
-		public override void SetPlayer(Player _player)
+		private IMove ai;
+		public void SetPlayer(Player _player)
 		{
-			base.SetPlayer(_player);
-			mover = _player.SpawnedPlayerGO.GetComponent<IControlMove>();
-			life.OnDying += Life_OnDying;
-		}
+			Debug.Log("player set");
+			anim = GetComponent<UnitAnimations>();
 
-		private void Life_OnDying(Player arg1, Life arg2)
-		{
-			ability.CanMove = false;
-			ability.StopMoving();
-			ability.StopPushing();
-		}
+			mover = GetComponent<MoveAbility>();
+			body = GetComponent<Body>();
+			owner = _player;
 
-		protected override void ListenToPlayer()
-		{
-			mover.OnMoveInDirection += Mover_MoveInDirection;
+			InitializeLife();
+
 			anim.animEvents.OnUseLegs += Anim_UseLegs;
 			anim.animEvents.OnStopUsingLegs += Anim_StopUsingLegs;
 			anim.animEvents.OnDashStop += Anim_DashStop;
 			anim.animEvents.OnRecovered += Anim_Recovered;
 		}
 
-		private void Mover_MoveInDirection(Vector2 newDirection)
+		private void Body_OnCanMove(bool canMove)
 		{
-			if (pauseManager.IsPaused) return;
-			if (isWounded) return;
-			if (!ability.CanMove) return;
-
-			if (newDirection.magnitude < .5f)
+			if (!canMove)
 			{
-				StopMoving();
-				return;
+				mover.StopMoving();
 			}
-
-			StartMoving(newDirection);
+			else
+			{
+				if(owner.IsPlayer()) mover.MoveInDirection(owner.Controller.MoveAxis.GetCurrentAngle(), life.MoveSpeed);
+			}
 		}
 
-		protected override void StopListeningToPlayer()
+		private void InitializeLife()
 		{
-			player.Controller.OnMoveAxis_Change -= Player_MoveInDirection;
-			player.Controller.OnMoveAxis_Inactive -= Player_StopMoving;
+			life = GetComponent<Life>();
+			life.OnWounded += Life_OnWounded;
+			life.OnDying += Life_OnDead;
 
-			mover.OnMoveInDirection -= AI_MoveInDirection;
-			mover.OnStopMoving -= AI_StopMoving;
+			if (owner.IsPlayer())
+			{
+				owner.Controller.MoveAxis.OnChange += Player_MoveInDirection;
+				owner.Controller.MoveAxis.OnInactive += Player_StopMoving;
+				CanMove = true;
+			}
+			else
+			{
+				Debug.Log("AI move controller initialized");
+				ai = GetComponent<IMove>();
+				if (ai == null)
+				{
+					Debug.Log("no ai component");
+					return;
+				}
+
+				ai.OnMoveInDirection += AI_MoveInDirection;
+				ai.OnStopMoving += AI_StopMoving;
+				CanMove = true;
+				Debug.Log("registered ai move controller");
+			}
+		}
+
+		private void OnDisable()
+		{
+			if (life == null) return;
+			if (life.IsPlayer)
+			{
+				Debug.Log("disable here");
+				owner.Controller.MoveAxis.OnChange -= Player_MoveInDirection;
+				owner.Controller.MoveAxis.OnInactive -= Player_StopMoving;
+			}
+			else
+			{
+				if (ai == null) return;
+				ai.OnMoveInDirection -= AI_MoveInDirection;
+				ai.OnStopMoving -= AI_StopMoving;
+			}
 
 			life.OnDamaged -= Life_OnWounded;
 			life.OnDying -= Life_OnDead;
@@ -82,11 +109,6 @@ namespace __SCRIPTS
 			anim.animEvents.OnRecovered -= Anim_Recovered;
 		}
 
-
-
-
-
-
 		private void Anim_Recovered()
 		{
 			isWounded = false;
@@ -94,45 +116,48 @@ namespace __SCRIPTS
 
 		private void Anim_DashStop()
 		{
-			ability.StopPushing();
+			mover.StopPush();
 		}
 
 		private void Reset()
 		{
-			ability.CanMove = true;
+			CanMove = true;
 		}
 
 		private void Anim_StopUsingLegs()
 		{
-			ability.CanMove = true;
-			body.doableLegs.Stop(ability);
+			CanMove = true;
+			body.legs.Stop(mover);
 		}
 
 		private void Anim_UseLegs()
 		{
-			ability.CanMove = false;
-			body.doableLegs.DoActivity(ability);
+			CanMove = false;
+			body.legs.Do(mover);
 		}
+
+
 
 		private void Life_OnWounded(Attack attack)
 		{
-			ability.Push(attack.Direction, attack.DamageAmount );
+			mover.Push(attack.Direction, attack.DamageAmount * damagePushMultiplier);
 			body.BottomFaceDirection(attack.Direction.x < 0);
 			isWounded = true;
 		}
 
 		private void Life_OnDead(Player player, Life life1)
 		{
-			ability.CanMove = false;
+			CanMove = false;
 		}
 
-		private void Player_MoveInDirection(Vector2 direction)
+		private void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction)
 		{
 			if (pauseManager.IsPaused) return;
 			if (isWounded) return;
-			if (!ability.CanMove) return;
+			if (!CanMove) return;
 
-			if (body.doableLegs.isActive)
+
+			if (body.legs.isActive)
 			{
 				StopMoving();
 				return;
@@ -151,22 +176,20 @@ namespace __SCRIPTS
 		{
 			Debug.Log("ai try move in direction");
 			if (pauseManager.IsPaused) return;
-			if (!ability.CanMove)
+			if (!CanMove)
 			{
 				Debug.Log("can't move");
 				return;
 			}
-
-			if (body.doableArms.isActive)
+			if (body.arms.isActive)
 			{
-				Debug.Log("ai doableArms busy");
+				Debug.Log("ai arms busy");
 				return;
 			}
 
 			Debug.Log("ai move in direction");
 			StartMoving(direction);
 		}
-
 		private void Player_StopMoving(IControlAxis controlAxis)
 		{
 			StopMoving();
@@ -177,13 +200,12 @@ namespace __SCRIPTS
 			Debug.Log("ai stop moving");
 			StopMoving();
 		}
-
 		private void StartMoving(Vector2 direction)
 		{
 			if (!life.IsPlayer) Debug.Log("start moving: " + life.MoveSpeed);
 			MoveDir = direction;
 			if (direction.x != 0) body.BottomFaceDirection(direction.x > 0);
-			ability.MoveInDirection(direction, life.MoveSpeed);
+			mover.MoveInDirection(direction, life.MoveSpeed);
 
 			anim.SetBool(UnitAnimations.IsMoving, true);
 		}
@@ -192,39 +214,36 @@ namespace __SCRIPTS
 		{
 			if (pauseManager.IsPaused) return;
 			anim.SetBool(UnitAnimations.IsMoving, false);
-			ability.StopMoving();
+			mover.StopMoving();
 		}
+
 
 		public void Push(Vector2 moveMoveDir, float statsDashSpeed)
 		{
-			ability.Push(moveMoveDir, statsDashSpeed);
+			mover.Push(moveMoveDir, statsDashSpeed);
 		}
 
-		public bool IsIdle() => ability.IsIdle();
+		public bool IsIdle() => mover.IsIdle();
 
 		public void OnPoolSpawn()
 		{
-			ability.CanMove = true;
+			// Reinitialize movement controller when spawned from pool
+			CanMove = true;
 			isWounded = false;
 			MoveDir = Vector2.zero;
+			// Reinitialize life connections if it's not a player
+			if (life != null && !life.IsPlayer)
+			{
+				InitializeLife();
+			}
 		}
 
 		public void OnPoolDespawn()
 		{
+			// Clean up when returning to pool
 			StopMoving();
-			ability.CanMove = false;
+			CanMove = false;
 			MoveDir = Vector2.zero;
-		}
-
-		public void SetCanMove(bool on)
-		{
-			ability.CanMove = on;
-			 if (!ability.CanMove)
-				 ability.StopMoving();
-			 else
-			 {
-				 if (player.IsPlayer()) ability.MoveInDirection(player.Controller.GetMoveAxisAngle(), life.MoveSpeed);
-			 }
 		}
 	}
 }

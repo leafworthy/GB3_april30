@@ -4,7 +4,7 @@ using UnityEngine;
 namespace __SCRIPTS
 {
 	[DisallowMultipleComponent]
-	public class DoableMoveAbility : DoableActivity
+	public class DoableMoveAbility : ServiceAbility
 	{
 		public bool CanMove
 		{
@@ -164,7 +164,7 @@ namespace __SCRIPTS
 		{
 			pushVelocity = Vector2.zero;
 		}
-		public bool IsIdle() => life.player.Controller.GetMoveAxisInactive();
+		public bool IsIdle() => life.player.Controller.MoveAxis.currentMagnitudeIsTooSmall();
 
 		private void SetCanMove(bool _canMove)
 		{

@@ -3,13 +3,13 @@
 ## Completed Fixes
 
 ### ✅ 1. Knife Attack Not Working When Pressed
-**Root Cause**: Activity system wasn't properly handling activity transitions when doableArms were busy with other activities.
-**Fix**: Changed `body.doableArms.Do(this)` to `body.doableArms.DoWithCompletion(this, CompletionReason.NewActivity)` in `TertiaryAttack_Knife.cs:75`
+**Root Cause**: Activity system wasn't properly handling activity transitions when arms were busy with other activities.
+**Fix**: Changed `body.arms.Do(this)` to `body.arms.DoWithCompletion(this, CompletionReason.NewActivity)` in `TertiaryAttack_Knife.cs:75`
 **Files Modified**: `Assets/++SCRIPTS/+ATTACKS/TertiaryAttack_Knife.cs`
 
 ### ✅ 2. Grenade Not Releasing on Right-Click Release  
 **Root Cause**: Race condition in activity transition from aim to throw phase.
-**Fix**: Changed manual StopSafely + Do sequence to `doableArms.DoWithCompletion(this, CompletionReason.NewActivity)` in `NadeAttack.cs:188`
+**Fix**: Changed manual StopSafely + Do sequence to `arms.DoWithCompletion(this, CompletionReason.NewActivity)` in `NadeAttack.cs:188`
 **Files Modified**: `Assets/++SCRIPTS/+ATTACKS/NadeAttack.cs`
 
 ### ✅ 3. Player No Longer Immobile While Landing  
@@ -53,7 +53,7 @@
 ✅ **Movement Fixed**: Character no longer stuck in permanent immobile state
 🔄 **Debug Logging Added**: Enhanced logging for knife and grenade input events and activity states
 ✅ **Grenade Press Fixed**: Grenade press now works correctly with logging
-🔄 **Issue Investigation**: doableArms.currentActivity gets cleared between press and release - need to find what's calling StopSafely
+🔄 **Issue Investigation**: arms.currentActivity gets cleared between press and release - need to find what's calling StopSafely
 
 ## Review Summary
 All reported activity system issues have been addressed with minimal, targeted fixes that preserve existing functionality while solving the core problems with activity state management and transitions.

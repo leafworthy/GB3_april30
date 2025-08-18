@@ -4,7 +4,7 @@ namespace __SCRIPTS
 {
     public class FollowMouse : ServiceUser
     {
-        private IAimAbility aim;
+        private AimAbility aim;
 
 
         void Update()

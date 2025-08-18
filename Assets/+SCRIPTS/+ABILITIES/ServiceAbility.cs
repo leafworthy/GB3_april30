@@ -1,9 +1,8 @@
 using __SCRIPTS;
-using __SCRIPTS.Cursor;
 using GangstaBean.Core;
 using UnityEngine;
 
-public abstract class DoableActivity : MonoBehaviour, IDoableActivity
+public abstract class ServiceAbility : MonoBehaviour, IDoableActivity
 {
 	protected UnitAnimations anim => _anim ?? GetComponent<UnitAnimations>();
 	private UnitAnimations _anim;
@@ -16,11 +15,12 @@ public abstract class DoableActivity : MonoBehaviour, IDoableActivity
 	protected AssetManager assetManager => _assetManager ??= ServiceLocator.Get<AssetManager>();
 	private AssetManager _assetManager;
 
-	protected MoveController moveController => _moveController ??= GetComponent<MoveController>();
-	private MoveController _moveController;
+	protected DoableMoveController moveController => _moveController ??= GetComponent<DoableMoveController>();
+	private DoableMoveController _moveController;
 	protected MoveAbility move => _move ??= GetComponent<MoveAbility>();
 	private MoveAbility _move;
 
+	protected Player _player;
 	public virtual string VerbName => "Generic Ability";
 
 	protected abstract bool requiresArms();
@@ -41,8 +41,8 @@ public abstract class DoableActivity : MonoBehaviour, IDoableActivity
 
 	public virtual void StopActivity()
 	{
-		if (requiresArms()) body.doableArms.Stop(this);
-		if (requiresLegs()) body.doableLegs.Stop(this);
+		if (requiresArms()) body.doableArms.StopActivity(this);
+		if (requiresLegs()) body.doableLegs.StopActivity(this);
 		CancelInvoke(nameof(AnimationComplete));
 	}
 

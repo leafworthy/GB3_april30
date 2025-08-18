@@ -3,7 +3,6 @@ using __SCRIPTS.UpgradeS;
 using GangstaBean.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 namespace __SCRIPTS
 {
@@ -23,9 +22,9 @@ namespace __SCRIPTS
 		private PlayerData data;
 
 		public GameObject SpawnedPlayerGO;
-		[FormerlySerializedAs("spawnedPlayerDefence")] public Life spawnedPlayerLife;
+		public Life spawnedPlayerDefence;
 
-		public IUnitController Controller;
+		public PlayerController Controller;
 		public PlayerInput input;
 		public bool isUsingMouse;
 
@@ -82,10 +81,10 @@ namespace __SCRIPTS
 			if (newGO == null) return;
 
 			SpawnedPlayerGO = newGO;
-			spawnedPlayerLife = SpawnedPlayerGO.GetComponent<Life>();
-			if (spawnedPlayerLife == null) return;
+			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
+			if (spawnedPlayerDefence == null) return;
 
-			spawnedPlayerLife.OnDead += OnPlayerDied;
+			spawnedPlayerDefence.OnDead += OnPlayerDied;
 
 			foreach (var needPlayer in SpawnedPlayerGO.GetComponentsInChildren<INeedPlayer>(true))
 			{
@@ -138,9 +137,10 @@ namespace __SCRIPTS
 
 			playerColor = data.playerColor;
 
-			Controller = GetComponent<IUnitController>();
+			Controller = GetComponent<PlayerController>();
+			if (Controller == null) return;
 
-			Controller?.InitializeAndLinkToPlayer(this);
+			Controller.InitializeAndLinkToPlayer(this);
 		}
 
 		public void StartSelectingCharacter()
@@ -174,11 +174,12 @@ namespace __SCRIPTS
 			playerStatsManager.ChangeStat(this, PlayerStat.StatType.TotalCash, -amount);
 		}
 
-		public bool isDead() => spawnedPlayerLife.IsDead();
+		public bool isDead() => spawnedPlayerDefence.IsDead();
 
 		public void LeaveUpgradeSetupMenu()
 		{
 			OnPlayerLeavesUpgradeSetupMenu?.Invoke(this);
 		}
+
 	}
 }

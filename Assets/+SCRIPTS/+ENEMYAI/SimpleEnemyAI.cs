@@ -3,13 +3,10 @@ using UnityEngine;
 
 namespace __SCRIPTS._ENEMYAI
 {
-	public class SimpleEnemyAI : ServiceUser, IControlMove, IAttack
+	public class SimpleEnemyAI : ServiceUser, IMove, IAttack
 	{
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;
-		public bool IsMoving() => isMoving;
-		private bool isMoving;
-
 		public event Action<Life> OnAttack;
 		public bool BornOnAggro { get; set; } = false;
 		private Life _life;
@@ -42,7 +39,6 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void WalkToPlayer()
 		{
-			isMoving = true;
 			OnMoveInDirection?.Invoke((_target.transform.position - transform.position).normalized * life.unitData.moveSpeed);
 			Debug.Log("walk to player");
 		}

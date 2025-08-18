@@ -35,12 +35,12 @@ namespace __SCRIPTS
 			if (playersBeingListenedTo.Contains(newPlayer)) return;
 			Debug.Log("Listening to joined player");
 			playersBeingListenedTo.Add(newPlayer);
-			newPlayer.Controller.OnPause_Pressed += PlayerPressedPause;
-			newPlayer.Controller.OnUnpause_Pressed += PlayerPressedPause;
-			newPlayer.Controller.OnSelect_Pressed += PlayerPressedSelect;
-			newPlayer.Controller.OnCancel_Pressed += PlayerPressedCancel;
-			newPlayer.Controller.OnUIAxis_Up += PlayerPressedUp;
-			newPlayer.Controller.OnUIAxis_Down += PlayerPressedDown;
+			newPlayer.Controller.Pause.OnPress += PlayerPressedPause;
+			newPlayer.Controller.Unpause.OnPress += PlayerPressedPause;
+			newPlayer.Controller.Select.OnPress += PlayerPressedSelect;
+			newPlayer.Controller.Cancel.OnPress += PlayerPressedCancel;
+			newPlayer.Controller.UIAxis.OnUp += PlayerPressedUp;
+			newPlayer.Controller.UIAxis.OnDown += PlayerPressedDown;
 			isListening = true;
 		}
 
@@ -57,12 +57,12 @@ namespace __SCRIPTS
 			foreach (var joinedPlayer in playersBeingListenedTo)
 			{
 				Debug.Log("Level menu stopped listening to player");
-				joinedPlayer.Controller.OnPause_Pressed -= PlayerPressedPause;
-				joinedPlayer.Controller.OnUnpause_Pressed -= PlayerPressedPause;
-				joinedPlayer.Controller.OnSelect_Pressed -= PlayerPressedSelect;
-				joinedPlayer.Controller.OnCancel_Pressed -= PlayerPressedCancel;
-				joinedPlayer.Controller.OnUIAxis_Up -= PlayerPressedUp;
-				joinedPlayer.Controller.OnUIAxis_Down -= PlayerPressedDown;
+				joinedPlayer.Controller.Pause.OnPress -= PlayerPressedPause;
+				joinedPlayer.Controller.Unpause.OnPress -= PlayerPressedPause;
+				joinedPlayer.Controller.Select.OnPress -= PlayerPressedSelect;
+				joinedPlayer.Controller.Cancel.OnPress -= PlayerPressedCancel;
+				joinedPlayer.Controller.UIAxis.OnUp -= PlayerPressedUp;
+				joinedPlayer.Controller.UIAxis.OnDown -= PlayerPressedDown;
 			}
 
 			playersBeingListenedTo.Clear();
