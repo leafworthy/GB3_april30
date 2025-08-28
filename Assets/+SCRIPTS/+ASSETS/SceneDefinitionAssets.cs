@@ -87,11 +87,14 @@ namespace __SCRIPTS
 			if (_nameMap == null)
 				Initialize();
 
-			var scene = _nameMap[sceneName];
-			if (scene == null) Debug.Log("can't find scene");
+			if (_nameMap.TryGetValue(sceneName, out var scene))
+			{
+				Debug.Log($"Got scene by name: {sceneName}");
+				return scene;
+			}
 
-			Debug.Log("got scene by name: " + sceneName);
-			return scene;
+			Debug.LogError($"Scene '{sceneName}' not found in SceneDefinitionAssets. Available keys: {string.Join(", ", _nameMap.Keys)}");
+			return null;
 		}
 
 		/// <summary>
