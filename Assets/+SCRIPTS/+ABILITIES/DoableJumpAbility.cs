@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class DoableJumpAbility : ServiceAbility, INeedPlayer
+	public class DoableJumpAbility : ServiceAbility
 	{
 		private float verticalVelocity;
 
@@ -19,6 +19,7 @@ namespace __SCRIPTS
 		private bool isResting;
 		private bool isOverLandable;
 		private float currentLandableHeight;
+		public bool IsJumping => isJumping;
 		private bool isJumping;
 
 		private float FallInDistance = 80;
@@ -27,41 +28,38 @@ namespace __SCRIPTS
 		private float airTimer;
 		private float maxFlyTime = 2.5f;
 
-		private Life life;
 		private bool isFlying;
 
-		public override bool requiresArms => false;
-		public override bool requiresLegs => true;
+		protected override bool requiresArms() => false;
+
+		protected override bool requiresLegs() => true;
 
 		public override string VerbName => "Jump";
 
 		public override bool canDo()
 		{
-			if (!base.canDo())
-			{
-				Debug.Log("Cannot jump, base canDo failed");
-				return false;
-			}
-			if (body.doableArms.IsActive)
-			{
-				Debug.Log("Cannot jump, arms are active");
-				return false;
-			}
+			if (!base.canDo()) return false;
 
-			return isResting && !life.IsDead() && !pauseManager.IsPaused;
+			//if (body.doableArms.IsActive)
+			//{
+			//	Debug.Log("Cannot jump, arms are active" + (body.doableArms.CurrentAbility != null ? $"({body.doableArms.CurrentAbility.VerbName})" : ""));
+			//	return false;
+			//}
+
+			return isResting;
 		}
 
 		public override bool canStop() => false;
 
-		public override void Do()
+		protected override void DoAbility()
 		{
-			Debug.Log( "Jumping");
 			Jump(body.GetCurrentLandableHeight(), life.JumpSpeed, 99);
 		}
 
-		public override void Stop(IDoableActivity activityToStop)
+		public override void Stop()
 		{
-			base.Stop(this);
+			Debug.Log("jump ability stop");
+			base.Stop();
 
 			body.canLand = false;
 			body.SetDistanceToGround(body.GetCurrentLandableHeight());
@@ -83,15 +81,12 @@ namespace __SCRIPTS
 			body.ChangeLayer(Body.BodyLayer.jumping);
 		}
 
-		public void SetPlayer(Player _player)
+		public override void SetPlayer(Player _player)
 		{
-			life = GetComponent<Life>();
+			base.SetPlayer(_player);
 			life.OnDying += Life_OnDying;
-
 			_player.Controller.Jump.OnPress += Controller_Jump;
-
 			body.OnFallFromLandable += FallFromHeight;
-
 			FallFromHeight(FallInDistance);
 		}
 
@@ -102,6 +97,7 @@ namespace __SCRIPTS
 				Debug.Log("Cannot jump, not resting or dead or paused or arms active");
 				return;
 			}
+
 			Do();
 		}
 
@@ -192,7 +188,8 @@ namespace __SCRIPTS
 			isJumping = false;
 			body.canLand = false;
 			body.SetCanMove(true);
-			Stop(this);
+			Debug.Log("jump abbility complete");
+			Stop();
 		}
 	}
 }

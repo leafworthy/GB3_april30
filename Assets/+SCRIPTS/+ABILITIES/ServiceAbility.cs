@@ -2,45 +2,97 @@ using __SCRIPTS;
 using GangstaBean.Core;
 using UnityEngine;
 
-public abstract class ServiceAbility : ServiceUser, IDoableActivity
+public abstract class ServiceAbility : ServiceUser, IDoableAbility, INeedPlayer
 {
+	protected Player player;
 	private UnitAnimations _anim;
 	protected UnitAnimations anim => _anim ?? GetComponent<UnitAnimations>();
 	private Body _body;
 	protected Body body => _body ?? GetComponent<Body>();
-	public virtual string VerbName => "Generic Ability";
+	private Life _life;
+	protected Life life => _life ?? GetComponent<Life>();
+	public virtual string VerbName => "";
 
-	public virtual bool requiresArms => false;
+	protected abstract bool requiresArms();
 
-	public virtual bool requiresLegs => false;
+	protected abstract bool requiresLegs();
 
 	public virtual bool canDo() => BodyCanDo(this);
 
 	public virtual bool canStop() => false;
 
-	public abstract void Do();
-
-	public virtual void Stop(IDoableActivity activityToStop)
+	public void Do()
 	{
-		if (requiresArms) body.doableArms.Stop(activityToStop);
-		if (requiresLegs) body.doableLegs.Stop(activityToStop);
+		if (!canDo()) return;
+		if (requiresArms())
+		{
+
+			body.doableArms.DoActivity(this);
+		}
+		if (requiresLegs())
+		{
+			body.doableLegs.DoActivity(this);
+		}
+		DoAbility();
+	}
+
+	protected abstract void DoAbility();
+
+	public virtual void Stop()
+	{
+		Debug.Log("trying to stop " + VerbName + " ability");
+		if (requiresArms())
+		{
+			body.doableArms.Stop(this);
+			Debug.Log("arms stopped for " + VerbName + " ability");
+		}
+		if (requiresLegs())
+		{
+			body.doableLegs.Stop(this);
+			Debug.Log("legs stopped for " + VerbName + " ability");
+		}
+
+		Debug.Log("cancelling invoke for " + VerbName + " ability");
 		CancelInvoke(nameof(AnimationComplete));
 	}
 
-	protected bool BodyCanDo(IDoableActivity activityToDo)
+	private bool BodyCanDo(IDoableAbility abilityToDo)
 	{
-		if (requiresArms && !body.doableArms.CanDoActivity(activityToDo)) return false;
-		if (requiresLegs && !body.doableLegs.CanDoActivity(activityToDo)) return false;
+		if (pauseManager.IsPaused) return false;
+		if (life.IsDead())
+		{
+			Debug.Log( "Dead, cannot do " + VerbName + " ability");
+			return false;
+		}
+		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo))
+		{
+			Debug.Log( "Cannot do arms, cannot do " + VerbName + " ability");
+			return false;
+		}
+		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo))
+		{
+			Debug.Log( "Cannot do legs, cannot do " + VerbName + " ability");
+			return false;
+		}
+
 		return true;
 	}
 
 	protected virtual void AnimationComplete()
 	{
+		Debug.Log("Animation complete for " + VerbName + " ability");
+		Stop();
 	}
 
-	protected void PlayAnimationClip(AnimationClip clip)
+	protected void PlayAnimationClip(AnimationClip clip, int layer = 0)
 	{
-		anim.Play(clip.name, 0, 0);
+		Debug.Log("animation starting" + clip.name + " for " + VerbName + " ability " + "length: " + clip.length);
+		anim.Play(clip.name, layer, 0);
 		Invoke(nameof(AnimationComplete), clip.length);
+	}
+
+	public virtual void SetPlayer(Player _player)
+	{
+		player = _player;
 	}
 }

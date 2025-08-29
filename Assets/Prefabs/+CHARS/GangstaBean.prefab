@@ -501,7 +501,6 @@ GameObject:
   - component: {fileID: 4284111403091859338}
   - component: {fileID: 5777560193688468641}
   - component: {fileID: 3508854899574188244}
-  - component: {fileID: 1943782646598743569}
   - component: {fileID: 4716467258387394285}
   - component: {fileID: 1611911406270945328}
   - component: {fileID: -7364892996544991729}
@@ -517,6 +516,8 @@ GameObject:
   - component: {fileID: 6978514886390485825}
   - component: {fileID: 733584479355038319}
   - component: {fileID: 5036427627969513471}
+  - component: {fileID: 6524197863214219341}
+  - component: {fileID: 3543835829479452941}
   m_Layer: 6
   m_Name: GangstaBean
   m_TagString: Player
@@ -749,6 +750,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b339e457eda40edbdf1f7eade5b3174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsAiming: 0
+  animationClip: {fileID: 7400000, guid: 1f41528348e2145adb8726fd2438630d, type: 2}
 --- !u!114 &5892735826027873934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -812,7 +815,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f512f76248e741cfa3e1074e10baf703, type: 3}
   m_Name: 
@@ -824,7 +827,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd848b7bc8e0a498db62c7fa36a953d6, type: 3}
   m_Name: 
@@ -840,7 +843,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d7b530f348243b18a77bff5e8baae8d, type: 3}
   m_Name: 
@@ -877,19 +880,6 @@ MonoBehaviour:
   Glock_SE: {fileID: 7400000, guid: 4b6ee326ca42c485e9214eab7ef6a4b9, type: 2}
   Glock_ES: {fileID: 7400000, guid: 3f335c0ce65be4a19ba0ef598ec2e282, type: 2}
   Glock_EES: {fileID: 7400000, guid: 9f28d3e503f774bc488bb7c8d5dae7ea, type: 2}
---- !u!114 &1943782646598743569
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88827274fe15495b8dcaf4c291c00b66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackPoint: {fileID: 8971666602374333099}
 --- !u!114 &4716467258387394285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1112,6 +1102,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6524197863214219341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5f9bbda06e4b42c0b7bd61ba870b743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: Hello World!
+  fontSize: 30
+  fontColor: {r: 1, g: 1, b: 1, a: 1}
+  padding: {x: 10, y: 10}
+--- !u!114 &3543835829479452941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 674c528a7095406eb2670ed871c08fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackPoint: {fileID: 8971666602374333099}
+  animationClip: {fileID: 7400000, guid: aaf890dfb175341beab9a356227816a3, type: 2}
 --- !u!1 &3833892834326608145
 GameObject:
   m_ObjectHideFlags: 0

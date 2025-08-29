@@ -45,7 +45,7 @@ namespace __SCRIPTS
 
 		private PlayerUpgrades playerUpgrades;
 
-		public bool IsPlayer() => data.isPlayer;
+		public bool IsPlayer() => data != null && data.isPlayer;
 
 		private void Start()
 		{
@@ -88,6 +88,7 @@ namespace __SCRIPTS
 
 			foreach (var needPlayer in SpawnedPlayerGO.GetComponentsInChildren<INeedPlayer>(true))
 			{
+				Debug.Log( "PLAYER: Set player for " + needPlayer.GetType());
 				needPlayer.SetPlayer(this);
 			}
 		}
@@ -141,6 +142,13 @@ namespace __SCRIPTS
 			if (Controller == null) return;
 
 			Controller.InitializeAndLinkToPlayer(this);
+			if (SpawnedPlayerGO != null)
+			{
+				foreach (var needPlayer in SpawnedPlayerGO.GetComponentsInChildren<INeedPlayer>(true))
+				{
+					needPlayer.SetPlayer(this);
+				}
+			}
 		}
 
 		public void StartSelectingCharacter()

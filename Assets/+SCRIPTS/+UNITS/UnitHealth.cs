@@ -6,7 +6,7 @@ namespace __SCRIPTS
 {
 	public class UnitHealth : ServiceUser, IPoolable, ICanAttack, INeedPlayer
 	{
-		public bool CanDie => unitStats.Data.isInvincible;
+		public bool CanDie => !unitStats.Data.isInvincible;
 		public bool IsInvincible;
 		public bool IsShielded;
 		public float AttackHeight => unitStats.AttackHeight;

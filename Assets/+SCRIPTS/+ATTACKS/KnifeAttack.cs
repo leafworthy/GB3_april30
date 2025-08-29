@@ -4,7 +4,7 @@ using __SCRIPTS;
 using GangstaBean.Core;
 using UnityEngine;
 
-public class TertiaryAttack_Knife : Attacks
+public class KnifeAttack : Attacks
 	{
 		private Player player;
 		private Body body;
@@ -18,20 +18,6 @@ public class TertiaryAttack_Knife : Attacks
 		public event Action OnMiss;
 		public event Action<Vector2> OnHit;
 
-		public bool TryCompleteGracefully(CompletionReason reason, IActivity newActivity = null)
-		{
-			switch (reason)
-			{
-				case CompletionReason.AnimationInterrupt:
-				case CompletionReason.NewActivity:
-					// Handle graceful completion
-					isAttacking = false;
-					isPressing = false;
-					anim.SetBool(UnitAnimations.IsBobbing, true);
-					return true;
-			}
-			return false;
-		}
 
 		public override void SetPlayer(Player _player)
 		{

@@ -64,5 +64,11 @@ namespace __SCRIPTS
 		{
 			_unitData = UnitStatsManager.GetUnitStats(gameObject.name);
 		}
+
+		[Button]
+		private void ClearStats()
+		{
+			_unitData = null;
+		}
 	}
 }

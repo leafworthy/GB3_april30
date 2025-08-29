@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 #if UNITY_EDITOR
 #endif
@@ -25,6 +26,7 @@ namespace __SCRIPTS
 		wall,
 		none
 	}
+
 
 	public static class UnitStatsManager
 	{
@@ -93,16 +95,29 @@ namespace __SCRIPTS
 
 			var cleanedName = unitName;
 
+			// 1. Remove Unity's "(Clone)" suffix
 			cleanedName = cleanedName.Replace("(Clone)", "");
 
-			// Remove trailing numbers
-			cleanedName = System.Text.RegularExpressions.Regex.Replace(cleanedName, @"\d+$", "");
+			// 2. Remove Unity/FBX import variants like "Variant", "Variant Variant", etc.
+			cleanedName = Regex.Replace(cleanedName, @"(\s+Variant)+$", "");
 
-			// Remove "Variant" suffixes (including multiple ones)
-			cleanedName = System.Text.RegularExpressions.Regex.Replace(cleanedName, @"(\s+Variant)+$", "");
+			// 3. Remove Blender-style ".001", ".002" suffixes
+			cleanedName = Regex.Replace(cleanedName, @"\.\d+$", "");
 
-			// Trim whitespace
-			cleanedName = cleanedName.Trim();
+			// 4. Remove trailing digits (e.g. "Enemy123" -> "Enemy")
+			cleanedName = Regex.Replace(cleanedName, @"\d+$", "");
+
+			// 5. Remove common separator + number cases: "Enemy_01", "Enemy-02"
+			cleanedName = Regex.Replace(cleanedName, @"[_\- ]\d+$", "");
+
+			// 6. Normalize whitespace (collapse multiple spaces -> single space)
+			cleanedName = Regex.Replace(cleanedName, @"\s{2,}", " ");
+
+			// 7. Trim leading/trailing spaces and special chars
+			cleanedName = cleanedName.Trim(' ', '_', '-', '.');
+
+			// 8. Normalize Unicode (handles weird invisible characters)
+			cleanedName = cleanedName.Normalize();
 
 			return cleanedName;
 		}

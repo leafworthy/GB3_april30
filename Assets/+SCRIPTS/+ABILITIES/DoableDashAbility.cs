@@ -3,21 +3,20 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class DoableDashAbility : ServiceAbility, INeedPlayer
+	public class DoableDashAbility : ServiceAbility
 	{
 		public AnimationClip dashAnimationClip;
 		private AnimationEvents animEvents;
 		private MoveController moveController;
-		private Life life;
 		private MoveAbility move;
 		private Player owner;
 		private DoableJumpAbility jumps;
 
 		public bool teleport;
 		public override string VerbName => "Dash";
+		protected override bool requiresArms() => true;
 
-		public override bool requiresArms => false;
-		public override bool requiresLegs => true;
+		protected override bool requiresLegs() => true;
 
 		public override bool canDo()
 		{
@@ -26,11 +25,7 @@ namespace __SCRIPTS
 				Debug.Log("Base canDo failed for " + VerbName + " ability");
 				return false;
 			}
-			if (pauseManager.IsPaused)
-			{
-				Debug.Log("Paused, cannot do " + VerbName + " ability");
-				return false;
-			}
+
 			if (!jumps.canDo())
 			{
 				Debug.Log("Cannot do jumps, cannot do " + VerbName + " ability");
@@ -44,11 +39,11 @@ namespace __SCRIPTS
 			return true;
 		}
 
-		public override bool canStop() => false;
+		public override bool canStop() => true;
 
-		public override void Do()
+
+		protected override void DoAbility()
 		{
-			Debug.Log("do");
 			Dash();
 		}
 
@@ -61,16 +56,15 @@ namespace __SCRIPTS
 			if (animEvents != null)
 				animEvents.OnTeleport -= Anim_Teleport;
 		}
-		public void SetPlayer(Player _player)
+		public override void SetPlayer(Player _player)
 		{
-			UnsubscribeFromEvents();
 			move = GetComponent<MoveAbility>();
 
 			jumps = GetComponent<DoableJumpAbility>();
 			moveController = GetComponent<MoveController>();
 
-			life = GetComponent<Life>();
 			owner = _player;
+			UnsubscribeFromEvents();
 
 			animEvents = anim.animEvents;
 			owner.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
@@ -107,18 +101,13 @@ namespace __SCRIPTS
 
 		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 		{
-			if (!canDo())
-			{
-				Debug.Log("cant do" + VerbName + " ability" );
-				return;
-			}
-			Dash();
+			Do();
 		}
 
 		protected override void AnimationComplete()
 		{
 			body.ChangeLayer(body.isOverLandable ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
-			Stop(this);
+			Stop();
 		}
 
 		private void Dash()

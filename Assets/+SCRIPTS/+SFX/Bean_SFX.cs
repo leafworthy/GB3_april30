@@ -11,7 +11,7 @@ namespace __SCRIPTS
 		private Life life;
 		private JumpAbility jump;
 		private GunAttack_AK_Glock gunAttackAkGlock;
-		private TertiaryAttack_Knife tertiaryAttackKnife;
+		private KnifeAttack knifeAttack;
 		private NadeAttack nadeAttack;
 
 		private void OnEnable()
@@ -27,7 +27,7 @@ namespace __SCRIPTS
 				jump.OnLand += Jump_OnLand;
 			}
 			gunAttackAkGlock = GetComponent<GunAttack_AK_Glock>();
-			tertiaryAttackKnife = GetComponent<TertiaryAttack_Knife>();
+			knifeAttack = GetComponent<KnifeAttack>();
 			nadeAttack = GetComponent<NadeAttack>();
 
 			animEvents = anim.animEvents;
@@ -44,8 +44,8 @@ namespace __SCRIPTS
 			gunAttackAkGlock.OnShotMissed += GunAttackAkGlockOnShotMissed;
 			gunAttackAkGlock.OnReload += GunAttackAkGlockOnReload;
 			gunAttackAkGlock.OnEmpty += GunAttackAkGlockOnEmpty;
-			tertiaryAttackKnife.OnMiss += TertiaryAttackKnifeOnMiss;
-			tertiaryAttackKnife.OnHit += TertiaryAttackKnifeOnHit;
+			knifeAttack.OnMiss += KnifeAttackOnMiss;
+			knifeAttack.OnHit += KnifeAttackOnHit;
 			nadeAttack.OnThrow += NadeAttackOnThrow;
 		}
 
@@ -73,8 +73,8 @@ namespace __SCRIPTS
 			gunAttackAkGlock.OnShotHitTarget -= GunAttackAkGlockOnOnShotHitTarget;
 			gunAttackAkGlock.OnShotMissed -= GunAttackAkGlockOnShotMissed;
 			gunAttackAkGlock.OnReload -= GunAttackAkGlockOnReload;
-			tertiaryAttackKnife.OnMiss -= TertiaryAttackKnifeOnMiss;
-			tertiaryAttackKnife.OnHit -= TertiaryAttackKnifeOnHit;
+			knifeAttack.OnMiss -= KnifeAttackOnMiss;
+			knifeAttack.OnHit -= KnifeAttackOnHit;
 			nadeAttack.OnThrow -= NadeAttackOnThrow;
 		}
 
@@ -93,10 +93,10 @@ namespace __SCRIPTS
 		private void Life_OnDying(Player arg1, Life arg2) => sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
 		private void NadeAttackOnThrow(Vector2 vector2, Vector2 vector3, float arg3, Player arg4) => sfx.sounds.bean_nade_throw_sounds.PlayRandomAt(transform.position);
 		private void Life_AttackHit(Attack attack, Life hitLife) => sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
-		private void TertiaryAttackKnifeOnMiss() => sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
+		private void KnifeAttackOnMiss() => sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 		private void GunAttackAkGlockOnReload() => sfx.sounds.bean_reload_sounds.PlayRandomAt(transform.position);
 		private void Jump_OnLand(Vector2 obj) => sfx.sounds.land_sound.PlayRandomAt(transform.position);
-		private void TertiaryAttackKnifeOnHit(Vector2 vector2) => sfx.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
+		private void KnifeAttackOnHit(Vector2 vector2) => sfx.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
 
 		private void Jump_OnJump(Vector2 obj) => sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 		private void Life_OnWounded(Attack obj) {

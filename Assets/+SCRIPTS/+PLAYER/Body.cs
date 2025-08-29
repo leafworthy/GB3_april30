@@ -33,6 +33,10 @@ namespace __SCRIPTS
 		public DoableArms doableLegs = new();
 		private bool canMove;
 		public event Action<bool> OnCanMove;
+		private ScreenDebugText screenDebugText;
+		private ScreenDebugText debug => screenDebugText ??= GetComponent<ScreenDebugText>();
+
+
 		public bool CanMove
 		{
 			get => canMove;
@@ -44,6 +48,8 @@ namespace __SCRIPTS
 			canMove = _canMove;
 			OnCanMove?.Invoke(_canMove);
 		}
+
+
 
 		public void ChangeLayer(BodyLayer bodyLayer)
 		{

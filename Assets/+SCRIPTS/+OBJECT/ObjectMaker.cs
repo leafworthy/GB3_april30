@@ -53,7 +53,6 @@ namespace __SCRIPTS
 
 		public  void Pool(GameObject obj, int clones)
 		{
-			Debug.Log("pooling: " + obj.name + " with " + clones + " clones.");
 			var currentPool = new List<GameObject>();
 			for (var i = 0; i < clones; i++)
 			{

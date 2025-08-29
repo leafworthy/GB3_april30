@@ -66,7 +66,6 @@ namespace __SCRIPTS
 		private void Nade_OnHideAiming()
 		{
 
-			Debug.Log("NadeAbility_FX: hide aiming plz");
 			if (currentArrowHead != null) currentArrowHead.SetActive(false);
 			if (_trajectoryMarkersContainer.Count <= 0) return;
 			foreach (var marker in _trajectoryMarkersContainer)

@@ -52,7 +52,12 @@ namespace __SCRIPTS
 
 		public void SetPlayer(Player player)
 		{
-			if (!player.IsPlayer()) return;
+			Debug.Log("player set in life fx");
+			if (!player.IsPlayer())
+			{
+				Debug.Log("not a player");
+				return;
+			}
 			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
 			Debug.Log("on player set" + player.playerColor);
 			foreach (var r in renderersToTint)

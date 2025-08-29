@@ -85,10 +85,6 @@ namespace __SCRIPTS
 			{
 				AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
 			}
-			else
-			{
-				if(life != null && !life.IsPlayer) Debug.Log("isMoving: "+ isMoving + " IsActive: " + IsActive);
-			}
 
 			ApplyVelocity();
 			DecayVelocity();

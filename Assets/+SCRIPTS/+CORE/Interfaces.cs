@@ -13,13 +13,13 @@ namespace GangstaBean.Core
     /// <summary>
     /// Interface for components that can be activities
     /// </summary>
-    public interface IDoableActivity
+    public interface IDoableAbility
     {
         string VerbName { get; }
        bool canDo();
         bool canStop();
         void Do();
-        void Stop(IDoableActivity activity);
+        void Stop();
     }
 
     public enum ActivityRequirements
