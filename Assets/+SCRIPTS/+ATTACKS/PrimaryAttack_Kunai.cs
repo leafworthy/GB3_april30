@@ -10,7 +10,7 @@ namespace __SCRIPTS
 	{
 		private AnimationEvents animationEvents;
 
-		private AimAbility aim;
+		private IAimAbility aim;
 		private UnitAnimations anim;
 		private Body body;
 		private AmmoInventory ammoInventory;
@@ -40,7 +40,7 @@ namespace __SCRIPTS
 			ammoInventory = GetComponent<AmmoInventory>();
 			body = GetComponent<Body>();
 			anim = GetComponent<UnitAnimations>();
-			aim = GetComponent<AimAbility>();
+			aim = GetComponent<IAimAbility>();
 
 
 		}

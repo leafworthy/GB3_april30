@@ -9,16 +9,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 	{
 		public string VerbName => "Shield-Dash";
 
-		public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
-		{
-			switch (reason)
-			{
-				case GangstaBean.Core.CompletionReason.AnimationInterrupt:
-				case GangstaBean.Core.CompletionReason.NewActivity:
-					return true;
-			}
-			return false;
-		}
+
 	}
 	private AnimationEvents animEvents;
 	private MoveController moveController;
@@ -126,13 +117,6 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 		if (pauseManager.IsPaused) return;
 		if (!jumps.isResting) return;
 
-		// Check if character has teleport dash ability - if so, let that take priority
-		var dashAbility = GetComponent<DashAbility>();
-		if (dashAbility != null && dashAbility.teleport)
-		{
-
-			return;
-		}
 
 		if (!isShielding)
 		{

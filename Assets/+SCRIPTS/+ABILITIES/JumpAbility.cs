@@ -154,7 +154,7 @@ namespace __SCRIPTS
 			thing.canLand = false;
 			thing.SetDistanceToGround(currentLandableHeight);
 
-			if (body != null) body.ChangeLayer(thing.isOverLandable ?  Body.BodyLayer.landed : Body.BodyLayer.grounded);
+			if (body != null) body.ChangeLayer( Body.BodyLayer.grounded);
 
 			verticalVelocity = 0;
 		}

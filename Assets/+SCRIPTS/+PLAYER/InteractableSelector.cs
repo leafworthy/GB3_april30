@@ -8,7 +8,7 @@ public class InteractableSelector : MonoBehaviour, INeedPlayer
 	public List<PlayerInteractable> interactables = new();
 	private PlayerInteractable selectedInteractable;
 	private Player player;
-	private AimAbility aimAbility;
+	private IAimAbility aimAbility;
 
 	private void FixedUpdate()
 	{
@@ -56,7 +56,7 @@ public class InteractableSelector : MonoBehaviour, INeedPlayer
 
 	private Vector2 GetAimPosition()
 	{
-		if (aimAbility == null) aimAbility = GetComponentInChildren<AimAbility>();
+		if (aimAbility == null) aimAbility = GetComponentInChildren<IAimAbility>();
 		return aimAbility.GetAimPoint();
 	}
 
@@ -76,6 +76,6 @@ public class InteractableSelector : MonoBehaviour, INeedPlayer
 	public void SetPlayer(Player _player)
 	{
 		player = _player;
-		aimAbility = GetComponentInChildren<AimAbility>();
+		aimAbility = GetComponentInChildren<IAimAbility>();
 	}
 }

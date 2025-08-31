@@ -5,12 +5,12 @@ namespace __SCRIPTS
 {
 	public class AK_GunAttacks_FX : ServiceUser
 	{
-		private GunAttack_AK_Glock gunAttackAkGlock;
+		private IAimableGun gunAttackAkGlock;
 		private GameObject bulletPrefab => assets.FX.BulletPrefab;
 
 		private void OnEnable()
 		{
-			gunAttackAkGlock = GetComponent<GunAttack_AK_Glock>();
+			gunAttackAkGlock = GetComponent<IAimableGun>();
 			gunAttackAkGlock.OnShotHitTarget += GunAttackAkGlockOnOnOnShotHitTarget;
 			gunAttackAkGlock.OnShotMissed += GunAttackAkGlockOnOnOnShotHitTarget;
 		}

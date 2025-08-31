@@ -216,7 +216,7 @@ namespace __SCRIPTS
 		{
 			if (pauseManager.IsPaused) return;
 			anim.SetBool(UnitAnimations.IsMoving, false);
-			mover.StopMoving();
+			mover?.StopMoving();
 		}
 
 
@@ -229,11 +229,9 @@ namespace __SCRIPTS
 
 		public void OnPoolSpawn()
 		{
-			// Reinitialize movement controller when spawned from pool
 			CanMove = true;
 			isWounded = false;
 			MoveDir = Vector2.zero;
-			// Reinitialize life connections if it's not a player
 			if (life != null && !life.IsPlayer)
 			{
 				InitializeLife();
@@ -242,8 +240,7 @@ namespace __SCRIPTS
 
 		public void OnPoolDespawn()
 		{
-			// Clean up when returning to pool
-			StopMoving();
+
 			CanMove = false;
 			MoveDir = Vector2.zero;
 		}

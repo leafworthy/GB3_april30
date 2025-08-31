@@ -3,7 +3,7 @@ using System.Linq;
 using __SCRIPTS;
 using UnityEngine;
 
-public class DoableKnifeAttack : DoableAttack
+public class DoableKnifeAttack : Ability
 {
 	public override string VerbName => "Knife-Attack";
 
@@ -13,8 +13,9 @@ public class DoableKnifeAttack : DoableAttack
 	public event Action OnMiss;
 	public event Action<Vector2> OnHit;
 	private DoableJumpAbility jumpAbility => _jumpAbility ??=GetComponent<DoableJumpAbility>();
-
 	private DoableJumpAbility _jumpAbility;
+	private UnitAttackManager unitAttackManager => _unitAttackManager ??= GetComponent<UnitAttackManager>();
+	private UnitAttackManager _unitAttackManager;
 
 
 
@@ -91,7 +92,7 @@ public class DoableKnifeAttack : DoableAttack
 
 	private GameObject FindClosestHit()
 	{
-		var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange, assets.LevelAssets.EnemyLayer).ToList();
+		var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, unitAttackManager.life.TertiaryAttackRange, assets.LevelAssets.EnemyLayer).ToList();
 		if (circleCast.Count <= 0) return null;
 
 		var closest = circleCast[0];
@@ -135,6 +136,6 @@ public class DoableKnifeAttack : DoableAttack
 		Debug.Log("attack hit");
 		OnHit?.Invoke(enemyHit.transform.position);
 
-		HitTarget(attacker.TertiaryAttackDamageWithExtra, enemy, 2);
+		unitAttackManager.HitTarget(unitAttackManager.life.TertiaryAttackDamageWithExtra, enemy, 2);
 	}
 }

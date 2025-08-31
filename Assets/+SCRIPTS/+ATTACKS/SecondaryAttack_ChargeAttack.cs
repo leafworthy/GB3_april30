@@ -9,7 +9,7 @@ namespace __SCRIPTS
 		private UnitAnimations anim;
 		private Body body;
 		private MoveAbility move;
-		private AimAbility aim;
+		private IAimAbility aim;
 
 		private bool isCharging;
 
@@ -34,7 +34,7 @@ namespace __SCRIPTS
 			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
 			ammo = GetComponent<AmmoInventory>();
-			aim = GetComponent<AimAbility>();
+			aim = GetComponent<IAimAbility>();
 
 			if (attacker != null)
 			{

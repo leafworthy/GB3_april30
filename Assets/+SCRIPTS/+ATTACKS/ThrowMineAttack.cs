@@ -16,7 +16,7 @@ namespace __SCRIPTS
 
 		private Player player;
 
-		private GunAimAbility aim;
+		private DoableGunAimAbility aim;
 		private MoveAbility move;
 		private AmmoInventory ammo;
 		private JumpAbility jump;
@@ -55,7 +55,7 @@ namespace __SCRIPTS
 			jump = GetComponent<JumpAbility>();
 			move = GetComponent<MoveAbility>();
 			ammo = GetComponent<AmmoInventory>();
-			aim = GetComponent<GunAimAbility>();
+			aim = GetComponent<DoableGunAimAbility>();
 			ListenToPlayer();
 		}
 

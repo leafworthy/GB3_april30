@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class NadeAttack : ServiceAbility
+	public class NadeAttack : Ability
 	{
 		private AnimationEvents animationEvents;
 		private Vector2 startPoint;
@@ -12,7 +12,8 @@ namespace __SCRIPTS
 
 		private const int throwTime = 30;
 
-		private GunAimAbility aim;
+		private IAimAbility aim  => _aim ??= GetComponent<IAimAbility>();
+		private IAimAbility _aim;
 		private MoveAbility move;
 		private AmmoInventory ammo;
 
@@ -67,7 +68,6 @@ namespace __SCRIPTS
 			animationEvents = anim.animEvents;
 			move = GetComponent<MoveAbility>();
 			ammo = GetComponent<AmmoInventory>();
-			aim = GetComponent<GunAimAbility>();
 			StopListeningToPlayer();
 			ListenToPlayer();
 		}

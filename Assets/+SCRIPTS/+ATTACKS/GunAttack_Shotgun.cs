@@ -9,13 +9,14 @@ namespace __SCRIPTS
 		public event Action<Attack, Vector2> OnShotMissed;
 		public event Action OnEmpty;
 		public bool isGlocking => false;
+		public Vector2 AimDir => aim.AimDir;
 		public bool isReloading { get; set; }
 
 		public bool isShooting;
 		public int numberOfShots = 4;
 
 		private float currentCooldownTime;
-		private GunAimAbility_Simple aim;
+		private GunAimAbility aim;
 		private Arms arms;
 		private Body body;
 		private UnitAnimations anim;
@@ -30,6 +31,7 @@ namespace __SCRIPTS
 		private bool isGlocking1;
 		private bool isReloading1;
 		private float spread = .25f;
+		private Vector2 aimDir;
 
 		public override void SetPlayer(Player player)
 		{
@@ -39,7 +41,7 @@ namespace __SCRIPTS
 
 			body = GetComponent<Body>();
 			arms = body.arms;
-			aim = GetComponent<GunAimAbility_Simple>();
+			aim = GetComponent<GunAimAbility>();
 			ListenToPlayer();
 		}
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class DoableJumpAbility : ServiceAbility
+	public class DoableJumpAbility : Ability
 	{
 		private float verticalVelocity;
 
@@ -170,7 +170,7 @@ namespace __SCRIPTS
 			body.canLand = false;
 			body.SetCanMove(false);
 			body.SetDistanceToGround(currentLandableHeight);
-			if (body != null) body.ChangeLayer(body.isOverLandable ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
+			if (body != null) body.ChangeLayer(Body.BodyLayer.grounded);
 			verticalVelocity = 0;
 			PlayAnimationClip(landingAnimationClip);
 		}

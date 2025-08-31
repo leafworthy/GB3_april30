@@ -2,7 +2,7 @@ using __SCRIPTS;
 using GangstaBean.Core;
 using UnityEngine;
 
-public abstract class ServiceAbility : ServiceUser, IDoableAbility, INeedPlayer
+public abstract class Ability : ServiceUser, IDoableAbility, INeedPlayer
 {
 	protected Player player;
 	private UnitAnimations _anim;
@@ -93,8 +93,14 @@ public abstract class ServiceAbility : ServiceUser, IDoableAbility, INeedPlayer
 		Stop();
 	}
 
-	protected void PlayAnimationClip(AnimationClip clip, int layer = 0)
+	protected void PlayAnimationClip(AnimationClip clip, int layer = 0, float delay = 0)
 	{
+		if (clip == null)
+		{
+			Debug.Log("starting ability with delay only: " + VerbName + " ability " + "delay: " + delay);
+			Invoke(nameof(AnimationComplete), delay);
+			return;
+		}
 		Debug.Log("animation starting" + clip.name + " for " + VerbName + " ability " + "length: " + clip.length);
 		anim.Play(clip.name, layer, 0);
 		Invoke(nameof(AnimationComplete), clip.length);

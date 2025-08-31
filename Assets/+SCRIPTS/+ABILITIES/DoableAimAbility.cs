@@ -3,10 +3,17 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class DoableAimAbility : ServiceAbility
+	public interface IAimAbility
 	{
-		[HideInInspector] public Vector2 AimDir = Vector2.right;
-		private bool hasEnoughMagnitude() => player.Controller.AimAxis.isActive;
+		RaycastHit2D CheckRaycastHit(Vector3 targetDirection);
+		bool hasEnoughMagnitude();
+		Vector2 AimDir { get; }
+		Vector2 GetAimPoint();
+	}
+	public class DoableAimAbility : Ability, IAimAbility
+	{
+		[HideInInspector] public Vector2 AimDir { get; set; }
+		public bool hasEnoughMagnitude() => player.Controller.AimAxis.isActive;
 		private float maxAimDistance = 30;
 
 		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
@@ -109,11 +116,7 @@ namespace __SCRIPTS
 
 		protected virtual Vector3 GetRealAimDir()
 		{
-			if (player == null) return Vector2.zero;
-
-			if (player.isUsingMouse)
-				return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
-
+		if (player.isUsingMouse) return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
 			return player.Controller.AimAxis.GetCurrentAngle();
 		}
 

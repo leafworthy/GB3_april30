@@ -248,7 +248,7 @@ PrefabInstance:
     - target: {fileID: 4330567752162112095, guid: cb879157170f74c019dcfb56c1da9382, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 55d73fdec6a3c446c817ee2b4eb8e71d, type: 2}
+      objectReference: {fileID: 2100000, guid: a352cbfbf94364268af325aed32ab73f, type: 2}
     - target: {fileID: 6456950177142563419, guid: cb879157170f74c019dcfb56c1da9382, type: 3}
       propertyPath: _unitData.hasData
       value: 1
@@ -4802,7 +4802,7 @@ PrefabInstance:
     - target: {fileID: 4330567752162112095, guid: cb879157170f74c019dcfb56c1da9382, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 9c22e92884a3e41b8ad8067c182c1188, type: 2}
+      objectReference: {fileID: 2100000, guid: a352cbfbf94364268af325aed32ab73f, type: 2}
     - target: {fileID: 6456950177142563419, guid: cb879157170f74c019dcfb56c1da9382, type: 3}
       propertyPath: _unitData.hasData
       value: 1
@@ -6828,9 +6828,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe611ddc5634c0488416678b52dbade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsInvincible: 0
+  CanTakeDamage: 0
   IsShielded: 0
-  _player: {fileID: 0}
 --- !u!114 &1813714612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7437,7 +7436,7 @@ PrefabInstance:
     - target: {fileID: 4330567752162112095, guid: cb879157170f74c019dcfb56c1da9382, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 9c22e92884a3e41b8ad8067c182c1188, type: 2}
+      objectReference: {fileID: 2100000, guid: fdae30f0854b54b158616aa60955364b, type: 2}
     - target: {fileID: 6456950177142563419, guid: cb879157170f74c019dcfb56c1da9382, type: 3}
       propertyPath: _unitData.hasData
       value: 1

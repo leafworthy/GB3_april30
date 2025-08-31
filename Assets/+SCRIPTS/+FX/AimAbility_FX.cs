@@ -6,7 +6,7 @@ namespace __SCRIPTS
 {
 	public class AimAbility_FX : ServiceUser
 	{
-		private AimAbility aimAbility;
+		private IAimAbility aimAbility;
 		private Body body;
 		public Light2D flashlightLight;
 		private Life life;
@@ -15,7 +15,7 @@ namespace __SCRIPTS
 		{
 			life = GetComponent<Life>();
 			if(life == null) return;
-			aimAbility = GetComponent<AimAbility>();
+			aimAbility = GetComponent<IAimAbility>();
 			body = GetComponent<Body>();
 		}
 
