@@ -74,7 +74,7 @@ namespace __SCRIPTS
 
 		private void SpawnFX()
 		{
-			currentArrowHead = objectMaker.Make(assets.FX.nadeTargetPrefab);
+			currentArrowHead = objectMaker.Make(assetManager.FX.nadeTargetPrefab);
 			currentArrowHead.SetActive(false);
 		}
 
@@ -172,7 +172,7 @@ namespace __SCRIPTS
 				if (!otherLife.IsEnemyOf(attacker) || otherLife.cantDie || otherLife.IsObstacle) return;
 				HitTarget(otherLife.SecondaryAttackDamageWithExtra, otherLife, 2);
 				connect = true;
-				objectMaker.Make( assets.FX.hits.GetRandom(), hit2D.transform.position);
+				objectMaker.Make( assetManager.FX.hits.GetRandom(), hit2D.transform.position);
 			}
 
 			if (!connect) return;
@@ -181,11 +181,11 @@ namespace __SCRIPTS
 
 		private void MoveIfDidCollideWithBuilding(Vector3 position, Vector3 targetPoint, out RaycastHit2D[] raycast)
 		{
-			var hitObstacle = Physics2D.Linecast(position, targetPoint, assets.LevelAssets.BuildingLayer);
+			var hitObstacle = Physics2D.Linecast(position, targetPoint, assetManager.LevelAssets.BuildingLayer);
 			if (hitObstacle) targetPoint = hitObstacle.point;
 
 			raycast = Physics2D.CircleCastAll(position, SpecialAttackWidth, move.MoveAimDir, SpecialAttackDistance,
-				 assets.LevelAssets.EnemyLayer);
+				 assetManager.LevelAssets.EnemyLayer);
 			transform.position = targetPoint;
 		}
 

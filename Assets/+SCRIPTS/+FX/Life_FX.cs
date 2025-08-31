@@ -111,7 +111,7 @@ namespace __SCRIPTS
 		private void MakeHitMark(Attack attack)
 		{
 
-			var hitList = assets.FX.GetBulletHits(stats.DebrisType);
+			var hitList = assetManager.FX.GetBulletHits(stats.DebrisType);
 
 			if (hitList == null) return;
 
@@ -143,7 +143,7 @@ namespace __SCRIPTS
 
 		private void CreateBloodSpray(Attack attack)
 		{
-			var blood = objectMaker.Make( assets.FX.bloodspray.GetRandom(), attack.DestinationFloorPoint);
+			var blood = objectMaker.Make( assetManager.FX.bloodspray.GetRandom(), attack.DestinationFloorPoint);
 			if (attack.Direction.x < 0)
 			{
 				blood.transform.localScale = new Vector3(-blood.transform.localScale.x, blood.transform.localScale.y, 0);
@@ -156,14 +156,14 @@ namespace __SCRIPTS
 			for (var j = 0; j < randAmount; j++)
 			{
 				//----->
-				var forwardDebree = objectMaker.Make( assets.FX.GetDebree(stats.DebrisType), attack.DestinationFloorPoint);
+				var forwardDebree = objectMaker.Make( assetManager.FX.GetDebree(stats.DebrisType), attack.DestinationFloorPoint);
 
 				forwardDebree.GetComponent<FallToFloor>().Fire(attack);
 				objectMaker.Unmake(forwardDebree, 3);
 
 				//<-----
 				var flippedAttack = new Attack(health, attack.OriginLife, attack.DamageAmount);
-				var backwardDebree = objectMaker.Make( assets.FX.GetDebree(stats.DebrisType), attack.DestinationFloorPoint);
+				var backwardDebree = objectMaker.Make( assetManager.FX.GetDebree(stats.DebrisType), attack.DestinationFloorPoint);
 				backwardDebree.GetComponent<FallToFloor>().Fire(flippedAttack);
 				objectMaker.Unmake(backwardDebree, 3);
 

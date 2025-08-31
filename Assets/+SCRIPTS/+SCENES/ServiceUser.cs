@@ -25,8 +25,8 @@ public class ServiceUser : MonoBehaviour
 	private SceneLoader _sceneLoader;
 	protected SceneLoader sceneLoader => _sceneLoader ?? ServiceLocator.Get<SceneLoader>();
 
-	private ASSETS _assets;
-	protected ASSETS assets => _assets ?? ServiceLocator.Get<ASSETS>();
+	private ASSETS _assetManager;
+	protected ASSETS assetManager => _assetManager ?? ServiceLocator.Get<ASSETS>();
 	private RisingTextCreator _risingText;
 	protected RisingTextCreator risingText => _risingText ?? ServiceLocator.Get<RisingTextCreator>();
 }

@@ -4,9 +4,9 @@ using UnityEngine;
 namespace __SCRIPTS
 {
 
-	public class GunAimAbility : DoableAimAbility
+	public class GunAimAbility : AimAbility
 	{
-		private IAimableGun aimableGun;
+		private IAimableGunAttack aimableGun;
 		public bool simpleShoot;
 
 		private static string[] AnimationClips =
@@ -34,7 +34,7 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player player)
 		{
 			base.SetPlayer(player);
-			aimableGun = GetComponent<IAimableGun>();
+			aimableGun = GetComponent<IAimableGunAttack>();
 			aimableGun.OnShotHitTarget += AimableGunOnShoot;
 			aimableGun.OnShotMissed += AimableGunOnShoot;
 		}

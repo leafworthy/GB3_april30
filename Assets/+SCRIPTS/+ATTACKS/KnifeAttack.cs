@@ -95,7 +95,7 @@ public class KnifeAttack : Attacks
 		private GameObject FindClosestHit()
 		{
 
-			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange, assets.LevelAssets.EnemyLayer)
+			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange, assetManager.LevelAssets.EnemyLayer)
 			                          .ToList();
 			if (circleCast.Count <= 0) return null;
 

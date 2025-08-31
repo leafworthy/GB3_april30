@@ -517,10 +517,12 @@ GameObject:
   - component: {fileID: 4040534153244162535}
   - component: {fileID: 6468961263891423961}
   - component: {fileID: 3647936817641516148}
-  - component: {fileID: 7458913326985496672}
   - component: {fileID: 4284111403091859338}
   - component: {fileID: 7588817595896598098}
   - component: {fileID: 5892735826027873934}
+  - component: {fileID: 2356797611298481610}
+  - component: {fileID: 147235593454067752}
+  - component: {fileID: 166854034480967044}
   m_Layer: 6
   m_Name: GangstaBean
   m_TagString: Player
@@ -719,11 +721,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff264cf2d310481ea1df4e39814eef10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOverLandable: 0
   ShadowObject: {fileID: 3833892834326608145}
   JumpObject: {fileID: 3833892833502990261}
   Sorting: {fileID: 5572898776388989025}
-  canLand: 0
   AttackStartPoint: {fileID: 2872526777515909649}
   FootPoint: {fileID: 8653315125031340046}
   RotateWithAim:
@@ -1088,19 +1088,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashlightLight: {fileID: 4333478069115357224}
---- !u!114 &7458913326985496672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6c3336c9feb489bbcef4dd413481906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isPressingShoot: 0
 --- !u!114 &4284111403091859338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1139,6 +1126,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad635b0b5e546af9d9b4d8bf010af7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2356797611298481610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df93fa7db728431da5f6abcc522e0186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPressingShoot: 0
+--- !u!114 &147235593454067752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1ea5995b9e9403bbed0e109af227eb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleShoot: 0
+--- !u!114 &166854034480967044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1daa38efc99242c9b6940d8eee99eba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleShoot: 0
 --- !u!1 &3833892834326608145
 GameObject:
   m_ObjectHideFlags: 0

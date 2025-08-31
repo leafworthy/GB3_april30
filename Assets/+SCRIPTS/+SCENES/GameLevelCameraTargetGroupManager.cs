@@ -40,7 +40,7 @@ namespace __SCRIPTS
 			if (player.SpawnedPlayerGO != null)
 			{
 				cameraFollowTargetGroup.AddMember(player.SpawnedPlayerGO.transform, 1, 0);
-				var stickTarget = objectMaker.Make( assets.Players.followStickPrefab).GetComponent<FollowCursor>();
+				var stickTarget = objectMaker.Make( assetManager.Players.followStickPrefab).GetComponent<FollowCursor>();
 				stickTarget.Init(player);
 			}
 			else

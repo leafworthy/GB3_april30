@@ -79,7 +79,7 @@ namespace __SCRIPTS
 			ammoInventory.primaryAmmo.UseAmmo( 1);
 
 			var throwHeight = body.ThrowPoint.transform.position.y - transform.position.y;
-			var newProjectile = objectMaker.Make(assets.FX.kunaiPrefab, transform.position);
+			var newProjectile = objectMaker.Make(assetManager.FX.kunaiPrefab, transform.position);
 			var kunaiScript = newProjectile.GetComponent<Kunai>();
 			kunaiScript.Throw(aim.AimDir, transform.position, throwHeight, player.spawnedPlayerDefence);
 			OnThrow?.Invoke(aim.AimDir, transform.position, throwHeight, player.spawnedPlayerDefence, false);

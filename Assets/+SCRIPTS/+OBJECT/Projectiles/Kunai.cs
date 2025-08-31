@@ -23,8 +23,6 @@ namespace __SCRIPTS.Projectiles
 			rotationRate = 0;
 			isActive = true;
 
-			// Use inherited component initialization instead of GetComponent
-			InitializeComponents();
 		}
 
 		private void RotateToDirection()
@@ -37,8 +35,6 @@ namespace __SCRIPTS.Projectiles
 
 		protected override void FixedUpdate()
 		{
-			// Use inherited component initialization (no GetComponent calls in FixedUpdate!)
-			InitializeComponents();
 
 			if (!isActive)
 			{
@@ -50,9 +46,9 @@ namespace __SCRIPTS.Projectiles
 			var colliderLife = CheckForCollisions(nextPos);
 			if (colliderLife == null)
 			{
-				if (mover != null)
+				if (moveAbility != null)
 				{
-					mover.MoveInDirection(direction.normalized, speed);
+					moveAbility.MoveInDirection(direction.normalized, speed);
 					if(height >= 0)
 					{
 						if (isAirThrow)
@@ -81,7 +77,7 @@ namespace __SCRIPTS.Projectiles
 		private void Land()
 		{
 			rotationRate = 300;
-			mover.StopMoving();
+			moveAbility.StopMoving();
 			isActive = false;
 			objectMaker.Unmake(gameObject,3);
 		}
@@ -93,17 +89,17 @@ namespace __SCRIPTS.Projectiles
 			var attack = new Attack(owner, hitLife, owner.PrimaryAttackDamageWithExtra);
 			hitLife.TakeDamage(attack);
 			rotationRate = 300;
-			mover.StopMoving();
+			moveAbility.StopMoving();
 			sfx.sounds.kunai_hit_sounds.PlayRandomAt(transform.position);
 
-			objectMaker.Make( assets.FX.hit5_xstrike, transform.position);
+			objectMaker.Make( assetManager.FX.hit5_xstrike, transform.position);
 			Fire(attack, true);
 			objectMaker.Unmake(gameObject, 3);
 		}
 
 		private Life CheckForCollisions(Vector2 target)
 		{
-			var lineCast = Physics2D.LinecastAll(transform.position, target, assets.LevelAssets.EnemyLayer);
+			var lineCast = Physics2D.LinecastAll(transform.position, target, assetManager.LevelAssets.EnemyLayer);
 			foreach (var hit2D in lineCast)
 			{
 				if (hit2D.collider == null) continue;

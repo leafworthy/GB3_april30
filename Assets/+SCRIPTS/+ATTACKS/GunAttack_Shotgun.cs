@@ -3,20 +3,24 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class GunAttack_Shotgun : Attacks, IAimableGun
+	public class GunAttack_Shotgun : Attacks, IAimableGunAttack
 	{
 		public event Action<Attack, Vector2> OnShotHitTarget;
 		public event Action<Attack, Vector2> OnShotMissed;
 		public event Action OnEmpty;
-		public bool isGlocking => false;
-		public Vector2 AimDir => aim.AimDir;
+		public bool IsUsingPrimaryGun
+		{
+			get => false;
+			set { }
+		}
+		public Vector2 AimDir => gunAimAbility.AimDir;
 		public bool isReloading { get; set; }
 
 		public bool isShooting;
 		public int numberOfShots = 4;
 
 		private float currentCooldownTime;
-		private GunAimAbility aim;
+		private GunAimAbility gunAimAbility;
 		private Arms arms;
 		private Body body;
 		private UnitAnimations anim;
@@ -28,7 +32,6 @@ namespace __SCRIPTS
 
 		private bool isPressing;
 		private bool isEmpty;
-		private bool isGlocking1;
 		private bool isReloading1;
 		private float spread = .25f;
 		private Vector2 aimDir;
@@ -41,7 +44,7 @@ namespace __SCRIPTS
 
 			body = GetComponent<Body>();
 			arms = body.arms;
-			aim = GetComponent<GunAimAbility>();
+			gunAimAbility = GetComponent<GunAimAbility>();
 			ListenToPlayer();
 		}
 
@@ -113,7 +116,7 @@ namespace __SCRIPTS
 				return;
 			}
 
-			ShootTarget(aim.AimDir);
+			ShootTarget(gunAimAbility.AimDir);
 		}
 
 		private void StopShooting()
@@ -146,7 +149,7 @@ namespace __SCRIPTS
 		{
 			if (!GetCorrectAmmoType().hasAmmoInReserveOrClip()) return;
 			GetCorrectAmmoType().UseAmmo(1);
-			var hitObject = CheckRaycastHit(targetPosition);
+			var hitObject = gunAimAbility.CheckRaycastHit(targetPosition, assetManager.LevelAssets.EnemyLayer);
 			if (hitObject)
 				ShotHitTarget(hitObject);
 			else
@@ -156,9 +159,9 @@ namespace __SCRIPTS
 		private void ShotMissed()
 		{
 			var missPosition = (Vector2) body.FootPoint.transform.position +
-			                   aim.AimDir.normalized * attacker.PrimaryAttackRange;
-			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, aim.AimDir.normalized,
-				attacker.PrimaryAttackRange, assets.LevelAssets.BuildingLayer);
+			                   gunAimAbility.AimDir.normalized * attacker.PrimaryAttackRange;
+			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, gunAimAbility.AimDir.normalized,
+				attacker.PrimaryAttackRange, assetManager.LevelAssets.BuildingLayer);
 			if (raycastHit) missPosition = raycastHit.point;
 			var newAttack = new Attack(attacker, body.FootPoint.transform.position, missPosition, null, 0);
 
@@ -175,21 +178,6 @@ namespace __SCRIPTS
 			target.TakeDamage(newAttack);
 		}
 
-		private RaycastHit2D CheckRaycastHit(Vector2 targetDirection)
-		{
-			if (body.isOverLandable)
-			{
-				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
-					attacker.PrimaryAttackRange, assets.LevelAssets.EnemyLayerOnLandable);
 
-				return raycastHit;
-			}
-			else
-			{
-				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
-					attacker.PrimaryAttackRange, assets.LevelAssets.EnemyLayer);
-				return raycastHit;
-			}
-		}
 	}
 }

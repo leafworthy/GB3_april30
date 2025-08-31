@@ -26,7 +26,7 @@ namespace __SCRIPTS
 			Debug.Log("GAME SCENE MAIN MENU: Player " + player.name + " has joined the main menu scene.");
 			playerManager.OnPlayerJoins -= PlayerOnJoins;
 			sfx.sounds.press_start_sounds.PlayRandom();
-			sceneLoader.GoToScene(assets.Scenes.characterSelect);
+			sceneLoader.GoToScene(assetManager.Scenes.characterSelect);
 		}
 	}
 }

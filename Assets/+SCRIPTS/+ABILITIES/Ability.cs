@@ -23,22 +23,22 @@ public abstract class Ability : ServiceUser, IDoableAbility, INeedPlayer
 
 	public void Do()
 	{
-		Debug.Log("trying to do " + VerbName + " ability");
+		//Debug.Log("trying to do " + VerbName + " ability");
 		if (!canDo())
 		{
-			Debug.Log("cannot do " + VerbName + " ability");
+			//Debug.Log("cannot do " + VerbName + " ability");
 			return;
 		}
 		if (requiresArms())
 		{
 
 			body.doableArms.DoActivity(this);
-			Debug.Log("arms doing for " + VerbName + " ability");
+			//Debug.Log("arms doing for " + VerbName + " ability");
 		}
 		if (requiresLegs())
 		{
 			body.doableLegs.DoActivity(this);
-			Debug.Log("legs doing for " + VerbName + " ability");
+			//Debug.Log("legs doing for " + VerbName + " ability");
 		}
 		DoAbility();
 	}

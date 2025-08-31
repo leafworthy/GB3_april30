@@ -96,19 +96,19 @@ namespace __SCRIPTS
 		{
 			Debug.Log("NadeAbility_FX: Spawning trajectory markers");
 
-			if ( assets.FX.nadeTargetPrefab == null)
+			if ( assetManager.FX.nadeTargetPrefab == null)
 			{
 				Debug.LogError(" assets.FX.nadeTargetPrefab is null!");
 				return;
 			}
 
-			if ( assets.FX.trajectoryMarkerPrefab == null)
+			if ( assetManager.FX.trajectoryMarkerPrefab == null)
 			{
 				Debug.LogError(" assets.FX.trajectoryMarkerPrefab is null!");
 				return;
 			}
 
-			currentArrowHead = objectMaker.Make( assets.FX.nadeTargetPrefab);
+			currentArrowHead = objectMaker.Make( assetManager.FX.nadeTargetPrefab);
 			if (currentArrowHead != null)
 			{
 				currentArrowHead.SetActive(true);
@@ -117,7 +117,7 @@ namespace __SCRIPTS
 
 			for (var i = 0; i < _numberOfMarkers; i++)
 			{
-				var marker = objectMaker.Make( assets.FX.trajectoryMarkerPrefab);
+				var marker = objectMaker.Make( assetManager.FX.trajectoryMarkerPrefab);
 				if (marker != null)
 				{
 					_trajectoryMarkersContainer.Add(marker);
@@ -133,13 +133,13 @@ namespace __SCRIPTS
 		{
 			Debug.Log($"NadeAbility_FX: Nade_OnThrow called! Creating grenade from {startPoint} with velocity {velocity}");
 
-			if ( assets.FX.nadePrefab == null)
+			if ( assetManager.FX.nadePrefab == null)
 			{
 				Debug.LogError(" assets.FX.nadePrefab is null! Cannot create grenade.");
 				return;
 			}
 
-			var newProjectile = objectMaker.Make( assets.FX.nadePrefab, body.AimCenter.transform.position);
+			var newProjectile = objectMaker.Make( assetManager.FX.nadePrefab, body.AimCenter.transform.position);
 			if (newProjectile == null)
 			{
 				Debug.LogError("Failed to create grenade projectile!");

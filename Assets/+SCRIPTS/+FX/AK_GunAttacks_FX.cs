@@ -5,12 +5,12 @@ namespace __SCRIPTS
 {
 	public class AK_GunAttacks_FX : ServiceUser
 	{
-		private IAimableGun gunAttackAkGlock;
-		private GameObject bulletPrefab => assets.FX.BulletPrefab;
+		private IAimableGunAttack gunAttackAkGlock;
+		private GameObject bulletPrefab => assetManager.FX.BulletPrefab;
 
 		private void OnEnable()
 		{
-			gunAttackAkGlock = GetComponent<IAimableGun>();
+			gunAttackAkGlock = GetComponent<IAimableGunAttack>();
 			gunAttackAkGlock.OnShotHitTarget += GunAttackAkGlockOnOnOnShotHitTarget;
 			gunAttackAkGlock.OnShotMissed += GunAttackAkGlockOnOnOnShotHitTarget;
 		}
@@ -45,7 +45,7 @@ namespace __SCRIPTS
 
 		private void MakeBulletShell(Attack attack)
 		{
-			var newBulletShell = objectMaker.Make( assets.FX.bulletShellPrefab, (Vector2) attack.OriginFloorPoint);
+			var newBulletShell = objectMaker.Make( assetManager.FX.bulletShellPrefab, (Vector2) attack.OriginFloorPoint);
 			newBulletShell.GetComponent<FallToFloor>()
 			              .Fire(attack, true);
 
@@ -56,7 +56,7 @@ namespace __SCRIPTS
 		{
 			var heightCorrectionForDepth = new Vector2(0,-1.25f);
 
-			var newBulletHitAnimation = objectMaker.Make( assets.FX.bulletHitAnimPrefab, attack.DestinationFloorPoint + heightCorrectionForDepth);
+			var newBulletHitAnimation = objectMaker.Make( assetManager.FX.bulletHitAnimPrefab, attack.DestinationFloorPoint + heightCorrectionForDepth);
 
 			Debug.DrawLine( attack.DestinationFloorPoint, attack.DestinationFloorPoint + heightCorrectionForDepth, Color.magenta, 5);
 

@@ -10,7 +10,7 @@ namespace __SCRIPTS
 		private AnimationEvents animEvents;
 		private Life life;
 		private JumpAbility jump;
-		private DoableGunAttack_AK_Glock gunAttackAkGlock;
+		private GunAttack_AK_Glock gunAttackAkGlock;
 		private DoableReloadAbility reloadAbility;
 		private KnifeAttack knifeAttack;
 		private NadeAttack nadeAttack;
@@ -27,7 +27,7 @@ namespace __SCRIPTS
 				jump.OnJump += Jump_OnJump;
 				jump.OnLand += Jump_OnLand;
 			}
-			gunAttackAkGlock = GetComponent<DoableGunAttack_AK_Glock>();
+			gunAttackAkGlock = GetComponent<GunAttack_AK_Glock>();
 			reloadAbility = GetComponent<DoableReloadAbility>();
 			knifeAttack = GetComponent<KnifeAttack>();
 			nadeAttack = GetComponent<NadeAttack>();

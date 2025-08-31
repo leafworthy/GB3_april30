@@ -97,7 +97,7 @@ namespace __SCRIPTS
 
 		private void SceneManager_OnSceneLoaded(Scene scene, LoadSceneMode mode)
 		{
-			if (scene.name == assets.Scenes.gameManager)
+			if (scene.name == assetManager.Scenes.gameManager)
 			{
 				Debug.Log("SCENE LOADER: game manager scene loaded");
 				return;

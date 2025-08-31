@@ -26,7 +26,7 @@ namespace __SCRIPTS
 			canJoinInGame = false;
 			Debug.Log("join in game false");
 			if (loadInGame) StartGame(GetFirstLevelToLoad());
-			else StartGame(assets.Scenes.mainMenu);
+			else StartGame(assetManager.Scenes.mainMenu);
 		}
 
 		public void StartGame(SceneDefinition startingScene)
@@ -82,7 +82,7 @@ namespace __SCRIPTS
 		private void GoToGameOverScreen()
 		{
 			StopLevel();
-			sceneLoader.GoToScene(assets.Scenes.GameOverScene);
+			sceneLoader.GoToScene(assetManager.Scenes.GameOverScene);
 		}
 
 		private void LoadLevel(SceneDefinition destinationScene)
@@ -121,7 +121,7 @@ namespace __SCRIPTS
 			StopLevel();
 			objectMaker.DestroyAllUnits(null);
 
-			sceneLoader.GoToScene(assets.Scenes.restartLevel);
+			sceneLoader.GoToScene(assetManager.Scenes.restartLevel);
 		}
 
 		public void ExitToMainMenu()
@@ -131,7 +131,7 @@ namespace __SCRIPTS
 			// Explicitly clear object pools when exiting to main menu
 			objectMaker.DestroyAllUnits(null);
 
-			sceneLoader.GoToScene(assets.Scenes.mainMenu);
+			sceneLoader.GoToScene(assetManager.Scenes.mainMenu);
 		}
 
 		public void GoBackFromRestart()
@@ -140,7 +140,7 @@ namespace __SCRIPTS
 			{
 				// Fallback to the main starting scene if we lost the restart reference
 				Debug.Log("loading starting scene because restartedLevelScene is null");
-				LoadLevel(assets.Scenes.startingScene);
+				LoadLevel(assetManager.Scenes.startingScene);
 				return;
 			}
 
@@ -180,8 +180,8 @@ namespace __SCRIPTS
 
 		public SceneDefinition GetFirstLevelToLoad()
 		{
-			if (!loadInGame) return assets.Scenes.startingScene;
-			return assets.Scenes.testScene;
+			if (!loadInGame) return assetManager.Scenes.startingScene;
+			return assetManager.Scenes.testScene;
 		}
 	}
 }

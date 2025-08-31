@@ -16,7 +16,6 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 	private Life life;
 	private Player owner;
 	private JumpAbility jumps;
-	private JumpController jumpController;
 	private Body body;
 	private UnitAnimations anim;
 	private bool isDashing;
@@ -52,7 +51,6 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 		anim = GetComponent<UnitAnimations>();
 		body = GetComponent<Body>();
 		jumps = GetComponent<JumpAbility>();
-		jumpController = GetComponent<JumpController>();
 		moveController = GetComponent<MoveController>();
 
 		life = GetComponent<Life>();
@@ -69,7 +67,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 
 	private void ShieldPush()
 	{
-		var hits = Physics2D.OverlapCircleAll(transform.position, 30, assets.LevelAssets.EnemyLayer);
+		var hits = Physics2D.OverlapCircleAll(transform.position, 30, assetManager.LevelAssets.EnemyLayer);
 		foreach (var hit in hits)
 		{
 			var _life = hit.GetComponent<Life>();
@@ -103,7 +101,6 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 	private void StartJump(NewControlButton obj)
 	{
 		SetShielding(false);
-		jumpController.Jump();
 	}
 
 	private void CancelShielding(NewControlButton obj)

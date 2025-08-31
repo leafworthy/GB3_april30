@@ -6,7 +6,7 @@ namespace __SCRIPTS.RisingText
 	{
 		public  void CreateRisingText(string textToRise, Vector2 position, Color textColor)
 		{
-			var risingTextGameObject = objectMaker.Make( assets.FX.risingTextPrefab, position);
+			var risingTextGameObject = objectMaker.Make( assetManager.FX.risingTextPrefab, position);
 			var risingTextScript = risingTextGameObject.GetComponent<RisingText>();
 			risingTextScript.RiseWithText(textToRise, textColor);
 		}

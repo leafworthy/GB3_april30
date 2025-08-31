@@ -5,12 +5,12 @@ namespace __SCRIPTS
 {
 	public interface IAimAbility
 	{
-		RaycastHit2D CheckRaycastHit(Vector3 targetDirection);
+		RaycastHit2D CheckRaycastHit(Vector3 targetDirection, LayerMask mask);
 		bool hasEnoughMagnitude();
 		Vector2 AimDir { get; }
 		Vector2 GetAimPoint();
 	}
-	public class DoableAimAbility : Ability, IAimAbility
+	public class AimAbility : Ability, IAimAbility
 	{
 		[HideInInspector] public Vector2 AimDir { get; set; }
 		public bool hasEnoughMagnitude() => player.Controller.AimAxis.isActive;
@@ -37,17 +37,12 @@ namespace __SCRIPTS
 
 			if (body.doableArms.IsActive)
 			{
-				Debug.Log("BLOCKED: Cannot aim, arms are active" + (body.doableArms.CurrentAbility != null ? $"({body.doableArms.CurrentAbility.VerbName})" : ""));
+				//Debug.Log("BLOCKED: Cannot aim, arms are active" + (body.doableArms.CurrentAbility != null ? $"({body.doableArms.CurrentAbility.VerbName})" : ""));
 				return false;
 			}
 			return true;
 		}
 
-		public override void Stop()
-		{
-			base.Stop();
-			Debug.Log("trying to stop aim ability");
-		}
 
 		protected override void DoAbility()
 		{
@@ -88,10 +83,9 @@ namespace __SCRIPTS
 			body.BottomFaceDirection(AimDir.x >= 0);
 		}
 
-		public RaycastHit2D CheckRaycastHit(Vector3 targetDirection)
+		public RaycastHit2D CheckRaycastHit(Vector3 targetDirection, LayerMask layer)
 		{
-			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, life.PrimaryAttackRange,
-				assets.LevelAssets.BuildingLayer);
+			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, life.PrimaryAttackRange, layer);
 
 			return raycastHit;
 		}
@@ -114,7 +108,7 @@ namespace __SCRIPTS
 			return body.AimCenter.transform.position + (CursorManager.GetMousePosition() - body.AimCenter.transform.position).normalized * maxAimDistance;
 		}
 
-		protected virtual Vector3 GetRealAimDir()
+		private Vector3 GetRealAimDir()
 		{
 		if (player.isUsingMouse) return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
 			return player.Controller.AimAxis.GetCurrentAngle();

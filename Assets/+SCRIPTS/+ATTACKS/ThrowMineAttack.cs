@@ -16,7 +16,7 @@ namespace __SCRIPTS
 
 		private Player player;
 
-		private DoableGunAimAbility aim;
+		private IAimAbility aim;
 		private MoveAbility move;
 		private AmmoInventory ammo;
 		private JumpAbility jump;
@@ -32,16 +32,6 @@ namespace __SCRIPTS
 		public AnimationClip mineDropAnimation;
 		public string VerbName => "Throw-Mine";
 
-		public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
-		{
-			switch (reason)
-			{
-				case GangstaBean.Core.CompletionReason.AnimationInterrupt:
-				case GangstaBean.Core.CompletionReason.NewActivity:
-					return true;
-			}
-			return false;
-		}
 
 		public event Action<Vector2, Player> OnThrow;
 
@@ -55,7 +45,7 @@ namespace __SCRIPTS
 			jump = GetComponent<JumpAbility>();
 			move = GetComponent<MoveAbility>();
 			ammo = GetComponent<AmmoInventory>();
-			aim = GetComponent<DoableGunAimAbility>();
+			aim = GetComponent<IAimAbility>();
 			ListenToPlayer();
 		}
 
@@ -153,7 +143,7 @@ namespace __SCRIPTS
 			startPoint = transform.position;
 			OnThrow?.Invoke(startPoint, life.player);
 
-			var newProjectile = objectMaker.Make( assets.FX.minePrefab, startPoint);
+			var newProjectile = objectMaker.Make( assetManager.FX.minePrefab, startPoint);
 			var newMine = newProjectile.GetComponent<Mine>();
 			newMine.Launch(startPoint, player);
 			newMine.OnSelfDetonate += RemoveMine;
@@ -166,10 +156,6 @@ namespace __SCRIPTS
 			{
 				ActiveMines.Remove(mine);
 				mine.OnSelfDetonate -= RemoveMine;
-			}
-			else
-			{
-
 			}
 		}
 

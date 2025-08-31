@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class DoableDashAbility : Ability
+	public class DashAbility : Ability
 	{
 		public AnimationClip dashAnimationClip;
 		private AnimationEvents animEvents;
@@ -93,9 +93,7 @@ namespace __SCRIPTS
 			var teleportOffset = teleportDirection.normalized * teleportDistance;
 			var newPoint = (Vector2) transform.position + teleportOffset;
 
-			var landable = body.GetLandableAtPosition(newPoint);
 			body.ChangeLayer(Body.BodyLayer.grounded);
-			if (landable != null) body.SetDistanceToGround(landable.height);
 			transform.position = newPoint;
 		}
 
@@ -122,7 +120,6 @@ namespace __SCRIPTS
 			else
 			{
 				body.ChangeLayer(Body.BodyLayer.jumping);
-				body.canLand = true;
 			}
 		}
 	}

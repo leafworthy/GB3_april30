@@ -96,7 +96,7 @@ namespace __SCRIPTS
 
 		private PlayerIndicator MakeIndicator()
 		{
-			var indicatorObj = objectMaker.Make( assets.FX.indicatorPrefab, transform.position+ indicatorOffset);
+			var indicatorObj = objectMaker.Make( assetManager.FX.indicatorPrefab, transform.position+ indicatorOffset);
 			indicatorObj.transform.SetParent(transform);
 			return indicatorObj.GetComponentInChildren<PlayerIndicator>();
 		}

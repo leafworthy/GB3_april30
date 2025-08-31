@@ -4,20 +4,14 @@ using UnityEngine.Serialization;
 
 namespace __SCRIPTS
 {
-	public interface IAimableGun
-	{
-		event Action<Attack, Vector2> OnShotHitTarget;
-		event Action<Attack, Vector2> OnShotMissed;
-		bool isGlocking { get; }
-		Vector2 AimDir { get; }
-	}
+
 
 	[Serializable]
-	public class DoableGunAttack_AK_Glock : Ability, IAimableGun
+	public class GunAttack_AK_Glock : Ability, IAimableGunAttack
 	{
 		public event Action<Attack, Vector2> OnShotHitTarget;
 		public event Action<Attack, Vector2> OnShotMissed;
-		public bool isGlocking { get; private set; }
+		public bool IsUsingPrimaryGun { get; private set; }
 		public bool isPressingShoot;
 
 		private float currentCooldownTime;
@@ -31,14 +25,14 @@ namespace __SCRIPTS
 
 		protected override bool requiresLegs() => false;
 
-		private float currentAttackRate => isGlocking ? life.UnlimitedAttackRate : life.PrimaryAttackRate;
+		private float currentAttackRate => IsUsingPrimaryGun ? life.UnlimitedAttackRate : life.PrimaryAttackRate;
 
 		private float currentDamage =>
-			isGlocking ? life.UnlimitedAttackDamageWithExtra : life.PrimaryAttackDamageWithExtra;
+			IsUsingPrimaryGun ? life.UnlimitedAttackDamageWithExtra : life.PrimaryAttackDamageWithExtra;
 
 		public Vector2 AimDir => gunAimAbility.AimDir;
 
-		public Ammo GetCorrectAmmoType() => isGlocking ? ammoInventory.unlimitedAmmo : ammoInventory.primaryAmmo;
+		public Ammo GetCorrectAmmoType() => IsUsingPrimaryGun ? ammoInventory.unlimitedAmmo : ammoInventory.primaryAmmo;
 
 		private bool isEmpty;
 		private bool isGlockingOnPurpose;
@@ -113,17 +107,17 @@ namespace __SCRIPTS
 			if (isGlockingOnPurpose) return;
 			if (ammoInventory.primaryAmmo.hasAmmoInReserveOrClip())
 			{
-				isGlocking = false;
+				IsUsingPrimaryGun = false;
 				return;
 			}
 
-			isGlocking = true;
+			IsUsingPrimaryGun = true;
 		}
 
 		private void ShootTarget(Vector3 targetPosition)
 		{
 			currentCooldownTime = Time.time + currentAttackRate;
-			var hitObject = CheckRaycastHit(targetPosition);
+			var hitObject = gunAimAbility.CheckRaycastHit(targetPosition, assetManager.LevelAssets.EnemyLayer);
 			if (hitObject)
 				ShotHitTarget(hitObject);
 			else
@@ -133,8 +127,7 @@ namespace __SCRIPTS
 		private void ShotMissed()
 		{
 			var missPosition = (Vector2) body.FootPoint.transform.position + gunAimAbility.AimDir.normalized * life.PrimaryAttackRange;
-			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, gunAimAbility.AimDir.normalized, life.PrimaryAttackRange,
-				assets.LevelAssets.BuildingLayer);
+			var raycastHit = gunAimAbility.CheckRaycastHit(body.FootPoint.transform.position, assetManager.LevelAssets.BuildingLayer);
 			if (raycastHit) missPosition = raycastHit.point;
 			var newAttack = new Attack(life, body.FootPoint.transform.position, missPosition, null, 0);
 
@@ -151,22 +144,6 @@ namespace __SCRIPTS
 		}
 
 
-		private RaycastHit2D CheckRaycastHit(Vector2 targetDirection)
-		{
-			if (body.isOverLandable)
-			{
-				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, life.PrimaryAttackRange,
-					assets.LevelAssets.EnemyLayerOnLandable);
-
-				return raycastHit;
-			}
-			else
-			{
-				var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, life.PrimaryAttackRange,
-					assets.LevelAssets.EnemyLayer);
-				return raycastHit;
-			}
-		}
 
 		private void ShootWithCooldown(Vector3 targetDir)
 		{

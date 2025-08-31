@@ -98,13 +98,13 @@ namespace __SCRIPTS
 			switch (player.CurrentCharacter)
 			{
 				case Character.Karrot:
-					return assets.Players.GangstaBeanPlayerPrefab;
+					return assetManager.Players.GangstaBeanPlayerPrefab;
 				case Character.Bean:
-					return assets.Players.GangstaBeanPlayerPrefab;
+					return assetManager.Players.GangstaBeanPlayerPrefab;
 				case Character.Brock:
-					return assets.Players.BrockLeePlayerPrefab;
+					return assetManager.Players.BrockLeePlayerPrefab;
 				case Character.Tmato:
-					return assets.Players.TMatoPlayerPrefab;
+					return assetManager.Players.TMatoPlayerPrefab;
 			}
 
 			return null;

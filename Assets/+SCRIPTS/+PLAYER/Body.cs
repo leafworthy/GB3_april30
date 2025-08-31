@@ -57,13 +57,13 @@ namespace __SCRIPTS
 			switch (bodyLayer)
 			{
 				case BodyLayer.jumping:
-					layerValue = assets.LevelAssets.JumpingLayer;
+					layerValue = assetManager.LevelAssets.JumpingLayer;
 					break;
 				case BodyLayer.landed:
-					layerValue = assets.LevelAssets.LandedLayer;
+					layerValue = assetManager.LevelAssets.LandedLayer;
 					break;
 				case BodyLayer.grounded:
-					layerValue = assets.LevelAssets.GroundedLayer;
+					layerValue = assetManager.LevelAssets.GroundedLayer;
 					break;
 			}
 

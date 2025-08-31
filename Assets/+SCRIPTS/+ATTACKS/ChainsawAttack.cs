@@ -221,13 +221,13 @@ namespace __SCRIPTS
 		private List<Life> FindClosestHits()
 		{
 			// Null checks
-			if (attackPoint == null || attacker == null || assets.LevelAssets == null)
+			if (attackPoint == null || attacker == null || assetManager.LevelAssets == null)
 			{
 				return new List<Life>();
 			}
 
 			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange,
-				 assets.LevelAssets.EnemyLayer).ToList();
+				 assetManager.LevelAssets.EnemyLayer).ToList();
 			if (circleCast.Count <= 0) return new List<Life>();
 
 			var enemies = new List<Life>();

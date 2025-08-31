@@ -22,7 +22,6 @@ namespace __SCRIPTS
 		[FormerlySerializedAs("isInAir")] public bool IsJumping;
 		private ThingWithHeight thing;
 		private float currentLandableHeight;
-		private bool isActive = true;
 		private bool isJumping;
 		private bool initiated;
 		private float minBounceVelocity = 1000;
@@ -31,22 +30,13 @@ namespace __SCRIPTS
 		private float maxFlyTime = 2.5f;
 		public string VerbName => "Jump";
 
-		public bool TryCompleteGracefully(CompletionReason reason, IActivity newActivity = null)
-		{
-			return false; // Jump activities complete naturally
-		}
-
-		public void SetActive(bool active)
-		{
-			isActive = active;
-		}
 
 		public void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
 		{
 			landTimer = 0;
 			minBounceVelocity = minBounce;
 			IsJumping = true;
-			isResting = false;
+			StopResting();
 			OnJump?.Invoke(transform.position+ new Vector3(0,startingHeight,0));
 
 			verticalVelocity = verticalSpeed;
@@ -70,18 +60,12 @@ namespace __SCRIPTS
 			initiated = true;
 			thing = GetComponent<ThingWithHeight>();
 			body = GetComponent<Body>();
-			thing.OnFallFromLandable += FallFromHeight;
 		}
 
 		private void OnEnable()
 		{
 			Init();
 
-		}
-
-		private void OnDisable()
-		{
-			if (thing != null) thing.OnFallFromLandable -= FallFromHeight;
 		}
 
 		public void FallFromHeight(float fallHeight)
@@ -91,8 +75,7 @@ namespace __SCRIPTS
 
 			if (body != null)
 			{
-				if (body.ShadowObject != null) body.ShadowObject.transform.localPosition = new Vector3(0,
-					thing.GetCurrentLandableHeight(),0);
+				if (body.ShadowObject != null) body.ShadowObject.transform.localPosition = Vector3.zero;
 			}
 
 			thing.SetDistanceToGround(fallHeight);
@@ -109,7 +92,6 @@ namespace __SCRIPTS
 		{
 			if (pauseManager.IsPaused) return;
 			if (isResting) return;
-			if (!isActive) return;
 			if (!IsJumping) return;
 
 			Fly();
@@ -123,20 +105,17 @@ namespace __SCRIPTS
 			landTimer += Time.fixedDeltaTime;
 			if(landTimer> maxFlyTime)
 			{
-				//Debug.Log("time out");
-
 				Land();
 				return;
 			}
-			currentLandableHeight = thing.GetCurrentLandableHeight();
-			verticalVelocity -= (assets.Vars.Gravity.y) * Time.fixedDeltaTime;
+			currentLandableHeight = 0;
+			verticalVelocity -= (assetManager.Vars.Gravity.y) * Time.fixedDeltaTime;
 			if ((thing.GetDistanceToGround() + verticalVelocity <= currentLandableHeight) && (verticalVelocity < 0))
 			{
 				Land();
 			}
 			else
 			{
-				thing.canLand = verticalVelocity < 0;
 				thing.SetDistanceToGround(thing.GetDistanceToGround() + verticalVelocity);
 			}
 		}
@@ -150,12 +129,11 @@ namespace __SCRIPTS
 				return;
 			}
 			IsJumping = false;
-			OnLand?.Invoke(transform.position+new Vector3(0, currentLandableHeight,0));
-			thing.canLand = false;
+			OnLand?.Invoke(transform.position);
 			thing.SetDistanceToGround(currentLandableHeight);
 
 			if (body != null) body.ChangeLayer( Body.BodyLayer.grounded);
-
+			StartResting();
 			verticalVelocity = 0;
 		}
 
@@ -167,30 +145,22 @@ namespace __SCRIPTS
 			OnBounce?.Invoke();
 		}
 
-
-		public void StartResting()
+		private void StartResting()
 		{
 			isResting = true;
 			OnResting?.Invoke(transform.position);
 			if (body == null) return;
 			body.legs.Stop(this);
 			body.arms.Stop(this);
-			thing.canLand = false;
 		}
 
-		public void StopResting()
+		private void StopResting()
 		{
 			isResting = false;
 			Debug.Log("[Jump] Stopped resting - character can move again");
 		}
 
-		// Safety method to force stop resting if stuck
-		public void ForceStopResting()
-		{
-			CancelInvoke(nameof(StopResting));
-			isResting = false;
-			Debug.Log("[Jump] FORCE stopped resting - character unstuck");
-		}
+
 
 	}
 }

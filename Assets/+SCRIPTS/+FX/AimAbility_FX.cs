@@ -32,7 +32,7 @@ namespace __SCRIPTS
 		private void AimFlashlight()
 		{
 
-			var hitPoint = aimAbility.CheckRaycastHit(aimAbility.AimDir);
+			var hitPoint = aimAbility.CheckRaycastHit(aimAbility.AimDir,  assetManager.LevelAssets.BuildingLayer);
 			if (hitPoint.collider != null)
 			{
 				Debug.DrawLine(body.FootPoint.transform.position, hitPoint.point, Color.white);

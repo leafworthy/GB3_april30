@@ -13,15 +13,15 @@ namespace __SCRIPTS
 		public bool isReloading { get; private set; }
 		private AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
 		private AmmoInventory _ammoInventory;
-		private IAimableGun gunAttack => _gunAttack ??= GetComponent<IAimableGun>();
-		private IAimableGun _gunAttack;
+		private IAimableGunAttack gunAttack => _gunAttack ??= GetComponent<IAimableGunAttack>();
+		private IAimableGunAttack _gunAttack;
 
 		private bool isEmpty =>
-			gunAttack.isGlocking ? ammoInventory.unlimitedAmmo.hasAmmoInReserveOrClip() : ammoInventory.primaryAmmo.hasAmmoInReserveOrClip();
+			gunAttack.IsUsingPrimaryGun ? ammoInventory.unlimitedAmmo.hasAmmoInReserveOrClip() : ammoInventory.primaryAmmo.hasAmmoInReserveOrClip();
 
 		private float reloadTime = .5f;
 		public override string VerbName => "Reloading";
-		private Ammo GetCorrectAmmoType() => gunAttack.isGlocking ? ammoInventory.unlimitedAmmo : ammoInventory.primaryAmmo;
+		private Ammo GetCorrectAmmoType() => gunAttack.IsUsingPrimaryGun ? ammoInventory.unlimitedAmmo : ammoInventory.primaryAmmo;
 		protected override bool requiresArms() => false;
 
 		protected override bool requiresLegs() => false;
@@ -45,7 +45,7 @@ namespace __SCRIPTS
 			anim.SetBool(UnitAnimations.IsBobbing, false);
 			isReloading = true;
 
-			if (gunAttack.isGlocking)
+			if (gunAttack.IsUsingPrimaryGun)
 				anim.Play(gunAttack.AimDir.x > 0 ? ReloadGlockAnimationClip.name : ReloadGlockAnimationLeftClip.name, 1, 0);
 			else
 				anim.Play(ReloadAKAnimationClip.name, 1, 0);

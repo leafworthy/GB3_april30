@@ -26,7 +26,7 @@ namespace __SCRIPTS
 			var otherTintHandler = col.gameObject.GetComponentInChildren<Life_FX>(true);
 			otherTintHandler.StartTint(pickupTintColor);
 			var position = transform.position;
-			objectMaker.Make( assets.FX.pickupEffectPrefab, position);
+			objectMaker.Make( assetManager.FX.pickupEffectPrefab, position);
 			CameraShaker.ShakeCamera(position,shakeIntensity);
 			CameraStunner_FX.StartStun(stunLength);
 			if(pickupItem.itemType == PickupItem.ItemType.cash)

@@ -15,6 +15,7 @@ namespace __SCRIPTS
 
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnJump;
+		public event Action<Vector2> OnResting;
 
 		public bool IsResting  => isResting;
 		private bool isResting;
@@ -54,16 +55,14 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
-			Jump(body.GetCurrentLandableHeight(), life.JumpSpeed, 99);
+			Jump(0, life.JumpSpeed, 99);
 		}
 
 		public override void Stop()
 		{
 			Debug.Log("jump ability stop");
 			base.Stop();
-
-			body.canLand = false;
-			body.SetDistanceToGround(body.GetCurrentLandableHeight());
+			body.SetDistanceToGround(0);
 		}
 
 		private void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
@@ -87,7 +86,6 @@ namespace __SCRIPTS
 			base.SetPlayer(_player);
 			life.OnDying += Life_OnDying;
 			_player.Controller.Jump.OnPress += Controller_Jump;
-			body.OnFallFromLandable += FallFromHeight;
 			FallFromHeight(FallInDistance);
 		}
 
@@ -110,7 +108,6 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			if (body != null) body.OnFallFromLandable -= FallFromHeight;
 			if (life == null) return;
 			if (life.player == null) return;
 			life.player.Controller.Jump.OnPress -= Controller_Jump;
@@ -144,13 +141,11 @@ namespace __SCRIPTS
 				return;
 			}
 
-			currentLandableHeight = body.GetCurrentLandableHeight();
-			verticalVelocity -= assets.Vars.Gravity.y * Time.fixedDeltaTime;
+			verticalVelocity -= assetManager.Vars.Gravity.y * Time.fixedDeltaTime;
 			if (body.GetDistanceToGround() + verticalVelocity <= currentLandableHeight && verticalVelocity < 0)
 				Land();
 			else
 			{
-				body.canLand = verticalVelocity < 0;
 				body.SetDistanceToGround(body.GetDistanceToGround() + verticalVelocity);
 			}
 		}
@@ -167,7 +162,6 @@ namespace __SCRIPTS
 			OnLand?.Invoke(transform.position + new Vector3(0, currentLandableHeight, 0));
 			anim.Play(landingAnimationClip.name, 0, 0);
 
-			body.canLand = false;
 			body.SetCanMove(false);
 			body.SetDistanceToGround(currentLandableHeight);
 			if (body != null) body.ChangeLayer(Body.BodyLayer.grounded);
@@ -185,11 +179,10 @@ namespace __SCRIPTS
 		protected override void AnimationComplete()
 		{
 			verticalVelocity = 0;
-			isResting = true;
 			isJumping = false;
-			body.canLand = false;
 			body.SetCanMove(true);
-			Debug.Log("jump abbility complete");
+			isResting = true;
+			OnResting?.Invoke(transform.position);
 			Stop();
 		}
 	}
