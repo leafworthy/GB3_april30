@@ -21,7 +21,7 @@ namespace __SCRIPTS
 		public bool IsDead() => unitHealth?.IsDead ?? false;
 		public bool cantDie => unitHealth?.CanDie == false;
 
-		public bool IsInvincible => unitHealth?.IsInvincible ?? false;
+		public bool IsInvincible => unitHealth?.CanTakeDamage ?? false;
 
 		public float ExtraMaxDamageFactor => unitStats?.ExtraDamageFactor ?? 0f;
 

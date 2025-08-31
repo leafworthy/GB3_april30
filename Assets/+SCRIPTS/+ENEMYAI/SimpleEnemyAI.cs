@@ -34,13 +34,11 @@ namespace __SCRIPTS._ENEMYAI
 		private void AttackPlayer()
 		{
 			OnAttack?.Invoke(_target);
-			Debug.Log("attack player");
 		}
 
 		private void WalkToPlayer()
 		{
 			OnMoveInDirection?.Invoke((_target.transform.position - transform.position).normalized * life.unitData.moveSpeed);
-			Debug.Log("walk to player");
 		}
 
 		private void Start()

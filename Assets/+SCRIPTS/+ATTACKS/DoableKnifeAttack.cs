@@ -12,8 +12,18 @@ public class DoableKnifeAttack : DoableAttack
 	public GameObject attackPoint;
 	public event Action OnMiss;
 	public event Action<Vector2> OnHit;
+	private DoableJumpAbility jumpAbility => _jumpAbility ??=GetComponent<DoableJumpAbility>();
+
+	private DoableJumpAbility _jumpAbility;
+
+
 
 	[SerializeField]private AnimationClip animationClip;
+
+	protected override bool requiresArms() => true;
+	protected override bool requiresLegs() => false;
+
+	public override bool canDo() => jumpAbility.IsResting && base.canDo();
 
 	protected override void DoAbility()
 	{
@@ -71,6 +81,7 @@ public class DoableKnifeAttack : DoableAttack
 
 	private void StartAttack()
 	{
+		Debug.Log("starting attack");
 		if (isAttacking) return;
 		isAttacking = true;
 		PlayAnimationClip(animationClip,1);

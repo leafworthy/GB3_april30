@@ -843,7 +843,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d7b530f348243b18a77bff5e8baae8d, type: 3}
   m_Name: 
@@ -1087,9 +1087,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe611ddc5634c0488416678b52dbade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsInvincible: 0
+  CanTakeDamage: 0
   IsShielded: 0
-  _player: {fileID: 0}
 --- !u!114 &5036427627969513471
 MonoBehaviour:
   m_ObjectHideFlags: 0

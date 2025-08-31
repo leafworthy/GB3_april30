@@ -11,7 +11,6 @@ namespace __SCRIPTS
 		protected Player owner;
 		protected Body body;
 		[HideInInspector] public Vector2 AimDir;
-		public const float aimDistanceFactor = 100;
 		private float minMagnitude = .2f;
 		private bool hasInitiated;
 		private float maxAimDistance = 30;

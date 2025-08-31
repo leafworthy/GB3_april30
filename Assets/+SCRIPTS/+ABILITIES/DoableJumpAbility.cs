@@ -16,6 +16,7 @@ namespace __SCRIPTS
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnJump;
 
+		public bool IsResting  => isResting;
 		private bool isResting;
 		private bool isOverLandable;
 		private float currentLandableHeight;
@@ -46,7 +47,7 @@ namespace __SCRIPTS
 			//	return false;
 			//}
 
-			return isResting;
+			return IsResting;
 		}
 
 		public override bool canStop() => false;

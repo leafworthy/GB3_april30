@@ -39,8 +39,16 @@ namespace __SCRIPTS
 		public bool CanDoActivity(IDoableAbility newAbility)
 		{
 			if (newAbility == null) return false;
-			if (ActivitiesAreTheSame(newAbility, CurrentAbility)) return false;
-			if (IsActive) return CurrentAbility.canStop();
+			if (ActivitiesAreTheSame(newAbility, CurrentAbility))
+			{
+				//Debug.Log("Cannot do activity " + newAbility.VerbName + " because it's already the current activity");
+				return false;
+			}
+			if (IsActive)
+			{
+				Debug.Log( "Cannot do activity " + newAbility.VerbName + " because current activity is " + CurrentAbility.VerbName);
+				return CurrentAbility.canStop();
+			}
 			return true;
 		}
 	}

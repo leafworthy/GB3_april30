@@ -72,7 +72,7 @@ namespace __SCRIPTS
 				return;
 
 			// Add to name map, using scene name as key
-			if (!string.IsNullOrEmpty(scene.SceneName) && !_nameMap.ContainsKey(scene.SceneName)) _nameMap[scene.SceneName] = scene;
+			if (!string.IsNullOrEmpty(scene.SceneName)) _nameMap.TryAdd(scene.SceneName, scene);
 		}
 
 

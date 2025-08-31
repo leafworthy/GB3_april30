@@ -23,15 +23,22 @@ public abstract class ServiceAbility : ServiceUser, IDoableAbility, INeedPlayer
 
 	public void Do()
 	{
-		if (!canDo()) return;
+		Debug.Log("trying to do " + VerbName + " ability");
+		if (!canDo())
+		{
+			Debug.Log("cannot do " + VerbName + " ability");
+			return;
+		}
 		if (requiresArms())
 		{
 
 			body.doableArms.DoActivity(this);
+			Debug.Log("arms doing for " + VerbName + " ability");
 		}
 		if (requiresLegs())
 		{
 			body.doableLegs.DoActivity(this);
+			Debug.Log("legs doing for " + VerbName + " ability");
 		}
 		DoAbility();
 	}
@@ -66,7 +73,7 @@ public abstract class ServiceAbility : ServiceUser, IDoableAbility, INeedPlayer
 		}
 		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo))
 		{
-			Debug.Log( "Cannot do arms, cannot do " + VerbName + " ability");
+			//Debug.Log( "Cannot do arms, cannot do " + VerbName + " ability");
 			return false;
 		}
 		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo))
@@ -74,6 +81,8 @@ public abstract class ServiceAbility : ServiceUser, IDoableAbility, INeedPlayer
 			Debug.Log( "Cannot do legs, cannot do " + VerbName + " ability");
 			return false;
 		}
+
+		Debug.Log("body can do" + VerbName + " ability");
 
 		return true;
 	}

@@ -1,28 +1,28 @@
 using System;
 using GangstaBean.Core;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace __SCRIPTS
 {
 	public class UnitHealth : ServiceUser, IPoolable, ICanAttack, INeedPlayer
 	{
 		public bool CanDie => !unitStats.Data.isInvincible;
-		public bool IsInvincible;
-		public bool IsShielded;
 		public float AttackHeight => unitStats.AttackHeight;
-
-		public Player _player;
-		public Player player => _player;
 		public DebrisType DebrisType => unitStats.DebrisType;
+		public float MaxHealth => unitStats?.MaxHealth ?? 100f;
+		public float GetFraction => MaxHealth > 0 ? currentHealth / MaxHealth : 0f;
 
+		[HideInInspector]public bool CanTakeDamage;
+		[HideInInspector] public bool IsShielded;
+
+		public Player player => _player;
+		private Player _player;
+
+		public float CurrentHealth => currentHealth;
 		private float currentHealth;
+		public bool IsDead => isDead;
 		private bool isDead;
-
-		public event Action<Attack> OnDamaged;
-		public event Action<Attack> OnShielded;
-		public event Action<float> OnFractionChanged; // passes health fraction
-		public event Action<Player,ICanAttack> OnDying;
-		public event Action OnResurrected;
 
 		private UnitStats unitStats => _unitStats ??= GetComponent<UnitStats>();
 		private UnitStats _unitStats;
@@ -30,11 +30,16 @@ namespace __SCRIPTS
 		private UnitAnimations _unitAnim;
 
 		private LayerMask originalLayer;
-		private Player player1;
-		public float CurrentHealth => currentHealth;
-		public float MaxHealth => unitStats?.MaxHealth ?? 100f;
-		public float GetFraction => MaxHealth > 0 ? currentHealth / MaxHealth : 0f;
-		public bool IsDead => isDead;
+
+		private Body body;
+
+
+
+		public event Action<Attack> OnDamaged;
+		public event Action<Attack> OnShielded;
+		public event Action<float> OnFractionChanged;
+		public event Action<Player, ICanAttack> OnDying;
+		public event Action OnResurrected;
 
 		private void Awake()
 		{
@@ -61,7 +66,7 @@ namespace __SCRIPTS
 
 		public void TakeDamage(Attack attack)
 		{
-			if (isDead || IsInvincible || unitStats?.Data?.isInvincible == true) return;
+			if (isDead || CanTakeDamage || unitStats?.Data?.isInvincible == true) return;
 
 			if (IsShielded)
 			{
@@ -129,7 +134,7 @@ namespace __SCRIPTS
 
 		private void SetInvincible(bool invincible)
 		{
-			IsInvincible = invincible;
+			CanTakeDamage = invincible;
 		}
 
 		private void EnableColliders(bool enable)

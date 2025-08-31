@@ -6,10 +6,7 @@ public class ReloadActivity : IActivity
 {
 	public string VerbName => "Reloading";
 
-	public bool TryCompleteGracefully(CompletionReason reason, IActivity newActivity = null)
-	{
-		return false; // Reload activities complete naturally
-	}
+
 }
 
 namespace __SCRIPTS
