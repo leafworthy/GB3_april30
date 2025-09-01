@@ -11,7 +11,7 @@ namespace __SCRIPTS
 			effectDuration = 0;
 			Debug.Log("cash pickup effect");
 			var stats = ServiceLocator.Get<PlayerStatsManager>();
-			stats.ChangeStat(life.player,PlayerStat.StatType.TotalCash,amount);
+			stats.ChangeStat(life.Player,PlayerStat.StatType.TotalCash,amount);
 			base.StartEffect(life);
 		}
 

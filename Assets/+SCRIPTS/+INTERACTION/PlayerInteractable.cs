@@ -45,7 +45,7 @@ namespace __SCRIPTS
 				if (life == null) return;
 			}
 
-			ListenToPlayerActionButton(life.player);
+			ListenToPlayerActionButton(life.Player);
 		}
 
 		protected void ListenToPlayerActionButton(Player player)
@@ -125,10 +125,10 @@ namespace __SCRIPTS
 			if (other == null) return;
 			var life = other.GetComponentInChildren<Life>();
 			if (life == null) return;
-			if (!life.IsPlayer) return;
+			if (!life.IsHuman) return;
 			if (!buildingIsInTheWay(life.transform.position))
 			{
-				ListenToPlayerActionButton(life.player);
+				ListenToPlayerActionButton(life.Player);
 			}
 
 		}
@@ -139,7 +139,7 @@ namespace __SCRIPTS
 			if (other.gameObject == gameObject) return;
 			var life = other.GetComponentInChildren<Life>();
 			if (life == null) return;
-			StopListeningToPlayer(life.player);
+			StopListeningToPlayer(life.Player);
 		}
 
 		protected void StopListeningToPlayer(Player player)

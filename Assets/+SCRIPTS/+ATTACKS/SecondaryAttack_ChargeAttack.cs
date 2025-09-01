@@ -38,8 +38,8 @@ namespace __SCRIPTS
 
 			if (attacker != null)
 			{
-				attacker.player.Controller.Attack2LeftTrigger.OnPress += Player_ChargePress;
-				attacker.player.Controller.Attack2LeftTrigger.OnRelease += Player_ChargeRelease;
+				attacker.Player.Controller.Attack2LeftTrigger.OnPress += Player_ChargePress;
+				attacker.Player.Controller.Attack2LeftTrigger.OnRelease += Player_ChargeRelease;
 			}
 
 			animEvents = anim.animEvents;
@@ -52,8 +52,8 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			if (attacker != null) return;
-			attacker.player.Controller.Attack2LeftTrigger.OnPress -= Player_ChargePress;
-			attacker.player.Controller.Attack2LeftTrigger.OnRelease -= Player_ChargeRelease;
+			attacker.Player.Controller.Attack2LeftTrigger.OnPress -= Player_ChargePress;
+			attacker.Player.Controller.Attack2LeftTrigger.OnRelease -= Player_ChargeRelease;
 			if (animEvents != null) return;
 			animEvents = anim.animEvents;
 			animEvents.OnFullyCharged -= Anim_FullyCharged;
@@ -158,7 +158,7 @@ namespace __SCRIPTS
 			foreach (var raycastHit2D in raycast)
 			{
 				var otherLife = raycastHit2D.collider.GetComponent<Life>();
-				if (!otherLife.IsEnemyOf(attacker) || otherLife.cantDie || otherLife.IsObstacle) return;
+				if (!otherLife.IsEnemyOf(attacker) || otherLife.CanBeAttacked || otherLife.IsObstacle) return;
 				HitTarget(life.SecondaryAttackDamageWithExtra, otherLife, 3);
 			}
 
@@ -169,7 +169,7 @@ namespace __SCRIPTS
 			{
 				var otherLife = hit2D.gameObject.GetComponent<Life>();
 				if (otherLife == null) continue;
-				if (!otherLife.IsEnemyOf(attacker) || otherLife.cantDie || otherLife.IsObstacle) return;
+				if (!otherLife.IsEnemyOf(attacker) || otherLife.CanBeAttacked || otherLife.IsObstacle) return;
 				HitTarget(otherLife.SecondaryAttackDamageWithExtra, otherLife, 2);
 				connect = true;
 				objectMaker.Make( assetManager.FX.hits.GetRandom(), hit2D.transform.position);

@@ -100,7 +100,7 @@ public class DoableKnifeAttack : Ability
 		{
 			var colStats = col.GetComponentInChildren<Life>();
 			if (colStats.IsObstacle || !colStats.IsPlayerAttackable) continue;
-			if (colStats.cantDie) continue;
+			if (colStats.CanBeAttacked) continue;
 			if (Vector2.Distance(col.gameObject.transform.position, transform.position) < Vector2.Distance(closest.transform.position, transform.position))
 				closest = col;
 		}
@@ -122,11 +122,11 @@ public class DoableKnifeAttack : Ability
 
 		var enemy = enemyHit.transform.gameObject.GetComponent<Life>();
 		if (enemy == null) enemy = enemyHit.transform.gameObject.GetComponentInParent<Life>();
-		if (enemy == null || enemy.IsPlayer || enemy.cantDie || enemy.IsObstacle)
+		if (enemy == null || enemy.IsHuman || enemy.CanBeAttacked || enemy.IsObstacle)
 		{
 			if (enemy == null ) Debug.Log(" attack hit null enemy");
-			if(enemy.IsPlayer) Debug.Log(" attack hit player");
-			if(enemy.cantDie) Debug.Log(" attack hit cant die", enemy);
+			if(enemy.IsHuman) Debug.Log(" attack hit player");
+			if(enemy.CanBeAttacked) Debug.Log(" attack hit cant die", enemy);
 			if(enemy.IsObstacle) Debug.Log(" attack hit obstacle");
 			Debug.Log("attack miss");
 			OnMiss?.Invoke();

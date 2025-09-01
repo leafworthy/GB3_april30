@@ -46,8 +46,8 @@ namespace __SCRIPTS
 			OnPlayerExits += PlayerExits;
 			OnTimeComplete += Repair;
 			base.OnDisable();
-				 
-			 
+
+
 		}
 
 		private void Init()
@@ -62,7 +62,6 @@ namespace __SCRIPTS
 			}
 			if (life == null) life = GetComponent<Life>();
 			openSortingPoints = GetComponentInChildren<SortingPoints>();
-			if (life != null) life.Resurrect();
 		}
 
 		private void PlayerExits(Player obj)
@@ -71,7 +70,7 @@ namespace __SCRIPTS
 			if (isBroken) return;
 			SetDoorOpen(false);
 		}
-	
+
 		protected override void InteractableOnActionPress(Player player)
 		{
 			if (isBroken)
@@ -126,7 +125,7 @@ namespace __SCRIPTS
 			DoorAnimator.SetBool(IsBroken, true);
 
 
-		
+
 			sfx.sounds.door_break_sound.PlayRandomAt(life1.transform.position);
 			sfx.sounds.door_break_sound.PlayRandomAt(life1.transform.position);
 
@@ -154,7 +153,6 @@ namespace __SCRIPTS
 			DoorAnimator.SetBool(IsBroken, false);
 			SetCollidersEnabled(true);
 			UpdateGraph();
-			life.Resurrect();
 
 			ListenToPlayerActionButton(player);
 		}

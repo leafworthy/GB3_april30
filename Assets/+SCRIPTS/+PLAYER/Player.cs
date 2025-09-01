@@ -85,12 +85,7 @@ namespace __SCRIPTS
 			if (spawnedPlayerDefence == null) return;
 
 			spawnedPlayerDefence.OnDead += OnPlayerDied;
-
-			foreach (var needPlayer in SpawnedPlayerGO.GetComponentsInChildren<INeedPlayer>(true))
-			{
-				Debug.Log( "PLAYER: Set player for " + needPlayer.GetType());
-				needPlayer.SetPlayer(this);
-			}
+			spawnedPlayerDefence.SetPlayer(this);
 		}
 
 		private GameObject GetPrefabFromCharacter(Player player)

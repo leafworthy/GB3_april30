@@ -5,12 +5,10 @@ namespace __SCRIPTS
 {
 	public class DoableReloadAbility : Ability
 	{
-
 		public event Action OnReload;
 		public AnimationClip ReloadAKAnimationClip;
 		public AnimationClip ReloadGlockAnimationClip;
 		public AnimationClip ReloadGlockAnimationLeftClip;
-		public bool isReloading { get; private set; }
 		private AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
 		private AmmoInventory _ammoInventory;
 		private IAimableGunAttack gunAttack => _gunAttack ??= GetComponent<IAimableGunAttack>();
@@ -21,16 +19,26 @@ namespace __SCRIPTS
 
 		private float reloadTime = .5f;
 		public override string VerbName => "Reloading";
-		private Ammo GetCorrectAmmoType() => gunAttack.IsUsingPrimaryGun ? ammoInventory.unlimitedAmmo : ammoInventory.primaryAmmo;
-		protected override bool requiresArms() => false;
+		private Ammo GetCorrectAmmoType() => gunAttack.currentGun.Ammo;
+		protected override bool requiresArms() => true;
 
 		protected override bool requiresLegs() => false;
 
 		public override bool canDo()
 		{
 			if (!base.canDo()) return false;
-			if (GetCorrectAmmoType().clipIsFull()) return false;
-			if (!GetCorrectAmmoType().hasReserveAmmo()) return false;
+			if (GetCorrectAmmoType().clipIsFull())
+			{
+				Debug.Log("clip is full");
+				return false;
+			}
+			if (!GetCorrectAmmoType().hasReserveAmmo())
+			{
+				Debug.Log("no reserve ammo");
+				return false;
+			}
+
+			Debug.Log("reload ability can do");
 			return true;
 		}
 
@@ -41,56 +49,41 @@ namespace __SCRIPTS
 
 		private void StartReloading()
 		{
+			Debug.Log("start reloading");
 			Invoke(nameof(Reload), reloadTime);
 			anim.SetBool(UnitAnimations.IsBobbing, false);
-			isReloading = true;
 
-			if (gunAttack.IsUsingPrimaryGun)
-				anim.Play(gunAttack.AimDir.x > 0 ? ReloadGlockAnimationClip.name : ReloadGlockAnimationLeftClip.name, 1, 0);
+			if (!gunAttack.IsUsingPrimaryGun)
+			{
+				Debug.Log("playing glock reload animation");
+				PlayAnimationClip(gunAttack.AimDir.x > 0 ? ReloadGlockAnimationClip : ReloadGlockAnimationLeftClip, 1);
+			}
 			else
-				anim.Play(ReloadAKAnimationClip.name, 1, 0);
+				PlayAnimationClip(ReloadAKAnimationClip, 1);
 		}
 
 		private void Reload()
 		{
+			Debug.Log("reload happens");
 			GetCorrectAmmoType().Reload();
 			OnReload?.Invoke();
 		}
 
-		private void StopReloading()
-		{
-			if (!isReloading) return;
-			isReloading = false;
-			body.doableArms.Stop(this);
-			//try shooting
-		}
-
 		public override void Stop()
 		{
+			player.Controller.ReloadTriangle.OnPress -= Player_Reload;
 			base.Stop();
-			StopReloading();
-			StopListeningToPlayer();
 		}
 
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
-			ListenToPlayer();
-		}
-
-		private void ListenToPlayer()
-		{
 			player.Controller.ReloadTriangle.OnPress += Player_Reload;
 		}
 
 		private void Player_Reload(NewControlButton btn)
 		{
 			Do();
-		}
-
-		private void StopListeningToPlayer()
-		{
-			player.Controller.ReloadTriangle.OnPress -= Player_Reload;
 		}
 	}
 }

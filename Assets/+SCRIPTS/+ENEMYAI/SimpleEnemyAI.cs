@@ -15,7 +15,7 @@ namespace __SCRIPTS._ENEMYAI
 		private Life _target;
 		private Targetter _targetter;
 
-		private float minDistanceToPlayer => life.unitData.attack1Range;
+		private float minDistanceToPlayer => life.UnitData.attack1Range;
 
 		private void Update()
 		{
@@ -38,7 +38,7 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void WalkToPlayer()
 		{
-			OnMoveInDirection?.Invoke((_target.transform.position - transform.position).normalized * life.unitData.moveSpeed);
+			OnMoveInDirection?.Invoke((_target.transform.position - transform.position).normalized * life.UnitData.moveSpeed);
 		}
 
 		private void Start()

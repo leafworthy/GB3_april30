@@ -21,5 +21,6 @@ namespace __SCRIPTS
 		public UnitStatsData DefaultUnitData;
 		public LayerMask EnemyLayerOnLandable;
 		public LayerMask EnemiesCanHitTheseLayers;
+		public UnitStatsDatabase StatsDatabase;
 	}
 }

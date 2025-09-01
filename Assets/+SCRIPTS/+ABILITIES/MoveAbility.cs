@@ -35,10 +35,10 @@ namespace __SCRIPTS
 
 		public Vector2 GetMoveAimPoint()
 		{
-			if (life == null || !life.IsPlayer) return Vector2.zero;
+			if (life == null || !life.IsHuman) return Vector2.zero;
 			MoveAimDir = GetMoveAimDir();
 			lastAimDirOffset = MoveAimDir * maxAimDistance;
-			if (!life.player.isUsingMouse) return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
+			if (!life.Player.isUsingMouse) return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
 			var mousePos = CursorManager.GetMousePosition();
 
 			return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
@@ -49,9 +49,9 @@ namespace __SCRIPTS
 
 		public Vector3 GetMoveAimDir()
 		{
-			if (life.player.isUsingMouse) return moveDir;
+			if (life.Player.isUsingMouse) return moveDir;
 
-			return life.player.Controller.MoveAxis.GetCurrentAngle();
+			return life.Player.Controller.MoveAxis.GetCurrentAngle();
 		}
 
 		private void OnEnable()
@@ -123,7 +123,6 @@ namespace __SCRIPTS
 			}
 			moveDir = direction.normalized;
 			moveSpeed = newSpeed;
-			if(!life.IsPlayer)Debug.Log("moving true");
 			isMoving = true;
 		}
 
@@ -169,7 +168,7 @@ namespace __SCRIPTS
 		public void StopMoving()
 		{
 
-			if(!life.IsPlayer)Debug.Log("stop moving");
+			if(!life.IsHuman)Debug.Log("stop moving");
 			isMoving = false;
 			moveVelocity = Vector2.zero;
 		}
@@ -181,7 +180,7 @@ namespace __SCRIPTS
 
 		public bool IsMoving() => isMoving;
 
-		public bool IsIdle() => life.player.Controller.MoveAxis.currentMagnitudeIsTooSmall();
+		public bool IsIdle() => life.Player.Controller.MoveAxis.currentMagnitudeIsTooSmall();
 
 
 	}

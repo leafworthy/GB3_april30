@@ -30,7 +30,7 @@ namespace __SCRIPTS
 			body = GetComponent<Body>();
 			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
-			owner = life.player;
+			owner = life.Player;
 			jumps = GetComponent<JumpAbility>();
 
 			if (owner == null) return;
@@ -92,8 +92,8 @@ namespace __SCRIPTS
 			{
 				if (col == null) return;
 				var _life = col.gameObject.GetComponent<Life>();
-				if (!_life.IsEnemyOf(attacker) || _life.cantDie) return;
-				if (attacker.IsPlayer && _life.IsObstacle) return;
+				if (!_life.IsEnemyOf(attacker) || _life.CanBeAttacked) return;
+				if (attacker.IsHuman && _life.IsObstacle) return;
 				HitTarget(GetAttackDamage(attackType), _life, extraPush);
 				OnHit?.Invoke(col.gameObject.transform.position);
 			}

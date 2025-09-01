@@ -489,9 +489,9 @@ GameObject:
   - component: {fileID: 7668832580322677999}
   - component: {fileID: 1364683539933955483}
   - component: {fileID: 3025189939797585559}
-  - component: {fileID: 5668455432631234438}
   - component: {fileID: 7594583681699860136}
   - component: {fileID: 6129626247479662832}
+  - component: {fileID: 5002742459162527955}
   m_Layer: 7
   m_Name: Toast
   m_TagString: Untagged
@@ -578,37 +578,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  _unitData:
-    unitName: Toast
-    category: 1
-    debrisType: 0
-    isPlayerSwingHittable: 1
-    showLifeBar: 1
-    isInvincible: 0
-    healthMax: 75
-    moveSpeed: 22
-    dashSpeed: 0
-    jumpSpeed: 0
-    aggroRange: 100
-    attack1Damage: 8
-    attack1Rate: 1
-    attack1Range: 12
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-  ExtraMaxHealthFactor: 0
-  ExtraMaxSpeedFactor: 0
-  ExtraMaxDamageFactor: 0
-  cantDie: 0
-  isInvincible: 0
-  Health: 75
-  isShielded: 0
+  unitStats:
+    _unitData:
+      unitName: 
+      category: 0
+      debrisType: 0
+      isPlayerSwingHittable: 0
+      showLifeBar: 0
+      isInvincible: 0
+      healthMax: 0
+      moveSpeed: 0
+      dashSpeed: 0
+      jumpSpeed: 0
+      aggroRange: 0
+      attack1Damage: 0
+      attack1Rate: 0
+      attack1Range: 0
+      attack2Damage: 0
+      attack2Rate: 0
+      attack2Range: 0
+      attack3Damage: 0
+      attack3Rate: 0
+      attack3Range: 0
+      attack4Damage: 0
+      attack4Rate: 0
+      attack4Range: 0
+      hasData: 0
+      isDefault: 0
+    ExtraHealthFactor: 0
+    ExtraDamageFactor: 0
+    ExtraSpeedFactor: 0
+  unitHealth:
+    IsTemporarilyInvincible: 0
+    IsShielded: 0
 --- !u!114 &-8070408823439803412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,11 +802,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff264cf2d310481ea1df4e39814eef10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOverLandable: 0
   ShadowObject: {fileID: 7431454427251243552}
   JumpObject: {fileID: 5859870553395041908}
   Sorting: {fileID: 536371090444542826}
-  canLand: 0
   AttackStartPoint: {fileID: 1954379024209702067}
   FootPoint: {fileID: 2974996309260671882}
   RotateWithAim: []
@@ -883,55 +883,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeb1bdcf5bcc4c37a9323c4f77dfd091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5668455432631234438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7431454428826219940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slowBarImage: {fileID: 8469193283116070906}
-  fastBarImage: {fileID: 8469193283163425923}
-  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
-  colorMode: 1
-  slowBarColor: {r: 1, g: 1, b: 1, a: 1}
-  barGradient:
-    serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 1}
-    key1: {r: 1, g: 0.95496154, b: 0, a: 1}
-    key2: {r: 0.19127488, g: 1, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 16577
-    ctime2: 65535
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 3
-    m_NumAlphaKeys: 2
-  healthBar: {fileID: 8469193281830769426}
-  BlockTint: 0
 --- !u!114 &7594583681699860136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -962,6 +913,18 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 9c22e92884a3e41b8ad8067c182c1188, type: 2}
   - {fileID: 2100000, guid: fdae30f0854b54b158616aa60955364b, type: 2}
   spriteRenderer: {fileID: 4330567752162112095}
+--- !u!114 &5002742459162527955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7431454428826219940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44cdd8330b2546caa9d082386aacef05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8681001409653053418
 GameObject:
   m_ObjectHideFlags: 0
@@ -1210,33 +1173,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
   m_PrefabInstance: {fileID: 2374502254047979683}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8469193281830769426 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6159643716270242737, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-  m_PrefabInstance: {fileID: 2374502254047979683}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8469193283116070906 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6159643717769961305, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-  m_PrefabInstance: {fileID: 2374502254047979683}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8469193283163425923 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-  m_PrefabInstance: {fileID: 2374502254047979683}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8748899421651549055
 PrefabInstance:
   m_ObjectHideFlags: 0

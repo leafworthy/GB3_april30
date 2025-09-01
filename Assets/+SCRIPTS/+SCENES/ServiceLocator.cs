@@ -15,11 +15,12 @@ public static class ServiceLocator
 		Debug.Log($"ServiceLocator: Service of type {type.Name} registered successfully.");
 	}
 
-	public static T Get<T>() where T : class
+	public static T Get<T>() where T : MonoBehaviour
 	{
 		var type = typeof(T);
 
 		if (_services.TryGetValue(type, out var service)) return (T) service;
+
 
 		throw new InvalidOperationException($"ServiceLocator: Service of type {type.Name} is not registered.");
 	}

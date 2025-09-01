@@ -65,6 +65,9 @@ namespace __SCRIPTS
 				case BodyLayer.grounded:
 					layerValue = assetManager.LevelAssets.GroundedLayer;
 					break;
+				case BodyLayer.enemy:
+					layerValue = assetManager.LevelAssets.EnemyLayer;
+					break;
 			}
 
 			FootPoint.layer = (int) Mathf.Log(layerValue, 2);
@@ -74,7 +77,8 @@ namespace __SCRIPTS
 		{
 			jumping,
 			landed,
-			grounded
+			grounded,
+			enemy
 		}
 
 		public void BottomFaceDirection(bool faceRight)

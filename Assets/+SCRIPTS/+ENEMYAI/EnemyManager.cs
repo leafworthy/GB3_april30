@@ -14,9 +14,19 @@ namespace __SCRIPTS
 		private Players _players;
 		private Players players => _players ?? ServiceLocator.Get<Players>();
 
+		private ObjectMaker objectMaker => _objectMaker ??= ServiceLocator.Get<ObjectMaker>();
+
+		private ObjectMaker _objectMaker;
+
 		public void StartService()
 		{
 			levelManager.OnStopLevel += ClearEnemies;
+		}
+
+		public void SpawnNewEnemy(GameObject enemyPrefab, Vector3 position)
+		{
+			var newEnemy = objectMaker.Make(enemyPrefab, position);
+			ConfigureNewEnemy(newEnemy);
 		}
 
 		private void CollectEnemy(GameObject enemy)
@@ -54,7 +64,7 @@ namespace __SCRIPTS
 		public void ConfigureNewEnemy(GameObject enemy)
 		{
 			// Set up the Life component
-			var life = enemy.GetComponent<UnitHealth>();
+			var life = enemy.GetComponent<Life>();
 			if (life != null)
 			{
 				life.SetPlayer(players.enemyPlayer);

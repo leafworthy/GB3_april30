@@ -39,8 +39,8 @@ namespace __SCRIPTS.HUD_Displays
 		private void UpdateDisplay(float f)
 		{
 			healthText.text = Mathf.Ceil(playerDefence.Health).ToString();
-			MaxHealthText.text = "/" + Mathf.Ceil(playerDefence.HealthMax).ToString();
-			barFX.UpdateBar(playerDefence.Health, playerDefence.HealthMax);
+			MaxHealthText.text = "/" + Mathf.Ceil(playerDefence.MaxHealth).ToString();
+			barFX.UpdateBar(playerDefence.Health, playerDefence.MaxHealth);
 			//var shaker = shakeIcon.gameObject.AddComponent<ObjectShaker>();
 			//shaker.Shake(ObjectShaker.ShakeIntensityType.medium);
 		}

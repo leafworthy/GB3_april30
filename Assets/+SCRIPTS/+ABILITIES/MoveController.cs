@@ -1,7 +1,4 @@
 using System;
-using __SCRIPTS._ENEMYAI;
-using __SCRIPTS.Cursor;
-using __SCRIPTS.HUD_Displays;
 using GangstaBean.Core;
 using UnityEngine;
 
@@ -28,9 +25,9 @@ namespace __SCRIPTS
 		private UnitAnimations anim;
 		private bool isWounded;
 		private IMove ai;
+
 		public void SetPlayer(Player _player)
 		{
-			Debug.Log("player set");
 			anim = GetComponent<UnitAnimations>();
 
 			mover = GetComponent<MoveAbility>();
@@ -49,12 +46,10 @@ namespace __SCRIPTS
 		private void Body_OnCanMove(bool canMove)
 		{
 			if (!canMove)
-			{
 				mover.StopMoving();
-			}
 			else
 			{
-				if(owner.IsPlayer()) mover.MoveInDirection(owner.Controller.MoveAxis.GetCurrentAngle(), life.MoveSpeed);
+				if (owner.IsPlayer()) mover.MoveInDirection(owner.Controller.MoveAxis.GetCurrentAngle(), life.MoveSpeed);
 			}
 		}
 
@@ -90,7 +85,7 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			if (life == null) return;
-			if (life.IsPlayer)
+			if (life.IsHuman)
 			{
 				Debug.Log("disable here");
 				owner.Controller.MoveAxis.OnChange -= Player_MoveInDirection;
@@ -138,8 +133,6 @@ namespace __SCRIPTS
 			body.legs.Do(mover);
 		}
 
-
-
 		private void Life_OnWounded(Attack attack)
 		{
 			mover.Push(attack.Direction, attack.DamageAmount * damagePushMultiplier);
@@ -158,7 +151,6 @@ namespace __SCRIPTS
 			if (isWounded) return;
 			if (!CanMove) return;
 
-
 			if (body.legs.isActive)
 			{
 				StopMoving();
@@ -176,22 +168,18 @@ namespace __SCRIPTS
 
 		private void AI_MoveInDirection(Vector2 direction)
 		{
-			Debug.Log("ai try move in direction");
 			if (pauseManager.IsPaused) return;
 			if (!CanMove)
 			{
 				Debug.Log("can't move");
 				return;
 			}
-			if (body.arms.isActive)
-			{
-				Debug.Log("ai arms busy");
-				return;
-			}
 
-			Debug.Log("ai move in direction");
+			if (body.arms.isActive) return;
+
 			StartMoving(direction);
 		}
+
 		private void Player_StopMoving(IControlAxis controlAxis)
 		{
 			StopMoving();
@@ -202,9 +190,9 @@ namespace __SCRIPTS
 			Debug.Log("ai stop moving");
 			StopMoving();
 		}
+
 		private void StartMoving(Vector2 direction)
 		{
-			if (!life.IsPlayer) Debug.Log("start moving: " + life.MoveSpeed);
 			MoveDir = direction;
 			if (direction.x != 0) body.BottomFaceDirection(direction.x > 0);
 			mover.MoveInDirection(direction, life.MoveSpeed);
@@ -219,7 +207,6 @@ namespace __SCRIPTS
 			mover?.StopMoving();
 		}
 
-
 		public void Push(Vector2 moveMoveDir, float statsDashSpeed)
 		{
 			mover.Push(moveMoveDir, statsDashSpeed);
@@ -232,15 +219,11 @@ namespace __SCRIPTS
 			CanMove = true;
 			isWounded = false;
 			MoveDir = Vector2.zero;
-			if (life != null && !life.IsPlayer)
-			{
-				InitializeLife();
-			}
+			if (life != null && !life.IsHuman) InitializeLife();
 		}
 
 		public void OnPoolDespawn()
 		{
-
 			CanMove = false;
 			MoveDir = Vector2.zero;
 		}

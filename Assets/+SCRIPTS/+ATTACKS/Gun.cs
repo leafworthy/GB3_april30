@@ -60,7 +60,7 @@ namespace __SCRIPTS
 			}
 
 			if (!CanShoot()) return;
-			Debug.Log("[GUN] isAttacking");
+			Debug.Log("[GUN] isAttacking, number of bullets: " + numberOfBulletsPerShot, this);
 			if (simpleShoot) anim.SetTrigger(UnitAnimations.ShootingTrigger);
 			for (var i = 0; i < numberOfBulletsPerShot; i++)
 			{
@@ -71,9 +71,13 @@ namespace __SCRIPTS
 
 		private void ShootBullet(Vector3 targetPosition)
 		{
+			Debug.Log("[GUN] shoot bullet in gun", this);
 			if (!Ammo.hasAmmoInClip()) return;
 			Ammo.UseAmmo(1);
-			var hitObject = gunAimAbility.CheckRaycastHit(targetPosition, assetManager.LevelAssets.EnemyLayer);
+			var hitObject = Physics2D.Linecast( body.FootPoint.transform.position, targetPosition, assetManager.LevelAssets.EnemyLayer);
+
+
+
 			if (hitObject)
 				ShotHitTarget(hitObject);
 			else
@@ -82,21 +86,26 @@ namespace __SCRIPTS
 
 		private void ShotMissed()
 		{
+			Debug.Log("shot missed target", this);
 			var missPosition = (Vector2) body.FootPoint.transform.position + gunAimAbility.AimDir.normalized * AttackRange;
 			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, gunAimAbility.AimDir.normalized, AttackRange,
 				assetManager.LevelAssets.BuildingLayer);
 			if (raycastHit) missPosition = raycastHit.point;
 			var newAttack = new Attack(life, body.FootPoint.transform.position, missPosition, null, 0);
-
+			MyDebugUtilities.DrawAttack(newAttack, Color.red);
+			Debug.DrawLine(body.FootPoint.transform.position, missPosition, Color.red, 3);
 			OnShotMissed?.Invoke(newAttack, body.AttackStartPoint.transform.position);
 		}
 
 		private void ShotHitTarget(RaycastHit2D hitObject)
 		{
+			Debug.Log("shot hit target", this);
 			var target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
 			if (target == null) return;
 			var newAttack = new Attack(life, body.FootPoint.transform.position, hitObject.point, target, Damage);
 			OnShotHitTarget?.Invoke(newAttack, body.AttackStartPoint.transform.position);
+			MyDebugUtilities.DrawAttack(newAttack, Color.green);
+			Debug.DrawLine(body.FootPoint.transform.position, body.FootPoint.transform.position, Color.green, 3);
 			target.TakeDamage(newAttack);
 		}
 	}

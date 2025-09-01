@@ -59,8 +59,6 @@ namespace __SCRIPTS
 			HideAiming();
 		}
 
-
-
 		public override void SetPlayer(Player _player)
 		{
 			Debug.Log("setting player for nade attack");
@@ -74,13 +72,6 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			Debug.Log("stop listen");
-			StopListeningToPlayer();
-		}
-
-		private void OnDestroy()
-		{
-			Debug.Log("stop listen");
 			StopListeningToPlayer();
 		}
 
@@ -88,7 +79,6 @@ namespace __SCRIPTS
 		{
 			Debug.Log("stop listen");
 			if (anim == null) return;
-			animationEvents.OnThrowStop -= Anim_ThrowStop;
 			if (player == null) return;
 			if (player.Controller == null) return;
 			player.Controller.AimAxis.OnChange -= Player_OnAim;
@@ -105,16 +95,12 @@ namespace __SCRIPTS
 				return;
 			}
 			animationEvents = anim.animEvents;
-			animationEvents.OnThrowStop += Anim_ThrowStop;
 			player.Controller.AimAxis.OnChange += Player_OnAim;
 			player.Controller.Attack2LeftTrigger.OnPress += Player_NadePress;
 			player.Controller.Attack2LeftTrigger.OnRelease += Player_NadeRelease;
 		}
 
-		private void Anim_ThrowStop()
-		{
-			arms.Stop(this);
-		}
+
 
 		private void Update()
 		{
@@ -160,7 +146,7 @@ namespace __SCRIPTS
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = body.AimCenter.transform.position;
 			var velocity = new Vector3((endPoint.x - startPoint.x) / throwTime, (endPoint.y - startPoint.y) / throwTime);
-			OnThrow?.Invoke(startPoint, velocity, throwTime, life.player);
+			OnThrow?.Invoke(startPoint, velocity, throwTime, life.Player);
 			HideAiming();
 		}
 

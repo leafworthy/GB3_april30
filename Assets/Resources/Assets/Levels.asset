@@ -47,10 +47,36 @@ MonoBehaviour:
   EnemyUnwalkableLayers:
     serializedVersion: 2
     m_Bits: 20189696
-  DefaultUnitData: {fileID: 11400000, guid: 8296f938af6624daebb576bb18932947, type: 2}
+  DefaultUnitData:
+    unitName: 
+    category: 0
+    debrisType: 0
+    isPlayerSwingHittable: 0
+    showLifeBar: 0
+    isInvincible: 0
+    healthMax: 0
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 0
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    hasData: 0
+    isDefault: 0
   EnemyLayerOnLandable:
     serializedVersion: 2
     m_Bits: 1049216
   EnemiesCanHitTheseLayers:
     serializedVersion: 2
     m_Bits: 34603072
+  StatsDatabase: {fileID: 11400000, guid: bf6ea19043f4748d8b8005fa1f10255a, type: 2}

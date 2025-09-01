@@ -5,10 +5,10 @@ namespace __SCRIPTS
 {
 	public class Shotgun_GunAttacks_FX : ServiceUser
 	{
-		private GunAttack_Shotgun gunAttackShotgun;
+		private IAimableGunAttack gunAttackShotgun;
 		private void OnEnable()
 		{
-			gunAttackShotgun = GetComponent<GunAttack_Shotgun>();
+			gunAttackShotgun = GetComponent<IAimableGunAttack>();
 			gunAttackShotgun.OnShotHitTarget += GunAttackShotgunOnOnOnShotHitTarget;
 			gunAttackShotgun.OnShotMissed += GunAttackShotgunOnOnOnShotHitTarget;
 		}

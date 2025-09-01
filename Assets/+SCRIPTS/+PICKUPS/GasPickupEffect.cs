@@ -10,7 +10,7 @@ namespace __SCRIPTS
 			effectDuration = 0;
 			var stats = ServiceLocator.Get<PlayerStatsManager>();
 
-			stats.ChangeStat(life.player,PlayerStat.StatType.Gas, amount);
+			stats.ChangeStat(life.Player,PlayerStat.StatType.Gas, amount);
 		}
 
 		public GasPickupEffect(float _effectDuration, int _amount) : base(

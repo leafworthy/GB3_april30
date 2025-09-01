@@ -11,7 +11,7 @@ public abstract class Ability : ServiceUser, IDoableAbility, INeedPlayer
 	protected Body body => _body ?? GetComponent<Body>();
 	private Life _life;
 	protected Life life => _life ?? GetComponent<Life>();
-	public virtual string VerbName => "";
+	public abstract string VerbName { get;  }
 
 	protected abstract bool requiresArms();
 
@@ -23,23 +23,12 @@ public abstract class Ability : ServiceUser, IDoableAbility, INeedPlayer
 
 	public void Do()
 	{
-		//Debug.Log("trying to do " + VerbName + " ability");
-		if (!canDo())
-		{
-			//Debug.Log("cannot do " + VerbName + " ability");
-			return;
-		}
-		if (requiresArms())
-		{
+		if (!canDo()) return;
 
-			body.doableArms.DoActivity(this);
-			//Debug.Log("arms doing for " + VerbName + " ability");
-		}
-		if (requiresLegs())
-		{
-			body.doableLegs.DoActivity(this);
-			//Debug.Log("legs doing for " + VerbName + " ability");
-		}
+		if (requiresArms()) body.doableArms.DoActivity(this);
+
+		if (requiresLegs()) body.doableLegs.DoActivity(this);
+
 		DoAbility();
 	}
 
@@ -53,6 +42,7 @@ public abstract class Ability : ServiceUser, IDoableAbility, INeedPlayer
 			body.doableArms.Stop(this);
 			Debug.Log("arms stopped for " + VerbName + " ability");
 		}
+
 		if (requiresLegs())
 		{
 			body.doableLegs.Stop(this);
@@ -66,23 +56,9 @@ public abstract class Ability : ServiceUser, IDoableAbility, INeedPlayer
 	private bool BodyCanDo(IDoableAbility abilityToDo)
 	{
 		if (pauseManager.IsPaused) return false;
-		if (life.IsDead())
-		{
-			Debug.Log( "Dead, cannot do " + VerbName + " ability");
-			return false;
-		}
-		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo))
-		{
-			//Debug.Log( "Cannot do arms, cannot do " + VerbName + " ability");
-			return false;
-		}
-		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo))
-		{
-			Debug.Log( "Cannot do legs, cannot do " + VerbName + " ability");
-			return false;
-		}
-
-		Debug.Log("body can do" + VerbName + " ability");
+		if (life.IsDead()) return false;
+		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo)) return false;
+		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo)) return false;
 
 		return true;
 	}
@@ -101,6 +77,7 @@ public abstract class Ability : ServiceUser, IDoableAbility, INeedPlayer
 			Invoke(nameof(AnimationComplete), delay);
 			return;
 		}
+
 		Debug.Log("animation starting" + clip.name + " for " + VerbName + " ability " + "length: " + clip.length);
 		anim.Play(clip.name, layer, 0);
 		Invoke(nameof(AnimationComplete), clip.length);

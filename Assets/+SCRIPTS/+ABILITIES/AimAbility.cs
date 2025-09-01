@@ -54,15 +54,16 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
+			player.Controller.AimAxis.OnChange -= AimerOnAim;
 			player.Controller.AimAxis.OnChange += AimerOnAim;
+			Debug.Log("subscribed to aim axis changes");
 		}
 
-		private void OnDisable()
+		public virtual void OnDisable()
 		{
 			if (player == null) return;
-			if (player.isUsingMouse) return;
-			if (!player.IsPlayer()) return;
 			player.Controller.AimAxis.OnChange -= AimerOnAim;
+			Debug.Log("unsubscribed from aim axis changes aimability");
 		}
 
 		private void AimerOnAim(IControlAxis controlAxis, Vector2 newAimDir)

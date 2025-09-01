@@ -141,7 +141,7 @@ namespace __SCRIPTS
 		{
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = transform.position;
-			OnThrow?.Invoke(startPoint, life.player);
+			OnThrow?.Invoke(startPoint, life.Player);
 
 			var newProjectile = objectMaker.Make( assetManager.FX.minePrefab, startPoint);
 			var newMine = newProjectile.GetComponent<Mine>();

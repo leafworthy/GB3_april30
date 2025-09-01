@@ -109,8 +109,8 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			if (life == null) return;
-			if (life.player == null) return;
-			life.player.Controller.Jump.OnPress -= Controller_Jump;
+			if (life.Player == null) return;
+			life.Player.Controller.Jump.OnPress -= Controller_Jump;
 			life.OnDying -= Life_OnDying;
 		}
 

@@ -13,7 +13,7 @@ namespace __SCRIPTS
 		{
 			Debug.Log("hit!!!");
 			if (targetLife == null) return;
-			if (targetLife.IsInvincible) return;
+			if (targetLife.CanTakeDamage) return;
 
 			var newAttack = new Attack(life, targetLife, attackDamage);
 			targetLife.TakeDamage(newAttack);
@@ -27,7 +27,7 @@ namespace __SCRIPTS
 		protected RaycastHit2D RaycastToObject(Life currentTargetLife)
 		{
 			var position = life.transform.position;
-			var layer = life.IsPlayer ? assetManager.LevelAssets.EnemyLayer : assetManager.LevelAssets.PlayerLayer;
+			var layer = life.IsHuman ? assetManager.LevelAssets.EnemyLayer : assetManager.LevelAssets.PlayerLayer;
 			var direction = (currentTargetLife.transform.position - position).normalized;
 			var distance = Vector3.Distance(position, currentTargetLife.transform.position);
 			return Physics2D.Raycast(position, direction, distance, layer);

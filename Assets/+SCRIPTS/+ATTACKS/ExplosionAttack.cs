@@ -18,9 +18,9 @@ namespace __SCRIPTS
 			base.SetPlayer(_player);
 			anim = GetComponent<UnitAnimations>();
 			anim.animEvents.OnAttackHit += AttackHit;
-			if (attacker.IsPlayer)
+			if (attacker.IsHuman)
 			{
-				attacker.player.Controller.Attack1RightTrigger.OnPress += Player_Attack;
+				attacker.Player.Controller.Attack1RightTrigger.OnPress += Player_Attack;
 
 			}
 			else
@@ -31,9 +31,9 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			if (attacker.IsPlayer)
+			if (attacker.IsHuman)
 			{
-				attacker.player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
+				attacker.Player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
 			}
 			else
 			{
@@ -52,7 +52,7 @@ namespace __SCRIPTS
 			if (attacker.IsDead()) return;
 			if (currentTargetLife == null) return;
 
-			Explosion_FX.Explode(transform.position, explosionRadius, attacker.PrimaryAttackDamageWithExtra, attacker.player);
+			Explosion_FX.Explode(transform.position, explosionRadius, attacker.PrimaryAttackDamageWithExtra, attacker.Player);
 			attacker.DieNow();
 		}
 

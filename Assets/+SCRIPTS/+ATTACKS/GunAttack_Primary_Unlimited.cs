@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-
-
-
 	public interface IAimableGunAttack
 	{
 		event Action<Attack, Vector2> OnShotHitTarget;
 		event Action<Attack, Vector2> OnShotMissed;
-		bool IsUsingPrimaryGun { get;  }
+		event Action OnEmpty;
+		bool IsUsingPrimaryGun { get; }
 		Vector2 AimDir { get; }
+		Gun currentGun { get; }
 	}
+
 	[Serializable]
 	public class GunAttack_Primary_Unlimited : Ability, IAimableGunAttack
 	{
@@ -28,7 +28,7 @@ namespace __SCRIPTS
 		private bool isUsingPrimaryGun = true;
 		public bool isPressingShoot;
 
-		private Gun currentGun => IsUsingPrimaryGun ? primaryGun : unlimitedGun;
+		public Gun currentGun => IsUsingPrimaryGun ? primaryGun : unlimitedGun;
 
 		private float currentCooldownTime;
 		private PrimaryGun primaryGun => _primaryGun ??= GetComponent<PrimaryGun>();
@@ -49,24 +49,25 @@ namespace __SCRIPTS
 
 		public Ammo GetCorrectAmmoType() => currentGun.Ammo;
 
-
-
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
+			StopListeningToPlayer();
 			primaryGun.OnEmpty += Gun_OnEmpty;
-			 primaryGun.OnNeedReload += Gun_NeedReload;
-			 primaryGun.OnShotHitTarget += Gun_ShotHitTarget;
-			 primaryGun.OnShotMissed += Gun_ShotMissed;
+			primaryGun.OnNeedReload += Gun_NeedReload;
+			primaryGun.OnShotHitTarget += Gun_ShotHitTarget;
+			primaryGun.OnShotMissed += Gun_ShotMissed;
 			unlimitedGun.OnEmpty += Gun_OnEmpty;
-			unlimitedGun.OnNeedReload += () => OnNeedReload?.Invoke();
+			unlimitedGun.OnNeedReload += Gun_NeedReload;
 			unlimitedGun.OnShotHitTarget += Gun_ShotHitTarget;
+			unlimitedGun.OnShotMissed += Gun_ShotMissed;
 
 			ListenToPlayer();
 		}
 
 		private void Gun_ShotMissed(Attack attack, Vector2 hitPoint)
-		{ OnShotMissed?.Invoke(attack, hitPoint);
+		{
+			OnShotMissed?.Invoke(attack, hitPoint);
 		}
 
 		private void Gun_ShotHitTarget(Attack attack, Vector2 hitPoint)
@@ -81,7 +82,7 @@ namespace __SCRIPTS
 
 		private void Gun_OnEmpty()
 		{
-			 OnEmpty?.Invoke();
+			OnEmpty?.Invoke();
 		}
 
 		private void OnDisable()
@@ -104,12 +105,14 @@ namespace __SCRIPTS
 
 		private void ListenToPlayer()
 		{
+			if (player == null) return;
 			player.Controller.Attack1RightTrigger.OnPress += PlayerControllerShootPress;
 			player.Controller.Attack1RightTrigger.OnRelease += PlayerControllerShootRelease;
 		}
 
 		private void StopListeningToPlayer()
 		{
+			if (player == null) return;
 			player.Controller.Attack1RightTrigger.OnPress -= PlayerControllerShootPress;
 			player.Controller.Attack1RightTrigger.OnRelease -= PlayerControllerShootRelease;
 		}
@@ -137,8 +140,6 @@ namespace __SCRIPTS
 			currentGun.Shoot(targetPosition);
 		}
 
-
-
 		private void ShootWithCooldown(Vector3 targetDir)
 		{
 			if (!(Time.time >= currentCooldownTime)) return;
@@ -159,10 +160,9 @@ namespace __SCRIPTS
 				return;
 			}
 
-			GetCorrectAmmoType().UseAmmo(1);
 			Debug.Log("[GUN] shoot target");
 			ShootTarget(targetDir);
-			PlayAnimationClip(null, 1, .25f);//TODO adjust speed based on attack rate
+			PlayAnimationClip(null, 1, .25f); //TODO adjust speed based on attack rate
 		}
 	}
 }

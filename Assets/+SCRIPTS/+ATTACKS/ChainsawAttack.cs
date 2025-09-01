@@ -164,7 +164,7 @@ namespace __SCRIPTS
 			foreach (var enemy in enemyHit)
 			{
 				if (enemy == null) continue;
-				if (enemy.IsPlayer || enemy.cantDie || enemy.IsObstacle) continue;
+				if (enemy.IsHuman || enemy.CanTakeDamage || enemy.IsObstacle) continue;
 				if (enemy.IsDead()) continue;
 				HitTarget(attacker.TertiaryAttackDamageWithExtra, enemy, 1);
 			}
@@ -238,7 +238,7 @@ namespace __SCRIPTS
 				var enemy = enemyCollider.gameObject.GetComponent<Life>();
 				if (enemy == null) enemy = enemyCollider.gameObject.GetComponentInParent<Life>();
 				if (enemy == null) continue;
-				if (enemy.IsPlayer || enemy.cantDie || enemy.IsObstacle) continue;
+				if (enemy.IsHuman || enemy.CanBeAttacked || enemy.IsObstacle) continue;
 				enemies.Add(enemy);
 			}
 

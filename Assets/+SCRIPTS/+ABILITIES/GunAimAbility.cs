@@ -31,12 +31,22 @@ namespace __SCRIPTS
 			"EEN"
 		};
 
-		public override void SetPlayer(Player player)
+		public override void SetPlayer(Player _player)
 		{
-			base.SetPlayer(player);
+			base.SetPlayer(_player);
 			aimableGun = GetComponent<IAimableGunAttack>();
 			aimableGun.OnShotHitTarget += AimableGunOnShoot;
 			aimableGun.OnShotMissed += AimableGunOnShoot;
+		}
+
+		public override void OnDisable()
+		{
+			base.OnDisable();
+			if (aimableGun != null)
+			{
+				aimableGun.OnShotHitTarget -= AimableGunOnShoot;
+				aimableGun.OnShotMissed -= AimableGunOnShoot;
+			}
 		}
 
 		protected override void DoAbility()

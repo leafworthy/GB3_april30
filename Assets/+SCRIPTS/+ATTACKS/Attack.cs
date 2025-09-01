@@ -8,7 +8,7 @@ namespace __SCRIPTS
 	{
 		float AttackHeight { get; }
 		Transform transform { get; }
-		Player player { get; }
+		Player Player { get; }
 		DebrisType DebrisType { get;  }
 	}
 
@@ -24,10 +24,10 @@ namespace __SCRIPTS
 			{
 				OriginHeight = attacker.AttackHeight;
 				OriginFloorPoint = attacker.transform.position;
-				Owner = attacker.player;
+				Owner = attacker.Player;
 
 				//
-				Owner = attacker.player;
+				Owner = attacker.Player;
 			}
 
 			if (defender != null)
@@ -46,7 +46,7 @@ namespace __SCRIPTS
 			if(attacker != null)
 			{
 				OriginHeight = attacker.AttackHeight;
-				Owner = attacker.player;
+				Owner = attacker.Player;
 			}
 
 			DestinationFloorPoint = destinationFloorPoint;

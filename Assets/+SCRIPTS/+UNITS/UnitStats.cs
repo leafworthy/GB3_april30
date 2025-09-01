@@ -1,36 +1,39 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
-using VInspector;
 
 namespace __SCRIPTS
 {
-	public class UnitStats : MonoBehaviour
+	[Serializable]
+	public class UnitStats
 	{
-		[SerializeField] private UnitStatsData _unitData;
+		[SerializeField]private UnitStatsData _unitData;
 		public UnitStatsData Data => GetData();
 
-		private UnitStatsData GetData() => _unitData ??= UnitStatsManager.GetUnitStats(gameObject.name);
+		private string unitName;
 
-		[Header("Extra Factors")] public float ExtraHealthFactor;
+		public UnitStats(string _name)
+		{
+			unitName = _name;
+			_unitData = UnitStatsManager.GetUnitStats(unitName);
+			GetData();
+		}
+
+		private UnitStatsData GetData() => _unitData ??= UnitStatsManager.GetUnitStats(unitName);
+
+		public float ExtraHealthFactor;
 		public float ExtraDamageFactor;
 		public float ExtraSpeedFactor;
 
-		// Computed properties (base + extra * base)
 		public float MaxHealth => Data.healthMax + ExtraHealthFactor * Data.healthMax;
 		public float MoveSpeed => Data.moveSpeed + ExtraSpeedFactor * Data.moveSpeed;
 		public float DashSpeed => Data.dashSpeed + ExtraSpeedFactor * Data.dashSpeed;
 		public float JumpSpeed => Data.jumpSpeed;
 		public float AggroRange => Data.aggroRange;
-		public float AttackHeight => 5f; // Default value since not in CSV
-
-		// Unit type properties
+		public float AttackHeight => 5f;
 		public bool IsObstacle => Data.category == UnitCategory.Obstacle;
 		public bool IsPlayerAttackable => Data.isPlayerSwingHittable;
 		public DebrisType DebrisType => Data.debrisType;
-
-		private void OnEnable()
-		{
-			GetData();
-		}
 
 		public float GetAttackDamage(int attackIndex) => attackIndex switch
 		                                                 {
@@ -58,17 +61,5 @@ namespace __SCRIPTS
 			                                               4 => Data.attack4Rate,
 			                                               _ => 0f
 		                                               };
-
-		[Button]
-		private void GetStats()
-		{
-			_unitData = UnitStatsManager.GetUnitStats(gameObject.name);
-		}
-
-		[Button]
-		private void ClearStats()
-		{
-			_unitData = null;
-		}
 	}
 }

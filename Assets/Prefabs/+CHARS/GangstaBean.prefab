@@ -506,8 +506,6 @@ GameObject:
   - component: {fileID: 1547629825238236334}
   - component: {fileID: 6438088722743322343}
   - component: {fileID: 8019141755725131464}
-  - component: {fileID: 6978514886390485825}
-  - component: {fileID: 733584479355038319}
   - component: {fileID: 7457489753948469393}
   - component: {fileID: 6524197863214219341}
   - component: {fileID: 3543835829479452941}
@@ -660,6 +658,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 0}
+  unitStats:
+    _unitData:
+      unitName: GangstaBean
+      category: 0
+      debrisType: 0
+      isPlayerSwingHittable: 0
+      showLifeBar: 1
+      isInvincible: 0
+      healthMax: 350
+      moveSpeed: 50
+      dashSpeed: 300
+      jumpSpeed: 2
+      aggroRange: 0
+      attack1Damage: 40
+      attack1Rate: 0.2
+      attack1Range: 100
+      attack2Damage: 300
+      attack2Rate: 1
+      attack2Range: 50
+      attack3Damage: 75
+      attack3Rate: 1
+      attack3Range: 20
+      attack4Damage: 35
+      attack4Rate: 0.25
+      attack4Range: 100
+      hasData: 1
+    ExtraHealthFactor: 0
+    ExtraDamageFactor: 0
+    ExtraSpeedFactor: 0
+  unitHealth:
+    IsTemporarilyInvincible: 0
+    IsShielded: 0
 --- !u!114 &2381929228146834292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -883,60 +914,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3833892833308743022}
---- !u!114 &6978514886390485825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2e2b3dff27b4366861201db03348d76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _unitData:
-    unitName: GangstaBean
-    category: 0
-    debrisType: 0
-    isPlayerSwingHittable: 0
-    showLifeBar: 1
-    isInvincible: 0
-    healthMax: 350
-    moveSpeed: 50
-    dashSpeed: 300
-    jumpSpeed: 2
-    aggroRange: 0
-    attack1Damage: 40
-    attack1Rate: 0.2
-    attack1Range: 100
-    attack2Damage: 300
-    attack2Rate: 1
-    attack2Range: 50
-    attack3Damage: 75
-    attack3Rate: 1
-    attack3Range: 20
-    attack4Damage: 35
-    attack4Rate: 0.25
-    attack4Range: 100
-    hasData: 1
-  ExtraHealthFactor: 0
-  ExtraDamageFactor: 0
-  ExtraSpeedFactor: 0
---- !u!114 &733584479355038319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfe611ddc5634c0488416678b52dbade, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CanTakeDamage: 0
-  IsShielded: 0
 --- !u!114 &7457489753948469393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1151,7 +1128,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1ea5995b9e9403bbed0e109af227eb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  simpleShoot: 0
 --- !u!114 &166854034480967044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1164,7 +1140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1daa38efc99242c9b6940d8eee99eba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  simpleShoot: 0
 --- !u!1 &3833892834326608145
 GameObject:
   m_ObjectHideFlags: 0

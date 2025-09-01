@@ -90,6 +90,7 @@ namespace __SCRIPTS
 
 		public void UseAmmo(int amount)
 		{
+			Debug.Log("using ammo: " + amount);
 			Use(amount);
 		}
 	}

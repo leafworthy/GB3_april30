@@ -9,7 +9,7 @@ namespace __SCRIPTS
 		private AnimationEvents animEvents;
 		private Life life;
 		private JumpAbility jump;
-		private GunAttack_Shotgun shotgunAttack;
+		private IAimableGunAttack shotgunAttack;
 		private ChainsawAttack chainsawAttack;
 		private ThrowMineAttack mineAttack;
 		public AudioSource idleSound;
@@ -20,7 +20,7 @@ namespace __SCRIPTS
 			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
 			jump = GetComponent<JumpAbility>();
-			shotgunAttack = GetComponent<GunAttack_Shotgun>();
+			shotgunAttack = GetComponent<IAimableGunAttack>();
 			chainsawAttack = GetComponent<ChainsawAttack>();
 			mineAttack = GetComponent<ThrowMineAttack>();
 

@@ -38,6 +38,7 @@ namespace __SCRIPTS
 		public float attack4Range;
 
 		public bool hasData = false;
+		public bool isDefault;
 
 		// Constructor for creating from CSV data
 		public  UnitStatsData(Dictionary<string, string> csvRow)

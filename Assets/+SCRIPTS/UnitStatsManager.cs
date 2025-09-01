@@ -27,19 +27,17 @@ namespace __SCRIPTS
 		none
 	}
 
-
 	public static class UnitStatsManager
 	{
 		private static UnitStatsDatabase _database;
 		private static UnitStatsDatabase database => _database ??= Resources.FindObjectsOfTypeAll<UnitStatsDatabase>().FirstOrDefault();
 
 		private static Dictionary<string, UnitStatsData> _unitStatsLookup;
-		private static Dictionary<string, UnitStatsData> unitStatsLookup => _unitStatsLookup ??= BuildLookupDictionary();
+		private static Dictionary<string, UnitStatsData> unitStatsLookup => BuildLookupDictionary();
 
 		private static Dictionary<string, UnitStatsData> BuildLookupDictionary()
 		{
-			Debug.Log("library built");
-			_unitStatsLookup = new();
+			_unitStatsLookup = new Dictionary<string, UnitStatsData>();
 
 			foreach (var unit in database.allUnits)
 			{
@@ -51,24 +49,19 @@ namespace __SCRIPTS
 
 		public static UnitStatsData GetUnitStats(string unitName)
 		{
-		if (string.IsNullOrEmpty(unitName))
-		{
-			Debug.Log("null name");
-			return GetDefaultLifeStats();
-		}
+			if (string.IsNullOrEmpty(unitName))
+			{
+				Debug.Log("null name");
+				return GetDefaultLifeStats();
+			}
 
 			unitName = CleanUnitName(unitName);
 
 			var foundStats = LookupUnitStats(unitName);
 			if (foundStats != null)
-			{
 				foundStats.hasData = true;
-				Debug.Log("already had data" + foundStats.unitName);
-			}
 			else
-			{
 				Debug.Log("null data");
-			}
 			return foundStats;
 		}
 
@@ -83,7 +76,7 @@ namespace __SCRIPTS
 			if (unitStatsLookup.TryGetValue(cleanedName, out var stats)) return stats;
 
 			var fuzzyMatch = FindFuzzyMatch(cleanedName);
-			Debug.Log("cleaned name: " + cleanedName + " fuzzy match: " + (fuzzyMatch != null ? fuzzyMatch.unitName : "null"));
+			//Debug.Log("cleaned name: " + cleanedName + " fuzzy match: " + (fuzzyMatch != null ? fuzzyMatch.unitName : "null"));
 			return fuzzyMatch ?? GetDefaultLifeStats();
 		}
 
