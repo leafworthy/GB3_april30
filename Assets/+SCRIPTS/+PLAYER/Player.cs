@@ -44,6 +44,8 @@ namespace __SCRIPTS
 		public event Action<Player> OnPlayerLeavesUpgradeSetupMenu;
 
 		private PlayerUpgrades playerUpgrades;
+		private int buildingLayer;
+		public int BuildingLayer => assetManager.LevelAssets.BuildingLayer;
 
 		public bool IsPlayer() => data != null && data.isPlayer;
 

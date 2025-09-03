@@ -21,6 +21,13 @@ public static class ServiceLocator
 
 		if (_services.TryGetValue(type, out var service)) return (T) service;
 
+		var findItem = UnityEngine.Object.FindFirstObjectByType<T>();
+		if (findItem != null)
+		{
+			Register<T>(findItem);
+			Debug.Log("found item by type: " + type.Name);
+			return findItem;
+		}
 
 		throw new InvalidOperationException($"ServiceLocator: Service of type {type.Name} is not registered.");
 	}

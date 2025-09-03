@@ -69,16 +69,21 @@ public abstract class Ability : ServiceUser, IDoableAbility, INeedPlayer
 		Stop();
 	}
 
-	protected void PlayAnimationClip(AnimationClip clip, int layer = 0, float delay = 0)
+	protected void PlayAnimationClip(string clipName, float length,int layer = 0)
 	{
-		if (clip == null)
-		{
-			Debug.Log("starting ability with delay only: " + VerbName + " ability " + "delay: " + delay);
-			Invoke(nameof(AnimationComplete), delay);
-			return;
-		}
 
-		Debug.Log("animation starting" + clip.name + " for " + VerbName + " ability " + "length: " + clip.length);
+
+		anim.Play(clipName, layer, 0);
+		if (length != 0)
+		{
+			Invoke(nameof(AnimationComplete), length);
+		}
+	}
+
+	protected void PlayAnimationClip(AnimationClip clip, int layer = 0)
+	{
+
+
 		anim.Play(clip.name, layer, 0);
 		Invoke(nameof(AnimationComplete), clip.length);
 	}

@@ -1,5 +1,6 @@
 ﻿using System;
 using GangstaBean.Core;
+using Sirenix.Serialization;
 using UnityEngine;
 using VInspector;
 
@@ -7,12 +8,15 @@ namespace __SCRIPTS
 {
 	public class Life : ServiceUser, ICanAttack, INeedPlayer
 	{
+
+
 		public Player Player => player;
 		[SerializeField] private Player player;
 		[SerializeField] private UnitStats unitStats;
 		public UnitHealth unitHealth;
 		private UnitAnimations animations => _animations ??= GetComponent<UnitAnimations>();
 		private UnitAnimations _animations;
+		private int enemyLayer;
 
 		public float Health => unitHealth.CurrentHealth;
 		public bool IsDead() => unitHealth.IsDead;
@@ -61,6 +65,13 @@ namespace __SCRIPTS
 		{
 			unitStats = new UnitStats(gameObject.name);
 		}
+
+		[Sirenix.OdinInspector.Button]
+		public void Test()
+		{
+			var assets = ServiceLocator.Get<ASSETS>();
+			Debug.Log(assets.LevelAssets.EnemyLayer.ToString());
+		}
 		private void Start()
 		{
 			unitStats = new UnitStats(gameObject.name);
@@ -89,6 +100,7 @@ namespace __SCRIPTS
 		}
 
 		public bool IsHuman => Player != null && Player.IsPlayer();
+		public LayerMask EnemyLayer  => IsHuman ? assetManager.LevelAssets.EnemyLayer : assetManager.LevelAssets.PlayerLayer;
 
 		public void SetPlayer(Player newPlayer)
 		{

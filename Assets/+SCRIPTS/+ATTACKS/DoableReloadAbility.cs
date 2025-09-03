@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -9,38 +11,19 @@ namespace __SCRIPTS
 		public AnimationClip ReloadAKAnimationClip;
 		public AnimationClip ReloadGlockAnimationClip;
 		public AnimationClip ReloadGlockAnimationLeftClip;
-		private AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
-		private AmmoInventory _ammoInventory;
-		private IAimableGunAttack gunAttack => _gunAttack ??= GetComponent<IAimableGunAttack>();
-		private IAimableGunAttack _gunAttack;
-
-		private bool isEmpty =>
-			gunAttack.IsUsingPrimaryGun ? ammoInventory.unlimitedAmmo.hasAmmoInReserveOrClip() : ammoInventory.primaryAmmo.hasAmmoInReserveOrClip();
+		private GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
+		private GunAttack _gunAttack;
 
 		private float reloadTime = .5f;
+
+		private List<Gun> guns => _guns??= GetComponents<Gun>().ToList();
+		private List<Gun> _guns;
 		public override string VerbName => "Reloading";
-		private Ammo GetCorrectAmmoType() => gunAttack.currentGun.Ammo;
 		protected override bool requiresArms() => true;
 
 		protected override bool requiresLegs() => false;
 
-		public override bool canDo()
-		{
-			if (!base.canDo()) return false;
-			if (GetCorrectAmmoType().clipIsFull())
-			{
-				Debug.Log("clip is full");
-				return false;
-			}
-			if (!GetCorrectAmmoType().hasReserveAmmo())
-			{
-				Debug.Log("no reserve ammo");
-				return false;
-			}
-
-			Debug.Log("reload ability can do");
-			return true;
-		}
+		public override bool canDo() => base.canDo() && gunAttack.CurrentGun.CanReload();
 
 		protected override void DoAbility()
 		{
@@ -65,7 +48,7 @@ namespace __SCRIPTS
 		private void Reload()
 		{
 			Debug.Log("reload happens");
-			GetCorrectAmmoType().Reload();
+			gunAttack.CurrentGun.Reload();
 			OnReload?.Invoke();
 		}
 
@@ -79,6 +62,15 @@ namespace __SCRIPTS
 		{
 			base.SetPlayer(_player);
 			player.Controller.ReloadTriangle.OnPress += Player_Reload;
+			foreach (var gun in guns)
+			{
+				gun.OnNeedsReload += Gun_OnNeedsReload;
+			}
+		}
+
+		private void Gun_OnNeedsReload()
+		{
+			Do();
 		}
 
 		private void Player_Reload(NewControlButton btn)

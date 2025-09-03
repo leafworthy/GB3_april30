@@ -1,25 +1,33 @@
 
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
 	public class AK_GunAttacks_FX : ServiceUser
 	{
-		private IAimableGunAttack gunAttackAkGlock;
+		private List<Gun> gunAttackAkGlocks;
 		private GameObject bulletPrefab => assetManager.FX.BulletPrefab;
 
 		private void OnEnable()
 		{
-			gunAttackAkGlock = GetComponent<IAimableGunAttack>();
-			gunAttackAkGlock.OnShotHitTarget += GunAttackAkGlockOnOnOnShotHitTarget;
-			gunAttackAkGlock.OnShotMissed += GunAttackAkGlockOnOnOnShotHitTarget;
+			gunAttackAkGlocks = GetComponents<Gun>().ToList();
+			foreach (var gun in gunAttackAkGlocks)
+			{
+				gun.OnShotHitTarget += GunAttackAkGlockOnOnOnShotHitTarget;
+				gun.OnShotMissed += GunAttackAkGlockOnOnOnShotHitTarget;
+			}
 		}
 
 
 		private void OnDisable()
 		{
-			gunAttackAkGlock.OnShotHitTarget -= GunAttackAkGlockOnOnOnShotHitTarget;
-			gunAttackAkGlock.OnShotMissed -= GunAttackAkGlockOnOnOnShotHitTarget;
+			foreach (var gun in gunAttackAkGlocks)
+			{
+				gun.OnShotHitTarget += GunAttackAkGlockOnOnOnShotHitTarget;
+				gun.OnShotMissed += GunAttackAkGlockOnOnOnShotHitTarget;
+			}
 
 		}
 

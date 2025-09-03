@@ -10,7 +10,7 @@ namespace __SCRIPTS.HUD_Displays
 		public Image AKIcon;
 		public Image PistolIcon;
 		private Player player;
-		private IAimableGunAttack gunAttackAkGlock;
+		private GunAttack gunAttackAkGlock;
 		private bool isGlocking;
 
 		public void SetPlayer(Player _player)
@@ -21,7 +21,7 @@ namespace __SCRIPTS.HUD_Displays
 			// Cache the component reference once during setup
 			if (_player.SpawnedPlayerGO != null)
 			{
-				gunAttackAkGlock = _player.SpawnedPlayerGO.GetComponent<IAimableGunAttack>();
+				gunAttackAkGlock = _player.SpawnedPlayerGO.GetComponent<GunAttack>();
 				if (gunAttackAkGlock == null)
 				{
 					Debug.LogWarning($"GunAttack_AK_Glock not found on {_player.SpawnedPlayerGO.name}", this);

@@ -1,8 +1,9 @@
 using __SCRIPTS;
 using __SCRIPTS.RisingText;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class ServiceUser : MonoBehaviour
+public class ServiceUser : SerializedMonoBehaviour
 {
 	private PlayerStatsManager _playerStatsManager;
 	protected PlayerStatsManager playerStatsManager => _playerStatsManager ?? ServiceLocator.Get<PlayerStatsManager>();
