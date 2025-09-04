@@ -6,10 +6,9 @@ using VInspector;
 
 namespace __SCRIPTS
 {
-	public class Life : ServiceUser, ICanAttack, INeedPlayer
+
+	public class Life : MonoBehaviour, INeedPlayer
 	{
-
-
 		public Player Player => player;
 		[SerializeField] private Player player;
 		[SerializeField] private UnitStats unitStats;
@@ -17,17 +16,12 @@ namespace __SCRIPTS
 		private UnitAnimations animations => _animations ??= GetComponent<UnitAnimations>();
 		private UnitAnimations _animations;
 		private int enemyLayer;
-
-		public float Health => unitHealth.CurrentHealth;
+		private float currentHealth;
+		public bool showLifeBar  => unitStats.Data.showLifeBar;
 		public bool IsDead() => unitHealth.IsDead;
-		public UnitStatsData UnitData => unitStats.Data;
 		public float MaxHealth => unitStats.MaxHealth;
 		public bool CanBeAttacked => !unitStats.Data.isInvincible;
 		public bool IsShielded => unitHealth.IsShielded;
-		public bool CanTakeDamage => !unitHealth.IsTemporarilyInvincible && !unitStats.Data.isInvincible;
-		public float ExtraMaxDamageFactor => unitStats.ExtraDamageFactor;
-
-		public float ExtraMaxSpeedFactor => unitStats.ExtraSpeedFactor;
 		public float PrimaryAttackDamageWithExtra => unitStats.GetAttackDamage(1);
 		public float PrimaryAttackRange => unitStats.GetAttackRange(1);
 		public float PrimaryAttackRate => unitStats.GetAttackRate(1);
@@ -59,8 +53,12 @@ namespace __SCRIPTS
 		public event Action<Attack> OnWounded;
 		public event Action<Attack> OnShielded;
 
-
-		[Button]
+		[Sirenix.OdinInspector.Button]
+		public void ClearStats()
+		{
+			unitStats = null;
+		}
+		[Sirenix.OdinInspector.Button]
 		public void GetStats()
 		{
 			unitStats = new UnitStats(gameObject.name);
@@ -70,12 +68,11 @@ namespace __SCRIPTS
 		public void Test()
 		{
 			var assets = ServiceLocator.Get<ASSETS>();
-			Debug.Log(assets.LevelAssets.EnemyLayer.ToString());
 		}
 		private void Start()
 		{
 			unitStats = new UnitStats(gameObject.name);
-			unitHealth = new UnitHealth(gameObject, unitStats.Data.isInvincible, unitStats.Data.healthMax, animations);
+			unitHealth = new UnitHealth(gameObject, unitStats.Data.isInvincible, unitStats.Data.healthMax);
 			unitHealth.OnDamaged += Health_OnDamaged;
 			unitHealth.OnFractionChanged += Health_OnFractionChanged;
 			unitHealth.OnDead += Health_OnDead;
@@ -83,7 +80,7 @@ namespace __SCRIPTS
 			unitHealth.OnDying += Health_OnDying;
 			unitHealth.OnAttackHit += Health_AttackHit;
 			unitHealth.OnWounded += Health_OnWounded;
-			if (unitStats.Data.category != UnitCategory.Character) SetPlayer(playerManager.enemyPlayer);
+			if (unitStats.Data.category != UnitCategory.Character) SetPlayer(Services.playerManager.enemyPlayer);
 		}
 
 		private void OnDisable()
@@ -96,11 +93,13 @@ namespace __SCRIPTS
 			unitHealth.OnKilled -= Health_OnKilled;
 			unitHealth.OnAttackHit -= Health_AttackHit;
 			unitHealth.OnWounded -= Health_OnWounded;
-			unitHealth.Cleanup();
 		}
 
 		public bool IsHuman => Player != null && Player.IsPlayer();
-		public LayerMask EnemyLayer  => IsHuman ? assetManager.LevelAssets.EnemyLayer : assetManager.LevelAssets.PlayerLayer;
+		public LayerMask EnemyLayer  => IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
+		public bool CanTakeDamage  => !unitHealth.IsDead && !unitHealth.IsTemporarilyInvincible && !unitStats.Data.isInvincible;
+		public float ExtraDamageFactor  => unitStats.ExtraDamageFactor;
+		public float CurrentHealth  => unitHealth.CurrentHealth;
 
 		public void SetPlayer(Player newPlayer)
 		{
@@ -134,14 +133,14 @@ namespace __SCRIPTS
 
 
 
-		private void Health_OnDying()
+		private void Health_OnDying(Life life)
 		{
 			OnDying?.Invoke(Player, this);
 		}
 
 
 
-		private void Health_OnKilled(Player killer)
+		private void Health_OnKilled(Life life, Player killer)
 		{
 			OnKilled?.Invoke(killer, this);
 		}
@@ -170,7 +169,7 @@ namespace __SCRIPTS
 
 		public void AddHealth(float amount) => unitHealth.AddHealth(amount);
 		public void DieNow() => unitHealth.KillInstantly();
-		public float GetFraction() => unitHealth.GetFraction;
+		public float GetFraction() => unitHealth.GetFraction();
 
 		public void SetShielding(bool isOn)
 		{

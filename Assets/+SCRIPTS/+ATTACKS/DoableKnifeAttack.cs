@@ -92,7 +92,7 @@ public class DoableKnifeAttack : Ability
 
 	private GameObject FindClosestHit()
 	{
-		var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, unitAttackManager.life.TertiaryAttackRange, assetManager.LevelAssets.EnemyLayer).ToList();
+		var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, unitAttackManager.life.TertiaryAttackRange, Services.assetManager.LevelAssets.EnemyLayer).ToList();
 		if (circleCast.Count <= 0) return null;
 
 		var closest = circleCast[0];

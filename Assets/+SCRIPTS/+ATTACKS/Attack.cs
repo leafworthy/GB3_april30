@@ -4,19 +4,13 @@ using UnityEngine.Serialization;
 
 namespace __SCRIPTS
 {
-	public interface ICanAttack
-	{
-		float AttackHeight { get; }
-		Transform transform { get; }
-		Player Player { get; }
-		DebrisType DebrisType { get;  }
-	}
+
 
 	[Serializable]
 	public class Attack
 	{
 
-		public Attack(ICanAttack attacker, ICanAttack defender, float damageAmount)
+		public Attack(Life attacker, Life defender, float damageAmount)
 		{
 			DestinationLife = defender;
 			OriginLife = attacker;
@@ -39,7 +33,7 @@ namespace __SCRIPTS
 			DamageAmount = damageAmount;
 		}
 
-		public Attack(ICanAttack attacker, Vector2 attackFloorPoint, Vector2 destinationFloorPoint, ICanAttack defender, float damageAmount)
+		public Attack(Life attacker, Vector2 attackFloorPoint, Vector2 destinationFloorPoint, Life defender, float damageAmount)
 		{
 			OriginFloorPoint = attackFloorPoint;
 			OriginLife = attacker;
@@ -63,8 +57,8 @@ namespace __SCRIPTS
 
 
 
-		public ICanAttack OriginLife;
-		public ICanAttack DestinationLife;
+		public Life OriginLife;
+		public Life DestinationLife;
 		public Vector2 Direction => DestinationFloorPoint - OriginFloorPoint;
 
 		public Vector2 FlippedDirection => OriginFloorPoint -DestinationFloorPoint;

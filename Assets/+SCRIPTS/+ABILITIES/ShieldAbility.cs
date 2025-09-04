@@ -3,7 +3,7 @@ using __SCRIPTS.HUD_Displays;
 using GangstaBean.Core;
 using UnityEngine;
 
-public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
+public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 {
 	public class ShieldDashActivity : IActivity
 	{
@@ -11,6 +11,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 
 
 	}
+
 	private AnimationEvents animEvents;
 	private MoveController moveController;
 	private Life life;
@@ -67,7 +68,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 
 	private void ShieldPush()
 	{
-		var hits = Physics2D.OverlapCircleAll(transform.position, 30, assetManager.LevelAssets.EnemyLayer);
+		var hits = Physics2D.OverlapCircleAll(transform.position, 30, Services.assetManager.LevelAssets.EnemyLayer);
 		foreach (var hit in hits)
 		{
 			var _life = hit.GetComponent<Life>();
@@ -111,7 +112,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 	private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 	{
 		if (!moveController.CanMove) return;
-		if (pauseManager.IsPaused) return;
+		if (Services.pauseManager.IsPaused) return;
 		if (!jumps.isResting) return;
 
 

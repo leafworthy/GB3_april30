@@ -9,18 +9,18 @@ public class GameSceneGameOver : GameScene
     public List<PlayerStatsDisplay> displays;
     void Start()
     {
-	    playerManager.SetActionMaps(Players.UIActionMap);
+	    Services.playerManager.SetActionMaps(Players.UIActionMap);
 	    foreach (var display in displays)
 	    {
 		    display.gameObject.SetActive(false);
 	    }
-	    for (int i = 0; i < playerManager.AllJoinedPlayers.Count; i++)
+	    for (int i = 0; i < Services.playerManager.AllJoinedPlayers.Count; i++)
 	    {
 
-			    Debug.Log("stats for player " + playerManager.AllJoinedPlayers[i].playerIndex);
+			    Debug.Log("Stats for player " + Services.playerManager.AllJoinedPlayers[i].playerIndex);
 			    displays[i].gameObject.SetActive(true);
-			    displays[i].SetPlayer(playerManager.AllJoinedPlayers[i]);
-			    playerManager.AllJoinedPlayers[i].Controller.Select.OnPress += ContinuePress;
+			    displays[i].SetPlayer(Services.playerManager.AllJoinedPlayers[i]);
+			    Services.playerManager.AllJoinedPlayers[i].Controller.Select.OnPress += ContinuePress;
 
 
 	    }
@@ -29,13 +29,13 @@ public class GameSceneGameOver : GameScene
 
     private void ContinuePress(NewControlButton obj)
     {
-	    foreach (var player in playerManager.AllJoinedPlayers)
+	    foreach (var player in Services.playerManager.AllJoinedPlayers)
 	    {
 			player.Controller.Select.OnPress -= ContinuePress;
 	    }
 
 	    // Use the original level manager system
-	    levelManager.ExitToMainMenu();
+	    Services.levelManager.ExitToMainMenu();
     }
 
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class CharacterSelectButtons : ServiceUser
+	public class CharacterSelectButtons : MonoBehaviour
 	{
 		public CharacterSelectButton DefaultButton;
 		public event Action<Character> OnCharacterChosen;
@@ -56,7 +56,7 @@ namespace __SCRIPTS
 		{
 			if (!hasSelected) return;
 			hasSelected = false;
-			sfx.sounds.charSelect_deselect_sounds.PlayRandom();
+			Services.sfx.sounds.charSelect_deselect_sounds.PlayRandom();
 			currentlySelectedButton.Deselect();
 		}
 
@@ -90,14 +90,14 @@ namespace __SCRIPTS
 		private void ChooseCharacter()
 		{
 			currentlySelectedButton.Unhighlight();
-			sfx.sounds.charSelect_select_sounds.PlayRandom();
+			Services.sfx.sounds.charSelect_select_sounds.PlayRandom();
 			OnCharacterChosen?.Invoke(currentlySelectedButton.character);
 		}
 
 		private void OnRight(NewInputAxis obj)
 		{
 			if (hasSelected) return;
-			sfx.sounds.charSelect_move_sounds.PlayRandom();
+			Services.sfx.sounds.charSelect_move_sounds.PlayRandom();
 			hasJoined = true;
 			currentlySelectedButton.Unhighlight();
 			currentlySelectedButton = currentlySelectedButton.buttonToRight;
@@ -108,7 +108,7 @@ namespace __SCRIPTS
 		{
 			if (hasSelected) return;
 			hasJoined = true;
-			sfx.sounds.charSelect_move_sounds.PlayRandom();
+			Services.sfx.sounds.charSelect_move_sounds.PlayRandom();
 			currentlySelectedButton.Unhighlight();
 			currentlySelectedButton = currentlySelectedButton.buttonToLeft;
 			currentlySelectedButton.Highlight();

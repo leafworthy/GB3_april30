@@ -34,12 +34,6 @@ namespace __SCRIPTS
 		public override bool canDo()
 		{
 			if (!base.canDo()) return false;
-
-			if (body.doableArms.IsActive)
-			{
-				//Debug.Log("BLOCKED: Cannot aim, arms are active" + (body.doableArms.CurrentAbility != null ? $"({body.doableArms.CurrentAbility.VerbName})" : ""));
-				return false;
-			}
 			return true;
 		}
 
@@ -54,25 +48,25 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
-			player.Controller.AimAxis.OnChange -= AimerOnAim;
+
 			player.Controller.AimAxis.OnChange += AimerOnAim;
 			Debug.Log("subscribed to aim axis changes");
 		}
 
-		public virtual void OnDisable()
+		private void OnDisable()
 		{
 			if (player == null) return;
+			if (player.Controller == null) return;
 			player.Controller.AimAxis.OnChange -= AimerOnAim;
-			Debug.Log("unsubscribed from aim axis changes aimability");
 		}
 
 		private void AimerOnAim(IControlAxis controlAxis, Vector2 newAimDir)
 		{
-			if (canDo() && hasEnoughMagnitude()) AimDir = newAimDir;
+			if (hasEnoughMagnitude()) AimDir = newAimDir;
 			Do();
 		}
 
-		protected virtual void Update()
+		protected void Update()
 		{
 			Do();
 		}

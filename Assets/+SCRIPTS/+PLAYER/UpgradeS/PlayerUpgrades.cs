@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace __SCRIPTS.UpgradeS
 {
-	public class PlayerUpgrades : ServiceUser
+	public class PlayerUpgrades : MonoBehaviour
 	{
 		private Player player;
 		[SerializeField]private List<Upgrade> upgrades = new();
 		private void Start()
 		{
-			levelManager.OnStartLevel += ResetUpgrades;
+			Services.levelManager.OnStartLevel += ResetUpgrades;
 		}
 		private void OnDisable()
 		{
-			levelManager.OnStartLevel -= ResetUpgrades;
+			Services.levelManager.OnStartLevel -= ResetUpgrades;
 		}
 
 		private void ResetUpgrades(GameLevel gameLevel)
@@ -26,14 +26,14 @@ namespace __SCRIPTS.UpgradeS
 		}
 		public bool BuyUpgrade(Upgrade upgrade)
 		{
-			if(upgrade.Cost > playerStatsManager.GetStatAmount(player,PlayerStat.StatType.TotalCash))
+			if(upgrade.Cost > Services.playerStatsManager.GetStatAmount(player,PlayerStat.StatType.TotalCash))
 			{
 
 				return false;
 			}
 
 
-			playerStatsManager.ChangeStat(player, PlayerStat.StatType.TotalCash, -upgrade.Cost);
+			Services.playerStatsManager.ChangeStat(player, PlayerStat.StatType.TotalCash, -upgrade.Cost);
 
 				upgrade.UpgradeLevel();
 

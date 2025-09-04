@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class PlayerInteractable : ServiceUser
+	public class PlayerInteractable : MonoBehaviour
 	{
 		public event Action<Player> OnActionPress;
 		public event Action<Player> OnActionRelease;
@@ -74,7 +74,7 @@ namespace __SCRIPTS
 		{
 			if (interactionIndicator == null) return true;
 
-			var hits = Physics2D.LinecastAll(playerPosition, interactionPosition, assetManager.LevelAssets.BuildingLayer);
+			var hits = Physics2D.LinecastAll(playerPosition, interactionPosition, Services.assetManager.LevelAssets.BuildingLayer);
 			//Debug.DrawLine( playerPosition, interactionPosition, Color.blue, 1f);
 
 			if(hits.Length == 0)

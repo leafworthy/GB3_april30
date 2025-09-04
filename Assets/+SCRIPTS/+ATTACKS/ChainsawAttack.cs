@@ -127,7 +127,7 @@ namespace __SCRIPTS
 
 		private void FixedUpdate()
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 
 			// Handle facing direction while chainsawing
 			if (isChainsawing && moveDir != Vector2.zero && body != null)
@@ -172,7 +172,7 @@ namespace __SCRIPTS
 
 		private void PlayerChainsawRelease(NewControlButton newControlButton)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			isPressingChainsawButton = false;
 			StopAttacking();
 			OnStopAttacking?.Invoke(transform.position);
@@ -213,7 +213,7 @@ namespace __SCRIPTS
 
 		private void PlayerChainsawPress(NewControlButton newControlButton)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			isPressingChainsawButton = true;
 			StartChainsawing();
 		}
@@ -221,13 +221,12 @@ namespace __SCRIPTS
 		private List<Life> FindClosestHits()
 		{
 			// Null checks
-			if (attackPoint == null || attacker == null || assetManager.LevelAssets == null)
+			if (attackPoint == null || attacker == null || Services.assetManager.LevelAssets == null)
 			{
 				return new List<Life>();
 			}
 
-			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange,
-				 assetManager.LevelAssets.EnemyLayer).ToList();
+			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange, Services.assetManager.LevelAssets.EnemyLayer).ToList();
 			if (circleCast.Count <= 0) return new List<Life>();
 
 			var enemies = new List<Life>();

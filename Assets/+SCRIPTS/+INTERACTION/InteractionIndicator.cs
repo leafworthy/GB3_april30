@@ -3,7 +3,7 @@ using UnityEngine.Serialization;
 
 namespace __SCRIPTS
 {
-	public class InteractionIndicator : ServiceUser
+	public class InteractionIndicator : MonoBehaviour
 	{
 		private static readonly int HitTrigger = Animator.StringToHash("HitTrigger");
 		private static readonly int IsFinished = Animator.StringToHash("IsFinished");
@@ -96,7 +96,7 @@ namespace __SCRIPTS
 
 		private PlayerIndicator MakeIndicator()
 		{
-			var indicatorObj = objectMaker.Make( assetManager.FX.indicatorPrefab, transform.position+ indicatorOffset);
+			var indicatorObj = Services.objectMaker.Make(Services.assetManager.FX.indicatorPrefab, transform.position+ indicatorOffset);
 			indicatorObj.transform.SetParent(transform);
 			return indicatorObj.GetComponentInChildren<PlayerIndicator>();
 		}

@@ -8,7 +8,7 @@ namespace __SCRIPTS
 		{
 			base.StartEffect(life);
 			effectDuration = 0;
-			var ammoHandler = life.GetComponent<AmmoInventory>();
+			var ammoHandler = life.transform.gameObject.GetComponent<AmmoInventory>();
 			ammoHandler.AddAmmoToReserve(ammoType, amount);
 		}
 

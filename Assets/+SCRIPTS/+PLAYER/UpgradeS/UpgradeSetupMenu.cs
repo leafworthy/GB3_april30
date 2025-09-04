@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace __SCRIPTS.UpgradeS
 {
-	public class UpgradeSetupMenu : ServiceUser, INeedPlayer
+	public class UpgradeSetupMenu : MonoBehaviour, INeedPlayer
 	{
 		public UpgradeSelectButtons buttons;
 		public GameObject Visible;
@@ -19,8 +19,8 @@ namespace __SCRIPTS.UpgradeS
 		private bool inMenu;
 		private void OnEnable()
 		{
-			levelManager.OnStopLevel += LevelGameSceneOnStopLevel;
-			pauseManager.OnPause += PauseWhileInMenu;
+			Services.levelManager.OnStopLevel += LevelGameSceneOnStopLevel;
+			Services.pauseManager.OnPause += PauseWhileInMenu;
 
 		}
 
@@ -57,8 +57,8 @@ namespace __SCRIPTS.UpgradeS
 
 		private void OnDisable()
 		{
-			levelManager.OnStopLevel -= LevelGameSceneOnStopLevel;
-			pauseManager.OnPause -= PauseWhileInMenu;
+			Services.levelManager.OnStopLevel -= LevelGameSceneOnStopLevel;
+			Services.pauseManager.OnPause -= PauseWhileInMenu;
 		}
 
 
@@ -98,14 +98,14 @@ namespace __SCRIPTS.UpgradeS
 
 			if (!playerUpgrades.BuyUpgrade(upgrade))
 			{
-				sfx.sounds.charSelect_deselect_sounds.PlayRandom();
-				risingText.CreateRisingText("Not enough cash" , owner.SpawnedPlayerGO.transform.position, Color.red);
+				Services.sfx.sounds.charSelect_deselect_sounds.PlayRandom();
+				Services.risingText.CreateRisingText("Not enough cash" , owner.SpawnedPlayerGO.transform.position, Color.red);
 				return;
 			}
 
-			sfx.sounds.charSelect_select_sounds.PlayRandom();
+			Services.sfx.sounds.charSelect_select_sounds.PlayRandom();
 
-			risingText.CreateRisingText(upgrade.GetDescription, owner.SpawnedPlayerGO.transform.position, Color.white);
+			Services.risingText.CreateRisingText(upgrade.GetDescription, owner.SpawnedPlayerGO.transform.position, Color.white);
 			OnUpgradePurchased?.Invoke(owner);
 
 		}

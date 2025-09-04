@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class ThrowMineAttack : ServiceUser, INeedPlayer, IActivity
+	public class ThrowMineAttack : MonoBehaviour, INeedPlayer, IActivity
 	{
 		private Vector2 startPoint;
 		private Vector2 endPoint;
@@ -103,7 +103,7 @@ namespace __SCRIPTS
 
 		private void Player_ThrowPress(NewControlButton newControlButton)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (isPressing) return;
 
 			if (!ammo.secondaryAmmo.hasReserveAmmo())
@@ -143,7 +143,7 @@ namespace __SCRIPTS
 			startPoint = transform.position;
 			OnThrow?.Invoke(startPoint, life.Player);
 
-			var newProjectile = objectMaker.Make( assetManager.FX.minePrefab, startPoint);
+			var newProjectile = Services.objectMaker.Make(Services.assetManager.FX.minePrefab, startPoint);
 			var newMine = newProjectile.GetComponent<Mine>();
 			newMine.Launch(startPoint, player);
 			newMine.OnSelfDetonate += RemoveMine;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class MoveAbility : ServiceUser, IActivity
+	public class MoveAbility : MonoBehaviour, IActivity
 	{
 		private Vector2 moveVelocity;
 		private Vector2 pushVelocity;
@@ -70,7 +70,7 @@ namespace __SCRIPTS
 			life.OnDying -= Life_OnDying;
 		}
 
-		private void Life_OnDying(Player arg1, Life arg2)
+		private void Life_OnDying(Player player, Life life1)
 		{
 			IsActive = false;
 			StopMoving();
@@ -79,7 +79,7 @@ namespace __SCRIPTS
 
 		private void FixedUpdate()
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 
 			if (isMoving && IsActive)
 			{
@@ -141,7 +141,7 @@ namespace __SCRIPTS
 		private void MoveObjectTo(Vector2 destination, bool teleport = false)
 		{
 			rb = GetComponent<Rigidbody2D>();
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (rb != null)
 			{
 				rb.MovePosition(destination);

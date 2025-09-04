@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-    public class Donut_SFX : ServiceUser
+    public class Donut_SFX : MonoBehaviour
     {
         private UnitAnimations anim;
         private AnimationEvents animEvents;
@@ -28,10 +28,10 @@ namespace __SCRIPTS
             animEvents.OnDieStart -= Anim_OnDie;
         }
 
-        private void Anim_OnDie() => sfx.sounds.donut_die_sounds.PlayRandomAt(transform.position);
-        private void Anim_OnHit() => sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
-        private void Anim_OnRoar() => sfx.sounds.donut_roar_sounds.PlayRandomAt(transform.position);
-        private void Anim_OnAttackHit(int attackType) => sfx.sounds.donut_hit_sounds.PlayRandomAt(transform.position);
-        private void Anim_OnStep() => sfx.sounds.donut_walk_sounds.PlayRandomAt(transform.position);
+        private void Anim_OnDie() => Services.sfx.sounds.donut_die_sounds.PlayRandomAt(transform.position);
+        private void Anim_OnHit() => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+        private void Anim_OnRoar() => Services.sfx.sounds.donut_roar_sounds.PlayRandomAt(transform.position);
+        private void Anim_OnAttackHit(int attackType) => Services.sfx.sounds.donut_hit_sounds.PlayRandomAt(transform.position);
+        private void Anim_OnStep() => Services.sfx.sounds.donut_walk_sounds.PlayRandomAt(transform.position);
     }
 }

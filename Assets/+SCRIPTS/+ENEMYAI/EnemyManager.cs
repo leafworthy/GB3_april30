@@ -8,7 +8,7 @@ namespace __SCRIPTS
 	{
 		private List<Life> _allEnemies = new();
 		public event Action<Player, Life> OnPlayerKillsEnemy;
-		public event Action<Player, Life> OnEnemyDying;
+		public event Action<Life> OnEnemyDying;
 		private LevelManager _levelManager;
 		private LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
 		private Players _players;
@@ -40,9 +40,9 @@ namespace __SCRIPTS
 			_allEnemies.Add(enemyDefence);
 		}
 
-		private void EnemyDying(Player x, Life y)
+		private void EnemyDying(Player player, Life life)
 		{
-			OnEnemyDying?.Invoke(x, y);
+			OnEnemyDying?.Invoke(life);
 		}
 
 		private void ClearEnemies(GameLevel gameLevel)

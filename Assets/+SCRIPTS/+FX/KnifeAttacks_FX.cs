@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class KnifeAttacks_FX : ServiceUser
+	public class KnifeAttacks_FX : MonoBehaviour
 	{
 		private DoableKnifeAttack knifeAttack;
 
@@ -23,7 +23,7 @@ namespace __SCRIPTS
 
 		private void KnifeAttackOnHit(Vector2 pos)
 		{
-			objectMaker.Make( assetManager.FX.hit5_xstrike, pos);
+			Services.objectMaker.Make(Services.assetManager.FX.hit5_xstrike, pos);
 			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);
 		}
 

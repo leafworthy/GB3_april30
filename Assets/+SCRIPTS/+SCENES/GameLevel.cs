@@ -1,8 +1,9 @@
 using System;
+using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class GameLevel : ServiceUser
+	public class GameLevel : MonoBehaviour
 	{
 		public TravelPoint defaultTravelPoint => FindFirstObjectByType<TravelPoint>();
 		public SceneDefinition scene;
@@ -10,12 +11,12 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
-			playerManager.OnAllJoinedPlayersDead += LoseLevel;
+			Services.playerManager.OnAllJoinedPlayersDead += LoseLevel;
 		}
 
 		public void StopLevel()
 		{
-			playerManager.OnAllJoinedPlayersDead -= LoseLevel;
+			Services.playerManager.OnAllJoinedPlayersDead -= LoseLevel;
 		}
 
 		private void LoseLevel()

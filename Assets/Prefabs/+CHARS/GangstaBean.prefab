@@ -513,14 +513,14 @@ GameObject:
   - component: {fileID: 5548372319585306732}
   - component: {fileID: 2540166378909504354}
   - component: {fileID: 4040534153244162535}
-  - component: {fileID: 6468961263891423961}
   - component: {fileID: 3647936817641516148}
-  - component: {fileID: 4284111403091859338}
   - component: {fileID: 7588817595896598098}
   - component: {fileID: 5892735826027873934}
   - component: {fileID: 2356797611298481610}
+  - component: {fileID: 4284111403091859338}
   - component: {fileID: 147235593454067752}
   - component: {fileID: 166854034480967044}
+  - component: {fileID: 2099686618678397150}
   m_Layer: 6
   m_Name: GangstaBean
   m_TagString: Player
@@ -666,10 +666,7 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: sampleSpot
-      Entry: 6
-      Data: 
+    SerializationNodes: []
   player: {fileID: 0}
   unitStats:
     _unitData:
@@ -1181,28 +1178,6 @@ MonoBehaviour:
     maxReserveAmmo: 999
     reloads: 1
     unlimited: 1
---- !u!114 &6468961263891423961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dccbd4ab199c4e6aafe47afa4d2443f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  simpleShoot: 0
 --- !u!114 &3647936817641516148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1225,27 +1200,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   flashlightLight: {fileID: 4333478069115357224}
---- !u!114 &4284111403091859338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f512f76248e741cfa3e1074e10baf703, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!114 &7588817595896598098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1310,11 +1264,30 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: _gunAimAbility
-      Entry: 6
-      Data: 
+    SerializationNodes: []
   isPressingShoot: 0
+  simpleShoot: 0
+--- !u!114 &4284111403091859338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f512f76248e741cfa3e1074e10baf703, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
 --- !u!114 &147235593454067752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1339,6 +1312,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1daa38efc99242c9b6940d8eee99eba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2099686618678397150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28e8f42e178c479683198e99ba643f7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
 --- !u!1 &3833892834326608145
 GameObject:
   m_ObjectHideFlags: 0

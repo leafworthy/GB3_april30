@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class PlayerStatsManager : MonoBehaviour, IService
+	public class PlayerStatsManager : SerializedMonoBehaviour, IService
 	{
 		private static Dictionary<Player, PlayerStats> playerStats = new();
 

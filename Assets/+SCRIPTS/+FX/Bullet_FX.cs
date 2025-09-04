@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class Bullet_FX : ServiceUser
+	public class Bullet_FX : MonoBehaviour
 	{
 		private int shotTime = 1;
 		private int shotCounter;
@@ -16,8 +16,10 @@ namespace __SCRIPTS
 		private IsoSpriteSorting sorting;
 		private bool hasFired;
 
-		public void Fire(Attack attack, Vector2 attackStartPoint)
+
+		public void Fire(Attack attack)
 		{
+			Debug.Log("bullet fired");
 			sprite = GetComponent<SpriteRenderer>();
 			if(!hasFired)
 			{
@@ -31,7 +33,7 @@ namespace __SCRIPTS
 			bulletWidth = width;
 			shotCounter = shotTime;
 			isOn = true;
-			line(attackStartPoint, attack.DestinationWithHeight);
+			line(attack.OriginWithHeight, attack.DestinationWithHeight);
 
 			sorting.SorterPositionOffset = attack.OriginFloorPoint -(Vector2)transform.position;
 			sorting.SorterPositionOffset2 = attack.DestinationFloorPoint - (Vector2)transform.position;
@@ -41,7 +43,7 @@ namespace __SCRIPTS
 
 		private void FixedUpdate()
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (!isOn) return;
 			if (shotCounter > 0)
 			{
@@ -50,14 +52,14 @@ namespace __SCRIPTS
 			}
 			else
 			{
-				objectMaker.Unmake(gameObject);
+				Services.objectMaker.Unmake(gameObject);
 				isOn = false;
 			}
 		}
 
 		private void line(Vector2 start, Vector2 end)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (start == end) return;
 			if (sprite == null) sprite = GetComponent<SpriteRenderer>();
 

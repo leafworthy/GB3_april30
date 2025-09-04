@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace __SCRIPTS.UpgradeS
 {
-	public class UpgradeSelectButtons : ServiceUser
+	public class UpgradeSelectButtons : MonoBehaviour
 	{
 		public UpgradeSelectButton DefaultButton;
 		public event Action OnExit;
@@ -86,7 +86,7 @@ namespace __SCRIPTS.UpgradeS
 
 		private void OnCancel(NewControlButton obj)
 		{
-			sfx.sounds.charSelect_deselect_sounds.PlayRandom();
+			Services.sfx.sounds.charSelect_deselect_sounds.PlayRandom();
 			currentlySelectedButton.Deselect();
 
 			OnExit?.Invoke();
@@ -107,7 +107,7 @@ namespace __SCRIPTS.UpgradeS
 		private void OnRight(NewInputAxis obj)
 		{
 
-			sfx.sounds.charSelect_move_sounds.PlayRandom();
+			Services.sfx.sounds.charSelect_move_sounds.PlayRandom();
 			currentlySelectedButton.Unhighlight();
 			SetCurrentButton(currentlySelectedButton.buttonToRight);
 			currentlySelectedButton.transform.DOPunchScale(Vector3.one * .1f, 0.5f, 1, 0.1f);
@@ -116,7 +116,7 @@ namespace __SCRIPTS.UpgradeS
 		private void OnLeft(NewInputAxis obj)
 		{
 
-			sfx.sounds.charSelect_move_sounds.PlayRandom();
+			Services.sfx.sounds.charSelect_move_sounds.PlayRandom();
 			currentlySelectedButton.Unhighlight();
 			SetCurrentButton(currentlySelectedButton.buttonToLeft);
 		}

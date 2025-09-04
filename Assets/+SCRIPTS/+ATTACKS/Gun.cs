@@ -5,8 +5,8 @@ namespace __SCRIPTS
 {
 	public abstract class Gun : MonoBehaviour
 	{
-		public event Action<Attack, Vector2> OnShotHitTarget;
-		public event Action<Attack, Vector2> OnShotMissed;
+		public event Action<Attack> OnShotHitTarget;
+		public event Action<Attack> OnShotMissed;
 		public event Action OnNeedsReload;
 		public event Action OnEmpty;
 		private UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
@@ -22,7 +22,7 @@ namespace __SCRIPTS
 		private Life _life;
 		private bool isCoolingDown;
 		private float currentCooldownTime;
-		protected abstract float AttackRate { get; }
+		public abstract float AttackRate { get; }
 		protected abstract float Damage { get; }
 		protected abstract Ammo Ammo { get; }
 
@@ -30,17 +30,35 @@ namespace __SCRIPTS
 		protected abstract float Spread { get; }
 		protected abstract int numberOfBulletsPerShot { get; }
 		protected virtual bool simpleShoot => false;
-		private bool IsCoolingDown => !(Time.time >= currentCooldownTime);
+		private bool IsCoolingDown => Time.time <= currentCooldownTime;
 		public bool CanReload() => Ammo.CanReload();
 		public void Reload() => Ammo.Reload();
-		public bool CanShoot() => !NeedToReload() && !IsCoolingDown;
+
+		private void Awake()
+		{
+			currentCooldownTime = Time.time;
+		}
+
+		public bool CanShoot()
+		{
+			return Ammo.hasAmmoInClip();
+			Debug.Log("is cooling down: " + IsCoolingDown + ", has ammo in clip: " + Ammo.hasAmmoInClip(), this);
+			Debug.Log("cooldown: " + currentCooldownTime + " vs time: " + Time.time +" good?: "+ (currentCooldownTime >= Time.time) , this);
+			if(Ammo.hasAmmoInClip() && !IsCoolingDown) Debug.Log("wtf this is right");
+			return Ammo.hasAmmoInClip() && !IsCoolingDown;
+		}
 
 		public void Shoot(Vector2 targetPosition)
 		{
+			if (!CanShoot())
+			{
+				Debug.Log("can't shoot", this);
+				return;
+			}
 			currentCooldownTime = Time.time + AttackRate;
 			Debug.Log("[GUN] shoot in gun");
 
-			if (!CanShoot()) return;
+
 			Debug.Log("[GUN] isAttacking, number of bullets: " + numberOfBulletsPerShot, this);
 			if (simpleShoot) anim.SetTrigger(UnitAnimations.ShootingTrigger);
 			for (var i = 0; i < numberOfBulletsPerShot; i++)
@@ -52,21 +70,27 @@ namespace __SCRIPTS
 
 		private bool NeedToReload()
 		{
-			if (!Ammo.hasAmmoInClip())
-			{
-				if (Ammo.hasReserveAmmo())
+			if (Ammo.clipIsFull()) return false;
+				if (!Ammo.hasAmmoInClip())
 				{
-					Debug.Log("[GUN] needs reload in gun");
+					if(Ammo.hasReserveAmmo())
+					{
+						Debug.Log("[GUN] needs reload in gun");
+						OnNeedsReload?.Invoke();
+					}
+					else
+					{
+						Debug.Log("[GUN] empty in gun");
+						OnEmpty?.Invoke();
+					}
+					return true;
+				}else if (Ammo.AmmoInClip < numberOfBulletsPerShot)
+				{
 					OnNeedsReload?.Invoke();
 					return true;
 				}
 
-				Debug.Log("[GUN] empty in gun");
-				OnEmpty?.Invoke();
-				return true;
-			}
-
-			return false;
+				return false;
 		}
 
 		private void ShootBullet(Vector3 targetPosition)
@@ -96,7 +120,7 @@ namespace __SCRIPTS
 			var newAttack = new Attack(life, body.FootPoint.transform.position, missPosition, null, 0);
 			MyDebugUtilities.DrawAttack(newAttack, Color.red);
 			Debug.DrawLine(body.FootPoint.transform.position, missPosition, Color.red, 3);
-			OnShotMissed?.Invoke(newAttack, body.AttackStartPoint.transform.position);
+			OnShotMissed?.Invoke(newAttack);
 		}
 
 		private void ShotHitTarget(RaycastHit2D hitObject)
@@ -105,9 +129,7 @@ namespace __SCRIPTS
 			var target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
 			if (target == null) return;
 			var newAttack = new Attack(life, body.FootPoint.transform.position, hitObject.point, target, Damage);
-			OnShotHitTarget?.Invoke(newAttack, body.AttackStartPoint.transform.position);
-			MyDebugUtilities.DrawAttack(newAttack, Color.green);
-			Debug.DrawLine(body.FootPoint.transform.position, body.FootPoint.transform.position, Color.green, 3);
+			OnShotHitTarget?.Invoke(newAttack);
 			target.TakeDamage(newAttack);
 		}
 	}
@@ -115,7 +137,7 @@ namespace __SCRIPTS
 	public class PrimaryGun : Gun
 	{
 		private bool isShooting;
-		protected override float AttackRate => life.PrimaryAttackRate;
+		public override float AttackRate => life.PrimaryAttackRate;
 		protected override float Damage => life.PrimaryAttackDamageWithExtra;
 		protected override Ammo Ammo => ammoInventory.primaryAmmo;
 		protected override float AttackRange => life.PrimaryAttackRange;
@@ -126,7 +148,7 @@ namespace __SCRIPTS
 
 	public class UnlimitedGun : Gun
 	{
-		protected override float AttackRate => life.UnlimitedAttackRate;
+		public override float AttackRate => life.UnlimitedAttackRate;
 		protected override float Damage => life.UnlimitedAttackDamageWithExtra;
 		protected override Ammo Ammo => ammoInventory.unlimitedAmmo;
 		protected override float AttackRange => life.UnlimitedAttackRange;

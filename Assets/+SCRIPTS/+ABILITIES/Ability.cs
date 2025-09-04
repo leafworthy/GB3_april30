@@ -1,8 +1,9 @@
 using __SCRIPTS;
 using GangstaBean.Core;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public abstract class Ability : ServiceUser, IDoableAbility, INeedPlayer
+public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPlayer
 {
 	protected Player player;
 	private UnitAnimations _anim;
@@ -55,7 +56,7 @@ public abstract class Ability : ServiceUser, IDoableAbility, INeedPlayer
 
 	private bool BodyCanDo(IDoableAbility abilityToDo)
 	{
-		if (pauseManager.IsPaused) return false;
+		if (Services.pauseManager.IsPaused) return false;
 		if (life.IsDead()) return false;
 		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo)) return false;
 		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo)) return false;

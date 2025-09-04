@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 namespace __SCRIPTS
 {
 	[Serializable]
-	public class Player : ServiceUser
+	public class Player : MonoBehaviour
 	{
 		public enum State
 		{
@@ -45,7 +45,7 @@ namespace __SCRIPTS
 
 		private PlayerUpgrades playerUpgrades;
 		private int buildingLayer;
-		public int BuildingLayer => assetManager.LevelAssets.BuildingLayer;
+		public int BuildingLayer => Services.assetManager.LevelAssets.BuildingLayer;
 
 		public bool IsPlayer() => data != null && data.isPlayer;
 
@@ -59,7 +59,7 @@ namespace __SCRIPTS
 		{
 			SetState(State.Dead);
 			OnPlayerDies?.Invoke(this);
-			playerStatsManager.SetStatAmount(player, PlayerStat.StatType.TimeSurvived, levelManager.GetCurrentLevelTimeElapsed());
+			Services.playerStatsManager.SetStatAmount(this, PlayerStat.StatType.TimeSurvived, Services.levelManager.GetCurrentLevelTimeElapsed());
 		}
 
 		public GameObject Spawn(Vector2 position, bool fallFromSky)
@@ -95,13 +95,13 @@ namespace __SCRIPTS
 			switch (player.CurrentCharacter)
 			{
 				case Character.Karrot:
-					return assetManager.Players.GangstaBeanPlayerPrefab;
+					return Services.assetManager.Players.GangstaBeanPlayerPrefab;
 				case Character.Bean:
-					return assetManager.Players.GangstaBeanPlayerPrefab;
+					return Services.assetManager.Players.GangstaBeanPlayerPrefab;
 				case Character.Brock:
-					return assetManager.Players.BrockLeePlayerPrefab;
+					return Services.assetManager.Players.BrockLeePlayerPrefab;
 				case Character.Tmato:
-					return assetManager.Players.TMatoPlayerPrefab;
+					return Services.assetManager.Players.TMatoPlayerPrefab;
 			}
 
 			return null;
@@ -172,11 +172,11 @@ namespace __SCRIPTS
 			hasKey = true;
 		}
 
-		public bool HasMoreMoneyThan(int amount) => playerStatsManager.GetStatAmount(this, PlayerStat.StatType.TotalCash) >= amount;
+		public bool HasMoreMoneyThan(int amount) => Services.playerStatsManager.GetStatAmount(this, PlayerStat.StatType.TotalCash) >= amount;
 
 		public void SpendMoney(int amount)
 		{
-			playerStatsManager.ChangeStat(this, PlayerStat.StatType.TotalCash, -amount);
+			Services.playerStatsManager.ChangeStat(this, PlayerStat.StatType.TotalCash, -amount);
 		}
 
 		public bool isDead() => spawnedPlayerDefence.IsDead();

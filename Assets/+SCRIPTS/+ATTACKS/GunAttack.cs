@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -53,7 +54,7 @@ namespace __SCRIPTS
 		{
 			CurrentGun.Shoot(aimAbility.AimDir);
 			body.TopFaceDirection(GetClampedAimDir().x >= 0);
-			PlayAnimationClip(GetClipNameFromDegrees(GetDegreesFromAimDir()), 0,1);
+			PlayAnimationClip(GetClipNameFromDegrees(GetDegreesFromAimDir()), CurrentGun.AttackRate,1);
 			anim.SetFloat(UnitAnimations.ShootSpeed, 1);
 		}
 
@@ -103,8 +104,11 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
+			currentGun = allGuns.FirstOrDefault( g => g is PrimaryGun);
 			foreach (var gun in allGuns)
 			{
+				gun.OnShotHitTarget -= Gun_OnShotHitTarget;
+				gun.OnShotMissed -= Gun_OnShotMissed;
 				gun.OnShotHitTarget += Gun_OnShotHitTarget;
 				gun.OnShotMissed += Gun_OnShotMissed;
 			}
@@ -113,7 +117,7 @@ namespace __SCRIPTS
 			ListenToEvents();
 		}
 
-		private void Gun_OnShotMissed(Attack attack, Vector2 position)
+		private void Gun_OnShotMissed(Attack attack)
 		{
 			Shoot();
 		}
@@ -127,22 +131,16 @@ namespace __SCRIPTS
 				anim.Play(GetClipNameFromDegrees(GetDegreesFromAimDir()), 1, .25f);
 		}
 
-		private void Gun_OnShotHitTarget(Attack attack, Vector2 position)
+		private void Gun_OnShotHitTarget(Attack attack)
 		{
 			Shoot();
 		}
 
-		private void OnDisable()
-		{
-			StopListeningToEvents();
-		}
+
 
 		public override bool canDo() => base.canDo() && CurrentGun.CanShoot();
 
-		private void OnDestroy()
-		{
-			StopListeningToEvents();
-		}
+
 
 		private void ListenToEvents()
 		{
@@ -157,9 +155,20 @@ namespace __SCRIPTS
 			player.Controller.Attack1RightTrigger.OnRelease += PlayerControllerShootRelease;
 		}
 
+		private void OnDisable()
+		{
+			StopListeningToEvents();
+		}
+
 		private void StopListeningToEvents()
 		{
+			foreach (var gun in allGuns)
+			{
+				gun.OnShotHitTarget -= Gun_OnShotHitTarget;
+				gun.OnShotMissed -= Gun_OnShotMissed;
+			}
 			if (player == null) return;
+			if (player.Controller == null) return;
 			player.Controller.Attack1RightTrigger.OnPress -= PlayerControllerShootPress;
 			player.Controller.Attack1RightTrigger.OnRelease -= PlayerControllerShootRelease;
 		}
@@ -178,7 +187,8 @@ namespace __SCRIPTS
 
 		private void Aim()
 		{
-			if (!canDo()) return;
+			if (body.doableArms.IsActive) return;
+			body.TopFaceDirection(GetClampedAimDir().x >= 0);
 			PlayAnimationClip(GetClipNameFromDegrees(GetDegreesFromAimDir()), 0,1);
 			anim.SetFloat(UnitAnimations.ShootSpeed, 0);
 		}

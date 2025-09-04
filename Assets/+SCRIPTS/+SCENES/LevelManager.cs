@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class LevelManager : ServiceUser, IService
+	public class LevelManager : MonoBehaviour, IService
 	{
 		private static SceneDefinition restartedLevelScene;
 		public GameLevel currentLevel;
@@ -22,23 +22,23 @@ namespace __SCRIPTS
 		{
 			Debug.Log("start wtf");
 			gameObject.SetActive(true);
-			sceneLoader.OnSceneReadyToStartLevel += SceneLoaderSceneReadyToStartLevel;
+			Services.sceneLoader.OnSceneReadyToStartLevel += SceneLoaderSceneReadyToStartLevel;
 			canJoinInGame = false;
 			Debug.Log("join in game false");
 			if (loadInGame) StartGame(GetFirstLevelToLoad());
-			else StartGame(assetManager.Scenes.mainMenu);
+			else StartGame(Services.assetManager.Scenes.mainMenu);
 		}
 
 		public void StartGame(SceneDefinition startingScene)
 		{
 			Debug.Log("LEVEL MANAGER: StartGame with scene: " + startingScene.sceneName);
-			sceneLoader.GoToScene(startingScene);
+			Services.sceneLoader.GoToScene(startingScene);
 		}
 
 		private void StartLevel(GameLevel newLevel)
 		{
 			canJoinInGame = true;
-			playerManager.SetActionMaps(Players.PlayerActionMap);
+			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
 			currentLevel = newLevel;
 			currentLevel.OnGameOver += newLevel_GameOver;
 			Debug.Log("LEVEL MANAGER: OnStartLevel");
@@ -51,14 +51,14 @@ namespace __SCRIPTS
 
 		private void SpawnPlayersIntoLevel(TravelPoint travelPoint)
 		{
-			Debug.Log("LEVEL MANAGER: joined players count: " + playerManager.AllJoinedPlayers.Count);
+			Debug.Log("LEVEL MANAGER: joined players count: " + Services.playerManager.AllJoinedPlayers.Count);
 			if (travelPoint == null)
 			{
 				Debug.Log("travel point is null");
 				return;
 			}
 
-			foreach (var player in playerManager.AllJoinedPlayers)
+			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
 				Debug.Log("trying to spawn" + player?.name + " at " + travelPoint.name);
 				SpawnPlayerFromInGame(player);
@@ -67,7 +67,7 @@ namespace __SCRIPTS
 
 		public void SpawnPlayerFromInGame(Player player)
 		{
-			playerManager.SetActionMaps(Players.PlayerActionMap);
+			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
 			player.Spawn(currentLevel.defaultTravelPoint.transform.position, currentLevel.defaultTravelPoint.fallFromSky);
 			Debug.Log("LEVEL MANAGER: OnLevelSpawnedPlayer: " + player.name);
 			OnLevelSpawnedPlayer?.Invoke(player);
@@ -82,13 +82,13 @@ namespace __SCRIPTS
 		private void GoToGameOverScreen()
 		{
 			StopLevel();
-			sceneLoader.GoToScene(assetManager.Scenes.GameOverScene);
+			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.GameOverScene);
 		}
 
 		private void LoadLevel(SceneDefinition destinationScene)
 		{
 			StopLevel();
-			sceneLoader.GoToScene(destinationScene);
+			Services.sceneLoader.GoToScene(destinationScene);
 		}
 
 		private void SceneLoaderSceneReadyToStartLevel(SceneDefinition newScene)
@@ -119,9 +119,9 @@ namespace __SCRIPTS
 		public void RestartLevel()
 		{
 			StopLevel();
-			objectMaker.DestroyAllUnits(null);
+			Services.objectMaker.DestroyAllUnits(null);
 
-			sceneLoader.GoToScene(assetManager.Scenes.restartLevel);
+			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.restartLevel);
 		}
 
 		public void ExitToMainMenu()
@@ -129,9 +129,9 @@ namespace __SCRIPTS
 			StopGame();
 
 			// Explicitly clear object pools when exiting to main menu
-			objectMaker.DestroyAllUnits(null);
+			Services.objectMaker.DestroyAllUnits(null);
 
-			sceneLoader.GoToScene(assetManager.Scenes.mainMenu);
+			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.mainMenu);
 		}
 
 		public void GoBackFromRestart()
@@ -140,7 +140,7 @@ namespace __SCRIPTS
 			{
 				// Fallback to the main starting scene if we lost the restart reference
 				Debug.Log("loading starting scene because restartedLevelScene is null");
-				LoadLevel(assetManager.Scenes.startingScene);
+				LoadLevel(Services.assetManager.Scenes.startingScene);
 				return;
 			}
 
@@ -180,8 +180,8 @@ namespace __SCRIPTS
 
 		public SceneDefinition GetFirstLevelToLoad()
 		{
-			if (!loadInGame) return assetManager.Scenes.startingScene;
-			return assetManager.Scenes.testScene;
+			if (!loadInGame) return Services.assetManager.Scenes.startingScene;
+			return Services.assetManager.Scenes.testScene;
 		}
 	}
 }

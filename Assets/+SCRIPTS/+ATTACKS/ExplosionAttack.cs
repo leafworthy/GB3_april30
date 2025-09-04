@@ -48,7 +48,7 @@ namespace __SCRIPTS
 
 		private void AttackHit(int attackType)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (attacker.IsDead()) return;
 			if (currentTargetLife == null) return;
 
@@ -59,7 +59,7 @@ namespace __SCRIPTS
 		private void AI_Attack(Life newTarget)
 		{
 			if (newTarget == null) return;
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (attacker.IsDead()) return;
 			var move = GetComponent<MoveAbility>();
 			currentTargetLife = newTarget;
@@ -69,7 +69,7 @@ namespace __SCRIPTS
 
 		private void Player_Attack(NewControlButton newControlButton)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (attacker.IsDead()) return;
 
 			var hitObject = RaycastToObject(currentTargetLife);

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class Bean_SFX : ServiceUser
+	public class Bean_SFX : MonoBehaviour
 	{
 		private UnitAnimations anim;
 		private AnimationEvents animEvents;
@@ -90,41 +90,41 @@ namespace __SCRIPTS
 			nadeAttack.OnThrow -= NadeAttackOnThrow;
 		}
 
-		private void GunAttackAkGlockOnShotMissed(Attack attack, Vector2 hitPositionh)
+		private void GunAttackAkGlockOnShotMissed(Attack attack)
 		{
-			sfx.sounds.bean_gun_miss_sounds.PlayRandomAt(hitPositionh);
-			sfx.sounds.ak47_shoot_sounds.PlayRandomAt(transform.position);
+			Services.sfx.sounds.bean_gun_miss_sounds.PlayRandomAt(attack.DestinationFloorPoint);
+			Services.sfx.sounds.ak47_shoot_sounds.PlayRandomAt(transform.position);
 		}
 
-		private void GunAttackAkGlockOnOnShotHitTarget(Attack attack, Vector2 hitPosition)
+		private void GunAttackAkGlockOnOnShotHitTarget(Attack attack)
 		{
-			sfx.sounds.GetBulletHitSounds(attack.DestinationLife.DebrisType).PlayRandomAt(hitPosition);
-			sfx.sounds.ak47_shoot_sounds.PlayRandomAt(attack.OriginFloorPoint);
+			Services.sfx.sounds.GetBulletHitSounds(attack.DestinationLife.DebrisType).PlayRandomAt(attack.DestinationFloorPoint);
+			Services.sfx.sounds.ak47_shoot_sounds.PlayRandomAt(attack.OriginFloorPoint);
 		}
 
-		private void Life_OnDying(Player arg1, Life arg2) => sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
+		private void Life_OnDying(Player player, Life life1) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
 
-		private void Life_AttackHit(Attack attack, Life hitLife) => sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+		private void Life_AttackHit(Attack attack, Life life1) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
 
 		private void Life_OnWounded(Attack obj)
 		{
-			sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
-			sfx.sounds.jump_sound.PlayRandomAt(transform.position);
+			Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+			Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 		}
 
-		private void NadeAttackOnThrow(Vector2 v, Vector2 v2, float f, Player p) => sfx.sounds.bean_nade_throw_sounds.PlayRandomAt(transform.position);
+		private void NadeAttackOnThrow(Vector2 v, Vector2 v2, float f, Player p) => Services.sfx.sounds.bean_nade_throw_sounds.PlayRandomAt(transform.position);
 
-		private void GunAttackAkGlockOnEmpty() => sfx.sounds.ak47_empty_shoot_sounds.PlayRandomAt(transform.position);
-		private void KnifeAttackOnMiss() => sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
-		private void GunAttackAkGlockOnReload() => sfx.sounds.bean_reload_sounds.PlayRandomAt(transform.position);
-		private void Jump_OnLand(Vector2 obj) => sfx.sounds.land_sound.PlayRandomAt(transform.position);
-		private void KnifeAttackOnHit(Vector2 vector2) => sfx.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
+		private void GunAttackAkGlockOnEmpty() => Services.sfx.sounds.ak47_empty_shoot_sounds.PlayRandomAt(transform.position);
+		private void KnifeAttackOnMiss() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
+		private void GunAttackAkGlockOnReload() => Services.sfx.sounds.bean_reload_sounds.PlayRandomAt(transform.position);
+		private void Jump_OnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
+		private void KnifeAttackOnHit(Vector2 vector2) => Services.sfx.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
 
-		private void Jump_OnJump(Vector2 obj) => sfx.sounds.jump_sound.PlayRandomAt(transform.position);
+		private void Jump_OnJump(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 
-		private void Anim_Dash() => sfx.sounds.bean_roll_sounds.PlayRandomAt(transform.position);
-		private void Anim_Teleport() => sfx.sounds.brock_teleport_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnHit() => sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
-		private void Anim_OnStep() => sfx.sounds.player_walk_sounds_concrete.PlayRandomAt(transform.position);
+		private void Anim_Dash() => Services.sfx.sounds.bean_roll_sounds.PlayRandomAt(transform.position);
+		private void Anim_Teleport() => Services.sfx.sounds.brock_teleport_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnHit() => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+		private void Anim_OnStep() => Services.sfx.sounds.player_walk_sounds_concrete.PlayRandomAt(transform.position);
 	}
 }

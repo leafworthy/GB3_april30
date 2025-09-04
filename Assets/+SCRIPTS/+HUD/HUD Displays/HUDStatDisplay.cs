@@ -5,7 +5,7 @@ using UnityEngine;
 namespace __SCRIPTS.HUD_Displays
 {
 
-	public class HUDStatDisplay : ServiceUser, INeedPlayer
+	public class HUDStatDisplay : MonoBehaviour, INeedPlayer
 	{
 		public PlayerStat.StatType statType;
 		public TMP_Text displayText;
@@ -13,12 +13,12 @@ namespace __SCRIPTS.HUD_Displays
 		private Player owner;
 		public bool hasMax;
 
-		private float CurrentAmount => playerStatsManager.GetStatAmount(owner, statType);
+		private float CurrentAmount => Services.playerStatsManager.GetStatAmount(owner, statType);
 
 		private void Start()
 		{
-			levelManager.OnStartLevel += (t) => UpdateDisplay();
-			levelManager.OnLevelSpawnedPlayer += (t) => UpdateDisplay();
+			Services.levelManager.OnStartLevel += (t) => UpdateDisplay();
+			Services.levelManager.OnLevelSpawnedPlayer += (t) => UpdateDisplay();
 		}
 
 
@@ -47,12 +47,12 @@ namespace __SCRIPTS.HUD_Displays
 			if (owner == null) return;
 
 			var currentAmount = CurrentAmount;
-			// Don't display negative values (which indicate uninitialized stats)
+			// Don't display negative values (which indicate uninitialized Stats)
 			if (currentAmount < 0) currentAmount = 0;
 
 			if(hasMax)
 			{
-				displayText.text = currentAmount.ToString() +"/" + playerStatsManager.MaxGas.ToString();
+				displayText.text = currentAmount.ToString() +"/" + Services.playerStatsManager.MaxGas.ToString();
 			}
 			else
 			{

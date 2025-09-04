@@ -86,7 +86,7 @@ namespace __SCRIPTS
 
 		private void RegularAttackHit(int attackType)
 		{
-			var circleCast = Physics2D.OverlapCircleAll(transform.position, GetHitRange(attackType), assetManager.LevelAssets.EnemyLayer);
+			var circleCast = Physics2D.OverlapCircleAll(transform.position, GetHitRange(attackType), Services.assetManager.LevelAssets.EnemyLayer);
 			var closest2 = circleCast.OrderBy(item => Vector2.Distance(item.gameObject.transform.position, transform.position)).Take(2);
 			foreach (var col in closest2)
 			{
@@ -108,7 +108,7 @@ namespace __SCRIPTS
 
 		private float GetAttackDamage(int attackType)
 		{
-			var extraDamageFactor = owner.spawnedPlayerDefence.ExtraMaxDamageFactor;
+			var extraDamageFactor = owner.spawnedPlayerDefence.ExtraDamageFactor;
 			return attackType switch
 			       {
 				       1 => 50 + 50 * extraDamageFactor,

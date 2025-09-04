@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class Tmato_SFX : ServiceUser
+	public class Tmato_SFX : MonoBehaviour
 	{
 
 		private UnitAnimations anim;
@@ -48,13 +48,13 @@ namespace __SCRIPTS
 
 		private void Anim_OnReload()
 		{
-			sfx.sounds.tmato_reload_sounds.PlayRandomAt(transform.position);
+			Services.sfx.sounds.tmato_reload_sounds.PlayRandomAt(transform.position);
 		}
 
 		private void ChainsawStart(Vector2 obj)
 		{
 			idleSound.Play();
-			sfx.sounds.tmato_chainsaw_start_sounds.PlayRandomAt(obj);
+			Services.sfx.sounds.tmato_chainsaw_start_sounds.PlayRandomAt(obj);
 		}
 
 		private void ChainsawStop(Vector2 obj)
@@ -65,19 +65,19 @@ namespace __SCRIPTS
 		private void ChainsawAttackStart(Vector2 obj)
 		{
 			chainsawAttackIdleSound.Play();
-			sfx.sounds.tmato_chainsaw_attack_start_sounds.PlayRandomAt(obj);
+			Services.sfx.sounds.tmato_chainsaw_attack_start_sounds.PlayRandomAt(obj);
 		}
 
 		private void ChainsawAttackStop(Vector2 obj)
 		{
 			chainsawAttackIdleSound.Stop();
-			sfx.sounds.tmato_chainsaw_attack_stop_sounds.PlayRandomAt(obj);
+			Services.sfx.sounds.tmato_chainsaw_attack_stop_sounds.PlayRandomAt(obj);
 		}
 
 
 		private void ShotgunAttackOnEmpty()
 		{
-			sfx.sounds.ak47_empty_shoot_sounds.PlayRandomAt(transform.position);
+			Services.sfx.sounds.ak47_empty_shoot_sounds.PlayRandomAt(transform.position);
 		}
 
 
@@ -97,34 +97,34 @@ namespace __SCRIPTS
 			mineAttack.OnThrow -= MineAttackOnThrow;
 		}
 
-		private void ShotgunAttackOnShotMissed(Attack attack, Vector2 hitPositionh)
+		private void ShotgunAttackOnShotMissed(Attack attack)
 		{
-			sfx.sounds.bean_gun_miss_sounds.PlayRandomAt(hitPositionh);
-			sfx.sounds.tmato_shoot_hit_sounds.PlayRandomAt(transform.position);
+			Services.sfx.sounds.bean_gun_miss_sounds.PlayRandomAt(attack.DestinationFloorPoint);
+			Services.sfx.sounds.tmato_shoot_hit_sounds.PlayRandomAt(transform.position);
 		}
 
-		private void ShotgunAttackOnOnShotHitTarget(Attack attack, Vector2 hitPosition)
+		private void ShotgunAttackOnOnShotHitTarget(Attack attack)
 		{
-			sfx.sounds.GetBulletHitSounds(attack.DestinationLife.DebrisType).PlayRandomAt(hitPosition);
-			sfx.sounds.tmato_shoot_hit_sounds.PlayRandomAt(attack.OriginFloorPoint);
+			Services.sfx.sounds.GetBulletHitSounds(attack.DestinationLife.DebrisType).PlayRandomAt(attack.DestinationFloorPoint);
+			Services.sfx.sounds.tmato_shoot_hit_sounds.PlayRandomAt(attack.OriginFloorPoint);
 		}
 
-		private void Life_OnDying(Player arg1, Life arg2) => sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
-		private void MineAttackOnThrow(Vector2 vector2, Player player) => sfx.sounds.tmato_mine_throw_sounds.PlayRandomAt(transform.position);
-		private void Life_AttackHit(Attack attack, Life hitLife) => sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
-		private void TertiaryAttackKnifeOnMiss() => sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
-		private void Jump_OnLand(Vector2 obj) => sfx.sounds.land_sound.PlayRandomAt(transform.position);
-		private void TertiaryAttackKnifeOnHit(Vector2 vector2) => sfx.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
+		private void Life_OnDying(Player player, Life life1) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
+		private void MineAttackOnThrow(Vector2 vector2, Player player) => Services.sfx.sounds.tmato_mine_throw_sounds.PlayRandomAt(transform.position);
+		private void Life_AttackHit(Attack attack, Life life1) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+		private void TertiaryAttackKnifeOnMiss() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
+		private void Jump_OnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
+		private void TertiaryAttackKnifeOnHit(Vector2 vector2) => Services.sfx.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
 
-		private void Jump_OnJump(Vector2 obj) => sfx.sounds.jump_sound.PlayRandomAt(transform.position);
+		private void Jump_OnJump(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 		private void Life_OnWounded(Attack obj) {
-			sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
-			sfx.sounds.jump_sound.PlayRandomAt(transform.position);
+			Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+			Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 		}
-		private void Anim_Dash() => sfx.sounds.tmato_shield_dash_sounds.PlayRandomAt(transform.position);
+		private void Anim_Dash() => Services.sfx.sounds.tmato_shield_dash_sounds.PlayRandomAt(transform.position);
 
-		private void Anim_OnHit() => sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
-		private void Anim_OnStep() => sfx.sounds.player_walk_sounds_concrete.PlayRandomAt(transform.position);
+		private void Anim_OnHit() => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+		private void Anim_OnStep() => Services.sfx.sounds.player_walk_sounds_concrete.PlayRandomAt(transform.position);
 
 	}
 }

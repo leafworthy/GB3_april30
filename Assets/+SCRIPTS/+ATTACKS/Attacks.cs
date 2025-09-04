@@ -4,12 +4,11 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class Attacks : ServiceUser, INeedPlayer, IActivity
+	public class Attacks : MonoBehaviour, INeedPlayer, IActivity
 	{
 		private Life _attacker;
 		protected Life attacker => _attacker?? GetComponent<Life>();
 		public virtual string VerbName => "Generic-Attack";
-
 
 
 		protected void HitTarget(float attackDamage, Life targetLife, float extraPush = 0)
@@ -29,7 +28,7 @@ namespace __SCRIPTS
 		protected RaycastHit2D RaycastToObject(Life currentTargetLife)
 		{
 			var position = attacker.transform.position;
-			var layer = attacker.IsHuman ? assetManager.LevelAssets.EnemyLayer : assetManager.LevelAssets.PlayerLayer;
+			var layer = attacker.IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
 			var direction = (currentTargetLife.transform.position - position).normalized;
 			var distance = Vector3.Distance(position, currentTargetLife.transform.position);
 			return Physics2D.Raycast(position, direction, distance, layer);

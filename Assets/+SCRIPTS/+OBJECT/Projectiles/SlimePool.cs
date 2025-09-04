@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace __SCRIPTS.Projectiles
 {
-	public class SlimePool : ServiceUser
+	public class SlimePool : MonoBehaviour
 	{
 		private Animator animator;
 		private float deathTime = 8;
@@ -51,7 +51,7 @@ namespace __SCRIPTS.Projectiles
 		private void Dead()
 		{
 			animationEvents.OnDieStop -= Dead;
-			objectMaker.Unmake(gameObject);
+			Services.objectMaker.Unmake(gameObject);
 		}
 
 		private void OnTriggerStay2D(Collider2D other)

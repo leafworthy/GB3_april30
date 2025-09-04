@@ -1,12 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GangstaBean.Core;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace __SCRIPTS
 {
-	public class Life_FX : ServiceUser, IPoolable, INeedPlayer
+
+	public class Life_FX : MonoBehaviour, IPoolable, INeedPlayer
 	{
 		public Image slowBarImage;
 		public Image fastBarImage;
@@ -16,6 +19,7 @@ namespace __SCRIPTS
 		private const float tintFadeSpeed = 6f;
 		private static readonly int ColorReplaceColor = Shader.PropertyToID("_NewColorA");
 		private static readonly int Tint = Shader.PropertyToID("_Tint");
+
 
 		public enum ColorMode
 		{
@@ -41,7 +45,7 @@ namespace __SCRIPTS
 			life.OnDamaged += LifeDamaged;
 			life.OnFractionChanged += DefenceOnDefenceChanged;
 			life.OnDying += DefenceOnDying;
-			if (life.UnitData.showLifeBar) return;
+			if (life.showLifeBar) return;
 			if (healthBar != null) healthBar.SetActive(false);
 		}
 
@@ -98,12 +102,12 @@ namespace __SCRIPTS
 
 		private void MakeHitMark(Attack attack)
 		{
-			var hitList = assetManager.FX.GetBulletHits(life.DebrisType);
+			var hitList = Services.assetManager.FX.GetBulletHits(life.DebrisType);
 
 			if (hitList == null) return;
 
 			var heightCorrectionForDepth = new Vector2(0, -1f);
-			var hitMarkObject = objectMaker.Make(hitList.GetRandom(), attack.DestinationFloorPoint + heightCorrectionForDepth);
+			var hitMarkObject = Services.objectMaker.Make(hitList.GetRandom(), attack.DestinationFloorPoint + heightCorrectionForDepth);
 
 			var hitHeightScript = hitMarkObject.GetComponent<ThingWithHeight>();
 			hitHeightScript.SetDistanceToGround(attack.DestinationHeight - heightCorrectionForDepth.y, false);
@@ -115,7 +119,7 @@ namespace __SCRIPTS
 				hitMarkObject.transform.localScale = new Vector3(-Mathf.Abs(localScale.x), localScale.y, 0);
 			}
 
-			objectMaker.Unmake(hitMarkObject, 5);
+			Services.objectMaker.Unmake(hitMarkObject, 5);
 			Debug.DrawLine(attack.DestinationFloorPoint, attack.DestinationFloorPoint + heightCorrectionForDepth, Color.black, 1f);
 		}
 
@@ -129,7 +133,7 @@ namespace __SCRIPTS
 
 		private void CreateBloodSpray(Attack attack)
 		{
-			var blood = objectMaker.Make(assetManager.FX.bloodspray.GetRandom(), attack.DestinationFloorPoint);
+			var blood = Services.objectMaker.Make(Services.assetManager.FX.bloodspray.GetRandom(), attack.DestinationFloorPoint);
 			if (attack.Direction.x < 0) blood.transform.localScale = new Vector3(-blood.transform.localScale.x, blood.transform.localScale.y, 0);
 		}
 
@@ -140,16 +144,16 @@ namespace __SCRIPTS
 			for (var j = 0; j < randAmount; j++)
 			{
 				//----->
-				var forwardDebree = objectMaker.Make(assetManager.FX.GetDebree(life.DebrisType), attack.DestinationFloorPoint);
+				var forwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), attack.DestinationFloorPoint);
 
 				forwardDebree.GetComponent<FallToFloor>().Fire(attack);
-				objectMaker.Unmake(forwardDebree, 3);
+				Services.objectMaker.Unmake(forwardDebree, 3);
 
 				//<-----
 				var flippedAttack = new Attack(life, attack.OriginLife, attack.DamageAmount);
-				var backwardDebree = objectMaker.Make(assetManager.FX.GetDebree(life.DebrisType), attack.DestinationFloorPoint);
+				var backwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), attack.DestinationFloorPoint);
 				backwardDebree.GetComponent<FallToFloor>().Fire(flippedAttack);
-				objectMaker.Unmake(backwardDebree, 3);
+				Services.objectMaker.Unmake(backwardDebree, 3);
 
 				var sprite = forwardDebree.GetComponentInChildren<SpriteRenderer>();
 				if (sprite != null) sprite.color = DebreeTint;
@@ -163,7 +167,7 @@ namespace __SCRIPTS
 			if (attack.DamageAmount <= 0) return;
 			if (!life.CanBeAttacked) return;
 			var roundedDamage = Mathf.Round(attack.DamageAmount);
-			risingText.CreateRisingText("-" + roundedDamage, attack.DestinationWithHeight, Color.red);
+			Services.risingText.CreateRisingText("-" + roundedDamage, attack.DestinationWithHeight, Color.red);
 		}
 
 		private void DefenceOnDefenceChanged(float newAmount)
@@ -171,7 +175,7 @@ namespace __SCRIPTS
 			UpdateBarFill();
 		}
 
-		private void DefenceOnDying(Player player, ICanAttack unitHealth)
+		private void DefenceOnDying(Player player, Life life1)
 		{
 			_life.OnFractionChanged -= DefenceOnDefenceChanged;
 			_life.OnDying -= DefenceOnDying;
@@ -200,7 +204,7 @@ namespace __SCRIPTS
 			if (_life == null) return;
 			if (healthBar == null) return;
 
-			if (life.UnitData == null || !life.UnitData.showLifeBar) return;
+			if (!life.showLifeBar) return;
 			targetFill = _life.GetFraction();
 			if (targetFill > .9f || targetFill <= 0)
 				healthBar.SetActive(false);

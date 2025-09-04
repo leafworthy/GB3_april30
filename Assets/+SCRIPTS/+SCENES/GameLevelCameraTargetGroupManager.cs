@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class GameLevelCameraTargetGroupManager : ServiceUser
+	public class GameLevelCameraTargetGroupManager : MonoBehaviour
 	{
 		private CinemachineTargetGroup cameraFollowTargetGroup;
 
@@ -12,9 +12,9 @@ namespace __SCRIPTS
 		private void Start()
 		{
 
-			levelManager.OnLevelSpawnedPlayer += AddMembersToCameraFollowTargetGroup;
-			playerManager.OnPlayerDies += Player_PlayerDies;
-			levelManager.OnStopLevel += LevelManager_OnStopLevel;
+			Services.levelManager.OnLevelSpawnedPlayer += AddMembersToCameraFollowTargetGroup;
+			Services.playerManager.OnPlayerDies += Player_PlayerDies;
+			Services.levelManager.OnStopLevel += LevelManager_OnStopLevel;
 
 		}
 
@@ -40,7 +40,7 @@ namespace __SCRIPTS
 			if (player.SpawnedPlayerGO != null)
 			{
 				cameraFollowTargetGroup.AddMember(player.SpawnedPlayerGO.transform, 1, 0);
-				var stickTarget = objectMaker.Make( assetManager.Players.followStickPrefab).GetComponent<FollowCursor>();
+				var stickTarget = Services.objectMaker.Make(Services.assetManager.Players.followStickPrefab).GetComponent<FollowCursor>();
 				stickTarget.Init(player);
 			}
 			else

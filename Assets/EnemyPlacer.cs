@@ -1,13 +1,13 @@
 using UnityEngine;
 using VInspector;
 
-public class EnemyPlacer : ServiceUser
+public class EnemyPlacer : MonoBehaviour
 {
 	public GameObject EnemyPrefab;
 
 	private void Start()
 	{
-		enemyManager.SpawnNewEnemy(EnemyPrefab, transform.position);
+		Services.enemyManager.SpawnNewEnemy(EnemyPrefab, transform.position);
 		Destroy(gameObject);
 	}
 

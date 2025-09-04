@@ -11,7 +11,7 @@ public interface IMove
 
 namespace __SCRIPTS
 {
-	public class MoveController : ServiceUser, INeedPlayer, IPoolable
+	public class MoveController : MonoBehaviour, INeedPlayer, IPoolable
 	{
 		public bool CanMove { get; set; }
 
@@ -25,7 +25,6 @@ namespace __SCRIPTS
 		private UnitAnimations anim;
 		private bool isWounded;
 		private IMove ai;
-
 		public void SetPlayer(Player _player)
 		{
 			anim = GetComponent<UnitAnimations>();
@@ -147,7 +146,7 @@ namespace __SCRIPTS
 
 		private void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (isWounded) return;
 			if (!CanMove) return;
 
@@ -168,7 +167,7 @@ namespace __SCRIPTS
 
 		private void AI_MoveInDirection(Vector2 direction)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (!CanMove)
 			{
 				Debug.Log("can't move");
@@ -202,7 +201,7 @@ namespace __SCRIPTS
 
 		private void StopMoving()
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			anim.SetBool(UnitAnimations.IsMoving, false);
 			mover?.StopMoving();
 		}

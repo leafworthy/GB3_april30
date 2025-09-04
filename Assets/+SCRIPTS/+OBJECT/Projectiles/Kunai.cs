@@ -79,7 +79,7 @@ namespace __SCRIPTS.Projectiles
 			rotationRate = 300;
 			moveAbility.StopMoving();
 			isActive = false;
-			objectMaker.Unmake(gameObject,3);
+			Services.objectMaker.Unmake(gameObject,3);
 		}
 
 		private void HandleHit(Life hitLife)
@@ -90,16 +90,16 @@ namespace __SCRIPTS.Projectiles
 			hitLife.TakeDamage(attack);
 			rotationRate = 300;
 			moveAbility.StopMoving();
-			sfx.sounds.kunai_hit_sounds.PlayRandomAt(transform.position);
+			Services.sfx.sounds.kunai_hit_sounds.PlayRandomAt(transform.position);
 
-			objectMaker.Make( assetManager.FX.hit5_xstrike, transform.position);
+			Services.objectMaker.Make(Services.assetManager.FX.hit5_xstrike, transform.position);
 			Fire(attack, true);
-			objectMaker.Unmake(gameObject, 3);
+			Services.objectMaker.Unmake(gameObject, 3);
 		}
 
 		private Life CheckForCollisions(Vector2 target)
 		{
-			var lineCast = Physics2D.LinecastAll(transform.position, target, assetManager.LevelAssets.EnemyLayer);
+			var lineCast = Physics2D.LinecastAll(transform.position, target, Services.assetManager.LevelAssets.EnemyLayer);
 			foreach (var hit2D in lineCast)
 			{
 				if (hit2D.collider == null) continue;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace __SCRIPTS._ENEMYAI
 {
-	public class SimpleEnemyAI : ServiceUser, IMove, IAttack
+	public class SimpleEnemyAI : MonoBehaviour, IMove, IAttack
 	{
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;
@@ -14,8 +14,7 @@ namespace __SCRIPTS._ENEMYAI
 
 		private Life _target;
 		private Targetter _targetter;
-
-		private float minDistanceToPlayer => life.UnitData.attack1Range;
+		private float minDistanceToPlayer => life.PrimaryAttackRange;
 
 		private void Update()
 		{
@@ -38,12 +37,12 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void WalkToPlayer()
 		{
-			OnMoveInDirection?.Invoke((_target.transform.position - transform.position).normalized * life.UnitData.moveSpeed);
+			OnMoveInDirection?.Invoke((_target.transform.position - transform.position).normalized * life.MoveSpeed);
 		}
 
 		private void Start()
 		{
-			enemyManager.ConfigureNewEnemy(gameObject);
+			Services.enemyManager.ConfigureNewEnemy(gameObject);
 			_targetter = GetComponent<Targetter>();
 		}
 

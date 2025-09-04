@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class PrimaryAttack_Kunai : ServiceUser, INeedPlayer, IActivity
+	public class PrimaryAttack_Kunai : MonoBehaviour, INeedPlayer, IActivity
 	{
 		private AnimationEvents animationEvents;
 
@@ -79,7 +79,7 @@ namespace __SCRIPTS
 			ammoInventory.primaryAmmo.UseAmmo( 1);
 
 			var throwHeight = body.ThrowPoint.transform.position.y - transform.position.y;
-			var newProjectile = objectMaker.Make(assetManager.FX.kunaiPrefab, transform.position);
+			var newProjectile = Services.objectMaker.Make(Services.assetManager.FX.kunaiPrefab, transform.position);
 			var kunaiScript = newProjectile.GetComponent<Kunai>();
 			kunaiScript.Throw(aim.AimDir, transform.position, throwHeight, player.spawnedPlayerDefence);
 			OnThrow?.Invoke(aim.AimDir, transform.position, throwHeight, player.spawnedPlayerDefence, false);

@@ -34,13 +34,13 @@ namespace __SCRIPTS
             Destroy(transformToDestroy);
         }
 
- 
+
 
         private void Interactable_OnInteract(Player player)
         {
             if (isBroken) return;
             SetLightActive(!isOn);
-            sfx.sounds.light_switch_sound.PlayRandomAt(transform.position);
+            Services.sfx.sounds.light_switch_sound.PlayRandomAt(transform.position);
         }
 
 

@@ -1,11 +1,12 @@
 using System;
 using GangstaBean.Core;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace __SCRIPTS
 {
-	public class JumpAbility : ServiceUser, IActivity
+	public class JumpAbility : SerializedMonoBehaviour, IActivity
 	{
 		private Body body;
 		public bool isResting;
@@ -15,7 +16,6 @@ namespace __SCRIPTS
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnResting;
 		public event Action<Vector2> OnJump;
-		public event Action<Vector2> OnFall;
 		public event Action OnBounce;
 
 		private bool isOverLandable;
@@ -68,29 +68,12 @@ namespace __SCRIPTS
 
 		}
 
-		public void FallFromHeight(float fallHeight)
-		{
-			Init();
-
-
-			if (body != null)
-			{
-				if (body.ShadowObject != null) body.ShadowObject.transform.localPosition = Vector3.zero;
-			}
-
-			thing.SetDistanceToGround(fallHeight);
-			IsJumping = true;
-			isResting = false;
-			OnFall?.Invoke(transform.position);
-			landTimer = 0;
-
-		}
 
 
 
 		protected void FixedUpdate()
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (isResting) return;
 			if (!IsJumping) return;
 
@@ -109,7 +92,7 @@ namespace __SCRIPTS
 				return;
 			}
 			currentLandableHeight = 0;
-			verticalVelocity -= (assetManager.Vars.Gravity.y) * Time.fixedDeltaTime;
+			verticalVelocity -= (Services.assetManager.Vars.Gravity.y) * Time.fixedDeltaTime;
 			if ((thing.GetDistanceToGround() + verticalVelocity <= currentLandableHeight) && (verticalVelocity < 0))
 			{
 				Land();

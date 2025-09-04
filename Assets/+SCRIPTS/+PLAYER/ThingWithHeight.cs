@@ -4,7 +4,7 @@ using __SCRIPTS;
 using __SCRIPTS.Plugins._ISOSORT;
 using UnityEngine;
 
-public class ThingWithHeight : ServiceUser
+public class ThingWithHeight : MonoBehaviour
 {
 
 	private float DistanceToGround;

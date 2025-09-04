@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS.HUD_Displays
 {
-	public class AmmoDisplay : ServiceUser, INeedPlayer
+	public class AmmoDisplay : MonoBehaviour, INeedPlayer
 	{
 		private Bar_FX barFX;
 		public TMP_Text ammoText;
@@ -83,7 +83,7 @@ namespace __SCRIPTS.HUD_Displays
 
 		public void SetPlayer(Player _player)
 		{
-			levelManager.OnStopLevel += CleanUp;
+			Services.levelManager.OnStopLevel += CleanUp;
 			barFX = GetComponentInChildren<Bar_FX>();
 			if (barFX.fastBarImage != null) barFX.fastBarImage.color = _player.playerColor;
 		}

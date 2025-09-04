@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class CharacterSelectIndicators : ServiceUser
+	public class CharacterSelectIndicators : MonoBehaviour
 	{
 		[SerializeField] private HideRevealObjects p1indicator;
 		[SerializeField] private HideRevealObjects p2indicator;
@@ -14,10 +14,10 @@ namespace __SCRIPTS
 
 		public void SetColors()
 		{
-			p1indicator.SetPlayerColor(playerManager.playerPresets[0].playerColor);
-			p2indicator.SetPlayerColor(playerManager.playerPresets[1].playerColor);
-			p3indicator.SetPlayerColor(playerManager.playerPresets[2].playerColor);
-			p4indicator.SetPlayerColor(playerManager.playerPresets[3].playerColor);
+			p1indicator.SetPlayerColor(Services.playerManager.playerPresets[0].playerColor);
+			p2indicator.SetPlayerColor(Services.playerManager.playerPresets[1].playerColor);
+			p3indicator.SetPlayerColor(Services.playerManager.playerPresets[2].playerColor);
+			p4indicator.SetPlayerColor(Services.playerManager.playerPresets[3].playerColor);
 
 		}
 

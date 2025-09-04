@@ -26,7 +26,7 @@ namespace __SCRIPTS._ENEMYAI
 		void UpdateState();
 	}
 
-	public class EnemyAI : ServiceUser, IAI, IPoolable, IMove, IAttack
+	public class EnemyAI : MonoBehaviour, IAI, IPoolable, IMove, IAttack
 	{
 		public bool stopMovingOnAttack = true;
 		private IAIState currentState;
@@ -73,7 +73,7 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void FixedUpdate()
 		{
-			if (pauseManager.IsPaused || Life.IsDead())
+			if (Services.pauseManager.IsPaused || Life.IsDead())
 				return;
 
 			currentState?.UpdateState();

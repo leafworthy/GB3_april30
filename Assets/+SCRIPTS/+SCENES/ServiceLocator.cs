@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public static class ServiceLocator
@@ -27,6 +28,15 @@ public static class ServiceLocator
 			Register<T>(findItem);
 			Debug.Log("found item by type: " + type.Name);
 			return findItem;
+		}
+
+		if (findItem == null)
+		{
+			Debug.Log("made new item by type: " + type.Name);
+			var go = new GameObject(type.Name);
+			var newService = go.AddComponent<T>();
+			Register<T>(newService);
+			 return newService;
 		}
 
 		throw new InvalidOperationException($"ServiceLocator: Service of type {type.Name} is not registered.");

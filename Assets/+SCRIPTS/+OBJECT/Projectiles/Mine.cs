@@ -2,7 +2,7 @@ using System;
 using __SCRIPTS;
 using UnityEngine;
 
-public class Mine : ServiceUser
+public class Mine : MonoBehaviour
 {
 	private bool hasLaunched;
 	public bool isProximityMine;
@@ -38,7 +38,7 @@ public class Mine : ServiceUser
 	{
 		Explosion_FX.Explode(transform.position, player.spawnedPlayerDefence.SecondaryAttackRange,
 			player.spawnedPlayerDefence.SecondaryAttackDamageWithExtra, player);
-		objectMaker.Unmake(gameObject);
+		Services.objectMaker.Unmake(gameObject);
 
 	}
 

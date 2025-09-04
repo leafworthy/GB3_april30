@@ -24,7 +24,7 @@ namespace __SCRIPTS
 
 		private void FixedUpdate()
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (attacker.IsDead()) return;
 			CheckForEnemiesInRange();
 			Cooldown();
@@ -32,9 +32,9 @@ namespace __SCRIPTS
 
 		private void CheckForEnemiesInRange()
 		{
-			var enemies = Physics2D.OverlapCircleAll(transform.position, attacker.PrimaryAttackRange, assetManager.LevelAssets.PlayerLayer)
+			var enemies = Physics2D.OverlapCircleAll(transform.position, attacker.PrimaryAttackRange, Services.assetManager.LevelAssets.PlayerLayer)
 			                       .ToList();
-			enemies.AddRange(Physics2D.OverlapCircleAll(transform.position, attacker.PrimaryAttackRange, assetManager.LevelAssets.DoorLayer).ToList());
+			enemies.AddRange(Physics2D.OverlapCircleAll(transform.position, attacker.PrimaryAttackRange, Services.assetManager.LevelAssets.DoorLayer).ToList());
 			if (enemies.Count <= 0) return;
 			foreach (var enemy in enemies)
 			{

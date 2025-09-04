@@ -18,7 +18,7 @@ namespace __SCRIPTS
 
             yield return new WaitForSeconds(1);
 
-           levelManager.GoBackFromRestart();
+            Services.levelManager.GoBackFromRestart();
         }
 
 

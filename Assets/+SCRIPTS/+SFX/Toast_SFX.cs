@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class Toast_SFX : ServiceUser
+	public class Toast_SFX : MonoBehaviour
 	{
 		private AnimationEvents animEvents;
 		private UnitAnimations anim;
@@ -27,13 +27,13 @@ namespace __SCRIPTS
 			animEvents.OnDieStart -= Anim_OnDieStart;
 		}
 
-		private void Anim_OnDieStart() => sfx.sounds.toast_die_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnGetHit() => sfx.sounds.toast_gethit_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnDieStart() => Services.sfx.sounds.toast_die_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnGetHit() => Services.sfx.sounds.toast_gethit_sounds.PlayRandomAt(transform.position);
 
-		private void Anim_OnAttackHit(int attackType) => sfx.sounds.toast_attack_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnAttackHit(int attackType) => Services.sfx.sounds.toast_attack_sounds.PlayRandomAt(transform.position);
 
-		private void Anim_OnStep() => sfx.sounds.toast_walk_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnStep() => Services.sfx.sounds.toast_walk_sounds.PlayRandomAt(transform.position);
 
-		private void Anim_OnRoar() => sfx.sounds.toast_roar_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnRoar() => Services.sfx.sounds.toast_roar_sounds.PlayRandomAt(transform.position);
 	}
 }

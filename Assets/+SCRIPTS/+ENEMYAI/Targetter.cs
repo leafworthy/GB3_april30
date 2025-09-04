@@ -5,7 +5,7 @@ using GangstaBean.Core;
 
 namespace __SCRIPTS._ENEMYAI
 {
-	public class Targetter : ServiceUser, IPoolable
+	public class Targetter : MonoBehaviour, IPoolable
 	{
 		private void Awake()
 		{
@@ -54,7 +54,7 @@ namespace __SCRIPTS._ENEMYAI
 		//private Life GetClosest(List<Life> targets) => targets.OrderBy(t => Vector2.Distance(t.transform.position, transform.position)).FirstOrDefault();
 		public Life GetClosestAttackableObstacle()
 		{
-			var obstacles = GetValidObstaclesInRange( assetManager.LevelAssets.DoorLayer, targetterLife.PrimaryAttackRange);
+			var obstacles = GetValidObstaclesInRange(Services.assetManager.LevelAssets.DoorLayer, targetterLife.PrimaryAttackRange);
 			var closest = GetClosest(obstacles);
 
 			// Debug logging to help identify door targeting issues
@@ -64,13 +64,13 @@ namespace __SCRIPTS._ENEMYAI
 
 			return closest;
 		}
-		public Life GetClosestAttackablePlayer() => GetClosest(GetAttackableTargetsInRange( assetManager.LevelAssets.PlayerLayer, targetterLife.PrimaryAttackRange));
-		public Life GetClosestPlayerInAggroRange() => GetClosest(GetAggroTargets( assetManager.LevelAssets.PlayerLayer));
+		public Life GetClosestAttackablePlayer() => GetClosest(GetAttackableTargetsInRange(Services.assetManager.LevelAssets.PlayerLayer, targetterLife.PrimaryAttackRange));
+		public Life GetClosestPlayerInAggroRange() => GetClosest(GetAggroTargets(Services.assetManager.LevelAssets.PlayerLayer));
 		public Life GetClosestPlayer() => GetClosest(GetPlayers());
 
 		private List<Life> GetPlayers()
 		{
-			var playersWithGOs = playerManager.AllJoinedPlayers.Where(x => (x.spawnedPlayerDefence != null)).ToList();
+			var playersWithGOs = Services.playerManager.AllJoinedPlayers.Where(x => (x.spawnedPlayerDefence != null)).ToList();
 			var playerLives = playersWithGOs.Select(x => x.spawnedPlayerDefence).Where(x => !x.IsDead()).ToList();
 
 
@@ -121,7 +121,7 @@ namespace __SCRIPTS._ENEMYAI
 
 		private bool buildingIsInTheWay(Vector2 position)
 		{
-			var hit = Physics2D.Linecast(transform.position, position, assetManager.LevelAssets.EnemyUnwalkableLayers);
+			var hit = Physics2D.Linecast(transform.position, position, Services.assetManager.LevelAssets.EnemyUnwalkableLayers);
 			if (!hit) return false;
 			return hit.collider != null;
 		}

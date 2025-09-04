@@ -9,7 +9,7 @@ namespace __SCRIPTS
 	/// <summary>
 	/// Integrated scene transition system that handles both scene loading and player spawn positions
 	/// </summary>
-	public class SceneLoader : ServiceUser, IService
+	public class SceneLoader : MonoBehaviour, IService
 	{
 		// UI References
 		[Header("UI References"), SerializeField]
@@ -97,7 +97,7 @@ namespace __SCRIPTS
 
 		private void SceneManager_OnSceneLoaded(Scene scene, LoadSceneMode mode)
 		{
-			if (scene.name == assetManager.Scenes.gameManager)
+			if (scene.name == Services.assetManager.Scenes.gameManager)
 			{
 				Debug.Log("SCENE LOADER: game manager scene loaded");
 				return;

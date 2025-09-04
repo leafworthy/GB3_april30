@@ -74,16 +74,16 @@ namespace __SCRIPTS
 			switch (lootContainerType)
 			{
 				case LootContainerType.chest:
-					sfx.sounds.chest_open_sound.PlayRandomAt(transform.position);
+					Services.sfx.sounds.chest_open_sound.PlayRandomAt(transform.position);
 					break;
 				case LootContainerType.drawer:
-					sfx.sounds.drawer_open_sound.PlayRandomAt(transform.position);
+					Services.sfx.sounds.drawer_open_sound.PlayRandomAt(transform.position);
 					break;
 				case LootContainerType.trash:
-					sfx.sounds.trash_open_sound.PlayRandomAt(transform.position);
+					Services.sfx.sounds.trash_open_sound.PlayRandomAt(transform.position);
 					break;
 				case LootContainerType.fridge:
-					sfx.sounds.fridge_open_sound.PlayRandomAt(transform.position);
+					Services.sfx.sounds.fridge_open_sound.PlayRandomAt(transform.position);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

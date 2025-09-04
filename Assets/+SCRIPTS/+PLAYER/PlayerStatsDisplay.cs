@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class PlayerStatsDisplay : ServiceUser
+	public class PlayerStatsDisplay : MonoBehaviour
 	{
 		private Player owner;
 		public TextMeshProUGUI PlayerName;
@@ -53,10 +53,10 @@ namespace __SCRIPTS
 
 		private void DisplayStats()
 		{
-			Stat_Kills.text = playerStatsManager.GetStatAmount(owner, PlayerStat.StatType.Kills).ToString();
-			Stat_Time.text = playerStatsManager.GetStatAmount(owner, PlayerStat.StatType.TimeSurvived).ToString("F1");
-			Stat_CashGained.text = playerStatsManager.GetStatAmount(owner, PlayerStat.StatType.TotalCash).ToString();
-			Stat_Gas.text = playerStatsManager.GetStatAmount(owner, PlayerStat.StatType.Gas).ToString();
+			Stat_Kills.text = Services.playerStatsManager.GetStatAmount(owner, PlayerStat.StatType.Kills).ToString();
+			Stat_Time.text = Services.playerStatsManager.GetStatAmount(owner, PlayerStat.StatType.TimeSurvived).ToString("F1");
+			Stat_CashGained.text = Services.playerStatsManager.GetStatAmount(owner, PlayerStat.StatType.TotalCash).ToString();
+			Stat_Gas.text = Services.playerStatsManager.GetStatAmount(owner, PlayerStat.StatType.Gas).ToString();
 			//Stat_Upgrades.text = owner.GetComponent<PlayerUpgrades>().GetTotalUpgradesPurchased().ToString();
 		}
 

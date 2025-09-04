@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class PauseManager : ServiceUser, IService
+	public class PauseManager : MonoBehaviour, IService
 	{
 		//STATE
 		private MenuButton currentlySelectedCharacterButton;
@@ -23,7 +23,7 @@ namespace __SCRIPTS
 
 		public void StartService()
 		{
-			levelManager.OnLevelSpawnedPlayer += ListenToJoinedLevelSpawnedPlayer;
+			Services.levelManager.OnLevelSpawnedPlayer += ListenToJoinedLevelSpawnedPlayer;
 
 			// Hide menu graphic initially
 			if (graphic != null)
@@ -47,7 +47,7 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			StopListeningToJoinedPlayers();
-			levelManager.OnLevelSpawnedPlayer -= ListenToJoinedLevelSpawnedPlayer;
+			Services.levelManager.OnLevelSpawnedPlayer -= ListenToJoinedLevelSpawnedPlayer;
 		}
 
 		private void StopListeningToJoinedPlayers()
@@ -85,17 +85,17 @@ namespace __SCRIPTS
 			{
 				case MenuButton.ButtonType.Restart:
 					Unpause();
-					levelManager.RestartLevel();
+					Services.levelManager.RestartLevel();
 					break;
 				case MenuButton.ButtonType.Resume:
 					Unpause();
 					break;
 				case MenuButton.ButtonType.MainMenu:
 					Unpause();
-					levelManager.ExitToMainMenu();
+					Services.levelManager.ExitToMainMenu();
 					break;
 				case MenuButton.ButtonType.Quit:
-					levelManager.QuitGame();
+					Services.levelManager.QuitGame();
 					break;
 			}
 		}
@@ -137,7 +137,7 @@ namespace __SCRIPTS
 			OnPause?.Invoke(player);
 			IsPaused = true;
 			pausingPlayer = player;
-			playerManager.SetActionMaps(Players.UIActionMap);
+			Services.playerManager.SetActionMaps(Players.UIActionMap);
 
 			Time.timeScale = 0;
 			menuButtons.InitButtons();
@@ -153,7 +153,7 @@ namespace __SCRIPTS
 			graphic.SetActive(false);
 			OnUnpause?.Invoke(pausingPlayer);
 			IsPaused = false;
-			playerManager.SetActionMaps(Players.PlayerActionMap);
+			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
 
 			Time.timeScale = 1;
 			menuButtons.UnhighlightButtons();

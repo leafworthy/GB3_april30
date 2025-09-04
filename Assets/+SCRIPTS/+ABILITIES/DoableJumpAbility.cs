@@ -100,7 +100,7 @@ namespace __SCRIPTS
 			Do();
 		}
 
-		private void Life_OnDying(Player arg1, Life arg2)
+		private void Life_OnDying(Player player1, Life life1)
 		{
 			isFlying = true;
 			Jump();
@@ -125,7 +125,7 @@ namespace __SCRIPTS
 
 		protected void FixedUpdate()
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (isResting) return;
 			if (!isJumping) return;
 
@@ -141,7 +141,7 @@ namespace __SCRIPTS
 				return;
 			}
 
-			verticalVelocity -= assetManager.Vars.Gravity.y * Time.fixedDeltaTime;
+			verticalVelocity -= Services.assetManager.Vars.Gravity.y * Time.fixedDeltaTime;
 			if (body.GetDistanceToGround() + verticalVelocity <= currentLandableHeight && verticalVelocity < 0)
 				Land();
 			else

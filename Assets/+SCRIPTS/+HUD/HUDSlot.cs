@@ -6,19 +6,20 @@ using UnityEngine.InputSystem.UI;
 
 namespace __SCRIPTS
 {
-	public class HUDSlot : ServiceUser
+	public class HUDSlot : MonoBehaviour
 	{
 		public PlayerSetupMenu charSelectMenu;
 		public UpgradeSetupMenu upgradeSetupMenu;
 		private Player currentPlayer;
 		public GameObject characterHUD;
+		
 
 		public void SetPlayer(Player player)
 		{
 			Debug.Log("slot set to player: " + player.name);
 			currentPlayer = player;
 
-			// Ensure player stats are initialized before setting up HUD components
+			// Ensure player Stats are initialized before setting up HUD components
 			var playerStats = player.GetComponent<PlayerStats>();
 			if (playerStats != null)
 			{
@@ -51,13 +52,13 @@ namespace __SCRIPTS
 		{
 			upgradeSetupMenu.gameObject.SetActive(true);
 			upgradeSetupMenu.StartUpgradeSelectMenu(player);
-			pauseManager.OnPause += CloseAllUpgradeSelectMenus;
+			Services.pauseManager.OnPause += CloseAllUpgradeSelectMenus;
 			upgradeSetupMenu.OnUpgradeExit += CloseUpgradeSelectMenu;
 		}
 
 		private void CloseAllUpgradeSelectMenus(Player p)
 		{
-			foreach (var player in playerManager.AllJoinedPlayers)
+			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
 				if (player == null) continue;
 				player.LeaveUpgradeSetupMenu();
@@ -66,7 +67,7 @@ namespace __SCRIPTS
 
 		private void CloseUpgradeSelectMenu(Player player)
 		{
-			pauseManager.OnPause -= CloseUpgradeSelectMenu;
+			Services.pauseManager.OnPause -= CloseUpgradeSelectMenu;
 			upgradeSetupMenu.OnUpgradeExit -= CloseUpgradeSelectMenu;
 			upgradeSetupMenu.gameObject.SetActive(false);
 			if (player == null) return;

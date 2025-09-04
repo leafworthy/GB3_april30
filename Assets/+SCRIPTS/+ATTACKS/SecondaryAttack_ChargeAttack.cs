@@ -74,7 +74,7 @@ namespace __SCRIPTS
 
 		private void SpawnFX()
 		{
-			currentArrowHead = objectMaker.Make(assetManager.FX.nadeTargetPrefab);
+			currentArrowHead = Services.objectMaker.Make(Services.assetManager.FX.nadeTargetPrefab);
 			currentArrowHead.SetActive(false);
 		}
 
@@ -91,7 +91,7 @@ namespace __SCRIPTS
 
 		private void Player_ChargePress(NewControlButton newControlButton)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (!body.arms.Do(this)) return;
 
 			if (!body.legs.Do(this))
@@ -110,7 +110,7 @@ namespace __SCRIPTS
 
 		private void Player_ChargeRelease(NewControlButton newControlButton)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (!isCharging) return;
 			OnChargeStop?.Invoke();
 
@@ -172,7 +172,7 @@ namespace __SCRIPTS
 				if (!otherLife.IsEnemyOf(attacker) || otherLife.CanBeAttacked || otherLife.IsObstacle) return;
 				HitTarget(otherLife.SecondaryAttackDamageWithExtra, otherLife, 2);
 				connect = true;
-				objectMaker.Make( assetManager.FX.hits.GetRandom(), hit2D.transform.position);
+				Services.objectMaker.Make(Services.assetManager.FX.hits.GetRandom(), hit2D.transform.position);
 			}
 
 			if (!connect) return;
@@ -181,11 +181,10 @@ namespace __SCRIPTS
 
 		private void MoveIfDidCollideWithBuilding(Vector3 position, Vector3 targetPoint, out RaycastHit2D[] raycast)
 		{
-			var hitObstacle = Physics2D.Linecast(position, targetPoint, assetManager.LevelAssets.BuildingLayer);
+			var hitObstacle = Physics2D.Linecast(position, targetPoint, Services.assetManager.LevelAssets.BuildingLayer);
 			if (hitObstacle) targetPoint = hitObstacle.point;
 
-			raycast = Physics2D.CircleCastAll(position, SpecialAttackWidth, move.MoveAimDir, SpecialAttackDistance,
-				 assetManager.LevelAssets.EnemyLayer);
+			raycast = Physics2D.CircleCastAll(position, SpecialAttackWidth, move.MoveAimDir, SpecialAttackDistance, Services.assetManager.LevelAssets.EnemyLayer);
 			transform.position = targetPoint;
 		}
 

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class Pickup_SFX : ServiceUser
+	public class Pickup_SFX : MonoBehaviour
 	{
 		private Pickup pickup;
 
@@ -15,7 +15,7 @@ namespace __SCRIPTS
 
 		private void StartPickup(Collider2D col, Color pickupTintColor)
 		{
-			sfx.PlayUISound(sfx.sounds.pickup_pickup_sounds.GetRandom());
+			Services.sfx.PlayUISound(Services.sfx.sounds.pickup_pickup_sounds.GetRandom());
 		}
 	}
 }

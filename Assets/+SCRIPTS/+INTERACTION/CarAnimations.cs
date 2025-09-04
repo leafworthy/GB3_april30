@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class CarAnimations : ServiceUser
+	public class CarAnimations : MonoBehaviour
 	{
 		private static readonly int Start = Animator.StringToHash("Start");
 
@@ -16,7 +16,7 @@ namespace __SCRIPTS
 
 		public void PlayerEntersCar()
 		{
-			foreach (var player in playerManager.AllJoinedPlayers) player.SpawnedPlayerGO.SetActive(false);
+			foreach (var player in Services.playerManager.AllJoinedPlayers) player.SpawnedPlayerGO.SetActive(false);
 		}
 
 		private void OnEnable()
@@ -39,8 +39,8 @@ namespace __SCRIPTS
 
 		public void OnCarEnter()
 		{
-			sfx.sounds.car_start_sound.PlayRandomAt(transform.position);
-			levelManager.StartWinningGame();
+			Services.sfx.sounds.car_start_sound.PlayRandomAt(transform.position);
+			Services.levelManager.StartWinningGame();
 
 		}
 
@@ -50,7 +50,7 @@ namespace __SCRIPTS
 
 		public void OnCarSkirtOff()
 		{
-			levelManager.WinGame();
+			Services.levelManager.WinGame();
 
 		}
 	}

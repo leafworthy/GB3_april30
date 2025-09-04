@@ -3,7 +3,7 @@ using __SCRIPTS;
 using UnityEngine;
 
 [RequireComponent(typeof(ParticleSystem))]
-public class AttachGameObjectsToParticles : ServiceUser
+public class AttachGameObjectsToParticles : MonoBehaviour
 {
 	public GameObject m_Prefab;
 
@@ -32,7 +32,7 @@ public class AttachGameObjectsToParticles : ServiceUser
 
 		while (m_Instances.Count < count && attempts < maxAttempts)
 		{
-			var prefab = objectMaker.Make(m_Prefab);
+			var prefab = Services.objectMaker.Make(m_Prefab);
 			if (prefab != null)
 			{
 				Debug.Log("new instance ");

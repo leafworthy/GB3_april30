@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class JumpAbility_FX : ServiceUser
+	public class JumpAbility_FX : MonoBehaviour
 	{
 		private JumpAbility jump;
 		private Body body;
@@ -24,13 +24,13 @@ namespace __SCRIPTS
 
 		private void Jump_OnJump(Vector2 obj)
 		{
-			objectMaker.Make( assetManager.FX.dust2_jump, transform.position);
+			Services.objectMaker.Make(Services.assetManager.FX.dust2_jump, transform.position);
 		}
 
 		private  void Jump_OnLand(Vector2 pos)
 		{
-			objectMaker.Make( assetManager.FX.dust1_ground, pos);
-			var flipDust = objectMaker.Make( assetManager.FX.dust1_ground, pos);
+			Services.objectMaker.Make(Services.assetManager.FX.dust1_ground, pos);
+			var flipDust = Services.objectMaker.Make(Services.assetManager.FX.dust1_ground, pos);
 			flipDust.transform.localScale = new Vector3(flipDust.transform.localScale.x * -1, flipDust.transform.localScale.y, 0);
 		}
 	}
