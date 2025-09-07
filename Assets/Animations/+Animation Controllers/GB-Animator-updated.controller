@@ -382,7 +382,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Top-Reload
+  m_Name: AK-Reload
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -438,6 +438,32 @@ AnimatorState:
   m_Motion: {fileID: 7400000, guid: 8c60ca05a20a14c7e8a127ab98182b36, type: 2}
   m_Tag: 
   m_SpeedParameter: ShootSpeed
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &-6551181583082855171
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Glock-PullOut
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 091793968778c4383adcbff6589d5876, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
@@ -631,6 +657,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -1395615136711661045}
     m_Position: {x: 550, y: 420, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 6696849630239624659}
+    m_Position: {x: -100, y: 620, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions:
@@ -649,7 +678,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: gb_glock_EN_SHOOT
+  m_Name: EN_Glock
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -753,7 +782,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: glock_EES_SHOOT
+  m_Name: EES_Glock
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -801,7 +830,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: glock_EEN_SHOOT
+  m_Name: EEN_Glock
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -841,6 +870,32 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: aaf890dfb175341beab9a356227816a3, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &-3992840503384607070
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AK47-PullOut
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 90ed46566c3f447b596ecd73ef391a3e, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1307,49 +1362,61 @@ AnimatorStateMachine:
     m_Position: {x: 440, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7574817438477664558}
-    m_Position: {x: 70, y: 30, z: 0}
+    m_Position: {x: 360, y: 310, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -9180985893876220120}
-    m_Position: {x: 70, y: -60, z: 0}
+    m_Position: {x: 220, y: -230, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4118606456740349707}
-    m_Position: {x: 70, y: -20, z: 0}
+    m_Position: {x: 460, y: -230, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5595756218334190550}
     m_Position: {x: -190, y: 90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4216277001285979637}
-    m_Position: {x: 1000, y: 50, z: 0}
+    m_Position: {x: 760, y: 50, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4479075606407306541}
-    m_Position: {x: 940, y: 160, z: 0}
+    m_Position: {x: 790, y: 130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4081068718887090177}
-    m_Position: {x: 900, y: 200, z: 0}
+    m_Position: {x: 760, y: 170, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2194223068637463990}
-    m_Position: {x: 880, y: 240, z: 0}
+    m_Position: {x: 720, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2275569673316580092}
-    m_Position: {x: 940, y: 120, z: 0}
+    m_Position: {x: 810, y: 90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4877128223938072406}
-    m_Position: {x: 980, y: 10, z: 0}
+    m_Position: {x: 740, y: 10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6111232900117962662}
-    m_Position: {x: 940, y: -30, z: 0}
+    m_Position: {x: 700, y: -30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1962299405226418513}
-    m_Position: {x: 960, y: -170, z: 0}
+    m_Position: {x: 660, y: 310, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4064539973044026198}
-    m_Position: {x: 910, y: -220, z: 0}
+    m_Position: {x: 930, y: -230, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1256711806857156139}
     m_Position: {x: 390, y: -70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7091132215207729913}
     m_Position: {x: 390, y: 250, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 7824887748323951701}
+    m_Position: {x: 660, y: -70, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 1978800642619859854}
+    m_Position: {x: 680, y: 250, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -6551181583082855171}
+    m_Position: {x: 630, y: -130, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -3992840503384607070}
+    m_Position: {x: 360, y: -130, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 2353546500901754284}
@@ -1438,6 +1505,32 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &1978800642619859854
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SSE_Glock
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 1
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 968d3b824b315462fba45ee98829b5fb, type: 2}
+  m_Tag: 
+  m_SpeedParameter: ShootSpeed
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &2194223068637463990
 AnimatorState:
   serializedVersion: 6
@@ -1445,7 +1538,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: glock_SE_SHOOT
+  m_Name: SE_Glock
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1471,7 +1564,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: glock_E_SHOOT
+  m_Name: E_Glock
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1705,7 +1798,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: glock_ES_SHOOT
+  m_Name: ES_Glock
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1854,7 +1947,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: glock_NE_SHOOT
+  m_Name: NE_Glock
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1965,6 +2058,32 @@ AnimatorTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 1
+--- !u!1102 &6696849630239624659
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AK47 Pull Out
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 90ed46566c3f447b596ecd73ef391a3e, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &6965536413222756168
 AnimatorState:
   serializedVersion: 6
@@ -2058,6 +2177,32 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &7824887748323951701
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NNE_Glock
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 1
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 47aa7be70e3244c208bdf169686748b3, type: 2}
+  m_Tag: 
+  m_SpeedParameter: ShootSpeed
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1101 &8082594337606859844
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

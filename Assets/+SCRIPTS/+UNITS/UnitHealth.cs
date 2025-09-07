@@ -13,12 +13,9 @@ namespace __SCRIPTS
 		public bool IsDead => isDead;
 		public float CurrentHealth => currentHealth;
 
-		public event Action<Attack> OnDamaged;
 		public event Action<float> OnFractionChanged;
-		public event Action<Attack> OnWounded;
-		public event Action<Life> OnDying;
-		public event Action OnDead;
-		public event Action<Life, Player> OnKilled;
+		public event Action<Attack> OnDying;
+		public event Action<Attack> OnDead;
 		public event Action<Attack> OnAttackHit;
 
 		private bool isInvincible;
@@ -29,21 +26,14 @@ namespace __SCRIPTS
 
 		private bool isDead;
 
-		private LayerMask originalLayer;
-		private GameObject gameObject;
-		private Collider2D[] colliders;
-		private Life life;
+		private UnitStatsData unitData;
 
-		private UnitAnimations unitAnim => _unitAnim ??= gameObject.GetComponent<UnitAnimations>();
-		private UnitAnimations _unitAnim;
 
-		public UnitHealth(GameObject _gameObject, bool _isInvincible, float _MaxHealth)
+		public UnitHealth(UnitStatsData data)
 		{
-			gameObject = _gameObject;
-			isInvincible = _isInvincible;
-			colliders = gameObject.GetComponentsInChildren<Collider2D>(true);
-			maxHealth = _MaxHealth;
-			life = gameObject.GetComponent<Life>();
+			unitData = data;
+			isInvincible = data.isInvincible;
+			maxHealth = data.healthMax;
 			Initialize();
 		}
 
@@ -51,7 +41,6 @@ namespace __SCRIPTS
 		{
 			currentHealth = maxHealth;
 			isDead = false;
-			EnableColliders(true);
 			OnFractionChanged?.Invoke(GetFraction());
 		}
 
@@ -60,16 +49,11 @@ namespace __SCRIPTS
 			if (isDead || IsTemporarilyInvincible || isInvincible) return;
 			Debug.Log("taking damage inside");
 			currentHealth = Mathf.Max(0, currentHealth - attack.DamageAmount);
-			OnDamaged?.Invoke(attack);
 			OnAttackHit?.Invoke(attack);
 			OnFractionChanged?.Invoke(GetFraction());
 
-			CameraShaker.ShakeCamera(attack.DestinationFloorPoint, CameraShaker.ShakeIntensityType.normal);
-			if(unitAnim != null) unitAnim?.SetTrigger(UnitAnimations.HitTrigger);
-
 			if (!(currentHealth <= 0) || isInvincible) return;
-			OnWounded?.Invoke(attack);
-			if (attack.OriginLife.Player != null) OnKilled?.Invoke(life, attack.OriginLife.Player);
+			OnDying?.Invoke(attack);
 			StartDeath();
 		}
 
@@ -86,55 +70,20 @@ namespace __SCRIPTS
 			StartDeath();
 		}
 
-		private void StartDeath()
+		private void StartDeath(Attack killingAttack = null)
 		{
-			OnDying?.Invoke(life);
+
+			OnDead?.Invoke(killingAttack);
 			isDead = true;
-			EnableColliders(false);
-			gameObject.layer = LayerMask.NameToLayer("Dead");
-
-			unitAnim?.SetTrigger(UnitAnimations.DeathTrigger);
-			unitAnim?.SetBool(UnitAnimations.IsDead, true);
 		}
 
-		private void CompleteDeath()
-		{
-			if (!isInvincible) return;
-			OnDead?.Invoke();
-			var objectMaker = ServiceLocator.Get<ObjectMaker>();
-			objectMaker?.Unmake(gameObject);
-			unitAnim.animEvents.OnDieStop -= CompleteDeath;
-			unitAnim.animEvents.OnInvincible -= SetInvincible;
-		}
-
-		private void SetInvincible(bool invincible)
+		public void SetTemporaryInvincible(bool invincible)
 		{
 			IsTemporarilyInvincible = invincible;
 		}
 
-		private void EnableColliders(bool enable)
-		{
-			if (!isInvincible && !enable) return;
-
-			foreach (var col in colliders)
-			{
-				col.enabled = enable;
-			}
-		}
-
-
-		private void SetupAnimationEvents()
-		{
-if(unitAnim == null ) return;
-
-			unitAnim.animEvents.OnDieStop += CompleteDeath;
-			unitAnim.animEvents.OnInvincible += SetInvincible;
-		}
-
 		private void Initialize()
 		{
-			SetupAnimationEvents();
-			originalLayer = gameObject.layer;
 			ResetHealth();
 		}
 	}

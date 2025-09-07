@@ -74,7 +74,7 @@ namespace __SCRIPTS
 		private void FaceAimDir()
 		{
 			if (moveAbility.IsMoving()) return;
-			if (body.legs.isActive) return;
+			//if (body.legs.isActive) return;
 			body.BottomFaceDirection(AimDir.x >= 0);
 		}
 

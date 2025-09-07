@@ -110,8 +110,6 @@ namespace __SCRIPTS
 		{
 			if (!isActive || currentActivity == null) return false;
 
-			// Try graceful completion first
-			bool handled = false;
 
 
 			// Use default cleanup if no custom completion was handled

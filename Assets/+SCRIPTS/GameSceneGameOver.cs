@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using __SCRIPTS;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameSceneGameOver : GameScene
 {

@@ -1,8 +1,6 @@
 ﻿using System;
 using GangstaBean.Core;
-using Sirenix.Serialization;
 using UnityEngine;
-using VInspector;
 
 namespace __SCRIPTS
 {
@@ -44,14 +42,14 @@ namespace __SCRIPTS
 		public bool IsPlayerAttackable => unitStats.IsPlayerAttackable;
 		public DebrisType DebrisType => unitStats.DebrisType;
 
-		public event Action<Attack, Life> OnAttackHit;
-		public event Action<Attack> OnDamaged;
+		public event Action<Attack> OnAttackHit;
 		public event Action<float> OnFractionChanged;
-		public event Action<Player, Life> OnDying;
+		public event Action<Attack> OnDying;
 		public event Action<Player, Life> OnKilled;
-		public event Action<Player> OnDead;
-		public event Action<Attack> OnWounded;
+
+		public event Action<Player> OnDeathComplete;
 		public event Action<Attack> OnShielded;
+		private Collider2D[] colliders;
 
 		[Sirenix.OdinInspector.Button]
 		public void ClearStats()
@@ -69,30 +67,29 @@ namespace __SCRIPTS
 		{
 			var assets = ServiceLocator.Get<ASSETS>();
 		}
-		private void Start()
+		private void OnEnable()
 		{
 			unitStats = new UnitStats(gameObject.name);
-			unitHealth = new UnitHealth(gameObject, unitStats.Data.isInvincible, unitStats.Data.healthMax);
-			unitHealth.OnDamaged += Health_OnDamaged;
+			unitHealth = new UnitHealth(unitStats.Data);
 			unitHealth.OnFractionChanged += Health_OnFractionChanged;
-			unitHealth.OnDead += Health_OnDead;
-			unitHealth.OnKilled += Health_OnKilled;
+			unitHealth.OnDead += HealthOnDead;
 			unitHealth.OnDying += Health_OnDying;
 			unitHealth.OnAttackHit += Health_AttackHit;
-			unitHealth.OnWounded += Health_OnWounded;
 			if (unitStats.Data.category != UnitCategory.Character) SetPlayer(Services.playerManager.enemyPlayer);
 		}
+
+		private void Health_OnDying(Attack attack)
+		{
+			OnDying?.Invoke(attack);
+		}
+
 
 		private void OnDisable()
 		{
 			if (unitHealth == null) return;
-			unitHealth.OnDamaged -= Health_OnDamaged;
 			unitHealth.OnFractionChanged -= Health_OnFractionChanged;
-			unitHealth.OnDead -= Health_OnDead;
-			unitHealth.OnDying -= Health_OnDying;
-			unitHealth.OnKilled -= Health_OnKilled;
+			unitHealth.OnDead -= HealthOnDead;
 			unitHealth.OnAttackHit -= Health_AttackHit;
-			unitHealth.OnWounded -= Health_OnWounded;
 		}
 
 		public bool IsHuman => Player != null && Player.IsPlayer();
@@ -106,7 +103,7 @@ namespace __SCRIPTS
 			player = newPlayer;
 
 
-
+			SetupAnimationEvents();
 			foreach (var component in GetComponents<INeedPlayer>())
 			{
 				if (component != this)
@@ -114,45 +111,70 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void Health_OnWounded(Attack obj)
+		private void SetupAnimationEvents()
 		{
-			OnWounded?.Invoke(obj);
+			if (animations == null) return;
+
+			animations.animEvents.OnDieStop += CompleteDeath;
+			animations.animEvents.OnInvincible += SetInvincible;
 		}
+
+		private void SetInvincible(bool inOn)
+		{
+			unitHealth.SetTemporaryInvincible(inOn);
+		}
+
+		private void CompleteDeath()
+		{
+			Health_OnDead();
+		}
+
 
 		private void Health_AttackHit(Attack attack)
 		{
-			OnAttackHit?.Invoke(attack, this);
+			OnAttackHit?.Invoke(attack);
 		}
 
 		private void Health_OnDead()
 		{
-			OnDead?.Invoke(Player);
+			OnDeathComplete?.Invoke(Player);
 		}
 
 		public bool IsEnemyOf(Life other) => IsHuman != other.IsHuman;
 
 
 
-		private void Health_OnDying(Life life)
+		private void HealthOnDead(Attack attack)
 		{
-			OnDying?.Invoke(Player, this);
+			OnDying?.Invoke(attack);
+			if (attack != null && attack.OriginLife != null)
+				OnKilled?.Invoke(attack.OriginLife.player,this);
+			EnableColliders(false);
+			gameObject.layer = LayerMask.NameToLayer("Dead");
+			animations?.SetTrigger(UnitAnimations.DeathTrigger);
+			animations?.SetBool(UnitAnimations.IsDead, true);
+		}
+
+		private void EnableColliders(bool enable)
+		{
+			if (!unitStats.Data.isInvincible && !enable) return;
+			colliders = gameObject.GetComponentsInChildren<Collider2D>(true);
+
+			foreach (var col in colliders)
+			{
+				col.enabled = enable;
+			}
 		}
 
 
-
-		private void Health_OnKilled(Life life, Player killer)
+		private void Health_OnKilled(Attack attack)
 		{
-			OnKilled?.Invoke(killer, this);
+			OnKilled?.Invoke(attack.OriginLife.player, this);
 		}
 
 		private void Health_OnFractionChanged(float fraction)
 		{
 			OnFractionChanged?.Invoke(fraction);
-		}
-
-		private void Health_OnDamaged(Attack attack)
-		{
-			OnDamaged?.Invoke(attack);
 		}
 
 		public void TakeDamage(Attack attack)
@@ -169,7 +191,16 @@ namespace __SCRIPTS
 
 		public void AddHealth(float amount) => unitHealth.AddHealth(amount);
 		public void DieNow() => unitHealth.KillInstantly();
-		public float GetFraction() => unitHealth.GetFraction();
+		public float GetFraction()  {
+			if(unitHealth != null)
+			{
+				Debug.Log("unit health fraction");
+				return unitHealth.GetFraction();
+			}
+
+			Debug.Log("default fraction");
+			return 1;
+		}
 
 		public void SetShielding(bool isOn)
 		{

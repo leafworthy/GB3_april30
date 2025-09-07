@@ -118,7 +118,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void BreakDoor(Player player, Life life1)
+		private void BreakDoor(Attack attack)
 		{
 			if (isBroken) return;
 			isBroken = true;
@@ -130,7 +130,7 @@ namespace __SCRIPTS
 			Services.sfx.sounds.door_break_sound.PlayRandomAt(transform.position);
 
 			SetCollidersEnabled(false);
-			OnBreak?.Invoke(player);
+			OnBreak?.Invoke(attack.DestinationLife.Player);
 		}
 
 		private void SetCollidersEnabled(bool collidersEnabled)

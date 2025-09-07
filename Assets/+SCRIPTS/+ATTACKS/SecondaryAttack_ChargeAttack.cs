@@ -65,7 +65,7 @@ namespace __SCRIPTS
 			if (isCharging)
 			{
 				ShowAiming();
-				body.BottomFaceDirection(move.MoveAimDir.x > 0);
+				body.BottomFaceDirection(move.GetMoveAimDir().x > 0);
 			}
 			else
 				HideAiming();
@@ -163,7 +163,7 @@ namespace __SCRIPTS
 			}
 
 			var circleCast = Physics2D.OverlapCircleAll(
-				(Vector2)transform.position + move.MoveAimDir * SpecialAttackDistance, GetHitRange(attackType));
+				(Vector2)transform.position + move.GetMoveAimDir() * SpecialAttackDistance, GetHitRange(attackType));
 
 			foreach (var hit2D in circleCast)
 			{
@@ -184,7 +184,7 @@ namespace __SCRIPTS
 			var hitObstacle = Physics2D.Linecast(position, targetPoint, Services.assetManager.LevelAssets.BuildingLayer);
 			if (hitObstacle) targetPoint = hitObstacle.point;
 
-			raycast = Physics2D.CircleCastAll(position, SpecialAttackWidth, move.MoveAimDir, SpecialAttackDistance, Services.assetManager.LevelAssets.EnemyLayer);
+			raycast = Physics2D.CircleCastAll(position, SpecialAttackWidth, move.GetMoveAimDir(), SpecialAttackDistance, Services.assetManager.LevelAssets.EnemyLayer);
 			transform.position = targetPoint;
 		}
 

@@ -30,26 +30,7 @@ namespace __SCRIPTS
 		[HideInInspector] public bool BottomIsFacingRight = true;
 		[HideInInspector] public bool TopIsFacingRight = true;
 		public DoableArms doableArms = new();
-		public DoableArms doableLegs = new();
-		private bool canMove;
-		public event Action<bool> OnCanMove;
-		private ScreenDebugText screenDebugText;
-		private ScreenDebugText debug => screenDebugText ??= GetComponent<ScreenDebugText>();
-
-
-		public bool CanMove
-		{
-			get => canMove;
-			private set => canMove = value;
-		}
-
-		public void SetCanMove(bool _canMove)
-		{
-			canMove = _canMove;
-			OnCanMove?.Invoke(_canMove);
-		}
-
-
+		public DoableLegs doableLegs = new();
 
 		public void ChangeLayer(BodyLayer bodyLayer)
 		{
@@ -116,6 +97,12 @@ namespace __SCRIPTS
 			currentScale.x = toTheRight ? Mathf.Abs(localScale.x) : -Mathf.Abs(localScale.x);
 			localScale = currentScale;
 			TopScaleObject.transform.localScale = localScale;
+		}
+
+		public void SetGrounded()
+		{
+			SetDistanceToGround(0);
+			ChangeLayer(Body.BodyLayer.grounded);
 		}
 	}
 }

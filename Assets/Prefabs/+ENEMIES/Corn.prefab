@@ -232,7 +232,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2ac3b84af52a94602a54bc139783a231, type: 2}
+  - {fileID: 2100000, guid: c0053c1e0e5d44d058cabce14c61b358, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -500,7 +500,6 @@ GameObject:
   - component: {fileID: 2225856711697603961}
   - component: {fileID: 7431416039479195692}
   - component: {fileID: 8285527797136473828}
-  - component: {fileID: 4661694019120698656}
   - component: {fileID: -130649681602366805}
   - component: {fileID: -389476094525104034}
   - component: {fileID: 4259043095036619887}
@@ -591,37 +590,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  _unitData:
-    unitName: Corn
-    category: 1
-    debrisType: 0
-    isPlayerSwingHittable: 1
-    showLifeBar: 1
-    isInvincible: 0
-    healthMax: 40
-    moveSpeed: 40
-    dashSpeed: 0
-    jumpSpeed: 0
-    aggroRange: 80
-    attack1Damage: 50
-    attack1Rate: 0
-    attack1Range: 3
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-  ExtraMaxHealthFactor: 0
-  ExtraMaxSpeedFactor: 0
-  ExtraMaxDamageFactor: 0
-  cantDie: 0
-  isInvincible: 0
-  Health: 40
-  isShielded: 0
+  unitStats:
+    _unitData:
+      unitName: 
+      category: 0
+      debrisType: 0
+      isPlayerSwingHittable: 0
+      showLifeBar: 0
+      isInvincible: 0
+      healthMax: 0
+      moveSpeed: 0
+      dashSpeed: 0
+      jumpSpeed: 0
+      aggroRange: 0
+      attack1Damage: 0
+      attack1Rate: 0
+      attack1Range: 0
+      attack2Damage: 0
+      attack2Rate: 0
+      attack2Range: 0
+      attack3Damage: 0
+      attack3Rate: 0
+      attack3Range: 0
+      attack4Damage: 0
+      attack4Rate: 0
+      attack4Range: 0
+      hasData: 0
+      isDefault: 0
+    ExtraHealthFactor: 0
+    ExtraDamageFactor: 0
+    ExtraSpeedFactor: 0
+  unitHealth:
+    IsTemporarilyInvincible: 0
+    IsShielded: 0
 --- !u!114 &3380774032305505157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -740,11 +741,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff264cf2d310481ea1df4e39814eef10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOverLandable: 0
   ShadowObject: {fileID: 5317405890393258320}
   JumpObject: {fileID: 7921273744536592311}
   Sorting: {fileID: 6723279448116647766}
-  canLand: 0
   AttackStartPoint: {fileID: 7995052009112491741}
   FootPoint: {fileID: 550463281407547642}
   RotateWithAim: []
@@ -810,19 +809,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8e19e5c2974953b6d306f3bb0303ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDir: {x: 0, y: 0}
---- !u!114 &4661694019120698656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5317405891896899284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeb1bdcf5bcc4c37a9323c4f77dfd091, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
 --- !u!114 &-130649681602366805
 MonoBehaviour:
   m_ObjectHideFlags: 0

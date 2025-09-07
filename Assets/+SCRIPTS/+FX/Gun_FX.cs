@@ -17,8 +17,8 @@ namespace __SCRIPTS
 			foreach (var gun in guns)
 			{
 				Debug.Log("subscribing to gun fx" + gun.name, gun);
-				gun.OnShotHitTarget += GunAttackAkGlockOnOnOnShotHitTarget;
-				gun.OnShotMissed += GunAttackAkGlockOnOnOnShotHitTarget;
+				gun.OnShotHitTarget += Gun_OnShoot;
+				gun.OnShotMissed += Gun_OnShoot;
 			}
 		}
 
@@ -26,12 +26,12 @@ namespace __SCRIPTS
 		{
 			foreach (var gun in guns)
 			{
-				gun.OnShotHitTarget += GunAttackAkGlockOnOnOnShotHitTarget;
-				gun.OnShotMissed += GunAttackAkGlockOnOnOnShotHitTarget;
+				gun.OnShotHitTarget -= Gun_OnShoot;
+				gun.OnShotMissed -= Gun_OnShoot;
 			}
 		}
 
-		private void GunAttackAkGlockOnOnOnShotHitTarget(Attack attack)
+		private void Gun_OnShoot(Attack attack)
 		{
 			Debug.Log("shot hit target fx");
 			CreateBullet(attack);
@@ -42,7 +42,7 @@ namespace __SCRIPTS
 
 		private void CreateBullet(Attack attack)
 		{
-			var newBullet = Services.objectMaker.Make(bulletPrefab, attack.OriginFloorPoint);
+			var newBullet = Services.objectMaker.Make(bulletPrefab, attack.OriginWithHeight);
 			newBullet.GetComponent<Bullet_FX>().Fire(attack);
 			CameraShaker.ShakeCamera(attack.OriginFloorPoint, CameraShaker.ShakeIntensityType.normal);
 		}

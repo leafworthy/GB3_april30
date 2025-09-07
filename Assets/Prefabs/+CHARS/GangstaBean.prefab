@@ -384,6 +384,7 @@ GameObject:
   - component: {fileID: 3833892833308743023}
   - component: {fileID: 3833892833308743022}
   - component: {fileID: 8525557761081596347}
+  - component: {fileID: 3194819042820860482}
   m_Layer: 10
   m_Name: Animations
   m_TagString: bottom
@@ -447,6 +448,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 235b0dca957a44663ae0a9256d23c975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &3194819042820860482
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833308743020}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.6333333, y: 1.45}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &3833892833502990261
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,7 +554,6 @@ GameObject:
   - component: {fileID: 7033340165896196128}
   - component: {fileID: -7255834867476403094}
   - component: {fileID: 1611911406270945328}
-  - component: {fileID: 1035550799087913613}
   - component: {fileID: -7364892996544991729}
   - component: {fileID: 2336976950886959425}
   - component: {fileID: 2569835813408618068}
@@ -645,6 +700,7 @@ MonoBehaviour:
   - {fileID: 6613743014821493785}
   - {fileID: 3833892834760878399}
   - {fileID: 7210983349185876981}
+  - {fileID: 3194819042820860482}
   renderAboveAll: 0
 --- !u!114 &5036427627969513471
 MonoBehaviour:
@@ -658,15 +714,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   player: {fileID: 0}
   unitStats:
     _unitData:
@@ -713,15 +760,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   slowBarImage: {fileID: 0}
   fastBarImage: {fileID: 0}
   DebreeTint: {r: 1, g: 0, b: 0, a: 1}
@@ -771,27 +809,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff264cf2d310481ea1df4e39814eef10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: doableArms
-      Entry: 7
-      Data: 0|__SCRIPTS.DoableArms, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: doableLegs
-      Entry: 7
-      Data: 1|__SCRIPTS.DoableArms, Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
   ShadowObject: {fileID: 3833892834326608145}
   JumpObject: {fileID: 3833892833502990261}
   Sorting: {fileID: 5572898776388989025}
@@ -850,27 +867,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectToHide: {fileID: 6464584115568360862}
---- !u!114 &1035550799087913613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeb1bdcf5bcc4c37a9323c4f77dfd091, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!114 &-7364892996544991729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,7 +888,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  moveDir: {x: 0, y: 0}
 --- !u!114 &2336976950886959425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -905,15 +900,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de38ca81127d4363bd50622ec988fd27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!114 &2569835813408618068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -926,15 +912,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02515278ca59420cb04ac10719e4ea33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!114 &5636858269508795379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -960,6 +937,7 @@ MonoBehaviour:
   fallingAnimationClip: {fileID: 7400000, guid: 572dcdab6062047b68838e6b201a485c, type: 2}
   landingAnimationClip: {fileID: 7400000, guid: f5e16cc96fff344e2b7b6fe2cb948588, type: 2}
   flyingAnimationClip: {fileID: 7400000, guid: ae4ada2c244254b9498e516924b7a730, type: 2}
+  deathAnimationClip: {fileID: 7400000, guid: 1f967d2e339f1437287980568bd40b1a, type: 2}
 --- !u!114 &1547629825238236334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -972,15 +950,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4292d3ea9a9b432ab0feb06b3d835a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!114 &6438088722743322343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1080,15 +1049,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0815b84cd52045dfb064f195a0dac53b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!114 &5548372319585306732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1112,7 +1072,6 @@ MonoBehaviour:
     SerializationNodes: []
   ReloadAKAnimationClip: {fileID: 7400000, guid: c282e12111bd1461a9470c82ea4f48bc, type: 2}
   ReloadGlockAnimationClip: {fileID: 7400000, guid: d390762771f9949fab1938be26f2c783, type: 2}
-  ReloadGlockAnimationLeftClip: {fileID: 7400000, guid: 9dbfd4e662ae54b3bada9cc02ef733ec, type: 2}
 --- !u!114 &2540166378909504354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1134,6 +1093,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  IsUsingPrimaryWeapon: 1
+  GlockPullOutAnimationClip: {fileID: 7400000, guid: 091793968778c4383adcbff6589d5876, type: 2}
+  AK47PullOutAnimationClip: {fileID: 7400000, guid: 90ed46566c3f447b596ecd73ef391a3e, type: 2}
 --- !u!114 &4040534153244162535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1190,15 +1152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f93652c92d345118a67ffec7aa24f9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   flashlightLight: {fileID: 4333478069115357224}
 --- !u!114 &7588817595896598098
 MonoBehaviour:
@@ -1235,15 +1188,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad635b0b5e546af9d9b4d8bf010af7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!114 &2356797611298481610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1279,15 +1223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f512f76248e741cfa3e1074e10baf703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!114 &147235593454067752
 MonoBehaviour:
   m_ObjectHideFlags: 0

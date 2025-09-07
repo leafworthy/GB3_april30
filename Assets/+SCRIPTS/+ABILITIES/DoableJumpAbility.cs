@@ -1,5 +1,4 @@
 using System;
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -12,12 +11,15 @@ namespace __SCRIPTS
 		public AnimationClip fallingAnimationClip;
 		public AnimationClip landingAnimationClip;
 		public AnimationClip flyingAnimationClip;
+		public AnimationClip deathAnimationClip;
 
+		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
+		private MoveAbility _moveAbility;
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnJump;
 		public event Action<Vector2> OnResting;
 
-		public bool IsResting  => isResting;
+		public bool IsResting => isResting;
 		private bool isResting;
 		private bool isOverLandable;
 		private float currentLandableHeight;
@@ -100,7 +102,7 @@ namespace __SCRIPTS
 			Do();
 		}
 
-		private void Life_OnDying(Player player1, Life life1)
+		private void Life_OnDying(Attack attack)
 		{
 			isFlying = true;
 			Jump();
@@ -145,9 +147,7 @@ namespace __SCRIPTS
 			if (body.GetDistanceToGround() + verticalVelocity <= currentLandableHeight && verticalVelocity < 0)
 				Land();
 			else
-			{
 				body.SetDistanceToGround(body.GetDistanceToGround() + verticalVelocity);
-			}
 		}
 
 		private void Land()
@@ -160,13 +160,11 @@ namespace __SCRIPTS
 
 			isJumping = false;
 			OnLand?.Invoke(transform.position + new Vector3(0, currentLandableHeight, 0));
-			anim.Play(landingAnimationClip.name, 0, 0);
 
-			body.SetCanMove(false);
-			body.SetDistanceToGround(currentLandableHeight);
-			if (body != null) body.ChangeLayer(Body.BodyLayer.grounded);
+			moveAbility.SetCanMove(false);
+			body.SetGrounded();
 			verticalVelocity = 0;
-			PlayAnimationClip(landingAnimationClip);
+			PlayAnimationClip(!life.IsDead() ? landingAnimationClip : deathAnimationClip);
 		}
 
 		private void Bounce()
@@ -180,7 +178,7 @@ namespace __SCRIPTS
 		{
 			verticalVelocity = 0;
 			isJumping = false;
-			body.SetCanMove(true);
+			moveAbility.SetCanMove(true);
 			isResting = true;
 			OnResting?.Invoke(transform.position);
 			Stop();

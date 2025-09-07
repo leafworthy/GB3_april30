@@ -86,7 +86,7 @@ namespace __SCRIPTS
 			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
 			if (spawnedPlayerDefence == null) return;
 
-			spawnedPlayerDefence.OnDead += OnPlayerDied;
+			spawnedPlayerDefence.OnDeathComplete += OnPlayerDied;
 			spawnedPlayerDefence.SetPlayer(this);
 		}
 

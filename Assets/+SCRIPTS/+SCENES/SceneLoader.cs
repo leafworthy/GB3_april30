@@ -43,6 +43,11 @@ namespace __SCRIPTS
 			StartFadingIn();
 		}
 
+		private void OnDestroy()
+		{
+			SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
+		}
+
 		private void OnDisable()
 		{
 			SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;

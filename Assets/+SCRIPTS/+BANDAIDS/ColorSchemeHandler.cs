@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using __SCRIPTS;
 using UnityEngine;
 using VInspector;
 

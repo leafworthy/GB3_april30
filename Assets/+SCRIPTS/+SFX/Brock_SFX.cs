@@ -29,7 +29,6 @@ namespace __SCRIPTS
 			animEvents.OnDieStart += Anim_OnDie;
 			animEvents.OnDash += Anim_Dash;
 			animEvents.OnTeleport += Anim_Teleport;
-			life.OnWounded += Life_OnWounded;
 			life.OnDying += Life_OnDying;
 			jump.OnJump += Jump_OnJump;
 			jump.OnLand += Jump_OnLand;
@@ -58,7 +57,6 @@ namespace __SCRIPTS
 			animEvents.OnDieStart -= Anim_OnDie;
 			animEvents.OnDash -= Anim_Dash;
 			animEvents.OnTeleport -= Anim_Teleport;
-			life.OnWounded -= Life_OnWounded;
 			jump.OnJump -= Jump_OnJump;
 			jump.OnLand -= Jump_OnLand;
 			secondaryAttackChargeAttack.OnChargePress -= SecondaryAttackChargeAttackOnSecondaryAttackChargePress;
@@ -70,7 +68,7 @@ namespace __SCRIPTS
 
 		private void MeleeAttackOnSwing() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 
-		private void Life_OnDying(Player player, Life life1) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
+		private void Life_OnDying(Attack attack) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
 
 		private void MeleeAttackOnHit(Vector2 vector2) => Services.sfx.sounds.brock_bathit_sounds.PlayRandomAt(vector2);
 		private void ChargeAttack_OnAttackHit() => Services.sfx.sounds.brock_bathit_sounds.PlayRandomAt(transform.position);

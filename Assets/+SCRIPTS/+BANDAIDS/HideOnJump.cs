@@ -30,16 +30,10 @@ namespace __SCRIPTS
 			{
 				events.OnRecovered -= Events_OnRecovered;
 			}
-			if (jumps != null)
-			{
-				jumps.OnJump -= Jumps_OnJump;
-				jumps.OnLand -= Jumps_OnLand;
-			}
-			var life = GetComponent<Life>();
-			if (life != null)
-			{
-				life.OnWounded -= Life_OnWounded;
-			}
+
+			if (jumps == null) return;
+			jumps.OnJump -= Jumps_OnJump;
+			jumps.OnLand -= Jumps_OnLand;
 		}
 
 		private void Events_OnRecovered()

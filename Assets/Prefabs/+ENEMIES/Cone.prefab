@@ -346,7 +346,6 @@ GameObject:
   - component: {fileID: 3018658050838440653}
   - component: {fileID: 5775313337100439448}
   - component: {fileID: 5042803154023811408}
-  - component: {fileID: 8626103442844033684}
   - component: {fileID: 2194203459170913656}
   - component: {fileID: -5959914097894329155}
   - component: {fileID: 4380901330312204681}
@@ -435,37 +434,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  _unitData:
-    unitName: Cone
-    category: 1
-    debrisType: 0
-    isPlayerSwingHittable: 1
-    showLifeBar: 1
-    isInvincible: 0
-    healthMax: 80
-    moveSpeed: 20
-    dashSpeed: 0
-    jumpSpeed: 0
-    aggroRange: 50
-    attack1Damage: 30
-    attack1Rate: 1
-    attack1Range: 8
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-  ExtraMaxHealthFactor: 0
-  ExtraMaxSpeedFactor: 0
-  ExtraMaxDamageFactor: 0
-  cantDie: 0
-  isInvincible: 0
-  Health: 80
-  isShielded: 0
+  unitStats:
+    _unitData:
+      unitName: 
+      category: 0
+      debrisType: 0
+      isPlayerSwingHittable: 0
+      showLifeBar: 0
+      isInvincible: 0
+      healthMax: 0
+      moveSpeed: 0
+      dashSpeed: 0
+      jumpSpeed: 0
+      aggroRange: 0
+      attack1Damage: 0
+      attack1Rate: 0
+      attack1Range: 0
+      attack2Damage: 0
+      attack2Rate: 0
+      attack2Range: 0
+      attack3Damage: 0
+      attack3Rate: 0
+      attack3Range: 0
+      attack4Damage: 0
+      attack4Rate: 0
+      attack4Range: 0
+      hasData: 0
+      isDefault: 0
+    ExtraHealthFactor: 0
+    ExtraDamageFactor: 0
+    ExtraSpeedFactor: 0
+  unitHealth:
+    IsTemporarilyInvincible: 0
+    IsShielded: 0
 --- !u!114 &1868243376366810161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,11 +610,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff264cf2d310481ea1df4e39814eef10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOverLandable: 0
   ShadowObject: {fileID: 9136819710552903396}
   JumpObject: {fileID: 6550975912698308611}
   Sorting: {fileID: 7659033533810467042}
-  canLand: 0
   AttackStartPoint: {fileID: 6481691498182271337}
   FootPoint: {fileID: 3504955075435949902}
   RotateWithAim: []
@@ -679,19 +678,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8e19e5c2974953b6d306f3bb0303ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDir: {x: 0, y: 0}
---- !u!114 &8626103442844033684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9136819711188386144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeb1bdcf5bcc4c37a9323c4f77dfd091, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
 --- !u!114 &2194203459170913656
 MonoBehaviour:
   m_ObjectHideFlags: 0

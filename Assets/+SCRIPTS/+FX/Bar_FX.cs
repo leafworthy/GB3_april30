@@ -37,9 +37,14 @@ namespace __SCRIPTS
 
 		public void UpdateBar(float currentValue, float maxValue)
 		{
+			UpdateBar(currentValue / maxValue);
+		}
+
+		public void UpdateBar(float fraction)
+		{
 			if (slowBarImage == null)
 				return;
-			targetFill = currentValue / maxValue;
+			targetFill = fraction;
 			UpdateGradient();
 			UpdateBarFill();
 		}

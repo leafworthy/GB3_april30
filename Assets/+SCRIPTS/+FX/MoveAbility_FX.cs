@@ -27,7 +27,7 @@ namespace __SCRIPTS
 		private void Anim_OnStep()
 		{
 			var dust = Services.objectMaker.Make(Services.assetManager.FX.dust1_ground, body.FootPoint.transform.position);
-			if (mover.moveDir.x > 0)
+			if (mover.MoveDir.x > 0)
 			{
 				dust.transform.localScale = new Vector3(-Mathf.Abs(dust.transform.localScale.x), dust.transform.localScale.y,
 					dust.transform.localScale.z);

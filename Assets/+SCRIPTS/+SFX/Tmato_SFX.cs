@@ -29,7 +29,6 @@ namespace __SCRIPTS
 			animEvents.OnHitStart += Anim_OnHit;
 			animEvents.OnDash += Anim_Dash;
 			animEvents.OnReload += Anim_OnReload;
-			life.OnWounded += Life_OnWounded;
 			life.OnAttackHit += Life_AttackHit;
 			life.OnDying += Life_OnDying;
 			jump.OnJump += Jump_OnJump;
@@ -86,7 +85,6 @@ namespace __SCRIPTS
 			animEvents.OnStep -= Anim_OnStep;
 			animEvents.OnHitStart -= Anim_OnHit;
 			animEvents.OnDash -= Anim_Dash;
-			life.OnWounded -= Life_OnWounded;
 
 			life.OnAttackHit -= Life_AttackHit;
 			jump.OnJump -= Jump_OnJump;
@@ -109,18 +107,15 @@ namespace __SCRIPTS
 			Services.sfx.sounds.tmato_shoot_hit_sounds.PlayRandomAt(attack.OriginFloorPoint);
 		}
 
-		private void Life_OnDying(Player player, Life life1) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
+		private void Life_OnDying(Attack attack) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
 		private void MineAttackOnThrow(Vector2 vector2, Player player) => Services.sfx.sounds.tmato_mine_throw_sounds.PlayRandomAt(transform.position);
-		private void Life_AttackHit(Attack attack, Life life1) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+		private void Life_AttackHit(Attack attack) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
 		private void TertiaryAttackKnifeOnMiss() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 		private void Jump_OnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
 		private void TertiaryAttackKnifeOnHit(Vector2 vector2) => Services.sfx.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
 
 		private void Jump_OnJump(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
-		private void Life_OnWounded(Attack obj) {
-			Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
-			Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
-		}
+
 		private void Anim_Dash() => Services.sfx.sounds.tmato_shield_dash_sounds.PlayRandomAt(transform.position);
 
 		private void Anim_OnHit() => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace __SCRIPTS.Plugins._ISOSORT
 {

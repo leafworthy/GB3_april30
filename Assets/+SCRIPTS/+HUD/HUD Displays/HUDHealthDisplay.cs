@@ -2,7 +2,6 @@ using GangstaBean.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace __SCRIPTS.HUD_Displays
 {
@@ -12,16 +11,18 @@ namespace __SCRIPTS.HUD_Displays
 		public TMP_Text healthText;
 		public TMP_Text MaxHealthText;
 		private Life playerDefence;
+		private Player player;
 
 
 		public void SetPlayer(Player _player)
 		{
+			player = _player;
 			barFX = GetComponentInChildren<Bar_FX>();
+			playerDefence = player.SpawnedPlayerGO.GetComponentInChildren<Life>();
 			if (playerDefence != null)
 			{
 				playerDefence.OnFractionChanged -= UpdateDisplay;
 			}
-			playerDefence = _player.SpawnedPlayerGO.GetComponentInChildren<Life>();
 
 
 			if (barFX.fastBarImage != null)
@@ -31,16 +32,23 @@ namespace __SCRIPTS.HUD_Displays
 
 			playerDefence.OnFractionChanged += UpdateDisplay;
 
-			UpdateDisplay(0);
+			Debug.Log("set player fraction  " + playerDefence.GetFraction());
+			UpdateDisplay(playerDefence.GetFraction());
 		}
 
-
-
-		private void UpdateDisplay(float f)
+		private void Start()
 		{
+			playerDefence = player.SpawnedPlayerGO.GetComponentInChildren<Life>();
+			Debug.Log("on enable fraction  " + playerDefence.GetFraction());
+			UpdateDisplay(playerDefence.GetFraction());
+		}
+
+		private void UpdateDisplay(float fraction)
+		{
+			Debug.Log("display updated");
 			healthText.text = Mathf.Ceil(playerDefence.CurrentHealth).ToString();
 			MaxHealthText.text = "/" + Mathf.Ceil(playerDefence.MaxHealth).ToString();
-			barFX.UpdateBar(playerDefence.CurrentHealth, playerDefence.MaxHealth);
+			barFX.UpdateBar(fraction);
 		}
 	}
 }

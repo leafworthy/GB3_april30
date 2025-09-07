@@ -1,5 +1,4 @@
 using __SCRIPTS;
-using __SCRIPTS.HUD_Displays;
 using GangstaBean.Core;
 using UnityEngine;
 
@@ -13,7 +12,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 	}
 
 	private AnimationEvents animEvents;
-	private MoveController moveController;
+	private MoveAbility moveAbility;
 	private Life life;
 	private Player owner;
 	private JumpAbility jumps;
@@ -52,7 +51,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 		anim = GetComponent<UnitAnimations>();
 		body = GetComponent<Body>();
 		jumps = GetComponent<JumpAbility>();
-		moveController = GetComponent<MoveController>();
+		moveAbility = GetComponent<MoveAbility>();
 
 		life = GetComponent<Life>();
 		owner = _player;
@@ -111,7 +110,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 
 	private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 	{
-		if (!moveController.CanMove) return;
+		if (!moveAbility.CanMove) return;
 		if (Services.pauseManager.IsPaused) return;
 		if (!jumps.isResting) return;
 
@@ -125,7 +124,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 
 			SetShielding(true);
 
-			if (!moveController.IsIdle())
+			if (!moveAbility.IsIdle())
 			{
 				ShieldDash();
 			}
@@ -145,7 +144,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 	{
 		if (!isShielding) return;
 		if (isDashing) return;
-		if (moveController.IsIdle())
+		if (moveAbility.IsIdle())
 		{
 			CancelShielding(null);
 		}
@@ -154,7 +153,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 			if (!body.legs.Do(shieldDashActivity)) return;
 
 			SetDashing(true);
-			moveController.Push(moveController.MoveDir, life.DashSpeed);
+			moveAbility.Push(moveAbility.MoveDir, life.DashSpeed);
 			ShieldPush();
 		}
 	}

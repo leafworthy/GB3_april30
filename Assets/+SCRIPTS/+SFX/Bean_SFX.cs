@@ -39,7 +39,6 @@ namespace __SCRIPTS
 			animEvents.OnDash += Anim_Dash;
 			animEvents.OnTeleport += Anim_Teleport;
 
-			life.OnWounded += Life_OnWounded;
 			life.OnAttackHit += Life_AttackHit;
 			life.OnDying += Life_OnDying;
 
@@ -64,7 +63,6 @@ namespace __SCRIPTS
 			animEvents.OnHitStart -= Anim_OnHit;
 			animEvents.OnDash -= Anim_Dash;
 			animEvents.OnTeleport -= Anim_Teleport;
-			life.OnWounded -= Life_OnWounded;
 
 			life.OnAttackHit -= Life_AttackHit;
 			if (jump != null)
@@ -102,9 +100,9 @@ namespace __SCRIPTS
 			Services.sfx.sounds.ak47_shoot_sounds.PlayRandomAt(attack.OriginFloorPoint);
 		}
 
-		private void Life_OnDying(Player player, Life life1) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
+		private void Life_OnDying(Attack attack) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
 
-		private void Life_AttackHit(Attack attack, Life life1) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+		private void Life_AttackHit(Attack attack) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
 
 		private void Life_OnWounded(Attack obj)
 		{

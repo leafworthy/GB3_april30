@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using __SCRIPTS;
 using UnityEngine;
 
 [RequireComponent(typeof(ParticleSystem))]

@@ -8,9 +8,11 @@ namespace __SCRIPTS
 	[Serializable]
 	public class GunAttack : Ability
 	{
-		public bool IsUsingPrimaryGun => CurrentGun is PrimaryGun;
+		public bool IsUsingPrimaryGun => currentGun is PrimaryGun;
 		public bool isPressingShoot;
 
+		private DoableReloadAbility reloadAbility  => _reloadAbility ??= GetComponent<DoableReloadAbility>();
+		private DoableReloadAbility _reloadAbility;
 		public Gun CurrentGun => currentGun;
 		private Gun currentGun;
 		private float currentCooldownTime;
@@ -28,7 +30,10 @@ namespace __SCRIPTS
 		private GunAttack aimableGun;
 		public bool simpleShoot;
 
-		private static string[] AnimationClips =
+		public event Action OnNeedsReload;
+
+
+		private static string[] PrimaryAnimationClips =
 		{
 			"E",
 			"EES",
@@ -54,7 +59,7 @@ namespace __SCRIPTS
 		{
 			CurrentGun.Shoot(aimAbility.AimDir);
 			body.TopFaceDirection(GetClampedAimDir().x >= 0);
-			PlayAnimationClip(GetClipNameFromDegrees(GetDegreesFromAimDir()), CurrentGun.AttackRate,1);
+			PlayAnimationClip(GetClipNameFromDegrees(GetDegreesFromAimDir()), CurrentGun.AttackRate, 1);
 			anim.SetFloat(UnitAnimations.ShootSpeed, 1);
 		}
 
@@ -70,8 +75,8 @@ namespace __SCRIPTS
 		private string GetClipNameFromDegrees(float degrees)
 		{
 			var whichPortion = GetDirectionPortion(degrees);
-			if (whichPortion > AnimationClips.Length) whichPortion = 0;
-			return AnimationClips[whichPortion];
+			if (whichPortion > PrimaryAnimationClips.Length) whichPortion = 0;
+			return IsUsingPrimaryGun ? PrimaryAnimationClips[whichPortion] : PrimaryAnimationClips[whichPortion]+"_Glock";
 		}
 
 		private static int GetDirectionPortion(float degrees)
@@ -79,9 +84,9 @@ namespace __SCRIPTS
 			var normalizedDegrees = degrees % 360;
 			if (normalizedDegrees < 0) normalizedDegrees += 360;
 			var offsetDegrees = (normalizedDegrees + 10) % 360;
-			var portionWidth = 360f / AnimationClips.Length;
+			var portionWidth = 360f / PrimaryAnimationClips.Length;
 			var portionNumber = Mathf.FloorToInt(offsetDegrees / portionWidth);
-			portionNumber = Mathf.Clamp(portionNumber, 0, AnimationClips.Length - 1);
+			portionNumber = Mathf.Clamp(portionNumber, 0, PrimaryAnimationClips.Length - 1);
 			return portionNumber;
 		}
 
@@ -104,17 +109,27 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
-			currentGun = allGuns.FirstOrDefault( g => g is PrimaryGun);
+			currentGun = allGuns[0];
 			foreach (var gun in allGuns)
 			{
 				gun.OnShotHitTarget -= Gun_OnShotHitTarget;
 				gun.OnShotMissed -= Gun_OnShotMissed;
+				gun.OnNeedsReload -= Gun_OnNeedsReload;
+
 				gun.OnShotHitTarget += Gun_OnShotHitTarget;
 				gun.OnShotMissed += Gun_OnShotMissed;
+				gun.OnNeedsReload += Gun_OnNeedsReload;
 			}
 
 			StopListeningToEvents();
 			ListenToEvents();
+		}
+
+		private void Gun_OnNeedsReload()
+		{
+			isPressingShoot = false;
+			Stop();
+			OnNeedsReload?.Invoke();
 		}
 
 		private void Gun_OnShotMissed(Attack attack)
@@ -136,11 +151,7 @@ namespace __SCRIPTS
 			Shoot();
 		}
 
-
-
 		public override bool canDo() => base.canDo() && CurrentGun.CanShoot();
-
-
 
 		private void ListenToEvents()
 		{
@@ -167,6 +178,7 @@ namespace __SCRIPTS
 				gun.OnShotHitTarget -= Gun_OnShotHitTarget;
 				gun.OnShotMissed -= Gun_OnShotMissed;
 			}
+
 			if (player == null) return;
 			if (player.Controller == null) return;
 			player.Controller.Attack1RightTrigger.OnPress -= PlayerControllerShootPress;
@@ -176,20 +188,16 @@ namespace __SCRIPTS
 		private void FixedUpdate()
 		{
 			if (isPressingShoot)
-			{
 				Do();
-			}
 			else
-			{
 				Aim();
-			}
 		}
 
 		private void Aim()
 		{
 			if (body.doableArms.IsActive) return;
 			body.TopFaceDirection(GetClampedAimDir().x >= 0);
-			PlayAnimationClip(GetClipNameFromDegrees(GetDegreesFromAimDir()), 0,1);
+			PlayAnimationClip(GetClipNameFromDegrees(GetDegreesFromAimDir()), 0, 1);
 			anim.SetFloat(UnitAnimations.ShootSpeed, 0);
 		}
 
@@ -204,6 +212,11 @@ namespace __SCRIPTS
 			isPressingShoot = false;
 		}
 
-
+		public void SwitchGuns(int i)
+		{
+			if (i < 0 || i >= allGuns.Count) return;
+			currentGun = allGuns[i];
+			Debug.Log("switched to gun " + i + " isPrimaryGun: " + (currentGun is PrimaryGun));
+		}
 	}
 }

@@ -46,7 +46,7 @@ namespace __SCRIPTS.HUD_Displays
 		private void ChangeAmmo(bool isGlock)
 		{
 			if (player.CurrentCharacter != Character.Bean) return;
-			if (isGlock)
+			if (!isGlock)
 			{
 				AKIcon.enabled = false;
 				PistolIcon.enabled = true;

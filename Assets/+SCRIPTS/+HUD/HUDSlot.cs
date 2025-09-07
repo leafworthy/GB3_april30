@@ -1,18 +1,14 @@
-using __SCRIPTS.HUD_Displays;
-using __SCRIPTS.UpgradeS;
 using GangstaBean.Core;
 using UnityEngine;
-using UnityEngine.InputSystem.UI;
 
 namespace __SCRIPTS
 {
 	public class HUDSlot : MonoBehaviour
 	{
 		public PlayerSetupMenu charSelectMenu;
-		public UpgradeSetupMenu upgradeSetupMenu;
 		private Player currentPlayer;
 		public GameObject characterHUD;
-		
+
 
 		public void SetPlayer(Player player)
 		{
@@ -48,31 +44,7 @@ namespace __SCRIPTS
 			charSelectMenu.OnCharacterChosen -= SetCharacterHudVisible;
 		}
 
-		public void OpenUpgradeSelectMenu(Player player)
-		{
-			upgradeSetupMenu.gameObject.SetActive(true);
-			upgradeSetupMenu.StartUpgradeSelectMenu(player);
-			Services.pauseManager.OnPause += CloseAllUpgradeSelectMenus;
-			upgradeSetupMenu.OnUpgradeExit += CloseUpgradeSelectMenu;
-		}
 
-		private void CloseAllUpgradeSelectMenus(Player p)
-		{
-			foreach (var player in Services.playerManager.AllJoinedPlayers)
-			{
-				if (player == null) continue;
-				player.LeaveUpgradeSetupMenu();
-			}
-		}
-
-		private void CloseUpgradeSelectMenu(Player player)
-		{
-			Services.pauseManager.OnPause -= CloseUpgradeSelectMenu;
-			upgradeSetupMenu.OnUpgradeExit -= CloseUpgradeSelectMenu;
-			upgradeSetupMenu.gameObject.SetActive(false);
-			if (player == null) return;
-			player.LeaveUpgradeSetupMenu();
-		}
 
 		private void SetCharacterHudVisible(Character currentCharacter)
 		{

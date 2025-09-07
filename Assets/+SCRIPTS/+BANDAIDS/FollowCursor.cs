@@ -1,5 +1,4 @@
 using UnityEngine;
-using __SCRIPTS.Cursor;
 
 namespace __SCRIPTS
 {

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -29,15 +28,21 @@ namespace __SCRIPTS
 
 	public static class UnitStatsManager
 	{
-		private static UnitStatsDatabase _database;
-		private static UnitStatsDatabase database => _database ??= Resources.FindObjectsOfTypeAll<UnitStatsDatabase>().FirstOrDefault();
+		private static UnitStatsDatabase database;
+		private static Dictionary<string, UnitStatsData> unitStatsLookup = new();
+		private static bool initialized;
 
-		private static Dictionary<string, UnitStatsData> _unitStatsLookup;
-		private static Dictionary<string, UnitStatsData> unitStatsLookup => BuildLookupDictionary();
-
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+		private static void ResetStatics()
+		{
+			initialized = true;
+			database = Resources.Load<UnitStatsDatabase>("UnitStatsDatabase");
+			unitStatsLookup = BuildLookupDictionary();
+		}
 		private static Dictionary<string, UnitStatsData> BuildLookupDictionary()
 		{
-			_unitStatsLookup = new Dictionary<string, UnitStatsData>();
+			if(!initialized) ResetStatics();
+			var _unitStatsLookup = new Dictionary<string, UnitStatsData>();
 
 			foreach (var unit in database.allUnits)
 			{
@@ -49,6 +54,7 @@ namespace __SCRIPTS
 
 		public static UnitStatsData GetUnitStats(string unitName)
 		{
+			if (!initialized) ResetStatics();
 			if (string.IsNullOrEmpty(unitName))
 			{
 				Debug.Log("null name");
@@ -67,6 +73,7 @@ namespace __SCRIPTS
 
 		private static UnitStatsData LookupUnitStats(string cleanedName)
 		{
+			if (!initialized) ResetStatics();
 			if (cleanedName is "Life" or "life")
 			{
 				if (unitStatsLookup.TryGetValue("Life", out var lifeStats))
@@ -80,7 +87,10 @@ namespace __SCRIPTS
 			return fuzzyMatch ?? GetDefaultLifeStats();
 		}
 
-		private static UnitStatsData GetDefaultLifeStats() => unitStatsLookup.GetValueOrDefault("Life");
+		private static UnitStatsData GetDefaultLifeStats() {
+			if (!initialized) ResetStatics();
+			return unitStatsLookup.GetValueOrDefault("Life");
+		}
 
 		private static string CleanUnitName(string unitName)
 		{

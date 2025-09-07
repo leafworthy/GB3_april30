@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using GangstaBean.Core;
@@ -8,7 +7,6 @@ using Random = UnityEngine.Random;
 
 namespace __SCRIPTS
 {
-
 	public class Life_FX : MonoBehaviour, IPoolable, INeedPlayer
 	{
 		public Image slowBarImage;
@@ -19,7 +17,6 @@ namespace __SCRIPTS
 		private const float tintFadeSpeed = 6f;
 		private static readonly int ColorReplaceColor = Shader.PropertyToID("_NewColorA");
 		private static readonly int Tint = Shader.PropertyToID("_Tint");
-
 
 		public enum ColorMode
 		{
@@ -42,21 +39,22 @@ namespace __SCRIPTS
 		{
 			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
 			if (life == null) return;
-			life.OnDamaged += LifeDamaged;
 			life.OnFractionChanged += DefenceOnDefenceChanged;
 			life.OnDying += DefenceOnDying;
+			life.OnAttackHit += Life_AttackHit;
+			life.OnShielded += Life_Shielded;
 			if (life.showLifeBar) return;
 			if (healthBar != null) healthBar.SetActive(false);
 		}
 
+		private void Life_Shielded(Attack obj)
+		{
+			StartTint(Color.yellow);
+		}
+
 		public void SetPlayer(Player player)
 		{
-			Debug.Log("player set in life fx");
-			if (!player.IsPlayer())
-			{
-				Debug.Log("not a player");
-				return;
-			}
+			if (!player.IsPlayer()) return;
 
 			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
 			Debug.Log("on player set" + player.playerColor);
@@ -69,9 +67,10 @@ namespace __SCRIPTS
 		public void OnDisable()
 		{
 			if (life == null) return;
-			life.OnDamaged -= LifeDamaged;
 			life.OnFractionChanged -= DefenceOnDefenceChanged;
 			life.OnDying -= DefenceOnDying;
+			life.OnAttackHit -= Life_AttackHit;
+			life.OnShielded -= Life_Shielded;
 		}
 
 		public void StartTint(Color tintColor)
@@ -85,19 +84,12 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void LifeDamaged(Attack attack)
+		private void Life_AttackHit(Attack attack)
 		{
-			if (life.IsShielded)
-				StartTint(Color.yellow);
-			else
-			{
-				StartTint(attack.color);
-				CreateDamageRisingText(attack);
-				SprayDebree(attack);
-				MakeHitMark(attack);
-			}
-
-			if (attack.DestinationLife.DebrisType == DebrisType.none) return;
+			StartTint(attack.color);
+			CreateDamageRisingText(attack);
+			SprayDebree(attack);
+			MakeHitMark(attack);
 		}
 
 		private void MakeHitMark(Attack attack)
@@ -175,7 +167,7 @@ namespace __SCRIPTS
 			UpdateBarFill();
 		}
 
-		private void DefenceOnDying(Player player, Life life1)
+		private void DefenceOnDying(Attack attack)
 		{
 			_life.OnFractionChanged -= DefenceOnDefenceChanged;
 			_life.OnDying -= DefenceOnDying;
@@ -268,7 +260,6 @@ namespace __SCRIPTS
 		{
 			// Clean up event subscriptions when despawning
 			if (_life == null) return;
-			_life.OnDamaged -= LifeDamaged;
 			_life.OnFractionChanged -= DefenceOnDefenceChanged;
 			_life.OnDying -= DefenceOnDying;
 		}

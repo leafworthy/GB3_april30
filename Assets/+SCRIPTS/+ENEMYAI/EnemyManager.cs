@@ -40,9 +40,9 @@ namespace __SCRIPTS
 			_allEnemies.Add(enemyDefence);
 		}
 
-		private void EnemyDying(Player player, Life life)
+		private void EnemyDying(Attack attack)
 		{
-			OnEnemyDying?.Invoke(life);
+			OnEnemyDying?.Invoke(attack.DestinationLife);
 		}
 
 		private void ClearEnemies(GameLevel gameLevel)

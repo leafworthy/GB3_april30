@@ -15,7 +15,7 @@ namespace __SCRIPTS
         protected void OnEnable()
         {
            // life = GetComponentInChildren<Life>();
-            //life.OnDead += Life_Dead;
+            //life.OnDeathComplete += Life_Dead;
             originalState = isOn;
             OnActionPress += Interactable_OnInteract;
             SetLightActive(originalState);
@@ -23,7 +23,7 @@ namespace __SCRIPTS
 
         private void OnDisable()
         {
-                //ife.OnDead -= Life_Dead;
+                //ife.OnDeathComplete -= Life_Dead;
                  OnActionPress -= Interactable_OnInteract;
         }
 

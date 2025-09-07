@@ -1,4 +1,3 @@
-using __SCRIPTS.RisingText;
 using UnityEngine;
 
 namespace __SCRIPTS

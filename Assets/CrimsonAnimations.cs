@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using UnityEngine;
 using __SCRIPTS;
 using __SCRIPTS._ENEMYAI;
+using UnityEngine;
 
 public class CrimsonAnimations : StateMachine<CrimsonAnimations>
 {
@@ -30,7 +30,7 @@ public class CrimsonAnimations : StateMachine<CrimsonAnimations>
 		base.Start();
 
 		var enemyManager = ServiceLocator.Get<EnemyManager>();
-			enemyManager.ConfigureNewEnemy(gameObject);
+		enemyManager.ConfigureNewEnemy(gameObject);
 
 		idleState = new IdleState();
 		runToPointState = new RunToPointState();
@@ -51,15 +51,14 @@ public class CrimsonAnimations : StateMachine<CrimsonAnimations>
 	public GameObject PickARandomTarget()
 	{
 		var targett = targets.GetClosestPlayer();
-		if(targett != null) return targets.GetClosestPlayer().gameObject;
+		if (targett != null) return targets.GetClosestPlayer().gameObject;
 		if (patrolPoints.Count == 0) return null;
 
 		var randomIndex = Random.Range(0, patrolPoints.Count);
-		for (int i = 0; i < 6; i++)
+		for (var i = 0; i < 6; i++)
 		{
 			if (patrolPoints[randomIndex] != null && patrolPoints[randomIndex] != target) return patrolPoints[randomIndex];
 			Debug.LogWarning("Picked a null target, trying again.");
-			return PickARandomTarget();
 		}
 
 		return null;
@@ -78,25 +77,15 @@ public class CrimsonAnimations : StateMachine<CrimsonAnimations>
 		public override void Update(CrimsonAnimations machine)
 		{
 			if (machine.currentSpeed > machine.minimumSpeed)
-			{
 				machine.currentSpeed = Mathf.Clamp(machine.currentSpeed - machine.deceleration * Time.deltaTime, 0, machine.maxSpeed);
-			}
 			else
-			{
 				machine.currentSpeed = 0;
-			}
-			machine.transform.position = (Vector2)machine.transform.position + machine.currentDirection * machine.currentSpeed;
-			if (machine.target == null)
-			{
-				machine.target = machine.PickARandomTarget();
-			}
+			machine.transform.position = (Vector2) machine.transform.position + machine.currentDirection * machine.currentSpeed;
+			if (machine.target == null) machine.target = machine.PickARandomTarget();
 			machine.transform.localScale = machine.target.transform.position.x < machine.transform.position.x ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
 
 			idleTimer -= Time.deltaTime;
-			if (idleTimer <= 0)
-			{
-				SwitchState(machine, machine.runToPointState);
-			}
+			if (idleTimer <= 0) SwitchState(machine, machine.runToPointState);
 		}
 
 		public override void Exit(CrimsonAnimations machine)
@@ -107,6 +96,7 @@ public class CrimsonAnimations : StateMachine<CrimsonAnimations>
 	private class RunToPointState : State<CrimsonAnimations>
 	{
 		private Vector3 currentTargetPosition;
+
 		public override void Enter(CrimsonAnimations machine)
 		{
 			machine.target = machine.PickARandomTarget();
@@ -116,17 +106,14 @@ public class CrimsonAnimations : StateMachine<CrimsonAnimations>
 
 		public override void Update(CrimsonAnimations machine)
 		{
-
 			if (pauseManager.IsPaused) return;
 
 			if (Vector2.Distance(machine.transform.position, currentTargetPosition) < machine.closeEnoughDistance)
-			{
 				SwitchState(machine, machine.idleState);
-			}
 			else
 			{
 				machine.currentDirection = (currentTargetPosition - machine.transform.position).normalized;
-				machine.transform.position = (Vector2)machine.transform.position + machine.currentDirection * machine.CalculateSpeed();
+				machine.transform.position = (Vector2) machine.transform.position + machine.currentDirection * machine.CalculateSpeed();
 				machine.transform.localScale = currentTargetPosition.x < machine.transform.position.x ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
 			}
 		}

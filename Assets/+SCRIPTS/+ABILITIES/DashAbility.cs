@@ -1,4 +1,3 @@
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -7,8 +6,8 @@ namespace __SCRIPTS
 	{
 		public AnimationClip dashAnimationClip;
 		private AnimationEvents animEvents;
-		private MoveController moveController;
-		private MoveAbility move;
+		private MoveAbility moveAbility  => _moveAbility ??= GetComponent<MoveAbility>();
+		private MoveAbility _moveAbility;
 		private Player owner;
 		private DoableJumpAbility jumps;
 
@@ -58,10 +57,8 @@ namespace __SCRIPTS
 		}
 		public override void SetPlayer(Player _player)
 		{
-			move = GetComponent<MoveAbility>();
 
 			jumps = GetComponent<DoableJumpAbility>();
-			moveController = GetComponent<MoveController>();
 
 			owner = _player;
 			UnsubscribeFromEvents();
@@ -82,10 +79,10 @@ namespace __SCRIPTS
 
 		private void Anim_Teleport()
 		{
-			var teleportDirection = moveController.MoveDir;
+			var teleportDirection = moveAbility.MoveDir;
 			if (teleportDirection.magnitude < 0.1f)
 			{
-				teleportDirection = move.GetLastMoveAimDirOffset().normalized;
+				teleportDirection = moveAbility.GetLastMoveAimDirOffset().normalized;
 				if (teleportDirection.magnitude < 0.1f) teleportDirection = body.BottomIsFacingRight ? Vector2.right : Vector2.left;
 			}
 
@@ -105,6 +102,7 @@ namespace __SCRIPTS
 		protected override void AnimationComplete()
 		{
 			body.ChangeLayer(Body.BodyLayer.grounded);
+			moveAbility.StopPush();
 			Stop();
 		}
 
@@ -114,7 +112,7 @@ namespace __SCRIPTS
 			Debug.Log("Dashing with " + VerbName + " ability");
 			if (!teleport)
 			{
-				moveController.Push(moveController.MoveDir, life.DashSpeed);
+				moveAbility.Push(moveAbility.MoveDir, life.DashSpeed);
 				body.ChangeLayer(Body.BodyLayer.grounded);
 			}
 			else

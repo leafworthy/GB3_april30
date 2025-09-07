@@ -159,7 +159,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a352cbfbf94364268af325aed32ab73f, type: 2}
+  - {fileID: 2100000, guid: 9c22e92884a3e41b8ad8067c182c1188, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -488,7 +488,6 @@ GameObject:
   - component: {fileID: 6638154871889747330}
   - component: {fileID: 7668832580322677999}
   - component: {fileID: 1364683539933955483}
-  - component: {fileID: 3025189939797585559}
   - component: {fileID: 7594583681699860136}
   - component: {fileID: 6129626247479662832}
   - component: {fileID: 5002742459162527955}
@@ -858,7 +857,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8e19e5c2974953b6d306f3bb0303ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDir: {x: 0, y: 0}
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
 --- !u!114 &1364683539933955483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -869,18 +876,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de38ca81127d4363bd50622ec988fd27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3025189939797585559
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7431454428826219940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeb1bdcf5bcc4c37a9323c4f77dfd091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &7594583681699860136

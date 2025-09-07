@@ -10,7 +10,6 @@ namespace __SCRIPTS
 		public event Action OnReload;
 		public AnimationClip ReloadAKAnimationClip;
 		public AnimationClip ReloadGlockAnimationClip;
-		public AnimationClip ReloadGlockAnimationLeftClip;
 		private GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
 		private GunAttack _gunAttack;
 
@@ -39,7 +38,7 @@ namespace __SCRIPTS
 			if (!gunAttack.IsUsingPrimaryGun)
 			{
 				Debug.Log("playing glock reload animation");
-				PlayAnimationClip(gunAttack.AimDir.x > 0 ? ReloadGlockAnimationClip : ReloadGlockAnimationLeftClip, 1);
+				PlayAnimationClip(ReloadGlockAnimationClip, 1);
 			}
 			else
 				PlayAnimationClip(ReloadAKAnimationClip, 1);
@@ -61,12 +60,12 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
+			if (player != null) player.Controller.ReloadTriangle.OnPress -= Player_Reload;
+			if (gunAttack != null) gunAttack.OnNeedsReload -= Gun_OnNeedsReload;
 			player.Controller.ReloadTriangle.OnPress += Player_Reload;
-			foreach (var gun in guns)
-			{
-				gun.OnNeedsReload += Gun_OnNeedsReload;
-			}
+		gunAttack.OnNeedsReload += Gun_OnNeedsReload;
 		}
+
 
 		private void Gun_OnNeedsReload()
 		{

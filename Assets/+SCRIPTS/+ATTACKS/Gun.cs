@@ -48,7 +48,7 @@ namespace __SCRIPTS
 			return Ammo.hasAmmoInClip() && !IsCoolingDown;
 		}
 
-		public void Shoot(Vector2 targetPosition)
+		public void Shoot(Vector2 shootDirection)
 		{
 			if (!CanShoot())
 			{
@@ -64,36 +64,12 @@ namespace __SCRIPTS
 			for (var i = 0; i < numberOfBulletsPerShot; i++)
 			{
 				var randomSpread = new Vector2(UnityEngine.Random.Range(-Spread, Spread), UnityEngine.Random.Range(-Spread, Spread));
-				ShootBullet(targetPosition + randomSpread);
+				ShootBullet(shootDirection + randomSpread);
 			}
 		}
 
-		private bool NeedToReload()
-		{
-			if (Ammo.clipIsFull()) return false;
-				if (!Ammo.hasAmmoInClip())
-				{
-					if(Ammo.hasReserveAmmo())
-					{
-						Debug.Log("[GUN] needs reload in gun");
-						OnNeedsReload?.Invoke();
-					}
-					else
-					{
-						Debug.Log("[GUN] empty in gun");
-						OnEmpty?.Invoke();
-					}
-					return true;
-				}else if (Ammo.AmmoInClip < numberOfBulletsPerShot)
-				{
-					OnNeedsReload?.Invoke();
-					return true;
-				}
 
-				return false;
-		}
-
-		private void ShootBullet(Vector3 targetPosition)
+		private void ShootBullet(Vector3 shootDirection)
 		{
 			Debug.Log("[GUN] shoot bullet in gun", this);
 			if (!Ammo.hasAmmoInClip())
@@ -103,7 +79,8 @@ namespace __SCRIPTS
 			}
 
 			Ammo.UseAmmo(1);
-			var hitObject = Physics2D.Linecast(body.FootPoint.transform.position, targetPosition, life.EnemyLayer);
+			var hitObject = Physics2D.Linecast(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange, life.EnemyLayer);
+			Debug.DrawLine( body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange, Color.green, 3);
 
 			if (hitObject)
 				ShotHitTarget(hitObject);
@@ -118,7 +95,7 @@ namespace __SCRIPTS
 			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, gunAimAbility.AimDir.normalized, AttackRange, life.Player.BuildingLayer);
 			if (raycastHit) missPosition = raycastHit.point;
 			var newAttack = new Attack(life, body.FootPoint.transform.position, missPosition, null, 0);
-			MyDebugUtilities.DrawAttack(newAttack, Color.red);
+
 			Debug.DrawLine(body.FootPoint.transform.position, missPosition, Color.red, 3);
 			OnShotMissed?.Invoke(newAttack);
 		}

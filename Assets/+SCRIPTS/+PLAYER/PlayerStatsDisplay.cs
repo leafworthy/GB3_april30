@@ -1,5 +1,4 @@
-﻿using __SCRIPTS.UpgradeS;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 namespace __SCRIPTS

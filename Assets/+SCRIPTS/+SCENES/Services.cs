@@ -4,6 +4,20 @@ using UnityEngine;
 
 public static class Services
 {
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	public static void ResetStatics()
+	{
+		_playerStatsManager = null;
+		_sfx = null;
+		_objectMaker = null;
+		_levelManager = null;
+		_playerManager = null;
+		_enemyManager = null;
+		_pauseManager = null;
+		_sceneLoader = null;
+		_assetManager = null;
+		_risingText = null;
+	}
 	private static  PlayerStatsManager _playerStatsManager;
 	public  static PlayerStatsManager playerStatsManager => _playerStatsManager ?? ServiceLocator.Get<PlayerStatsManager>();
 	private static  SFX _sfx;
