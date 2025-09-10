@@ -3,6 +3,7 @@ using __SCRIPTS;
 using __SCRIPTS.RisingText;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public interface IService
 {

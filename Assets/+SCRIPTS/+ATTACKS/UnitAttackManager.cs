@@ -6,8 +6,8 @@ namespace __SCRIPTS
 	{
 		public Life life => _life ?? GetComponent<Life>();
 		private Life _life;
-		private ASSETS _assetManager;
-		private ASSETS assetManager => _assetManager ??= ServiceLocator.Get<ASSETS>();
+		private AssetManager _assetManager;
+		private AssetManager assetManager => _assetManager ??= ServiceLocator.Get<AssetManager>();
 
 		public void HitTarget(float attackDamage, Life targetLife, float extraPush = 0)
 		{

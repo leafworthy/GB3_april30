@@ -65,7 +65,7 @@ namespace __SCRIPTS
 		[Sirenix.OdinInspector.Button]
 		public void Test()
 		{
-			var assets = ServiceLocator.Get<ASSETS>();
+			var assets = ServiceLocator.Get<AssetManager>();
 		}
 		private void OnEnable()
 		{
