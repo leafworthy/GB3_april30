@@ -31,16 +31,16 @@ namespace __SCRIPTS
 		{
 			anim = GetComponent<UnitAnimations>();
 			body = GetComponent<Body>();
-			this.player = _player;
-			this.player.Controller.Attack3Circle.OnPress += PlayerChainsawPress;
-			this.player.Controller.Attack3Circle.OnRelease += PlayerChainsawRelease;
-			this.player.Controller.Attack1RightTrigger.OnPress += PlayerPrimaryPress;
-			this.player.Controller.MoveAxis.OnChange += Player_MoveInDirection;
+			player = _player;
+			player.Controller.Attack3Circle.OnPress += PlayerChainsawPress;
+			player.Controller.Attack3Circle.OnRelease += PlayerChainsawRelease;
+			player.Controller.Attack1RightTrigger.OnPress += PlayerPrimaryPress;
+			player.Controller.MoveAxis.OnChange += Player_MoveInDirection;
 
 			// Listen for actions that should cancel chainsawing
-			this.player.Controller.Attack2LeftTrigger.OnPress += PlayerMinePress;
-			this.player.Controller.Jump.OnPress += PlayerJumpPress;
-			this.player.Controller.DashRightShoulder.OnPress += PlayerDashPress;
+			player.Controller.Attack2LeftTrigger.OnPress += PlayerMinePress;
+			player.Controller.Jump.OnPress += PlayerJumpPress;
+			player.Controller.DashRightShoulder.OnPress += PlayerDashPress;
 
 			anim.animEvents.OnAttackStop += Anim_OnAttackStop;
 		}
@@ -127,7 +127,7 @@ namespace __SCRIPTS
 
 		private void FixedUpdate()
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 
 			// Handle facing direction while chainsawing
 			if (isChainsawing && moveDir != Vector2.zero && body != null)
@@ -164,7 +164,7 @@ namespace __SCRIPTS
 			foreach (var enemy in enemyHit)
 			{
 				if (enemy == null) continue;
-				if (enemy.IsPlayer || enemy.cantDie || enemy.IsObstacle) continue;
+				if (enemy.IsHuman || enemy.CanTakeDamage || enemy.IsObstacle) continue;
 				if (enemy.IsDead()) continue;
 				HitTarget(attacker.TertiaryAttackDamageWithExtra, enemy, 1);
 			}
@@ -172,7 +172,7 @@ namespace __SCRIPTS
 
 		private void PlayerChainsawRelease(NewControlButton newControlButton)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			isPressingChainsawButton = false;
 			StopAttacking();
 			OnStopAttacking?.Invoke(transform.position);
@@ -213,7 +213,7 @@ namespace __SCRIPTS
 
 		private void PlayerChainsawPress(NewControlButton newControlButton)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			isPressingChainsawButton = true;
 			StartChainsawing();
 		}
@@ -221,13 +221,12 @@ namespace __SCRIPTS
 		private List<Life> FindClosestHits()
 		{
 			// Null checks
-			if (attackPoint == null || attacker == null || AssetManager.LevelAssets == null)
+			if (attackPoint == null || attacker == null || Services.assetManager.LevelAssets == null)
 			{
 				return new List<Life>();
 			}
 
-			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange,
-				 AssetManager.LevelAssets.EnemyLayer).ToList();
+			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange, Services.assetManager.LevelAssets.EnemyLayer).ToList();
 			if (circleCast.Count <= 0) return new List<Life>();
 
 			var enemies = new List<Life>();
@@ -238,7 +237,7 @@ namespace __SCRIPTS
 				var enemy = enemyCollider.gameObject.GetComponent<Life>();
 				if (enemy == null) enemy = enemyCollider.gameObject.GetComponentInParent<Life>();
 				if (enemy == null) continue;
-				if (enemy.IsPlayer || enemy.cantDie || enemy.IsObstacle) continue;
+				if (enemy.IsHuman || enemy.CanBeAttacked || enemy.IsObstacle) continue;
 				enemies.Add(enemy);
 			}
 

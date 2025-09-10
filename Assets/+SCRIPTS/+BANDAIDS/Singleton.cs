@@ -1,8 +1,9 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-    public abstract class Singleton<T> : MonoBehaviour where T : Component
+    public abstract class Singleton<T> : SerializedMonoBehaviour where T : Component
     {
         private static T _instance;
 

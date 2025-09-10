@@ -58,7 +58,7 @@ namespace __SCRIPTS
 
 		private void AI_Attack(Life newTarget)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (TargetIsInvalid(newTarget)) return;
 			currentTargetLife = newTarget;
 			StartAttack();
@@ -101,7 +101,7 @@ namespace __SCRIPTS
 
 		private void OnAttackHit(int attackType)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (currentTargetLife == null) return;
 			if (attacker.IsDead() || currentTargetLife.IsDead()) return;
 			if (!currentTargetLife.IsObstacle)

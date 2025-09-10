@@ -14,7 +14,7 @@ namespace __SCRIPTS
 			breakList.Set(0);
 		}
 
-		private void Life_Dead(Player player, Life life1)
+		private void Life_Dead(Attack attack)
 		{
 			breakList.Set(1);
 		}

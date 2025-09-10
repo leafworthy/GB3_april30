@@ -8,9 +8,9 @@ namespace __SCRIPTS
 		public override void StartEffect(Life life)
 		{
 			effectDuration = 0;
-			var stats = ServiceLocator.Get<PlayerStats>();
+			var stats = ServiceLocator.Get<PlayerStatsManager>();
 
-			stats.ChangeStat(PlayerStat.StatType.Gas, amount);
+			stats.ChangeStat(life.Player,PlayerStat.StatType.Gas, amount);
 		}
 
 		public GasPickupEffect(float _effectDuration, int _amount) : base(

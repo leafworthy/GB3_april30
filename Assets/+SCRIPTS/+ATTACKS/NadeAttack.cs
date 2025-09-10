@@ -1,16 +1,9 @@
 using System;
-using __SCRIPTS.Cursor;
-using __SCRIPTS.HUD_Displays;
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class NadeAimActivity : IActivity
-	{
-		public string VerbName => "Nade-Aim";
-	}
-	public class NadeAttack : ServiceUser, INeedPlayer, IActivity
+	public class NadeAttack : Ability
 	{
 		private AnimationEvents animationEvents;
 		private Vector2 startPoint;
@@ -18,45 +11,61 @@ namespace __SCRIPTS
 
 		private const int throwTime = 30;
 
-		private GunAimAbility aim;
+		private IAimAbility aim  => _aim ??= GetComponent<IAimAbility>();
+		private IAimAbility _aim;
 		private MoveAbility move;
 		private AmmoInventory ammo;
-		private Arms arms => body.arms;
-		private Player player;
-		private Life life;
-		private Body body;
-		private UnitAnimations anim;
 
-		private bool IsAiming;
-		private float currentCooldownTime;
-		private float throwStartTime;
-		private bool isThrowingGrenade;
-		private const float THROW_TIMEOUT = 3f; // Safety timeout for throw animation
-
-		private NadeAimActivity aimActivity = new NadeAimActivity();
-		public  string VerbName => "Nade-Attack";
-		private string AnimationName = "ThrowNade_Top";
-		private bool _isAiming;
+		public override string VerbName => NadeVerbName;
+		private DoableJumpAbility jump => _jump ??= GetComponent<DoableJumpAbility>();
+		private DoableJumpAbility _jump;
+		private DoableArms arms => body.doableArms;
 
 		public event Action<Vector2, Vector2, float, Player> OnThrow;
 		public event Action OnShowAiming;
 		public event Action OnHideAiming;
 		public event Action<Vector2, Vector2> OnAimAt;
 		public event Action<Vector2, Vector2> OnAimInDirection;
+		public bool IsAiming;
+		private float currentCooldownTime;
+		[SerializeField] private AnimationClip animationClip;
 
+		public static string NadeVerbName = "Nade";
+		protected override bool requiresArms() => true;
 
-		public void SetPlayer(Player _player)
+		protected override bool requiresLegs() => false;
+
+		public override bool canStop() => IsAiming;
+		public override bool canDo() => ammo.secondaryAmmo.hasReserveAmmo() && !jump.IsJumping && base.canDo();
+
+		protected override void DoAbility()
 		{
-			StopListeningToPlayer();
-			anim = GetComponent<UnitAnimations>();
-			animationEvents = anim.animEvents;
-			body = GetComponent<Body>();
-			life = GetComponent<Life>();
-			this.player = _player;
-			move = GetComponent<MoveAbility>();
+			Debug.Log("throw grenade");
+			ThrowGrenade();
+		}
 
+		private void ShowAiming()
+		{
+			Debug.Log("show aiming");
+			IsAiming = true;
+			OnShowAiming?.Invoke();
+		}
+
+		public override void Stop()
+		{
+			base.Stop();
+			Debug.Log("aiming stop");
+			HideAiming();
+		}
+
+		public override void SetPlayer(Player _player)
+		{
+			Debug.Log("setting player for nade attack");
+			base.SetPlayer(_player);
+			animationEvents = anim.animEvents;
+			move = GetComponent<MoveAbility>();
 			ammo = GetComponent<AmmoInventory>();
-			aim = GetComponent<GunAimAbility>();
+			StopListeningToPlayer();
 			ListenToPlayer();
 		}
 
@@ -65,16 +74,10 @@ namespace __SCRIPTS
 			StopListeningToPlayer();
 		}
 
-		private void OnDestroy()
-		{
-			StopListeningToPlayer();
-		}
-
 		private void StopListeningToPlayer()
 		{
+			Debug.Log("stop listen");
 			if (anim == null) return;
-			animationEvents.OnThrow -= Anim_Throw;
-			animationEvents.OnThrowStop -= Anim_ThrowStop;
 			if (player == null) return;
 			if (player.Controller == null) return;
 			player.Controller.AimAxis.OnChange -= Player_OnAim;
@@ -84,116 +87,75 @@ namespace __SCRIPTS
 
 		private void ListenToPlayer()
 		{
-			if (player == null) return;
+			Debug.Log("listen to player");
+			if (player == null)
+			{
+				Debug.Log("No player assigned to nade attack");
+				return;
+			}
 			animationEvents = anim.animEvents;
-			animationEvents.OnThrow += Anim_Throw;
-			animationEvents.OnThrowStop += Anim_ThrowStop;
 			player.Controller.AimAxis.OnChange += Player_OnAim;
 			player.Controller.Attack2LeftTrigger.OnPress += Player_NadePress;
 			player.Controller.Attack2LeftTrigger.OnRelease += Player_NadeRelease;
 		}
 
-		private void Anim_ThrowStop()
-		{
-
-			isThrowingGrenade = false;
-			arms.Stop(this);
-		}
 
 
 		private void Update()
 		{
 			if (IsAiming)
 			{
-				if (player.isUsingMouse) AimAt(CursorManager.GetMousePosition());
-				else Aim();
+				Aim();
 				OnShowAiming?.Invoke();
 			}
 			else
 				OnHideAiming?.Invoke();
 
-			// Safety timeout for stuck throw animation
-			if (isThrowingGrenade && Time.time - throwStartTime > THROW_TIMEOUT)
-			{
-
-				isThrowingGrenade = false;
-				arms.Stop(this);
-			}
 		}
 
 		private void Player_NadePress(NewControlButton newControlButton)
 		{
-			if (pauseManager.IsPaused) return;
-
-			if (!ammo.secondaryAmmo.hasReserveAmmo())
+			Debug.Log("nade press");
+			if (!IsAiming && canDo())
 			{
-				return;
+				ShowAiming();
 			}
+		}
 
-			if (!arms.Do(aimActivity))
-			{
-				Debug.Log("[Grenade] BLOCKED: Arms busy with: " +   (arms.currentActivity?.VerbName ?? "nothing"));
-				return;
-			}
-
-			IsAiming = true;
-			OnShowAiming?.Invoke();
+		protected override void AnimationComplete()
+		{
+			base.AnimationComplete();
 		}
 
 		private void Player_NadeRelease(NewControlButton newControlButton)
 		{
-			if (pauseManager.IsPaused) return;
-			Debug.Log("[Grenade] Player released grenade button");
-			OnHideAiming?.Invoke();
-			IsAiming = false;
-
-			if (!ammo.secondaryAmmo.hasReserveAmmo())
+			Debug.Log("nade release");
+			if (!canDo())
 			{
-				arms.Stop(aimActivity);
-				return;
+				Debug.Log("can't do nade");
+				Stop();
 			}
 
-			if (arms.currentActivity == aimActivity)
-			{
-
-				if (arms.DoWithCompletion(this, GangstaBean.Core.CompletionReason.NewActivity))
-				{
-					isThrowingGrenade = true;
-					throwStartTime = Time.time;
-					anim.Play(AnimationName, 1, 0);
-				}
-				else
-				{
-					Debug.Log("[Grenade] BLOCKED: Could not transition from aim to throw");
-				}
-			}
-			else
-			{
-				Debug.Log($"[Grenade] BLOCKED: Expected aim activity but current is {arms.currentActivity?.VerbName}");
-				arms.Stop(aimActivity);
-			}
+			Do();
 		}
 
-
-		private void Anim_Throw()
+		private void ThrowGrenade()
 		{
-
+			PlayAnimationClip(animationClip, 1);
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = body.AimCenter.transform.position;
-			var velocity = new Vector3((endPoint.x - startPoint.x) / throwTime,
-				(endPoint.y - startPoint.y) / throwTime);
-
-
-			if (OnThrow != null)
-			{
-				OnThrow.Invoke(startPoint, velocity, throwTime, life.player);
-
-			}
-			else
-			{
-
-			}
+			var velocity = new Vector3((endPoint.x - startPoint.x) / throwTime, (endPoint.y - startPoint.y) / throwTime);
+			OnThrow?.Invoke(startPoint, velocity, throwTime, life.Player);
+			HideAiming();
 		}
+
+		private void HideAiming()
+		{
+			Debug.Log("hide aiming");
+			IsAiming = false;
+			OnHideAiming?.Invoke();
+		}
+
 
 		private void Player_OnAim(IControlAxis controlAxis, Vector2 aimDir)
 		{
@@ -210,14 +172,6 @@ namespace __SCRIPTS
 
 			OnAimInDirection?.Invoke(startPoint, endPoint);
 		}
-
-		private void AimAt(Vector2 aimPos)
-		{
-			startPoint = body.AimCenter.transform.position;
-			endPoint = aimPos;
-			OnAimAt?.Invoke(startPoint, endPoint);
-		}
-
 
 	}
 }

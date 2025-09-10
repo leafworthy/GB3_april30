@@ -3,8 +3,6 @@ using __SCRIPTS;
 using __SCRIPTS.RisingText;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-
 
 public interface IService
 {
@@ -32,7 +30,7 @@ public class GameLauncher : MonoBehaviour
 	{
 		if (servicesStarted) return;
 		servicesStarted = true;
-		Debug.Log("GAME LAUNCHER: Initializing services...");
+		Debug.Log("GAME LAUNCHER: Initializing Services...");
 		sceneLoader.StartService();
 		ServiceLocator.Register(sceneLoader);
 

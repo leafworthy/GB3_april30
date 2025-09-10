@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class SlimeAttack : ServiceUser
+	public class SlimeAttack : MonoBehaviour
 	{
 		[SerializeField] private GameObject ProjectilePrefab;
 		private float currentCooldownTime;
@@ -36,7 +36,7 @@ namespace __SCRIPTS
 
 		private void AI_Attack(Life _life)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (life.IsDead()) return;
 			AttackTarget(_life);
 		}
@@ -86,7 +86,7 @@ namespace __SCRIPTS
 
 		private void CreateSlimePrefab(Vector2 pos)
 		{
-			var newProjectile = objectMaker.Make(ProjectilePrefab, pos);
+			var newProjectile = Services.objectMaker.Make(ProjectilePrefab, pos);
 			var projectileScript = newProjectile.GetComponent<SlimePool>();
 			var directionMult = body.BottomIsFacingRight ? 1 : -1;
 			projectileScript.Fire(directionMult, life);

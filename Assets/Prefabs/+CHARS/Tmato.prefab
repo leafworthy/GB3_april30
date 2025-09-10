@@ -57,20 +57,15 @@ GameObject:
   - component: {fileID: 3467100300594585527}
   - component: {fileID: 7180302646562525445}
   - component: {fileID: 4778565004266643515}
-  - component: {fileID: 6953231132071183340}
   - component: {fileID: 3504440835863790728}
   - component: {fileID: 6941785045609039485}
-  - component: {fileID: 7248367991195948246}
   - component: {fileID: 425890416975624573}
   - component: {fileID: 3952349814418493022}
   - component: {fileID: 8201654479573628637}
   - component: {fileID: 8885707532850852582}
   - component: {fileID: 8675161199927038349}
   - component: {fileID: 6719769570431361143}
-  - component: {fileID: 4950114849481728215}
-  - component: {fileID: 8241303801601398251}
   - component: {fileID: 4845799822202863552}
-  - component: {fileID: 2835559526434000434}
   - component: {fileID: 8932575119027580578}
   - component: {fileID: 8546300430613841500}
   - component: {fileID: -6767198448172107484}
@@ -211,37 +206,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  _unitData:
-    unitName: Tmato
-    category: 0
-    debrisType: 0
-    isPlayerSwingHittable: 0
-    showLifeBar: 1
-    isInvincible: 0
-    healthMax: 450
-    moveSpeed: 45
-    dashSpeed: 250
-    jumpSpeed: 2
-    aggroRange: 0
-    attack1Damage: 40
-    attack1Rate: 1
-    attack1Range: 100
-    attack2Damage: 300
-    attack2Rate: 1
-    attack2Range: 50
-    attack3Damage: 25
-    attack3Rate: 0.1
-    attack3Range: 20
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-  ExtraMaxHealthFactor: 0
-  ExtraMaxSpeedFactor: 0
-  ExtraMaxDamageFactor: 0
-  cantDie: 0
-  isInvincible: 0
-  Health: 450
-  isShielded: 0
+  unitStats:
+    _unitData:
+      unitName: 
+      category: 0
+      debrisType: 0
+      isPlayerSwingHittable: 0
+      showLifeBar: 0
+      isInvincible: 0
+      healthMax: 0
+      moveSpeed: 0
+      dashSpeed: 0
+      jumpSpeed: 0
+      aggroRange: 0
+      attack1Damage: 0
+      attack1Rate: 0
+      attack1Range: 0
+      attack2Damage: 0
+      attack2Rate: 0
+      attack2Range: 0
+      attack3Damage: 0
+      attack3Rate: 0
+      attack3Range: 0
+      attack4Damage: 0
+      attack4Rate: 0
+      attack4Range: 0
+      hasData: 0
+      isDefault: 0
+    ExtraHealthFactor: 0
+    ExtraDamageFactor: 0
+    ExtraSpeedFactor: 0
+  unitHealth:
+    IsTemporarilyInvincible: 0
+    IsShielded: 0
 --- !u!114 &8674550254211582662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,11 +300,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff264cf2d310481ea1df4e39814eef10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOverLandable: 0
   ShadowObject: {fileID: 4731456876907379719}
   JumpObject: {fileID: 1373179861667002548}
   Sorting: {fileID: 2367419657709322461}
-  canLand: 0
   AttackStartPoint: {fileID: 5157628139186349314}
   FootPoint: {fileID: 3863578556289495954}
   RotateWithAim:
@@ -406,20 +401,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a22135ef50477c89a5e717d44de835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   isResting: 0
   IsJumping: 0
---- !u!114 &6953231132071183340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb2fe01e165b4147b041b88f56e9b0d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3504440835863790728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,19 +436,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8e19e5c2974953b6d306f3bb0303ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDir: {x: 0, y: 0}
---- !u!114 &7248367991195948246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeb1bdcf5bcc4c37a9323c4f77dfd091, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
 --- !u!114 &425890416975624573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,32 +524,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackPoint: {fileID: 3556136585836396036}
   chainsawClip: {fileID: 2667628247901613342, guid: bafefef3fd23d4be6971618229de2562, type: 3}
---- !u!114 &4950114849481728215
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 649a829914074a309fe23decb38afc2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isShooting: 0
-  numberOfShots: 4
---- !u!114 &8241303801601398251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba61a0cf580f4726909cc7a11499e421, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4845799822202863552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -575,19 +537,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shieldOutClip: {fileID: 7400000, guid: d62be2764810a43fc8ebb4378c925085, type: 2}
---- !u!114 &2835559526434000434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dccbd4ab199c4e6aafe47afa4d2443f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AimDir: {x: 0, y: 0}
 --- !u!82 &8932575119027580578
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1957,7 +1906,7 @@ MonoBehaviour:
   shadowDistanceMin: 22.698963
   shadowDistanceMax: 22.698963
   shadowTranslucency: 0
-  maskType: 1
+  maskType: 0
   maskLit: 4
   maskPivot: 0
   maskLayer: 0
@@ -1973,7 +1922,7 @@ MonoBehaviour:
     spriteRenderer: {fileID: 0}
   mainShape:
     shadowType: 3
-    maskType: 1
+    maskType: 0
     maskPivot: 0
     transform: {fileID: 4612445003134065520}
 --- !u!1 &7268803704520335423
@@ -2204,6 +2153,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerSayer
       objectReference: {fileID: 0}
+    - target: {fileID: 3917116794222995331, guid: 33a7ad43aae8042028850bfeaebab8b3, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 3917116794222995331, guid: 33a7ad43aae8042028850bfeaebab8b3, type: 3}
     - target: {fileID: 4950293114644294523, guid: 33a7ad43aae8042028850bfeaebab8b3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2274,6 +2227,10 @@ PrefabInstance:
       propertyPath: 'prefab.Array.data[1]'
       value: 
       objectReference: {fileID: 5032977284790817949, guid: acf0da2c7f224204a99fafffd9fc30d2, type: 3}
+    - target: {fileID: 912570411838465814, guid: edd6d0de85238474ca7d567d46d3b068, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 912570411838465814, guid: edd6d0de85238474ca7d567d46d3b068, type: 3}
     - target: {fileID: 1263067252963004692, guid: edd6d0de85238474ca7d567d46d3b068, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2352,6 +2309,10 @@ PrefabInstance:
       propertyPath: 'prefab.Array.data[1]'
       value: 
       objectReference: {fileID: 5032977284790817949, guid: acf0da2c7f224204a99fafffd9fc30d2, type: 3}
+    - target: {fileID: 912570411838465814, guid: edd6d0de85238474ca7d567d46d3b068, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 912570411838465814, guid: edd6d0de85238474ca7d567d46d3b068, type: 3}
     - target: {fileID: 1263067252963004692, guid: edd6d0de85238474ca7d567d46d3b068, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.35

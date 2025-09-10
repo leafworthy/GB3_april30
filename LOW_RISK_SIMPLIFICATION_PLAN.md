@@ -20,7 +20,7 @@ public static class ComponentHelper
         return cache;
     }
     
-    public static void CachePlayerComponents(GameObject playerGO, out Body body, out Life life, out Animations anim)
+    public static void CachePlayerComponents(GameObject playerGO, out Body body, out ILife life, out Animations anim)
     {
         body = playerGO.GetComponent<Body>();
         life = playerGO.GetComponent<Life>();
@@ -127,7 +127,7 @@ public abstract class PausableMonoBehaviour : MonoBehaviour
 ```csharp
 public abstract class EventSubscriptionBase : PausableMonoBehaviour
 {
-    protected Life life;
+    protected ILife life;
     
     protected virtual void OnEnable()
     {

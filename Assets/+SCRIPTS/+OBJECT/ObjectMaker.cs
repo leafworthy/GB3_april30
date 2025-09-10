@@ -6,7 +6,7 @@ using UnityEngine;
 namespace __SCRIPTS
 {
 	//REQUIRES levelManager
-	public class ObjectMaker : ServiceUser, IService
+	public class ObjectMaker : MonoBehaviour, IService
 	{
 		//CREATOR DESTROYER
 		private  List<GameObject> allActiveUnits = new();
@@ -26,16 +26,16 @@ namespace __SCRIPTS
 				containerContainer.transform.SetParent(transform);
 			}
 
-			levelManager.OnStartLevel += PoolObjects;
-			levelManager.OnStopLevel += DestroyAllUnits;
+			Services.levelManager.OnStartLevel += PoolObjects;
+			Services.levelManager.OnStopLevel += DestroyAllUnits;
 		}
 		public void OnDisable()
 		{
 			Debug.Log("object maker disabled");
 			DestroyAllUnits(null);
-			if (levelManager == null) return;
-			levelManager.OnStartLevel -= PoolObjects;
-			levelManager.OnStopLevel -= DestroyAllUnits;
+			if (Services.levelManager == null) return;
+			Services.levelManager.OnStartLevel -= PoolObjects;
+			Services.levelManager.OnStopLevel -= DestroyAllUnits;
 		}
 
 
@@ -53,7 +53,6 @@ namespace __SCRIPTS
 
 		public  void Pool(GameObject obj, int clones)
 		{
-			Debug.Log("pooling: " + obj.name + " with " + clones + " clones.");
 			var currentPool = new List<GameObject>();
 			for (var i = 0; i < clones; i++)
 			{

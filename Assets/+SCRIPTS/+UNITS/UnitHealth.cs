@@ -1,167 +1,90 @@
 using System;
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class UnitHealth : ServiceUser, IPoolable, ICanAttack, INeedPlayer
+	[Serializable]
+	public class UnitHealth
 	{
-		public bool CanDie => unitStats.Data.isInvincible;
-		public bool IsInvincible;
-		public bool IsShielded;
-		public float AttackHeight => unitStats.AttackHeight;
+		public float GetFraction() => maxHealth > 0 ? currentHealth / maxHealth : 0f;
 
-		public Player _player;
-		public Player player => _player;
-		public DebrisType DebrisType => unitStats.DebrisType;
+		public bool IsTemporarilyInvincible;
+		public bool IsShielded;
+		public bool IsDead => isDead;
+		public float CurrentHealth => currentHealth;
+
+		public event Action<float> OnFractionChanged;
+		public event Action<Attack> OnDying;
+		public event Action<Attack> OnDead;
+		public event Action<Attack> OnAttackHit;
+
+		private bool isInvincible;
+
+		private float maxHealth;
 
 		private float currentHealth;
+
 		private bool isDead;
 
-		public event Action<Attack> OnDamaged;
-		public event Action<Attack> OnShielded;
-		public event Action<float> OnFractionChanged; // passes health fraction
-		public event Action<Player,ICanAttack> OnDying;
-		public event Action OnResurrected;
+		private UnitStatsData unitData;
 
-		private UnitStats unitStats => _unitStats ??= GetComponent<UnitStats>();
-		private UnitStats _unitStats;
-		private UnitAnimations unitAnim => _unitAnim ??= GetComponent<UnitAnimations>();
-		private UnitAnimations _unitAnim;
 
-		private LayerMask originalLayer;
-		private Player player1;
-		public float CurrentHealth => currentHealth;
-		public float MaxHealth => unitStats?.MaxHealth ?? 100f;
-		public float GetFraction => MaxHealth > 0 ? currentHealth / MaxHealth : 0f;
-		public bool IsDead => isDead;
-
-		private void Awake()
+		public UnitHealth(UnitStatsData data)
 		{
-			originalLayer = gameObject.layer;
-		}
-
-
-
-		private void SetupAnimationEvents()
-		{
-			if (unitAnim?.animEvents == null) return;
-			unitAnim.animEvents.OnDieStop += CompleteDeath;
-			unitAnim.animEvents.OnInvincible += SetInvincible;
+			unitData = data;
+			isInvincible = data.isInvincible;
+			maxHealth = data.healthMax;
+			Initialize();
 		}
 
 		private void ResetHealth()
 		{
-			currentHealth = MaxHealth;
+			currentHealth = maxHealth;
 			isDead = false;
-			gameObject.layer = originalLayer;
-			EnableColliders(true);
-			OnFractionChanged?.Invoke(GetFraction);
+			OnFractionChanged?.Invoke(GetFraction());
 		}
 
 		public void TakeDamage(Attack attack)
 		{
-			if (isDead || IsInvincible || unitStats?.Data?.isInvincible == true) return;
-
-			if (IsShielded)
-			{
-				OnShielded?.Invoke(attack);
-				return;
-			}
-
-			// Apply damage
+			if (isDead || IsTemporarilyInvincible || isInvincible) return;
+			Debug.Log("taking damage inside");
 			currentHealth = Mathf.Max(0, currentHealth - attack.DamageAmount);
-			OnDamaged?.Invoke(attack);
-			OnFractionChanged?.Invoke(GetFraction);
+			OnAttackHit?.Invoke(attack);
+			OnFractionChanged?.Invoke(GetFraction());
 
-			// Handle hit reaction
-			CameraShaker.ShakeCamera(transform.position, CameraShaker.ShakeIntensityType.normal);
-			unitAnim?.SetTrigger(UnitAnimations.HitTrigger);
-
-			// Check for death
-			if (currentHealth <= 0 && CanDie) StartDeath();
+			if (!(currentHealth <= 0) || isInvincible) return;
+			OnDying?.Invoke(attack);
+			StartDeath();
 		}
 
 		public void AddHealth(float amount)
 		{
-			if (isDead && amount > 0)
-			{
-				Resurrect();
-				return;
-			}
-
-			currentHealth = Mathf.Clamp(currentHealth + amount, 0, MaxHealth);
-			OnFractionChanged?.Invoke(GetFraction);
-		}
-
-		public void Resurrect()
-		{
-			if (!isDead) return;
-
-			ResetHealth();
-			unitAnim?.SetBool(UnitAnimations.IsDead, false);
-			OnResurrected?.Invoke();
+			currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+			OnFractionChanged?.Invoke(GetFraction());
 		}
 
 		public void KillInstantly()
 		{
-			if (!CanDie) return;
+			if (!isInvincible) return;
 			currentHealth = 0;
 			StartDeath();
 		}
 
-		private void StartDeath()
+		private void StartDeath(Attack killingAttack = null)
 		{
+
+			OnDead?.Invoke(killingAttack);
 			isDead = true;
-			EnableColliders(false);
-			gameObject.layer = LayerMask.NameToLayer("Dead");
-
-			unitAnim?.SetTrigger(UnitAnimations.DeathTrigger);
-			unitAnim?.SetBool(UnitAnimations.IsDead, true);
 		}
 
-		private void CompleteDeath()
+		public void SetTemporaryInvincible(bool invincible)
 		{
-			if (!CanDie) return;
-			OnDying?.Invoke(player, this);
-			objectMaker?.Unmake(gameObject);
+			IsTemporarilyInvincible = invincible;
 		}
 
-		private void SetInvincible(bool invincible)
+		private void Initialize()
 		{
-			IsInvincible = invincible;
-		}
-
-		private void EnableColliders(bool enable)
-		{
-			if (!CanDie && !enable) return;
-
-			foreach (var col in GetComponentsInChildren<Collider2D>())
-			{
-				col.enabled = enable;
-			}
-		}
-
-		// IPoolable implementation
-		public void OnPoolSpawn() => ResetHealth();
-		public void OnPoolDespawn() => CleanupEvents();
-
-		private void CleanupEvents()
-		{
-			if (unitAnim?.animEvents != null)
-			{
-				unitAnim.animEvents.OnDieStop -= CompleteDeath;
-				unitAnim.animEvents.OnInvincible -= SetInvincible;
-			}
-		}
-
-		private void OnDestroy() => CleanupEvents();
-
-		public void SetPlayer(Player _player)
-		{
-			 this._player  = _player;
-			 ResetHealth();
-			 SetupAnimationEvents();
+			ResetHealth();
 		}
 	}
 }

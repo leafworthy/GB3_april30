@@ -21,7 +21,7 @@ namespace __SCRIPTS
 
 		private void GoToMainMenu(VideoPlayer source)
 		{
-			levelManager.ExitToMainMenu();
+			Services.levelManager.ExitToMainMenu();
 		}
 	}
 }

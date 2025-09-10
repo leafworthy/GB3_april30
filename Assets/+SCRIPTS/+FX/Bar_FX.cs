@@ -25,7 +25,7 @@ namespace __SCRIPTS
 
 		private void UpdateGradient()
 		{
-			
+
 			if (colorMode == ColorMode.Gradient)
 			{
 				var time = _life == null ? targetFill : _life.GetFraction();
@@ -37,20 +37,25 @@ namespace __SCRIPTS
 
 		public void UpdateBar(float currentValue, float maxValue)
 		{
+			UpdateBar(currentValue / maxValue);
+		}
+
+		public void UpdateBar(float fraction)
+		{
 			if (slowBarImage == null)
 				return;
-			targetFill = currentValue / maxValue;
+			targetFill = fraction;
 			UpdateGradient();
 			UpdateBarFill();
 		}
 
 		private void UpdateBarFill()
 		{
-		
-		
+
+
 			if (slowBarImage != null) slowBarImage.fillAmount = Mathf.Lerp(slowBarImage.fillAmount, targetFill, smoothingFactor);
 			if (fastBarImage != null) fastBarImage.fillAmount = targetFill;
-		
+
 		}
 
 		private void Update()
@@ -60,7 +65,7 @@ namespace __SCRIPTS
 			UpdateBarFill();
 		}
 
-	
+
 
 		private void UpdateColor(Color targetColor)
 		{

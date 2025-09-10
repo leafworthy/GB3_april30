@@ -8,15 +8,25 @@ namespace __SCRIPTS
 	{
 		private List<Life> _allEnemies = new();
 		public event Action<Player, Life> OnPlayerKillsEnemy;
-		public event Action<Player, Life> OnEnemyDying;
+		public event Action<Life> OnEnemyDying;
 		private LevelManager _levelManager;
 		private LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
 		private Players _players;
 		private Players players => _players ?? ServiceLocator.Get<Players>();
 
+		private ObjectMaker objectMaker => _objectMaker ??= ServiceLocator.Get<ObjectMaker>();
+
+		private ObjectMaker _objectMaker;
+
 		public void StartService()
 		{
 			levelManager.OnStopLevel += ClearEnemies;
+		}
+
+		public void SpawnNewEnemy(GameObject enemyPrefab, Vector3 position)
+		{
+			var newEnemy = objectMaker.Make(enemyPrefab, position);
+			ConfigureNewEnemy(newEnemy);
 		}
 
 		private void CollectEnemy(GameObject enemy)
@@ -30,9 +40,9 @@ namespace __SCRIPTS
 			_allEnemies.Add(enemyDefence);
 		}
 
-		private void EnemyDying(Player x, Life y)
+		private void EnemyDying(Attack attack)
 		{
-			OnEnemyDying?.Invoke(x, y);
+			OnEnemyDying?.Invoke(attack.DestinationLife);
 		}
 
 		private void ClearEnemies(GameLevel gameLevel)
@@ -54,7 +64,7 @@ namespace __SCRIPTS
 		public void ConfigureNewEnemy(GameObject enemy)
 		{
 			// Set up the Life component
-			var life = enemy.GetComponent<UnitHealth>();
+			var life = enemy.GetComponent<Life>();
 			if (life != null)
 			{
 				life.SetPlayer(players.enemyPlayer);

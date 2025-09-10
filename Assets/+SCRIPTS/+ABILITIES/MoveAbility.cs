@@ -1,10 +1,16 @@
+using System;
 using __SCRIPTS.Cursor;
 using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class MoveAbility : ServiceUser, IActivity
+	public interface IMove
+	{
+		event Action<Vector2> OnMoveInDirection;
+		event Action OnStopMoving;
+	}
+	public class MoveAbility : Ability, IActivity, IPoolable
 	{
 		private Vector2 moveVelocity;
 		private Vector2 pushVelocity;
@@ -13,82 +19,147 @@ namespace __SCRIPTS
 		private const float overallVelocityMultiplier = 2;
 		private float pushMultiplier = 1;
 		private float maxPushVelocity = 3000;
-
 		private Rigidbody2D rb;
 
-		public Vector2 moveDir;
 		private bool isMoving;
 		private bool isDragging = true;
 
 		private Vector2 lastAimDirOffset;
 
+		private IMove ai;
+
 		private float moveSpeed;
 		private bool isTryingToMove;
 		private bool IsActive = true;
 		private bool IsPushed;
-		private Life life;
-		private Body body;
 		private float maxAimDistance = 30;
-		public string VerbName => "Move";
+		public override string VerbName => "Move";
+		protected override bool requiresArms() => false;
 
-		public Vector2 MoveAimDir { get; set; }
+		protected override bool requiresLegs() => false;
+
+		protected override void DoAbility()
+		{
+		}
+
+		public bool CanMove => canMove;
+		private bool canMove;
+		private Vector2 MoveAimDir { get; set; }
+		public Vector2 MoveDir { get; private set; }
+
+		public override void SetPlayer(Player _player)
+		{
+			player = _player;
+
+			canMove = true;
+			StartListeningToPlayer();
+		}
 
 		public Vector2 GetMoveAimPoint()
 		{
-			if (life == null || !life.IsPlayer) return Vector2.zero;
+			if (life == null || !life.IsHuman) return Vector2.zero;
 			MoveAimDir = GetMoveAimDir();
 			lastAimDirOffset = MoveAimDir * maxAimDistance;
-			if (!life.player.isUsingMouse) return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
+			if (!life.Player.isUsingMouse) return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
 			var mousePos = CursorManager.GetMousePosition();
 
 			return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
-
 		}
 
 		public Vector2 GetLastMoveAimDirOffset() => lastAimDirOffset;
 
-		public Vector3 GetMoveAimDir()
+		public Vector2 GetMoveAimDir()
 		{
-			if (life.player.isUsingMouse) return moveDir;
+			if (life.Player.isUsingMouse) return MoveDir;
 
-			return life.player.Controller.MoveAxis.GetCurrentAngle();
+			return life.Player.Controller.MoveAxis.GetCurrentAngle();
 		}
 
-		private void OnEnable()
+		public void SetCanMove(bool _canMove)
 		{
-			body = GetComponent<Body>();
-			life = GetComponent<Life>();
-			if (life == null) return;
-			life.OnDying += Life_OnDying;
+			canMove = _canMove;
+			if (!_canMove)
+				StopMoving();
+			else
+			{
+				if (player.IsPlayer()) MoveInDirection(player.Controller.MoveAxis.GetCurrentAngle(), life.MoveSpeed);
+			}
 		}
 
-
-
-		private void OnDisable()
+		private void Life_OnDying(Attack attack)
 		{
-			if (life == null) return;
-			life.OnDying -= Life_OnDying;
-		}
-
-		private void Life_OnDying(Player arg1, Life arg2)
-		{
+			Push(attack.Direction, attack.DamageAmount);
+			body.BottomFaceDirection(attack.Direction.x < 0);
 			IsActive = false;
 			StopMoving();
+			SetCanMove(false);
 			pushVelocity = Vector2.zero;
+			StopListeningToPlayer();
+		}
+
+		private void Controller_MoveInDirection(Vector2 direction)
+		{
+			if (Services.pauseManager.IsPaused) return;
+			if (life.IsDead()) return;
+			if (!CanMove)
+			{
+				Debug.Log("can't move");
+				return;
+			}
+
+			if (body.doableLegs.IsActive || direction.magnitude < .5f)
+			{
+				StopMoving();
+				return;
+			}
+
+			StartMoving(direction);
+		}
+
+		private void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction)
+		{
+			Controller_MoveInDirection(direction);
+			if (Services.pauseManager.IsPaused) return;
+			if (life.IsDead()) return;
+			if (!CanMove) return;
+
+			if (body.doableLegs.IsActive || direction.magnitude < .5f)
+			{
+				StopMoving();
+				return;
+			}
+
+			StartMoving(direction);
+		}
+
+		private void Life_DeathComplete(Player obj)
+		{
+			SetCanMove(false);
+			pushVelocity = Vector2.zero;
+		}
+
+		private void StopListeningToPlayer()
+		{
+			if (life == null) return;
+			if (life != null) life.OnDying -= Life_OnDying;
+			if (life.IsHuman)
+			{
+				player.Controller.MoveAxis.OnChange -= Player_MoveInDirection;
+				player.Controller.MoveAxis.OnInactive -= Player_StopMoving;
+			}
+			else
+			{
+				if (ai == null) return;
+				ai.OnMoveInDirection -= Controller_MoveInDirection;
+				ai.OnStopMoving -= AI_StopMoving;
+			}
 		}
 
 		private void FixedUpdate()
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 
-			if (isMoving && IsActive)
-			{
-				AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
-			}
-			else
-			{
-				if(life != null && !life.IsPlayer) Debug.Log("isMoving: "+ isMoving + " IsActive: " + IsActive);
-			}
+			if (isMoving && IsActive) AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
 
 			ApplyVelocity();
 			DecayVelocity();
@@ -114,20 +185,19 @@ namespace __SCRIPTS
 
 		private Vector2 GetVelocity()
 		{
-			moveVelocity = moveDir * moveSpeed;
+			moveVelocity = MoveDir * moveSpeed;
 			return moveVelocity;
 		}
 
 		public void MoveInDirection(Vector2 direction, float newSpeed)
 		{
-			if (!IsActive)
-			{
-				Debug.Log("not active");
-				return;
-			}
-			moveDir = direction.normalized;
+			if (!IsActive) return;
+
+			if (direction.x != 0) body.BottomFaceDirection(direction.x > 0);
+			anim.SetBool(UnitAnimations.IsMoving, true);
+
+			MoveDir = direction.normalized;
 			moveSpeed = newSpeed;
-			if(!life.IsPlayer)Debug.Log("moving true");
 			isMoving = true;
 		}
 
@@ -146,15 +216,11 @@ namespace __SCRIPTS
 		private void MoveObjectTo(Vector2 destination, bool teleport = false)
 		{
 			rb = GetComponent<Rigidbody2D>();
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (rb != null)
-			{
 				rb.MovePosition(destination);
-			}
 			else
-			{
 				transform.position = destination;
-			}
 		}
 
 		public void SetDragging(bool isNowDragging)
@@ -170,12 +236,17 @@ namespace __SCRIPTS
 			AddPushVelocity(tempVel);
 		}
 
-		public void StopMoving()
+		private void StartMoving(Vector2 direction)
 		{
 
-			if(!life.IsPlayer)Debug.Log("stop moving");
+			MoveInDirection(direction, life.MoveSpeed);
+		}
+		public void StopMoving()
+		{
+			if (!life.IsHuman) Debug.Log("stop moving");
 			isMoving = false;
 			moveVelocity = Vector2.zero;
+			anim.SetBool(UnitAnimations.IsMoving, false);
 		}
 
 		public void StopPush()
@@ -185,7 +256,51 @@ namespace __SCRIPTS
 
 		public bool IsMoving() => isMoving;
 
-		public bool IsIdle() => life.player.Controller.MoveAxis.currentMagnitudeIsTooSmall();
+		public bool IsIdle() => life.Player.Controller.MoveAxis.currentMagnitudeIsTooSmall();
 
+		public void OnPoolSpawn()
+		{
+			IsActive = true;
+			isMoving = false;
+			moveVelocity = Vector2.zero;
+			pushVelocity = Vector2.zero;
+		}
+
+		public void OnPoolDespawn()
+		{
+			IsActive = false;
+			isMoving = false;
+			moveVelocity = Vector2.zero;
+			pushVelocity = Vector2.zero;
+		}
+
+		private void OnDisable()
+		{
+			StopListeningToPlayer();
+		}
+
+		private void Player_StopMoving(IControlAxis controlAxis) => StopMoving();
+
+		private void AI_StopMoving() => StopMoving();
+
+		private void StartListeningToPlayer()
+		{
+			if (life == null) return;
+			life.OnDying += Life_OnDying;
+			life.OnDeathComplete += Life_DeathComplete;
+			if (player.IsPlayer())
+			{
+				player.Controller.MoveAxis.OnChange += Player_MoveInDirection;
+				player.Controller.MoveAxis.OnInactive += Player_StopMoving;
+			}
+			else
+			{
+				ai = GetComponent<IMove>();
+				if (ai == null) return;
+
+				ai.OnMoveInDirection += Controller_MoveInDirection;
+				ai.OnStopMoving += AI_StopMoving;
+			}
+		}
 	}
 }

@@ -2,18 +2,18 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-    public class SceneAnimationEvents : ServiceUser
+    public class SceneAnimationEvents : MonoBehaviour
     {
 
         public void FadeInComplete()
         {
 
-            sceneLoader.FadeInComplete();
+	        Services.sceneLoader.FadeInComplete();
         }
         public void FadeComplete()
         {
 
-	        sceneLoader.FadeOutComplete();
+	        Services.sceneLoader.FadeOutComplete();
         }
 
     }

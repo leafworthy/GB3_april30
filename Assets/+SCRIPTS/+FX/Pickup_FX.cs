@@ -1,9 +1,8 @@
-using __SCRIPTS.RisingText;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class Pickup_FX : ServiceUser
+	public class Pickup_FX : MonoBehaviour
 	{
 		[SerializeField] private CameraShaker.ShakeIntensityType shakeIntensity;
 		[SerializeField] private CameraStunner_FX.StunLength stunLength;
@@ -26,13 +25,13 @@ namespace __SCRIPTS
 			var otherTintHandler = col.gameObject.GetComponentInChildren<Life_FX>(true);
 			otherTintHandler.StartTint(pickupTintColor);
 			var position = transform.position;
-			objectMaker.Make( AssetManager.FX.pickupEffectPrefab, position);
+			Services.objectMaker.Make(Services.assetManager.FX.pickupEffectPrefab, position);
 			CameraShaker.ShakeCamera(position,shakeIntensity);
 			CameraStunner_FX.StartStun(stunLength);
 			if(pickupItem.itemType == PickupItem.ItemType.cash)
-				risingText.CreateRisingText("+$" + pickupItem.itemAmount, position, Color.white);
+				Services.risingText.CreateRisingText("+$" + pickupItem.itemAmount, position, Color.white);
 			else
-				risingText.CreateRisingText("+" + pickupItem.itemAmount + " " +pickupItem.itemName, position, Color.white);
+				Services.risingText.CreateRisingText("+" + pickupItem.itemAmount + " " +pickupItem.itemName, position, Color.white);
 		}
 	}
 }

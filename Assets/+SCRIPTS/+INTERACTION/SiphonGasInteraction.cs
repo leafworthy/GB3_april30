@@ -32,7 +32,7 @@ namespace __SCRIPTS
 		private void Interactable_OnActionPress(Player player)
 		{
 
-			sfx.sounds.siphon_gas_sound.PlayRandomAt(transform.position);
+			Services.sfx.sounds.siphon_gas_sound.PlayRandomAt(transform.position);
 		}
 
 		protected override bool canEnter(Player player)

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class SceneCharacterSelection_SFX : ServiceUser
+	public class SceneCharacterSelection_SFX : MonoBehaviour
 	{
 		private GameSceneCharacterSelection gameSceneCharacterSelection;
 
@@ -29,19 +29,19 @@ namespace __SCRIPTS
 			gameSceneCharacterSelection.OnDeselectCharacter -= SceneCharacterSelection_OnDeselectCharacter;
 		}
 
-		private void SceneCharacterSelection_OnDeselectCharacter() => sfx.sounds.charSelect_deselect_sounds.PlayRandom();
-		private void SceneCharacterSelection_OnSelectCharacter() => sfx.sounds.charSelect_select_sounds.PlayRandom();
+		private void SceneCharacterSelection_OnDeselectCharacter() => Services.sfx.sounds.charSelect_deselect_sounds.PlayRandom();
+		private void SceneCharacterSelection_OnSelectCharacter() => Services.sfx.sounds.charSelect_select_sounds.PlayRandom();
 
 
 
-		private void SceneCharacterSelection_OnTryToStartGame() => sfx.sounds.pickup_speed_sounds.PlayRandom();
+		private void SceneCharacterSelection_OnTryToStartGame() => Services.sfx.sounds.pickup_speed_sounds.PlayRandom();
 
-		private void SceneCharacterSelection_OnPlayerMoveRight() => sfx.sounds.charSelect_move_sounds.PlayRandom();
+		private void SceneCharacterSelection_OnPlayerMoveRight() => Services.sfx.sounds.charSelect_move_sounds.PlayRandom();
 
-		private void SceneCharacterSelection_OnPlayerMoveLeft() => sfx.sounds.charSelect_move_sounds.PlayRandom();
+		private void SceneCharacterSelection_OnPlayerMoveLeft() => Services.sfx.sounds.charSelect_move_sounds.PlayRandom();
 
-		private void SceneCharacterSelection_OnPlayerUnjoins() => sfx.sounds.charSelect_move_sounds.PlayRandom();
+		private void SceneCharacterSelection_OnPlayerUnjoins() => Services.sfx.sounds.charSelect_move_sounds.PlayRandom();
 
-		private void SceneCharacterSelection_OnPlayerStartsSelecting() => sfx.sounds.charSelect_select_sounds.PlayRandom();
+		private void SceneCharacterSelection_OnPlayerStartsSelecting() => Services.sfx.sounds.charSelect_select_sounds.PlayRandom();
 	}
 }

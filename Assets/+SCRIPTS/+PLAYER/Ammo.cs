@@ -65,11 +65,9 @@ namespace __SCRIPTS
 				return;
 			}
 
-			if (!reloads) return;
-			if (reserveAmmo <= 0) return;
-			if (AmmoInClip >= clipSize) return;
-			var ammoNeeded = clipSize - AmmoInClip;
+			if (!CanReload()) return;
 
+			var ammoNeeded = clipSize - AmmoInClip;
 			if (ammoNeeded > reserveAmmo)
 			{
 				AmmoInClip += reserveAmmo;
@@ -78,7 +76,7 @@ namespace __SCRIPTS
 			else
 			{
 				reserveAmmo -= ammoNeeded;
-				AmmoInClip += ammoNeeded;
+				AmmoInClip = clipSize;
 			}
 
 			OnAmmoGained?.Invoke();
@@ -90,7 +88,17 @@ namespace __SCRIPTS
 
 		public void UseAmmo(int amount)
 		{
+			Debug.Log("using ammo: " + amount);
 			Use(amount);
+		}
+
+		public bool CanReload()
+		{
+			if (!reloads) return false;
+			if (reserveAmmo <= 0) return false;
+			if (AmmoInClip >= clipSize) return false;
+			return true;
+
 		}
 	}
 }

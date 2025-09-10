@@ -1,47 +1,70 @@
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class DashAbility : ServiceUser, INeedPlayer, IActivity
+	public class DashAbility : Ability
 	{
+		public AnimationClip dashAnimationClip;
 		private AnimationEvents animEvents;
-		private MoveController moveController;
-		private Life life;
-		private MoveAbility move;
+		private MoveAbility moveAbility  => _moveAbility ??= GetComponent<MoveAbility>();
+		private MoveAbility _moveAbility;
 		private Player owner;
-		private JumpAbility jumps;
-		private Body body;
-		private UnitAnimations anim;
+		private DoableJumpAbility jumps;
+
 		public bool teleport;
-		private string verbName;
-		public string VerbName => "Dash";
-		public bool canDo() => false;
+		public override string VerbName => "Dash";
+		protected override bool requiresArms() => true;
 
-		public bool canStop() => false;
+		protected override bool requiresLegs() => true;
 
-		public void DoSafely()
+		public override bool canDo()
 		{
+			if (!base.canDo())
+			{
+				Debug.Log("Base canDo failed for " + VerbName + " ability");
+				return false;
+			}
+
+			if (!jumps.canDo())
+			{
+				Debug.Log("Cannot do jumps, cannot do " + VerbName + " ability");
+				return false;
+			}
+			if (body.doableArms.IsActive)
+			{
+				Debug.Log("Arms are active, cannot do " + VerbName + " ability");
+				return false;
+			}
+			return true;
 		}
 
-		public void Stop()
+		public override bool canStop() => true;
+
+
+		protected override void DoAbility()
 		{
+			Dash();
 		}
 
-		public void SetPlayer(Player _player)
+		private void UnsubscribeFromEvents()
 		{
-			move = GetComponent<MoveAbility>();
-			anim = GetComponent<UnitAnimations>();
-			body = GetComponent<Body>();
-			jumps = GetComponent<JumpAbility>();
-			moveController = GetComponent<MoveController>();
+			// These won't throw exceptions even if not subscribed
+			if (owner?.Controller != null)
+				owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 
-			life = GetComponent<Life>();
+			if (animEvents != null)
+				animEvents.OnTeleport -= Anim_Teleport;
+		}
+		public override void SetPlayer(Player _player)
+		{
+
+			jumps = GetComponent<DoableJumpAbility>();
+
 			owner = _player;
+			UnsubscribeFromEvents();
 
 			animEvents = anim.animEvents;
 			owner.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
-			animEvents.OnDashStop += Anim_DashStop;
 			animEvents.OnTeleport += Anim_Teleport;
 		}
 
@@ -49,110 +72,52 @@ namespace __SCRIPTS
 		{
 			if (owner == null) return;
 			if (owner.Controller == null) return;
-			if (animEvents != null)
-			{
-				animEvents.OnDashStop -= Anim_DashStop;
-				animEvents.OnTeleport -= Anim_Teleport;
-			}
-
+			if (animEvents != null) animEvents.OnTeleport -= Anim_Teleport;
 			owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
-
-			// Clean up any pending invokes and ensure arms are freed
-			CancelInvoke(nameof(SafetyArmRelease));
-			if (body != null && body.arms.currentActivity?.VerbName == VerbName) body.arms.Stop(this);
+			//Stop(this);
 		}
 
 		private void Anim_Teleport()
 		{
-			// Get the current movement direction for teleport
-			var teleportDirection = moveController.MoveDir;
-
-			// If not moving, use the last movement direction or default to facing direction
+			var teleportDirection = moveAbility.MoveDir;
 			if (teleportDirection.magnitude < 0.1f)
 			{
-				teleportDirection = move.GetLastMoveAimDirOffset().normalized;
-				if (teleportDirection.magnitude < 0.1f)
-				{
-					// Fallback to facing direction
-					teleportDirection = body.BottomIsFacingRight ? Vector2.right : Vector2.left;
-				}
+				teleportDirection = moveAbility.GetLastMoveAimDirOffset().normalized;
+				if (teleportDirection.magnitude < 0.1f) teleportDirection = body.BottomIsFacingRight ? Vector2.right : Vector2.left;
 			}
 
-			// Calculate teleport distance (adjust this value as needed)
-			var teleportDistance = life.DashSpeed; // You can adjust this value
+			var teleportDistance = life.DashSpeed;
 			var teleportOffset = teleportDirection.normalized * teleportDistance;
 			var newPoint = (Vector2) transform.position + teleportOffset;
 
-			var landable = body.GetLandableAtPosition(newPoint);
-			body.ChangeLayer(landable != null ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
-			if (landable != null) body.SetDistanceToGround(landable.height);
+			body.ChangeLayer(Body.BodyLayer.grounded);
 			transform.position = newPoint;
-		}
-
-		private void Anim_DashStop()
-		{
-			// Cancel safety release since animation event fired properly
-			CancelInvoke(nameof(SafetyArmRelease));
-
-			body.ChangeLayer(body.isOverLandable ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
-			body.arms.Stop(this);
-			body.arms.Stop(this);
-
-			// Force refresh of aiming system after dash completes
-			RefreshAimingSystem();
-		}
-
-		private void RefreshAimingSystem()
-		{
-			// Find and refresh the aiming ability to prevent stuck aim direction
-			var aimAbility = GetComponent<AimAbility>();
-			if (aimAbility != null && owner != null)
-			{
-				// Ensure IsShielding is cleared in case ShieldAbility left it stuck
-				if (anim != null) anim.SetBool(UnitAnimations.IsShielding, false);
-
-				// Force the aim direction to update
-				if (!owner.isUsingMouse && owner.Controller != null)
-				{
-					var currentAim = owner.Controller.AimAxis.GetCurrentAngle();
-
-					// Force refresh by setting the aim direction directly if controller has input
-					if (currentAim.magnitude > 0.2f) aimAbility.AimDir = currentAim.normalized;
-				}
-			}
 		}
 
 		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 		{
-			if (!moveController.CanMove) return;
-			if (pauseManager.IsPaused) return;
-			if (!jumps.isResting) return;
+			Do();
+		}
 
-			if (!body.arms.Do(this)) return;
-			if (!body.arms.Do(this) && !teleport) return;
+		protected override void AnimationComplete()
+		{
+			body.ChangeLayer(Body.BodyLayer.grounded);
+			moveAbility.StopPush();
+			Stop();
+		}
 
-			anim.SetTrigger(UnitAnimations.DashTrigger);
+		private void Dash()
+		{
+			PlayAnimationClip(dashAnimationClip);
+			Debug.Log("Dashing with " + VerbName + " ability");
 			if (!teleport)
 			{
-				moveController.Push(moveController.MoveDir, life.DashSpeed);
+				moveAbility.Push(moveAbility.MoveDir, life.DashSpeed);
 				body.ChangeLayer(Body.BodyLayer.grounded);
 			}
 			else
 			{
 				body.ChangeLayer(Body.BodyLayer.jumping);
-				body.canLand = true;
-			}
-
-			// Safety mechanism: ensure arms are freed after animation duration
-			Invoke(nameof(SafetyArmRelease), 2f);
-		}
-
-		private void SafetyArmRelease()
-		{
-			if (body.arms.currentActivity?.VerbName == VerbName)
-			{
-				body.arms.Stop(this);
-				RefreshAimingSystem();
 			}
 		}
 	}

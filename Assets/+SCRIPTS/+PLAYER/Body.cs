@@ -31,9 +31,6 @@ namespace __SCRIPTS
 		[HideInInspector] public bool TopIsFacingRight = true;
 		public DoableArms doableArms = new();
 		public DoableLegs doableLegs = new();
-		private bool canMove;
-
-
 
 		public void ChangeLayer(BodyLayer bodyLayer)
 		{
@@ -41,13 +38,16 @@ namespace __SCRIPTS
 			switch (bodyLayer)
 			{
 				case BodyLayer.jumping:
-					layerValue = AssetManager.LevelAssets.JumpingLayer;
+					layerValue = Services.assetManager.LevelAssets.JumpingLayer;
 					break;
 				case BodyLayer.landed:
-					layerValue = AssetManager.LevelAssets.LandedLayer;
+					layerValue = Services.assetManager.LevelAssets.LandedLayer;
 					break;
 				case BodyLayer.grounded:
-					layerValue = AssetManager.LevelAssets.GroundedLayer;
+					layerValue = Services.assetManager.LevelAssets.GroundedLayer;
+					break;
+				case BodyLayer.enemy:
+					layerValue = Services.assetManager.LevelAssets.EnemyLayer;
 					break;
 			}
 
@@ -58,7 +58,8 @@ namespace __SCRIPTS
 		{
 			jumping,
 			landed,
-			grounded
+			grounded,
+			enemy
 		}
 
 		public void BottomFaceDirection(bool faceRight)
@@ -96,6 +97,12 @@ namespace __SCRIPTS
 			currentScale.x = toTheRight ? Mathf.Abs(localScale.x) : -Mathf.Abs(localScale.x);
 			localScale = currentScale;
 			TopScaleObject.transform.localScale = localScale;
+		}
+
+		public void SetGrounded()
+		{
+			SetDistanceToGround(0);
+			ChangeLayer(Body.BodyLayer.grounded);
 		}
 	}
 }

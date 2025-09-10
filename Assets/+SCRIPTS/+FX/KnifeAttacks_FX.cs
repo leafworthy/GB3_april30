@@ -2,26 +2,28 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class KnifeAttacks_FX : ServiceUser
+	public class KnifeAttacks_FX : MonoBehaviour
 	{
-		private TertiaryAttack_Knife tertiaryAttackKnife;
+		private DoableKnifeAttack knifeAttack;
 
 		void OnEnable()
 		{
-			tertiaryAttackKnife = GetComponent<TertiaryAttack_Knife>();
-			tertiaryAttackKnife.OnHit += TertiaryAttackKnifeOnHit;
+			knifeAttack = GetComponent<DoableKnifeAttack>();
+			if (knifeAttack == null) return;
+			knifeAttack.OnHit += KnifeAttackOnHit;
 
 		}
 
 		private void OnDisable()
 		{
-			tertiaryAttackKnife.OnHit -= TertiaryAttackKnifeOnHit;
+			if (knifeAttack == null) return;
+			knifeAttack.OnHit -= KnifeAttackOnHit;
 
 		}
 
-		private void TertiaryAttackKnifeOnHit(Vector2 pos)
+		private void KnifeAttackOnHit(Vector2 pos)
 		{
-			objectMaker.Make( AssetManager.FX.hit5_xstrike, pos);
+			Services.objectMaker.Make(Services.assetManager.FX.hit5_xstrike, pos);
 			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);
 		}
 

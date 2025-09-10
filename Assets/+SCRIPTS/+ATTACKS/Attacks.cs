@@ -1,24 +1,19 @@
-using __SCRIPTS.HUD_Displays;
 using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class Attacks : ServiceUser, INeedPlayer, IActivity
+	public class Attacks : MonoBehaviour, INeedPlayer, IActivity
 	{
 		private Life _attacker;
 		protected Life attacker => _attacker?? GetComponent<Life>();
 		public virtual string VerbName => "Generic-Attack";
 
-		public virtual bool TryCompleteGracefully(CompletionReason reason, IActivity newActivity = null)
-		{
-			return false; // Default: no special completion handling
-		}
 
 		protected void HitTarget(float attackDamage, Life targetLife, float extraPush = 0)
 		{
 			if (targetLife == null) return;
-			if(targetLife.IsInvincible) return;
+			if(!targetLife.CanTakeDamage) return;
 
 			var newAttack = new Attack(attacker, targetLife, attackDamage);
 			targetLife.TakeDamage(newAttack);
@@ -32,7 +27,7 @@ namespace __SCRIPTS
 		protected RaycastHit2D RaycastToObject(Life currentTargetLife)
 		{
 			var position = attacker.transform.position;
-			var layer = attacker.IsPlayer ? AssetManager.LevelAssets.EnemyLayer : AssetManager.LevelAssets.PlayerLayer;
+			var layer = attacker.IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
 			var direction = (currentTargetLife.transform.position - position).normalized;
 			var distance = Vector3.Distance(position, currentTargetLife.transform.position);
 			return Physics2D.Raycast(position, direction, distance, layer);

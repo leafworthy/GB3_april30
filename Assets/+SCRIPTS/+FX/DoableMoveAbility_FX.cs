@@ -2,18 +2,16 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-
-	[RequireComponent(typeof(DoableMoveAbility)), DisallowMultipleComponent]
-	public class DoableMoveAbility_FX : ServiceUser
+	public class MoveAbility_FX : MonoBehaviour
 	{
 		private Body body;
 		private AnimationEvents animEvents;
 		private UnitAnimations anim;
-		private DoableMoveAbility mover;
+		private MoveAbility mover;
 
 		private void OnEnable()
 		{
-			mover = GetComponent<DoableMoveAbility>();
+			mover = GetComponent<MoveAbility>();
 			anim = GetComponent<UnitAnimations>();
 			animEvents = anim.animEvents;
 			animEvents.OnStep += Anim_OnStep;
@@ -28,8 +26,8 @@ namespace __SCRIPTS
 
 		private void Anim_OnStep()
 		{
-			var dust = objectMaker.Make( AssetManager.FX.dust1_ground, body.FootPoint.transform.position);
-			if (mover.moveDir.x > 0)
+			var dust = Services.objectMaker.Make(Services.assetManager.FX.dust1_ground, body.FootPoint.transform.position);
+			if (mover.MoveDir.x > 0)
 			{
 				dust.transform.localScale = new Vector3(-Mathf.Abs(dust.transform.localScale.x), dust.transform.localScale.y,
 					dust.transform.localScale.z);

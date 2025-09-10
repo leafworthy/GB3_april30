@@ -23,7 +23,7 @@ namespace __SCRIPTS
 		{
 			OnActionPress += InteractableOnActionPress;
 			OnActionRelease += InteractableOnActionRelease;
-			
+
 		}
 
 		protected virtual void OnDisable()
@@ -31,7 +31,7 @@ namespace __SCRIPTS
 			OnActionPress -= InteractableOnActionPress;
 			OnActionRelease -= InteractableOnActionRelease;
 		}
-		
+
 		private void OnDestroy()
 		{
 			// Clean up loading bar when this component is destroyed
@@ -50,8 +50,8 @@ namespace __SCRIPTS
 			{
 				// Create loading bar slightly above the interaction object
 				Vector3 barPosition = transform.position + Vector3.up * 1.5f;
-				loadingBar = objectMaker.Make( AssetManager.FX.loadingBarPrefab, barPosition);
-				
+				loadingBar = Services.objectMaker.Make(Services.assetManager.FX.loadingBarPrefab, barPosition);
+
 				// Set up proper world space positioning
 				var canvas = loadingBar.GetComponent<Canvas>();
 				if (canvas != null)
@@ -60,7 +60,7 @@ namespace __SCRIPTS
 					canvas.sortingLayerName = "UI";
 					canvas.sortingOrder = 100;
 				}
-				
+
 				// Don't parent to transform to avoid rotation/scale issues
 				loadingBarImage = loadingBar.GetComponentInChildren<Image>();
 				loadingBarImage.enabled = true;
@@ -90,13 +90,13 @@ namespace __SCRIPTS
 		private void Update()
 		{
 			if (!isActive) return;
-			
+
 			// Keep loading bar positioned above the interaction object
 			if (loadingBar != null)
 			{
 				loadingBar.transform.position = transform.position + Vector3.up * 1.5f;
 			}
-			
+
 			currentProgress += Time.deltaTime;
 			loadingBarImage.fillAmount = currentProgress / totalTime;
 			if (!(currentProgress >= totalTime)) return;
@@ -107,7 +107,7 @@ namespace __SCRIPTS
 		private void Stop()
 		{
 			currentPlayer = null;
-		
+
 
 			loadingBar.SetActive(false);
 			isActive = false;

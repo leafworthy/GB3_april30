@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using __SCRIPTS.Cursor;
-using __SCRIPTS.HUD_Displays;
 using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class ThrowMineAttack : ServiceUser, INeedPlayer, IActivity
+	public class ThrowMineAttack : MonoBehaviour, INeedPlayer, IActivity
 	{
 		private Vector2 startPoint;
 		private Vector2 endPoint;
@@ -16,7 +14,7 @@ namespace __SCRIPTS
 
 		private Player player;
 
-		private GunAimAbility aim;
+		private IAimAbility aim;
 		private MoveAbility move;
 		private AmmoInventory ammo;
 		private JumpAbility jump;
@@ -32,16 +30,6 @@ namespace __SCRIPTS
 		public AnimationClip mineDropAnimation;
 		public string VerbName => "Throw-Mine";
 
-		public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
-		{
-			switch (reason)
-			{
-				case GangstaBean.Core.CompletionReason.AnimationInterrupt:
-				case GangstaBean.Core.CompletionReason.NewActivity:
-					return true;
-			}
-			return false;
-		}
 
 		public event Action<Vector2, Player> OnThrow;
 
@@ -51,11 +39,11 @@ namespace __SCRIPTS
 			animationEvents = anim.animEvents;
 			body = GetComponent<Body>();
 			life = GetComponent<Life>();
-			this.player = _player;
+			player = _player;
 			jump = GetComponent<JumpAbility>();
 			move = GetComponent<MoveAbility>();
 			ammo = GetComponent<AmmoInventory>();
-			aim = GetComponent<GunAimAbility>();
+			aim = GetComponent<IAimAbility>();
 			ListenToPlayer();
 		}
 
@@ -113,7 +101,7 @@ namespace __SCRIPTS
 
 		private void Player_ThrowPress(NewControlButton newControlButton)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (isPressing) return;
 
 			if (!ammo.secondaryAmmo.hasReserveAmmo())
@@ -151,9 +139,9 @@ namespace __SCRIPTS
 		{
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = transform.position;
-			OnThrow?.Invoke(startPoint, life.player);
+			OnThrow?.Invoke(startPoint, life.Player);
 
-			var newProjectile = objectMaker.Make( AssetManager.FX.minePrefab, startPoint);
+			var newProjectile = Services.objectMaker.Make(Services.assetManager.FX.minePrefab, startPoint);
 			var newMine = newProjectile.GetComponent<Mine>();
 			newMine.Launch(startPoint, player);
 			newMine.OnSelfDetonate += RemoveMine;
@@ -166,10 +154,6 @@ namespace __SCRIPTS
 			{
 				ActiveMines.Remove(mine);
 				mine.OnSelfDetonate -= RemoveMine;
-			}
-			else
-			{
-
 			}
 		}
 

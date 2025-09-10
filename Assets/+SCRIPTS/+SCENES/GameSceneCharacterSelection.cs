@@ -24,15 +24,15 @@ namespace __SCRIPTS
 		protected void OnEnable()
 		{
 			CleanUp();
-			playerManager.OnPlayerJoins += PlayerStartsSelecting;
-			foreach (var player in playerManager.AllJoinedPlayers) PlayerStartsSelecting(player);
+			Services.playerManager.OnPlayerJoins += PlayerStartsSelecting;
+			foreach (var player in Services.playerManager.AllJoinedPlayers) PlayerStartsSelecting(player);
 			foreach (var button in Buttons) button.SetPlayerColors();
 			isActive = true;
 		}
 
 		private void OnDisable()
 		{
-			playerManager.OnPlayerJoins -= PlayerStartsSelecting;
+			Services.playerManager.OnPlayerJoins -= PlayerStartsSelecting;
 		}
 
 		private void CleanUp()
@@ -65,7 +65,7 @@ namespace __SCRIPTS
 			OnPlayerUnjoins?.Invoke();
 			StopListeningToPlayer(player);
 			player.Controller.Select.OnPress += OnUnjoinedPlayerPressSelect;
-			playerManager.AllJoinedPlayers.Remove(player);
+			Services.playerManager.AllJoinedPlayers.Remove(player);
 		}
 
 		private void OnUnjoinedPlayerPressSelect(NewControlButton obj)
@@ -73,9 +73,9 @@ namespace __SCRIPTS
 			var player = obj.owner;
 			player.Controller.Select.OnPress -= OnUnjoinedPlayerPressSelect;
 
-			if (!playerManager.AllJoinedPlayers.Contains(player))
+			if (!Services.playerManager.AllJoinedPlayers.Contains(player))
 			{
-				playerManager.AllJoinedPlayers.Add(player);
+				Services.playerManager.AllJoinedPlayers.Add(player);
 			}
 
 			PlayerStartsSelecting(player);
@@ -181,15 +181,15 @@ namespace __SCRIPTS
 			StopListeningToPlayers();
 			ClearAllPlayerButtons();
 			isActive = false;
-			playerManager.OnPlayerJoins -= PlayerStartsSelecting;
+			Services.playerManager.OnPlayerJoins -= PlayerStartsSelecting;
 			Debug.Log("GAME SCENE CHARACTER SELECTION: All players have selected characters, starting the game.");
-			Debug.Log("Characters joining: " + playerManager.AllJoinedPlayers.Count);
-			levelManager.StartGame(levelManager.GetFirstLevelToLoad());
+			Debug.Log("Characters joining: " + Services.playerManager.AllJoinedPlayers.Count);
+			Services.levelManager.StartGame(Services.levelManager.GetFirstLevelToLoad());
 		}
 
 		private void ClearAllPlayerButtons()
 		{
-			foreach (var player in playerManager.AllJoinedPlayers) player.CurrentButton = null;
+			foreach (var player in Services.playerManager.AllJoinedPlayers) player.CurrentButton = null;
 		}
 
 		private void PlayerPressCancel(NewControlButton newControlButton)
@@ -226,7 +226,7 @@ namespace __SCRIPTS
 
 		private void CheckIfPlayersAllSelected()
 		{
-			var playersStillSelecting = playerManager.AllJoinedPlayers.Where(t => t.state == Player.State.SelectingCharacter).ToList();
+			var playersStillSelecting = Services.playerManager.AllJoinedPlayers.Where(t => t.state == Player.State.SelectingCharacter).ToList();
 			if (playersStillSelecting.Count > 0)
 			{
 				HideGoGoGo();

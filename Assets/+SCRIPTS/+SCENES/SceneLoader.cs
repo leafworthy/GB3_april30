@@ -9,7 +9,7 @@ namespace __SCRIPTS
 	/// <summary>
 	/// Integrated scene transition system that handles both scene loading and player spawn positions
 	/// </summary>
-	public class SceneLoader : ServiceUser, IService
+	public class SceneLoader : MonoBehaviour, IService
 	{
 		// UI References
 		[Header("UI References"), SerializeField]
@@ -43,6 +43,11 @@ namespace __SCRIPTS
 			StartFadingIn();
 		}
 
+		private void OnDestroy()
+		{
+			SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
+		}
+
 		private void OnDisable()
 		{
 			SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
@@ -62,26 +67,18 @@ namespace __SCRIPTS
 
 		#region Public Scene Loading Methods
 
-		public void GoToScene(SceneDefinition sceneDefinition)
+		public void GoToScene(SceneDefinition newScene)
 		{
-			Debug.Log("SCENE LOADER: go to scene " + sceneDefinition?.sceneName);
-			if (sceneDefinition == null || !sceneDefinition.IsValid())
-			{
-				Debug.Log("Invalid scene definition provided, cannot load scene: " + sceneDefinition?.sceneName);
-				return;
-			}
-
-			Debug.Log("SCENE LOADER: loading scene, fade in begins" + sceneDefinition.sceneName);
-			loadingScene = sceneDefinition;
+			Debug.Log("SCENE LOADER: go to scene " + newScene?.sceneName);
+			loadingScene = newScene;
 			StartFadingIn();
 		}
 
 		#endregion
 
-		private void SetCurrentSceneReady(SceneDefinition scene)
+		private void SetCurrentSceneReady()
 		{
-			if (scene == null) return;
-			currentlyLoadedScene = scene;
+			currentlyLoadedScene = loadingScene;
 			loadingScene = null;
 			OnSceneReadyToStartLevel?.Invoke(currentlyLoadedScene);
 			Debug.Log("SCENE LOADER: Scene is ready to start level: " + currentlyLoadedScene?.sceneName);
@@ -105,7 +102,7 @@ namespace __SCRIPTS
 
 		private void SceneManager_OnSceneLoaded(Scene scene, LoadSceneMode mode)
 		{
-			if (scene.name == AssetManager.Scenes.gameManager)
+			if (scene.name == Services.assetManager.Scenes.gameManager)
 			{
 				Debug.Log("SCENE LOADER: game manager scene loaded");
 				return;
@@ -113,7 +110,7 @@ namespace __SCRIPTS
 
 			Debug.Log("SCENE LOADER: Scene loaded: " + scene.name);
 			isLoading = false;
-			SetCurrentSceneReady(AssetManager.Scenes.GetByName(scene.name));
+			SetCurrentSceneReady();
 		}
 
 		private void StartFadingIn()

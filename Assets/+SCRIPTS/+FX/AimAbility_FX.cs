@@ -4,10 +4,9 @@ using UnityEngine.Rendering.Universal;
 
 namespace __SCRIPTS
 {
-	[DisallowMultipleComponent]
-	public class AimAbility_FX : ServiceUser
+	public class AimAbility_FX : MonoBehaviour
 	{
-		private AimAbility aimAbility;
+		private IAimAbility aimAbility;
 		private Body body;
 		public Light2D flashlightLight;
 		private Life life;
@@ -16,13 +15,13 @@ namespace __SCRIPTS
 		{
 			life = GetComponent<Life>();
 			if(life == null) return;
-			aimAbility = GetComponent<AimAbility>();
+			aimAbility = GetComponent<IAimAbility>();
 			body = GetComponent<Body>();
 		}
 
 		private void Update()
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if(aimAbility.hasEnoughMagnitude())
 			{
 				AimFlashlight();
@@ -33,7 +32,7 @@ namespace __SCRIPTS
 		private void AimFlashlight()
 		{
 
-			var hitPoint = aimAbility.CheckRaycastHit(aimAbility.AimDir);
+			var hitPoint = aimAbility.CheckRaycastHit(aimAbility.AimDir, Services.assetManager.LevelAssets.BuildingLayer);
 			if (hitPoint.collider != null)
 			{
 				Debug.DrawLine(body.FootPoint.transform.position, hitPoint.point, Color.white);

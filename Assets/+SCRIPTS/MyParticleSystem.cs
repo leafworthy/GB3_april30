@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using __SCRIPTS;
 using UnityEngine;
 
-public class MyParticleSystem : ServiceUser
+public class MyParticleSystem : MonoBehaviour
 {
 	public List<GameObject> prefab = new();
 	public GameObject origin;
@@ -33,7 +33,7 @@ public class MyParticleSystem : ServiceUser
 		if (currentTime >= lifeTime)
 		{
 			currentTime = 0;
-			var newObj = objectMaker.Make(prefab.GetRandom());
+			var newObj = Services.objectMaker.Make(prefab.GetRandom());
 			newObj.transform.position = origin.transform.position + new Vector3(Random.Range(-yRange/3, yRange / 3), Random.Range(-yRange, yRange), 0);
 			newObj.transform.localScale = Vector3.one * Random.Range(minScale, maxScale);
 			lastPos = origin.transform.position;

@@ -10,18 +10,18 @@ namespace __SCRIPTS.HUD_Displays
 		public Image AKIcon;
 		public Image PistolIcon;
 		private Player player;
-		private GunAttack_AK_Glock gunAttackAkGlock;
+		private GunAttack gunAttackAkGlock;
 		private bool isGlocking;
-	
+
 		public void SetPlayer(Player _player)
 		{
-			this.player = _player;
-			if (this.player.CurrentCharacter != Character.Bean) return;
-			
+			player = _player;
+			if (player.CurrentCharacter != Character.Bean) return;
+
 			// Cache the component reference once during setup
 			if (_player.SpawnedPlayerGO != null)
 			{
-				gunAttackAkGlock = _player.SpawnedPlayerGO.GetComponent<GunAttack_AK_Glock>();
+				gunAttackAkGlock = _player.SpawnedPlayerGO.GetComponent<GunAttack>();
 				if (gunAttackAkGlock == null)
 				{
 					Debug.LogWarning($"GunAttack_AK_Glock not found on {_player.SpawnedPlayerGO.name}", this);
@@ -34,19 +34,19 @@ namespace __SCRIPTS.HUD_Displays
 			if(player == null) return;
 			if (player.CurrentCharacter != Character.Bean) return;
 			if(player.SpawnedPlayerGO == null) return;
-			
+
 			// Use cached reference instead of GetComponent every frame
 			if (gunAttackAkGlock == null) return;
-			
-			if(isGlocking == gunAttackAkGlock.isGlocking) return;
-			isGlocking = gunAttackAkGlock.isGlocking;
+
+			if(isGlocking == gunAttackAkGlock.IsUsingPrimaryGun) return;
+			isGlocking = gunAttackAkGlock.IsUsingPrimaryGun;
 			ChangeAmmo(isGlocking);
 		}
 
 		private void ChangeAmmo(bool isGlock)
 		{
 			if (player.CurrentCharacter != Character.Bean) return;
-			if (isGlock)
+			if (!isGlock)
 			{
 				AKIcon.enabled = false;
 				PistolIcon.enabled = true;

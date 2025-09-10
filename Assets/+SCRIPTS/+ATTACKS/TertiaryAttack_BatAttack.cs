@@ -30,7 +30,7 @@ namespace __SCRIPTS
 			body = GetComponent<Body>();
 			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
-			owner = life.player;
+			owner = life.Player;
 			jumps = GetComponent<JumpAbility>();
 
 			if (owner == null) return;
@@ -86,14 +86,14 @@ namespace __SCRIPTS
 
 		private void RegularAttackHit(int attackType)
 		{
-			var circleCast = Physics2D.OverlapCircleAll(transform.position, GetHitRange(attackType), AssetManager.LevelAssets.EnemyLayer);
+			var circleCast = Physics2D.OverlapCircleAll(transform.position, GetHitRange(attackType), Services.assetManager.LevelAssets.EnemyLayer);
 			var closest2 = circleCast.OrderBy(item => Vector2.Distance(item.gameObject.transform.position, transform.position)).Take(2);
 			foreach (var col in closest2)
 			{
 				if (col == null) return;
 				var _life = col.gameObject.GetComponent<Life>();
-				if (!_life.IsEnemyOf(attacker) || _life.cantDie) return;
-				if (attacker.IsPlayer && _life.IsObstacle) return;
+				if (!_life.IsEnemyOf(attacker) || _life.CanBeAttacked) return;
+				if (attacker.IsHuman && _life.IsObstacle) return;
 				HitTarget(GetAttackDamage(attackType), _life, extraPush);
 				OnHit?.Invoke(col.gameObject.transform.position);
 			}
@@ -108,7 +108,7 @@ namespace __SCRIPTS
 
 		private float GetAttackDamage(int attackType)
 		{
-			var extraDamageFactor = owner.spawnedPlayerDefence.ExtraMaxDamageFactor;
+			var extraDamageFactor = owner.spawnedPlayerDefence.ExtraDamageFactor;
 			return attackType switch
 			       {
 				       1 => 50 + 50 * extraDamageFactor,

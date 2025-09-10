@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class Brock_FX : ServiceUser
+	public class Brock_FX : MonoBehaviour
 	{
 		private TertiaryAttack_BatAttack meleeAttack;
 		private SecondaryAttack_ChargeAttack secondaryAttackChargeAttack;
@@ -17,14 +17,14 @@ namespace __SCRIPTS
 
 		private void MeleeAttackOnHit(Vector2 vector2)
 		{
-			objectMaker.Make( AssetManager.FX.hits.GetRandom(), vector2);
+			Services.objectMaker.Make(Services.assetManager.FX.hits.GetRandom(), vector2);
 			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);
 		}
 
 		private void SecondaryAttackChargeAttackOnSpecialAttackHit()
 		{
-			objectMaker.Make( AssetManager.FX.hit2_biglongflash, transform.position);
-			objectMaker.Make( AssetManager.FX.hit5_line_burst, transform.position);
+			Services.objectMaker.Make(Services.assetManager.FX.hit2_biglongflash, transform.position);
+			Services.objectMaker.Make(Services.assetManager.FX.hit5_line_burst, transform.position);
 			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Long);
 		}
 	}

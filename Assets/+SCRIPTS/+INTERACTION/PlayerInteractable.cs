@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class PlayerInteractable : ServiceUser
+	public class PlayerInteractable : MonoBehaviour
 	{
 		public event Action<Player> OnActionPress;
 		public event Action<Player> OnActionRelease;
@@ -45,7 +45,7 @@ namespace __SCRIPTS
 				if (life == null) return;
 			}
 
-			ListenToPlayerActionButton(life.player);
+			ListenToPlayerActionButton(life.Player);
 		}
 
 		protected void ListenToPlayerActionButton(Player player)
@@ -74,7 +74,7 @@ namespace __SCRIPTS
 		{
 			if (interactionIndicator == null) return true;
 
-			var hits = Physics2D.LinecastAll(playerPosition, interactionPosition, AssetManager.LevelAssets.BuildingLayer);
+			var hits = Physics2D.LinecastAll(playerPosition, interactionPosition, Services.assetManager.LevelAssets.BuildingLayer);
 			//Debug.DrawLine( playerPosition, interactionPosition, Color.blue, 1f);
 
 			if(hits.Length == 0)
@@ -125,10 +125,10 @@ namespace __SCRIPTS
 			if (other == null) return;
 			var life = other.GetComponentInChildren<Life>();
 			if (life == null) return;
-			if (!life.IsPlayer) return;
+			if (!life.IsHuman) return;
 			if (!buildingIsInTheWay(life.transform.position))
 			{
-				ListenToPlayerActionButton(life.player);
+				ListenToPlayerActionButton(life.Player);
 			}
 
 		}
@@ -139,7 +139,7 @@ namespace __SCRIPTS
 			if (other.gameObject == gameObject) return;
 			var life = other.GetComponentInChildren<Life>();
 			if (life == null) return;
-			StopListeningToPlayer(life.player);
+			StopListeningToPlayer(life.Player);
 		}
 
 		protected void StopListeningToPlayer(Player player)

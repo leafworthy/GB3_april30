@@ -172,6 +172,7 @@ namespace __SCRIPTS
 		public void OnPoolSpawn()
 		{
 			// Reinitialize animations when spawned from pool
+
 			InitializeAnimations();
 		}
 

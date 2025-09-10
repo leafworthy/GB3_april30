@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace __SCRIPTS
 {
 
-	public class DayNightClock : ServiceUser
+	public class DayNightClock : MonoBehaviour
 	{
 		[Header("UI References")]
 		public TMP_Text TimeText;
@@ -60,8 +60,8 @@ namespace __SCRIPTS
 		{
 			// Validate UI references
 			if (DayText == null) Debug.LogWarning("DayNightClock: Time text reference is missing!");
-			levelManager.OnStartLevel += SetStartingTime;
-			playerManager.OnPlayerDies += PlayerOnPlayerDies;
+			Services.levelManager.OnStartLevel += SetStartingTime;
+			Services.playerManager.OnPlayerDies += PlayerOnPlayerDies;
 			SetStartingTime(null);
 			//UpdateClock(DayNightCycle.I.timeOfDay);
 		}
@@ -73,8 +73,8 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			levelManager.OnStopLevel -= SetStartingTime;
-			playerManager.OnPlayerDies -= PlayerOnPlayerDies;
+			Services.levelManager.OnStopLevel -= SetStartingTime;
+			Services.playerManager.OnPlayerDies -= PlayerOnPlayerDies;
 		}
 
 		private void SetStartingTime(GameLevel obj)

@@ -18,9 +18,9 @@ namespace __SCRIPTS
 			base.SetPlayer(_player);
 			anim = GetComponent<UnitAnimations>();
 			anim.animEvents.OnAttackHit += AttackHit;
-			if (attacker.IsPlayer)
+			if (attacker.IsHuman)
 			{
-				attacker.player.Controller.Attack1RightTrigger.OnPress += Player_Attack;
+				attacker.Player.Controller.Attack1RightTrigger.OnPress += Player_Attack;
 
 			}
 			else
@@ -31,9 +31,9 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			if (attacker.IsPlayer)
+			if (attacker.IsHuman)
 			{
-				attacker.player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
+				attacker.Player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
 			}
 			else
 			{
@@ -48,18 +48,18 @@ namespace __SCRIPTS
 
 		private void AttackHit(int attackType)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (attacker.IsDead()) return;
 			if (currentTargetLife == null) return;
 
-			Explosion_FX.Explode(transform.position, explosionRadius, attacker.PrimaryAttackDamageWithExtra, attacker.player);
+			Explosion_FX.Explode(transform.position, explosionRadius, attacker.PrimaryAttackDamageWithExtra, attacker.Player);
 			attacker.DieNow();
 		}
 
 		private void AI_Attack(Life newTarget)
 		{
 			if (newTarget == null) return;
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (attacker.IsDead()) return;
 			var move = GetComponent<MoveAbility>();
 			currentTargetLife = newTarget;
@@ -69,7 +69,7 @@ namespace __SCRIPTS
 
 		private void Player_Attack(NewControlButton newControlButton)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (attacker.IsDead()) return;
 
 			var hitObject = RaycastToObject(currentTargetLife);

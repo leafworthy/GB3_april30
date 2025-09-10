@@ -19,7 +19,7 @@ namespace __SCRIPTS
     {
       isOpen = !isOpen;
       animator.SetBool(IsOpen, isOpen);
-      life.gameObject.SetActive(!isOpen);
+      life.transform.gameObject.SetActive(!isOpen);
     }
   }
 }

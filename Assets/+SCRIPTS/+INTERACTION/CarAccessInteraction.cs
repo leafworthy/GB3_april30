@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace __SCRIPTS
 {
@@ -47,7 +46,7 @@ namespace __SCRIPTS
 				else
 				{
 					player.Say("Filling gas...", 0);
-					sfx.sounds.siphon_gas_sound.PlayRandomAt(transform.position);
+					Services.sfx.sounds.siphon_gas_sound.PlayRandomAt(transform.position);
 					base.InteractableOnActionPress(player);
 				}
 			}
@@ -55,11 +54,11 @@ namespace __SCRIPTS
 
 		private bool HasKey() => DoAnyPlayersHaveAKey();
 
-		private bool HasEnoughGas() => GetTotalGasFromAllJoinedPlayers() >= AssetManager.Vars.GasGoal;
+		private bool HasEnoughGas() => GetTotalGasFromAllJoinedPlayers() >= Services.assetManager.Vars.GasGoal;
 
 		private bool DoAnyPlayersHaveAKey()
 		{
-			foreach (var player in playerManager.AllJoinedPlayers)
+			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
 				if (player.hasKey) return true;
 			}
@@ -70,22 +69,22 @@ namespace __SCRIPTS
 		private int GetTotalGasFromAllJoinedPlayers()
 		{
 			var totalGas = 0;
-			foreach (var player in playerManager.AllJoinedPlayers)
+			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
-				totalGas += (int)playerStatsManager.GetStatAmount(player,PlayerStat.StatType.Gas);
+				totalGas += (int) Services.playerStatsManager.GetStatAmount(player,PlayerStat.StatType.Gas);
 			}
 
 
 			return totalGas;
 		}
 
-		private bool HasSomeGas() => GetTotalGasFromAllJoinedPlayers() > 0 && GetTotalGasFromAllJoinedPlayers() < AssetManager.Vars.GasGoal;
+		private bool HasSomeGas() => GetTotalGasFromAllJoinedPlayers() > 0 && GetTotalGasFromAllJoinedPlayers() < Services.assetManager.Vars.GasGoal;
 
 		private void Interactable_OnTimeComplete(Player player)
 		{
 			if (!HasEnoughGas() || gasFilled) return;
 			gasFilled = true;
-			playerStatsManager.ChangeStat(player,PlayerStat.StatType.Gas, -AssetManager.Vars.GasGoal);
+			Services.playerStatsManager.ChangeStat(player,PlayerStat.StatType.Gas, -Services.assetManager.Vars.GasGoal);
 		Interactable_OnPlayerEnters(player);
 		}
 

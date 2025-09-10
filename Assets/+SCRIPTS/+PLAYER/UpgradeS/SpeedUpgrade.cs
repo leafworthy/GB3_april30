@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace __SCRIPTS.UpgradeS
+﻿namespace __SCRIPTS.UpgradeS
 {
 	public class SpeedUpgrade : Upgrade
 	{

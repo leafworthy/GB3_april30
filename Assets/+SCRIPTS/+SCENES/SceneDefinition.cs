@@ -73,8 +73,8 @@ namespace __SCRIPTS
         public bool Equals(SceneDefinition other) =>
             other != null && string.Equals(SceneName, other.SceneName, StringComparison.OrdinalIgnoreCase);
 
-        public bool Equals(string sceneName) =>
-            !string.IsNullOrEmpty(sceneName) && string.Equals(SceneName, sceneName, StringComparison.OrdinalIgnoreCase);
+        public bool Equals(string _sceneName) =>
+            !string.IsNullOrEmpty(_sceneName) && string.Equals(SceneName, _sceneName, StringComparison.OrdinalIgnoreCase);
 
         public override bool Equals(object obj)
         {

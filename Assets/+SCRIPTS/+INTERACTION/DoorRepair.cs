@@ -39,7 +39,7 @@ namespace __SCRIPTS
 			base.OnTriggerEnter2D(other);
 		}
 
-	
+
 		private void RepairDoor(Player player)
 		{
 			doorInteraction.Repair(player);

@@ -2,14 +2,14 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-    public class FollowMouse : ServiceUser
+    public class FollowMouse : MonoBehaviour
     {
-        private AimAbility aim;
+        private IAimAbility aim;
 
 
         void Update()
         {
-            if (pauseManager.IsPaused)
+            if (Services.pauseManager.IsPaused)
             {
                 return;
             }

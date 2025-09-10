@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 #if UNITY_EDITOR
 #endif
@@ -28,16 +28,21 @@ namespace __SCRIPTS
 
 	public static class UnitStatsManager
 	{
-		private static UnitStatsDatabase _database;
-		private static UnitStatsDatabase database => _database ??= Resources.FindObjectsOfTypeAll<UnitStatsDatabase>().FirstOrDefault();
+		private static UnitStatsDatabase database;
+		private static Dictionary<string, UnitStatsData> unitStatsLookup = new();
+		private static bool initialized;
 
-		private static Dictionary<string, UnitStatsData> _unitStatsLookup;
-		private static Dictionary<string, UnitStatsData> unitStatsLookup => _unitStatsLookup ??= BuildLookupDictionary();
-
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+		private static void ResetStatics()
+		{
+			initialized = true;
+			database = Resources.Load<UnitStatsDatabase>("UnitStatsDatabase");
+			unitStatsLookup = BuildLookupDictionary();
+		}
 		private static Dictionary<string, UnitStatsData> BuildLookupDictionary()
 		{
-			Debug.Log("library built");
-			_unitStatsLookup = new();
+			if(!initialized) ResetStatics();
+			var _unitStatsLookup = new Dictionary<string, UnitStatsData>();
 
 			foreach (var unit in database.allUnits)
 			{
@@ -49,29 +54,26 @@ namespace __SCRIPTS
 
 		public static UnitStatsData GetUnitStats(string unitName)
 		{
-		if (string.IsNullOrEmpty(unitName))
-		{
-			Debug.Log("null name");
-			return GetDefaultLifeStats();
-		}
+			if (!initialized) ResetStatics();
+			if (string.IsNullOrEmpty(unitName))
+			{
+				Debug.Log("null name");
+				return GetDefaultLifeStats();
+			}
 
 			unitName = CleanUnitName(unitName);
 
 			var foundStats = LookupUnitStats(unitName);
 			if (foundStats != null)
-			{
 				foundStats.hasData = true;
-				Debug.Log("already had data" + foundStats.unitName);
-			}
 			else
-			{
 				Debug.Log("null data");
-			}
 			return foundStats;
 		}
 
 		private static UnitStatsData LookupUnitStats(string cleanedName)
 		{
+			if (!initialized) ResetStatics();
 			if (cleanedName is "Life" or "life")
 			{
 				if (unitStatsLookup.TryGetValue("Life", out var lifeStats))
@@ -81,11 +83,14 @@ namespace __SCRIPTS
 			if (unitStatsLookup.TryGetValue(cleanedName, out var stats)) return stats;
 
 			var fuzzyMatch = FindFuzzyMatch(cleanedName);
-			Debug.Log("cleaned name: " + cleanedName + " fuzzy match: " + (fuzzyMatch != null ? fuzzyMatch.unitName : "null"));
+			//Debug.Log("cleaned name: " + cleanedName + " fuzzy match: " + (fuzzyMatch != null ? fuzzyMatch.unitName : "null"));
 			return fuzzyMatch ?? GetDefaultLifeStats();
 		}
 
-		private static UnitStatsData GetDefaultLifeStats() => unitStatsLookup.GetValueOrDefault("Life");
+		private static UnitStatsData GetDefaultLifeStats() {
+			if (!initialized) ResetStatics();
+			return unitStatsLookup.GetValueOrDefault("Life");
+		}
 
 		private static string CleanUnitName(string unitName)
 		{
@@ -93,16 +98,29 @@ namespace __SCRIPTS
 
 			var cleanedName = unitName;
 
+			// 1. Remove Unity's "(Clone)" suffix
 			cleanedName = cleanedName.Replace("(Clone)", "");
 
-			// Remove trailing numbers
-			cleanedName = System.Text.RegularExpressions.Regex.Replace(cleanedName, @"\d+$", "");
+			// 2. Remove Unity/FBX import variants like "Variant", "Variant Variant", etc.
+			cleanedName = Regex.Replace(cleanedName, @"(\s+Variant)+$", "");
 
-			// Remove "Variant" suffixes (including multiple ones)
-			cleanedName = System.Text.RegularExpressions.Regex.Replace(cleanedName, @"(\s+Variant)+$", "");
+			// 3. Remove Blender-style ".001", ".002" suffixes
+			cleanedName = Regex.Replace(cleanedName, @"\.\d+$", "");
 
-			// Trim whitespace
-			cleanedName = cleanedName.Trim();
+			// 4. Remove trailing digits (e.g. "Enemy123" -> "Enemy")
+			cleanedName = Regex.Replace(cleanedName, @"\d+$", "");
+
+			// 5. Remove common separator + number cases: "Enemy_01", "Enemy-02"
+			cleanedName = Regex.Replace(cleanedName, @"[_\- ]\d+$", "");
+
+			// 6. Normalize whitespace (collapse multiple spaces -> single space)
+			cleanedName = Regex.Replace(cleanedName, @"\s{2,}", " ");
+
+			// 7. Trim leading/trailing spaces and special chars
+			cleanedName = cleanedName.Trim(' ', '_', '-', '.');
+
+			// 8. Normalize Unicode (handles weird invisible characters)
+			cleanedName = cleanedName.Normalize();
 
 			return cleanedName;
 		}

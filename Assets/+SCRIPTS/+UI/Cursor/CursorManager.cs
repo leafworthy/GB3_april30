@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace __SCRIPTS.Cursor
 {
-	public class CursorManager : ServiceUser
+	public class CursorManager : MonoBehaviour
 	{
 		[SerializeField] private GameObject player1cursor;
 		[SerializeField] private GameObject player2cursor;
@@ -22,14 +22,14 @@ namespace __SCRIPTS.Cursor
 		private void Start()
 		{
 			UnityEngine.Cursor.visible = false;
-			levelManager.OnStartLevel += LevelStartsLevel;
-			levelManager.OnLevelSpawnedPlayer += InitCursor;
+			Services.levelManager.OnStartLevel += LevelStartsLevel;
+			Services.levelManager.OnLevelSpawnedPlayer += InitCursor;
 		}
 
 		private void LevelStartsLevel(GameLevel level)
 		{
 			isActive = true;
-			foreach (var player in playerManager.AllJoinedPlayers)
+			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
 				InitCursor(player);
 			}
@@ -38,8 +38,8 @@ namespace __SCRIPTS.Cursor
 
 		private void OnDisable()
 		{
-			levelManager.OnStartLevel -= LevelStartsLevel;
-			levelManager.OnLevelSpawnedPlayer -= InitCursor;
+			Services.levelManager.OnStartLevel -= LevelStartsLevel;
+			Services.levelManager.OnLevelSpawnedPlayer -= InitCursor;
 			currentCursors.Clear();
 		}
 
@@ -72,27 +72,27 @@ namespace __SCRIPTS.Cursor
 			//DontDestroyOnLoad(currentCursor);
 			var image = currentCursor.GetComponentInChildren<Image>();
 			if (image != null) image.color = player.playerColor;
-			levelManager.OnStartLevel += (t) => { SetCursorsActive(true); };
-			pauseManager.OnPause += x =>
+			Services.levelManager.OnStartLevel += (t) => { SetCursorsActive(true); };
+			Services.pauseManager.OnPause += x =>
 			{
 				SetCursorsActive(false);
 			};
-			pauseManager.OnUnpause += x => { SetCursorsActive(true); };
-			levelManager.OnStopLevel += t => { SetCursorsActive(false); };
+			Services.pauseManager.OnUnpause += x => { SetCursorsActive(true); };
+			Services.levelManager.OnStopLevel += t => { SetCursorsActive(false); };
 			currentCursor.gameObject.SetActive(true);
 			currentCursors.Add(currentCursor);
 			SetCursorsActive(true);
-			if (playerManager.AllJoinedPlayers.Count < 4)
+			if (Services.playerManager.AllJoinedPlayers.Count < 4)
 			{
 				player4cursor.SetActive(false);
 			}
 
-			if (playerManager.AllJoinedPlayers.Count < 3)
+			if (Services.playerManager.AllJoinedPlayers.Count < 3)
 			{
 				player3cursor.SetActive(false);
 			}
 
-			if (playerManager.AllJoinedPlayers.Count < 2)
+			if (Services.playerManager.AllJoinedPlayers.Count < 2)
 			{
 				player2cursor.SetActive(false);
 			}

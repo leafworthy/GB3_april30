@@ -1,78 +1,86 @@
 using __SCRIPTS.Cursor;
-using __SCRIPTS.HUD_Displays;
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class AimAbility : ServiceUser, INeedPlayer
+	public interface IAimAbility
 	{
-		private Life life;
-		protected Player owner;
-		protected Body body;
-		[HideInInspector] public Vector2 AimDir;
-		public const float aimDistanceFactor = 100;
-		private float minMagnitude = .2f;
-		private bool hasInitiated;
+		RaycastHit2D CheckRaycastHit(Vector3 targetDirection, LayerMask mask);
+		bool hasEnoughMagnitude();
+		Vector2 AimDir { get; }
+		Vector2 GetAimPoint();
+	}
+	public class AimAbility : Ability, IAimAbility
+	{
+		[HideInInspector] public Vector2 AimDir { get; set; }
+		public bool hasEnoughMagnitude() => player.Controller.AimAxis.isActive;
 		private float maxAimDistance = 30;
 
+		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
+		private MoveAbility _moveAbility;
 
-		private MoveAbility moveAbility;
+		public override string VerbName => "Aim";
 
-		public virtual void SetPlayer(Player _player)
+		public override bool canStop()
 		{
-			moveAbility = GetComponent<MoveAbility>();
-			body = GetComponent<Body>();
-			life = GetComponent<Life>();
-			if (life == null) return;
+			Debug.Log("testing can stop");
+			return true;
+		}
 
-			owner = _player;
+		protected override bool requiresArms() => false;
 
-			if (owner == null) return;
-			AimDir = Vector2.right;
-			if (owner.isUsingMouse) return;
-			if (!owner.IsPlayer()) return;
-			owner.Controller.AimAxis.OnChange += AimerOnAim;
+		protected override bool requiresLegs() => false;
+
+		public override bool canDo()
+		{
+			if (!base.canDo()) return false;
+			return true;
+		}
+
+
+		protected override void DoAbility()
+		{
+			AimDir = GetRealAimDir();
+			RotateAimObjects(AimDir);
+			FaceAimDir();
+		}
+
+		public override void SetPlayer(Player _player)
+		{
+			base.SetPlayer(_player);
+
+			player.Controller.AimAxis.OnChange += AimerOnAim;
+			Debug.Log("subscribed to aim axis changes");
 		}
 
 		private void OnDisable()
 		{
-			if (owner == null) return;
-			if (owner.isUsingMouse) return;
-			if (!owner.IsPlayer()) return;
-			owner.Controller.AimAxis.OnChange -= AimerOnAim;
+			if (player == null) return;
+			if (player.Controller == null) return;
+			player.Controller.AimAxis.OnChange -= AimerOnAim;
 		}
-
 
 		private void AimerOnAim(IControlAxis controlAxis, Vector2 newAimDir)
 		{
-			if (pauseManager.IsPaused) return;
-			if (owner.isDead()) return;
 			if (hasEnoughMagnitude()) AimDir = newAimDir;
+			Do();
 		}
 
-		protected virtual void Update()
+		protected void Update()
 		{
-			if (pauseManager.IsPaused) return;
-			if (!owner.IsPlayer()) return;
-			if (owner.isDead()) return;
-			if (owner.isUsingMouse) AimDir = GetRealAimDir();
-			RotateAimObjects(AimDir);
-			FaceAimDir();
+			Do();
 		}
 
 		private void FaceAimDir()
 		{
 			if (moveAbility.IsMoving()) return;
-			if (body.legs.isActive) return;
+			//if (body.legs.isActive) return;
 			body.BottomFaceDirection(AimDir.x >= 0);
 		}
 
-		public RaycastHit2D CheckRaycastHit(Vector3 targetDirection)
+		public RaycastHit2D CheckRaycastHit(Vector3 targetDirection, LayerMask layer)
 		{
-			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized,
-				life.PrimaryAttackRange,
-				 AssetManager.LevelAssets.BuildingLayer);
+			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, life.PrimaryAttackRange, layer);
 
 			return raycastHit;
 		}
@@ -89,30 +97,18 @@ namespace __SCRIPTS
 
 		public Vector2 GetAimPoint()
 		{
-			if(owner == null || body == null || body.AimCenter == null) return Vector2.zero;
-			if (!owner.isUsingMouse)
-				return (Vector2)body.AimCenter.transform.position + (Vector2)GetRealAimDir() * maxAimDistance;
-			else
-				return body.AimCenter.transform.position + (CursorManager.GetMousePosition() - body.AimCenter.transform.position).normalized * maxAimDistance;
+			if (player == null || body == null || body.AimCenter == null) return Vector2.zero;
+			if (!player.isUsingMouse)
+				return (Vector2) body.AimCenter.transform.position + (Vector2) GetRealAimDir() * maxAimDistance;
+			return body.AimCenter.transform.position + (CursorManager.GetMousePosition() - body.AimCenter.transform.position).normalized * maxAimDistance;
 		}
 
-
-
-		protected virtual Vector3 GetRealAimDir()
+		private Vector3 GetRealAimDir()
 		{
-			if (owner == null) return Vector2.zero;
-
-			if (owner.isUsingMouse)
-				return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
-
-			return owner.Controller.AimAxis.GetCurrentAngle();
+		if (player.isUsingMouse) return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
+			return player.Controller.AimAxis.GetCurrentAngle();
 		}
 
-		public bool hasEnoughMagnitude()
-		{
-			if(owner == null) return false;
-			if (owner.isUsingMouse) return true;
-			return GetRealAimDir().magnitude > minMagnitude;
-		}
+
 	}
 }

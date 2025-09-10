@@ -1,125 +1,212 @@
 ﻿using System;
 using GangstaBean.Core;
 using UnityEngine;
-using IPoolable = GangstaBean.Core.IPoolable;
 
 namespace __SCRIPTS
 {
-[RequireComponent(typeof(UnitStats), typeof(UnitHealth))]
-	public class Life : ServiceUser, ICanAttack, INeedPlayer
+
+	public class Life : MonoBehaviour, INeedPlayer
 	{
-		// Core components
-		private UnitStats unitStats => _unitStats ??= GetComponent<UnitStats>();
-		private UnitStats _unitStats;
-		private UnitHealth unitHealth => _unitHealth ??= GetComponent<UnitHealth>();
-		private UnitHealth _unitHealth;
+		public Player Player => player;
+		[SerializeField] private Player player;
+		[SerializeField] private UnitStats unitStats;
+		public UnitHealth unitHealth;
+		private UnitAnimations animations => _animations ??= GetComponent<UnitAnimations>();
+		private UnitAnimations _animations;
+		private int enemyLayer;
+		private float currentHealth;
+		public bool showLifeBar  => unitStats.Data.showLifeBar;
+		public bool IsDead() => unitHealth.IsDead;
+		public float MaxHealth => unitStats.MaxHealth;
+		public bool CanBeAttacked => !unitStats.Data.isInvincible;
+		public bool IsShielded => unitHealth.IsShielded;
+		public float PrimaryAttackDamageWithExtra => unitStats.GetAttackDamage(1);
+		public float PrimaryAttackRange => unitStats.GetAttackRange(1);
+		public float PrimaryAttackRate => unitStats.GetAttackRate(1);
+		public float SecondaryAttackDamageWithExtra => unitStats.GetAttackDamage(2);
+		public float SecondaryAttackRange => unitStats.GetAttackRange(2);
+		public float SecondaryAttackRate => unitStats.GetAttackRate(2);
+		public float TertiaryAttackDamageWithExtra => unitStats.GetAttackDamage(3);
+		public float TertiaryAttackRange => unitStats.GetAttackRange(3);
+		public float TertiaryAttackRate => unitStats.GetAttackRate(3);
 
+		public float UnlimitedAttackDamageWithExtra => unitStats.GetAttackDamage(4);
+		public float UnlimitedAttackRange => unitStats.GetAttackRange(4);
+		public float UnlimitedAttackRate => unitStats.GetAttackRate(4);
+		public float MoveSpeed => unitStats.MoveSpeed;
+		public float DashSpeed => unitStats.DashSpeed;
+		public float JumpSpeed => unitStats.JumpSpeed;
+		public float AggroRange => unitStats.AggroRange;
+		public float AttackHeight => unitStats.AttackHeight;
+		public bool IsObstacle => unitStats.IsObstacle;
+		public bool IsPlayerAttackable => unitStats.IsPlayerAttackable;
+		public DebrisType DebrisType => unitStats.DebrisType;
 
-		public UnitStatsData unitData => unitStats?.Data;
-		public float Health => unitHealth?.CurrentHealth ?? 0f;
-		public float HealthMax => unitHealth?.MaxHealth ?? 100f;
-		public bool IsDead() => unitHealth?.IsDead ?? false;
-		public bool cantDie => unitHealth?.CanDie == false;
-
-		public bool IsInvincible => unitHealth?.IsInvincible ?? false;
-
-		public float ExtraMaxDamageFactor => unitStats?.ExtraDamageFactor ?? 0f;
-
-		public float ExtraMaxSpeedFactor => unitStats?.ExtraSpeedFactor ?? 0f;
-
-		public float PrimaryAttackDamageWithExtra => unitStats?.GetAttackDamage(1) ?? 0f;
-		public float PrimaryAttackRange => unitStats?.GetAttackRange(1) ?? 0f;
-		public float PrimaryAttackRate => unitStats?.GetAttackRate(1) ?? 0f;
-
-		public float SecondaryAttackDamageWithExtra => unitStats?.GetAttackDamage(2) ?? 0f;
-		public float SecondaryAttackRange => unitStats?.GetAttackRange(2) ?? 0f;
-		public float SecondaryAttackRate => unitStats?.GetAttackRate(2) ?? 0f;
-
-		public float TertiaryAttackDamageWithExtra => unitStats?.GetAttackDamage(3) ?? 0f;
-		public float TertiaryAttackRange => unitStats?.GetAttackRange(3) ?? 0f;
-		public float TertiaryAttackRate => unitStats?.GetAttackRate(3) ?? 0f;
-
-		public float UnlimitedAttackDamageWithExtra => unitStats?.GetAttackDamage(4) ?? 0f;
-		public float UnlimitedAttackRange => unitStats?.GetAttackRange(4) ?? 0f;
-		public float UnlimitedAttackRate => unitStats?.GetAttackRate(4) ?? 0f;
-
-		// Other legacy properties
-		public float MoveSpeed => unitStats?.MoveSpeed ?? 0f;
-		public float DashSpeed => unitStats?.DashSpeed ?? 0f;
-		public float JumpSpeed => unitStats?.JumpSpeed ?? 0f;
-		public float AggroRange => unitStats?.AggroRange ?? 0f;
-		public float AttackHeight => unitStats?.AttackHeight ?? 5f;
-		public bool IsObstacle => unitStats?.IsObstacle ?? false;
-		public bool IsPlayerAttackable => unitStats?.IsPlayerAttackable ?? false;
-		public Player player => _player;
-		private Player _player;
-		public DebrisType DebrisType => unitStats?.DebrisType ?? default;
-
-		public event Action<Attack, Life> OnAttackHit;
-		public event Action<Attack> OnDamaged;
+		public event Action<Attack> OnAttackHit;
 		public event Action<float> OnFractionChanged;
-		public event Action<Player, Life> OnDying;
+		public event Action<Attack> OnDying;
 		public event Action<Player, Life> OnKilled;
-		public event Action<Player> OnDead;
-		public event Action<Attack> OnWounded;
 
+		public event Action<Player> OnDeathComplete;
+		public event Action<Attack> OnShielded;
+		private Collider2D[] colliders;
 
-		public bool IsPlayer => player != null && player.IsPlayer();
-
-		public void SetPlayer(Player _player)
+		[Sirenix.OdinInspector.Button]
+		public void ClearStats()
 		{
-			Debug.Log( "Setting player for Life component: " + _player?.name);
-			this._player = _player;
+			unitStats = null;
+		}
+		[Sirenix.OdinInspector.Button]
+		public void GetStats()
+		{
+			unitStats = new UnitStats(gameObject.name);
+		}
 
-			// Notify other components that need the player
+		[Sirenix.OdinInspector.Button]
+		public void Test()
+		{
+			var assets = ServiceLocator.Get<ASSETS>();
+		}
+		private void OnEnable()
+		{
+			unitStats = new UnitStats(gameObject.name);
+			unitHealth = new UnitHealth(unitStats.Data);
+			unitHealth.OnFractionChanged += Health_OnFractionChanged;
+			unitHealth.OnDead += HealthOnDead;
+			unitHealth.OnDying += Health_OnDying;
+			unitHealth.OnAttackHit += Health_AttackHit;
+			if (unitStats.Data.category != UnitCategory.Character) SetPlayer(Services.playerManager.enemyPlayer);
+		}
+
+		private void Health_OnDying(Attack attack)
+		{
+			OnDying?.Invoke(attack);
+		}
+
+
+		private void OnDisable()
+		{
+			if (unitHealth == null) return;
+			unitHealth.OnFractionChanged -= Health_OnFractionChanged;
+			unitHealth.OnDead -= HealthOnDead;
+			unitHealth.OnAttackHit -= Health_AttackHit;
+		}
+
+		public bool IsHuman => Player != null && Player.IsPlayer();
+		public LayerMask EnemyLayer  => IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
+		public bool CanTakeDamage  => !unitHealth.IsDead && !unitHealth.IsTemporarilyInvincible && !unitStats.Data.isInvincible;
+		public float ExtraDamageFactor  => unitStats.ExtraDamageFactor;
+		public float CurrentHealth  => unitHealth.CurrentHealth;
+
+		public void SetPlayer(Player newPlayer)
+		{
+			player = newPlayer;
+
+
+			SetupAnimationEvents();
 			foreach (var component in GetComponents<INeedPlayer>())
 			{
 				if (component != this)
-					component.SetPlayer(this.player);
+					component.SetPlayer(Player);
 			}
 		}
 
-		public bool IsEnemyOf(Life other) => IsPlayer != other.IsPlayer;
-		private void Awake()
+		private void SetupAnimationEvents()
 		{
-			SetupEventForwarding();
+			if (animations == null) return;
+
+			animations.animEvents.OnDieStop += CompleteDeath;
+			animations.animEvents.OnInvincible += SetInvincible;
 		}
 
-		private void SetupEventForwarding()
+		private void SetInvincible(bool inOn)
 		{
-			unitHealth.OnDamaged += attack => OnDamaged?.Invoke(attack);
-			unitHealth.OnFractionChanged += fraction => OnFractionChanged?.Invoke(fraction);
-			unitHealth.OnDying += (p, u) => OnDead?.Invoke(p);
+			unitHealth.SetTemporaryInvincible(inOn);
+		}
+
+		private void CompleteDeath()
+		{
+			Health_OnDead();
+		}
+
+
+		private void Health_AttackHit(Attack attack)
+		{
+			OnAttackHit?.Invoke(attack);
+		}
+
+		private void Health_OnDead()
+		{
+			OnDeathComplete?.Invoke(Player);
+		}
+
+		public bool IsEnemyOf(Life other) => IsHuman != other.IsHuman;
+
+
+
+		private void HealthOnDead(Attack attack)
+		{
+			OnDying?.Invoke(attack);
+			if (attack != null && attack.OriginLife != null)
+				OnKilled?.Invoke(attack.OriginLife.player,this);
+			EnableColliders(false);
+			gameObject.layer = LayerMask.NameToLayer("Dead");
+			animations?.SetTrigger(UnitAnimations.DeathTrigger);
+			animations?.SetBool(UnitAnimations.IsDead, true);
+		}
+
+		private void EnableColliders(bool enable)
+		{
+			if (!unitStats.Data.isInvincible && !enable) return;
+			colliders = gameObject.GetComponentsInChildren<Collider2D>(true);
+
+			foreach (var col in colliders)
+			{
+				col.enabled = enable;
+			}
+		}
+
+
+		private void Health_OnKilled(Attack attack)
+		{
+			OnKilled?.Invoke(attack.OriginLife.player, this);
+		}
+
+		private void Health_OnFractionChanged(float fraction)
+		{
+			OnFractionChanged?.Invoke(fraction);
 		}
 
 		public void TakeDamage(Attack attack)
 		{
-			unitHealth?.TakeDamage(attack);
-
-			// Fire additional legacy events
-			if (!unitHealth.IsDead)
-				OnAttackHit?.Invoke(attack, this);
-
-			if (unitHealth.CurrentHealth <= 0)
+			Debug.Log("taking damage", this);
+			if (IsShielded)
 			{
-				OnWounded?.Invoke(attack);
-				OnDying?.Invoke(attack.Owner, this);
-				if (attack.Owner != null)
-					OnKilled?.Invoke(attack.Owner, this);
+				OnShielded?.Invoke(attack);
+				return;
 			}
+
+			unitHealth?.TakeDamage(attack);
 		}
 
-		public void AddHealth(float amount) => unitHealth?.AddHealth(amount);
-		public void Resurrect() => unitHealth?.Resurrect();
-		public void DieNow() => unitHealth?.KillInstantly();
-		public float GetFraction() => unitHealth?.GetFraction ?? 0f;
+		public void AddHealth(float amount) => unitHealth.AddHealth(amount);
+		public void DieNow() => unitHealth.KillInstantly();
+		public float GetFraction()  {
+			if(unitHealth != null)
+			{
+				Debug.Log("unit health fraction");
+				return unitHealth.GetFraction();
+			}
+
+			Debug.Log("default fraction");
+			return 1;
+		}
 
 		public void SetShielding(bool isOn)
 		{
 			if (unitHealth != null) unitHealth.IsShielded = isOn;
 		}
 
-		// Factor methods (same math as original)
 		public void SetExtraMaxHealthFactor(float factor)
 		{
 			if (unitStats != null) unitStats.ExtraHealthFactor = factor;
@@ -134,6 +221,5 @@ namespace __SCRIPTS
 		{
 			if (unitStats != null) unitStats.ExtraSpeedFactor = factor;
 		}
-
 	}
 }

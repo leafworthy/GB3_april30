@@ -7,8 +7,7 @@ namespace __SCRIPTS
 		public override void StartEffect(Life life)
 		{
 			effectDuration = 0;
-			var defence = life.GetComponent<Life>();
-			defence.AddHealth(amount);
+			life.AddHealth(amount);
 			base.StartEffect(life);
 		}
 

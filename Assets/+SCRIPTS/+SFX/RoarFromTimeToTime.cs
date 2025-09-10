@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class RoarFromTimeToTime : ServiceUser
+	public class RoarFromTimeToTime : MonoBehaviour
 	{
 		private float roarRate;
 		private float currentRoarTime;
@@ -19,7 +19,7 @@ namespace __SCRIPTS
 			{
 				currentRoarTime = 0;
 				roarRate = Random.Range(15, 25);
-				sfx.sounds.cone_roar_sounds.PlayRandomAt(transform.position);
+				Services.sfx.sounds.cone_roar_sounds.PlayRandomAt(transform.position);
 			}
 		}
 	}

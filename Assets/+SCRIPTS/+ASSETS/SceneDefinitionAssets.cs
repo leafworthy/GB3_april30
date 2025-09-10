@@ -68,34 +68,10 @@ namespace __SCRIPTS
 		// Add a scene to the name dictionary
 		private void AddToNameDictionary(SceneDefinition scene)
 		{
-			if (scene == null || !scene.IsValid())
-				return;
-
-			// Add to name map, using scene name as key
-			if (!string.IsNullOrEmpty(scene.SceneName)) _nameMap.TryAdd(scene.SceneName, scene);
+			_nameMap.TryAdd(scene.SceneName, scene);
 		}
 
 
-		public SceneDefinition GetByName(string sceneName)
-		{
-			if (string.IsNullOrEmpty(sceneName))
-			{
-				Debug.LogWarning("Scene name is null or empty");
-				return null;
-			}
-
-			if (_nameMap == null)
-				Initialize();
-			Debug.Log("Scene keys in dictionary: " + string.Join(", ", _nameMap.Keys));
-			if (_nameMap.TryGetValue(sceneName, out var scene))
-			{
-				Debug.Log("Got scene by name: " + sceneName);
-				return scene;
-			}
-
-			Debug.LogWarning($"Scene '{sceneName}' not found in SceneDefinitionAssets.");
-			return null;
-		}
 
 		/// <summary>
 		/// Get all scenes as a flat list
@@ -111,8 +87,6 @@ namespace __SCRIPTS
 			return result;
 		}
 
-		public SceneDefinition FindScene(string sceneName) => GetByName(sceneName);
-
 		public void AddScene(SceneDefinition scene)
 		{
 			if (scene == null || !scene.IsValid())
@@ -125,10 +99,7 @@ namespace __SCRIPTS
 			// Add to name dictionary
 			AddToNameDictionary(scene);
 
-			// Add to additional scenes list if not present in any other property
-			if (scene != mainMenu && scene != characterSelect && scene != gangstaBeanHouse && scene != endScreen && scene != fancyHouse &&
-			    scene != baseballField && scene != gasStation && scene != restartLevel && scene != gameManager && !additionalScenes.Contains(scene))
-				additionalScenes.Add(scene);
+
 		}
 
 #if UNITY_EDITOR

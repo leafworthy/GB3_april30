@@ -7,85 +7,63 @@ namespace __SCRIPTS
 	public class FallToFloor : ThingWithHeight
 	{
 		public SpriteRenderer spriteRendererToTint;
-		protected JumpAbility jumper;
-		protected MoveAbility mover;
-		private bool componentsInitialized = false;
+		private JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
+		private JumpAbility _jumpAbility;
+		protected MoveAbility moveAbility  => _moveAbility ??= GetComponent<MoveAbility>();
+		private MoveAbility _moveAbility;
+
 		protected float rotationRate = 100;
 		private float RotationRate;
 		private float PushSpeed = 40;
 		private float bounceSpeed = .25f;
 		private float jumpSpeed = .5f;
-		private bool _freezeRotation;
+		private bool freezeRotation;
 
-		protected void InitializeComponents()
-		{
-			if (componentsInitialized) return;
-			
-			// Cache component references - these are required components
-			jumper = GetComponent<JumpAbility>();
-			mover = GetComponent<MoveAbility>();
-			
-			// Validate required components
-			Debug.Assert(jumper != null, $"JumpAbility required on {gameObject.name}");
-			Debug.Assert(mover != null, $"MoveAbility required on {gameObject.name}");
-			
-			componentsInitialized = true;
-		}
 
-		public void FireForDrops(Vector3 shootAngle, Color color, float height, bool freezeRotation = false)
+		public void FireForDrops(Vector3 shootAngle, Color color, float height, bool _freezeRotation = false)
 		{
-			// Ensure components are cached before use
-			InitializeComponents();
-			
 			RotationRate = Random.Range(0, rotationRate);
-			jumper.OnBounce += Jumper_OnBounce;
-			jumper.OnResting += Jumper_OnResting;
-			jumper.Jump(height, jumpSpeed, bounceSpeed);
-			mover.SetDragging(false);
-			mover.Push(shootAngle, Random.Range(0, PushSpeed));
+			jumpAbility.OnBounce += JumpAbilityOnBounce;
+			jumpAbility.OnResting += JumpAbilityOnResting;
+			jumpAbility.Jump(height, jumpSpeed, bounceSpeed);
+			moveAbility.SetDragging(false);
+			moveAbility.Push(shootAngle, Random.Range(0, PushSpeed));
 			spriteRendererToTint.color = color;
-			_freezeRotation = freezeRotation;
+			freezeRotation = _freezeRotation;
 		}
 
-		private void Jumper_OnResting(Vector2 obj)
+		private void JumpAbilityOnResting(Vector2 obj)
 		{
-			if (_freezeRotation)
+			if (freezeRotation)
 			{
 				transform.rotation = Quaternion.identity;
 			}
 		}
 
-		private void Jumper_OnBounce()
+		private void JumpAbilityOnBounce()
 		{
-			mover.SetDragging(true);
+			moveAbility.SetDragging(true);
 		}
 
 		public void Fire(Attack attack, bool isFlipped = false)
 		{
 			RotationRate = Random.Range(0, rotationRate);
-			jumper = GetComponent<JumpAbility>();
-			jumper.OnBounce += Jumper_OnBounce;
-			jumper.OnResting += Jumper_OnResting;
-			mover = GetComponent<MoveAbility>();
+			jumpAbility.OnBounce += JumpAbilityOnBounce;
+			jumpAbility.OnResting += JumpAbilityOnResting;
 			var verticalSpeed = Random.Range(0, bounceSpeed);
-			jumper.Jump(attack.OriginHeight, 0);
-			mover.SetDragging(false);
-			mover.Push(isFlipped ? attack.FlippedDirection : attack.Direction.normalized + new Vector2(Random.Range(-.4f, .4f), Random.Range(-.4f, .4f)),
+			jumpAbility.Jump(attack.OriginHeight, 0);
+			moveAbility.SetDragging(false);
+			moveAbility.Push(isFlipped ? attack.FlippedDirection : attack.Direction.normalized + new Vector2(Random.Range(-.4f, .4f), Random.Range(-.4f, .4f)),
 				Random.Range(0, PushSpeed));
 		}
 
 		protected override void FixedUpdate()
 		{
-			// Ensure components are initialized (no GetComponent calls in FixedUpdate!)
-			InitializeComponents();
-			
 			base.FixedUpdate();
-			
-			// Use cached references - components are guaranteed to exist due to RequireComponent
-			if (jumper.IsJumping && !_freezeRotation)
+			if (jumpAbility.IsJumping && !freezeRotation)
 				Rotate(RotationRate);
 			else
-				mover.SetDragging(true);
+				moveAbility.SetDragging(true);
 		}
 
 		private void Rotate(float rotationSpeed)

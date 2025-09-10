@@ -1,5 +1,3 @@
-using System;
-
 namespace GangstaBean.Core
 {
     /// <summary>
@@ -13,13 +11,13 @@ namespace GangstaBean.Core
     /// <summary>
     /// Interface for components that can be activities
     /// </summary>
-    public interface IDoableActivity
+    public interface IDoableAbility
     {
         string VerbName { get; }
        bool canDo();
         bool canStop();
-        void StopActivity();
-        void StartActivity();
+        void Do();
+        void Stop();
     }
 
     public enum ActivityRequirements

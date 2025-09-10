@@ -1,31 +1,21 @@
 using __SCRIPTS;
-using __SCRIPTS.HUD_Displays;
 using GangstaBean.Core;
 using UnityEngine;
 
-public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
+public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 {
 	public class ShieldDashActivity : IActivity
 	{
 		public string VerbName => "Shield-Dash";
 
-		public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
-		{
-			switch (reason)
-			{
-				case GangstaBean.Core.CompletionReason.AnimationInterrupt:
-				case GangstaBean.Core.CompletionReason.NewActivity:
-					return true;
-			}
-			return false;
-		}
+
 	}
+
 	private AnimationEvents animEvents;
-	private MoveController moveController;
+	private MoveAbility moveAbility;
 	private Life life;
 	private Player owner;
 	private JumpAbility jumps;
-	private JumpController jumpController;
 	private Body body;
 	private UnitAnimations anim;
 	private bool isDashing;
@@ -61,8 +51,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 		anim = GetComponent<UnitAnimations>();
 		body = GetComponent<Body>();
 		jumps = GetComponent<JumpAbility>();
-		jumpController = GetComponent<JumpController>();
-		moveController = GetComponent<MoveController>();
+		moveAbility = GetComponent<MoveAbility>();
 
 		life = GetComponent<Life>();
 		owner = _player;
@@ -78,7 +67,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 
 	private void ShieldPush()
 	{
-		var hits = Physics2D.OverlapCircleAll(transform.position, 30, AssetManager.LevelAssets.EnemyLayer);
+		var hits = Physics2D.OverlapCircleAll(transform.position, 30, Services.assetManager.LevelAssets.EnemyLayer);
 		foreach (var hit in hits)
 		{
 			var _life = hit.GetComponent<Life>();
@@ -112,7 +101,6 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 	private void StartJump(NewControlButton obj)
 	{
 		SetShielding(false);
-		jumpController.Jump();
 	}
 
 	private void CancelShielding(NewControlButton obj)
@@ -122,17 +110,10 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 
 	private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 	{
-		if (!moveController.CanMove) return;
-		if (pauseManager.IsPaused) return;
+		if (!moveAbility.CanMove) return;
+		if (Services.pauseManager.IsPaused) return;
 		if (!jumps.isResting) return;
 
-		// Check if character has teleport dash ability - if so, let that take priority
-		var dashAbility = GetComponent<DashAbility>();
-		if (dashAbility != null && dashAbility.teleport)
-		{
-
-			return;
-		}
 
 		if (!isShielding)
 		{
@@ -143,7 +124,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 
 			SetShielding(true);
 
-			if (!moveController.IsIdle())
+			if (!moveAbility.IsIdle())
 			{
 				ShieldDash();
 			}
@@ -163,7 +144,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 	{
 		if (!isShielding) return;
 		if (isDashing) return;
-		if (moveController.IsIdle())
+		if (moveAbility.IsIdle())
 		{
 			CancelShielding(null);
 		}
@@ -172,7 +153,7 @@ public class ShieldAbility : ServiceUser, INeedPlayer, IActivity
 			if (!body.legs.Do(shieldDashActivity)) return;
 
 			SetDashing(true);
-			moveController.Push(moveController.MoveDir, life.DashSpeed);
+			moveAbility.Push(moveAbility.MoveDir, life.DashSpeed);
 			ShieldPush();
 		}
 	}

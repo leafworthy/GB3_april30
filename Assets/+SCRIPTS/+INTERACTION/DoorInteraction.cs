@@ -46,8 +46,8 @@ namespace __SCRIPTS
 			OnPlayerExits += PlayerExits;
 			OnTimeComplete += Repair;
 			base.OnDisable();
-				 
-			 
+
+
 		}
 
 		private void Init()
@@ -62,7 +62,6 @@ namespace __SCRIPTS
 			}
 			if (life == null) life = GetComponent<Life>();
 			openSortingPoints = GetComponentInChildren<SortingPoints>();
-			if (life != null) life.Resurrect();
 		}
 
 		private void PlayerExits(Player obj)
@@ -71,14 +70,14 @@ namespace __SCRIPTS
 			if (isBroken) return;
 			SetDoorOpen(false);
 		}
-	
+
 		protected override void InteractableOnActionPress(Player player)
 		{
 			if (isBroken)
 			{
 				//start normal loading bar
 				base.InteractableOnActionPress(player);
-				sfx.sounds.door_repair_sound.PlayRandomAt(transform.position);
+				Services.sfx.sounds.door_repair_sound.PlayRandomAt(transform.position);
 				return;
 			}
 
@@ -92,11 +91,11 @@ namespace __SCRIPTS
 			DoorAnimator.SetBool(IsOpen, open);
 			if (isOpen)
 			{
-				sfx.sounds.door_open_sound.PlayRandomAt(transform.position);
+				Services.sfx.sounds.door_open_sound.PlayRandomAt(transform.position);
 			}
 			else
 			{
-				sfx.sounds.door_close_sound.PlayRandomAt(transform.position);
+				Services.sfx.sounds.door_close_sound.PlayRandomAt(transform.position);
 			}
 			UpdateGraph();
 		}
@@ -119,19 +118,19 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void BreakDoor(Player player, Life life1)
+		private void BreakDoor(Attack attack)
 		{
 			if (isBroken) return;
 			isBroken = true;
 			DoorAnimator.SetBool(IsBroken, true);
 
 
-		
-			sfx.sounds.door_break_sound.PlayRandomAt(life1.transform.position);
-			sfx.sounds.door_break_sound.PlayRandomAt(life1.transform.position);
+
+			Services.sfx.sounds.door_break_sound.PlayRandomAt(transform.position);
+			Services.sfx.sounds.door_break_sound.PlayRandomAt(transform.position);
 
 			SetCollidersEnabled(false);
-			OnBreak?.Invoke(player);
+			OnBreak?.Invoke(attack.DestinationLife.Player);
 		}
 
 		private void SetCollidersEnabled(bool collidersEnabled)
@@ -154,7 +153,6 @@ namespace __SCRIPTS
 			DoorAnimator.SetBool(IsBroken, false);
 			SetCollidersEnabled(true);
 			UpdateGraph();
-			life.Resurrect();
 
 			ListenToPlayerActionButton(player);
 		}

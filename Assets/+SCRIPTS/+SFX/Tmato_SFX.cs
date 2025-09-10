@@ -2,14 +2,14 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class Tmato_SFX : ServiceUser
+	public class Tmato_SFX : MonoBehaviour
 	{
 
 		private UnitAnimations anim;
 		private AnimationEvents animEvents;
 		private Life life;
 		private JumpAbility jump;
-		private GunAttack_Shotgun shotgunAttack;
+		private Shotgun shotgunAttack;
 		private ChainsawAttack chainsawAttack;
 		private ThrowMineAttack mineAttack;
 		public AudioSource idleSound;
@@ -20,7 +20,7 @@ namespace __SCRIPTS
 			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
 			jump = GetComponent<JumpAbility>();
-			shotgunAttack = GetComponent<GunAttack_Shotgun>();
+			shotgunAttack = GetComponent<Shotgun>();
 			chainsawAttack = GetComponent<ChainsawAttack>();
 			mineAttack = GetComponent<ThrowMineAttack>();
 
@@ -29,7 +29,6 @@ namespace __SCRIPTS
 			animEvents.OnHitStart += Anim_OnHit;
 			animEvents.OnDash += Anim_Dash;
 			animEvents.OnReload += Anim_OnReload;
-			life.OnWounded += Life_OnWounded;
 			life.OnAttackHit += Life_AttackHit;
 			life.OnDying += Life_OnDying;
 			jump.OnJump += Jump_OnJump;
@@ -48,13 +47,13 @@ namespace __SCRIPTS
 
 		private void Anim_OnReload()
 		{
-			sfx.sounds.tmato_reload_sounds.PlayRandomAt(transform.position);
+			Services.sfx.sounds.tmato_reload_sounds.PlayRandomAt(transform.position);
 		}
 
 		private void ChainsawStart(Vector2 obj)
 		{
 			idleSound.Play();
-			sfx.sounds.tmato_chainsaw_start_sounds.PlayRandomAt(obj);
+			Services.sfx.sounds.tmato_chainsaw_start_sounds.PlayRandomAt(obj);
 		}
 
 		private void ChainsawStop(Vector2 obj)
@@ -65,19 +64,19 @@ namespace __SCRIPTS
 		private void ChainsawAttackStart(Vector2 obj)
 		{
 			chainsawAttackIdleSound.Play();
-			sfx.sounds.tmato_chainsaw_attack_start_sounds.PlayRandomAt(obj);
+			Services.sfx.sounds.tmato_chainsaw_attack_start_sounds.PlayRandomAt(obj);
 		}
 
 		private void ChainsawAttackStop(Vector2 obj)
 		{
 			chainsawAttackIdleSound.Stop();
-			sfx.sounds.tmato_chainsaw_attack_stop_sounds.PlayRandomAt(obj);
+			Services.sfx.sounds.tmato_chainsaw_attack_stop_sounds.PlayRandomAt(obj);
 		}
 
 
 		private void ShotgunAttackOnEmpty()
 		{
-			sfx.sounds.ak47_empty_shoot_sounds.PlayRandomAt(transform.position);
+			Services.sfx.sounds.ak47_empty_shoot_sounds.PlayRandomAt(transform.position);
 		}
 
 
@@ -86,7 +85,6 @@ namespace __SCRIPTS
 			animEvents.OnStep -= Anim_OnStep;
 			animEvents.OnHitStart -= Anim_OnHit;
 			animEvents.OnDash -= Anim_Dash;
-			life.OnWounded -= Life_OnWounded;
 
 			life.OnAttackHit -= Life_AttackHit;
 			jump.OnJump -= Jump_OnJump;
@@ -97,34 +95,31 @@ namespace __SCRIPTS
 			mineAttack.OnThrow -= MineAttackOnThrow;
 		}
 
-		private void ShotgunAttackOnShotMissed(Attack attack, Vector2 hitPositionh)
+		private void ShotgunAttackOnShotMissed(Attack attack)
 		{
-			sfx.sounds.bean_gun_miss_sounds.PlayRandomAt(hitPositionh);
-			sfx.sounds.tmato_shoot_hit_sounds.PlayRandomAt(transform.position);
+			Services.sfx.sounds.bean_gun_miss_sounds.PlayRandomAt(attack.DestinationFloorPoint);
+			Services.sfx.sounds.tmato_shoot_hit_sounds.PlayRandomAt(transform.position);
 		}
 
-		private void ShotgunAttackOnOnShotHitTarget(Attack attack, Vector2 hitPosition)
+		private void ShotgunAttackOnOnShotHitTarget(Attack attack)
 		{
-			sfx.sounds.GetBulletHitSounds(attack.DestinationLife.DebrisType).PlayRandomAt(hitPosition);
-			sfx.sounds.tmato_shoot_hit_sounds.PlayRandomAt(attack.OriginFloorPoint);
+			Services.sfx.sounds.GetBulletHitSounds(attack.DestinationLife.DebrisType).PlayRandomAt(attack.DestinationFloorPoint);
+			Services.sfx.sounds.tmato_shoot_hit_sounds.PlayRandomAt(attack.OriginFloorPoint);
 		}
 
-		private void Life_OnDying(Player arg1, Life arg2) => sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
-		private void MineAttackOnThrow(Vector2 vector2, Player player) => sfx.sounds.tmato_mine_throw_sounds.PlayRandomAt(transform.position);
-		private void Life_AttackHit(Attack attack, Life hitLife) => sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
-		private void TertiaryAttackKnifeOnMiss() => sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
-		private void Jump_OnLand(Vector2 obj) => sfx.sounds.land_sound.PlayRandomAt(transform.position);
-		private void TertiaryAttackKnifeOnHit(Vector2 vector2) => sfx.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
+		private void Life_OnDying(Attack attack) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
+		private void MineAttackOnThrow(Vector2 vector2, Player player) => Services.sfx.sounds.tmato_mine_throw_sounds.PlayRandomAt(transform.position);
+		private void Life_AttackHit(Attack attack) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+		private void TertiaryAttackKnifeOnMiss() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
+		private void Jump_OnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
+		private void TertiaryAttackKnifeOnHit(Vector2 vector2) => Services.sfx.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
 
-		private void Jump_OnJump(Vector2 obj) => sfx.sounds.jump_sound.PlayRandomAt(transform.position);
-		private void Life_OnWounded(Attack obj) {
-			sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
-			sfx.sounds.jump_sound.PlayRandomAt(transform.position);
-		}
-		private void Anim_Dash() => sfx.sounds.tmato_shield_dash_sounds.PlayRandomAt(transform.position);
+		private void Jump_OnJump(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 
-		private void Anim_OnHit() => sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
-		private void Anim_OnStep() => sfx.sounds.player_walk_sounds_concrete.PlayRandomAt(transform.position);
+		private void Anim_Dash() => Services.sfx.sounds.tmato_shield_dash_sounds.PlayRandomAt(transform.position);
+
+		private void Anim_OnHit() => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+		private void Anim_OnStep() => Services.sfx.sounds.player_walk_sounds_concrete.PlayRandomAt(transform.position);
 
 	}
 }

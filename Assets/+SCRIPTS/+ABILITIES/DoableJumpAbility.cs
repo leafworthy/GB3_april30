@@ -1,11 +1,9 @@
 using System;
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	[DisallowMultipleComponent, RequireComponent(typeof(DoableJumpAbility))]
-	public class DoableJumpAbility : ServiceAbility
+	public class DoableJumpAbility : Ability
 	{
 		private float verticalVelocity;
 
@@ -13,13 +11,19 @@ namespace __SCRIPTS
 		public AnimationClip fallingAnimationClip;
 		public AnimationClip landingAnimationClip;
 		public AnimationClip flyingAnimationClip;
+		public AnimationClip deathAnimationClip;
 
+		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
+		private MoveAbility _moveAbility;
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnJump;
+		public event Action<Vector2> OnResting;
 
+		public bool IsResting => isResting;
 		private bool isResting;
 		private bool isOverLandable;
 		private float currentLandableHeight;
+		public bool IsJumping => isJumping;
 		private bool isJumping;
 
 		private float FallInDistance = 80;
@@ -27,37 +31,46 @@ namespace __SCRIPTS
 		private float bounceVelocityDragFactor = .2f;
 		private float airTimer;
 		private float maxFlyTime = 2.5f;
-		private bool canJump;
 
+		private bool isFlying;
+
+		protected override bool requiresArms() => false;
+
+		protected override bool requiresLegs() => true;
 
 		public override string VerbName => "Jump";
-		protected override bool requiresArms() => true;
 
-		protected override bool requiresLegs() => false;
+		public override bool canDo()
+		{
+			if (!base.canDo()) return false;
 
-		public override bool canDo() => base.canDo() && isResting && canJump;
+			//if (body.doableArms.IsActive)
+			//{
+			//	Debug.Log("Cannot jump, arms are active" + (body.doableArms.CurrentAbility != null ? $"({body.doableArms.CurrentAbility.VerbName})" : ""));
+			//	return false;
+			//}
+
+			return IsResting;
+		}
 
 		public override bool canStop() => false;
 
-
-		public override void StartActivity()
+		protected override void DoAbility()
 		{
-			Jump(body.GetCurrentLandableHeight(), life.JumpSpeed, 99);
-
+			Jump(0, life.JumpSpeed, 99);
 		}
 
-		public override void StopActivity()
+		public override void Stop()
 		{
-			base.StopActivity();
-			body.canLand = false;
-			body.SetDistanceToGround(body.GetCurrentLandableHeight());
+			Debug.Log("jump ability stop");
+			base.Stop();
+			body.SetDistanceToGround(0);
 		}
 
-		private void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1, bool isFlying = false)
+		private void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
 		{
-			//anim.ResetTrigger(UnitAnimations.LandTrigger);
-			//anim.SetTrigger(UnitAnimations.JumpTrigger);
 			anim.Play(isFlying ? flyingAnimationClip.name : jumpingAnimationClip.name, 0, 0);
+			isFlying = false;
 			airTimer = 0;
 			minBounceVelocity = minBounce;
 			isJumping = true;
@@ -70,21 +83,42 @@ namespace __SCRIPTS
 			body.ChangeLayer(Body.BodyLayer.jumping);
 		}
 
-		private void Controller_Jump(NewControlButton newControlButton)
+		public override void SetPlayer(Player _player)
 		{
-			if (!canDo()) return;
-			DoSafely();
+			base.SetPlayer(_player);
+			life.OnDying += Life_OnDying;
+			_player.Controller.Jump.OnPress += Controller_Jump;
+			FallFromHeight(FallInDistance);
 		}
 
-		private void Life_OnDying(Player arg1, Life arg2)
+		private void Controller_Jump(NewControlButton newControlButton)
 		{
+			if (!canDo())
+			{
+				Debug.Log("Cannot jump, not resting or dead or paused or arms active");
+				return;
+			}
+
+			Do();
+		}
+
+		private void Life_OnDying(Attack attack)
+		{
+			isFlying = true;
 			Jump();
 		}
 
-		public void FallFromLandable()
+		private void OnDisable()
 		{
-			anim.SetBool(UnitAnimations.IsFalling, true);
-			body.SetDistanceToGround(FallInDistance);
+			if (life == null) return;
+			if (life.Player == null) return;
+			life.Player.Controller.Jump.OnPress -= Controller_Jump;
+			life.OnDying -= Life_OnDying;
+		}
+
+		private void FallFromHeight(float fallHeight)
+		{
+			body.SetDistanceToGround(fallHeight);
 			isJumping = true;
 			isResting = false;
 			anim.Play(fallingAnimationClip.name, 0, 0);
@@ -93,7 +127,7 @@ namespace __SCRIPTS
 
 		protected void FixedUpdate()
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (isResting) return;
 			if (!isJumping) return;
 
@@ -109,15 +143,11 @@ namespace __SCRIPTS
 				return;
 			}
 
-			currentLandableHeight = body.GetCurrentLandableHeight();
-			verticalVelocity -= assetManager.Vars.Gravity.y * Time.fixedDeltaTime;
+			verticalVelocity -= Services.assetManager.Vars.Gravity.y * Time.fixedDeltaTime;
 			if (body.GetDistanceToGround() + verticalVelocity <= currentLandableHeight && verticalVelocity < 0)
 				Land();
 			else
-			{
-				body.canLand = verticalVelocity < 0;
 				body.SetDistanceToGround(body.GetDistanceToGround() + verticalVelocity);
-			}
 		}
 
 		private void Land()
@@ -130,14 +160,11 @@ namespace __SCRIPTS
 
 			isJumping = false;
 			OnLand?.Invoke(transform.position + new Vector3(0, currentLandableHeight, 0));
-			anim.Play(landingAnimationClip.name, 0, 0);
 
-			body.canLand = false;
-			moveController.SetCanMove(false);
-			body.SetDistanceToGround(currentLandableHeight);
-			if (body != null) body.ChangeLayer(body.isOverLandable ? Body.BodyLayer.landed : Body.BodyLayer.grounded);
+			moveAbility.SetCanMove(false);
+			body.SetGrounded();
 			verticalVelocity = 0;
-			PlayAnimationClip(landingAnimationClip);
+			PlayAnimationClip(!life.IsDead() ? landingAnimationClip : deathAnimationClip);
 		}
 
 		private void Bounce()
@@ -150,17 +177,11 @@ namespace __SCRIPTS
 		protected override void AnimationComplete()
 		{
 			verticalVelocity = 0;
-			isResting = true;
-			anim.SetBool(UnitAnimations.IsFalling, false);
 			isJumping = false;
-			body.canLand = false;
-			moveController.SetCanMove(true);
-			StopActivity();
-		}
-
-		public void SetCanJump(bool on)
-		{
-			canJump = on;
+			moveAbility.SetCanMove(true);
+			isResting = true;
+			OnResting?.Invoke(transform.position);
+			Stop();
 		}
 	}
 }

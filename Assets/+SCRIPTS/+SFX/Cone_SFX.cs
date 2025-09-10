@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class Cone_SFX : ServiceUser
+	public class Cone_SFX : MonoBehaviour
 	{
 		private UnitAnimations anim;
 		private AnimationEvents animEvents;
@@ -22,7 +22,7 @@ namespace __SCRIPTS
 
 		private void Anim_OnSplat()
 		{
-			sfx.sounds.cone_splat_sounds.PlayRandomAt(transform.position);
+			Services.sfx.sounds.cone_splat_sounds.PlayRandomAt(transform.position);
 		}
 
 		private void OnDisable()
@@ -36,11 +36,11 @@ namespace __SCRIPTS
 
 		}
 
-		private void Anim_OnDie()=> sfx.sounds.cone_die_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnHit()=> sfx.sounds.cone_gethit_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnRoar()=> sfx.sounds.cone_roar_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnAttackHit(int attackType)=> sfx.sounds.cone_attack_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnStep()=> sfx.sounds.cone_walk_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnDie()=> Services.sfx.sounds.cone_die_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnHit()=> Services.sfx.sounds.cone_gethit_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnRoar()=> Services.sfx.sounds.cone_roar_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnAttackHit(int attackType)=> Services.sfx.sounds.cone_attack_sounds.PlayRandomAt(transform.position);
+		private void Anim_OnStep()=> Services.sfx.sounds.cone_walk_sounds.PlayRandomAt(transform.position);
 
 	}
 }

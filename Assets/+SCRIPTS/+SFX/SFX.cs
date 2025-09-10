@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using __SCRIPTS.Cursor;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class SFX : MonoBehaviour, IService
+	public class SFX : SerializedMonoBehaviour, IService
 	{
 		public AudioSource ongoingAudioSource;
 		public AudioAssets sounds => _audio ?? Resources.Load<AudioAssets>("Assets/Audio");

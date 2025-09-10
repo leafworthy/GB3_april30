@@ -7,39 +7,49 @@ namespace __SCRIPTS
 	[Serializable]
 	public class DoableBodyPart
 	{
-		public bool IsActive => currentActivity != null;
-		public IDoableActivity currentActivity;
+		public bool IsActive => CurrentAbility != null;
+		public IDoableAbility CurrentAbility => _currentAbility;
+		private IDoableAbility _currentAbility;
 
-		public void StopActivity(IDoableActivity activityToStop)
+		public void Stop(IDoableAbility abilityToStop)
 		{
-			if (currentActivity == null) return;
-			if (currentActivity != activityToStop) return;
-			currentActivity.StopActivity();
-			currentActivity = null;
+			if (CurrentAbility == null) return;
+			if (CurrentAbility != abilityToStop) return;
+			_currentAbility = null;
 		}
 
-		public bool DoActivity(IDoableActivity newActivity)
+		public void DoActivity(IDoableAbility newAbility)
 		{
-			if (CanDoActivity(newActivity))
+			if (CanDoActivity(newAbility))
 			{
-				currentActivity = newActivity;
-				currentActivity.StartActivity();
-				return true;
+				Debug.Log("starting activity " + newAbility.VerbName);
+				_currentAbility = newAbility;
+				CurrentAbility.Do();
+				Debug.Log("[Doer] activity started: " + newAbility.VerbName);
+				return;
 			}
 
-			Debug.Log($"[DoableActivityDoer] BLOCKED: Cannot do {newActivity.VerbName} because " +
-			          $"{(currentActivity == null ? "no current activity" : $"current activity is {currentActivity.VerbName}")}");
-
-			return false;
+			Debug.Log($"[Doer] BLOCKED: Cannot do {newAbility.VerbName} because " +
+			          $"{(IsActive ? "no current activity" : $"current activity is {CurrentAbility.VerbName}")}");
 		}
 
-		private bool ActivitiesAreTheSame(IDoableActivity activity1, IDoableActivity activity2) =>
+		private bool ActivitiesAreTheSame(IDoableAbility activity1, IDoableAbility activity2) =>
 			activity1?.VerbName == activity2?.VerbName;
 
-		public bool CanDoActivity(IDoableActivity newActivity)
+		public bool CanDoActivity(IDoableAbility newAbility)
 		{
-			if (IsActive && !currentActivity.canStop()) return false;
-			return !ActivitiesAreTheSame(newActivity, currentActivity) && newActivity.canDo();
+			if (newAbility == null) return false;
+			if (ActivitiesAreTheSame(newAbility, CurrentAbility))
+			{
+				//Debug.Log("Cannot do activity " + newAbility.VerbName + " because it's already the current activity");
+				return false;
+			}
+			if (IsActive)
+			{
+				Debug.Log( "Cannot do activity " + newAbility.VerbName + " because current activity is " + CurrentAbility.VerbName);
+				return CurrentAbility.canStop();
+			}
+			return true;
 		}
 	}
 }
