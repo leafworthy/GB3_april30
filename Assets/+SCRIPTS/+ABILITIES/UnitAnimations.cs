@@ -48,6 +48,8 @@ namespace __SCRIPTS
 		public static readonly int GlockTrigger = Animator.StringToHash("GlockTrigger");
 
 		private HashSet<int> parameterHashes;
+		public AnimationClip DefaultBottomAnimation;
+		public AnimationClip DefaultTopAnimation;
 		private static int _aimDir;
 		public static readonly int IsShielding = Animator.StringToHash("IsShielding");
 		public static readonly int AimDir = Animator.StringToHash("AimDir");
@@ -181,5 +183,12 @@ namespace __SCRIPTS
 			// Nothing needed when despawning
 		}
 
+		public void RevertBottomToDefault()
+		{
+			if (animator == null) return;
+			Debug.Log("reverted");
+			animator.StopPlayback();
+			animator.Play(DefaultBottomAnimation.name, 0 );
+		}
 	}
 }

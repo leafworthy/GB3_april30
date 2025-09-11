@@ -12,7 +12,7 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 	protected Body body => _body ?? GetComponent<Body>();
 	private Life _life;
 	protected Life life => _life ?? GetComponent<Life>();
-	public abstract string VerbName { get;  }
+	public abstract string AbilityName { get;  }
 
 	protected abstract bool requiresArms();
 
@@ -37,20 +37,20 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public virtual void Stop()
 	{
-		Debug.Log("trying to stop " + VerbName + " ability");
+		Debug.Log("trying to stop " + AbilityName + " ability");
 		if (requiresArms())
 		{
 			body.doableArms.Stop(this);
-			Debug.Log("arms stopped for " + VerbName + " ability");
+			Debug.Log("arms stopped for " + AbilityName + " ability");
 		}
 
 		if (requiresLegs())
 		{
 			body.doableLegs.Stop(this);
-			Debug.Log("legs stopped for " + VerbName + " ability");
+			Debug.Log("legs stopped for " + AbilityName + " ability");
 		}
 
-		Debug.Log("cancelling invoke for " + VerbName + " ability");
+		Debug.Log("cancelling invoke for " + AbilityName + " ability");
 		CancelInvoke(nameof(AnimationComplete));
 	}
 
@@ -66,7 +66,7 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	protected virtual void AnimationComplete()
 	{
-		Debug.Log("Animation complete for " + VerbName + " ability");
+		Debug.Log("Animation complete for " + AbilityName + " ability");
 		Stop();
 	}
 

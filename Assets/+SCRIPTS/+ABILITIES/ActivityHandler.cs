@@ -39,31 +39,31 @@ namespace __SCRIPTS
 				var life = parentMonoBehaviour.GetComponent<Life>();
 				if (life != null && life.IsDead())
 				{
-					ActivityStory += $"\nTried to do {activity.VerbName} but character is dead";
-					Debug.Log($"[ActivityHandler] BLOCKED: Character is dead, cannot {activity.VerbName}");
+					ActivityStory += $"\nTried to do {activity.AbilityName} but character is dead";
+					Debug.Log($"[ActivityHandler] BLOCKED: Character is dead, cannot {activity.AbilityName}");
 					return false;
 				}
 			}
 
 			if (isActive)
 			{
-				if (currentActivity?.VerbName == activity.VerbName)
+				if (currentActivity?.AbilityName == activity.AbilityName)
 				{
-					ActivityStory += "\nTried to start doing " + activity.VerbName + " but already doing it";
-					Debug.Log($"[ActivityHandler] BLOCKED: Already doing {activity.VerbName}");
+					ActivityStory += "\nTried to start doing " + activity.AbilityName + " but already doing it";
+					Debug.Log($"[ActivityHandler] BLOCKED: Already doing {activity.AbilityName}");
 					return false;
 				}
 
 				ActivityStory += "\n" +
-				                 $"Tried to do {activity.VerbName} but current activity is {currentActivity?.VerbName}" +
-				                 $" on {this} with {currentActivity?.VerbName} and is active: {isActive}";
-				Debug.Log($"[ActivityHandler] BLOCKED: Tried {activity.VerbName} but busy with {currentActivity?.VerbName}");
+				                 $"Tried to do {activity.AbilityName} but current activity is {currentActivity?.AbilityName}" +
+				                 $" on {this} with {currentActivity?.AbilityName} and is active: {isActive}";
+				Debug.Log($"[ActivityHandler] BLOCKED: Tried {activity.AbilityName} but busy with {currentActivity?.AbilityName}");
 				return false;
 			}
 
-			ActivityStory += "\nStarted doing " + activity.VerbName + " with last activity: " +
-			                 currentActivity?.VerbName;
-			Debug.Log($"[ActivityHandler] SUCCESS: Started {activity.VerbName}");
+			ActivityStory += "\nStarted doing " + activity.AbilityName + " with last activity: " +
+			                 currentActivity?.AbilityName;
+			Debug.Log($"[ActivityHandler] SUCCESS: Started {activity.AbilityName}");
 			isActive = true;
 			currentActivity = activity;
 
@@ -83,24 +83,24 @@ namespace __SCRIPTS
 
 		public void Stop(GangstaBean.Core.IActivity activity)
 		{
-			if (currentActivity?.VerbName != activity.VerbName)
+			if (currentActivity?.AbilityName != activity.AbilityName)
 			{
-				ActivityStory += "\n Tried to stop " + activity.VerbName + " but current activity is " +
-				                 currentActivity?.VerbName;
-				Debug.Log($"[ActivityHandler] StopSafely FAILED: Tried to stop {activity.VerbName} but current is {currentActivity?.VerbName}");
+				ActivityStory += "\n Tried to stop " + activity.AbilityName + " but current activity is " +
+				                 currentActivity?.AbilityName;
+				Debug.Log($"[ActivityHandler] StopSafely FAILED: Tried to stop {activity.AbilityName} but current is {currentActivity?.AbilityName}");
 				return;
 			}
 
 			if (!isActive)
 			{
-				ActivityStory += "\n Tried to stop " + activity.VerbName + " but not currently active";
-				Debug.Log($"[ActivityHandler] StopSafely FAILED: Tried to stop {activity.VerbName} but not active");
+				ActivityStory += "\n Tried to stop " + activity.AbilityName + " but not currently active";
+				Debug.Log($"[ActivityHandler] StopSafely FAILED: Tried to stop {activity.AbilityName} but not active");
 				return;
 			}
 
-			ActivityStory += "\n Stopped doing " + activity.VerbName + " with last activity: " +
-			                 currentActivity?.VerbName;
-			Debug.Log($"[ActivityHandler] StopSafely SUCCESS: Stopped {activity.VerbName}");
+			ActivityStory += "\n Stopped doing " + activity.AbilityName + " with last activity: " +
+			                 currentActivity?.AbilityName;
+			Debug.Log($"[ActivityHandler] StopSafely SUCCESS: Stopped {activity.AbilityName}");
 			isActive = false;
 			currentActivity = null;
 
@@ -113,7 +113,7 @@ namespace __SCRIPTS
 
 
 			// Use default cleanup if no custom completion was handled
-			ActivityStory += $"\nUsing default cleanup for {currentActivity.VerbName}";
+			ActivityStory += $"\nUsing default cleanup for {currentActivity.AbilityName}";
 			DefaultCleanup(currentActivity, parentMonoBehaviour);
 			isActive = false;
 			currentActivity = null;
@@ -124,16 +124,16 @@ namespace __SCRIPTS
 		{
 			if (isActive && currentActivity != null)
 			{
-				if (currentActivity.VerbName == activity.VerbName)
+				if (currentActivity.AbilityName == activity.AbilityName)
 				{
-					ActivityStory += "\nTried to start doing " + activity.VerbName + " but already doing it";
+					ActivityStory += "\nTried to start doing " + activity.AbilityName + " but already doing it";
 					return false;
 				}
 
 				// Try completing current activity first
 				if (!CompleteCurrentActivity(reason, activity))
 				{
-					ActivityStory += $"\nCould not complete {currentActivity.VerbName} for {activity.VerbName}";
+					ActivityStory += $"\nCould not complete {currentActivity.AbilityName} for {activity.AbilityName}";
 					return false;
 				}
 			}
@@ -172,7 +172,7 @@ namespace __SCRIPTS
 			// Body part cleanup is handled by the body parts themselves via StopSafely()
 			// So we don't need to duplicate that logic here
 
-			Debug.Log($"[ActivityHandler] Default cleanup completed for {activity.VerbName}");
+			Debug.Log($"[ActivityHandler] Default cleanup completed for {activity.AbilityName}");
 		}
 	}
 

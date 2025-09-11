@@ -13,7 +13,7 @@ namespace __SCRIPTS
 		private UnitAnimations anim;
 		private Body body;
 		private AmmoInventory ammoInventory;
-		public string VerbName => "Throw-Kunai";
+		public string AbilityName => "Throw-Kunai";
 		private bool isPressing;
 		private Player player;
 		private string verbName;

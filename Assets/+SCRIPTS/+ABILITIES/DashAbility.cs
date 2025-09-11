@@ -12,7 +12,7 @@ namespace __SCRIPTS
 		private DoableJumpAbility jumps;
 
 		public bool teleport;
-		public override string VerbName => "Dash";
+		public override string AbilityName => "Dash";
 		protected override bool requiresArms() => true;
 
 		protected override bool requiresLegs() => true;
@@ -21,18 +21,18 @@ namespace __SCRIPTS
 		{
 			if (!base.canDo())
 			{
-				Debug.Log("Base canDo failed for " + VerbName + " ability");
+				Debug.Log("Base canDo failed for " + AbilityName + " ability");
 				return false;
 			}
 
 			if (!jumps.canDo())
 			{
-				Debug.Log("Cannot do jumps, cannot do " + VerbName + " ability");
+				Debug.Log("Cannot do jumps, cannot do " + AbilityName + " ability");
 				return false;
 			}
 			if (body.doableArms.IsActive)
 			{
-				Debug.Log("Arms are active, cannot do " + VerbName + " ability");
+				Debug.Log("Arms are active, cannot do " + AbilityName + " ability");
 				return false;
 			}
 			return true;
@@ -40,6 +40,14 @@ namespace __SCRIPTS
 
 		public override bool canStop() => true;
 
+		public override void Stop()
+		{
+			base.Stop();
+			body.ChangeLayer(Body.BodyLayer.grounded);
+			moveAbility.StopPush();
+			anim.RevertBottomToDefault();
+			Debug.Log("interrupt");
+		}
 
 		protected override void DoAbility()
 		{
@@ -74,12 +82,11 @@ namespace __SCRIPTS
 			if (owner.Controller == null) return;
 			if (animEvents != null) animEvents.OnTeleport -= Anim_Teleport;
 			owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
-			//Stop(this);
 		}
 
 		private void Anim_Teleport()
 		{
-			var teleportDirection = moveAbility.MoveDir;
+			var teleportDirection = moveAbility.GetMoveDir();
 			if (teleportDirection.magnitude < 0.1f)
 			{
 				teleportDirection = moveAbility.GetLastMoveAimDirOffset().normalized;
@@ -101,18 +108,17 @@ namespace __SCRIPTS
 
 		protected override void AnimationComplete()
 		{
-			body.ChangeLayer(Body.BodyLayer.grounded);
-			moveAbility.StopPush();
+
 			Stop();
 		}
 
 		private void Dash()
 		{
 			PlayAnimationClip(dashAnimationClip);
-			Debug.Log("Dashing with " + VerbName + " ability");
+			Debug.Log("Dashing with " + AbilityName + " ability");
 			if (!teleport)
 			{
-				moveAbility.Push(moveAbility.MoveDir, life.DashSpeed);
+				moveAbility.Push(moveAbility.GetMoveDir(), life.DashSpeed);
 				body.ChangeLayer(Body.BodyLayer.grounded);
 			}
 			else

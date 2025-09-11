@@ -28,7 +28,7 @@ namespace __SCRIPTS
 		private float bounceVelocityDragFactor = .2f;
 		private float landTimer;
 		private float maxFlyTime = 2.5f;
-		public string VerbName => "Jump";
+		public string AbilityName => "Jump";
 
 
 		public void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
@@ -39,6 +39,7 @@ namespace __SCRIPTS
 			StopResting();
 			OnJump?.Invoke(transform.position+ new Vector3(0,startingHeight,0));
 
+			Debug.Log("on jump");
 			verticalVelocity = verticalSpeed;
 
 			thing = GetComponent<ThingWithHeight>();
@@ -113,6 +114,7 @@ namespace __SCRIPTS
 			}
 			IsJumping = false;
 			OnLand?.Invoke(transform.position);
+			Debug.Log("land");
 			thing.SetDistanceToGround(currentLandableHeight);
 
 			if (body != null) body.ChangeLayer( Body.BodyLayer.grounded);

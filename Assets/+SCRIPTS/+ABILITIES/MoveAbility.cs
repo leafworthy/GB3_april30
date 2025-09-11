@@ -1,5 +1,4 @@
 using System;
-using __SCRIPTS.Cursor;
 using GangstaBean.Core;
 using UnityEngine;
 
@@ -10,132 +9,89 @@ namespace __SCRIPTS
 		event Action<Vector2> OnMoveInDirection;
 		event Action OnStopMoving;
 	}
-	public class MoveAbility : Ability, IActivity, IPoolable
-	{
-		private Vector2 moveVelocity;
-		private Vector2 pushVelocity;
 
+	public class MoveAbility : MonoBehaviour, INeedPlayer
+	{
 		private const float velocityDecayFactor = .90f;
 		private const float overallVelocityMultiplier = 2;
-		private float pushMultiplier = 1;
-		private float maxPushVelocity = 3000;
-		private Rigidbody2D rb;
+		private const float pushMultiplier = 1;
+		private const float maxPushVelocity = 3000;
+		private const float maxAimDistance = 30;
 
-		private bool isMoving;
-		private bool isDragging = true;
+		private Player player;
+		private Rigidbody2D rb => _rb ??= GetComponent<Rigidbody2D>();
+		private Rigidbody2D _rb;
+		private Body body => _body ?? GetComponent<Body>();
+		private Body _body;
+		private UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
+		private UnitAnimations _anim;
+		private Life life => _life ?? GetComponent<Life>();
+		private Life _life;
+		private IMove ai => _ai ??= GetComponent<IMove>();
+		private IMove _ai;
 
-		private Vector2 lastAimDirOffset;
-
-		private IMove ai;
-
+		private Vector2 moveVelocity;
+		private Vector2 pushVelocity;
 		private float moveSpeed;
 		private bool isTryingToMove;
+		private bool isMoving;
+		private bool isDragging = true;
 		private bool IsActive = true;
 		private bool IsPushed;
-		private float maxAimDistance = 30;
-		public override string VerbName => "Move";
-		protected override bool requiresArms() => false;
+		private bool canMove = true;
+		private Vector2 moveDir;
+		private Vector2 lastMoveAimDirOffset;
 
-		protected override bool requiresLegs() => false;
+		public bool GetCanMove() =>  canMove;
+		public Vector2 GetLastMoveAimDirOffset() => lastMoveAimDirOffset;
+		public Vector2 GetMoveDir() => moveDir;
+		public Vector2 GetMoveAimDir() => life.IsHuman?life.Player.Controller.MoveAxis.GetCurrentAngle() : Vector2.zero;
+		public Vector2 GetMoveAimPoint() => (Vector2) body.AimCenter.transform.position + GetMoveAimDir().normalized * maxAimDistance;
 
-		protected override void DoAbility()
-		{
-		}
-
-		public bool CanMove => canMove;
-		private bool canMove;
-		private Vector2 MoveAimDir { get; set; }
-		public Vector2 MoveDir { get; private set; }
-
-		public override void SetPlayer(Player _player)
+		public void SetPlayer(Player _player)
 		{
 			player = _player;
-
-			canMove = true;
 			StartListeningToPlayer();
 		}
 
-		public Vector2 GetMoveAimPoint()
-		{
-			if (life == null || !life.IsHuman) return Vector2.zero;
-			MoveAimDir = GetMoveAimDir();
-			lastAimDirOffset = MoveAimDir * maxAimDistance;
-			if (!life.Player.isUsingMouse) return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
-			var mousePos = CursorManager.GetMousePosition();
-
-			return (Vector2) body.AimCenter.transform.position + MoveAimDir.normalized * maxAimDistance;
-		}
-
-		public Vector2 GetLastMoveAimDirOffset() => lastAimDirOffset;
-
-		public Vector2 GetMoveAimDir()
-		{
-			if (life.Player.isUsingMouse) return MoveDir;
-
-			return life.Player.Controller.MoveAxis.GetCurrentAngle();
-		}
 
 		public void SetCanMove(bool _canMove)
 		{
+			Debug.Log("setting can move to " + _canMove);
 			canMove = _canMove;
-			if (!_canMove)
+			if (!_canMove || !isTryingToMove)
 				StopMoving();
 			else
 			{
-				if (player.IsPlayer()) MoveInDirection(player.Controller.MoveAxis.GetCurrentAngle(), life.MoveSpeed);
+				if (isTryingToMove) MoveInDirection(player.Controller.MoveAxis.GetCurrentAngle(), life.MoveSpeed);
 			}
 		}
 
 		private void Life_OnDying(Attack attack)
 		{
-			Push(attack.Direction, attack.DamageAmount);
+			if (Services.pauseManager.IsPaused) return;
 			body.BottomFaceDirection(attack.Direction.x < 0);
 			IsActive = false;
 			StopMoving();
 			SetCanMove(false);
-			pushVelocity = Vector2.zero;
 			StopListeningToPlayer();
 		}
 
-		private void Controller_MoveInDirection(Vector2 direction)
+		private void MoveInDirection(Vector2 direction)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (life.IsDead()) return;
-			if (!CanMove)
-			{
-				Debug.Log("can't move");
-				return;
-			}
-
-			if (body.doableLegs.IsActive || direction.magnitude < .5f)
-			{
-				StopMoving();
-				return;
-			}
-
+			lastMoveAimDirOffset = GetMoveAimDir() * maxAimDistance;
+			isTryingToMove = true;
 			StartMoving(direction);
 		}
 
-		private void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction)
-		{
-			Controller_MoveInDirection(direction);
-			if (Services.pauseManager.IsPaused) return;
-			if (life.IsDead()) return;
-			if (!CanMove) return;
-
-			if (body.doableLegs.IsActive || direction.magnitude < .5f)
-			{
-				StopMoving();
-				return;
-			}
-
-			StartMoving(direction);
-		}
+		private void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction) => MoveInDirection(direction);
 
 		private void Life_DeathComplete(Player obj)
 		{
-			SetCanMove(false);
 			pushVelocity = Vector2.zero;
+			moveVelocity = Vector2.zero;
 		}
 
 		private void StopListeningToPlayer()
@@ -145,13 +101,13 @@ namespace __SCRIPTS
 			if (life.IsHuman)
 			{
 				player.Controller.MoveAxis.OnChange -= Player_MoveInDirection;
-				player.Controller.MoveAxis.OnInactive -= Player_StopMoving;
+				player.Controller.MoveAxis.OnInactive -= Player_StopTryingToMove;
 			}
 			else
 			{
 				if (ai == null) return;
-				ai.OnMoveInDirection -= Controller_MoveInDirection;
-				ai.OnStopMoving -= AI_StopMoving;
+				ai.OnMoveInDirection -= MoveInDirection;
+				ai.OnStopMoving -= AI_StopTryingToMove;
 			}
 		}
 
@@ -159,6 +115,9 @@ namespace __SCRIPTS
 		{
 			if (Services.pauseManager.IsPaused) return;
 
+			if (isTryingToMove)
+				if (!body.doableLegs.IsActive)
+					MoveInDirection(GetMoveAimDir(), life.MoveSpeed);
 			if (isMoving && IsActive) AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
 
 			ApplyVelocity();
@@ -185,7 +144,7 @@ namespace __SCRIPTS
 
 		private Vector2 GetVelocity()
 		{
-			moveVelocity = MoveDir * moveSpeed;
+			moveVelocity = GetMoveDir() * moveSpeed;
 			return moveVelocity;
 		}
 
@@ -193,10 +152,23 @@ namespace __SCRIPTS
 		{
 			if (!IsActive) return;
 
-			if (direction.x != 0) body.BottomFaceDirection(direction.x > 0);
-			anim.SetBool(UnitAnimations.IsMoving, true);
+			if (direction.magnitude != 0)
+			{
+				moveDir = direction.normalized;
+				Debug.Log("move dir: " + GetMoveDir(), this);
+				body.BottomFaceDirection(direction.x > 0);
+			}
 
-			MoveDir = direction.normalized;
+			if (!canMove)
+			{
+				Debug.Log("can't move");
+				StopMoving();
+				return;
+			}
+
+			anim.SetBool(UnitAnimations.IsMoving, true);
+			Debug.Log("direction: " + direction, this);
+
 			moveSpeed = newSpeed;
 			isMoving = true;
 		}
@@ -213,9 +185,8 @@ namespace __SCRIPTS
 			pushVelocity = tempVel;
 		}
 
-		private void MoveObjectTo(Vector2 destination, bool teleport = false)
+		private void MoveObjectTo(Vector2 destination)
 		{
-			rb = GetComponent<Rigidbody2D>();
 			if (Services.pauseManager.IsPaused) return;
 			if (rb != null)
 				rb.MovePosition(destination);
@@ -238,12 +209,13 @@ namespace __SCRIPTS
 
 		private void StartMoving(Vector2 direction)
 		{
-
+			Debug.Log("start moving in direction " + direction);
 			MoveInDirection(direction, life.MoveSpeed);
 		}
+
 		public void StopMoving()
 		{
-			if (!life.IsHuman) Debug.Log("stop moving");
+			Debug.Log("stop moving");
 			isMoving = false;
 			moveVelocity = Vector2.zero;
 			anim.SetBool(UnitAnimations.IsMoving, false);
@@ -256,50 +228,40 @@ namespace __SCRIPTS
 
 		public bool IsMoving() => isMoving;
 
-		public bool IsIdle() => life.Player.Controller.MoveAxis.currentMagnitudeIsTooSmall();
-
-		public void OnPoolSpawn()
-		{
-			IsActive = true;
-			isMoving = false;
-			moveVelocity = Vector2.zero;
-			pushVelocity = Vector2.zero;
-		}
-
-		public void OnPoolDespawn()
-		{
-			IsActive = false;
-			isMoving = false;
-			moveVelocity = Vector2.zero;
-			pushVelocity = Vector2.zero;
-		}
+		public bool IsIdle() => !life.IsHuman || life.Player.Controller.MoveAxis.currentMagnitudeIsTooSmall();
 
 		private void OnDisable()
 		{
 			StopListeningToPlayer();
 		}
 
-		private void Player_StopMoving(IControlAxis controlAxis) => StopMoving();
+		private void Player_StopTryingToMove(IControlAxis controlAxis)
+		{
+			isTryingToMove = false;
+			StopMoving();
+		}
 
-		private void AI_StopMoving() => StopMoving();
+		private void AI_StopTryingToMove()
+		{
+			isTryingToMove = false;
+			StopMoving();
+		}
 
 		private void StartListeningToPlayer()
 		{
 			if (life == null) return;
 			life.OnDying += Life_OnDying;
 			life.OnDeathComplete += Life_DeathComplete;
-			if (player.IsPlayer())
+			if (life.IsHuman)
 			{
 				player.Controller.MoveAxis.OnChange += Player_MoveInDirection;
-				player.Controller.MoveAxis.OnInactive += Player_StopMoving;
+				player.Controller.MoveAxis.OnInactive += Player_StopTryingToMove;
 			}
 			else
 			{
-				ai = GetComponent<IMove>();
 				if (ai == null) return;
-
-				ai.OnMoveInDirection += Controller_MoveInDirection;
-				ai.OnStopMoving += AI_StopMoving;
+				ai.OnMoveInDirection += MoveInDirection;
+				ai.OnStopMoving += AI_StopTryingToMove;
 			}
 		}
 	}

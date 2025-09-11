@@ -13,7 +13,7 @@ namespace GangstaBean.Core
     /// </summary>
     public interface IDoableAbility
     {
-        string VerbName { get; }
+        string AbilityName { get; }
        bool canDo();
         bool canStop();
         void Do();
@@ -30,7 +30,7 @@ namespace GangstaBean.Core
 
     public interface IActivity
     {
-        string VerbName { get; }
+        string AbilityName { get; }
 
 
     }

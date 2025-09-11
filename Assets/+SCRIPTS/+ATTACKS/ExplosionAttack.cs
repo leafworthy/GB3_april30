@@ -11,56 +11,46 @@ namespace __SCRIPTS
 		private EnemyAI ai => _ai ??= GetComponent<EnemyAI>();
 		private UnitAnimations anim;
 		private float explosionRadius = 5;
-		public override string VerbName => "ExplosionAttack";
+		public override string AbilityName => "ExplosionAttack";
 
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
 			anim = GetComponent<UnitAnimations>();
 			anim.animEvents.OnAttackHit += AttackHit;
-			if (attacker.IsHuman)
-			{
-				attacker.Player.Controller.Attack1RightTrigger.OnPress += Player_Attack;
-
-			}
+			if (life.IsHuman)
+				life.Player.Controller.Attack1RightTrigger.OnPress += Player_Attack;
 			else
-			{
 				ai.OnAttack += AI_Attack;
-			}
 		}
 
 		private void OnDisable()
 		{
-			if (attacker.IsHuman)
-			{
-				attacker.Player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
-			}
+			if (life.IsHuman)
+				life.Player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
 			else
-			{
 				ai.OnAttack -= AI_Attack;
-			}
 
 			if (anim == null) return;
 			if (anim.animEvents == null) return;
 			anim.animEvents.OnAttackHit -= AttackHit;
-
 		}
 
 		private void AttackHit(int attackType)
 		{
 			if (Services.pauseManager.IsPaused) return;
-			if (attacker.IsDead()) return;
+			if (life.IsDead()) return;
 			if (currentTargetLife == null) return;
 
-			Explosion_FX.Explode(transform.position, explosionRadius, attacker.PrimaryAttackDamageWithExtra, attacker.Player);
-			attacker.DieNow();
+			AttackUtilities.Explode(transform.position, explosionRadius, life.PrimaryAttackDamageWithExtra, life.Player);
+			life.DieNow();
 		}
 
 		private void AI_Attack(Life newTarget)
 		{
 			if (newTarget == null) return;
 			if (Services.pauseManager.IsPaused) return;
-			if (attacker.IsDead()) return;
+			if (life.IsDead()) return;
 			var move = GetComponent<MoveAbility>();
 			currentTargetLife = newTarget;
 			anim.SetTrigger(UnitAnimations.Attack1Trigger);
@@ -70,18 +60,15 @@ namespace __SCRIPTS
 		private void Player_Attack(NewControlButton newControlButton)
 		{
 			if (Services.pauseManager.IsPaused) return;
-			if (attacker.IsDead()) return;
+			if (life.IsDead()) return;
 
-			var hitObject = RaycastToObject(currentTargetLife);
+			var hitObject = AttackUtilities.RaycastToObject(currentTargetLife,
+				life.IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer);
 			if (hitObject.collider == null) return;
-
 
 			currentTargetLife = hitObject.collider.gameObject.GetComponent<Life>();
 			if (currentTargetLife == null) return;
 			anim.SetTrigger(UnitAnimations.Attack1Trigger);
 		}
-
-
-
 	}
 }

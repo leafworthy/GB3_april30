@@ -28,7 +28,7 @@ namespace __SCRIPTS
 		private List<Mine> ActiveMines  = new();
 		private bool detonatePressed;
 		public AnimationClip mineDropAnimation;
-		public string VerbName => "Throw-Mine";
+		public string AbilityName => "Throw-Mine";
 
 
 		public event Action<Vector2, Player> OnThrow;
@@ -114,7 +114,7 @@ namespace __SCRIPTS
 			{
 				if ((jump.IsJumping))
 				{
-					if (arms.currentActivity?.VerbName == VerbName) return;
+					if (arms.currentActivity?.AbilityName == AbilityName) return;
 					arms.StopCurrentActivity();
 					arms.Do(this);
 				}

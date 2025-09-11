@@ -6,7 +6,7 @@ namespace __SCRIPTS
 	{
 		public bool IsUsingPrimaryWeapon = true;
 
-		public override string VerbName => "Swapping Weapon";
+		public override string AbilityName => "Swapping Weapon";
 		protected override bool requiresArms() => true;
 
 		protected override bool requiresLegs() => false;

@@ -5,21 +5,18 @@ using UnityEngine;
 
 public class DoableKnifeAttack : Ability
 {
-	public override string VerbName => "Knife-Attack";
+	public override string AbilityName => "KnifeAttack";
 
 	private bool isAttacking;
 	private bool isPressing;
 	public GameObject attackPoint;
+
 	public event Action OnMiss;
 	public event Action<Vector2> OnHit;
-	private DoableJumpAbility jumpAbility => _jumpAbility ??=GetComponent<DoableJumpAbility>();
+	private DoableJumpAbility jumpAbility => _jumpAbility ??= GetComponent<DoableJumpAbility>();
 	private DoableJumpAbility _jumpAbility;
-	private UnitAttackManager unitAttackManager => _unitAttackManager ??= GetComponent<UnitAttackManager>();
-	private UnitAttackManager _unitAttackManager;
 
-
-
-	[SerializeField]private AnimationClip animationClip;
+	[SerializeField] private AnimationClip animationClip;
 
 	protected override bool requiresArms() => true;
 	protected override bool requiresLegs() => false;
@@ -45,6 +42,11 @@ public class DoableKnifeAttack : Ability
 		player.Controller.Attack3Circle.OnRelease += PlayerKnifeRelease;
 	}
 
+	private void StopListeningToPlayer()
+	{
+		player.Controller.Attack3Circle.OnPress -= PlayerKnifePress;
+		player.Controller.Attack3Circle.OnRelease -= PlayerKnifeRelease;
+	}
 	private void OnDisable()
 	{
 		if (player == null) return;
@@ -52,11 +54,7 @@ public class DoableKnifeAttack : Ability
 		StopListeningToPlayer();
 	}
 
-	private void StopListeningToPlayer()
-	{
-		player.Controller.Attack3Circle.OnPress -= PlayerKnifePress;
-		player.Controller.Attack3Circle.OnRelease -= PlayerKnifeRelease;
-	}
+
 
 	protected override void AnimationComplete()
 	{
@@ -80,62 +78,37 @@ public class DoableKnifeAttack : Ability
 		Do();
 	}
 
+	public override void Stop()
+	{
+		base.Stop();
+		isAttacking = false;
+	}
+
 	private void StartAttack()
 	{
 		Debug.Log("starting attack");
 		if (isAttacking) return;
 		isAttacking = true;
-		PlayAnimationClip(animationClip,1);
-		Invoke(nameof(Anim_AttackHit), 0);
+		PlayAnimationClip(animationClip, 1);
+		Invoke(nameof(Anim_AttackHit), .1f);
 		anim.SetBool(UnitAnimations.IsBobbing, false);
 	}
 
-	private GameObject FindClosestHit()
-	{
-		var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, unitAttackManager.life.TertiaryAttackRange, Services.assetManager.LevelAssets.EnemyLayer).ToList();
-		if (circleCast.Count <= 0) return null;
 
-		var closest = circleCast[0];
-		foreach (var col in circleCast)
-		{
-			var colStats = col.GetComponentInChildren<Life>();
-			if (colStats.IsObstacle || !colStats.IsPlayerAttackable) continue;
-			if (colStats.CanBeAttacked) continue;
-			if (Vector2.Distance(col.gameObject.transform.position, transform.position) < Vector2.Distance(closest.transform.position, transform.position))
-				closest = col;
-		}
-
-		return closest.gameObject;
-	}
 
 	private void Anim_AttackHit()
 	{
-
-		var enemyHit = FindClosestHit();
-		if (enemyHit == null)
+		var targetHit = AttackUtilities.FindClosestHit( attackPoint.transform.position, life.TertiaryAttackRange, life.EnemyLayer);
+		if (targetHit == null)
 		{
 			Debug.Log("attack miss");
 			OnMiss?.Invoke();
 			return;
 		}
 
-
-		var enemy = enemyHit.transform.gameObject.GetComponent<Life>();
-		if (enemy == null) enemy = enemyHit.transform.gameObject.GetComponentInParent<Life>();
-		if (enemy == null || enemy.IsHuman || enemy.CanBeAttacked || enemy.IsObstacle)
-		{
-			if (enemy == null ) Debug.Log(" attack hit null enemy");
-			if(enemy.IsHuman) Debug.Log(" attack hit player");
-			if(enemy.CanBeAttacked) Debug.Log(" attack hit cant die", enemy);
-			if(enemy.IsObstacle) Debug.Log(" attack hit obstacle");
-			Debug.Log("attack miss");
-			OnMiss?.Invoke();
-			return;
-		}
-
-		Debug.Log("attack hit");
-		OnHit?.Invoke(enemyHit.transform.position);
-
-		unitAttackManager.HitTarget(unitAttackManager.life.TertiaryAttackDamageWithExtra, enemy, 2);
+		var targetLife = targetHit.transform.gameObject.GetComponentInParent<Life>();
+		if (targetLife == null) return;
+		AttackUtilities.HitTarget(life.TertiaryAttackDamageWithExtra, life, targetLife, 2);
+		OnHit?.Invoke(targetHit.transform.position);
 	}
 }

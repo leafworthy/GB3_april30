@@ -11,13 +11,12 @@ namespace __SCRIPTS
 		private Body body;
 		private UnitAnimations anim;
 
-		public override string VerbName => "Chainsaw-Attack";
+		public override string AbilityName => "Chainsaw-Attack";
 
 		private bool isAttacking;
 		private bool isChainsawing;
 		private bool isPressingChainsawButton;
 		public GameObject attackPoint;
-		public event Action OnMiss;
 		private Vector2 moveDir;
 
 		public event Action<Vector2> OnStartChainsawing;
@@ -141,33 +140,16 @@ namespace __SCRIPTS
 				StartAttacking();
 			}
 
-			if (isAttacking && attacker != null)
-			{
-				counter += Time.fixedDeltaTime;
-				if (counter >= attacker.TertiaryAttackRate)
-				{
-					counter = 0;
-					HitClosest();
-				}
-			}
+			if (!isAttacking || life == null) return;
+			counter += Time.fixedDeltaTime;
+			if (!(counter >= life.TertiaryAttackRate)) return;
+			counter = 0;
+			HitClosest();
 		}
 
 		private void HitClosest()
 		{
-			var enemyHit = FindClosestHits();
-			if (enemyHit == null || enemyHit.Count == 0)
-			{
-				OnMiss?.Invoke();
-				return;
-			}
-
-			foreach (var enemy in enemyHit)
-			{
-				if (enemy == null) continue;
-				if (enemy.IsHuman || enemy.CanTakeDamage || enemy.IsObstacle) continue;
-				if (enemy.IsDead()) continue;
-				HitTarget(attacker.TertiaryAttackDamageWithExtra, enemy, 1);
-			}
+			AttackUtilities.HitTargetsWithinRange( life, attackPoint.transform.position,life.TertiaryAttackRange , life.TertiaryAttackDamageWithExtra, life.EnemyLayer);
 		}
 
 		private void PlayerChainsawRelease(NewControlButton newControlButton)
@@ -183,9 +165,8 @@ namespace __SCRIPTS
 			if (isChainsawing) return; // Already chainsawing
 
 			if (!body.arms.Do(this)) return;
-			// Don't occupy legs - allow movement while chainsawing
 
-			if (body.arms.isActive && body.arms.currentActivity?.VerbName != VerbName)
+			if (body.arms.isActive && body.arms.currentActivity?.AbilityName != AbilityName)
 			{
 				StopAttacking();
 				StopChainsawing();
@@ -209,8 +190,6 @@ namespace __SCRIPTS
 			OnStopChainsawing?.Invoke(transform.position);
 		}
 
-
-
 		private void PlayerChainsawPress(NewControlButton newControlButton)
 		{
 			if (Services.pauseManager.IsPaused) return;
@@ -218,30 +197,6 @@ namespace __SCRIPTS
 			StartChainsawing();
 		}
 
-		private List<Life> FindClosestHits()
-		{
-			// Null checks
-			if (attackPoint == null || attacker == null || Services.assetManager.LevelAssets == null)
-			{
-				return new List<Life>();
-			}
 
-			var circleCast = Physics2D.OverlapCircleAll(attackPoint.transform.position, attacker.TertiaryAttackRange, Services.assetManager.LevelAssets.EnemyLayer).ToList();
-			if (circleCast.Count <= 0) return new List<Life>();
-
-			var enemies = new List<Life>();
-			foreach (var enemyCollider in circleCast)
-			{
-				if (enemyCollider == null || enemyCollider.gameObject == null) continue;
-
-				var enemy = enemyCollider.gameObject.GetComponent<Life>();
-				if (enemy == null) enemy = enemyCollider.gameObject.GetComponentInParent<Life>();
-				if (enemy == null) continue;
-				if (enemy.IsHuman || enemy.CanBeAttacked || enemy.IsObstacle) continue;
-				enemies.Add(enemy);
-			}
-
-			return enemies;
-		}
 	}
 }

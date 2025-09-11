@@ -6,7 +6,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 {
 	public class ShieldDashActivity : IActivity
 	{
-		public string VerbName => "Shield-Dash";
+		public string AbilityName => "Shield-Dash";
 
 
 	}
@@ -21,7 +21,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 	private bool isDashing;
 	private bool isShielding;
 	public AnimationClip shieldOutClip;
-	public string VerbName => "Shield";
+	public string AbilityName => "Shield";
 	private ShieldDashActivity shieldDashActivity = new ShieldDashActivity();
 	private float counter;
 	private float counterMax = .25f;
@@ -35,7 +35,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 				SetDashing(false);
 				return true;
 			case GangstaBean.Core.CompletionReason.NewActivity:
-				if (newActivity?.VerbName == "Shooting" || newActivity?.VerbName == "Dash")
+				if (newActivity?.AbilityName == "Shooting" || newActivity?.AbilityName == "Dash")
 				{
 					SetShielding(false);
 					SetDashing(false);
@@ -110,7 +110,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 
 	private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 	{
-		if (!moveAbility.CanMove) return;
+		if (!moveAbility.GetCanMove()) return;
 		if (Services.pauseManager.IsPaused) return;
 		if (!jumps.isResting) return;
 
@@ -153,7 +153,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 			if (!body.legs.Do(shieldDashActivity)) return;
 
 			SetDashing(true);
-			moveAbility.Push(moveAbility.MoveDir, life.DashSpeed);
+			moveAbility.Push(moveAbility.GetMoveDir(), life.DashSpeed);
 			ShieldPush();
 		}
 	}

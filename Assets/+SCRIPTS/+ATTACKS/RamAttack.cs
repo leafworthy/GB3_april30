@@ -13,7 +13,7 @@ namespace __SCRIPTS
 		private MoveAbility mover;
 		[SerializeField]private float pushBackAmount = 3;
 
-		public override string VerbName => "Ram-Attack";
+		public override string AbilityName => "Ram-Attack";
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
@@ -25,16 +25,16 @@ namespace __SCRIPTS
 		private void FixedUpdate()
 		{
 			if (Services.pauseManager.IsPaused) return;
-			if (attacker.IsDead()) return;
+			if (life.IsDead()) return;
 			CheckForEnemiesInRange();
 			Cooldown();
 		}
 
 		private void CheckForEnemiesInRange()
 		{
-			var enemies = Physics2D.OverlapCircleAll(transform.position, attacker.PrimaryAttackRange, Services.assetManager.LevelAssets.PlayerLayer)
+			var enemies = Physics2D.OverlapCircleAll(transform.position, life.PrimaryAttackRange, Services.assetManager.LevelAssets.PlayerLayer)
 			                       .ToList();
-			enemies.AddRange(Physics2D.OverlapCircleAll(transform.position, attacker.PrimaryAttackRange, Services.assetManager.LevelAssets.DoorLayer).ToList());
+			enemies.AddRange(Physics2D.OverlapCircleAll(transform.position, life.PrimaryAttackRange, Services.assetManager.LevelAssets.DoorLayer).ToList());
 			if (enemies.Count <= 0) return;
 			foreach (var enemy in enemies)
 			{
@@ -57,7 +57,7 @@ namespace __SCRIPTS
 
 		private void CheckForHit(GameObject other)
 		{
-			if (attacker.IsDead()) return;
+			if (life.IsDead()) return;
 			if (!isCooledDown) return;
 			if (other == null) return;
 			if (other.transform == transform) return;
@@ -86,10 +86,10 @@ namespace __SCRIPTS
 		private void AttackHit(Life other)
 		{
 			currentCooldown = coolDown;
-			var otherAttack = new Attack(attacker, other, attacker.PrimaryAttackDamageWithExtra);
-			var bouncebackAttack = new Attack(other, attacker, attacker.PrimaryAttackDamageWithExtra);
+			var otherAttack = new Attack(life, other, life.PrimaryAttackDamageWithExtra);
+			var bouncebackAttack = new Attack(other, life, life.PrimaryAttackDamageWithExtra);
 			other.TakeDamage(otherAttack);
-			attacker.TakeDamage(bouncebackAttack);
+			life.TakeDamage(bouncebackAttack);
 			mover.Push(bouncebackAttack.Direction, pushBackAmount);
 
 		}

@@ -194,11 +194,8 @@ namespace __SCRIPTS
 		public float GetFraction()  {
 			if(unitHealth != null)
 			{
-				Debug.Log("unit health fraction");
 				return unitHealth.GetFraction();
 			}
-
-			Debug.Log("default fraction");
 			return 1;
 		}
 

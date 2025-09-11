@@ -91,7 +91,6 @@ namespace __SCRIPTS
 			jump.OnLand -= Jump_OnLand;
 			shotgunAttack.OnShotHitTarget -= ShotgunAttackOnOnShotHitTarget;
 			shotgunAttack.OnShotMissed -= ShotgunAttackOnShotMissed;
-			chainsawAttack.OnMiss -= TertiaryAttackKnifeOnMiss;
 			mineAttack.OnThrow -= MineAttackOnThrow;
 		}
 

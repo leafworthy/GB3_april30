@@ -14,13 +14,14 @@ namespace __SCRIPTS
 		private bool isCharging;
 
 		private AmmoInventory ammo;
-		private Life life;
+		private Life life => _life ??= GetComponent<Life>();
+		private Life _life;
 
 		private float SpecialAttackDistance = 3;
 		private float SpecialAttackWidth = 3;
 		private bool isFullyCharged;
 		private GameObject currentArrowHead;
-		public override string VerbName => "ChargeAttack";
+		public override string AbilityName => "ChargeAttack";
 		public event Action OnAttackHit;
 		public event Action OnSpecialAttackHit;
 		public event Action OnChargePress;
@@ -32,14 +33,13 @@ namespace __SCRIPTS
 			move = GetComponent<MoveAbility>();
 			body = GetComponent<Body>();
 			anim = GetComponent<UnitAnimations>();
-			life = GetComponent<Life>();
 			ammo = GetComponent<AmmoInventory>();
 			aim = GetComponent<IAimAbility>();
 
-			if (attacker != null)
+			if (base.life != null)
 			{
-				attacker.Player.Controller.Attack2LeftTrigger.OnPress += Player_ChargePress;
-				attacker.Player.Controller.Attack2LeftTrigger.OnRelease += Player_ChargeRelease;
+				base.life.Player.Controller.Attack2LeftTrigger.OnPress += Player_ChargePress;
+				base.life.Player.Controller.Attack2LeftTrigger.OnRelease += Player_ChargeRelease;
 			}
 
 			animEvents = anim.animEvents;
@@ -51,9 +51,9 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			if (attacker != null) return;
-			attacker.Player.Controller.Attack2LeftTrigger.OnPress -= Player_ChargePress;
-			attacker.Player.Controller.Attack2LeftTrigger.OnRelease -= Player_ChargeRelease;
+			if (base.life != null) return;
+			base.life.Player.Controller.Attack2LeftTrigger.OnPress -= Player_ChargePress;
+			base.life.Player.Controller.Attack2LeftTrigger.OnRelease -= Player_ChargeRelease;
 			if (animEvents != null) return;
 			animEvents = anim.animEvents;
 			animEvents.OnFullyCharged -= Anim_FullyCharged;
@@ -146,7 +146,7 @@ namespace __SCRIPTS
 		private void SpecialAttackHit(int attackType)
 		{
 			var position = body.AimCenter.transform.position;
-			var targetPoint = move.IsIdle() ? aim.GetAimPoint() : ((Vector2) position + (Vector2)move.GetLastMoveAimDirOffset());
+			var targetPoint = move.IsIdle() ? aim.GetAimPoint() : ((Vector2) position + move.GetLastMoveAimDirOffset());
 
 			var connect = false;
 			SpecialAttackDistance = Vector2.Distance(position, targetPoint);
@@ -158,8 +158,8 @@ namespace __SCRIPTS
 			foreach (var raycastHit2D in raycast)
 			{
 				var otherLife = raycastHit2D.collider.GetComponent<Life>();
-				if (!otherLife.IsEnemyOf(attacker) || otherLife.CanBeAttacked || otherLife.IsObstacle) return;
-				HitTarget(life.SecondaryAttackDamageWithExtra, otherLife, 3);
+				if (!otherLife.IsEnemyOf(base.life) || otherLife.CanBeAttacked || otherLife.IsObstacle) return;
+				AttackUtilities.HitTarget(life.SecondaryAttackDamageWithExtra, life,otherLife, 3);
 			}
 
 			var circleCast = Physics2D.OverlapCircleAll(
@@ -169,8 +169,8 @@ namespace __SCRIPTS
 			{
 				var otherLife = hit2D.gameObject.GetComponent<Life>();
 				if (otherLife == null) continue;
-				if (!otherLife.IsEnemyOf(attacker) || otherLife.CanBeAttacked || otherLife.IsObstacle) return;
-				HitTarget(otherLife.SecondaryAttackDamageWithExtra, otherLife, 2);
+				if (!otherLife.IsEnemyOf(base.life) || otherLife.CanBeAttacked || otherLife.IsObstacle) return;
+				AttackUtilities.HitTarget(otherLife.SecondaryAttackDamageWithExtra, life, otherLife, 2);
 				connect = true;
 				Services.objectMaker.Make(Services.assetManager.FX.hits.GetRandom(), hit2D.transform.position);
 			}

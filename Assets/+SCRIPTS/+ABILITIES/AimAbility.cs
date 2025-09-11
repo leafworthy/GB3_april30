@@ -19,7 +19,7 @@ namespace __SCRIPTS
 		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
 
-		public override string VerbName => "Aim";
+		public override string AbilityName => "Aim";
 
 		public override bool canStop()
 		{

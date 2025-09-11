@@ -36,7 +36,7 @@ public class Mine : MonoBehaviour
 
 	private void Explode()
 	{
-		Explosion_FX.Explode(transform.position, player.spawnedPlayerDefence.SecondaryAttackRange,
+		AttackUtilities.Explode(transform.position, player.spawnedPlayerDefence.SecondaryAttackRange,
 			player.spawnedPlayerDefence.SecondaryAttackDamageWithExtra, player);
 		Services.objectMaker.Unmake(gameObject);
 

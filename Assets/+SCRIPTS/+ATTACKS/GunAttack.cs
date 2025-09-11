@@ -18,7 +18,7 @@ namespace __SCRIPTS
 		private float currentCooldownTime;
 		private IAimAbility aimAbility => _aimAbility ??= GetComponent<IAimAbility>();
 		private IAimAbility _aimAbility;
-		public override string VerbName => "Shooting";
+		public override string AbilityName => "Shooting";
 		protected override bool requiresArms() => true;
 
 		protected override bool requiresLegs() => false;

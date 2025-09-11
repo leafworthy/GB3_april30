@@ -17,7 +17,7 @@ namespace __SCRIPTS
 
 		private List<Gun> guns => _guns??= GetComponents<Gun>().ToList();
 		private List<Gun> _guns;
-		public override string VerbName => "Reloading";
+		public override string AbilityName => "Reloading";
 		protected override bool requiresArms() => true;
 
 		protected override bool requiresLegs() => false;

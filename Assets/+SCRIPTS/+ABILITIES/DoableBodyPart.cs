@@ -22,33 +22,36 @@ namespace __SCRIPTS
 		{
 			if (CanDoActivity(newAbility))
 			{
-				Debug.Log("starting activity " + newAbility.VerbName);
+				if (_currentAbility != null && _currentAbility.canStop()) _currentAbility.Stop();
+				Debug.Log("starting activity " + newAbility.AbilityName);
 				_currentAbility = newAbility;
 				CurrentAbility.Do();
-				Debug.Log("[Doer] activity started: " + newAbility.VerbName);
+				Debug.Log("[Doer] activity started: " + newAbility.AbilityName);
 				return;
 			}
 
-			Debug.Log($"[Doer] BLOCKED: Cannot do {newAbility.VerbName} because " +
-			          $"{(IsActive ? "no current activity" : $"current activity is {CurrentAbility.VerbName}")}");
+			Debug.Log($"[Doer] BLOCKED: Cannot do {newAbility.AbilityName} because " +
+			          $"{(IsActive ? "no current activity" : $"current activity is {CurrentAbility.AbilityName}")}");
 		}
 
 		private bool ActivitiesAreTheSame(IDoableAbility activity1, IDoableAbility activity2) =>
-			activity1?.VerbName == activity2?.VerbName;
+			activity1?.AbilityName == activity2?.AbilityName;
 
 		public bool CanDoActivity(IDoableAbility newAbility)
 		{
 			if (newAbility == null) return false;
 			if (ActivitiesAreTheSame(newAbility, CurrentAbility))
 			{
-				//Debug.Log("Cannot do activity " + newAbility.VerbName + " because it's already the current activity");
+				//Debug.Log("Cannot do activity " + newAbility.AbilityName + " because it's already the current activity");
 				return false;
 			}
+
 			if (IsActive)
 			{
-				Debug.Log( "Cannot do activity " + newAbility.VerbName + " because current activity is " + CurrentAbility.VerbName);
+				Debug.Log("Cannot do activity " + newAbility.AbilityName + " because current activity is " + CurrentAbility.AbilityName);
 				return CurrentAbility.canStop();
 			}
+
 			return true;
 		}
 	}

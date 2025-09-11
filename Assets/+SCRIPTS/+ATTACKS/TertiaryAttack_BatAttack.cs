@@ -11,7 +11,7 @@ namespace __SCRIPTS
 		private JumpAbility jumps;
 		private UnitAnimations anim;
 		private Body body;
-		public override string VerbName => "Bat-Attack";
+		public override string AbilityName => "Bat-Attack";
 		private bool isCharging;
 		private Life life;
 
@@ -92,9 +92,9 @@ namespace __SCRIPTS
 			{
 				if (col == null) return;
 				var _life = col.gameObject.GetComponent<Life>();
-				if (!_life.IsEnemyOf(attacker) || _life.CanBeAttacked) return;
-				if (attacker.IsHuman && _life.IsObstacle) return;
-				HitTarget(GetAttackDamage(attackType), _life, extraPush);
+				if (!_life.IsEnemyOf(base.life) || _life.CanBeAttacked) return;
+				if (base.life.IsHuman && _life.IsObstacle) return;
+				AttackUtilities.HitTarget(GetAttackDamage(attackType),life, _life, extraPush);
 				OnHit?.Invoke(col.gameObject.transform.position);
 			}
 		}

@@ -16,7 +16,7 @@ namespace __SCRIPTS
 		private MoveAbility move;
 		private AmmoInventory ammo;
 
-		public override string VerbName => NadeVerbName;
+		public override string AbilityName => NadeVerbName;
 		private DoableJumpAbility jump => _jump ??= GetComponent<DoableJumpAbility>();
 		private DoableJumpAbility _jump;
 		private DoableArms arms => body.doableArms;

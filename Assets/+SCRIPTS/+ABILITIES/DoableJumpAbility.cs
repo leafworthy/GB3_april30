@@ -38,7 +38,7 @@ namespace __SCRIPTS
 
 		protected override bool requiresLegs() => true;
 
-		public override string VerbName => "Jump";
+		public override string AbilityName => "Jump";
 
 		public override bool canDo()
 		{
@@ -46,7 +46,7 @@ namespace __SCRIPTS
 
 			//if (body.doableArms.IsActive)
 			//{
-			//	Debug.Log("Cannot jump, arms are active" + (body.doableArms.CurrentAbility != null ? $"({body.doableArms.CurrentAbility.VerbName})" : ""));
+			//	Debug.Log("Cannot jump, arms are active" + (body.doableArms.CurrentAbility != null ? $"({body.doableArms.CurrentAbility.AbilityName})" : ""));
 			//	return false;
 			//}
 
@@ -160,7 +160,7 @@ namespace __SCRIPTS
 
 			isJumping = false;
 			OnLand?.Invoke(transform.position + new Vector3(0, currentLandableHeight, 0));
-
+			Debug.Log("land");
 			moveAbility.SetCanMove(false);
 			body.SetGrounded();
 			verticalVelocity = 0;
