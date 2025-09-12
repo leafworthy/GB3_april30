@@ -30,6 +30,7 @@ namespace __SCRIPTS
 
 		private void DropLootFromEnemy(Life life)
 		{
+			return;
 			if (life.IsDead()) DropLoot(life.transform.position);
 		}
 

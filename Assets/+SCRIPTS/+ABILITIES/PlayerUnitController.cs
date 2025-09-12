@@ -7,10 +7,11 @@ namespace __SCRIPTS
 	public class PlayerUnitController : MonoBehaviour, INeedPlayer, IMove
 	{
 		private Player player;
-		private PauseManager pauseManager  => _pauseManager ??= ServiceLocator.Get<PauseManager>();
-		private PauseManager _pauseManager;
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;
+		public Vector2 GetMoveAimDir() => player.Controller.MoveAxis.GetCurrentAngle();
+
+		public bool IsMoving() => false;
 
 		public void SetPlayer(Player _player)
 		{
@@ -21,13 +22,13 @@ namespace __SCRIPTS
 
 		private void Player_StopMoving(NewInputAxis obj)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 			OnStopMoving?.Invoke();
 		}
 
 		private void Player_MoveInDirection(NewInputAxis axis, Vector2 newDirection)
 		{
-			if (pauseManager.IsPaused) return;
+			if (Services.pauseManager.IsPaused) return;
 
 			if (newDirection.magnitude < .5f)
 			{

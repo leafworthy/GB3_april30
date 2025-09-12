@@ -16,7 +16,6 @@ namespace __SCRIPTS
 	[Serializable]
 	public class Body : ThingWithHeight
 	{
-		//Manages Layer and Direction
 		public GameObject AttackStartPoint;
 		public GameObject FootPoint;
 		public List<GameObject> RotateWithAim;

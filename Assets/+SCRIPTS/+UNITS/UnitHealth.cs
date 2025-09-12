@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -14,7 +15,6 @@ namespace __SCRIPTS
 		public float CurrentHealth => currentHealth;
 
 		public event Action<float> OnFractionChanged;
-		public event Action<Attack> OnDying;
 		public event Action<Attack> OnDead;
 		public event Action<Attack> OnAttackHit;
 
@@ -53,8 +53,7 @@ namespace __SCRIPTS
 			OnFractionChanged?.Invoke(GetFraction());
 
 			if (!(currentHealth <= 0) || isInvincible) return;
-			OnDying?.Invoke(attack);
-			StartDeath();
+			StartDeath(attack);
 		}
 
 		public void AddHealth(float amount)
@@ -67,10 +66,10 @@ namespace __SCRIPTS
 		{
 			if (!isInvincible) return;
 			currentHealth = 0;
-			StartDeath();
+			StartDeath(new Attack(null, null, 0));
 		}
 
-		private void StartDeath(Attack killingAttack = null)
+		private void StartDeath(Attack killingAttack)
 		{
 
 			OnDead?.Invoke(killingAttack);

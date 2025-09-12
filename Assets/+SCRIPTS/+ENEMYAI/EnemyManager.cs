@@ -42,6 +42,9 @@ namespace __SCRIPTS
 
 		private void EnemyDying(Attack attack)
 		{
+			//wtf
+			//wrong line bro
+			Debug.Log("Attack properties || " + "origin life name: " +attack.OriginLife.name + " | destination life name: " + (attack.DestinationLife == null ? "null" : attack.DestinationLife.name));
 			OnEnemyDying?.Invoke(attack.DestinationLife);
 		}
 

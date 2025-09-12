@@ -62,7 +62,7 @@ namespace __SCRIPTS
 			if (other == null) return;
 			if (other.transform == transform) return;
 			var otherDefence = other.GetComponentInChildren<Life>();
-			var otherJump = other.GetComponentInChildren<JumpAbility>();
+			var otherJump = other.GetComponentInChildren<SimpleJumpAbility>();
 			if (otherJump != null)
 			{
 				if(!otherJump.isResting) return;

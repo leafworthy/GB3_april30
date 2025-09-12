@@ -10,16 +10,15 @@ namespace __SCRIPTS
 		public Player Player => player;
 		[SerializeField] private Player player;
 		[SerializeField] private UnitStats unitStats;
-		public UnitHealth unitHealth;
+		[SerializeField] private UnitHealth unitHealth;
 		private UnitAnimations animations => _animations ??= GetComponent<UnitAnimations>();
 		private UnitAnimations _animations;
-		private int enemyLayer;
-		private float currentHealth;
-		public bool showLifeBar  => unitStats.Data.showLifeBar;
 		public bool IsDead() => unitHealth.IsDead;
-		public float MaxHealth => unitStats.MaxHealth;
-		public bool CanBeAttacked => !unitStats.Data.isInvincible;
 		public bool IsShielded => unitHealth.IsShielded;
+		public float CurrentHealth => unitHealth.CurrentHealth;
+
+		#region UnitStats Wrappers
+
 		public float PrimaryAttackDamageWithExtra => unitStats.GetAttackDamage(1);
 		public float PrimaryAttackRange => unitStats.GetAttackRange(1);
 		public float PrimaryAttackRate => unitStats.GetAttackRate(1);
@@ -29,10 +28,10 @@ namespace __SCRIPTS
 		public float TertiaryAttackDamageWithExtra => unitStats.GetAttackDamage(3);
 		public float TertiaryAttackRange => unitStats.GetAttackRange(3);
 		public float TertiaryAttackRate => unitStats.GetAttackRate(3);
-
 		public float UnlimitedAttackDamageWithExtra => unitStats.GetAttackDamage(4);
 		public float UnlimitedAttackRange => unitStats.GetAttackRange(4);
 		public float UnlimitedAttackRate => unitStats.GetAttackRate(4);
+		public float ExtraDamageFactor => unitStats.ExtraDamageFactor;
 		public float MoveSpeed => unitStats.MoveSpeed;
 		public float DashSpeed => unitStats.DashSpeed;
 		public float JumpSpeed => unitStats.JumpSpeed;
@@ -41,12 +40,23 @@ namespace __SCRIPTS
 		public bool IsObstacle => unitStats.IsObstacle;
 		public bool IsPlayerAttackable => unitStats.IsPlayerAttackable;
 		public DebrisType DebrisType => unitStats.DebrisType;
+		public bool showLifeBar => unitStats.Data.showLifeBar;
+		public float MaxHealth => unitStats.MaxHealth;
+		public bool CanBeAttacked => !unitStats.Data.isInvincible;
+
+		#endregion
+
+
+		public bool IsHuman => Player != null && Player.IsPlayer();
+		public LayerMask EnemyLayer => IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
+		public bool CanTakeDamage => !unitHealth.IsDead && !unitHealth.IsTemporarilyInvincible && !unitStats.Data.isInvincible;
+
+
 
 		public event Action<Attack> OnAttackHit;
 		public event Action<float> OnFractionChanged;
 		public event Action<Attack> OnDying;
 		public event Action<Player, Life> OnKilled;
-
 		public event Action<Player> OnDeathComplete;
 		public event Action<Attack> OnShielded;
 		private Collider2D[] colliders;
@@ -62,27 +72,24 @@ namespace __SCRIPTS
 			unitStats = new UnitStats(gameObject.name);
 		}
 
-		[Sirenix.OdinInspector.Button]
-		public void Test()
-		{
-			var assets = ServiceLocator.Get<AssetManager>();
-		}
+
 		private void OnEnable()
 		{
 			unitStats = new UnitStats(gameObject.name);
 			unitHealth = new UnitHealth(unitStats.Data);
 			unitHealth.OnFractionChanged += Health_OnFractionChanged;
 			unitHealth.OnDead += HealthOnDead;
-			unitHealth.OnDying += Health_OnDying;
 			unitHealth.OnAttackHit += Health_AttackHit;
 			if (unitStats.Data.category != UnitCategory.Character) SetPlayer(Services.playerManager.enemyPlayer);
 		}
 
-		private void Health_OnDying(Attack attack)
+		private void SetupAnimationEvents()
 		{
-			OnDying?.Invoke(attack);
-		}
+			if (animations == null) return;
 
+			animations.animEvents.OnDieStop += CompleteDeath;
+			animations.animEvents.OnInvincible += SetInvincible;
+		}
 
 		private void OnDisable()
 		{
@@ -92,11 +99,7 @@ namespace __SCRIPTS
 			unitHealth.OnAttackHit -= Health_AttackHit;
 		}
 
-		public bool IsHuman => Player != null && Player.IsPlayer();
-		public LayerMask EnemyLayer  => IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
-		public bool CanTakeDamage  => !unitHealth.IsDead && !unitHealth.IsTemporarilyInvincible && !unitStats.Data.isInvincible;
-		public float ExtraDamageFactor  => unitStats.ExtraDamageFactor;
-		public float CurrentHealth  => unitHealth.CurrentHealth;
+
 
 		public void SetPlayer(Player newPlayer)
 		{
@@ -111,13 +114,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void SetupAnimationEvents()
-		{
-			if (animations == null) return;
 
-			animations.animEvents.OnDieStop += CompleteDeath;
-			animations.animEvents.OnInvincible += SetInvincible;
-		}
 
 		private void SetInvincible(bool inOn)
 		{
@@ -126,7 +123,7 @@ namespace __SCRIPTS
 
 		private void CompleteDeath()
 		{
-			Health_OnDead();
+			OnDeathComplete?.Invoke(Player);
 		}
 
 
@@ -135,10 +132,7 @@ namespace __SCRIPTS
 			OnAttackHit?.Invoke(attack);
 		}
 
-		private void Health_OnDead()
-		{
-			OnDeathComplete?.Invoke(Player);
-		}
+
 
 		public bool IsEnemyOf(Life other) => IsHuman != other.IsHuman;
 
@@ -146,10 +140,12 @@ namespace __SCRIPTS
 
 		private void HealthOnDead(Attack attack)
 		{
-			OnDying?.Invoke(attack);
-			if (attack != null && attack.OriginLife != null)
-				OnKilled?.Invoke(attack.OriginLife.player,this);
 			EnableColliders(false);
+			OnDying?.Invoke(attack);
+			if (attack.OriginLife.player != null)
+			{
+				OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
+			}
 			gameObject.layer = LayerMask.NameToLayer("Dead");
 			animations?.SetTrigger(UnitAnimations.DeathTrigger);
 			animations?.SetBool(UnitAnimations.IsDead, true);
@@ -164,12 +160,6 @@ namespace __SCRIPTS
 			{
 				col.enabled = enable;
 			}
-		}
-
-
-		private void Health_OnKilled(Attack attack)
-		{
-			OnKilled?.Invoke(attack.OriginLife.player, this);
 		}
 
 		private void Health_OnFractionChanged(float fraction)

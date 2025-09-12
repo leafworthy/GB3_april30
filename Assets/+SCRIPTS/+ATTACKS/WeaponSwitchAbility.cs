@@ -37,6 +37,12 @@ namespace __SCRIPTS
 			gunAttack.SwitchGuns(IsUsingPrimaryWeapon ? 0: 1);
 		}
 
+		private void OnDestroy()
+		{
+			if (player == null) return;
+			player.Controller.SwapWeaponSquare.OnPress -= Player_SwapWeapon;
+		}
+
 		private void Player_SwapWeapon(NewControlButton obj)
 		{
 			Do();

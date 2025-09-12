@@ -7,7 +7,7 @@ namespace __SCRIPTS
 		private UnitAnimations anim;
 		private AnimationEvents animEvents;
 		private Life life;
-		private JumpAbility jump;
+		private SimpleJumpAbility simpleJump;
 		private Glock glock => _glock ??= GetComponent<Glock>();
 		private Glock _glock;
 		private AK47 ak47 => _ak47 ??= GetComponent<AK47>();
@@ -21,12 +21,12 @@ namespace __SCRIPTS
 			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
 
-			jump = GetComponent<JumpAbility>();
+			simpleJump = GetComponent<SimpleJumpAbility>();
 
-			if (jump != null)
+			if (simpleJump != null)
 			{
-				jump.OnJump += Jump_OnJump;
-				jump.OnLand += Jump_OnLand;
+				simpleJump.OnJump += SimpleJumpOnSimpleJump;
+				simpleJump.OnLand += SimpleJumpOnLand;
 			}
 
 			reloadAbility = GetComponent<DoableReloadAbility>();
@@ -65,10 +65,10 @@ namespace __SCRIPTS
 			animEvents.OnTeleport -= Anim_Teleport;
 
 			life.OnAttackHit -= Life_AttackHit;
-			if (jump != null)
+			if (simpleJump != null)
 			{
-				jump.OnJump -= Jump_OnJump;
-				jump.OnLand -= Jump_OnLand;
+				simpleJump.OnJump -= SimpleJumpOnSimpleJump;
+				simpleJump.OnLand -= SimpleJumpOnLand;
 			}
 
 
@@ -115,10 +115,10 @@ namespace __SCRIPTS
 		private void GunAttackAkGlockOnEmpty() => Services.sfx.sounds.ak47_empty_shoot_sounds.PlayRandomAt(transform.position);
 		private void KnifeAttackOnMiss() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 		private void GunAttackAkGlockOnReload() => Services.sfx.sounds.bean_reload_sounds.PlayRandomAt(transform.position);
-		private void Jump_OnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
+		private void SimpleJumpOnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
 		private void KnifeAttackOnHit(Vector2 vector2) => Services.sfx.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
 
-		private void Jump_OnJump(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
+		private void SimpleJumpOnSimpleJump(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 
 		private void Anim_Dash() => Services.sfx.sounds.bean_roll_sounds.PlayRandomAt(transform.position);
 		private void Anim_Teleport() => Services.sfx.sounds.brock_teleport_sounds.PlayRandomAt(transform.position);

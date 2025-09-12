@@ -7,7 +7,7 @@ namespace __SCRIPTS
 		private UnitAnimations anim;
 		private AnimationEvents animEvents;
 		private Life life;
-		private JumpAbility jump;
+		private SimpleJumpAbility simpleJump;
 		private TertiaryAttack_BatAttack meleeAttack;
 		private SecondaryAttack_ChargeAttack secondaryAttackChargeAttack;
 
@@ -17,7 +17,7 @@ namespace __SCRIPTS
 		{
 			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
-			jump = GetComponent<JumpAbility>();
+			simpleJump = GetComponent<SimpleJumpAbility>();
 			meleeAttack = GetComponent<TertiaryAttack_BatAttack>();
 			secondaryAttackChargeAttack = GetComponent<SecondaryAttack_ChargeAttack>();
 			primaryAttackKunai = GetComponent<PrimaryAttack_Kunai>();
@@ -30,8 +30,8 @@ namespace __SCRIPTS
 			animEvents.OnDash += Anim_Dash;
 			animEvents.OnTeleport += Anim_Teleport;
 			life.OnDying += Life_OnDying;
-			jump.OnJump += Jump_OnJump;
-			jump.OnLand += Jump_OnLand;
+			simpleJump.OnJump += SimpleJumpOnSimpleJump;
+			simpleJump.OnLand += SimpleJumpOnLand;
 			meleeAttack.OnSwing += MeleeAttackOnSwing;
 			meleeAttack.OnHit += MeleeAttackOnHit;
 			secondaryAttackChargeAttack.OnChargePress += SecondaryAttackChargeAttackOnSecondaryAttackChargePress;
@@ -57,8 +57,8 @@ namespace __SCRIPTS
 			animEvents.OnDieStart -= Anim_OnDie;
 			animEvents.OnDash -= Anim_Dash;
 			animEvents.OnTeleport -= Anim_Teleport;
-			jump.OnJump -= Jump_OnJump;
-			jump.OnLand -= Jump_OnLand;
+			simpleJump.OnJump -= SimpleJumpOnSimpleJump;
+			simpleJump.OnLand -= SimpleJumpOnLand;
 			secondaryAttackChargeAttack.OnChargePress -= SecondaryAttackChargeAttackOnSecondaryAttackChargePress;
 			secondaryAttackChargeAttack.OnSpecialAttackHit -= SecondaryAttackChargeAttackOnSpecialAttackHit;
 			secondaryAttackChargeAttack.OnAttackHit -= ChargeAttack_OnAttackHit;
@@ -78,8 +78,8 @@ namespace __SCRIPTS
 
 		private void SecondaryAttackChargeAttackOnSpecialAttackHit() => Services.sfx.sounds.brock_homerunhit_sounds.PlayRandomAt(transform.position);
 		private void SecondaryAttackChargeAttackOnSecondaryAttackChargePress() => Services.sfx.StartOngoingSound();
-		private void Jump_OnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
-		private void Jump_OnJump(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
+		private void SimpleJumpOnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
+		private void SimpleJumpOnSimpleJump(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 		private void Life_OnWounded(Attack obj)  {
 			Services.sfx.sounds.brock_gethit_sounds.PlayRandomAt(transform.position);
 			Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);

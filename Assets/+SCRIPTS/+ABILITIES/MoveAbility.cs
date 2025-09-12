@@ -8,6 +8,8 @@ namespace __SCRIPTS
 	{
 		event Action<Vector2> OnMoveInDirection;
 		event Action OnStopMoving;
+		Vector2 GetMoveAimDir();
+		bool IsMoving();
 	}
 
 	public class MoveAbility : MonoBehaviour, INeedPlayer
@@ -21,14 +23,14 @@ namespace __SCRIPTS
 		private Player player;
 		private Rigidbody2D rb => _rb ??= GetComponent<Rigidbody2D>();
 		private Rigidbody2D _rb;
-		private Body body => _body ?? GetComponent<Body>();
+		private Body body => _body ??= GetComponent<Body>();
 		private Body _body;
 		private UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
 		private UnitAnimations _anim;
 		private Life life => _life ?? GetComponent<Life>();
 		private Life _life;
-		private IMove ai => _ai ??= GetComponent<IMove>();
-		private IMove _ai;
+		private IMove mover => _mover ??= GetComponent<IMove>();
+		private IMove _mover;
 
 		private Vector2 moveVelocity;
 		private Vector2 pushVelocity;
@@ -42,22 +44,22 @@ namespace __SCRIPTS
 		private Vector2 moveDir;
 		private Vector2 lastMoveAimDirOffset;
 
-		public bool GetCanMove() =>  canMove;
+		public bool GetCanMove() => canMove;
 		public Vector2 GetLastMoveAimDirOffset() => lastMoveAimDirOffset;
 		public Vector2 GetMoveDir() => moveDir;
-		public Vector2 GetMoveAimDir() => life.IsHuman?life.Player.Controller.MoveAxis.GetCurrentAngle() : Vector2.zero;
+		public Vector2 GetMoveAimDir() => mover.GetMoveAimDir();
 		public Vector2 GetMoveAimPoint() => (Vector2) body.AimCenter.transform.position + GetMoveAimDir().normalized * maxAimDistance;
+		public bool IsMoving() => isMoving;
 
+		public bool IsIdle() => mover.IsMoving();
 		public void SetPlayer(Player _player)
 		{
 			player = _player;
 			StartListeningToPlayer();
 		}
 
-
 		public void SetCanMove(bool _canMove)
 		{
-			Debug.Log("setting can move to " + _canMove);
 			canMove = _canMove;
 			if (!_canMove || !isTryingToMove)
 				StopMoving();
@@ -98,17 +100,9 @@ namespace __SCRIPTS
 		{
 			if (life == null) return;
 			if (life != null) life.OnDying -= Life_OnDying;
-			if (life.IsHuman)
-			{
-				player.Controller.MoveAxis.OnChange -= Player_MoveInDirection;
-				player.Controller.MoveAxis.OnInactive -= Player_StopTryingToMove;
-			}
-			else
-			{
-				if (ai == null) return;
-				ai.OnMoveInDirection -= MoveInDirection;
-				ai.OnStopMoving -= AI_StopTryingToMove;
-			}
+			if (mover == null) return;
+			mover.OnMoveInDirection -= MoveInDirection;
+			mover.OnStopMoving -= MoverStopTryingToMove;
 		}
 
 		private void FixedUpdate()
@@ -116,8 +110,10 @@ namespace __SCRIPTS
 			if (Services.pauseManager.IsPaused) return;
 
 			if (isTryingToMove)
-				if (!body.doableLegs.IsActive)
+			{
 					MoveInDirection(GetMoveAimDir(), life.MoveSpeed);
+			}
+
 			if (isMoving && IsActive) AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
 
 			ApplyVelocity();
@@ -231,22 +227,14 @@ namespace __SCRIPTS
 			pushVelocity = Vector2.zero;
 		}
 
-		public bool IsMoving() => isMoving;
 
-		public bool IsIdle() => !life.IsHuman || life.Player.Controller.MoveAxis.currentMagnitudeIsTooSmall();
 
 		private void OnDisable()
 		{
 			StopListeningToPlayer();
 		}
 
-		private void Player_StopTryingToMove(IControlAxis controlAxis)
-		{
-			isTryingToMove = false;
-			StopMoving();
-		}
-
-		private void AI_StopTryingToMove()
+		private void MoverStopTryingToMove()
 		{
 			isTryingToMove = false;
 			StopMoving();
@@ -254,20 +242,21 @@ namespace __SCRIPTS
 
 		private void StartListeningToPlayer()
 		{
+			if (hasListened)
+			{
+				Debug.LogWarning( "Already listening to player in MoveAbility", this);
+			}
+
+			hasListened = true;
 			if (life == null) return;
 			life.OnDying += Life_OnDying;
 			life.OnDeathComplete += Life_DeathComplete;
-			if (life.IsHuman)
-			{
-				player.Controller.MoveAxis.OnChange += Player_MoveInDirection;
-				player.Controller.MoveAxis.OnInactive += Player_StopTryingToMove;
-			}
-			else
-			{
-				if (ai == null) return;
-				ai.OnMoveInDirection += MoveInDirection;
-				ai.OnStopMoving += AI_StopTryingToMove;
-			}
+
+			if (mover == null) return;
+			mover.OnMoveInDirection += MoveInDirection;
+			mover.OnStopMoving += MoverStopTryingToMove;
 		}
+
+		private bool hasListened;
 	}
 }

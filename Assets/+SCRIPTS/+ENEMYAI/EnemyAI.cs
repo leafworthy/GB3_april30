@@ -32,6 +32,7 @@ namespace __SCRIPTS._ENEMYAI
 		private IAIState currentState;
 
 		private Animator _animator;
+		private Vector2 moveDir;
 
 		public AstarPathfinder Pathmaker { get; set; }
 
@@ -40,10 +41,14 @@ namespace __SCRIPTS._ENEMYAI
 
 		public Targetter Targets { get; set; }
 
-
 		public event Action<Life> OnAttack;
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;
+		public Vector2 GetMoveAimDir() => moveDir;
+
+		public bool IsMoving() => isMoving;
+		private bool isMoving;
+
 		public bool BornOnAggro { get; set; }
 
 		private void Awake()
@@ -62,7 +67,11 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void InitializeAI()
 		{
-			if (Pathmaker != null) Pathmaker.OnNewDirection += HandleNewDirection;
+			if (Pathmaker != null)
+			{
+				Pathmaker.OnNewDirection -= HandleNewDirection;
+				Pathmaker.OnNewDirection += HandleNewDirection;
+			}
 			TransitionToState(new AggroState());
 		}
 
@@ -89,6 +98,7 @@ namespace __SCRIPTS._ENEMYAI
 		public void StopMoving()
 		{
 			if (!stopMovingOnAttack) return;
+			isMoving = false;
 			OnStopMoving?.Invoke();
 			Pathmaker.StopPathing();
 		}
@@ -102,33 +112,31 @@ namespace __SCRIPTS._ENEMYAI
 
 		public void GetBornIfBornOnAggro()
 		{
-			if (BornOnAggro)
-			{
-				// Use a constant (or cached) trigger name to avoid allocating strings.
-				_animator.SetTrigger(UnitAnimations.AggroTrigger);
-			}
+			if (BornOnAggro) _animator.SetTrigger(UnitAnimations.AggroTrigger);
 		}
 
 		public void MoveWithoutPathing(Vector2 randomDirection)
 		{
+			isMoving = true;
+			moveDir = randomDirection;
 			OnMoveInDirection?.Invoke(randomDirection);
 		}
 
-		// Cached event handler for new direction events.
 		private void HandleNewDirection(Vector2 direction)
 		{
+			isMoving = true;
+			moveDir = direction;
 			OnMoveInDirection?.Invoke(direction);
 		}
 
 		public void OnPoolSpawn()
 		{
-			// Reinitialize AI when spawned from pool
+			isMoving = false;
 			InitializeAI();
 		}
 
 		public void OnPoolDespawn()
 		{
-			// Clean up when returning to pool
 			if (Pathmaker != null) Pathmaker.OnNewDirection -= HandleNewDirection;
 			currentState?.OnExitState();
 			currentState = null;

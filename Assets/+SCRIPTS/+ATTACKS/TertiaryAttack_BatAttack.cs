@@ -8,7 +8,7 @@ namespace __SCRIPTS
 	public class TertiaryAttack_BatAttack : Attacks
 	{
 		private AnimationEvents animEvents;
-		private JumpAbility jumps;
+		private SimpleJumpAbility jumps;
 		private UnitAnimations anim;
 		private Body body;
 		public override string AbilityName => "Bat-Attack";
@@ -31,7 +31,7 @@ namespace __SCRIPTS
 			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
 			owner = life.Player;
-			jumps = GetComponent<JumpAbility>();
+			jumps = GetComponent<SimpleJumpAbility>();
 
 			if (owner == null) return;
 			owner.Controller.Attack3Circle.OnPress += Player_AttackPress;
@@ -123,7 +123,7 @@ namespace __SCRIPTS
 		{
 			isPressingAttack = true;
 			if (isAttacking) return;
-			if (jumps.IsJumping)
+			if (!jumps.IsJumping)
 			{
 				StartJumpAttack();
 				return;
@@ -137,7 +137,7 @@ namespace __SCRIPTS
 		{
 			if (!body.arms.Do(this))
 			{
-				if ((JumpAbility) body.arms.currentActivity != jumps)
+				if ((SimpleJumpAbility) body.arms.currentActivity != jumps)
 					return;
 			}
 

@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	[RequireComponent(typeof(MoveAbility)), RequireComponent(typeof(JumpAbility))]
+	[RequireComponent(typeof(MoveAbility)), RequireComponent(typeof(SimpleJumpAbility))]
 	public class FallToFloor : ThingWithHeight
 	{
 		public SpriteRenderer spriteRendererToTint;
-		private JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
-		private JumpAbility _jumpAbility;
+		private SimpleJumpAbility SimpleJumpAbility => simpleJumpAbility ??= GetComponent<SimpleJumpAbility>();
+		private SimpleJumpAbility simpleJumpAbility;
 		protected MoveAbility moveAbility  => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
 
@@ -23,16 +23,16 @@ namespace __SCRIPTS
 		public void FireForDrops(Vector3 shootAngle, Color color, float height, bool _freezeRotation = false)
 		{
 			RotationRate = Random.Range(0, rotationRate);
-			jumpAbility.OnBounce += JumpAbilityOnBounce;
-			jumpAbility.OnResting += JumpAbilityOnResting;
-			jumpAbility.Jump(height, jumpSpeed, bounceSpeed);
+			SimpleJumpAbility.OnBounce += SimpleJumpAbilityOnBounce;
+			SimpleJumpAbility.OnResting += SimpleJumpAbilityOnResting;
+			SimpleJumpAbility.Jump(height, jumpSpeed, bounceSpeed);
 			moveAbility.SetDragging(false);
 			moveAbility.Push(shootAngle, Random.Range(0, PushSpeed));
 			spriteRendererToTint.color = color;
 			freezeRotation = _freezeRotation;
 		}
 
-		private void JumpAbilityOnResting(Vector2 obj)
+		private void SimpleJumpAbilityOnResting(Vector2 obj)
 		{
 			if (freezeRotation)
 			{
@@ -40,7 +40,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void JumpAbilityOnBounce()
+		private void SimpleJumpAbilityOnBounce()
 		{
 			moveAbility.SetDragging(true);
 		}
@@ -48,10 +48,10 @@ namespace __SCRIPTS
 		public void Fire(Attack attack, bool isFlipped = false)
 		{
 			RotationRate = Random.Range(0, rotationRate);
-			jumpAbility.OnBounce += JumpAbilityOnBounce;
-			jumpAbility.OnResting += JumpAbilityOnResting;
+			SimpleJumpAbility.OnBounce += SimpleJumpAbilityOnBounce;
+			SimpleJumpAbility.OnResting += SimpleJumpAbilityOnResting;
 			var verticalSpeed = Random.Range(0, bounceSpeed);
-			jumpAbility.Jump(attack.OriginHeight, 0);
+			SimpleJumpAbility.Jump(attack.OriginHeight, 0);
 			moveAbility.SetDragging(false);
 			moveAbility.Push(isFlipped ? attack.FlippedDirection : attack.Direction.normalized + new Vector2(Random.Range(-.4f, .4f), Random.Range(-.4f, .4f)),
 				Random.Range(0, PushSpeed));
@@ -60,7 +60,7 @@ namespace __SCRIPTS
 		protected override void FixedUpdate()
 		{
 			base.FixedUpdate();
-			if (jumpAbility.IsJumping && !freezeRotation)
+			if (SimpleJumpAbility.IsJumping && !freezeRotation)
 				Rotate(RotationRate);
 			else
 				moveAbility.SetDragging(true);

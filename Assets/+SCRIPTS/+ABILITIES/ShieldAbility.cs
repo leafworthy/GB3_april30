@@ -15,7 +15,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 	private MoveAbility moveAbility;
 	private Life life;
 	private Player owner;
-	private JumpAbility jumps;
+	private SimpleJumpAbility simpleJumps;
 	private Body body;
 	private UnitAnimations anim;
 	private bool isDashing;
@@ -50,7 +50,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 	{
 		anim = GetComponent<UnitAnimations>();
 		body = GetComponent<Body>();
-		jumps = GetComponent<JumpAbility>();
+		simpleJumps = GetComponent<SimpleJumpAbility>();
 		moveAbility = GetComponent<MoveAbility>();
 
 		life = GetComponent<Life>();
@@ -112,7 +112,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 	{
 		if (!moveAbility.GetCanMove()) return;
 		if (Services.pauseManager.IsPaused) return;
-		if (!jumps.isResting) return;
+		if (!simpleJumps.isResting) return;
 
 
 		if (!isShielding)

@@ -1,15 +1,16 @@
 using __SCRIPTS;
 using UnityEngine;
 
-[RequireComponent(typeof(DoableJumpAbility)),DisallowMultipleComponent]
+[RequireComponent(typeof(CharacterJumpAbility)),DisallowMultipleComponent]
 public class DoableJumpAbility_FX : MonoBehaviour
 {
-	private DoableJumpAbility jump;
+
+	private CharacterJumpAbility jump;
 	private Body body;
 
 	private void OnEnable()
 	{
-		jump = GetComponent<DoableJumpAbility>();
+		jump = GetComponent<CharacterJumpAbility>();
 		if (jump == null) return;
 		jump.OnJump += Jump_OnJump;
 		jump.OnLand += Jump_OnLand;

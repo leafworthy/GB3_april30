@@ -17,8 +17,8 @@ namespace __SCRIPTS
 		private AmmoInventory ammo;
 
 		public override string AbilityName => NadeVerbName;
-		private DoableJumpAbility jump => _jump ??= GetComponent<DoableJumpAbility>();
-		private DoableJumpAbility _jump;
+		private CharacterJumpAbility jump => _jump ??= GetComponent<CharacterJumpAbility>();
+		private CharacterJumpAbility _jump;
 		private DoableArms arms => body.doableArms;
 
 		public event Action<Vector2, Vector2, float, Player> OnThrow;

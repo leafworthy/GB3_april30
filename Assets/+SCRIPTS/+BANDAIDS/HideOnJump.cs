@@ -6,17 +6,17 @@ namespace __SCRIPTS
 	{
 		public GameObject ObjectToHide;
 
-		private JumpAbility jumps;
+		private CharacterJumpAbility jumps;
 		private AnimationEvents events;
 
 		private bool hasRecovered;
 
 		private void Start()
 		{
-			jumps = GetComponent<JumpAbility>();
+			jumps = GetComponent<CharacterJumpAbility>();
 			if (jumps == null) return;
-			jumps.OnJump += Jumps_OnJump;
-			jumps.OnLand += Jumps_OnLand;
+			jumps.OnJump += JumpsOnJump;
+			jumps.OnLand += JumpsOnLand;
 
 			hasRecovered = true;
 			events = GetComponentInChildren<AnimationEvents>();
@@ -32,28 +32,21 @@ namespace __SCRIPTS
 			}
 
 			if (jumps == null) return;
-			jumps.OnJump -= Jumps_OnJump;
-			jumps.OnLand -= Jumps_OnLand;
+			jumps.OnJump -= JumpsOnJump;
+			jumps.OnLand -= JumpsOnLand;
 		}
 
 		private void Events_OnRecovered()
 		{
 			hasRecovered = true;
 		}
-
-		private void Life_OnWounded(Attack obj)
-		{
-			ObjectToHide.SetActive(false);
-			hasRecovered = false;
-		}
-
-		private void Jumps_OnLand(Vector2 vector2)
+		private void JumpsOnLand(Vector2 vector2)
 		{
 			if (!hasRecovered) return;
 			ObjectToHide.SetActive(true);
 		}
 
-		private void Jumps_OnJump(Vector2 vector2)
+		private void JumpsOnJump(Vector2 vector2)
 		{
 			ObjectToHide.SetActive(false);
 		}

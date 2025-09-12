@@ -13,8 +13,8 @@ public class DoableKnifeAttack : Ability
 
 	public event Action OnMiss;
 	public event Action<Vector2> OnHit;
-	private DoableJumpAbility jumpAbility => _jumpAbility ??= GetComponent<DoableJumpAbility>();
-	private DoableJumpAbility _jumpAbility;
+	private CharacterJumpAbility jumpAbility => _jumpAbility ??= GetComponent<CharacterJumpAbility>();
+	private CharacterJumpAbility _jumpAbility;
 
 	[SerializeField] private AnimationClip animationClip;
 

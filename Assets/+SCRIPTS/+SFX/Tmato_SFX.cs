@@ -8,7 +8,7 @@ namespace __SCRIPTS
 		private UnitAnimations anim;
 		private AnimationEvents animEvents;
 		private Life life;
-		private JumpAbility jump;
+		private SimpleJumpAbility simpleJump;
 		private Shotgun shotgunAttack;
 		private ChainsawAttack chainsawAttack;
 		private ThrowMineAttack mineAttack;
@@ -19,7 +19,7 @@ namespace __SCRIPTS
 		{
 			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
-			jump = GetComponent<JumpAbility>();
+			simpleJump = GetComponent<SimpleJumpAbility>();
 			shotgunAttack = GetComponent<Shotgun>();
 			chainsawAttack = GetComponent<ChainsawAttack>();
 			mineAttack = GetComponent<ThrowMineAttack>();
@@ -31,8 +31,8 @@ namespace __SCRIPTS
 			animEvents.OnReload += Anim_OnReload;
 			life.OnAttackHit += Life_AttackHit;
 			life.OnDying += Life_OnDying;
-			jump.OnJump += Jump_OnJump;
-			jump.OnLand += Jump_OnLand;
+			simpleJump.OnJump += SimpleJumpOnSimpleJump;
+			simpleJump.OnLand += SimpleJumpOnLand;
 			shotgunAttack.OnShotHitTarget += ShotgunAttackOnOnShotHitTarget;
 			shotgunAttack.OnShotMissed += ShotgunAttackOnShotMissed;
 			shotgunAttack.OnEmpty += ShotgunAttackOnEmpty;
@@ -87,8 +87,8 @@ namespace __SCRIPTS
 			animEvents.OnDash -= Anim_Dash;
 
 			life.OnAttackHit -= Life_AttackHit;
-			jump.OnJump -= Jump_OnJump;
-			jump.OnLand -= Jump_OnLand;
+			simpleJump.OnJump -= SimpleJumpOnSimpleJump;
+			simpleJump.OnLand -= SimpleJumpOnLand;
 			shotgunAttack.OnShotHitTarget -= ShotgunAttackOnOnShotHitTarget;
 			shotgunAttack.OnShotMissed -= ShotgunAttackOnShotMissed;
 			mineAttack.OnThrow -= MineAttackOnThrow;
@@ -110,10 +110,10 @@ namespace __SCRIPTS
 		private void MineAttackOnThrow(Vector2 vector2, Player player) => Services.sfx.sounds.tmato_mine_throw_sounds.PlayRandomAt(transform.position);
 		private void Life_AttackHit(Attack attack) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
 		private void TertiaryAttackKnifeOnMiss() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
-		private void Jump_OnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
+		private void SimpleJumpOnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
 		private void TertiaryAttackKnifeOnHit(Vector2 vector2) => Services.sfx.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
 
-		private void Jump_OnJump(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
+		private void SimpleJumpOnSimpleJump(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 
 		private void Anim_Dash() => Services.sfx.sounds.tmato_shield_dash_sounds.PlayRandomAt(transform.position);
 

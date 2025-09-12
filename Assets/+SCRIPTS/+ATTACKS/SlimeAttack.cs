@@ -23,18 +23,18 @@ namespace __SCRIPTS
 
 			ai = GetComponent<EnemyAI>();
 
-			ai.OnAttack += AI_Attack;
+			ai.OnAttack += AIAttack;
 			anim.animEvents.OnAttackHit += CreateSlime;
 		}
 
 		private void OnDisable()
 		{
-			ai.OnAttack -= AI_Attack;
+			ai.OnAttack -= AIAttack;
 			anim.animEvents.OnAttackHit -= CreateSlime;
 		}
 
 
-		private void AI_Attack(Life _life)
+		private void AIAttack(Life _life)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (life.IsDead()) return;

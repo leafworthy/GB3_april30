@@ -25,20 +25,22 @@ namespace __SCRIPTS._ENEMYAI
 
 		private PauseManager pauseManager => _pauseManager ??= ServiceLocator.Get<PauseManager>();
 		private PauseManager _pauseManager;
+		private bool isMoving;
 
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;
-		private void Awake()
+		public Vector2 GetMoveAimDir() => default;
+
+		public bool IsMoving() => isMoving;
+
+
+
+		private void Start()
 		{
 			Pathmaker = GetComponent<AstarPathfinder>();
 			Life = GetComponent<Life>();
 			Targets = GetComponent<Targetter>();
-
 			_animator = GetComponentInChildren<Animator>();
-		}
-
-		private void Start()
-		{
 			InitializeAI();
 		}
 
@@ -71,6 +73,7 @@ namespace __SCRIPTS._ENEMYAI
 		public void StopMoving()
 		{
 			if (!stopMovingOnAttack) return;
+			isMoving = false;
 			OnStopMoving?.Invoke();
 			Pathmaker.StopPathing();
 		}
@@ -86,25 +89,27 @@ namespace __SCRIPTS._ENEMYAI
 		{
 			if (BornOnAggro)
 			{
-				// Use a constant (or cached) trigger name to avoid allocating strings.
 				_animator.SetTrigger(UnitAnimations.AggroTrigger);
 			}
 		}
 
 		public void MoveWithoutPathing(Vector2 randomDirection)
 		{
+			isMoving = true;
 			OnMoveInDirection?.Invoke(randomDirection);
 		}
 
 		// Cached event handler for new direction events.
 		private void HandleNewDirection(Vector2 direction)
 		{
+			isMoving = true;
 			OnMoveInDirection?.Invoke(direction);
 		}
 
 		public void OnPoolSpawn()
 		{
 			// Reinitialize AI when spawned from pool
+			isMoving = false;
 			InitializeAI();
 		}
 

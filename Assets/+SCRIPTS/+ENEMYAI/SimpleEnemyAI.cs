@@ -7,13 +7,18 @@ namespace __SCRIPTS._ENEMYAI
 	{
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;
+		public Vector2 GetMoveAimDir() => moveDir;
+		private Vector2 moveDir;
+
+		public bool IsMoving() => isMoving;
+		private bool isMoving;
 		public event Action<Life> OnAttack;
-		public bool BornOnAggro { get; set; } = false;
 		private Life _life;
 		private Life life => _life ??= GetComponent<Life>();
 
 		private Life _target;
 		private Targetter _targetter;
+
 		private float minDistanceToPlayer => life.PrimaryAttackRange;
 
 		private void Update()
@@ -32,12 +37,16 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void AttackPlayer()
 		{
+			isMoving = false;
+			OnStopMoving?.Invoke();
 			OnAttack?.Invoke(_target);
 		}
 
 		private void WalkToPlayer()
 		{
-			OnMoveInDirection?.Invoke((_target.transform.position - transform.position).normalized * life.MoveSpeed);
+			isMoving = true;
+			moveDir = (_target.transform.position - transform.position).normalized * life.MoveSpeed;
+			OnMoveInDirection?.Invoke(moveDir);
 		}
 
 		private void Start()

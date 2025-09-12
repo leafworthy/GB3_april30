@@ -103,8 +103,14 @@ namespace __SCRIPTS
 		private void ShotHitTarget(RaycastHit2D hitObject)
 		{
 			Debug.Log("shot hit target", this);
-			var target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
-			if (target == null) return;
+			var target = hitObject.collider.gameObject.GetComponentInParent<Life>();
+			if (target == null)
+			{
+				Debug.Log("target is null", this);
+				target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
+				if (target == null) Debug.Log("target is still null", this);
+				return;
+			}
 			var newAttack = new Attack(life, body.FootPoint.transform.position, hitObject.point, target, Damage);
 			OnShotHitTarget?.Invoke(newAttack);
 			target.TakeDamage(newAttack);

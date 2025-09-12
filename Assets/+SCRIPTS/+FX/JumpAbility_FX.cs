@@ -4,30 +4,30 @@ namespace __SCRIPTS
 {
 	public class JumpAbility_FX : MonoBehaviour
 	{
-		private JumpAbility jump;
+		private SimpleJumpAbility simpleJump;
 		private Body body;
 
 		private void OnEnable()
 		{
-			jump = GetComponent<JumpAbility>();
-			jump.OnJump += Jump_OnJump;
-			jump.OnLand += Jump_OnLand;
+			simpleJump = GetComponent<SimpleJumpAbility>();
+			simpleJump.OnJump += SimpleJumpOnSimpleJump;
+			simpleJump.OnLand += SimpleJumpOnLand;
 			body = GetComponent<Body>();
 		}
 
 		private void OnDisable()
 		{
-			jump.OnJump -= Jump_OnJump;
-			jump.OnLand -= Jump_OnLand;
+			simpleJump.OnJump -= SimpleJumpOnSimpleJump;
+			simpleJump.OnLand -= SimpleJumpOnLand;
 
 		}
 
-		private void Jump_OnJump(Vector2 obj)
+		private void SimpleJumpOnSimpleJump(Vector2 obj)
 		{
 			Services.objectMaker.Make(Services.assetManager.FX.dust2_jump, transform.position);
 		}
 
-		private  void Jump_OnLand(Vector2 pos)
+		private  void SimpleJumpOnLand(Vector2 pos)
 		{
 			Services.objectMaker.Make(Services.assetManager.FX.dust1_ground, pos);
 			var flipDust = Services.objectMaker.Make(Services.assetManager.FX.dust1_ground, pos);

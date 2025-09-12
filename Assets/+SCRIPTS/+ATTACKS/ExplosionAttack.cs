@@ -7,8 +7,8 @@ namespace __SCRIPTS
 	public class ExplosionAttack : Attacks
 	{
 		private Life currentTargetLife;
-		private EnemyAI _ai;
-		private EnemyAI ai => _ai ??= GetComponent<EnemyAI>();
+		private EnemyAI ai;
+		private EnemyAI AI => ai ??= GetComponent<EnemyAI>();
 		private UnitAnimations anim;
 		private float explosionRadius = 5;
 		public override string AbilityName => "ExplosionAttack";
@@ -21,7 +21,7 @@ namespace __SCRIPTS
 			if (life.IsHuman)
 				life.Player.Controller.Attack1RightTrigger.OnPress += Player_Attack;
 			else
-				ai.OnAttack += AI_Attack;
+				AI.OnAttack += AIAttack;
 		}
 
 		private void OnDisable()
@@ -29,7 +29,7 @@ namespace __SCRIPTS
 			if (life.IsHuman)
 				life.Player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
 			else
-				ai.OnAttack -= AI_Attack;
+				AI.OnAttack -= AIAttack;
 
 			if (anim == null) return;
 			if (anim.animEvents == null) return;
@@ -46,7 +46,7 @@ namespace __SCRIPTS
 			life.DieNow();
 		}
 
-		private void AI_Attack(Life newTarget)
+		private void AIAttack(Life newTarget)
 		{
 			if (newTarget == null) return;
 			if (Services.pauseManager.IsPaused) return;

@@ -9,7 +9,7 @@ namespace __SCRIPTS
 		private MoveAbility moveAbility  => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
 		private Player owner;
-		private DoableJumpAbility jumps;
+		private CharacterJumpAbility jumps;
 
 		public bool teleport;
 		public override string AbilityName => "Dash";
@@ -66,7 +66,7 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player _player)
 		{
 
-			jumps = GetComponent<DoableJumpAbility>();
+			jumps = GetComponent<CharacterJumpAbility>();
 
 			owner = _player;
 			UnsubscribeFromEvents();

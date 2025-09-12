@@ -17,7 +17,7 @@ namespace __SCRIPTS
 		private IAimAbility aim;
 		private MoveAbility move;
 		private AmmoInventory ammo;
-		private JumpAbility jump;
+		private SimpleJumpAbility simpleJump;
 		private Life life;
 		private Body body;
 		private Arms arms => body.arms;
@@ -40,7 +40,7 @@ namespace __SCRIPTS
 			body = GetComponent<Body>();
 			life = GetComponent<Life>();
 			player = _player;
-			jump = GetComponent<JumpAbility>();
+			simpleJump = GetComponent<SimpleJumpAbility>();
 			move = GetComponent<MoveAbility>();
 			ammo = GetComponent<AmmoInventory>();
 			aim = GetComponent<IAimAbility>();
@@ -112,7 +112,7 @@ namespace __SCRIPTS
 
 			if (!arms.Do(this))
 			{
-				if ((jump.IsJumping))
+				if ((simpleJump.IsJumping))
 				{
 					if (arms.currentActivity?.AbilityName == AbilityName) return;
 					arms.StopCurrentActivity();
