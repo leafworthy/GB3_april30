@@ -561,7 +561,6 @@ GameObject:
   - component: {fileID: 1547629825238236334}
   - component: {fileID: 6438088722743322343}
   - component: {fileID: 8019141755725131464}
-  - component: {fileID: 7457489753948469393}
   - component: {fileID: 6524197863214219341}
   - component: {fileID: 3543835829479452941}
   - component: {fileID: 4716467258387394285}
@@ -688,6 +687,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   isMovable: 1
   renderBelowAll: 0
   sortingBounds: {fileID: 7684790488111085796}
@@ -879,15 +887,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8e19e5c2974953b6d306f3bb0303ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!114 &2336976950886959425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -988,18 +987,6 @@ MonoBehaviour:
   animator: {fileID: 3833892833308743022}
   DefaultBottomAnimation: {fileID: 7400000, guid: 4f55359b4945d459997a2333342ddf7f, type: 2}
   DefaultTopAnimation: {fileID: 0}
---- !u!114 &7457489753948469393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ebcb801a83746f7b28bae4f81c5f778, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6524197863214219341
 MonoBehaviour:
   m_ObjectHideFlags: 0

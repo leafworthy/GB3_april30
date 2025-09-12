@@ -7,17 +7,10 @@ namespace __SCRIPTS.Plugins._ISOSORT
     [CustomEditor(typeof(IsoSpriteSorting))]
     public class IsoSpriteSortingEditor : UnityEditor.Editor
     {
-        private static Texture2D customIcon;
+        private static Texture2D customIcon => AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Eye_Icon.png");
 
         private void OnEnable()
         {
-            // Load the custom icon from the Assets folder
-            if (customIcon == null)
-            {
-                customIcon = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Eye_Icon.png");
-            }
-
-            // Set the icon for the target object
             if (customIcon != null)
             {
                 EditorGUIUtility.SetIconForObject(target, customIcon);
@@ -35,7 +28,6 @@ namespace __SCRIPTS.Plugins._ISOSORT
             Vector3 worldPos1 = localToWorld.MultiplyPoint3x4(myTarget.SorterPositionOffset);
 
             // First handle position
-            var fmh_31_13_638687467658385480 = Quaternion.identity;
             Vector3 newPos = Handles.FreeMoveHandle(worldPos1, 0.08f * HandleUtility.GetHandleSize(myTarget.transform.position), Vector3.zero,
                 Handles.DotHandleCap);
 
@@ -48,7 +40,6 @@ namespace __SCRIPTS.Plugins._ISOSORT
                 Vector3 worldPos2 = localToWorld.MultiplyPoint3x4(myTarget.SorterPositionOffset2);
 
                 // Second handle position
-                var fmh_41_17_638687467658394920 = Quaternion.identity;
                 Vector3 newPos2 = Handles.FreeMoveHandle(worldPos2, 0.08f * HandleUtility.GetHandleSize(myTarget.transform.position), Vector3.zero,
                     Handles.DotHandleCap);
 
@@ -59,11 +50,9 @@ namespace __SCRIPTS.Plugins._ISOSORT
                 Handles.DrawLine(worldPos1, worldPos2);
             }
 
-            if (GUI.changed)
-            {
-                Undo.RecordObject(target, "Updated Sorting Offset");
-                EditorUtility.SetDirty(target);
-            }
+            if (!GUI.changed) return;
+            Undo.RecordObject(target, "Updated Sorting Offset");
+            EditorUtility.SetDirty(target);
         }
 
         public override void OnInspectorGUI()

@@ -1,5 +1,6 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
-using VInspector;
+
 
 public class EnemyPlacer : MonoBehaviour
 {

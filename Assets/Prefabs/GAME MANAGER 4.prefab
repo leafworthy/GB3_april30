@@ -143,7 +143,6 @@ GameObject:
   - component: {fileID: 2616225907467045999}
   - component: {fileID: 3570976833043135718}
   - component: {fileID: 3084799123831883361}
-  - component: {fileID: 4993760586310119736}
   m_Layer: 0
   m_Name: FXManager
   m_TagString: Untagged
@@ -235,134 +234,6 @@ MonoBehaviour:
   player3cursor: {fileID: 1510744164856875480}
   player4cursor: {fileID: 3734486090080993688}
   currentCursors: []
---- !u!114 &4993760586310119736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 775496218302050263}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f606e3e13349a4c949ff9f15b4b2d3bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  targetLight: {fileID: 0}
-  cycleDuration: 240
-  timeOfDay: 0.4936263
-  timeMultiplier: 1
-  pauseCycle: 0
-  intensityCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.1
-      inSlope: 0.5
-      outSlope: 0.5
-      tangentMode: 35
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.2
-      value: 0.2
-      inSlope: 3.2499998
-      outSlope: 3.2499998
-      tangentMode: 35
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.3
-      value: 0.8
-      inSlope: 3.4999998
-      outSlope: 3.4999998
-      tangentMode: 35
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: 0.100000024
-      outSlope: 0.100000024
-      tangentMode: 35
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.75
-      value: 0.8
-      inSlope: -3.3999996
-      outSlope: -3.3999996
-      tangentMode: 35
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.85
-      value: 0.2
-      inSlope: -3.333333
-      outSlope: -3.333333
-      tangentMode: 35
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0.1
-      inSlope: -0.6666668
-      outSlope: -0.6666668
-      tangentMode: 35
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  intensityMultiplier: 1
-  colorGradient:
-    serializedVersion: 2
-    key0: {r: 0.11, g: 0.1, b: 0.3, a: 1}
-    key1: {r: 0.7, g: 0.3, b: 0.2, a: 1}
-    key2: {r: 1, g: 0.9, b: 0.7, a: 0}
-    key3: {r: 1, g: 1, b: 1, a: 0}
-    key4: {r: 1, g: 0.6, b: 0.3, a: 0}
-    key5: {r: 0.1, g: 0.1, b: 0.25, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 13107
-    ctime2: 19661
-    ctime3: 32768
-    ctime4: 49151
-    ctime5: 58982
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 6
-    m_NumAlphaKeys: 2
-  showDebugInfo: 1
-  currentTimeString: 11:50 AM
 --- !u!1 &1365171486938599376
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,6 +528,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a792b055f89fc5f4dbb4e07e313063af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
 --- !u!1 &4890664727903609641
 GameObject:
   m_ObjectHideFlags: 0

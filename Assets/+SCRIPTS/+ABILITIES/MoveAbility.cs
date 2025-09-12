@@ -158,6 +158,11 @@ namespace __SCRIPTS
 				Debug.Log("move dir: " + GetMoveDir(), this);
 				body.BottomFaceDirection(direction.x > 0);
 			}
+			else
+			{
+				StopMoving();
+				return;
+			}
 
 			if (!canMove)
 			{

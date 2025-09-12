@@ -62,7 +62,7 @@ namespace __SCRIPTS
 			Services.playerStatsManager.SetStatAmount(this, PlayerStat.StatType.TimeSurvived, Services.levelManager.GetCurrentLevelTimeElapsed());
 		}
 
-		public GameObject Spawn(Vector2 position, bool fallFromSky)
+		public GameObject Spawn(Vector2 position)
 		{
 			SetState(State.Alive);
 
@@ -71,7 +71,7 @@ namespace __SCRIPTS
 			SetSpawnedPlayerGO(spawnedPlayerGO);
 
 			var animations = spawnedPlayerGO.GetComponentInChildren<UnitAnimations>();
-			if (animations != null) animations.SetBool(UnitAnimations.IsFallingFromSky, fallFromSky);
+			if (animations != null) animations.SetBool(UnitAnimations.IsFallingFromSky, true);
 
 			if (playerUpgrades != null) playerUpgrades.ApplyUpgrades(this);
 			Debug.Log("PLAYER: Player spawned: " + spawnedPlayerGO.name);

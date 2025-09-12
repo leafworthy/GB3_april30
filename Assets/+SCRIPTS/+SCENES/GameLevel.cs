@@ -5,7 +5,7 @@ namespace __SCRIPTS
 {
 	public class GameLevel : MonoBehaviour
 	{
-		public TravelPoint defaultTravelPoint => FindFirstObjectByType<TravelPoint>();
+		public PlayerSpawnPoint DefaultPlayerSpawnPoint => FindFirstObjectByType<PlayerSpawnPoint>();
 		public SceneDefinition scene;
 		public event Action OnGameOver;
 

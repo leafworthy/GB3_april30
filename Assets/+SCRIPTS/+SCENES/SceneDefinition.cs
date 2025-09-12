@@ -37,7 +37,7 @@ namespace __SCRIPTS
 
         // Scene path is derived from the asset (valid in editor only)
         public string scenePath;
-        private List<TravelPoint> spawnPoints;
+        private List<PlayerSpawnPoint> spawnPoints;
 
         /// <summary>
         /// Get the scene name

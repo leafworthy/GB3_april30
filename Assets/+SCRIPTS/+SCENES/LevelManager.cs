@@ -41,17 +41,17 @@ namespace __SCRIPTS
 			currentLevel = newLevel;
 			currentLevel.OnGameOver += newLevel_GameOver;
 			Debug.Log("LEVEL MANAGER: OnStartLevel");
-			SpawnPlayersIntoLevel(currentLevel.defaultTravelPoint);
+			SpawnPlayersIntoLevel(currentLevel.DefaultPlayerSpawnPoint);
 			OnStartLevel?.Invoke(currentLevel);
 
 			gameStartTime = Time.time;
 		}
 
 
-		private void SpawnPlayersIntoLevel(TravelPoint travelPoint)
+		private void SpawnPlayersIntoLevel(PlayerSpawnPoint playerSpawnPoint)
 		{
 			Debug.Log("LEVEL MANAGER: joined players count: " + Services.playerManager.AllJoinedPlayers.Count);
-			if (travelPoint == null)
+			if (playerSpawnPoint == null)
 			{
 				Debug.Log("travel point is null");
 				return;
@@ -59,7 +59,7 @@ namespace __SCRIPTS
 
 			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
-				Debug.Log("trying to spawn" + player?.name + " at " + travelPoint.name);
+				Debug.Log("trying to spawn" + player?.name + " at " + playerSpawnPoint.name);
 				SpawnPlayerFromInGame(player);
 			}
 		}
@@ -67,7 +67,7 @@ namespace __SCRIPTS
 		public void SpawnPlayerFromInGame(Player player)
 		{
 			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
-			player.Spawn(currentLevel.defaultTravelPoint.transform.position, currentLevel.defaultTravelPoint.fallFromSky);
+			player.Spawn(currentLevel.DefaultPlayerSpawnPoint.transform.position);
 			Debug.Log("LEVEL MANAGER: OnLevelSpawnedPlayer: " + player.name);
 			OnLevelSpawnedPlayer?.Invoke(player);
 		}

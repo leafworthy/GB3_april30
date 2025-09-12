@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
 namespace __SCRIPTS.Plugins._ISOSORT
 {
 	//[ExecuteInEditMode]
-	public class IsoSpriteSorting : MonoBehaviour
+	[Serializable]
+	public class IsoSpriteSorting : SerializedMonoBehaviour
 	{
 		public bool isMovable;
 		public bool renderBelowAll;
@@ -16,16 +18,21 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		public Collider2D sortingBounds;
 
-		[NonSerialized] public readonly List<IsoSpriteSorting> staticDependencies = new(16);
-		[NonSerialized] public readonly List<IsoSpriteSorting> inverseStaticDependencies = new(16);
-		[NonSerialized] public readonly List<IsoSpriteSorting> movingDependencies = new(8);
+		[NonSerialized] public readonly List<IsoSpriteSorting> staticDependencies = new(64);
+		[NonSerialized] public readonly List<IsoSpriteSorting> inverseStaticDependencies = new(64);
+		[NonSerialized] public readonly List<IsoSpriteSorting> movingDependencies = new(64);
+		[NonSerialized] private readonly List<IsoSpriteSorting> visibleStaticDependencies = new(64);
 
-		private readonly List<IsoSpriteSorting> visibleStaticDependencies = new(16);
-
-		public int renderBelowSortingOrder = 0;
-		private int visibleStaticLastRefreshFrame = 0;
+		public int renderBelowSortingOrder;
+		private int visibleStaticLastRefreshFrame;
 
 		private static IsoSpriteSorting[] isoSorters = new IsoSpriteSorting[8];
+
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+		private static void ResetStatics()
+		{
+			isoSorters = new IsoSpriteSorting[8];
+		}
 
 		public List<IsoSpriteSorting> VisibleStaticDependencies
 		{
@@ -51,14 +58,14 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		public SortType sortType = SortType.Point;
 
-		public Vector3 SorterPositionOffset = new();
-		public Vector3 SorterPositionOffset2 = new();
+		public Vector3 SorterPositionOffset;
+		public Vector3 SorterPositionOffset2;
 		public List<Renderer> renderersToSort = new();
-		private Bounds2D cachedBounds;
-		private int lastBoundsCalculatedFrame = 0;
 		public bool renderAboveAll;
-		private bool hasRenderers;
 
+		private Bounds2D cachedBounds;
+		private int lastBoundsCalculatedFrame;
+		private bool hasRenderers;
 		private Transform t;
 
 		public void SetupStaticCache()
@@ -163,8 +170,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			{
 				if (sortType == SortType.Line)
 					return (SortingPoint1 + SortingPoint2) / 2;
-				else
-					return SortingPoint1;
+				return SortingPoint1;
 			}
 		}
 
@@ -174,27 +180,23 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			{
 				if (sortType == SortType.Line)
 					return (SortingPoint1.y + SortingPoint2.y) / 2;
-				else
-					return SortingPoint1.y;
+				return SortingPoint1.y;
 			}
 		}
 
 		public static void UpdateSorters()
 		{
 #if UNITY_EDITOR
-			if (!Application.isPlaying)
+			if (Application.isPlaying) return;
+			isoSorters = (IsoSpriteSorting[]) FindObjectsByType(typeof(IsoSpriteSorting), FindObjectsInactive.Include, FindObjectsSortMode.None);
+			foreach (var t1 in isoSorters)
 			{
-				//CHANGED THIS from findObjectsOfType to FindObjectsByType
-				isoSorters = (IsoSpriteSorting[])FindObjectsByType(typeof(IsoSpriteSorting), FindObjectsInactive.Include, FindObjectsSortMode.None);
-				foreach (var t1 in isoSorters)
-				{
-					t1.Setup();
-					t1.forceSort = true; // Force sorting update for all sprites
-				}
-
-				IsoSpriteSortingManager.UpdateSorting();
-				SceneView.RepaintAll();
+				t1.Setup();
+				t1.forceSort = true; // Force sorting update for all sprites
 			}
+
+			IsoSpriteSortingManager.UpdateSorting();
+			SceneView.RepaintAll();
 #endif
 		}
 
@@ -230,9 +232,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			{
 				GetRenderers();
 				forceSort = true;
-
-				// Only register if IsoSpriteSortingManager exists
-				if (IsoSpriteSortingManager.I != null) IsoSpriteSortingManager.RegisterSprite(this);
+				IsoSpriteSortingManager.RegisterSprite(this);
 			}
 		}
 
@@ -246,6 +246,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		private void OnDrawGizmosSelected()
 		{
+			return;
 			// Force refresh in Scene view when object is selected
 			if (!Application.isPlaying)
 			{
@@ -256,7 +257,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				RefreshPoint2();
 				RefreshBounds();
 
-				if (IsoSpriteSortingManager.I != null) IsoSpriteSortingManager.UpdateSorting();
+				IsoSpriteSortingManager.UpdateSorting();
 			}
 		}
 
@@ -287,7 +288,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			}
 		}
 
-		private float lastGizmosUpdateTime = 0f;
+		private float lastGizmosUpdateTime;
 #endif
 
 		public void GetRenderers()
@@ -325,14 +326,13 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		{
 			if (sprite1.sortType == SortType.Point && sprite2.sortType == SortType.Point)
 				return sprite2.SortingPoint1.y.CompareTo(sprite1.SortingPoint1.y);
-			else if (sprite1.sortType == SortType.Line && sprite2.sortType == SortType.Line)
+			if (sprite1.sortType == SortType.Line && sprite2.sortType == SortType.Line)
 				return CompareLineAndLine(sprite1, sprite2);
-			else if (sprite1.sortType == SortType.Point && sprite2.sortType == SortType.Line)
+			if (sprite1.sortType == SortType.Point && sprite2.sortType == SortType.Line)
 				return ComparePointAndLine(sprite1.SortingPoint1, sprite2);
-			else if (sprite1.sortType == SortType.Line && sprite2.sortType == SortType.Point)
+			if (sprite1.sortType == SortType.Line && sprite2.sortType == SortType.Point)
 				return -ComparePointAndLine(sprite2.SortingPoint1, sprite1);
-			else
-				return 0;
+			return 0;
 		}
 
 		public static int CompareIsoSortersBelow(IsoSpriteSorting sprite1, IsoSpriteSorting sprite2)
@@ -378,8 +378,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			{
 				if (line1slantUpward)
 					return line1LowPoint.x > line2LowPoint.x ? 1 : -1;
-				else
-					return line1LowPoint.x > line2LowPoint.x ? -1 : 1;
+				return line1LowPoint.x > line2LowPoint.x ? -1 : 1;
 			}
 
 			if (oneVStwo != int.MinValue)
@@ -398,16 +397,12 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			var pointY = point.y;
 			if (pointY > line.SortingPoint1.y && pointY > line.SortingPoint2.y)
 				return -1;
-			else if (pointY < line.SortingPoint1.y && pointY < line.SortingPoint2.y)
+			if (pointY < line.SortingPoint1.y && pointY < line.SortingPoint2.y)
 				return 1;
-			else
-			{
-				var slope = (line.SortingPoint2.y - line.SortingPoint1.y) /
-				            (line.SortingPoint2.x - line.SortingPoint1.x);
-				var intercept = line.SortingPoint1.y - slope * line.SortingPoint1.x;
-				var yOnLineForPoint = slope * point.x + intercept;
-				return yOnLineForPoint > point.y ? 1 : -1;
-			}
+			var slope = (line.SortingPoint2.y - line.SortingPoint1.y) / (line.SortingPoint2.x - line.SortingPoint1.x);
+			var intercept = line.SortingPoint1.y - slope * line.SortingPoint1.x;
+			var yOnLineForPoint = slope * point.x + intercept;
+			return yOnLineForPoint > point.y ? 1 : -1;
 		}
 
 		public int RendererSortingOrder
@@ -416,8 +411,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			{
 				if (renderersToSort.Count > 0)
 					return renderersToSort[0].sortingOrder;
-				else
-					return 0;
+				return 0;
 			}
 			set
 			{

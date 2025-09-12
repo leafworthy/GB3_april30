@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class SorterPoint : MonoBehaviour
@@ -7,7 +8,7 @@ public class SorterPoint : MonoBehaviour
 	// This class is just a placeholder for the editor script to work with.
 	// It can be extended with additional functionality as needed.
 
-	[VInspector.Button]
+	[Button]
 	public static void SortScene()
 	{
 		Debug.Log("scene sorted");

@@ -45,6 +45,7 @@ namespace __SCRIPTS
 				{
 					IsActive = false;
 					OnInactive?.Invoke(this);
+					Debug.Log("[INPUT] On inactive, magnitude = " + currentDir.magnitude);
 				}
 
 				// Always reset directional state when inactive
@@ -61,6 +62,7 @@ namespace __SCRIPTS
 			{
 				IsActive = true;
 				OnActive?.Invoke(this);
+				Debug.Log("[INPUT] On active magnitude = " + currentDir.magnitude);
 
 				// Reset directional states on activation to avoid stale triggers
 				RightPressed = LeftPressed = UpPressed = DownPressed = false;
@@ -114,7 +116,7 @@ namespace __SCRIPTS
 				UpPressed = DownPressed = false;
 			}
 		}
-		public bool currentMagnitudeIsTooSmall() => !(currentDir.magnitude > .3f);
+		public bool currentMagnitudeIsTooSmall() => (currentDir.magnitude < .3f);
 
 		private bool UpPressed;
 		private bool DownPressed;
