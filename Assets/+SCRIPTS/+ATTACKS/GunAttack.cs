@@ -22,6 +22,7 @@ namespace __SCRIPTS
 		protected override bool requiresArms() => true;
 
 		protected override bool requiresLegs() => false;
+		public override bool canStop() => true;
 
 		public Vector2 AimDir => aimAbility.AimDir;
 
@@ -29,9 +30,17 @@ namespace __SCRIPTS
 		private List<Gun> _allGuns;
 		private GunAttack aimableGun;
 		public bool simpleShoot;
+		private CharacterJumpAbility jumps  => _jumps ??= GetComponent<CharacterJumpAbility>();
+		private CharacterJumpAbility _jumps;
 
 		public event Action OnNeedsReload;
 
+		public override void Stop()
+		{
+			base.Stop();
+			anim.SetFloat(UnitAnimations.ShootSpeed, 0);
+
+		}
 
 		private static string[] PrimaryAnimationClips =
 		{
@@ -57,6 +66,7 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
+			Debug.Log("Shoot");
 			CurrentGun.Shoot(aimAbility.AimDir);
 			body.TopFaceDirection(GetClampedAimDir().x >= 0);
 			PlayAnimationClip(GetClipNameFromDegrees(GetDegreesFromAimDir()), CurrentGun.AttackRate, 1);
@@ -127,9 +137,9 @@ namespace __SCRIPTS
 
 		private void Gun_OnNeedsReload()
 		{
-			isPressingShoot = false;
 			Stop();
 			OnNeedsReload?.Invoke();
+			Debug.Log("gun needs reload");
 		}
 
 		private void Gun_OnShotMissed(Attack attack)
@@ -151,7 +161,7 @@ namespace __SCRIPTS
 			Shoot();
 		}
 
-		public override bool canDo() => base.canDo() && CurrentGun.CanShoot();
+		public override bool canDo() => base.canDo() && CurrentGun.CanShoot() && jumps.IsResting;
 
 		private void ListenToEvents()
 		{
@@ -203,7 +213,7 @@ namespace __SCRIPTS
 
 		private void PlayerControllerShootPress(NewControlButton newControlButton)
 		{
-			if (canDo()) isPressingShoot = true;
+			isPressingShoot = true;
 			Do();
 		}
 

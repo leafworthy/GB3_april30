@@ -1,26 +1,7 @@
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Utilities
 {
-	public static class VectorUtilities
-	{
-		public static List<Vector2> GetPositionsWithinRadiusOfPoint(int numberOfPositions, Vector2 basePosition, float radius = 1)
-		{
-			var positions = new List<Vector2>();
-
-			for (var i = 0; i < numberOfPositions; i++)
-			{
-				var angle = i * (360f / numberOfPositions) * Mathf.Deg2Rad;
-				var offset = new Vector2(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius);
-				positions.Add(basePosition + offset);
-			}
-
-			return positions;
-		}
-	}
-
 	public abstract class Timer
 	{
 		protected float initialTime;
@@ -71,15 +52,9 @@ namespace Utilities
 
 		public override void Tick(float deltaTime)
 		{
-			if (IsRunning && Time > 0)
-			{
-				Time -= deltaTime;
-			}
+			if (IsRunning && Time > 0) Time -= deltaTime;
 
-			if (IsRunning && Time <= 0)
-			{
-				Stop();
-			}
+			if (IsRunning && Time <= 0) Stop();
 		}
 
 		public bool IsFinished => Time <= 0;
@@ -101,10 +76,7 @@ namespace Utilities
 
 		public override void Tick(float deltaTime)
 		{
-			if (IsRunning)
-			{
-				Time += deltaTime;
-			}
+			if (IsRunning) Time += deltaTime;
 		}
 
 		public void Reset() => Time = 0;

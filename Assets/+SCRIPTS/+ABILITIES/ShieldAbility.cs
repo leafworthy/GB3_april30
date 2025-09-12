@@ -26,25 +26,7 @@ public class ShieldAbility : MonoBehaviour, INeedPlayer, IActivity
 	private float counter;
 	private float counterMax = .25f;
 
-	public bool TryCompleteGracefully(GangstaBean.Core.CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
-	{
-		switch (reason)
-		{
-			case GangstaBean.Core.CompletionReason.AnimationInterrupt:
-				SetShielding(false);
-				SetDashing(false);
-				return true;
-			case GangstaBean.Core.CompletionReason.NewActivity:
-				if (newActivity?.AbilityName == "Shooting" || newActivity?.AbilityName == "Dash")
-				{
-					SetShielding(false);
-					SetDashing(false);
-					return true;
-				}
-				break;
-		}
-		return false;
-	}
+
 
 	public void SetPlayer(Player _player)
 	{

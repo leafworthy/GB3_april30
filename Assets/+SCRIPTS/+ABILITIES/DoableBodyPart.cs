@@ -39,16 +39,20 @@ namespace __SCRIPTS
 
 		public bool CanDoActivity(IDoableAbility newAbility)
 		{
-			if (newAbility == null) return false;
+			if (newAbility == null)
+			{
+				Debug.Log("Cannot do activity because it's null");
+				return false;
+			}
 			if (ActivitiesAreTheSame(newAbility, CurrentAbility))
 			{
-				//Debug.Log("Cannot do activity " + newAbility.AbilityName + " because it's already the current activity");
+				Debug.Log("Cannot do activity " + newAbility.AbilityName + " because it's already the current activity");
 				return false;
 			}
 
 			if (IsActive)
 			{
-				Debug.Log("Cannot do activity " + newAbility.AbilityName + " because current activity is " + CurrentAbility.AbilityName);
+				Debug.Log(newAbility.AbilityName +" can stop: " + CurrentAbility.AbilityName + " ? " + CurrentAbility.canStop());
 				return CurrentAbility.canStop();
 			}
 

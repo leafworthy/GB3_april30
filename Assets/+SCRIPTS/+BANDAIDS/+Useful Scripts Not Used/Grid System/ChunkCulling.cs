@@ -1,25 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridCulling : MonoBehaviour
+public class ChunkCulling : MonoBehaviour
 {
 
     public List<GameObject> chunks;
     public Camera cam;
     public Vector2 camSize;
-    private bool isActive;
-
-    private void Start()
-    {
-        isActive = true;
-    }
-
     private void Update()
     {
-        if( !isActive) return;
         Vector3 camPos = cam.transform.position;
-      
-
         foreach (GameObject chunk in chunks)
         {
             if (chunk != null)
@@ -37,10 +27,5 @@ public class GridCulling : MonoBehaviour
                 }
             }
         }
-    }
-
-    public void StopCulling()
-    {
-        isActive = false;
     }
 }

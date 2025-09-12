@@ -18,6 +18,7 @@ namespace __SCRIPTS
 
 		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
+		public float aimSmoothSpeed = 8;
 
 		public override string AbilityName => "Aim";
 
@@ -37,10 +38,13 @@ namespace __SCRIPTS
 			return true;
 		}
 
-
+		private Vector2 lastAimDir;
 		protected override void DoAbility()
 		{
-			AimDir = GetRealAimDir();
+			if(GetRealAimDir().magnitude != 0)AimDir = Vector2.Lerp(lastAimDir, GetRealAimDir().normalized, aimSmoothSpeed * Time.deltaTime);
+			lastAimDir = AimDir;
+
+			//AimDir = GetRealAimDir();
 			RotateAimObjects(AimDir);
 			FaceAimDir();
 		}
@@ -62,7 +66,7 @@ namespace __SCRIPTS
 
 		private void AimerOnAim(IControlAxis controlAxis, Vector2 newAimDir)
 		{
-			if (hasEnoughMagnitude()) AimDir = newAimDir;
+			if (hasEnoughMagnitude()) AimDir = Vector2.Lerp(AimDir, GetRealAimDir().normalized, aimSmoothSpeed * Time.deltaTime);
 			Do();
 		}
 

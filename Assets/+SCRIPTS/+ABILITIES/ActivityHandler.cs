@@ -106,78 +106,8 @@ namespace __SCRIPTS
 
 		}
 
-		public bool CompleteCurrentActivity(CompletionReason reason, GangstaBean.Core.IActivity newActivity = null)
-		{
-			if (!isActive || currentActivity == null) return false;
 
 
-
-			// Use default cleanup if no custom completion was handled
-			ActivityStory += $"\nUsing default cleanup for {currentActivity.AbilityName}";
-			DefaultCleanup(currentActivity, parentMonoBehaviour);
-			isActive = false;
-			currentActivity = null;
-			return true;
-		}
-
-		public bool DoWithCompletion(GangstaBean.Core.IActivity activity, CompletionReason reason = CompletionReason.NewActivity)
-		{
-			if (isActive && currentActivity != null)
-			{
-				if (currentActivity.AbilityName == activity.AbilityName)
-				{
-					ActivityStory += "\nTried to start doing " + activity.AbilityName + " but already doing it";
-					return false;
-				}
-
-				// Try completing current activity first
-				if (!CompleteCurrentActivity(reason, activity))
-				{
-					ActivityStory += $"\nCould not complete {currentActivity.AbilityName} for {activity.AbilityName}";
-					return false;
-				}
-			}
-
-			// Continue with normal Do logic
-			return Do(activity);
-		}
-
-		/// <summary>
-		/// Default cleanup logic that handles common patterns across most abilities.
-		/// This covers the standard cleanup that 80% of abilities need.
-		/// </summary>
-		/// <param name="activity">The activity being cleaned up</param>
-		/// <param name="parent">The MonoBehaviour component hosting the activity</param>
-		public static void DefaultCleanup(GangstaBean.Core.IActivity activity, MonoBehaviour parent)
-		{
-			if (parent == null) return;
-
-			// Cancel any pending Invoke calls - common safety mechanism
-			parent.CancelInvoke();
-
-			// Get common components that abilities use
-			var animations = parent.GetComponent<UnitAnimations>();
-			var body = parent.GetComponent<Body>();
-
-			// Reset common animation states
-			if (animations != null)
-			{
-				animations.SetBool(UnitAnimations.IsAttacking, false);
-				animations.SetBool(UnitAnimations.IsShooting, false);
-				animations.SetBool(UnitAnimations.IsCharging, false);
-				animations.SetBool(UnitAnimations.IsShielding, false);
-				animations.SetBool(UnitAnimations.IsBobbing, true); // Default bobbing state
-			}
-
-			// Body part cleanup is handled by the body parts themselves via StopSafely()
-			// So we don't need to duplicate that logic here
-
-			Debug.Log($"[ActivityHandler] Default cleanup completed for {activity.AbilityName}");
-		}
 	}
 
-}
-
-namespace __SCRIPTS
-{
 }

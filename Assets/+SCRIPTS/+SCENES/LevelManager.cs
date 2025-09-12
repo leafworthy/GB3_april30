@@ -163,11 +163,6 @@ namespace __SCRIPTS
 			OnWinGame?.Invoke();
 		}
 
-		public void StartWinningGame()
-		{
-			var graphNodePositioner = FindFirstObjectByType<GridCulling>();
-			graphNodePositioner.StopCulling();
-		}
 
 		public float GetCurrentLevelTimeElapsed() => GetTimeElapsed();
 
@@ -181,6 +176,10 @@ namespace __SCRIPTS
 		{
 			if (!loadInGame) return Services.assetManager.Scenes.startingScene;
 			return Services.assetManager.Scenes.testScene;
+		}
+
+		public void StartWinningGame()
+		{
 		}
 	}
 }

@@ -143,7 +143,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.4080002, z: 0}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4951918003775185730}
@@ -1102,7 +1102,7 @@ MonoBehaviour:
     weaponType: 0
     reserveAmmo: 120
     clipSize: 30
-    AmmoInClip: 20
+    AmmoInClip: 3
     maxReserveAmmo: 300
     reloads: 1
     unlimited: 0
@@ -1258,6 +1258,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  aimSmoothSpeed: 8
 --- !u!114 &318323335208742521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1782,7 +1783,7 @@ Transform:
   m_GameObject: {fileID: 5712099988744022249}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.030273167, y: 0.5916421, z: 0}
+  m_LocalPosition: {x: -0.030273167, y: 0.76, z: 0}
   m_LocalScale: {x: 0.07762363, y: 0.07762363, z: 0.07762363}
   m_ConstrainProportionsScale: 0
   m_Children:

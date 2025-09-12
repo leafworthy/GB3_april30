@@ -24,8 +24,11 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public void Do()
 	{
-		if (!canDo()) return;
-
+		if (!canDo())
+		{
+			Debug.Log("body cant do");
+			return;
+		}
 		if (requiresArms()) body.doableArms.DoActivity(this);
 
 		if (requiresLegs()) body.doableLegs.DoActivity(this);
@@ -56,10 +59,26 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	private bool BodyCanDo(IDoableAbility abilityToDo)
 	{
-		if (Services.pauseManager.IsPaused) return false;
-		if (life.IsDead()) return false;
-		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo)) return false;
-		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo)) return false;
+		if (Services.pauseManager.IsPaused)
+		{
+			Debug.Log("can't do " + AbilityName + " because paused");
+			return false;
+		}
+		if (life.IsDead())
+		{
+			Debug.Log("can't do " + AbilityName + " because dead");
+			return false;
+		}
+		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo))
+		{
+			Debug.Log("can't do " + AbilityName + " because arms can't do activity");
+			return false;
+		}
+		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo))
+		{
+			Debug.Log("can't do " + AbilityName + " because legs can't do activity");
+			return false;
+		}
 
 		return true;
 	}

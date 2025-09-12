@@ -94,9 +94,23 @@ namespace __SCRIPTS
 
 		public bool CanReload()
 		{
-			if (!reloads) return false;
-			if (reserveAmmo <= 0) return false;
-			if (AmmoInClip >= clipSize) return false;
+			if (!reloads)
+			{
+				Debug.Log("cant reload, this weapon doesn't reload");
+				return false;
+			}
+			if (reserveAmmo <= 0)
+			{
+				Debug.Log("cant reload, no reserve ammo");
+				return false;
+			}
+			if (AmmoInClip >= clipSize)
+			{
+				Debug.Log("cant reload, clip is full");
+				return false;
+			}
+
+			Debug.Log("can reload");
 			return true;
 
 		}

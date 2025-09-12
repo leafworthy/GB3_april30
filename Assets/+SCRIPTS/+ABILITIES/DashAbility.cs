@@ -25,20 +25,15 @@ namespace __SCRIPTS
 				return false;
 			}
 
-			if (!jumps.canDo())
+			if (!jumps.IsResting)
 			{
 				Debug.Log("Cannot do jumps, cannot do " + AbilityName + " ability");
-				return false;
-			}
-			if (body.doableArms.IsActive)
-			{
-				Debug.Log("Arms are active, cannot do " + AbilityName + " ability");
 				return false;
 			}
 			return true;
 		}
 
-		public override bool canStop() => true;
+		public override bool canStop() => false;
 
 		public override void Stop()
 		{

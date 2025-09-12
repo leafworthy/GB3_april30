@@ -151,7 +151,6 @@ namespace __SCRIPTS
 			if (direction.magnitude != 0)
 			{
 				moveDir = direction.normalized;
-				Debug.Log("move dir: " + GetMoveDir(), this);
 				body.BottomFaceDirection(direction.x > 0);
 			}
 			else
@@ -210,13 +209,11 @@ namespace __SCRIPTS
 
 		private void StartMoving(Vector2 direction)
 		{
-			Debug.Log("start moving in direction " + direction);
 			MoveInDirection(direction, life.MoveSpeed);
 		}
 
 		public void StopMoving()
 		{
-			Debug.Log("stop moving");
 			isMoving = false;
 			moveVelocity = Vector2.zero;
 			anim.SetBool(UnitAnimations.IsMoving, false);

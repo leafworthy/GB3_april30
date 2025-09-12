@@ -116,7 +116,7 @@ namespace __SCRIPTS
 				UpPressed = DownPressed = false;
 			}
 		}
-		public bool currentMagnitudeIsTooSmall() => (currentDir.magnitude < .3f);
+		public bool currentMagnitudeIsTooSmall() => (currentDir.magnitude < .5f);
 
 		private bool UpPressed;
 		private bool DownPressed;

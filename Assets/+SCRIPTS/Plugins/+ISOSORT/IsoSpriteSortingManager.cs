@@ -141,7 +141,6 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			sortedSprites.Clear();
 			TopologicalSort.Sort(currentlyVisibleStaticSpriteList, currentlyVisibleMoveableSpriteList, sortedSprites);
 			SetSortOrderBasedOnListOrder(sortedSprites);
-			Debug.Log("sorting updated with " + sortedSprites.Count + " sprites");
 		}
 
 		private static void AddMovingDependencies(List<IsoSpriteSorting> moveableList, List<IsoSpriteSorting> staticList)

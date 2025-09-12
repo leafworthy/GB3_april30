@@ -41,7 +41,13 @@ namespace __SCRIPTS
 
 		public bool CanShoot()
 		{
-			return Ammo.hasAmmoInClip();
+			if (!Ammo.hasAmmoInClip())
+			{
+				OnNeedsReload?.Invoke();
+				Debug.Log("gun needs reload", this);
+				return false;
+			}
+			return true;
 			Debug.Log("is cooling down: " + IsCoolingDown + ", has ammo in clip: " + Ammo.hasAmmoInClip(), this);
 			Debug.Log("cooldown: " + currentCooldownTime + " vs time: " + Time.time +" good?: "+ (currentCooldownTime >= Time.time) , this);
 			if(Ammo.hasAmmoInClip() && !IsCoolingDown) Debug.Log("wtf this is right");
@@ -75,6 +81,7 @@ namespace __SCRIPTS
 			if (!Ammo.hasAmmoInClip())
 			{
 				OnNeedsReload?.Invoke();
+				Debug.Log("gun needs reload", this);
 				return;
 			}
 
@@ -94,7 +101,7 @@ namespace __SCRIPTS
 			var missPosition = (Vector2) body.FootPoint.transform.position + gunAimAbility.AimDir.normalized * AttackRange;
 			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, gunAimAbility.AimDir.normalized, AttackRange, life.Player.BuildingLayer);
 			if (raycastHit) missPosition = raycastHit.point;
-			var newAttack = new Attack(life, body.FootPoint.transform.position, missPosition, null, 0);
+			var newAttack = new Attack(life, body.AttackStartPoint.transform.position, missPosition, 0);
 
 			Debug.DrawLine(body.FootPoint.transform.position, missPosition, Color.red, 3);
 			OnShotMissed?.Invoke(newAttack);
@@ -111,7 +118,7 @@ namespace __SCRIPTS
 				if (target == null) Debug.Log("target is still null", this);
 				return;
 			}
-			var newAttack = new Attack(life, body.FootPoint.transform.position, hitObject.point, target, Damage);
+			var newAttack = new Attack(life, target, body.AttackStartPoint.transform.position, hitObject.point, Damage);
 			OnShotHitTarget?.Invoke(newAttack);
 			target.TakeDamage(newAttack);
 		}

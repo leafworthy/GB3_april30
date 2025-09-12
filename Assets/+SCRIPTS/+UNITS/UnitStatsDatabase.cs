@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using __SCRIPTS;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -50,7 +51,7 @@ public class UnitStatsDatabase : ScriptableObject
 			GetCoroutineRunner().StartCoroutine(LoadDataCoroutine());
 	}
 
-	// New self-sufficient method
+[Button]
 	public void LoadFromGoogleSheets()
 	{
 		LoadFromGoogleSheets(null);

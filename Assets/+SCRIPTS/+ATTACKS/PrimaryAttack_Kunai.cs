@@ -19,20 +19,6 @@ namespace __SCRIPTS
 		private string verbName;
 		public event Action<Vector3, Vector3, float, Life, bool> OnThrow;
 
-		public bool TryCompleteGracefully(CompletionReason reason, IActivity newActivity = null)
-		{
-			switch (reason)
-			{
-				case CompletionReason.AnimationInterrupt:
-				case CompletionReason.NewActivity:
-					// Handle graceful completion
-					isPressing = false;
-					body.arms.Stop(this);
-					anim.ResetTrigger(UnitAnimations.ThrowTrigger);
-					return true;
-			}
-			return false;
-		}
 
 		private void OnEnable()
 		{

@@ -51,7 +51,7 @@ namespace __SCRIPTS
 			OnReload?.Invoke();
 		}
 
-		public override void Stop()
+		public void OnDestroy()
 		{
 			player.Controller.ReloadTriangle.OnPress -= Player_Reload;
 			base.Stop();
@@ -63,17 +63,20 @@ namespace __SCRIPTS
 			if (player != null) player.Controller.ReloadTriangle.OnPress -= Player_Reload;
 			if (gunAttack != null) gunAttack.OnNeedsReload -= Gun_OnNeedsReload;
 			player.Controller.ReloadTriangle.OnPress += Player_Reload;
+			Debug.Log("set player reload");
 		gunAttack.OnNeedsReload += Gun_OnNeedsReload;
 		}
 
 
 		private void Gun_OnNeedsReload()
 		{
+			Debug.Log("gun neesd reload do");
 			Do();
 		}
 
 		private void Player_Reload(NewControlButton btn)
 		{
+			Debug.Log("player do");
 			Do();
 		}
 	}
