@@ -15,6 +15,7 @@ namespace __SCRIPTS
 		public event Action OnAmmoUsed;
 		public bool reloads = true;
 		public bool unlimited;
+		public bool hasSlash = true;
 
 		public bool hasAmmoInClip() => AmmoInClip > 0;
 

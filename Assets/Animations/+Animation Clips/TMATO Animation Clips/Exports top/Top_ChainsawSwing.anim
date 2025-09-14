@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Top_Shield idle
+  m_Name: Top_ChainsawSwing
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,7 +21,13 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 2652285736596604695, guid: bafefef3fd23d4be6971618229de2562, type: 3}
+      value: {fileID: 6088299263009675511, guid: bafefef3fd23d4be6971618229de2562, type: 3}
+    - time: 0.065999985
+      value: {fileID: 5576476644593222997, guid: bafefef3fd23d4be6971618229de2562, type: 3}
+    - time: 0.13199997
+      value: {fileID: -1896738059812885620, guid: bafefef3fd23d4be6971618229de2562, type: 3}
+    - time: 0.18799996
+      value: {fileID: -1896738059812885620, guid: bafefef3fd23d4be6971618229de2562, type: 3}
     attribute: m_Sprite
     path: JumpObject/Animation/TopSprite/Sprite
     classID: 212
@@ -44,13 +50,16 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 2652285736596604695, guid: bafefef3fd23d4be6971618229de2562, type: 3}
+    - {fileID: 6088299263009675511, guid: bafefef3fd23d4be6971618229de2562, type: 3}
+    - {fileID: 5576476644593222997, guid: bafefef3fd23d4be6971618229de2562, type: 3}
+    - {fileID: -1896738059812885620, guid: bafefef3fd23d4be6971618229de2562, type: 3}
+    - {fileID: -1896738059812885620, guid: bafefef3fd23d4be6971618229de2562, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.01
+    m_StopTime: 0.19799997
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

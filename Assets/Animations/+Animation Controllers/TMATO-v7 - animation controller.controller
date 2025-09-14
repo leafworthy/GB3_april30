@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shoot
+  m_Name: Top_Shoot
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -59,7 +59,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: chainsaw swing
+  m_Name: Top_ChainsawSwing
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -134,7 +134,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Land
+  m_Name: Bottom_Land
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -334,7 +334,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: chainsaw away
+  m_Name: Top_ChainsawAway
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -412,7 +412,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Flying
+  m_Name: Bottom_Flying
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -439,7 +439,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: chainsaw idle
+  m_Name: Top_ChainsawIdle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -467,7 +467,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Jump up-top
+  m_Name: Top_JumpUp
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -617,7 +617,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Stand
+  m_Name: Bottom_Stand
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -648,7 +648,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Top_Shield out
+  m_Name: Top_ShieldOut
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -677,7 +677,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: chainsaw saw
+  m_Name: Top_ChainsawSaw
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -830,7 +830,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Jump down-top
+  m_Name: Top_JumpDown
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -857,7 +857,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shield idle
+  m_Name: Top_ShieldIdle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -906,7 +906,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Die
+  m_Name: Bottom_Die
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1025,6 +1025,33 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &-393858617725743965
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Top_Reload
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions:
+  - {fileID: 8557401923257338858}
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: a93f9dd5c06ce4f52b3ad4a01aa7e6ad, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1101 &-228754673668887535
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1315,7 +1342,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dash
+  m_Name: Top_Dash
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1639,7 +1666,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Top-Idle
+  m_Name: Top_Idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1694,7 +1721,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: chainsaw out
+  m_Name: Top_ChainsawOut
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1721,7 +1748,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dash
+  m_Name: Bottom_Dash
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1750,7 +1777,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Jump up-bottom
+  m_Name: Bottom_JumpUp
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1779,7 +1806,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Run
+  m_Name: Bottom_Run
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1952,7 +1979,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shield away
+  m_Name: Top_ShieldAway
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -2050,7 +2077,10 @@ AnimatorStateMachine:
     m_Position: {x: 1660, y: 310, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1779106135040885859}
-    m_Position: {x: 1616.7352, y: 169.89845, z: 0}
+    m_Position: {x: 1620, y: 170, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -393858617725743965}
+    m_Position: {x: 240, y: 560, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 963448668618996629}
@@ -2170,7 +2200,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Top_Mine drop
+  m_Name: Top_MineDrop
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -2190,6 +2220,28 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1101 &8557401923257338858
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions: []
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -6089313973920308937}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 1
+  m_HasExitTime: 1
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &8638743579471794778
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -2222,7 +2274,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Jump down-bottom
+  m_Name: Bottom_JumpDown
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

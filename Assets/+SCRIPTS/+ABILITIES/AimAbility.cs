@@ -10,6 +10,7 @@ namespace __SCRIPTS
 		Vector2 AimDir { get; }
 		Vector2 GetAimPoint();
 	}
+	[DisallowMultipleComponent]
 	public class AimAbility : Ability, IAimAbility
 	{
 		[HideInInspector] public Vector2 AimDir { get; set; }

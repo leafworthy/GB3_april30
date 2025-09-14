@@ -5,18 +5,15 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class DoableReloadAbility : Ability
+	public class ReloadAbility : Ability
 	{
 		public event Action OnReload;
-		public AnimationClip ReloadAKAnimationClip;
-		public AnimationClip ReloadGlockAnimationClip;
+		public AnimationClip ReloadPrimaryGunAnimationClip;
+		public AnimationClip ReloadUnlimitedGunAnimationClip;
 		private GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
 		private GunAttack _gunAttack;
 
 		private float reloadTime = .5f;
-
-		private List<Gun> guns => _guns??= GetComponents<Gun>().ToList();
-		private List<Gun> _guns;
 		public override string AbilityName => "Reloading";
 		protected override bool requiresArms() => true;
 
@@ -32,16 +29,16 @@ namespace __SCRIPTS
 		private void StartReloading()
 		{
 			Debug.Log("start reloading");
-			Invoke(nameof(Reload), reloadTime);
+			Invoke(nameof(Reload), gunAttack.CurrentGun.reloadTime);
 			anim.SetBool(UnitAnimations.IsBobbing, false);
 
 			if (!gunAttack.IsUsingPrimaryGun)
 			{
 				Debug.Log("playing glock reload animation");
-				PlayAnimationClip(ReloadGlockAnimationClip, 1);
+				PlayAnimationClip(ReloadUnlimitedGunAnimationClip, 1);
 			}
 			else
-				PlayAnimationClip(ReloadAKAnimationClip, 1);
+				PlayAnimationClip(ReloadPrimaryGunAnimationClip, 1);
 		}
 
 		private void Reload()

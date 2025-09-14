@@ -4,7 +4,8 @@ namespace __SCRIPTS
 {
 	public class DashAbility : Ability
 	{
-		public AnimationClip dashAnimationClip;
+		public AnimationClip dashAnimationClip_Bottom;
+		public AnimationClip dashAnimationClip_Top;
 		private AnimationEvents animEvents;
 		private MoveAbility moveAbility  => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
@@ -12,6 +13,7 @@ namespace __SCRIPTS
 		private CharacterJumpAbility jumps;
 
 		public bool teleport;
+
 		public override string AbilityName => "Dash";
 		protected override bool requiresArms() => true;
 
@@ -109,7 +111,8 @@ namespace __SCRIPTS
 
 		private void Dash()
 		{
-			PlayAnimationClip(dashAnimationClip);
+			if(dashAnimationClip_Bottom != null)PlayAnimationClip(dashAnimationClip_Bottom);
+			if (dashAnimationClip_Bottom != null) PlayAnimationClip(dashAnimationClip_Top,1);
 			Debug.Log("Dashing with " + AbilityName + " ability");
 			if (!teleport)
 			{

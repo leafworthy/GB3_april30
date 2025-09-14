@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -9,10 +8,7 @@ namespace __SCRIPTS
 	public class GunAttack : Ability
 	{
 		public bool IsUsingPrimaryGun => currentGun is PrimaryGun;
-		public bool isPressingShoot;
-
-		private DoableReloadAbility reloadAbility  => _reloadAbility ??= GetComponent<DoableReloadAbility>();
-		private DoableReloadAbility _reloadAbility;
+		private bool isPressingShoot;
 		public Gun CurrentGun => currentGun;
 		private Gun currentGun;
 		private float currentCooldownTime;
@@ -30,7 +26,7 @@ namespace __SCRIPTS
 		private List<Gun> _allGuns;
 		private GunAttack aimableGun;
 		public bool simpleShoot;
-		private CharacterJumpAbility jumps  => _jumps ??= GetComponent<CharacterJumpAbility>();
+		private CharacterJumpAbility jumps => _jumps ??= GetComponent<CharacterJumpAbility>();
 		private CharacterJumpAbility _jumps;
 
 		public event Action OnNeedsReload;
@@ -39,8 +35,8 @@ namespace __SCRIPTS
 		{
 			base.Stop();
 			anim.SetFloat(UnitAnimations.ShootSpeed, 0);
-
 		}
+
 
 		private static string[] PrimaryAnimationClips =
 		{
@@ -86,7 +82,7 @@ namespace __SCRIPTS
 		{
 			var whichPortion = GetDirectionPortion(degrees);
 			if (whichPortion > PrimaryAnimationClips.Length) whichPortion = 0;
-			return IsUsingPrimaryGun ? PrimaryAnimationClips[whichPortion] : PrimaryAnimationClips[whichPortion]+"_Glock";
+			return IsUsingPrimaryGun ? PrimaryAnimationClips[whichPortion] : PrimaryAnimationClips[whichPortion] + "_Glock";
 		}
 
 		private static int GetDirectionPortion(float degrees)
@@ -150,7 +146,7 @@ namespace __SCRIPTS
 		private void Shoot()
 		{
 			anim.SetFloat(UnitAnimations.ShootSpeed, 1);
-			if (simpleShoot)
+			if (currentGun.simpleShoot)
 				anim.Play("Shoot", 1, 0);
 			else
 				anim.Play(GetClipNameFromDegrees(GetDegreesFromAimDir()), 1, .25f);

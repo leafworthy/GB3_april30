@@ -2,7 +2,7 @@ using __SCRIPTS;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterJumpAbility)),DisallowMultipleComponent]
-public class DoableJumpAbility_FX : MonoBehaviour
+public class CharacterJumpAbility_FX : MonoBehaviour
 {
 
 	private CharacterJumpAbility jump;

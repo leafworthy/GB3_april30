@@ -71,7 +71,7 @@ namespace __SCRIPTS
 
 		private void StartDeath(Attack killingAttack)
 		{
-
+			Debug.Log("on death in unit health");
 			OnDead?.Invoke(killingAttack);
 			isDead = true;
 		}

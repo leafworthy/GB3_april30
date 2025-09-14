@@ -9,6 +9,7 @@ namespace __SCRIPTS
 		public event Action<Attack> OnShotMissed;
 		public event Action OnNeedsReload;
 		public event Action OnEmpty;
+		public event Action<Vector2> OnShoot;
 		private UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
 		private UnitAnimations _anim;
 		protected AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
@@ -22,6 +23,7 @@ namespace __SCRIPTS
 		private Life _life;
 		private bool isCoolingDown;
 		private float currentCooldownTime;
+		public virtual float reloadTime => .5f;
 		public abstract float AttackRate { get; }
 		protected abstract float Damage { get; }
 		protected abstract Ammo Ammo { get; }
@@ -29,7 +31,7 @@ namespace __SCRIPTS
 		protected abstract float AttackRange { get; }
 		protected abstract float Spread { get; }
 		protected abstract int numberOfBulletsPerShot { get; }
-		protected virtual bool simpleShoot => false;
+		public virtual bool simpleShoot => false;
 		private bool IsCoolingDown => Time.time <= currentCooldownTime;
 		public bool CanReload() => Ammo.CanReload();
 		public void Reload() => Ammo.Reload();
@@ -66,6 +68,7 @@ namespace __SCRIPTS
 
 
 			Debug.Log("[GUN] isAttacking, number of bullets: " + numberOfBulletsPerShot, this);
+			OnShoot?.Invoke(shootDirection);
 			if (simpleShoot) anim.SetTrigger(UnitAnimations.ShootingTrigger);
 			for (var i = 0; i < numberOfBulletsPerShot; i++)
 			{
@@ -84,6 +87,7 @@ namespace __SCRIPTS
 				Debug.Log("gun needs reload", this);
 				return;
 			}
+
 
 			Ammo.UseAmmo(1);
 			var hitObject = Physics2D.Linecast(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange, life.EnemyLayer);

@@ -66,6 +66,8 @@ namespace __SCRIPTS
 		[FormerlySerializedAs("RisingTextPrefab")]
 		public GameObject risingTextPrefab;
 
+		public GameObject shotgunBlastPrefab;
+
 		public List<GameObject> GetBulletHits(DebrisType debrisType)
 		{
 			switch (debrisType)

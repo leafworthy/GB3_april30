@@ -44,15 +44,12 @@ namespace __SCRIPTS
 		public static readonly int IsCharging = Animator.StringToHash("IsCharging");
 		public static readonly int IsMoving = Animator.StringToHash("IsMoving");
 		public static readonly int IsChainsawing = Animator.StringToHash("IsChainsawing");
+		public static readonly int IsShielding = Animator.StringToHash("IsShielding");
 
 		public static readonly int GlockTrigger = Animator.StringToHash("GlockTrigger");
 
 		private HashSet<int> parameterHashes;
 		public AnimationClip DefaultBottomAnimation;
-		public AnimationClip DefaultTopAnimation;
-		private static int _aimDir;
-		public static readonly int IsShielding = Animator.StringToHash("IsShielding");
-		public static readonly int AimDir = Animator.StringToHash("AimDir");
 
 		#endregion
 

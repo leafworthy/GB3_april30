@@ -140,6 +140,7 @@ namespace __SCRIPTS
 
 		private void HealthOnDead(Attack attack)
 		{
+			Debug.Log("health on dead", this);
 			EnableColliders(false);
 			OnDying?.Invoke(attack);
 			if (attack.OriginLife.player != null)

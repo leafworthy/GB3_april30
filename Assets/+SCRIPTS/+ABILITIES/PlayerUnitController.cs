@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
+	[DisallowMultipleComponent]
 	public class PlayerUnitController : MonoBehaviour, INeedPlayer, IMove
 	{
 		private Player player;

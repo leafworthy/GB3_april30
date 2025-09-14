@@ -11,7 +11,6 @@ namespace __SCRIPTS.HUD_Displays
 		public TMP_Text totalText;
 		private Ammo ammoToDisplay;
 		public CanvasGroup ammoDisplayCanvas;
-		public bool hasSlash;
 
 		public bool greys;
 		private bool init;
@@ -22,8 +21,8 @@ namespace __SCRIPTS.HUD_Displays
 
 			if (totalText != null)
 			{
-				if (hasSlash) totalText.text = "/" + ammoToDisplay.reserveAmmo;
-				else totalText.text = ammoToDisplay.reserveAmmo.ToString();
+				if (ammoToDisplay.hasSlash) totalText.text = "/" + ammoToDisplay.reserveAmmo;
+				else totalText.text = "/" + ammoToDisplay.maxReserveAmmo;
 			}
 
 			if (!ammoToDisplay.hasAmmoInClip() && ammoToDisplay.reloads)

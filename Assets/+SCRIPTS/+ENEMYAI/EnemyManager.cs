@@ -35,6 +35,7 @@ namespace __SCRIPTS
 
 			if (enemyDefence == null) return;
 			if (_allEnemies.Contains(enemyDefence)) return;
+			Debug.Log("collected enemy: " + enemyDefence.name);
 			enemyDefence.OnKilled += EnemyKilled;
 			enemyDefence.OnDying += EnemyDying;
 			_allEnemies.Add(enemyDefence);
@@ -66,6 +67,7 @@ namespace __SCRIPTS
 
 		public void ConfigureNewEnemy(GameObject enemy)
 		{
+			Debug.Log("configuring new enemy");
 			// Set up the Life component
 			var life = enemy.GetComponent<Life>();
 			if (life != null)

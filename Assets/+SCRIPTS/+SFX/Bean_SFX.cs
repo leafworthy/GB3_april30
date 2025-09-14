@@ -12,7 +12,7 @@ namespace __SCRIPTS
 		private Glock _glock;
 		private AK47 ak47 => _ak47 ??= GetComponent<AK47>();
 		private AK47 _ak47;
-		private DoableReloadAbility reloadAbility;
+		private ReloadAbility reloadAbility;
 		private DoableKnifeAttack knifeAttack;
 		private NadeAttack nadeAttack;
 
@@ -29,7 +29,7 @@ namespace __SCRIPTS
 				simpleJump.OnLand += SimpleJumpOnLand;
 			}
 
-			reloadAbility = GetComponent<DoableReloadAbility>();
+			reloadAbility = GetComponent<ReloadAbility>();
 			knifeAttack = GetComponent<DoableKnifeAttack>();
 			nadeAttack = GetComponent<NadeAttack>();
 
