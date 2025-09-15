@@ -58,8 +58,15 @@ namespace __SCRIPTS
 
 		public void Shoot(Vector2 shootDirection)
 		{
+
 			if (!CanShoot())
 			{
+				if (!Ammo.hasAmmoInClip())
+				{
+					OnNeedsReload?.Invoke();
+					Debug.Log("gun needs reload", this);
+					return;
+				}
 				Debug.Log("can't shoot", this);
 				return;
 			}
@@ -69,6 +76,8 @@ namespace __SCRIPTS
 
 			Debug.Log("[GUN] isAttacking, number of bullets: " + numberOfBulletsPerShot, this);
 			OnShoot?.Invoke(shootDirection);
+			Ammo.UseAmmo(1);
+
 			if (simpleShoot) anim.SetTrigger(UnitAnimations.ShootingTrigger);
 			for (var i = 0; i < numberOfBulletsPerShot; i++)
 			{
@@ -81,15 +90,10 @@ namespace __SCRIPTS
 		private void ShootBullet(Vector3 shootDirection)
 		{
 			Debug.Log("[GUN] shoot bullet in gun", this);
-			if (!Ammo.hasAmmoInClip())
-			{
-				OnNeedsReload?.Invoke();
-				Debug.Log("gun needs reload", this);
-				return;
-			}
 
 
-			Ammo.UseAmmo(1);
+
+
 			var hitObject = Physics2D.Linecast(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange, life.EnemyLayer);
 			Debug.DrawLine( body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange, Color.green, 3);
 

@@ -10,28 +10,69 @@ namespace __SCRIPTS
 		public bool IsActive => CurrentAbility != null;
 		public IDoableAbility CurrentAbility => _currentAbility;
 		private IDoableAbility _currentAbility;
-
+		private IDoableAbility _bufferedAbility;
 		public void Stop(IDoableAbility abilityToStop)
 		{
 			if (CurrentAbility == null) return;
 			if (CurrentAbility != abilityToStop) return;
+			Debug.Log($"[Doer] stopping {CurrentAbility.AbilityName}");
 			_currentAbility = null;
+
+			if (_bufferedAbility == null) return;
+			var next = _bufferedAbility;
+			_bufferedAbility = null;
+			Debug.Log($"[Doer] buffered ability found: {next.AbilityName}");
+			DoActivity(next);
+
 		}
 
 		public void DoActivity(IDoableAbility newAbility)
 		{
 			if (CanDoActivity(newAbility))
 			{
-				if (_currentAbility != null && _currentAbility.canStop()) _currentAbility.Stop();
-				Debug.Log("starting activity " + newAbility.AbilityName);
-				_currentAbility = newAbility;
-				CurrentAbility.Do();
-				Debug.Log("[Doer] activity started: " + newAbility.AbilityName);
+				ActuallyDo(newAbility);
 				return;
 			}
 
-			Debug.Log($"[Doer] BLOCKED: Cannot do {newAbility.AbilityName} because " +
-			          $"{(IsActive ? "no current activity" : $"current activity is {CurrentAbility.AbilityName}")}");
+			if (IsActive)
+			{
+				BufferAbility(newAbility);
+				return;
+			}
+
+			Debug.Log($"[Doer] BLOCKED: Cannot do {newAbility.AbilityName} " +
+			          $"{(IsActive ? $"current activity is {CurrentAbility.AbilityName}" : "no current activity")}");
+
+		}
+
+		private void ActuallyDo(IDoableAbility newAbility)
+		{
+			if (_currentAbility != null && _currentAbility.canStop())
+			{
+				Debug.Log("[Doer] stopping activity " + _currentAbility.AbilityName);
+				_currentAbility.Stop();
+			}
+			_currentAbility = newAbility;
+			CurrentAbility.Do();
+			Debug.Log("[Doer] activity started: " + newAbility.AbilityName);
+		}
+
+		private void BufferAbility(IDoableAbility newAbility)
+		{
+			if (ActivitiesAreTheSame(newAbility, CurrentAbility))
+			{
+				Debug.Log($"[Doer] Not buffering {newAbility.AbilityName} (same as current)");
+				return;
+			}
+
+			if (ActivitiesAreTheSame(newAbility, _bufferedAbility))
+			{
+				Debug.Log($"[Doer] Not buffering {newAbility.AbilityName} (already buffered)");
+				return;
+			}
+
+			_bufferedAbility = newAbility;
+			Debug.Log($"[Doer] Queued ability {newAbility.AbilityName} to start after {CurrentAbility.AbilityName}");
 		}
 
 		private bool ActivitiesAreTheSame(IDoableAbility activity1, IDoableAbility activity2) =>
@@ -44,19 +85,17 @@ namespace __SCRIPTS
 				Debug.Log("Cannot do activity because it's null");
 				return false;
 			}
+
 			if (ActivitiesAreTheSame(newAbility, CurrentAbility))
 			{
 				Debug.Log("Cannot do activity " + newAbility.AbilityName + " because it's already the current activity");
 				return false;
 			}
 
-			if (IsActive)
-			{
-				Debug.Log(newAbility.AbilityName +" can stop: " + CurrentAbility.AbilityName + " ? " + CurrentAbility.canStop());
-				return CurrentAbility.canStop();
-			}
+			if (!IsActive) return true;
+			Debug.Log(newAbility.AbilityName + " can stop: " + CurrentAbility.AbilityName + " ? " + CurrentAbility.canStop());
+			return CurrentAbility.canStop();
 
-			return true;
 		}
 	}
 }

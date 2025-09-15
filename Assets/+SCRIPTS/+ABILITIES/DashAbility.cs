@@ -7,7 +7,7 @@ namespace __SCRIPTS
 		public AnimationClip dashAnimationClip_Bottom;
 		public AnimationClip dashAnimationClip_Top;
 		private AnimationEvents animEvents;
-		private MoveAbility moveAbility  => _moveAbility ??= GetComponent<MoveAbility>();
+		protected MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
 		private Player owner;
 		private CharacterJumpAbility jumps;
@@ -32,6 +32,7 @@ namespace __SCRIPTS
 				Debug.Log("Cannot do jumps, cannot do " + AbilityName + " ability");
 				return false;
 			}
+
 			return true;
 		}
 
@@ -60,9 +61,9 @@ namespace __SCRIPTS
 			if (animEvents != null)
 				animEvents.OnTeleport -= Anim_Teleport;
 		}
+
 		public override void SetPlayer(Player _player)
 		{
-
 			jumps = GetComponent<CharacterJumpAbility>();
 
 			owner = _player;
@@ -103,26 +104,12 @@ namespace __SCRIPTS
 			Do();
 		}
 
-		protected override void AnimationComplete()
-		{
-
-			Stop();
-		}
-
 		private void Dash()
 		{
-			if(dashAnimationClip_Bottom != null)PlayAnimationClip(dashAnimationClip_Bottom);
-			if (dashAnimationClip_Bottom != null) PlayAnimationClip(dashAnimationClip_Top,1);
-			Debug.Log("Dashing with " + AbilityName + " ability");
-			if (!teleport)
-			{
-				moveAbility.Push(moveAbility.GetMoveDir(), life.DashSpeed);
-				body.ChangeLayer(Body.BodyLayer.grounded);
-			}
-			else
-			{
-				body.ChangeLayer(Body.BodyLayer.jumping);
-			}
+			if (dashAnimationClip_Bottom != null) PlayAnimationClip(dashAnimationClip_Bottom);
+			if (dashAnimationClip_Bottom != null) PlayAnimationClip(dashAnimationClip_Top, 1);
+
+			moveAbility.Push(moveAbility.GetMoveDir(), life.DashSpeed);
 		}
 	}
 }

@@ -116,6 +116,7 @@ namespace __SCRIPTS
 		{
 			base.SetPlayer(_player);
 			currentGun = allGuns[0];
+			Debug.Log(  "set player gun attack, current gun is primary: " + (currentGun is PrimaryGun) + " total guns: " + allGuns.Count);
 			foreach (var gun in allGuns)
 			{
 				gun.OnShotHitTarget -= Gun_OnShotHitTarget;

@@ -3,6 +3,7 @@ using GangstaBean.Core;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
+
 public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPlayer
 {
 	protected Player player;

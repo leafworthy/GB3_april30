@@ -62,7 +62,6 @@ GameObject:
   - component: {fileID: 8675161199927038349}
   - component: {fileID: 4095820994941158476}
   - component: {fileID: 7895999935522049922}
-  - component: {fileID: 7091988369132417981}
   - component: {fileID: 8201654479573628637}
   - component: {fileID: 3502544150800627868}
   - component: {fileID: 6719769570431361143}
@@ -78,6 +77,7 @@ GameObject:
   - component: {fileID: 5027827199548788944}
   - component: {fileID: 7270518776441820197}
   - component: {fileID: 2156083562631303988}
+  - component: {fileID: 4159714342900945356}
   m_Layer: 6
   m_Name: Tmato
   m_TagString: Player
@@ -364,11 +364,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   primaryAmmo:
     weaponType: 7
-    reserveAmmo: 25
-    clipSize: 1
-    AmmoInClip: 1
-    maxReserveAmmo: 25
-    reloads: 0
+    reserveAmmo: 50
+    clipSize: 2
+    AmmoInClip: 2
+    maxReserveAmmo: 50
+    reloads: 1
     unlimited: 0
     hasSlash: 1
   secondaryAmmo:
@@ -379,7 +379,7 @@ MonoBehaviour:
     maxReserveAmmo: 9
     reloads: 0
     unlimited: 0
-    hasSlash: 1
+    hasSlash: 0
   tertiaryAmmo:
     weaponType: 9
     reserveAmmo: 999
@@ -388,7 +388,7 @@ MonoBehaviour:
     maxReserveAmmo: 999
     reloads: 0
     unlimited: 1
-    hasSlash: 1
+    hasSlash: 0
   unlimitedAmmo:
     weaponType: 2
     reserveAmmo: 999
@@ -500,30 +500,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4292d3ea9a9b432ab0feb06b3d835a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7091988369132417981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 515facb9872f4120ba98fc418327e202, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  dashAnimationClip_Bottom: {fileID: 7400000, guid: 746c1ced39b2848bf8d0f07abac95286, type: 2}
-  dashAnimationClip_Top: {fileID: 7400000, guid: 2c4a788ed7a984519ad55e814b922696, type: 2}
-  teleport: 0
 --- !u!114 &8201654479573628637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -593,6 +569,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb2b3bd32d1e4208b996e4cc9cfd831a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   mineDropAnimation: {fileID: 7400000, guid: dd31d40d3b4ce49f1930c5a433a6312c, type: 2}
 --- !u!114 &4845799822202863552
 MonoBehaviour:
@@ -606,6 +591,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dce6f46fbb046e893331e3f8538b37f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   shieldOutClip: {fileID: 7400000, guid: d62be2764810a43fc8ebb4378c925085, type: 2}
 --- !u!82 &8932575119027580578
 AudioSource:
@@ -916,6 +910,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2aacb7acdd84b1cac6564a60d5c6a86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4159714342900945356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081200535837487843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d6d671d851d42caaec8afd43fac3fd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  dashAnimationClip_Bottom: {fileID: 0}
+  dashAnimationClip_Top: {fileID: 0}
+  teleport: 0
 --- !u!1 &1215287345263444361
 GameObject:
   m_ObjectHideFlags: 0

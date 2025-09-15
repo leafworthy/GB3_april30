@@ -1,141 +1,31 @@
 using System;
 using System.Collections.Generic;
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class ThrowMineAttack : MonoBehaviour, INeedPlayer, IActivity
+	public class ThrowMineAttack : Ability
 	{
+		public override string AbilityName => "Throw-Mine";
+		public AnimationClip mineDropAnimation;
 		private Vector2 startPoint;
 		private Vector2 endPoint;
-
-		private const int throwTime = 30;
-
-		private Player player;
-
-		private IAimAbility aim;
-		private MoveAbility move;
-		private AmmoInventory ammo;
-		private SimpleJumpAbility simpleJump;
-		private Life life;
-		private Body body;
-		private Arms arms => body.arms;
-		private UnitAnimations anim;
-		private AnimationEvents animationEvents;
-
-		private bool isPressing;
-		private List<Mine> ActiveMines  = new();
-		private bool detonatePressed;
-		public AnimationClip mineDropAnimation;
-		public string AbilityName => "Throw-Mine";
-
-
 		public event Action<Vector2, Player> OnThrow;
+		private AmmoInventory ammo => _ammo ??= GetComponent<AmmoInventory>();
+		private AmmoInventory _ammo;
+		private CharacterJumpAbility jumpAbility => _jumpAbility ??= GetComponent<CharacterJumpAbility>();
+		private CharacterJumpAbility _jumpAbility;
 
-		public void SetPlayer(Player _player)
-		{
-			anim = GetComponent<UnitAnimations>();
-			animationEvents = anim.animEvents;
-			body = GetComponent<Body>();
-			life = GetComponent<Life>();
-			player = _player;
-			simpleJump = GetComponent<SimpleJumpAbility>();
-			move = GetComponent<MoveAbility>();
-			ammo = GetComponent<AmmoInventory>();
-			aim = GetComponent<IAimAbility>();
-			ListenToPlayer();
-		}
+		private List<Mine> ActiveMines = new();
+		private bool isPressingThrowMine;
+		private bool isPressingDetonate;
+		protected override bool requiresArms() => true;
 
-		private void OnDisable()
-		{
-			StopListeningToPlayer();
-		}
+		protected override bool requiresLegs() => false;
 
-		private void StopListeningToPlayer()
-		{
-			if (player == null) return;
-			if (player.Controller == null) return;
-			if (anim == null) return;
-			animationEvents.OnThrow -= Anim_Throw;
-			animationEvents.OnThrowStop -= Anim_ThrowStop;
-			player.Controller.Attack2LeftTrigger.OnPress -= Player_ThrowPress;
-			player.Controller.Attack2LeftTrigger.OnRelease -= Player_ThrowRelease;
-			player.Controller.ReloadTriangle.OnPress -= Player_DetonatePress;
-			player.Controller.ReloadTriangle.OnRelease -= Player_DetonateRelease;
-		}
+		public override bool canDo() => base.canDo() && ammo.secondaryAmmo.hasReserveAmmo() && jumpAbility.IsResting;
 
-		private void ListenToPlayer()
-		{
-			if (player == null) return;
-			animationEvents = anim.animEvents;
-			animationEvents.OnThrow += Anim_Throw;
-			animationEvents.OnThrowStop += Anim_ThrowStop;
-			player.Controller.Attack2LeftTrigger.OnPress += Player_ThrowPress;
-			player.Controller.Attack2LeftTrigger.OnRelease += Player_ThrowRelease;
-			player.Controller.ReloadTriangle.OnPress += Player_DetonatePress;
-			player.Controller.ReloadTriangle.OnRelease += Player_DetonateRelease;
-		}
-
-		private void Player_DetonateRelease(NewControlButton obj)
-		{
-			if (!detonatePressed) return;
-			detonatePressed = false;
-		}
-
-		private void Player_DetonatePress(NewControlButton obj)
-		{
-			if (detonatePressed) return;
-			detonatePressed = true;
-			if (ActiveMines.Count <= 0) return;
-			if (ActiveMines[0] == null) return;
-			ActiveMines[0].Detonate();
-			RemoveMine(ActiveMines[0]);
-		}
-
-		private void Anim_ThrowStop()
-		{
-			arms.Stop(this);
-			if (isPressing) Player_ThrowPress(null);
-		}
-
-		private void Player_ThrowPress(NewControlButton newControlButton)
-		{
-			if (Services.pauseManager.IsPaused) return;
-			if (isPressing) return;
-
-			if (!ammo.secondaryAmmo.hasReserveAmmo())
-			{
-
-				return;
-			}
-
-			if (!arms.Do(this))
-			{
-				if ((simpleJump.IsJumping))
-				{
-					if (arms.currentActivity?.AbilityName == AbilityName) return;
-					arms.StopCurrentActivity();
-					arms.Do(this);
-				}
-				else
-				{
-					return;
-				}
-			}
-
-			isPressing = true;
-
-			anim.Play(mineDropAnimation.name, 1, 0);
-		}
-
-		private void Player_ThrowRelease(NewControlButton obj)
-		{
-
-			isPressing = false;
-		}
-
-		private void Anim_Throw()
+		private void DropMine()
 		{
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = transform.position;
@@ -148,14 +38,91 @@ namespace __SCRIPTS
 			ActiveMines.Add(newMine);
 		}
 
-		private void RemoveMine(Mine mine)
+		protected override void DoAbility()
 		{
-			if (ActiveMines.Contains(mine))
-			{
-				ActiveMines.Remove(mine);
-				mine.OnSelfDetonate -= RemoveMine;
-			}
+			PlayAnimationClip(mineDropAnimation, 1);
+			Invoke(nameof(DropMine), mineDropAnimation.length / 2);
+
+			anim.Play(mineDropAnimation.name, 1, 0);
 		}
 
+
+
+		public override void SetPlayer(Player _player)
+		{
+			base.SetPlayer(_player);
+			ListenToPlayer();
+		}
+
+		private void OnDestroy()
+		{
+			StopListeningToPlayer();
+		}
+
+		private void StopListeningToPlayer()
+		{
+			if (player == null) return;
+			if (player.Controller == null) return;
+			player.Controller.Attack2LeftTrigger.OnPress -= Player_ThrowPress;
+			player.Controller.Attack2LeftTrigger.OnRelease -= Player_ThrowRelease;
+			player.Controller.ReloadTriangle.OnPress -= Player_DetonatePress;
+			player.Controller.ReloadTriangle.OnRelease -= Player_DetonateRelease;
+		}
+
+		private void ListenToPlayer()
+		{
+			if (player == null) return;
+			if (player.Controller == null) return;
+			player.Controller.Attack2LeftTrigger.OnPress += Player_ThrowPress;
+			player.Controller.Attack2LeftTrigger.OnRelease += Player_ThrowRelease;
+			player.Controller.ReloadTriangle.OnPress += Player_DetonatePress;
+			player.Controller.ReloadTriangle.OnRelease += Player_DetonateRelease;
+		}
+
+		private void Player_DetonateRelease(NewControlButton obj) => isPressingDetonate = false;
+
+		private void Player_DetonatePress(NewControlButton obj)
+		{
+			if (isPressingDetonate) return;
+			isPressingDetonate = true;
+			DetonateMine();
+		}
+
+		private void DetonateMine()
+		{
+			if (ActiveMines.Count <= 0) return;
+			if (ActiveMines[0] == null) return;
+			ActiveMines[0].Detonate();
+			RemoveMine(ActiveMines[0]);
+		}
+
+		protected override void AnimationComplete()
+		{
+			if (isPressingThrowMine)
+			{
+				Player_ThrowPress(null);
+				return;
+			}
+
+			base.AnimationComplete();
+		}
+
+		private void Player_ThrowPress(NewControlButton newControlButton)
+		{
+			if (Services.pauseManager.IsPaused) return;
+			Do();
+		}
+
+		private void Player_ThrowRelease(NewControlButton obj)
+		{
+			isPressingThrowMine = false;
+		}
+
+		private void RemoveMine(Mine mine)
+		{
+			if (!ActiveMines.Contains(mine)) return;
+			ActiveMines.Remove(mine);
+			mine.OnSelfDetonate -= RemoveMine;
+		}
 	}
 }
