@@ -4,7 +4,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class ShieldDashAbility : DashAbility
 {
-	private float extraDashSpeedFactor = 1.5f;
+	private float extraDashPushFactor = 3;
 	public override string AbilityName => "Shield-Dash";
 	protected override void DoAbility()
 	{
@@ -17,11 +17,21 @@ public class ShieldDashAbility : DashAbility
 		var hits = Physics2D.OverlapCircleAll(transform.position, 30, life.EnemyLayer);
 		foreach (var hit in hits)
 		{
-			var _life = hit.GetComponent<Life>();
-			if (_life == null || !_life.IsEnemyOf(life)) continue;
-			var movement = hit.GetComponent<MoveAbility>();
-			if (movement == null) return;
-			movement.Push((hit.transform.position - transform.position).normalized, life.DashSpeed * extraDashSpeedFactor);
+			Debug.Log("[SHIELD] Hit " + hit.name);
+			var _life = hit.GetComponentInParent<Life>();
+			if (_life == null || !_life.IsEnemyOf(life))
+			{
+				Debug.Log("[SHIELD] Not an enemy");
+				continue;
+			}
+			var movement = _life.GetComponent<MoveAbility>();
+			if (movement == null)
+			{
+				Debug.Log("[SHIELD] No movement component");
+				continue;
+			}
+			movement.Push((hit.transform.position - transform.position).normalized, life.DashSpeed * extraDashPushFactor);
+			Debug.Log("[SHIELD] Pushed " + hit.name);
 		}
 	}
 

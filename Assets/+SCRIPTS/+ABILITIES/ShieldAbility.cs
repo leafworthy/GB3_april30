@@ -5,34 +5,80 @@ public class ShieldAbility : Ability
 {
 	public override string AbilityName => "Shield";
 	public AnimationClip shieldOutClip;
-	private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
-	private MoveAbility _moveAbility;
-	private CharacterJumpAbility jumpAbility => _jumpAbility ??= GetComponent<CharacterJumpAbility>();
-	private CharacterJumpAbility _jumpAbility;
+	public AnimationClip shieldAwayClip;
+	public AnimationClip shieldingClip;
+	public GameObject shieldObject;
 
 	private bool isShielding;
+	private bool isPuttingAway;
+	private bool isPressingShield;
+	private bool isResuming;
+
+	private AimAbility aimAbility => _aimAbility ??= GetComponent<AimAbility>();
+	private AimAbility _aimAbility;
 	protected override bool requiresArms() => true;
-	public override bool canStop() => true;
 	protected override bool requiresLegs() => false;
+	public override bool canStop() => true;
+
 	protected override void DoAbility()
 	{
 		if (isShielding) return;
+		shieldObject.SetActive(true);
 		isShielding = true;
-		PlayAnimationClip(shieldOutClip.name, 1 );
+		life.SetShielding(true);
+		PlayAnimationClip(isResuming ? shieldingClip : shieldOutClip, 1);
 	}
 
+	private void Update()
+	{
+		if (canDo() && isPressingShield && !isShielding && !isPuttingAway)
+		{
+			isResuming = true;
+			Do();
+		}
 
+		if (isShielding)
+		{
+
+				 body.TopFaceDirection(aimAbility.AimDir.x >= 0);
+
+		}
+	}
+
+	protected override void AnimationComplete()
+	{
+		if (isPuttingAway)
+		{
+			Stop();
+			return;
+		}
+
+		if (isShielding) return;
+		PutShieldAway();
+	}
 
 	public override void SetPlayer(Player _player)
 	{
 		base.SetPlayer(_player);
-		_player.Controller.InteractRightShoulder.OnPress += Controller_RightShouldPress;
-		_player.Controller.InteractRightShoulder.OnRelease += Controller_RightShouldRelease;
+		player.Controller.InteractRightShoulder.OnPress += Controller_RightShouldPress;
+		player.Controller.InteractRightShoulder.OnRelease += Controller_RightShouldRelease;
 	}
 
 	private void Controller_RightShouldRelease(NewControlButton obj)
 	{
-		Stop();
+		isPressingShield = false;
+		if (!isShielding) return;
+		PutShieldAway();
+	}
+
+	private void PutShieldAway()
+	{
+		if (isPuttingAway) return;
+		shieldObject.SetActive(false);
+		isPuttingAway = true;
+		isShielding = false;
+		life.SetShielding(false);
+		PlayAnimationClip(shieldAwayClip, 1);
 	}
 
 	private void OnDestroy()
@@ -40,20 +86,20 @@ public class ShieldAbility : Ability
 		if (player == null) return;
 		if (player.Controller == null) return;
 		player.Controller.InteractRightShoulder.OnPress -= Controller_RightShouldPress;
+		player.Controller.InteractRightShoulder.OnRelease -= Controller_RightShouldRelease;
 	}
 
 	public override void Stop()
 	{
 		base.Stop();
+		isPuttingAway = false;
+		life.SetShielding(false);
 		isShielding = false;
 	}
 
-
-	public override bool canDo() => base.canDo() && jumpAbility.IsResting && !moveAbility.GetCanMove();
-
 	private void Controller_RightShouldPress(NewControlButton newControlButton)
 	{
+		isPressingShield = true;
 		Do();
 	}
-
 }

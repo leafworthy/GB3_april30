@@ -23,7 +23,7 @@ namespace __SCRIPTS
 
 		protected override bool requiresLegs() => false;
 
-		public override bool canDo() => base.canDo() && ammo.secondaryAmmo.hasReserveAmmo() && jumpAbility.IsResting;
+		public override bool canDo() => base.canDo() && ammo.secondaryAmmo.hasReserveAmmo();
 
 		private void DropMine()
 		{

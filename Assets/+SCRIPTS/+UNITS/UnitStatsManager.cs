@@ -35,6 +35,7 @@ namespace __SCRIPTS
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void ResetStatics()
 		{
+			Debug.Log("resetting UnitStatsManager statics");
 			initialized = true;
 			database = Resources.Load<UnitStatsDatabase>("UnitStatsDatabase");
 			unitStatsLookup = BuildLookupDictionary();
@@ -42,6 +43,7 @@ namespace __SCRIPTS
 		private static Dictionary<string, UnitStatsData> BuildLookupDictionary()
 		{
 			if(!initialized) ResetStatics();
+			Debug.Log("rebuilding lookup dictionary");
 			var _unitStatsLookup = new Dictionary<string, UnitStatsData>();
 
 			foreach (var unit in database.allUnits)

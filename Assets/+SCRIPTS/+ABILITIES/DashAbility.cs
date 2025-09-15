@@ -104,10 +104,10 @@ namespace __SCRIPTS
 			Do();
 		}
 
-		private void Dash()
+		protected void Dash()
 		{
 			if (dashAnimationClip_Bottom != null) PlayAnimationClip(dashAnimationClip_Bottom);
-			if (dashAnimationClip_Bottom != null) PlayAnimationClip(dashAnimationClip_Top, 1);
+			if (dashAnimationClip_Top != null) PlayAnimationClip(dashAnimationClip_Top, 1);
 
 			moveAbility.Push(moveAbility.GetMoveDir(), life.DashSpeed);
 		}

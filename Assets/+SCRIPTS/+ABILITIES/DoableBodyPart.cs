@@ -11,6 +11,7 @@ namespace __SCRIPTS
 		public IDoableAbility CurrentAbility => _currentAbility;
 		private IDoableAbility _currentAbility;
 		private IDoableAbility _bufferedAbility;
+
 		public void Stop(IDoableAbility abilityToStop)
 		{
 			if (CurrentAbility == null) return;
@@ -23,7 +24,6 @@ namespace __SCRIPTS
 			_bufferedAbility = null;
 			Debug.Log($"[Doer] buffered ability found: {next.AbilityName}");
 			DoActivity(next);
-
 		}
 
 		public void DoActivity(IDoableAbility newAbility)
@@ -34,15 +34,7 @@ namespace __SCRIPTS
 				return;
 			}
 
-			if (IsActive)
-			{
-				BufferAbility(newAbility);
-				return;
-			}
-
-			Debug.Log($"[Doer] BLOCKED: Cannot do {newAbility.AbilityName} " +
-			          $"{(IsActive ? $"current activity is {CurrentAbility.AbilityName}" : "no current activity")}");
-
+			BufferAbility(newAbility);
 		}
 
 		private void ActuallyDo(IDoableAbility newAbility)
@@ -52,6 +44,7 @@ namespace __SCRIPTS
 				Debug.Log("[Doer] stopping activity " + _currentAbility.AbilityName);
 				_currentAbility.Stop();
 			}
+
 			_currentAbility = newAbility;
 			CurrentAbility.Do();
 			Debug.Log("[Doer] activity started: " + newAbility.AbilityName);
@@ -72,7 +65,7 @@ namespace __SCRIPTS
 			}
 
 			_bufferedAbility = newAbility;
-			Debug.Log($"[Doer] Queued ability {newAbility.AbilityName} to start after {CurrentAbility.AbilityName}");
+			Debug.Log($"[Doer] Buffered ability {newAbility.AbilityName} to start after {CurrentAbility.AbilityName}");
 		}
 
 		private bool ActivitiesAreTheSame(IDoableAbility activity1, IDoableAbility activity2) =>
@@ -95,7 +88,6 @@ namespace __SCRIPTS
 			if (!IsActive) return true;
 			Debug.Log(newAbility.AbilityName + " can stop: " + CurrentAbility.AbilityName + " ? " + CurrentAbility.canStop());
 			return CurrentAbility.canStop();
-
 		}
 	}
 }
