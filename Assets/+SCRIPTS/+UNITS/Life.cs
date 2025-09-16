@@ -124,6 +124,7 @@ namespace __SCRIPTS
 		private void CompleteDeath()
 		{
 			OnDeathComplete?.Invoke(Player);
+			Services.objectMaker.Unmake(gameObject);
 		}
 
 
@@ -156,6 +157,7 @@ namespace __SCRIPTS
 		{
 			if (!unitStats.Data.isInvincible && !enable) return;
 			colliders = gameObject.GetComponentsInChildren<Collider2D>(true);
+			Debug.Log("disable colliders");
 
 			foreach (var col in colliders)
 			{

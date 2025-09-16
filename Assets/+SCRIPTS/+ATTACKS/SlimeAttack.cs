@@ -4,24 +4,22 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class SlimeAttack : MonoBehaviour
+	public class SlimeAttack : Attacks
 	{
 		[SerializeField] private GameObject ProjectilePrefab;
 		private float currentCooldownTime;
 
-		private Life life;
 		private Body body;
 		private UnitAnimations anim;
-		private EnemyAI ai;
+		private IAttack ai;
 		private Life currentTarget;
 
 		private void OnEnable()
 		{
-			life = GetComponent<Life>();
 			body = GetComponent<Body>();
 			anim = GetComponent<UnitAnimations>();
 
-			ai = GetComponent<EnemyAI>();
+			ai = GetComponent<IAttack>();
 
 			ai.OnAttack += AIAttack;
 			anim.animEvents.OnAttackHit += CreateSlime;

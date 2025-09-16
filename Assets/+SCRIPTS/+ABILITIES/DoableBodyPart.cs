@@ -39,7 +39,7 @@ namespace __SCRIPTS
 
 		private void ActuallyDo(IDoableAbility newAbility)
 		{
-			if (_currentAbility != null && _currentAbility.canStop())
+			if (_currentAbility != null && _currentAbility.canStop(newAbility))
 			{
 				Debug.Log("[Doer] stopping activity " + _currentAbility.AbilityName);
 				_currentAbility.Stop();
@@ -86,8 +86,8 @@ namespace __SCRIPTS
 			}
 
 			if (!IsActive) return true;
-			Debug.Log(newAbility.AbilityName + " can stop: " + CurrentAbility.AbilityName + " ? " + CurrentAbility.canStop());
-			return CurrentAbility.canStop();
+			Debug.Log(newAbility.AbilityName + " can stop: " + CurrentAbility.AbilityName + " ? " + CurrentAbility.canStop(newAbility));
+			return CurrentAbility.canStop(newAbility);
 		}
 	}
 }

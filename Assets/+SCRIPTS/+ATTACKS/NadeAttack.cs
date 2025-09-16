@@ -1,4 +1,5 @@
 using System;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -16,7 +17,7 @@ namespace __SCRIPTS
 		private MoveAbility move;
 		private AmmoInventory ammo;
 
-		public override string AbilityName => NadeVerbName;
+		public override string AbilityName => "Nade";
 		private CharacterJumpAbility jump => _jump ??= GetComponent<CharacterJumpAbility>();
 		private CharacterJumpAbility _jump;
 		private DoableArms arms => body.doableArms;
@@ -30,12 +31,11 @@ namespace __SCRIPTS
 		private float currentCooldownTime;
 		[SerializeField] private AnimationClip animationClip;
 
-		public static string NadeVerbName = "Nade";
 		protected override bool requiresArms() => true;
 
 		protected override bool requiresLegs() => false;
 
-		public override bool canStop() => IsAiming;
+		public override bool canStop(IDoableAbility abilityToStopFor) => IsAiming;
 		public override bool canDo() => ammo.secondaryAmmo.hasReserveAmmo() && !jump.IsJumping && base.canDo();
 
 		protected override void DoAbility()

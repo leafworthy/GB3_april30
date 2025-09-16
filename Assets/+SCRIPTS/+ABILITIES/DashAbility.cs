@@ -1,3 +1,4 @@
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -36,7 +37,7 @@ namespace __SCRIPTS
 			return true;
 		}
 
-		public override bool canStop() => false;
+		public override bool canStop(IDoableAbility abilityToStopFor) => false;
 
 		public override void Stop()
 		{

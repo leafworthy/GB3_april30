@@ -1,4 +1,5 @@
 using System;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -53,7 +54,7 @@ namespace __SCRIPTS
 			return IsResting;
 		}
 
-		public override bool canStop() => false;
+		public override bool canStop(IDoableAbility abilityToStopFor) => false;
 
 		protected override void DoAbility()
 		{

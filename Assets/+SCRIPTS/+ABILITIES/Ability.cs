@@ -21,7 +21,7 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public virtual bool canDo() => BodyCanDo(this);
 
-	public virtual bool canStop() => false;
+	public virtual bool canStop(IDoableAbility abilityToStopFor) => false;
 
 	public void Do()
 	{

@@ -1,4 +1,5 @@
 using __SCRIPTS.Cursor;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -23,7 +24,7 @@ namespace __SCRIPTS
 
 		public override string AbilityName => "Aim";
 
-		public override bool canStop()
+		public override bool canStop(IDoableAbility abilityToStopFor)
 		{
 			Debug.Log("testing can stop");
 			return true;

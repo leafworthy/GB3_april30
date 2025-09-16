@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -18,7 +19,7 @@ namespace __SCRIPTS
 		protected override bool requiresArms() => true;
 
 		protected override bool requiresLegs() => false;
-		public override bool canStop() => true;
+		public override bool canStop(IDoableAbility abilityToStopFor) => true;
 
 		public Vector2 AimDir => aimAbility.AimDir;
 

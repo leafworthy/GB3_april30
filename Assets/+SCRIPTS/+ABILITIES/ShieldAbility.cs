@@ -1,4 +1,5 @@
 using __SCRIPTS;
+using GangstaBean.Core;
 using UnityEngine;
 
 public class ShieldAbility : Ability
@@ -18,7 +19,7 @@ public class ShieldAbility : Ability
 	private AimAbility _aimAbility;
 	protected override bool requiresArms() => true;
 	protected override bool requiresLegs() => false;
-	public override bool canStop() => true;
+	public override bool canStop(IDoableAbility newAbility) => true;
 
 	protected override void DoAbility()
 	{

@@ -57,6 +57,8 @@ namespace __SCRIPTS
 		public static UnitStatsData GetUnitStats(string unitName)
 		{
 			if (!initialized) ResetStatics();
+			if(!Application.isPlaying)ResetStatics();
+			Debug.Log("getting stats for " + unitName);
 			if (string.IsNullOrEmpty(unitName))
 			{
 				Debug.Log("null name");

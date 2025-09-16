@@ -103,18 +103,21 @@ namespace __SCRIPTS
 			AllJoinedPlayers.Add(joiningPlayer);
 			Debug.Log("PLAYERS: player joins" + joiningPlayer.name + " with input " + newPlayerInput.playerIndex);
 			OnPlayerJoins?.Invoke(joiningPlayer);
+			joiningPlayer.OnPlayerDies += Player_PlayerDies;
 		}
 
 
 		private void Player_PlayerDies(Player deadPlayer)
 		{
 			OnPlayerDies?.Invoke(deadPlayer);
+			Debug.Log("player dies, players left: " + AllJoinedPlayers.Count(t => t.state == Player.State.Alive));
 			if (AllJoinedPlayersAreDead()) OnAllJoinedPlayersDead?.Invoke();
 		}
 
 		private bool AllJoinedPlayersAreDead()
 		{
 			var playersAlive = AllJoinedPlayers.Where(t => t.state == Player.State.Alive).ToList();
+			Debug.Log(playersAlive.Count <= 0 ? "all players dead" : "players still alive: " + playersAlive.Count);
 			return playersAlive.Count <= 0;
 		}
 

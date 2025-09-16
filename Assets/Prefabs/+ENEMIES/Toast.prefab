@@ -476,7 +476,6 @@ GameObject:
   - component: {fileID: 7431454428826219924}
   - component: {fileID: 2451757643079752978}
   - component: {fileID: -8070408823439803412}
-  - component: {fileID: 1858765045}
   - component: {fileID: 1858765047}
   - component: {fileID: 6976058987671691116}
   - component: {fileID: 7431454428826219941}
@@ -659,21 +658,6 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   healthBar: {fileID: 0}
   BlockTint: 0
---- !u!114 &1858765045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7431454428826219940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f586f285b3847808d79083bd19ef1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  unwrap: 1
-  splitAtEveryPortal: 1
 --- !u!114 &1858765047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -739,6 +723,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   isMovable: 1
   renderBelowAll: 0
   sortingBounds: {fileID: 2783720333978919190}
@@ -845,6 +838,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 4330567752162112080}
+  DefaultBottomAnimation: {fileID: 0}
 --- !u!114 &7668832580322677999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -857,15 +851,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8e19e5c2974953b6d306f3bb0303ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!114 &1364683539933955483
 MonoBehaviour:
   m_ObjectHideFlags: 0

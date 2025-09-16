@@ -65,7 +65,7 @@ namespace __SCRIPTS
 				StopMoving();
 			else
 			{
-				if (isTryingToMove) MoveInDirection(player.Controller.MoveAxis.GetCurrentAngle(), life.MoveSpeed);
+				if (isTryingToMove) MoveInDirection(GetMoveAimDir(), life.MoveSpeed);
 			}
 		}
 

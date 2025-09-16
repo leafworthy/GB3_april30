@@ -12,15 +12,5 @@ public class EnemyPlacer : MonoBehaviour
 		Destroy(gameObject);
 	}
 
-	[Button]
-	public void GrabSpriteFromPrefab()
-	{
-		if (EnemyPrefab == null) return;
-		var spriteRenderer = EnemyPrefab.GetComponentInChildren<SpriteRenderer>();
-		if (spriteRenderer == null) return;
-		var mySpriteRenderer = GetComponentInChildren<SpriteRenderer>();
-		if (mySpriteRenderer == null) return;
-		mySpriteRenderer.sprite = spriteRenderer.sprite;
-	}
 
 }

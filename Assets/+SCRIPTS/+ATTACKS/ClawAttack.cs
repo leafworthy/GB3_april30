@@ -17,8 +17,6 @@ namespace __SCRIPTS
 	{
 		private float currentCooldownTime;
 		private Life currentTargetLife;
-		private Life life => _life ??= GetComponent<Life>();
-		private Life _life;
 
 		private IAttack ai;
 		private UnitAnimations anim;
