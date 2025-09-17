@@ -21,7 +21,6 @@ namespace __SCRIPTS
 		private IAttack ai;
 		private UnitAnimations anim;
 		private Body body;
-		public float extraPush = .2f;
 		private Targetter targetter;
 
 		public override string AbilityName => "MeleeAttack";
@@ -66,10 +65,8 @@ namespace __SCRIPTS
 
 		private bool TargetIsInvalid(Life newTarget)
 		{
-			if (base.life.IsDead() || newTarget.IsDead()) return true;
-			if (!targetter.HasLineOfSightWith(newTarget.transform.position) && !newTarget.IsObstacle) return true;
-			return false;
-
+			if (life == null ||life.IsDead() || newTarget.IsDead() ) return true;
+			return !targetter.HasLineOfSightWith(newTarget.transform.position) && !newTarget.IsObstacle;
 		}
 
 		private void StartAttack()
@@ -103,23 +100,11 @@ namespace __SCRIPTS
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (currentTargetLife == null) return;
-			if (base.life.IsDead() || currentTargetLife.IsDead()) return;
-			if (!currentTargetLife.IsObstacle)
-			{
-				if (!targetter.HasLineOfSightWith(currentTargetLife.transform.position))
-				{
-					return;
-				}
-			}
-			else
-			{
-				AttackUtilities.HitTarget(base.life.PrimaryAttackDamageWithExtra, life,currentTargetLife, extraPush);
-				return;
-			}
+			if (TargetIsInvalid(currentTargetLife)) return;
 
 			if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= base.life.PrimaryAttackRange*1.25f)
 			{
-				AttackUtilities.HitTarget(base.life.PrimaryAttackDamageWithExtra, life, currentTargetLife, extraPush);
+				AttackUtilities.HitTarget(life, currentTargetLife, life.PrimaryAttackDamageWithExtra);
 			}
 
 

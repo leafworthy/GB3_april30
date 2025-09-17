@@ -86,18 +86,15 @@ namespace __SCRIPTS
 
 		private void RegularAttackHit(int attackType)
 		{
-			var circleCast = Physics2D.OverlapCircleAll(transform.position, GetHitRange(attackType), Services.assetManager.LevelAssets.EnemyLayer);
-			var closest2 = circleCast.OrderBy(item => Vector2.Distance(item.gameObject.transform.position, transform.position)).Take(2);
-			foreach (var col in closest2)
+			var hits = AttackUtilities.CircleCastForXClosestTargets(life,GetAttackDamage(attackType));
+			foreach (var hit in hits)
 			{
-				if (col == null) return;
-				var _life = col.gameObject.GetComponent<Life>();
-				if (!_life.IsEnemyOf(base.life) || _life.CanBeAttacked) return;
-				if (base.life.IsHuman && _life.IsObstacle) return;
-				AttackUtilities.HitTarget(GetAttackDamage(attackType),life, _life, extraPush);
-				OnHit?.Invoke(col.gameObject.transform.position);
+				AttackUtilities.HitTarget(life, hit,GetAttackDamage(attackType));
+				OnHit?.Invoke(hit.gameObject.transform.position);
 			}
 		}
+
+
 
 		private float GetHitRange(int attackType)
 		{

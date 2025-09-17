@@ -157,7 +157,7 @@ namespace __SCRIPTS
 		private void CreateDamageRisingText(Attack attack)
 		{
 			if (attack.DamageAmount <= 0) return;
-			if (!life.CanBeAttacked) return;
+			if (!life.IsNotInvincible) return;
 			var roundedDamage = Mathf.Round(attack.DamageAmount);
 			Services.risingText.CreateRisingText("-" + roundedDamage, attack.DestinationWithHeight, Color.red);
 		}

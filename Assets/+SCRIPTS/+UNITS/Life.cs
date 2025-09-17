@@ -42,7 +42,7 @@ namespace __SCRIPTS
 		public DebrisType DebrisType => unitStats.DebrisType;
 		public bool showLifeBar => unitStats.Data.showLifeBar;
 		public float MaxHealth => unitStats.MaxHealth;
-		public bool CanBeAttacked => !unitStats.Data.isInvincible;
+		public bool IsNotInvincible => !unitStats.Data.isInvincible;
 
 		#endregion
 

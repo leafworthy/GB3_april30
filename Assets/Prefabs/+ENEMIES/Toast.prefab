@@ -578,20 +578,20 @@ MonoBehaviour:
   player: {fileID: 0}
   unitStats:
     _unitData:
-      unitName: 
-      category: 0
+      unitName: Toast
+      category: 1
       debrisType: 0
-      isPlayerSwingHittable: 0
-      showLifeBar: 0
+      isPlayerSwingHittable: 1
+      showLifeBar: 1
       isInvincible: 0
-      healthMax: 0
-      moveSpeed: 0
+      healthMax: 40
+      moveSpeed: 22
       dashSpeed: 0
       jumpSpeed: 0
-      aggroRange: 0
-      attack1Damage: 0
-      attack1Rate: 0
-      attack1Range: 0
+      aggroRange: 400
+      attack1Damage: 8
+      attack1Rate: 1
+      attack1Range: 12
       attack2Damage: 0
       attack2Rate: 0
       attack2Range: 0
@@ -601,7 +601,7 @@ MonoBehaviour:
       attack4Damage: 0
       attack4Rate: 0
       attack4Range: 0
-      hasData: 0
+      hasData: 1
       isDefault: 0
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
@@ -724,7 +724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 

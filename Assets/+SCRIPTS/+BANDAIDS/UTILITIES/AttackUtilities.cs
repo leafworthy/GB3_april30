@@ -5,70 +5,82 @@ using UnityEngine;
 
 public static class AttackUtilities
 {
-	public static float PushFactor = 10;
+	private const float PushFactor = 10;
 
+	public static List<Life> CircleCastForXClosestTargets(Life originLife,float range, int howMany = 2)
+	{
+		var result = new List<Life>();
+		var circleCast = Physics2D.OverlapCircleAll(originLife.transform.position, range, Services.assetManager.LevelAssets.EnemyLayer);
+		var closest2 = circleCast.OrderBy(item => Vector2.Distance(item.gameObject.transform.position, originLife.transform.position)).Take(howMany);
+		foreach (var col in closest2)
+		{
+			if (col == null) continue;
+			var _life = col.gameObject.GetComponent<Life>();
+			if (_life == null) continue;
+			if (!IsValidTarget(originLife, _life)) return null;
+			result.Add( _life);
+
+		}
+
+		return result;
+	}
 	public static void HitTargetsWithinRange(Life attackerLife, Vector2 attackPosition, float attackRange, float attackDamage, float extraPush = .1f)
 	{
-		var layer = attackerLife.EnemyLayer;
-
-		var closestHits = FindClosestHits(attackPosition, attackRange, layer);
+		var closestHits = FindClosestHits(attackerLife, attackPosition, attackRange, attackerLife.EnemyLayer);
 		if (closestHits.Count <= 0) return;
 
 		foreach (var targetLife in closestHits)
 		{
-			HitTarget(attackDamage, attackerLife, targetLife, extraPush);
+			HitTarget( attackerLife, targetLife, attackDamage);
 		}
 	}
-	private static List<Life> FindClosestHits(Vector2 attackPosition, float attackRange, LayerMask layerMask)
+
+	private static List<Life> FindClosestHits(Life originLife, Vector2 attackPosition, float attackRange, LayerMask layerMask)
 	{
-
-		var circleCast = Physics2D.OverlapCircleAll(attackPosition, attackRange, layerMask)
-		                          .ToList();
-		if (circleCast.Count <= 0) return new List<Life>();
-
-		var enemies = new List<Life>();
-		foreach (var targetCollider in circleCast)
-		{
-			if (targetCollider == null || targetCollider.gameObject == null) continue;
-
-			var targetLife = targetCollider.gameObject.GetComponentInParent<Life>();
-			if (targetLife == null) continue;
-			if (targetLife.IsHuman || targetLife.CanBeAttacked || targetLife.IsObstacle) continue;
-			enemies.Add(targetLife);
-		}
-
-		return enemies;
+		return Physics2D.OverlapCircleAll(attackPosition, attackRange, layerMask).Where(c => c?.gameObject != null)
+		                .Select(c => c.gameObject.GetComponent<Life>()).Where(life => IsValidTarget(originLife, life)).ToList();
 	}
-	public static GameObject FindClosestHit(Vector2 attackPosition, float attackRange, LayerMask layerMask)
+
+	public static bool IsValidTarget(Life originLife, Life targetLife)
 	{
-		var closestHits = FindClosestHits(attackPosition, attackRange, layerMask);
+		if (targetLife == null) return false;
+		return originLife.IsEnemyOf(targetLife) && targetLife.IsNotInvincible && targetLife.IsPlayerAttackable && !targetLife.IsObstacle &&
+		       targetLife.CanTakeDamage;
+	}
+
+	public static GameObject FindClosestHit(Life originLife, Vector2 attackPosition, float attackRange, LayerMask layerMask)
+	{
+		var closestHits = FindClosestHits(originLife, attackPosition, attackRange, layerMask);
 		if (closestHits.Count <= 0) return null;
 
 		var closest = closestHits[0];
 		foreach (var col in closestHits)
 		{
-			var colStats = col.GetComponentInChildren<Life>();
-			if (colStats.IsObstacle || !colStats.IsPlayerAttackable) continue;
-			if (!colStats.CanBeAttacked) continue;
+			var colStats = col.GetComponent<Life>();
+			if (colStats.IsObstacle || !colStats.IsPlayerAttackable)
+			{
+				Debug.Log("[ATTACK] skipping obstacle or unattackable");
+				continue;
+			}
+
+			if (!colStats.IsNotInvincible)
+			{
+				Debug.Log("[ATTACK] skipping unattackable");
+				continue;
+			}
+
 			if (Vector2.Distance(col.gameObject.transform.position, attackPosition) < Vector2.Distance(closest.transform.position, attackPosition))
 				closest = col;
 		}
 
 		return closest.gameObject;
 	}
-	public static void HitTarget(float attackDamage, Life originLife, Life targetLife, float extraPush = 0)
+
+	public static void HitTarget(Life originLife, Life targetLife, float attackDamage, float extraPush = .1f)
 	{
 		if (targetLife == null) return;
-		if (!targetLife.IsEnemyOf(originLife)) return;
-		if (!targetLife.CanTakeDamage) return;
-
-		var newAttack = new Attack(originLife, targetLife, attackDamage);
-		targetLife.TakeDamage(newAttack);
-		if (targetLife.IsDead()) return;
-
-		var targetMoveAbility = targetLife.transform.gameObject.GetComponent<MoveAbility>();
-		if (targetMoveAbility == null) return;
-		targetMoveAbility.Push(newAttack.Direction, newAttack.DamageAmount * extraPush);
+		if (!IsValidTarget(originLife, targetLife)) return;
+		targetLife.TakeDamage(new Attack(originLife, targetLife, attackDamage));
 	}
 
 	public static RaycastHit2D RaycastToObject(Life currentTargetLife, LayerMask layerMask)
@@ -79,8 +91,6 @@ public static class AttackUtilities
 		var distance = Vector3.Distance(position, currentTargetLife.transform.position);
 		return Physics2D.Raycast(position, direction, distance, layer);
 	}
-
-
 
 	public static void Explode(Vector3 explosionPosition, float explosionRadius, float explosionDamage, Player _owner)
 	{
@@ -112,6 +122,4 @@ public static class AttackUtilities
 			defence.TakeDamage(newAttack);
 		}
 	}
-
-
 }

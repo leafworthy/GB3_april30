@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -28,7 +27,6 @@ namespace __SCRIPTS
 
 		private UnitStatsData unitData;
 
-
 		public UnitHealth(UnitStatsData data)
 		{
 			unitData = data;
@@ -49,11 +47,9 @@ namespace __SCRIPTS
 			if (isDead || IsTemporarilyInvincible || isInvincible) return;
 			Debug.Log("taking damage inside");
 			currentHealth = Mathf.Max(0, currentHealth - attack.DamageAmount);
-			OnAttackHit?.Invoke(attack);
+			if (currentHealth <= 0 && !isInvincible) StartDeath(attack);
 			OnFractionChanged?.Invoke(GetFraction());
-
-			if (!(currentHealth <= 0) || isInvincible) return;
-			StartDeath(attack);
+			OnAttackHit?.Invoke(attack);
 		}
 
 		public void AddHealth(float amount)
@@ -72,8 +68,8 @@ namespace __SCRIPTS
 		private void StartDeath(Attack killingAttack)
 		{
 			Debug.Log("on death in unit health");
-			OnDead?.Invoke(killingAttack);
 			isDead = true;
+			OnDead?.Invoke(killingAttack);
 		}
 
 		public void SetTemporaryInvincible(bool invincible)

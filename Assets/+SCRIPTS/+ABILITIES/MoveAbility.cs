@@ -246,12 +246,19 @@ namespace __SCRIPTS
 
 			hasListened = true;
 			if (life == null) return;
+			life.OnAttackHit += Life_AttackHit;
 			life.OnDying += Life_OnDying;
 			life.OnDeathComplete += Life_DeathComplete;
 
 			if (mover == null) return;
 			mover.OnMoveInDirection += MoveInDirection;
 			mover.OnStopMoving += MoverStopTryingToMove;
+		}
+
+		private void Life_AttackHit(Attack attack)
+		{
+			if (life.IsDead()) return;
+			Push( attack.Direction, attack.DamageAmount);
 		}
 
 		private bool hasListened;

@@ -98,17 +98,22 @@ public class DoableKnifeAttack : Ability
 
 	private void Anim_AttackHit()
 	{
-		var targetHit = AttackUtilities.FindClosestHit( attackPoint.transform.position, life.TertiaryAttackRange, life.EnemyLayer);
+		Debug.Log("knife attack hit");
+		var targetHit = AttackUtilities.FindClosestHit( life,attackPoint.transform.position, life.TertiaryAttackRange, life.EnemyLayer);
 		if (targetHit == null)
 		{
-			Debug.Log("attack miss");
 			OnMiss?.Invoke();
 			return;
 		}
 
 		var targetLife = targetHit.transform.gameObject.GetComponentInParent<Life>();
-		if (targetLife == null) return;
-		AttackUtilities.HitTarget(life.TertiaryAttackDamageWithExtra, life, targetLife, 2);
+		if (targetLife == null)
+		{
+			Debug.Log("no life");
+			return;
+		}
+		Debug.Log("attack hit");
+		AttackUtilities.HitTarget( life, targetLife, life.TertiaryAttackDamageWithExtra);
 		OnHit?.Invoke(targetHit.transform.position);
 	}
 }

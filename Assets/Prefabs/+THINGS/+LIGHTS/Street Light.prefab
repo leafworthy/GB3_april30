@@ -53,11 +53,11 @@ MonoBehaviour:
   translucentPresetId: 0
   color: {r: 1.1132075, g: 0.83927685, b: 0.5770028, a: 1}
   size: 210
-  spotAngleInner: 360
-  spotAngleOuter: 360
+  spotAngleInner: 171.90308
+  spotAngleOuter: 202.15517
   coreSize: 0.5
   falloff: 0
-  lightStrength: 0.998
+  lightStrength: 1
   outerAngle: 15
   lightRadius: 1
   shadowDistanceClose: 0
@@ -92,7 +92,7 @@ MonoBehaviour:
     - {x: -0.50000006, y: 0.8660254}
     - {x: -0.4999999, y: -0.86602545}
   drawingEnabled: 1
-  drawingTranslucencyEnabled: 0
+  drawingTranslucencyEnabled: 1
 --- !u!1 &2413286178243640050
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +121,7 @@ Transform:
   m_GameObject: {fileID: 2413286178243640050}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0030542875, y: -0, z: -0, w: 0.99999535}
-  m_LocalPosition: {x: -4.4, y: 33.6, z: 0}
+  m_LocalPosition: {x: 0.1, y: 15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -195,12 +195,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
   renderBelowSortingOrder: 0
   sortType: 0
-  SorterPositionOffset: {x: -0.31597137, y: -16.10823, z: 0}
+  SorterPositionOffset: {x: -0.315979, y: -16.106228, z: 0.00001946942}
   SorterPositionOffset2: {x: 9.042946, y: -31.237207, z: 0}
   renderersToSort:
   - {fileID: 827350551121471613}
@@ -468,7 +477,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9048459617251402012}
   m_Layer: 0
-  m_Name: Thing - Light
+  m_Name: Street Light
   m_TagString: Untagged
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
