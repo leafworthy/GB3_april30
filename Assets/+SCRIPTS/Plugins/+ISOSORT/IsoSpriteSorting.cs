@@ -18,10 +18,10 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		public Collider2D sortingBounds;
 
-		[NonSerialized] public readonly List<IsoSpriteSorting> staticDependencies = new(64);
-		[NonSerialized] public readonly List<IsoSpriteSorting> inverseStaticDependencies = new(64);
-		[NonSerialized] public readonly List<IsoSpriteSorting> movingDependencies = new(64);
-		[NonSerialized] private readonly List<IsoSpriteSorting> visibleStaticDependencies = new(64);
+		[NonSerialized] public readonly List<IsoSpriteSorting> staticDependencies = new(1024);
+		[NonSerialized] public readonly List<IsoSpriteSorting> inverseStaticDependencies = new(1024);
+		[NonSerialized] public readonly List<IsoSpriteSorting> movingDependencies = new(1024);
+		[NonSerialized] private readonly List<IsoSpriteSorting> visibleStaticDependencies = new(1024);
 
 		public int renderBelowSortingOrder;
 		private int visibleStaticLastRefreshFrame;
@@ -184,6 +184,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			}
 		}
 
+		[MenuItem("Tools/Update Sorters")]
 		public static void UpdateSorters()
 		{
 #if UNITY_EDITOR
@@ -293,7 +294,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		public void GetRenderers()
 		{
-			if (hasRenderers) return;
+			if (hasRenderers && Application.isPlaying) return;
 			hasRenderers = true;
 
 			RemoveNulls();
@@ -419,7 +420,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				{
 					if (renderersToSort[j] == null) continue;
 
-					renderersToSort[j].sortingOrder = value + j;
+					renderersToSort[j].sortingOrder = value + j-1000;
 				}
 			}
 		}

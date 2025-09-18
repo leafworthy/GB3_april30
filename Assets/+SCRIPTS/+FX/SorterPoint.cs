@@ -34,7 +34,7 @@ public class SorterPoint : MonoBehaviour
 				var sorterModifier = renderer.GetComponent<SorterPointDepthModifier>();
 				if (sorterModifier != null)
 				{
-					renderer.sortingOrder = sorterPoint.sorterPosition+sorterModifier.SorterPointDepthModification - 1000;
+					renderer.sortingOrder += sorterPoint.sorterPosition+sorterModifier.SorterPointDepthModification - 1000;
 				}
 				else
 				{

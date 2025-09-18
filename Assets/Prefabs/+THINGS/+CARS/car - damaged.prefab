@@ -24,6 +24,10 @@ PrefabInstance:
       propertyPath: SorterPositionOffset2.y
       value: -6.899872
       objectReference: {fileID: 0}
+    - target: {fileID: 1912044715145874369, guid: 451d5fe299d534b16bb7ece9f6e19df7, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 1912044715145874369, guid: 451d5fe299d534b16bb7ece9f6e19df7, type: 3}
     - target: {fileID: 2924126358322442674, guid: 451d5fe299d534b16bb7ece9f6e19df7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.4
@@ -31,6 +35,14 @@ PrefabInstance:
     - target: {fileID: 2924126358322442674, guid: 451d5fe299d534b16bb7ece9f6e19df7, type: 3}
       propertyPath: m_LocalPosition.y
       value: -4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614066749272155622, guid: 451d5fe299d534b16bb7ece9f6e19df7, type: 3}
+      propertyPath: maskType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614066749272155622, guid: 451d5fe299d534b16bb7ece9f6e19df7, type: 3}
+      propertyPath: mainShape.maskType
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3614066749272155622, guid: 451d5fe299d534b16bb7ece9f6e19df7, type: 3}
       propertyPath: mainShape.transform
@@ -149,7 +161,8 @@ PrefabInstance:
       value: 1.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6797251555392869304, guid: 451d5fe299d534b16bb7ece9f6e19df7, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 451d5fe299d534b16bb7ece9f6e19df7, type: 3}

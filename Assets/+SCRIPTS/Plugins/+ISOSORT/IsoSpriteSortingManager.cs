@@ -6,18 +6,18 @@ using UnityEngine;
 
 namespace __SCRIPTS.Plugins._ISOSORT
 {
-	//[ExecuteInEditMode]
+	[ExecuteInEditMode]
 	[Serializable]
 	public class IsoSpriteSortingManager : SerializedMonoBehaviour
 	{
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> fgSpriteList = new(256);
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> floorSpriteList = new(256);
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> staticSpriteList = new(256);
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new(256);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> fgSpriteList = new(1024);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> floorSpriteList = new(1024);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> staticSpriteList = new(1024);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new(1024);
 
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> moveableSpriteList = new(256);
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new(256);
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> sortedSprites = new(256);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> moveableSpriteList = new(1024);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new(1024);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> sortedSprites = new(1024);
 
 		public static void RegisterSprite(IsoSpriteSorting newSprite)
 		{
