@@ -46,7 +46,6 @@ namespace __SCRIPTS
 		private void PlayerStartsSelecting(Player player)
 		{
 			if (playersBeingListenedTo.Contains(player)) return;
-			Debug.Log("GAME SCENE CHARACTER SELECTION: Player " + player.name + " has started selecting a character.");
 			player.SetState(Player.State.SelectingCharacter);
 			player.CurrentButton = Buttons[0];
 			player.CurrentButton.HighlightButton(player);
@@ -173,7 +172,6 @@ namespace __SCRIPTS
 			CheckIfPlayersAllSelected();
 			if (!playersAllChosen)
 			{
-				Debug.Log( "Not all players have selected characters yet.");
 				return;
 			}
 			OnTryToStartGame?.Invoke(); //SFX
@@ -182,8 +180,6 @@ namespace __SCRIPTS
 			ClearAllPlayerButtons();
 			isActive = false;
 			Services.playerManager.OnPlayerJoins -= PlayerStartsSelecting;
-			Debug.Log("GAME SCENE CHARACTER SELECTION: All players have selected characters, starting the game.");
-			Debug.Log("Characters joining: " + Services.playerManager.AllJoinedPlayers.Count);
 			Services.levelManager.StartGame(Services.levelManager.GetFirstLevelToLoad());
 		}
 

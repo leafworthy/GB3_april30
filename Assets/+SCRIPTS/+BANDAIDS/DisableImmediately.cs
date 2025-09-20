@@ -8,13 +8,7 @@ namespace __SCRIPTS
         void Awake()
         {
             gameObject.SetActive(false);
-            Debug.Log("disable here");
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
     }
 }

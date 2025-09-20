@@ -25,13 +25,11 @@ namespace __SCRIPTS
 		{
 			Services.enemyManager.OnEnemyDying += DropLootFromEnemy;
 			MakeDropList();
-			Debug.Log("loot table started");
 		}
 
 
 		private void DropLootFromEnemy(Life life)
 		{
-			Debug.Log("[LOOT] Enemy Dying, dropping loot");
 			DropLoot(life.transform.position);
 		}
 
@@ -39,7 +37,6 @@ namespace __SCRIPTS
 		public void DropLoot(Vector2 position, LootType type = LootType.Random)
 		{
 			if (_dropsToSpawn.Count == 0) MakeDropList();
-			Debug.Log("[LOOT] Dropping loot of type " + type);
 			GameObject lootPrefab = null;
 			switch (type)
 			{

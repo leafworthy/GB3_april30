@@ -1345,6 +1345,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isAboveZeroSortingOrder: 0
   isMovable: 1
   renderBelowAll: 0
   sortingBounds: {fileID: 1185514299242270449}
@@ -1552,6 +1562,7 @@ MonoBehaviour:
     maxReserveAmmo: 50
     reloads: 0
     unlimited: 0
+    hasSlash: 1
   secondaryAmmo:
     weaponType: 5
     reserveAmmo: 100
@@ -1560,6 +1571,7 @@ MonoBehaviour:
     maxReserveAmmo: 100
     reloads: 0
     unlimited: 1
+    hasSlash: 1
   tertiaryAmmo:
     weaponType: 4
     reserveAmmo: 100
@@ -1568,6 +1580,7 @@ MonoBehaviour:
     maxReserveAmmo: 100
     reloads: 0
     unlimited: 0
+    hasSlash: 1
   unlimitedAmmo:
     weaponType: 0
     reserveAmmo: 0
@@ -1576,6 +1589,7 @@ MonoBehaviour:
     maxReserveAmmo: 0
     reloads: 1
     unlimited: 0
+    hasSlash: 1
 --- !u!114 &8196521329697107543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1649,15 +1663,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8e19e5c2974953b6d306f3bb0303ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!114 &6329833482935886680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1683,6 +1688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5168781308437090969}
+  DefaultBottomAnimation: {fileID: 0}
 --- !u!114 &7156676400399751533
 MonoBehaviour:
   m_ObjectHideFlags: 0

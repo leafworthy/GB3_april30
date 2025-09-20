@@ -12,14 +12,11 @@ namespace __SCRIPTS
 
 		public void SetPlayer(Player player)
 		{
-			Debug.Log("slot set to player: " + player.name);
 			currentPlayer = player;
 
-			// Ensure player Stats are initialized before setting up HUD components
 			var playerStats = player.GetComponent<PlayerStats>();
 			if (playerStats != null)
 			{
-				// Force initialization if not already done
 				playerStats.InitStats();
 			}
 

@@ -45,7 +45,6 @@ namespace __SCRIPTS
 		public void TakeDamage(Attack attack)
 		{
 			if (isDead || IsTemporarilyInvincible || isInvincible) return;
-			Debug.Log("taking damage inside");
 			currentHealth = Mathf.Max(0, currentHealth - attack.DamageAmount);
 			if (currentHealth <= 0 && !isInvincible) StartDeath(attack);
 			OnFractionChanged?.Invoke(GetFraction());
@@ -67,7 +66,6 @@ namespace __SCRIPTS
 
 		private void StartDeath(Attack killingAttack)
 		{
-			Debug.Log("on death in unit health");
 			isDead = true;
 			OnDead?.Invoke(killingAttack);
 		}

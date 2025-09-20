@@ -1,15 +1,27 @@
 using __SCRIPTS;
+using GangstaBean.Core;
 using UnityEngine;
 
 [DisallowMultipleComponent]
 public class ShieldDashAbility : DashAbility
 {
-	private float extraDashPushFactor = 3;
+	private float extraDashPushFactor = 1.5f;
 	public override string AbilityName => "Shield-Dash";
+	private IDoableAbility lastAbility;
+
+	private bool isDashing;
 	protected override void DoAbility()
 	{
 		base.DoAbility();
 		ShieldDash();
+		isDashing = true;
+	}
+
+	public override void Stop()
+	{
+		isDashing = false;
+		base.Stop();
+		lastAbility?.Do();
 	}
 
 	private void ShieldDash()
@@ -17,39 +29,52 @@ public class ShieldDashAbility : DashAbility
 		var hits = Physics2D.OverlapCircleAll(transform.position, 30, life.EnemyLayer);
 		foreach (var hit in hits)
 		{
-			Debug.Log("[SHIELD] Hit " + hit.name);
 			var _life = hit.GetComponentInParent<Life>();
 			if (_life == null || !_life.IsEnemyOf(life))
 			{
-				Debug.Log("[SHIELD] Not an enemy");
 				continue;
 			}
 			var movement = _life.GetComponent<MoveAbility>();
 			if (movement == null)
 			{
-				Debug.Log("[SHIELD] No movement component");
 				continue;
 			}
 			movement.Push((hit.transform.position - transform.position).normalized, life.DashSpeed * extraDashPushFactor);
-			Debug.Log("[SHIELD] Pushed " + hit.name);
+
 		}
 	}
 
+	private bool hasInitialized = false;
 	public override void SetPlayer(Player _player)
 	{
-		base.SetPlayer(_player);
-		_player.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
+		player = _player;
+		player.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
 	}
 
 	private void OnDestroy()
 	{
 		if (player == null) return;
-		if (player.Controller == null) return;
+		Debug.Log("ShieldDashAbility OnDestroy");
+		player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
+	}
+
+	private void OnDisable()
+	{
+		if (player == null) return;
+		Debug.Log("ShieldDashAbility OnDisable");
 		player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 	}
 
 	private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 	{
+
+		if (isDashing)
+		{
+			Debug.LogWarning( "Already Dashing");
+			return;
+		}
+
+		lastAbility = body.doableArms.CurrentAbility;
 		Do();
 	}
 

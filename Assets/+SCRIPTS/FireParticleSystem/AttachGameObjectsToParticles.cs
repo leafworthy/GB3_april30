@@ -34,13 +34,11 @@ public class AttachGameObjectsToParticles : MonoBehaviour
 			var prefab = Services.objectMaker.Make(m_Prefab);
 			if (prefab != null)
 			{
-				Debug.Log("new instance ");
 				prefab.transform.SetParent(particleParent.transform);
 				m_Instances.Add(prefab);
 			}
 			else
 			{
-				Debug.LogWarning("AttachGameObjectsToParticles: Failed to create prefab instance");
 				break;
 			}
 			attempts++;
@@ -52,7 +50,6 @@ public class AttachGameObjectsToParticles : MonoBehaviour
 		{
 			if (m_Instances[i].gameObject == null)
 			{
-				Debug.Log("instance added");
 				instanceToRemove.Add(m_Instances[i]);
 				continue;
 			}
@@ -70,7 +67,6 @@ public class AttachGameObjectsToParticles : MonoBehaviour
 
 		foreach (var instance in instanceToRemove)
 		{
-			Debug.Log("removed instance");
 			m_Instances.Remove(instance);
 		}
 	}

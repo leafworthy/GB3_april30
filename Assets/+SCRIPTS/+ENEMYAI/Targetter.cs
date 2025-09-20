@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using GangstaBean.Core;
+using UnityEngine;
 
 namespace __SCRIPTS._ENEMYAI
 {
@@ -32,15 +32,15 @@ namespace __SCRIPTS._ENEMYAI
 		private Life GetClosest(List<Life> targets)
 		{
 			Life closest = null;
-			float minDistance = float.MaxValue;
+			var minDistance = float.MaxValue;
 			// Cache transform.position
 			Vector2 pos = transform.position;
 
-			for (int i = 0; i < targets.Count; i++)
+			for (var i = 0; i < targets.Count; i++)
 			{
-				Life target = targets[i];
+				var target = targets[i];
 				// Use SqrMagnitude to avoid the square root cost
-				float distance = Vector2.SqrMagnitude(target.transform.position - (Vector3)pos);
+				var distance = Vector2.SqrMagnitude(target.transform.position - (Vector3) pos);
 				if (distance < minDistance)
 				{
 					minDistance = distance;
@@ -64,15 +64,17 @@ namespace __SCRIPTS._ENEMYAI
 
 			return closest;
 		}
-		public Life GetClosestAttackablePlayer() => GetClosest(GetAttackableTargetsInRange(Services.assetManager.LevelAssets.PlayerLayer, targetterLife.PrimaryAttackRange));
+
+		public Life GetClosestAttackablePlayer() =>
+			GetClosest(GetAttackableTargetsInRange(Services.assetManager.LevelAssets.PlayerLayer, targetterLife.PrimaryAttackRange));
+
 		public Life GetClosestPlayerInAggroRange() => GetClosest(GetAggroTargets(Services.assetManager.LevelAssets.PlayerLayer));
 		public Life GetClosestPlayer() => GetClosest(GetPlayers());
 
 		private List<Life> GetPlayers()
 		{
-			var playersWithGOs = Services.playerManager.AllJoinedPlayers.Where(x => (x.spawnedPlayerDefence != null)).ToList();
+			var playersWithGOs = Services.playerManager.AllJoinedPlayers.Where(x => x.spawnedPlayerDefence != null).ToList();
 			var playerLives = playersWithGOs.Select(x => x.spawnedPlayerDefence).Where(x => !x.IsDead()).ToList();
-
 
 			return playerLives;
 		}
@@ -80,7 +82,6 @@ namespace __SCRIPTS._ENEMYAI
 		private List<Life> GetValidTargetsInRange(LayerMask layer, float range) =>
 			Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
 			         .Where(life => life != null && TargetIsValid(life)).ToList();
-
 
 		private List<Life> GetValidObstaclesInRange(LayerMask layer, float range)
 		{
@@ -97,10 +98,7 @@ namespace __SCRIPTS._ENEMYAI
 				if (life != null && ObstacleIsValid(life))
 				{
 					// Additional validation: ensure we can actually reach the door
-					if (CanReachObstacle(life))
-					{
-						validObstacles.Add(life);
-					}
+					if (CanReachObstacle(life)) validObstacles.Add(life);
 				}
 			}
 
@@ -110,9 +108,10 @@ namespace __SCRIPTS._ENEMYAI
 		private bool CanReachObstacle(Life obstacle)
 		{
 			// Simple distance check - door should be reachable within attack range
-			float distance = Vector2.Distance(transform.position, obstacle.transform.position);
+			var distance = Vector2.Distance(transform.position, obstacle.transform.position);
 			return distance <= targetterLife.PrimaryAttackRange;
 		}
+
 		private List<Life> GetAttackableTargetsInRange(LayerMask layer, float range) =>
 			Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
 			         .Where(life => life != null && TargetIsValid(life) && HasLineOfSightWith(life.transform.position)).ToList();
@@ -165,37 +164,20 @@ namespace __SCRIPTS._ENEMYAI
 
 		private bool ObstacleIsValid(Life target)
 		{
-			if (target == null || target.IsDead())
-			{
-				return false;
-			}
+			if (target == null || target.IsDead()) return false;
 
-			if (!target.IsObstacle)
-			{
-				return false;
-			}
+			if (!target.IsObstacle) return false;
 
 			// Try multiple ways to find the door component for robustness
 			var door = target.GetComponentInParent<DoorInteraction>();
 			if (door == null) door = target.GetComponent<DoorInteraction>();
 			if (door == null) door = target.GetComponentInChildren<DoorInteraction>();
 
-			if (door == null)
-			{
-				// TODO: Replace with structured logging
-				// Debug.LogWarning($"{gameObject.name}: Found obstacle {target.name} but no DoorInteraction component");
-				return false;
-			}
+			if (door == null) return false;
 
-			if (door.isBroken)
-			{
-				return false;
-			}
+			if (door.isBroken) return false;
 
-			if (door.isOpen)
-			{
-				return false;
-			}
+			if (door.isOpen) return false;
 
 			return true;
 		}

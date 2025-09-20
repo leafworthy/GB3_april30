@@ -64,7 +64,7 @@ namespace __SCRIPTS._ENEMYAI.EnemyAI_States
 				ai.Pathmaker.SetTargetPosition(target.transform.position);
 			}
 
-			// If close enough to attack, switch to attack state
+			// If close enough to attack, switch to attack weaponState
 			if (CloseEnoughToAttack())
 			{
 				ai.TransitionToState(new AttackPlayerState());

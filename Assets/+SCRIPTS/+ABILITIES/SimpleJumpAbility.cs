@@ -42,7 +42,6 @@ namespace __SCRIPTS
 			StopResting();
 			OnJump?.Invoke(transform.position+ new Vector3(0,startingHeight,0));
 
-			Debug.Log("on jump");
 			verticalVelocity = verticalSpeed;
 
 			thing.SetDistanceToGround(startingHeight);
@@ -115,7 +114,6 @@ namespace __SCRIPTS
 
 			IsJumping = false;
 			OnLand?.Invoke(transform.position);
-			Debug.Log("land");
 			thing.SetDistanceToGround(currentLandableHeight);
 
 			if (body != null) body.ChangeLayer( Body.BodyLayer.grounded);
@@ -135,15 +133,11 @@ namespace __SCRIPTS
 		{
 			isResting = true;
 			OnResting?.Invoke(transform.position);
-			if (body == null) return;
-			body.legs.Stop(this);
-			body.arms.Stop(this);
 		}
 
 		private void StopResting()
 		{
 			isResting = false;
-			Debug.Log("[Jump] Stopped resting - character can move again");
 		}
 
 

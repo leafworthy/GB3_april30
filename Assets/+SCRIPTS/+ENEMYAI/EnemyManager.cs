@@ -35,7 +35,6 @@ namespace __SCRIPTS
 
 			if (enemyDefence == null) return;
 			if (_allEnemies.Contains(enemyDefence)) return;
-			Debug.Log("collected enemy: " + enemyDefence.name);
 			enemyDefence.OnKilled += EnemyKilled;
 			enemyDefence.OnDying += EnemyDying;
 			_allEnemies.Add(enemyDefence);
@@ -43,9 +42,6 @@ namespace __SCRIPTS
 
 		private void EnemyDying(Attack attack)
 		{
-			//wtf
-			//wrong line bro
-			Debug.Log("Attack properties || " + "origin life name: " +attack.OriginLife.name + " | destination life name: " + (attack.DestinationLife == null ? "null" : attack.DestinationLife.name));
 			OnEnemyDying?.Invoke(attack.DestinationLife);
 		}
 
@@ -67,7 +63,6 @@ namespace __SCRIPTS
 
 		public void ConfigureNewEnemy(GameObject enemy)
 		{
-			Debug.Log("configuring new enemy");
 			// Set up the Life component
 			var life = enemy.GetComponent<Life>();
 			if (life != null)

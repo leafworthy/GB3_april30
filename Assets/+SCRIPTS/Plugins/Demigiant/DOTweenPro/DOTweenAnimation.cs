@@ -615,7 +615,7 @@ namespace DG.Tweening
         }
 
         /// <summary>
-        /// Pauses/unpauses (depending on the current state) all tweens whose target-id is the same as the one set by this animation
+        /// Pauses/unpauses (depending on the current weaponState) all tweens whose target-id is the same as the one set by this animation
         /// </summary>
         public override void DOTogglePause()
         {

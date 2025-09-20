@@ -10,6 +10,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 	[Serializable]
 	public class IsoSpriteSorting : SerializedMonoBehaviour
 	{
+		public bool isBelowZeroSortingOrder;
 		public bool isMovable;
 		public bool renderBelowAll;
 
@@ -104,7 +105,6 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			{
 				// Fallback if transform is still null
 				cachedPoint1 = SorterPositionOffset;
-				Debug.LogWarning("IsoSpriteSorting: Transform reference is null in " + gameObject.name, this);
 			}
 		}
 
@@ -118,7 +118,6 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			{
 				// Fallback if transform is still null
 				cachedPoint2 = SorterPositionOffset2;
-				Debug.LogWarning("IsoSpriteSorting: Transform reference is null in " + gameObject.name, this);
 			}
 		}
 
@@ -420,7 +419,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				{
 					if (renderersToSort[j] == null) continue;
 
-					renderersToSort[j].sortingOrder = value + j-1000;
+					renderersToSort[j].sortingOrder = value + j- (isBelowZeroSortingOrder? 1000:0);
 				}
 			}
 		}

@@ -1,13 +1,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using __SCRIPTS;
+using UnityEditor;
 using UnityEngine;
 
 public static class AttackUtilities
 {
 	private const float PushFactor = 10;
 
-	public static List<Life> CircleCastForXClosestTargets(Life originLife,float range, int howMany = 2)
+	[MenuItem("Tools/Select Player Unit Animator")]
+	public static void SelectPlayerUnitAnimator()
+	{
+		var component = Object.FindFirstObjectByType(typeof(PlayerUnitController)) as PlayerUnitController;
+		var unitAnimations = component.GetComponentInChildren<UnitAnimations>();
+		Selection.activeObject = unitAnimations.animator.gameObject;
+
+		// Optionally, you can also ping it in the hierarchy to highlight it
+		EditorGUIUtility.PingObject(unitAnimations.animator.gameObject);
+	}
+	public static List<Life> CircleCastForXClosestTargets(Life originLife, float range, int howMany = 2)
 	{
 		var result = new List<Life>();
 		var circleCast = Physics2D.OverlapCircleAll(originLife.transform.position, range, Services.assetManager.LevelAssets.EnemyLayer);
@@ -18,12 +29,12 @@ public static class AttackUtilities
 			var _life = col.gameObject.GetComponent<Life>();
 			if (_life == null) continue;
 			if (!IsValidTarget(originLife, _life)) return null;
-			result.Add( _life);
-
+			result.Add(_life);
 		}
 
 		return result;
 	}
+
 	public static void HitTargetsWithinRange(Life attackerLife, Vector2 attackPosition, float attackRange, float attackDamage, float extraPush = .1f)
 	{
 		var closestHits = FindClosestHits(attackerLife, attackPosition, attackRange, attackerLife.EnemyLayer);
@@ -31,7 +42,7 @@ public static class AttackUtilities
 
 		foreach (var targetLife in closestHits)
 		{
-			HitTarget( attackerLife, targetLife, attackDamage);
+			HitTarget(attackerLife, targetLife, attackDamage);
 		}
 	}
 
@@ -57,17 +68,9 @@ public static class AttackUtilities
 		foreach (var col in closestHits)
 		{
 			var colStats = col.GetComponent<Life>();
-			if (colStats.IsObstacle || !colStats.IsPlayerAttackable)
-			{
-				Debug.Log("[ATTACK] skipping obstacle or unattackable");
-				continue;
-			}
+			if (colStats.IsObstacle || !colStats.IsPlayerAttackable) continue;
 
-			if (!colStats.IsNotInvincible)
-			{
-				Debug.Log("[ATTACK] skipping unattackable");
-				continue;
-			}
+			if (!colStats.IsNotInvincible) continue;
 
 			if (Vector2.Distance(col.gameObject.transform.position, attackPosition) < Vector2.Distance(closest.transform.position, attackPosition))
 				closest = col;

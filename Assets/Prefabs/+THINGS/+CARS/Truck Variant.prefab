@@ -198,7 +198,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6467686391776535147, guid: 95ab7fae677e346a68987e69ff65fbfe, type: 3}
       propertyPath: SorterPositionOffset.x
-      value: 35.30327
+      value: 35.303284
       objectReference: {fileID: 0}
     - target: {fileID: 6467686391776535147, guid: 95ab7fae677e346a68987e69ff65fbfe, type: 3}
       propertyPath: SorterPositionOffset.y
@@ -206,12 +206,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6467686391776535147, guid: 95ab7fae677e346a68987e69ff65fbfe, type: 3}
       propertyPath: SorterPositionOffset2.x
-      value: -35.525017
+      value: -35.525024
       objectReference: {fileID: 0}
     - target: {fileID: 6467686391776535147, guid: 95ab7fae677e346a68987e69ff65fbfe, type: 3}
       propertyPath: SorterPositionOffset2.y
-      value: -20.70807
+      value: -20.708069
       objectReference: {fileID: 0}
+    - target: {fileID: 6467686391776535147, guid: 95ab7fae677e346a68987e69ff65fbfe, type: 3}
+      propertyPath: isAboveZeroSortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467686391776535147, guid: 95ab7fae677e346a68987e69ff65fbfe, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 6467686391776535147, guid: 95ab7fae677e346a68987e69ff65fbfe, type: 3}
     - target: {fileID: 7083399537326447762, guid: 95ab7fae677e346a68987e69ff65fbfe, type: 3}
       propertyPath: m_IsTrigger
       value: 0
@@ -252,6 +260,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 28d8a3b84e8ae4e0e874089d3825d338, type: 3}
+    - target: {fileID: 8120744216234196888, guid: 95ab7fae677e346a68987e69ff65fbfe, type: 3}
+      propertyPath: m_SortingOrder
+      value: 422
+      objectReference: {fileID: 0}
+    - target: {fileID: 8173640279483731020, guid: 95ab7fae677e346a68987e69ff65fbfe, type: 3}
+      propertyPath: maskType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8173640279483731020, guid: 95ab7fae677e346a68987e69ff65fbfe, type: 3}
+      propertyPath: mainShape.maskType
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3274272701289723002, guid: 95ab7fae677e346a68987e69ff65fbfe, type: 3}
     - {fileID: 2036676420650597076, guid: 95ab7fae677e346a68987e69ff65fbfe, type: 3}

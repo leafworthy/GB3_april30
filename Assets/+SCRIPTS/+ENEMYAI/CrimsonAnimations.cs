@@ -58,7 +58,7 @@ public class CrimsonAnimations : StateMachine<CrimsonAnimations>
 		for (var i = 0; i < 6; i++)
 		{
 			if (patrolPoints[randomIndex] != null && patrolPoints[randomIndex] != target) return patrolPoints[randomIndex];
-			Debug.LogWarning("Picked a null target, trying again.");
+
 		}
 
 		return null;

@@ -552,7 +552,7 @@
         </member>
         <member name="M:DG.DemiEditor.DeGUIDrag.Drag(System.Int32,System.Collections.IList,System.Int32,System.Nullable{UnityEngine.Rect},DG.DemiEditor.DeDragDirection,System.Boolean)">
             <summary>
-            Call this after each draggable GUI block, to calculate and draw the current drag state
+            Call this after each draggable GUI block, to calculate and draw the current drag weaponState
             (or complete it if the mouse was released).
             </summary>
             <param name="dragId">ID for this drag operation (must be the same for both StartDrag and Drag</param>
@@ -569,7 +569,7 @@
         </member>
         <member name="M:DG.DemiEditor.DeGUIDrag.Drag(System.Collections.IList,System.Int32,System.Nullable{UnityEngine.Rect},DG.DemiEditor.DeDragDirection,System.Boolean)">
             <summary>
-            Call this after each draggable GUI block, to calculate and draw the current drag state
+            Call this after each draggable GUI block, to calculate and draw the current drag weaponState
             (or complete it if the mouse was released).
             </summary>
             <param name="draggableList">List containing the draggable item and all other relative draggable items</param>
@@ -585,7 +585,7 @@
         </member>
         <member name="M:DG.DemiEditor.DeGUIDrag.Drag(System.Int32,System.Collections.IList,System.Int32,UnityEngine.Color,System.Nullable{UnityEngine.Rect},DG.DemiEditor.DeDragDirection,System.Boolean)">
             <summary>
-            Call this after each draggable GUI block, to calculate and draw the current drag state
+            Call this after each draggable GUI block, to calculate and draw the current drag weaponState
             (or complete it if the mouse was released).
             </summary>
             <param name="dragId">ID for this drag operation (must be the same for both StartDrag and Drag</param>
@@ -603,7 +603,7 @@
         </member>
         <member name="M:DG.DemiEditor.DeGUIDrag.Drag(System.Collections.IList,System.Int32,UnityEngine.Color,System.Nullable{UnityEngine.Rect},DG.DemiEditor.DeDragDirection,System.Boolean)">
             <summary>
-            Call this after each draggable GUI block, to calculate and draw the current drag state
+            Call this after each draggable GUI block, to calculate and draw the current drag weaponState
             (or complete it if the mouse was released).
             </summary>
             <param name="draggableList">List containing the draggable item and all other relative draggable items</param>
@@ -754,7 +754,7 @@
         </member>
         <member name="M:DG.DemiEditor.DeGUINodeSystem.InteractionManager.Reset">
             <summary>
-            Resets the interaction state
+            Resets the interaction weaponState
             </summary>
         </member>
         <member name="M:DG.DemiEditor.DeGUINodeSystem.InteractionManager.IsDragging(DG.DemiLib.IEditorGUINode)">
@@ -866,7 +866,7 @@
         </member>
         <member name="M:DG.DemiEditor.DeGUINodeSystem.NodeProcess.ToggleHelpPanel">
             <summary>
-            Opens or closes the Help panel based on its current state
+            Opens or closes the Help panel based on its current weaponState
             </summary>
         </member>
         <member name="M:DG.DemiEditor.DeGUINodeSystem.NodeProcess.AreaIsVisible(UnityEngine.Rect)">
@@ -1340,7 +1340,7 @@
             <summary>
             A button that triggers an immediate repaint when hovered/pressed/unhovered
             (which otherwise doesn't happen if you set a background to the button's GUIStyle)
-            and also assigns different GUI colors based on the button's state and the given one.<para/>
+            and also assigns different GUI colors based on the button's weaponState and the given one.<para/>
             Requires <see cref="P:UnityEditor.EditorWindow.wantsMouseMove"/> to be activated.
             </summary>
             <param name="content">Content</param>
@@ -1352,7 +1352,7 @@
             <summary>
             A button that triggers an immediate repaint when hovered/pressed/unhovered
             (which otherwise doesn't happen if you set a background to the button's GUIStyle)
-            and also assigns different GUI colors based on the button's state with options to eventually auto-generate them.<para/>
+            and also assigns different GUI colors based on the button's weaponState with options to eventually auto-generate them.<para/>
             Requires <see cref="P:UnityEditor.EditorWindow.wantsMouseMove"/> to be activated.
             </summary>
             <param name="content">Content</param>
@@ -1769,7 +1769,7 @@
             <summary>
             A button that triggers an immediate repaint when hovered/pressed/unhovered
             (which otherwise doesn't happen if you apply a background to the button's GUIStyle)
-            and also assigns different GUI colors based on the button's state and the given one.<para/>
+            and also assigns different GUI colors based on the button's weaponState and the given one.<para/>
             Requires <see cref="P:UnityEditor.EditorWindow.wantsMouseMove"/> to be activated.
             </summary>
             <param name="rect">Rect</param>
@@ -1781,7 +1781,7 @@
             <summary>
             A button that triggers an immediate repaint when hovered/pressed/unhovered
             (which otherwise doesn't happen if you apply a background to the button's GUIStyle)
-            and also assigns different GUI colors based on the button's state with options to eventually auto-generate them.<para/>
+            and also assigns different GUI colors based on the button's weaponState with options to eventually auto-generate them.<para/>
             Requires <see cref="P:UnityEditor.EditorWindow.wantsMouseMove"/> to be activated.
             </summary>
             <param name="rect">Rect</param>

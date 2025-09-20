@@ -19,7 +19,6 @@ namespace __SCRIPTS
 		protected override void DoAbility()
 		{
 			SwitchGuns();
-			Debug.Log("switched, now playing animation: " + (IsUsingPrimaryWeapon ? AK47PullOutAnimationClip.name : GlockPullOutAnimationClip.name));
 			PlayAnimationClip(IsUsingPrimaryWeapon ? AK47PullOutAnimationClip : GlockPullOutAnimationClip, 1);
 		}
 
@@ -33,7 +32,6 @@ namespace __SCRIPTS
 		private void SwitchGuns()
 		{
 			IsUsingPrimaryWeapon = !IsUsingPrimaryWeapon;
-			Debug.Log(  "Swapping Weapons to " + (IsUsingPrimaryWeapon ?  "AK47": "Glock"));
 			gunAttack.SwitchGuns(IsUsingPrimaryWeapon ? 0: 1);
 		}
 

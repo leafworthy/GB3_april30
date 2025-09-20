@@ -16,7 +16,6 @@ namespace __SCRIPTS
 		{
 			foreach (var gun in guns)
 			{
-				Debug.Log("subscribing to gun fx" + gun.name, gun);
 				gun.OnShotHitTarget += Gun_OnShoot;
 				gun.OnShotMissed += Gun_OnShoot;
 			}
@@ -33,7 +32,6 @@ namespace __SCRIPTS
 
 		private void Gun_OnShoot(Attack attack)
 		{
-			Debug.Log("shot hit target fx");
 			CreateBullet(attack);
 			CreateBulletHitAnimation(attack);
 			MakeBulletShell(attack);

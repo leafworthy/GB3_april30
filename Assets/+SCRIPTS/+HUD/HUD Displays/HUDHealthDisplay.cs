@@ -32,20 +32,17 @@ namespace __SCRIPTS.HUD_Displays
 
 			playerDefence.OnFractionChanged += UpdateDisplay;
 
-			Debug.Log("set player fraction  " + playerDefence.GetFraction());
 			UpdateDisplay(playerDefence.GetFraction());
 		}
 
 		private void Start()
 		{
 			playerDefence = player.SpawnedPlayerGO.GetComponentInChildren<Life>();
-			Debug.Log("on enable fraction  " + playerDefence.GetFraction());
 			UpdateDisplay(playerDefence.GetFraction());
 		}
 
 		private void UpdateDisplay(float fraction)
 		{
-			Debug.Log("display updated");
 			healthText.text = Mathf.Ceil(playerDefence.CurrentHealth).ToString();
 			MaxHealthText.text = "/" + Mathf.Ceil(playerDefence.MaxHealth).ToString();
 			barFX.UpdateBar(fraction);

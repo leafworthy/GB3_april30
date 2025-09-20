@@ -22,23 +22,14 @@ namespace Utilities
 
 		public static GameObject MakePrefab(GameObject gridPrefab, Vector3 position)
 		{
-			if (gridPrefab == null)
-			{
-				Debug.LogError("GridMaker: gridPrefab is null.");
-				return null;
-			}
+			if (gridPrefab == null) return null;
 
 			var assetPath = AssetDatabase.GetAssetPath(gridPrefab);
-			if (string.IsNullOrEmpty(assetPath))
-			{
-				Debug.LogError("GridMaker: Assigned prefab is not a valid asset. Make sure you're assigning a prefab from the Project window, not the scene.");
-				return null;
-			}
+			if (string.IsNullOrEmpty(assetPath)) return null;
 
 			var instance = (GameObject) PrefabUtility.InstantiatePrefab(gridPrefab);
 			if (instance == null)
 			{
-				Debug.LogError("GridMaker: Failed to instantiate prefab.");
 				return null;
 			}
 
@@ -46,6 +37,4 @@ namespace Utilities
 			return instance;
 		}
 	}
-
-
 }

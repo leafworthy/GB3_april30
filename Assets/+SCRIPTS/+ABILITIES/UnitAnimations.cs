@@ -183,7 +183,6 @@ namespace __SCRIPTS
 		public void RevertBottomToDefault()
 		{
 			if (animator == null) return;
-			Debug.Log("reverted");
 			animator.StopPlayback();
 			animator.Play(DefaultBottomAnimation.name, 0 );
 		}

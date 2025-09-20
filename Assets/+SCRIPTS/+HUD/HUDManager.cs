@@ -64,7 +64,6 @@ namespace __SCRIPTS
 
 		private void LevelSceneOnLevelSpawnedPlayer(Player player)
 		{
-			Debug.Log("HUD MANAGER: " + player.name + player.input.playerIndex + " has spawned in-game, setting HUD slot." );
 			var playerStats = player.GetComponent<PlayerStats>();
 			if (playerStats != null) playerStats.ResetStats();
 			SetHUDSlotPlayer(player);
@@ -72,7 +71,6 @@ namespace __SCRIPTS
 
 		private void LevelSceneOnStartLevel(GameLevel gameLevel)
 		{
-			Debug.Log("HUD MANAGER: OnStart() creating HUD for players, event registering");
 			isInGame = true;
 			CreateHUDForPlayers(playerManager.AllJoinedPlayers);
 
@@ -84,7 +82,6 @@ namespace __SCRIPTS
 		{
 			foreach (var player in players)
 			{
-				Debug.Log( "HUD MANAGER: Creating HUD for player: " + player.name + " with input " + player.input.playerIndex);
 				SetHUDSlotPlayer(player);
 			}
 		}

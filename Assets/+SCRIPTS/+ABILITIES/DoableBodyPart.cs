@@ -16,13 +16,11 @@ namespace __SCRIPTS
 		{
 			if (CurrentAbility == null) return;
 			if (CurrentAbility != abilityToStop) return;
-			Debug.Log($"[Doer] stopping {CurrentAbility.AbilityName}");
 			_currentAbility = null;
 
 			if (_bufferedAbility == null) return;
 			var next = _bufferedAbility;
 			_bufferedAbility = null;
-			Debug.Log($"[Doer] buffered ability found: {next.AbilityName}");
 			DoActivity(next);
 		}
 
@@ -34,38 +32,24 @@ namespace __SCRIPTS
 				return;
 			}
 
-			BufferAbility(newAbility);
+			//BufferAbility(newAbility);
 		}
 
 		private void ActuallyDo(IDoableAbility newAbility)
 		{
-			if (_currentAbility != null && _currentAbility.canStop(newAbility))
-			{
-				Debug.Log("[Doer] stopping activity " + _currentAbility.AbilityName);
-				_currentAbility.Stop();
-			}
+			if (_currentAbility != null && _currentAbility.canStop(newAbility)) _currentAbility.Stop();
 
 			_currentAbility = newAbility;
 			CurrentAbility.Do();
-			Debug.Log("[Doer] activity started: " + newAbility.AbilityName);
 		}
 
 		private void BufferAbility(IDoableAbility newAbility)
 		{
-			if (ActivitiesAreTheSame(newAbility, CurrentAbility))
-			{
-				Debug.Log($"[Doer] Not buffering {newAbility.AbilityName} (same as current)");
-				return;
-			}
+			if (ActivitiesAreTheSame(newAbility, CurrentAbility)) return;
 
-			if (ActivitiesAreTheSame(newAbility, _bufferedAbility))
-			{
-				Debug.Log($"[Doer] Not buffering {newAbility.AbilityName} (already buffered)");
-				return;
-			}
+			if (ActivitiesAreTheSame(newAbility, _bufferedAbility)) return;
 
 			_bufferedAbility = newAbility;
-			Debug.Log($"[Doer] Buffered ability {newAbility.AbilityName} to start after {CurrentAbility.AbilityName}");
 		}
 
 		private bool ActivitiesAreTheSame(IDoableAbility activity1, IDoableAbility activity2) =>
@@ -75,18 +59,15 @@ namespace __SCRIPTS
 		{
 			if (newAbility == null)
 			{
-				Debug.Log("Cannot do activity because it's null");
 				return false;
 			}
 
 			if (ActivitiesAreTheSame(newAbility, CurrentAbility))
 			{
-				Debug.Log("Cannot do activity " + newAbility.AbilityName + " because it's already the current activity");
 				return false;
 			}
 
 			if (!IsActive) return true;
-			Debug.Log(newAbility.AbilityName + " can stop: " + CurrentAbility.AbilityName + " ? " + CurrentAbility.canStop(newAbility));
 			return CurrentAbility.canStop(newAbility);
 		}
 	}

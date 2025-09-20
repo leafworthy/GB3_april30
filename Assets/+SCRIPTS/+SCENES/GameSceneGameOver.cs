@@ -16,7 +16,6 @@ public class GameSceneGameOver : GameScene
 	    for (int i = 0; i < Services.playerManager.AllJoinedPlayers.Count; i++)
 	    {
 
-			    Debug.Log("Stats for player " + Services.playerManager.AllJoinedPlayers[i].playerIndex);
 			    displays[i].gameObject.SetActive(true);
 			    displays[i].SetPlayer(Services.playerManager.AllJoinedPlayers[i]);
 			    Services.playerManager.AllJoinedPlayers[i].Controller.Select.OnPress += ContinuePress;

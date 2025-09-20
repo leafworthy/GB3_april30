@@ -147,7 +147,7 @@ namespace DG.Tweening
 
         /// <summary>
         /// Returns a <see cref="CustomYieldInstruction"/> that waits until the tween is killed or started
-        /// (meaning when the tween is set in a playing state the first time, after any eventual delay).
+        /// (meaning when the tween is set in a playing weaponState the first time, after any eventual delay).
         /// It can be used inside a coroutine as a yield.
         /// <para>Example usage:</para><code>yield return myTween.WaitForStart();</code>
         /// </summary>
@@ -266,7 +266,7 @@ namespace DG.Tweening
 
         /// <summary>
         /// Returns an async <see cref="System.Threading.Tasks.Task"/> that waits until the tween is killed or started
-        /// (meaning when the tween is set in a playing state the first time, after any eventual delay).
+        /// (meaning when the tween is set in a playing weaponState the first time, after any eventual delay).
         /// It can be used inside an async operation.
         /// <para>Example usage:</para><code>await myTween.AsyncWaitForPosition();</code>
         /// </summary>

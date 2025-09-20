@@ -12,7 +12,7 @@ namespace __SCRIPTS
 
 		private const int throwTime = 30;
 
-		private IAimAbility aim  => _aim ??= GetComponent<IAimAbility>();
+		private IAimAbility aim => _aim ??= GetComponent<IAimAbility>();
 		private IAimAbility _aim;
 		private MoveAbility move;
 		private AmmoInventory ammo;
@@ -40,13 +40,11 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
-			Debug.Log("throw grenade");
 			ThrowGrenade();
 		}
 
 		private void ShowAiming()
 		{
-			Debug.Log("show aiming");
 			IsAiming = true;
 			OnShowAiming?.Invoke();
 		}
@@ -54,13 +52,11 @@ namespace __SCRIPTS
 		public override void Stop()
 		{
 			base.Stop();
-			Debug.Log("aiming stop");
 			HideAiming();
 		}
 
 		public override void SetPlayer(Player _player)
 		{
-			Debug.Log("setting player for nade attack");
 			base.SetPlayer(_player);
 			animationEvents = anim.animEvents;
 			move = GetComponent<MoveAbility>();
@@ -76,7 +72,6 @@ namespace __SCRIPTS
 
 		private void StopListeningToPlayer()
 		{
-			Debug.Log("stop listen");
 			if (anim == null) return;
 			if (player == null) return;
 			if (player.Controller == null) return;
@@ -87,19 +82,12 @@ namespace __SCRIPTS
 
 		private void ListenToPlayer()
 		{
-			Debug.Log("listen to player");
-			if (player == null)
-			{
-				Debug.Log("No player assigned to nade attack");
-				return;
-			}
+			if (player == null) return;
 			animationEvents = anim.animEvents;
 			player.Controller.AimAxis.OnChange += Player_OnAim;
 			player.Controller.Attack2LeftTrigger.OnPress += Player_NadePress;
 			player.Controller.Attack2LeftTrigger.OnRelease += Player_NadeRelease;
 		}
-
-
 
 		private void Update()
 		{
@@ -110,29 +98,18 @@ namespace __SCRIPTS
 			}
 			else
 				OnHideAiming?.Invoke();
-
 		}
 
 		private void Player_NadePress(NewControlButton newControlButton)
 		{
-			Debug.Log("nade press");
-			if (!IsAiming && canDo())
-			{
-				ShowAiming();
-			}
+			if (!IsAiming && canDo()) ShowAiming();
 		}
 
-		protected override void AnimationComplete()
-		{
-			base.AnimationComplete();
-		}
 
 		private void Player_NadeRelease(NewControlButton newControlButton)
 		{
-			Debug.Log("nade release");
 			if (!canDo())
 			{
-				Debug.Log("can't do nade");
 				Stop();
 			}
 
@@ -151,11 +128,9 @@ namespace __SCRIPTS
 
 		private void HideAiming()
 		{
-			Debug.Log("hide aiming");
 			IsAiming = false;
 			OnHideAiming?.Invoke();
 		}
-
 
 		private void Player_OnAim(IControlAxis controlAxis, Vector2 aimDir)
 		{
@@ -172,6 +147,5 @@ namespace __SCRIPTS
 
 			OnAimInDirection?.Invoke(startPoint, endPoint);
 		}
-
 	}
 }

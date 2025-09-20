@@ -201,7 +201,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 604
+  m_SortingOrder: 444
   m_Sprite: {fileID: -1732737396, guid: 62bdcbc8cb64846b480cc905ef28a0f7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -256,13 +256,14 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
   renderBelowSortingOrder: 0
   sortType: 1
-  SorterPositionOffset: {x: 0.4199524, y: -9.329376, z: 0}
-  SorterPositionOffset2: {x: 10.867706, y: -14.3798065, z: 0}
+  SorterPositionOffset: {x: 0.41992188, y: -9.329376, z: 0}
+  SorterPositionOffset2: {x: 10.867676, y: -14.3798065, z: 0}
   renderersToSort:
   - {fileID: 6484305129628690066}
   renderAboveAll: 0
@@ -342,8 +343,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d97d7adab58b4ca89762ea648acacd8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openSortingPoint1: {x: -10.610321, y: -14.604797, z: 0}
-  openSortingPoint2: {x: 0.12484741, y: -9.112396, z: 0}
+  openSortingPoint1: {x: -10.610352, y: -14.604797, z: 0}
+  openSortingPoint2: {x: 0.12487793, y: -9.112396, z: 0}
 --- !u!1001 &6484305127717199943
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -352,6 +353,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 566204173526078015, guid: 9fdaa39cbe4c4444d88b6772cd43af5e, type: 3}
+      propertyPath: m_Name
+      value: Gate_Metal
+      objectReference: {fileID: 0}
     - target: {fileID: 794611883884748401, guid: 9fdaa39cbe4c4444d88b6772cd43af5e, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -403,6 +408,14 @@ PrefabInstance:
     - target: {fileID: 6483412565578081425, guid: 9fdaa39cbe4c4444d88b6772cd43af5e, type: 3}
       propertyPath: m_Layer
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 7657447406621911862, guid: 9fdaa39cbe4c4444d88b6772cd43af5e, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 4294967287
+      objectReference: {fileID: 0}
+    - target: {fileID: 7657447406621911864, guid: 9fdaa39cbe4c4444d88b6772cd43af5e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.7
       objectReference: {fileID: 0}
     - target: {fileID: 7657447406621911867, guid: 9fdaa39cbe4c4444d88b6772cd43af5e, type: 3}
       propertyPath: m_IsActive

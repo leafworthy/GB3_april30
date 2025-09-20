@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -21,6 +22,7 @@ namespace __SCRIPTS
 
 		public override bool canDo() => base.canDo() && gunAttack.CurrentGun.CanReload();
 
+
 		protected override void DoAbility()
 		{
 			StartReloading();
@@ -28,28 +30,36 @@ namespace __SCRIPTS
 
 		private void StartReloading()
 		{
-			Debug.Log("start reloading");
+			Debug.Log("Starting Reload");
 			Invoke(nameof(Reload), gunAttack.CurrentGun.reloadTime);
 			anim.SetBool(UnitAnimations.IsBobbing, false);
 
 			if (!gunAttack.IsUsingPrimaryGun)
 			{
-				Debug.Log("playing glock reload animation");
 				PlayAnimationClip(ReloadUnlimitedGunAnimationClip, 1);
 			}
 			else
+			{
 				PlayAnimationClip(ReloadPrimaryGunAnimationClip, 1);
+			}
+		}
+
+		public override void Stop()
+		{
+			base.Stop();
+			Debug.Log("Reload Stopped, doing gun attack");
+			gunAttack.ResumeFromReload();
 		}
 
 		private void Reload()
 		{
-			Debug.Log("reload happens");
 			gunAttack.CurrentGun.Reload();
 			OnReload?.Invoke();
 		}
 
 		public void OnDestroy()
 		{
+			if (player == null) return;
 			player.Controller.ReloadTriangle.OnPress -= Player_Reload;
 			base.Stop();
 		}
@@ -60,20 +70,17 @@ namespace __SCRIPTS
 			if (player != null) player.Controller.ReloadTriangle.OnPress -= Player_Reload;
 			if (gunAttack != null) gunAttack.OnNeedsReload -= Gun_OnNeedsReload;
 			player.Controller.ReloadTriangle.OnPress += Player_Reload;
-			Debug.Log("set player reload");
 		gunAttack.OnNeedsReload += Gun_OnNeedsReload;
 		}
 
 
 		private void Gun_OnNeedsReload()
 		{
-			Debug.Log("gun neesd reload do");
 			Do();
 		}
 
 		private void Player_Reload(NewControlButton btn)
 		{
-			Debug.Log("player do");
 			Do();
 		}
 	}

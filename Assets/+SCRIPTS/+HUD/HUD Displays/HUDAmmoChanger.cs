@@ -22,10 +22,7 @@ namespace __SCRIPTS.HUD_Displays
 			if (_player.SpawnedPlayerGO != null)
 			{
 				gunAttackAkGlock = _player.SpawnedPlayerGO.GetComponent<GunAttack>();
-				if (gunAttackAkGlock == null)
-				{
-					Debug.LogWarning($"GunAttack_AK_Glock not found on {_player.SpawnedPlayerGO.name}", this);
-				}
+
 			}
 		}
 

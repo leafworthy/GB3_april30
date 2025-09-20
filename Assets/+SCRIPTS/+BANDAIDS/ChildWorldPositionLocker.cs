@@ -14,7 +14,7 @@ public class ChildWorldPositionLocker : MonoBehaviour
 
 	private void Update()
 	{
-		// Check if lock state changed
+		// Check if lock weaponState changed
 		if (lockChildren != wasLocked)
 		{
 			if (lockChildren)

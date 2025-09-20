@@ -34,6 +34,7 @@ namespace __SCRIPTS
 		public virtual bool simpleShoot => false;
 		private bool IsCoolingDown => Time.time <= currentCooldownTime;
 		public bool CanReload() => Ammo.CanReload();
+		public bool MustReload() => !Ammo.hasAmmoInClip();
 		public void Reload() => Ammo.Reload();
 
 		private void Awake()
@@ -41,40 +42,18 @@ namespace __SCRIPTS
 			currentCooldownTime = Time.time;
 		}
 
-		public bool CanShoot()
-		{
-			if (!Ammo.hasAmmoInClip())
-			{
-				OnNeedsReload?.Invoke();
-				Debug.Log("gun needs reload", this);
-				return false;
-			}
-			return true;
-			Debug.Log("is cooling down: " + IsCoolingDown + ", has ammo in clip: " + Ammo.hasAmmoInClip(), this);
-			Debug.Log("cooldown: " + currentCooldownTime + " vs time: " + Time.time +" good?: "+ (currentCooldownTime >= Time.time) , this);
-			if(Ammo.hasAmmoInClip() && !IsCoolingDown) Debug.Log("wtf this is right");
-			return Ammo.hasAmmoInClip() && !IsCoolingDown;
-		}
+		public bool CanShoot() => Ammo.hasAmmoInClip();
 
 		public void Shoot(Vector2 shootDirection)
 		{
-
 			if (!CanShoot())
 			{
-				if (!Ammo.hasAmmoInClip())
-				{
-					OnNeedsReload?.Invoke();
-					Debug.Log("gun needs reload", this);
-					return;
-				}
-				Debug.Log("can't shoot", this);
+				if (!Ammo.hasAmmoInClip()) OnNeedsReload?.Invoke();
 				return;
 			}
+
 			currentCooldownTime = Time.time + AttackRate;
-			Debug.Log("[GUN] shoot in gun");
 
-
-			Debug.Log("[GUN] isAttacking, number of bullets: " + numberOfBulletsPerShot, this);
 			OnShoot?.Invoke(shootDirection);
 			Ammo.UseAmmo(1);
 
@@ -86,16 +65,12 @@ namespace __SCRIPTS
 			}
 		}
 
-
 		private void ShootBullet(Vector3 shootDirection)
 		{
-			Debug.Log("[GUN] shoot bullet in gun", this);
 
-
-
-
-			var hitObject = Physics2D.Linecast(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange, life.EnemyLayer);
-			Debug.DrawLine( body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange, Color.green, 3);
+			var hitObject = Physics2D.Linecast(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange,
+				life.EnemyLayer);
+			Debug.DrawLine(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange, Color.green, 3);
 
 			if (hitObject)
 				ShotHitTarget(hitObject);
@@ -105,7 +80,6 @@ namespace __SCRIPTS
 
 		private void ShotMissed()
 		{
-			Debug.Log("shot missed target", this);
 			var missPosition = (Vector2) body.FootPoint.transform.position + gunAimAbility.AimDir.normalized * AttackRange;
 			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, gunAimAbility.AimDir.normalized, AttackRange, life.Player.BuildingLayer);
 			if (raycastHit) missPosition = raycastHit.point;
@@ -117,15 +91,12 @@ namespace __SCRIPTS
 
 		private void ShotHitTarget(RaycastHit2D hitObject)
 		{
-			Debug.Log("shot hit target", this);
 			var target = hitObject.collider.gameObject.GetComponentInParent<Life>();
 			if (target == null)
 			{
-				Debug.Log("target is null", this);
 				target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
-				if (target == null) Debug.Log("target is still null", this);
-				return;
 			}
+
 			var newAttack = new Attack(life, target, body.AttackStartPoint.transform.position, hitObject.point, Damage);
 			OnShotHitTarget?.Invoke(newAttack);
 			target.TakeDamage(newAttack);

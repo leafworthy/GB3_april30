@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -19,6 +20,9 @@ namespace __SCRIPTS
 		private List<Mine> ActiveMines = new();
 		private bool isPressingThrowMine;
 		private bool isPressingDetonate;
+
+		private IDoableAbility lastArmAbility;
+		private bool isThrowing;
 		protected override bool requiresArms() => true;
 
 		protected override bool requiresLegs() => false;
@@ -30,6 +34,7 @@ namespace __SCRIPTS
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = transform.position;
 			OnThrow?.Invoke(startPoint, life.Player);
+			isThrowing = true;
 
 			var newProjectile = Services.objectMaker.Make(Services.assetManager.FX.minePrefab, startPoint);
 			var newMine = newProjectile.GetComponent<Mine>();
@@ -63,20 +68,20 @@ namespace __SCRIPTS
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;
-			player.Controller.Attack2LeftTrigger.OnPress -= Player_ThrowPress;
-			player.Controller.Attack2LeftTrigger.OnRelease -= Player_ThrowRelease;
-			player.Controller.ReloadTriangle.OnPress -= Player_DetonatePress;
-			player.Controller.ReloadTriangle.OnRelease -= Player_DetonateRelease;
+			player.Controller.SwapWeaponSquare.OnPress -= Player_ThrowPress;
+			player.Controller.SwapWeaponSquare.OnRelease -= Player_ThrowRelease;
+			//player.Controller.Attack3Circle.OnPress -= Player_DetonatePress;
+			//player.Controller.Attack3Circle.OnRelease -= Player_DetonateRelease;
 		}
 
 		private void ListenToPlayer()
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;
-			player.Controller.Attack2LeftTrigger.OnPress += Player_ThrowPress;
-			player.Controller.Attack2LeftTrigger.OnRelease += Player_ThrowRelease;
-			player.Controller.ReloadTriangle.OnPress += Player_DetonatePress;
-			player.Controller.ReloadTriangle.OnRelease += Player_DetonateRelease;
+			player.Controller.SwapWeaponSquare.OnPress += Player_ThrowPress;
+			player.Controller.SwapWeaponSquare.OnRelease += Player_ThrowRelease;
+			//player.Controller.Attack3Circle.OnPress += Player_DetonatePress;
+			//player.Controller.Attack3Circle.OnRelease += Player_DetonateRelease;
 		}
 
 		private void Player_DetonateRelease(NewControlButton obj) => isPressingDetonate = false;
@@ -98,18 +103,29 @@ namespace __SCRIPTS
 
 		protected override void AnimationComplete()
 		{
+			isThrowing = false;
 			if (isPressingThrowMine)
 			{
+
 				Player_ThrowPress(null);
 				return;
 			}
 
 			base.AnimationComplete();
+			lastArmAbility?.Do();
 		}
 
 		private void Player_ThrowPress(NewControlButton newControlButton)
 		{
 			if (Services.pauseManager.IsPaused) return;
+			if(ActiveMines.Count >0)
+			{
+				DetonateMine();
+				return;
+			}
+
+			if (isThrowing) return;
+			if(body.doableArms.CurrentAbility is not ThrowMineAttack) lastArmAbility = body.doableArms.CurrentAbility;
 			Do();
 		}
 

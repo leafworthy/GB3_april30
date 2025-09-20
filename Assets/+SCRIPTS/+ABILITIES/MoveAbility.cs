@@ -161,13 +161,11 @@ namespace __SCRIPTS
 
 			if (!canMove)
 			{
-				Debug.Log("can't move");
 				StopMoving();
 				return;
 			}
 
 			anim.SetBool(UnitAnimations.IsMoving, true);
-			Debug.Log("direction: " + direction, this);
 
 			moveSpeed = newSpeed;
 			isMoving = true;
@@ -239,10 +237,6 @@ namespace __SCRIPTS
 
 		private void StartListeningToPlayer()
 		{
-			if (hasListened)
-			{
-				Debug.LogWarning( "Already listening to player in MoveAbility", this);
-			}
 
 			hasListened = true;
 			if (life == null) return;

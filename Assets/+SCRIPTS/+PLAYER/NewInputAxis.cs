@@ -38,17 +38,16 @@ namespace __SCRIPTS
 
 			bool tooSmall = currentMagnitudeIsTooSmall();
 
-			// Handle inactive state
+			// Handle inactive weaponState
 			if (tooSmall)
 			{
 				if (IsActive)
 				{
 					IsActive = false;
 					OnInactive?.Invoke(this);
-					Debug.Log("[INPUT] On inactive, magnitude = " + currentDir.magnitude);
 				}
 
-				// Always reset directional state when inactive
+				// Always reset directional weaponState when inactive
 				if (RightPressed || LeftPressed || UpPressed || DownPressed)
 				{
 					RightPressed = LeftPressed = UpPressed = DownPressed = false;
@@ -57,12 +56,11 @@ namespace __SCRIPTS
 				return;
 			}
 
-			// Handle transition to active state
+			// Handle transition to active weaponState
 			if (!IsActive)
 			{
 				IsActive = true;
 				OnActive?.Invoke(this);
-				Debug.Log("[INPUT] On active magnitude = " + currentDir.magnitude);
 
 				// Reset directional states on activation to avoid stale triggers
 				RightPressed = LeftPressed = UpPressed = DownPressed = false;

@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-    [ExecuteInEditMode]
     public class ColorWalls : MonoBehaviour
     {
         [BoxGroup("Color Settings")]
@@ -86,7 +85,6 @@ namespace __SCRIPTS
                 if (spriteRenderer.CompareTag(Glass_Tag))
                 {
                     spriteRenderer.color = GlassTint;
-                    Debug.Log("tinting glass");
                     continue;
                 }
 

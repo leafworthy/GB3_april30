@@ -4,11 +4,20 @@ using UnityEngine;
 public class ScreenDebugText : MonoBehaviour
 {
 	public string text = "Hello World!"; // Text to display
-	public int fontSize = 16; // Font size
+	private int fontSize = 40; // Font size
 	public Color fontColor = Color.white; // Text color
 	public Vector2 padding = new Vector2(10, 10); // Offset from top-right
-	private Body body;
+	private Body body  => _body ??= GetComponent<Body>();
+	private Body _body;
 	private GUIStyle guiStyle;
+	private ThreeWeaponSwitchAbility threeWeaponSwitchAbility => _threeWeaponSwitchAbility ??= GetComponent<ThreeWeaponSwitchAbility>();
+	private ThreeWeaponSwitchAbility _threeWeaponSwitchAbility;
+	private ChainsawAttack chainsawAttack => _chainsawAttack ??= GetComponent<ChainsawAttack>();
+	private ChainsawAttack _chainsawAttack;
+	private ShieldAbility shieldAbility => _shieldAbility ??= GetComponent<ShieldAbility>();
+	private ShieldAbility _shieldAbility;
+	private GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
+	private GunAttack _gunAttack;
 
 
 
@@ -18,13 +27,17 @@ public class ScreenDebugText : MonoBehaviour
 		guiStyle.fontSize = fontSize;
 		guiStyle.normal.textColor = fontColor;
 		guiStyle.alignment = TextAnchor.UpperRight;
-		body = GetComponent<Body>();
 	}
 
 	private void Update()
-	{
-		SetText("Arms: " + (body.doableArms.CurrentAbility?.AbilityName ?? "Idle") + "\nLegs: " + (body.doableLegs.CurrentAbility?.AbilityName ?? "Idle"));
-	}
+	{/*
+		SetText("Arms: " + (body.doableArms.CurrentAbility?.AbilityName ?? "Idle") +
+		        "\nLegs: " + (body.doableLegs.CurrentAbility?.AbilityName ?? "Idle")+
+		        "\nChainsaw: " + (chainsawAttack?.AbilityName + " " + chainsawAttack.currentState) +
+		        "\nShield: " + (shieldAbility?.AbilityName + " " + shieldAbility.currentState) +
+		        "\nGunAttack: " + (gunAttack?.AbilityName + " " + gunAttack.currentState) +
+		        "\nCurrentWeapon: " + (threeWeaponSwitchAbility.currentWeapon?.AbilityName + " " + threeWeaponSwitchAbility.currentWeapon?.AbilityName)) ;
+	*/}
 
 	private void OnGUI()
 	{

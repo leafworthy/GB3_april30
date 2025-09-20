@@ -31,7 +31,6 @@ public class GameLauncher : MonoBehaviour
 	{
 		if (servicesStarted) return;
 		servicesStarted = true;
-		Debug.Log("GAME LAUNCHER: Initializing Services...");
 		sceneLoader.StartService();
 		ServiceLocator.Register(sceneLoader);
 
@@ -79,7 +78,6 @@ public class GameLauncher : MonoBehaviour
 
 
 
-		Debug.Log("GAME LAUNCHER: All services registered successfully.");
 	}
 
 	public static class LoadGameManager
@@ -92,17 +90,11 @@ public class GameLauncher : MonoBehaviour
 		{
 			if (hasLaunched) return;
 			hasLaunched = true;
-			Debug.Log("GAME LAUNCHER: LoadGameManagerAtStart()");
 			var manager = FindFirstObjectByType<GameManager>();
 			if (manager == null)
 			{
-				Debug.Log("GAME LAUNCHER: loading game manager scene: " + SceneName);
 
 				SceneManager.LoadScene(SceneName, LoadSceneMode.Single);
-			}
-			else
-			{
-				Debug.Log("manager found");
 			}
 
 		}

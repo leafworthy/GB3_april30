@@ -9,10 +9,8 @@ public static class ServiceLocator
 	public static void Register<T>(T instance) where T : class
 	{
 		var type = typeof(T);
-		if (_services.ContainsKey(type)) Debug.LogWarning($"ServiceLocator: Service of type {type.Name} is already registered. Overwriting...");
 
 		_services[type] = instance;
-		Debug.Log($"ServiceLocator: Service of type {type.Name} registered successfully.");
 	}
 
 	public static T Get<T>() where T : MonoBehaviour
@@ -25,13 +23,11 @@ public static class ServiceLocator
 		if (findItem != null)
 		{
 			Register<T>(findItem);
-			Debug.Log("found item by type: " + type.Name);
 			return findItem;
 		}
 
 		if (findItem == null)
 		{
-			Debug.Log("made new item by type: " + type.Name);
 			var go = new GameObject(type.Name);
 			var newService = go.AddComponent<T>();
 			Register<T>(newService);

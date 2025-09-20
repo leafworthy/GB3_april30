@@ -74,7 +74,6 @@ namespace __SCRIPTS
 			if (animations != null) animations.SetBool(UnitAnimations.IsFallingFromSky, true);
 
 			if (playerUpgrades != null) playerUpgrades.ApplyUpgrades(this);
-			Debug.Log("PLAYER: Player spawned: " + spawnedPlayerGO.name);
 			return spawnedPlayerGO;
 		}
 

@@ -57,7 +57,6 @@ namespace __SCRIPTS
 			if (!player.IsPlayer()) return;
 
 			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
-			Debug.Log("on player set" + player.playerColor);
 			foreach (var r in renderersToTint)
 			{
 				r.material.SetColor(ColorReplaceColor, player.playerColor);

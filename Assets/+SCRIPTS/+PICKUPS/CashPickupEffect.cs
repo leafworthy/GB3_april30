@@ -9,7 +9,6 @@ namespace __SCRIPTS
 		public override void StartEffect(Life life)
 		{
 			effectDuration = 0;
-			Debug.Log("cash pickup effect");
 			var stats = ServiceLocator.Get<PlayerStatsManager>();
 			stats.ChangeStat(life.Player,PlayerStat.StatType.TotalCash,amount);
 			base.StartEffect(life);

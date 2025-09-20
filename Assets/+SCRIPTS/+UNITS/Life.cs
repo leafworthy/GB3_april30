@@ -73,7 +73,7 @@ namespace __SCRIPTS
 		}
 
 
-		private void OnEnable()
+		private void Awake()
 		{
 			unitStats = new UnitStats(gameObject.name);
 			unitHealth = new UnitHealth(unitStats.Data);
@@ -141,7 +141,6 @@ namespace __SCRIPTS
 
 		private void HealthOnDead(Attack attack)
 		{
-			Debug.Log("health on dead", this);
 			EnableColliders(false);
 			OnDying?.Invoke(attack);
 			if (attack.OriginLife.player != null)
@@ -157,7 +156,6 @@ namespace __SCRIPTS
 		{
 			if (!unitStats.Data.isInvincible && !enable) return;
 			colliders = gameObject.GetComponentsInChildren<Collider2D>(true);
-			Debug.Log("disable colliders");
 
 			foreach (var col in colliders)
 			{
@@ -172,7 +170,6 @@ namespace __SCRIPTS
 
 		public void TakeDamage(Attack attack)
 		{
-			Debug.Log("taking damage", this);
 			if (IsShielded)
 			{
 				OnShielded?.Invoke(attack);

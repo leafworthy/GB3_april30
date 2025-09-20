@@ -24,11 +24,7 @@ namespace __SCRIPTS._ENEMYAI
 		private void Update()
 		{
 			_target = _targetter.GetClosestPlayer();
-			if (_target == null)
-			{
-				Debug.Log("no target");
-				return;
-			}
+			if (_target == null) return;
 			if (CloseEnoughToPlayer())
 				AttackPlayer();
 			else

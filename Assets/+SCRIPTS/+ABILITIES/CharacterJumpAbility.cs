@@ -41,18 +41,7 @@ namespace __SCRIPTS
 
 		public override string AbilityName => "Jump";
 
-		public override bool canDo()
-		{
-			if (!base.canDo()) return false;
-
-			//if (body.doableArms.IsActive)
-			//{
-			//	Debug.Log("Cannot jump, arms are active" + (body.doableArms.CurrentAbility != null ? $"({body.doableArms.CurrentAbility.AbilityName})" : ""));
-			//	return false;
-			//}
-
-			return IsResting;
-		}
+		public override bool canDo() => base.canDo() && IsResting;
 
 		public override bool canStop(IDoableAbility abilityToStopFor) => false;
 
@@ -63,7 +52,6 @@ namespace __SCRIPTS
 
 		public override void Stop()
 		{
-			Debug.Log("jump ability stop");
 			base.Stop();
 			body.SetDistanceToGround(0);
 		}
@@ -94,11 +82,7 @@ namespace __SCRIPTS
 
 		private void Controller_Jump(NewControlButton newControlButton)
 		{
-			if (!canDo())
-			{
-				Debug.Log("Cannot jump, not resting or dead or paused or arms active");
-				return;
-			}
+			if (!canDo()) return;
 
 			Do();
 		}
@@ -161,7 +145,6 @@ namespace __SCRIPTS
 
 			isJumping = false;
 			OnLand?.Invoke(transform.position + new Vector3(0, currentLandableHeight, 0));
-			Debug.Log("land");
 			moveAbility.SetCanMove(false);
 			body.SetGrounded();
 			verticalVelocity = 0;

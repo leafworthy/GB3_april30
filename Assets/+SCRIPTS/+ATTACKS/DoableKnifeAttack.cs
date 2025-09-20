@@ -1,9 +1,8 @@
 using System;
-using System.Linq;
 using __SCRIPTS;
 using UnityEngine;
 
-public class DoableKnifeAttack : Ability
+public class DoableKnifeAttack : WeaponAbility
 {
 	public override string AbilityName => "KnifeAttack";
 
@@ -47,14 +46,13 @@ public class DoableKnifeAttack : Ability
 		player.Controller.Attack3Circle.OnPress -= PlayerKnifePress;
 		player.Controller.Attack3Circle.OnRelease -= PlayerKnifeRelease;
 	}
+
 	private void OnDisable()
 	{
 		if (player == null) return;
 		if (anim == null) return;
 		StopListeningToPlayer();
 	}
-
-
 
 	protected override void AnimationComplete()
 	{
@@ -73,7 +71,6 @@ public class DoableKnifeAttack : Ability
 
 	private void PlayerKnifePress(NewControlButton newControlButton)
 	{
-		Debug.Log("[Knife] Player pressed knife button");
 		isPressing = true;
 		Do();
 	}
@@ -86,7 +83,6 @@ public class DoableKnifeAttack : Ability
 
 	private void StartAttack()
 	{
-		Debug.Log("starting attack");
 		if (isAttacking) return;
 		isAttacking = true;
 		PlayAnimationClip(animationClip, 1);
@@ -94,12 +90,9 @@ public class DoableKnifeAttack : Ability
 		anim.SetBool(UnitAnimations.IsBobbing, false);
 	}
 
-
-
 	private void Anim_AttackHit()
 	{
-		Debug.Log("knife attack hit");
-		var targetHit = AttackUtilities.FindClosestHit( life,attackPoint.transform.position, life.TertiaryAttackRange, life.EnemyLayer);
+		var targetHit = AttackUtilities.FindClosestHit(life, attackPoint.transform.position, life.TertiaryAttackRange, life.EnemyLayer);
 		if (targetHit == null)
 		{
 			OnMiss?.Invoke();
@@ -107,13 +100,8 @@ public class DoableKnifeAttack : Ability
 		}
 
 		var targetLife = targetHit.transform.gameObject.GetComponentInParent<Life>();
-		if (targetLife == null)
-		{
-			Debug.Log("no life");
-			return;
-		}
-		Debug.Log("attack hit");
-		AttackUtilities.HitTarget( life, targetLife, life.TertiaryAttackDamageWithExtra);
+		if (targetLife == null) return;
+		AttackUtilities.HitTarget(life, targetLife, life.TertiaryAttackDamageWithExtra);
 		OnHit?.Invoke(targetHit.transform.position);
 	}
 }

@@ -47,10 +47,8 @@ namespace __SCRIPTS
 
 		public void SelectCharacter(Player player)
 		{
-			Debug.Log("select character");
 			if(playersWhoSelectedThisCharacter.Contains(player))
 			{
-				Debug.Log("double select character attempt");
 				return;
 			}
 			playersWhoSelectedThisCharacter.Add(player);
@@ -61,7 +59,6 @@ namespace __SCRIPTS
 
 		public void DeselectCharacter(Player player)
 		{
-			Debug.Log("deselect character");
 			playersWhoSelectedThisCharacter.Remove(player);
 			HighlightButton(player);
 			characterSelectIndicators.Set(player.input.playerIndex, 1);
@@ -90,19 +87,16 @@ namespace __SCRIPTS
 
 		private void UpdateIndicator()
 		{
-			//Debug.Log("update indicator function called by " + name, this);
 			characterSelectIndicators = GetComponentInChildren<CharacterSelectIndicators>();
 			characterSelectIndicators.SetAllUnhighlighted();
 			foreach (var player in playersWhoHighlightedThisCharacter)
 			{
 				characterSelectIndicators.Set(player.input.playerIndex, 1);
-				//Debug.Log("Button " + character + " is highlighted for player " + player.input.playerIndex);
 			}
 
 			foreach (var player in playersWhoSelectedThisCharacter)
 			{
 				characterSelectIndicators.Set(player.input.playerIndex, 2);
-				//Debug.Log("Button " + character + " is selected for player " + player.input.playerIndex, this);
 			}
 
 		}

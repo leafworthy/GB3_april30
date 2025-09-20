@@ -19,7 +19,6 @@ namespace __SCRIPTS
 
 		public void Fire(Attack attack)
 		{
-			Debug.Log("bullet fired");
 			sprite = GetComponent<SpriteRenderer>();
 			if(!hasFired)
 			{

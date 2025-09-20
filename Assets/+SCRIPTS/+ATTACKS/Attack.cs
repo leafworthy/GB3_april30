@@ -21,13 +21,11 @@ namespace __SCRIPTS
 
 		public Attack(Life attacker, Life defender, float damageAmount)
 		{
-			Debug.Log("attack style 1");
 			MakeNewAttack(attacker, attacker.transform.position, defender.transform.position, defender, damageAmount);
 		}
 
 		public Attack(Life attacker, Vector2 attackFloorPoint, Vector2 destinationFloorPoint, Life defender, float damageAmount)
 		{
-			Debug.Log("attack style 2");
 			MakeNewAttack(attacker, attackFloorPoint, destinationFloorPoint, defender, damageAmount);
 		}
 
@@ -35,19 +33,16 @@ namespace __SCRIPTS
 
 		public Attack(Life attacker, Vector2 attackPointWithHeight, Life defender, float damageAmount)
 		{
-			Debug.Log("attack style 3");
 			MakeNewAttack(attacker, attackPointWithHeight - new Vector2(0, attacker.AttackHeight), defender.transform.position, defender, damageAmount);
 		}
 
 		public Attack(Life attacker, Life defender, Vector2 attackPointWithHeight, Vector2 destinationPointWithHeight,  float damageAmount)
 		{
-			Debug.Log("attack style 3");
 			MakeNewAttack(attacker, attackPointWithHeight - new Vector2(0, 5), destinationPointWithHeight - new Vector2(0, 5), defender, damageAmount);
 		}
 
 		public Attack(Life attacker, Vector2 attackPointWithHeight, Vector2 destinationFloorPoint, float damageAmount)
 		{
-			Debug.Log("attack style 4");
 			MakeNewAttack(attacker, attackPointWithHeight - new Vector2(0, attacker.AttackHeight), destinationFloorPoint, null, damageAmount);
 		}
 

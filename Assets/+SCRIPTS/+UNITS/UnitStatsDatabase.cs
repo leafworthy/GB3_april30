@@ -39,7 +39,6 @@ public class UnitStatsDatabase : ScriptableObject
 	{
 		if (string.IsNullOrEmpty(googleSheetsConfig.documentId))
 		{
-			Debug.LogError("Google Sheets Document ID is not set!");
 			OnDataLoaded?.Invoke(false);
 			return;
 		}
@@ -63,7 +62,6 @@ public class UnitStatsDatabase : ScriptableObject
 		lastError = "";
 
 		var url = googleSheetsConfig.GetCSVUrl();
-		Debug.Log($"Loading data from: {url}");
 
 		using (var request = UnityWebRequest.Get(url))
 		{
@@ -84,14 +82,12 @@ public class UnitStatsDatabase : ScriptableObject
 				catch (Exception e)
 				{
 					lastError = $"Parse error: {e.Message}";
-					Debug.LogError($"Error parsing CSV data: {e.Message}");
 					OnDataLoaded?.Invoke(false);
 				}
 			}
 			else
 			{
 				lastError = $"Network error: {request.error}";
-				Debug.LogError($"Error loading from Google Sheets: {request.error}");
 				OnDataLoaded?.Invoke(false);
 			}
 		}

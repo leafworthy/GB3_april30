@@ -31,7 +31,6 @@ namespace __SCRIPTS
 		}
 		public void OnDisable()
 		{
-			Debug.Log("object maker disabled");
 			DestroyAllUnits(null);
 			if (Services.levelManager == null) return;
 			Services.levelManager.OnStartLevel -= PoolObjects;
@@ -42,7 +41,6 @@ namespace __SCRIPTS
 
 		private void PoolObjects(GameLevel gameLevel)
 		{
-			Debug.Log("poolin");
 			foreach (var obj in ObjectsToPool)
 			{
 

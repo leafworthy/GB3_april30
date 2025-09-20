@@ -10,8 +10,9 @@ namespace __SCRIPTS
 		private AnimationEvents animEvents;
 		protected MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
-		private Player owner;
-		private CharacterJumpAbility jumps;
+
+		private CharacterJumpAbility jumps  => _jumps ??= GetComponent<CharacterJumpAbility>();
+		private CharacterJumpAbility _jumps;
 
 		public bool teleport;
 
@@ -20,24 +21,14 @@ namespace __SCRIPTS
 
 		protected override bool requiresLegs() => true;
 
-		public override bool canDo()
+		public override bool canDo() => base.canDo() && jumps.IsResting;
+
+		public override bool canStop(IDoableAbility abilityToStopFor)
 		{
-			if (!base.canDo())
-			{
-				Debug.Log("Base canDo failed for " + AbilityName + " ability");
-				return false;
-			}
+			if (abilityToStopFor is CharacterJumpAbility) return true;
 
-			if (!jumps.IsResting)
-			{
-				Debug.Log("Cannot do jumps, cannot do " + AbilityName + " ability");
-				return false;
-			}
-
-			return true;
+			return false;
 		}
-
-		public override bool canStop(IDoableAbility abilityToStopFor) => false;
 
 		public override void Stop()
 		{
@@ -45,7 +36,6 @@ namespace __SCRIPTS
 			body.ChangeLayer(Body.BodyLayer.grounded);
 			moveAbility.StopPush();
 			anim.RevertBottomToDefault();
-			Debug.Log("interrupt");
 		}
 
 		protected override void DoAbility()
@@ -56,8 +46,8 @@ namespace __SCRIPTS
 		private void UnsubscribeFromEvents()
 		{
 			// These won't throw exceptions even if not subscribed
-			if (owner?.Controller != null)
-				owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
+			if (player?.Controller != null)
+				player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 
 			if (animEvents != null)
 				animEvents.OnTeleport -= Anim_Teleport;
@@ -65,22 +55,22 @@ namespace __SCRIPTS
 
 		public override void SetPlayer(Player _player)
 		{
-			jumps = GetComponent<CharacterJumpAbility>();
+			base.SetPlayer(_player);
 
-			owner = _player;
+			Debug.LogWarning("Set player in dash");
 			UnsubscribeFromEvents();
 
 			animEvents = anim.animEvents;
-			owner.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
+			player.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
 			animEvents.OnTeleport += Anim_Teleport;
 		}
 
 		private void OnDisable()
 		{
-			if (owner == null) return;
-			if (owner.Controller == null) return;
+			if (player == null) return;
+			if (player.Controller == null) return;
 			if (animEvents != null) animEvents.OnTeleport -= Anim_Teleport;
-			owner.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
+			player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 		}
 
 		private void Anim_Teleport()
@@ -102,6 +92,7 @@ namespace __SCRIPTS
 
 		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 		{
+			Debug.LogWarning("dash pressed inside dash");
 			Do();
 		}
 

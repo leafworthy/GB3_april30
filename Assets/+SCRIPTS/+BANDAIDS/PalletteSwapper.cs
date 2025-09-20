@@ -23,7 +23,6 @@ public class PalletteSwapper : MonoBehaviour, IPoolable
 	[Button]
 	public void Swap()
 	{
-		Debug.Log("swap");
 		spriteRenderer.material = pallettes[Random.Range(0, pallettes.Count)];
 	}
 

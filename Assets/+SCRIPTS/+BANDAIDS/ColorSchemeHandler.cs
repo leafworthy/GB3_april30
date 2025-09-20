@@ -23,7 +23,6 @@ namespace __SCRIPTS
 
 			int randomIndex = Random.Range(0, allSchemes.Length);
 			houseColors = allSchemes[randomIndex];
-			Debug.Log($"Randomly selected color scheme: {houseColors.name}");
 		}
 	}
 }

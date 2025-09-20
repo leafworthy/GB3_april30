@@ -29,10 +29,16 @@ namespace __SCRIPTS
 
 		}
 
+		private RaycastHit2D CheckRaycastHit(Vector3 targetDirection, LayerMask layer)
+		{
+			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, life.PrimaryAttackRange, layer);
+			return raycastHit;
+		}
+
 		private void AimFlashlight()
 		{
 
-			var hitPoint = aimAbility.CheckRaycastHit(aimAbility.AimDir, Services.assetManager.LevelAssets.BuildingLayer);
+			var hitPoint = CheckRaycastHit(aimAbility.AimDir, Services.assetManager.LevelAssets.BuildingLayer);
 			if (hitPoint.collider != null)
 			{
 				Debug.DrawLine(body.FootPoint.transform.position, hitPoint.point, Color.white);

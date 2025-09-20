@@ -3,7 +3,6 @@ using GangstaBean.Core;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-
 public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPlayer
 {
 	protected Player player;
@@ -13,7 +12,7 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 	protected Body body => _body ?? GetComponent<Body>();
 	private Life _life;
 	protected Life life => _life ?? GetComponent<Life>();
-	public abstract string AbilityName { get;  }
+	public abstract string AbilityName { get; }
 
 	protected abstract bool requiresArms();
 
@@ -25,11 +24,7 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public void Do()
 	{
-		if (!canDo())
-		{
-			Debug.Log("body cant do");
-			return;
-		}
+		if (!canDo()) return;
 		if (requiresArms()) body.doableArms.DoActivity(this);
 
 		if (requiresLegs()) body.doableLegs.DoActivity(this);
@@ -41,70 +36,36 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public virtual void Stop()
 	{
-		Debug.Log("trying to stop " + AbilityName + " ability");
-		if (requiresArms())
-		{
-			body.doableArms.Stop(this);
-			Debug.Log("arms stopped for " + AbilityName + " ability");
-		}
+		if (requiresArms()) body.doableArms.Stop(this);
 
-		if (requiresLegs())
-		{
-			body.doableLegs.Stop(this);
-			Debug.Log("legs stopped for " + AbilityName + " ability");
-		}
+		if (requiresLegs()) body.doableLegs.Stop(this);
 
-		Debug.Log("cancelling invoke for " + AbilityName + " ability");
-		CancelInvoke(nameof(AnimationComplete));
+		CancelInvoke();
 	}
 
 	private bool BodyCanDo(IDoableAbility abilityToDo)
 	{
-		if (Services.pauseManager.IsPaused)
-		{
-			Debug.Log("can't do " + AbilityName + " because paused");
-			return false;
-		}
-		if (life.IsDead())
-		{
-			Debug.Log("can't do " + AbilityName + " because dead");
-			return false;
-		}
-		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo))
-		{
-			Debug.Log("can't do " + AbilityName + " because arms can't do activity");
-			return false;
-		}
-		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo))
-		{
-			Debug.Log("can't do " + AbilityName + " because legs can't do activity");
-			return false;
-		}
+		if (Services.pauseManager.IsPaused) return false;
+		if (life.IsDead()) return false;
+		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo)) return false;
+		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo)) return false;
 
 		return true;
 	}
 
 	protected virtual void AnimationComplete()
 	{
-		Debug.Log("Animation complete for " + AbilityName + " ability");
 		Stop();
 	}
 
-	protected void PlayAnimationClip(string clipName, float length,int layer = 0)
+	protected void PlayAnimationClip(string clipName, float length, int layer = 0)
 	{
-
-
 		anim.Play(clipName, layer, 0);
-		if (length != 0)
-		{
-			Invoke(nameof(AnimationComplete), length);
-		}
+		if (length != 0) Invoke(nameof(AnimationComplete), length);
 	}
 
 	protected void PlayAnimationClip(AnimationClip clip, int layer = 0)
 	{
-
-
 		anim.Play(clip.name, layer, 0);
 		Invoke(nameof(AnimationComplete), clip.length);
 	}

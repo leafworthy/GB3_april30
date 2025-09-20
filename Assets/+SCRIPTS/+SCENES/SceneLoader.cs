@@ -27,7 +27,7 @@ namespace __SCRIPTS
 		private bool isLoading;
 		private static readonly int IsFadedIn = Animator.StringToHash("IsFadedIn");
 
-		// Scene transition state tracking
+		// Scene transition weaponState tracking
 		private SceneDefinition currentlyLoadedScene;
 		private SceneDefinition loadingScene;
 
@@ -37,7 +37,6 @@ namespace __SCRIPTS
 
 		public void StartService()
 		{
-			Debug.Log("SCENE LOADER: START SERVICE");
 			SceneManager.sceneLoaded += SceneManager_OnSceneLoaded;
 			pressAnyButtonText.gameObject.SetActive(false);
 			StartFadingIn();
@@ -58,7 +57,6 @@ namespace __SCRIPTS
 			if (!isLoading) return;
 			var progressValue = UpdateLoadingProgress();
 			if (!loadingOperation.allowSceneActivation || !(progressValue >= 1.0f)) return;
-			Debug.Log("SCENE LOADER: Scene load complete, fading out now: " + loadingScene?.sceneName);
 			isLoading = false;
 			FadeOut();
 		}
@@ -69,7 +67,6 @@ namespace __SCRIPTS
 
 		public void GoToScene(SceneDefinition newScene)
 		{
-			Debug.Log("SCENE LOADER: go to scene " + newScene?.sceneName);
 			loadingScene = newScene;
 			StartFadingIn();
 		}
@@ -81,7 +78,6 @@ namespace __SCRIPTS
 			currentlyLoadedScene = loadingScene;
 			loadingScene = null;
 			OnSceneReadyToStartLevel?.Invoke(currentlyLoadedScene);
-			Debug.Log("SCENE LOADER: Scene is ready to start level: " + currentlyLoadedScene?.sceneName);
 		}
 
 
@@ -104,11 +100,9 @@ namespace __SCRIPTS
 		{
 			if (scene.name == Services.assetManager.Scenes.gameManager)
 			{
-				Debug.Log("SCENE LOADER: game manager scene loaded");
 				return;
 			}
 
-			Debug.Log("SCENE LOADER: Scene loaded: " + scene.name);
 			isLoading = false;
 			SetCurrentSceneReady();
 		}
@@ -137,7 +131,6 @@ namespace __SCRIPTS
 		{
 			isLoading = true;
 			loadingOperation = SceneManager.LoadSceneAsync(loadingScene.SceneName);
-			Debug.Log("SCENE LOADER: Starting async load for scene: " + loadingScene?.SceneName);
 		}
 
 		private float UpdateLoadingProgress()

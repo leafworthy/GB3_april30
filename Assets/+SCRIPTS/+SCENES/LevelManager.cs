@@ -19,18 +19,15 @@ namespace __SCRIPTS
 
 		public void StartService()
 		{
-			Debug.Log("start wtf");
 			gameObject.SetActive(true);
 			Services.sceneLoader.OnSceneReadyToStartLevel += SceneLoaderSceneReadyToStartLevel;
 			canJoinInGame = false;
-			Debug.Log("join in game false");
 			if (loadInGame) StartGame(GetFirstLevelToLoad());
 			else StartGame(Services.assetManager.Scenes.mainMenu);
 		}
 
 		public void StartGame(SceneDefinition startingScene)
 		{
-			Debug.Log("LEVEL MANAGER: StartGame with scene: " + startingScene.sceneName);
 			Services.sceneLoader.GoToScene(startingScene);
 		}
 
@@ -40,7 +37,6 @@ namespace __SCRIPTS
 			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
 			currentLevel = newLevel;
 			currentLevel.OnGameOver += newLevel_GameOver;
-			Debug.Log("LEVEL MANAGER: OnStartLevel");
 			SpawnPlayersIntoLevel(currentLevel.DefaultPlayerSpawnPoint);
 			OnStartLevel?.Invoke(currentLevel);
 
@@ -50,16 +46,13 @@ namespace __SCRIPTS
 
 		private void SpawnPlayersIntoLevel(PlayerSpawnPoint playerSpawnPoint)
 		{
-			Debug.Log("LEVEL MANAGER: joined players count: " + Services.playerManager.AllJoinedPlayers.Count);
 			if (playerSpawnPoint == null)
 			{
-				Debug.Log("travel point is null");
 				return;
 			}
 
 			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
-				Debug.Log("trying to spawn" + player?.name + " at " + playerSpawnPoint.name);
 				SpawnPlayerFromInGame(player);
 			}
 		}
@@ -68,7 +61,6 @@ namespace __SCRIPTS
 		{
 			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
 			player.Spawn(currentLevel.DefaultPlayerSpawnPoint.transform.position);
-			Debug.Log("LEVEL MANAGER: OnLevelSpawnedPlayer: " + player.name);
 			OnLevelSpawnedPlayer?.Invoke(player);
 		}
 
@@ -92,7 +84,6 @@ namespace __SCRIPTS
 
 		private void SceneLoaderSceneReadyToStartLevel(SceneDefinition newScene)
 		{
-			Debug.Log("LEVEL MANAGER: scene loader ready to start level: " + newScene.sceneName);
 			var gameLevel = FindFirstObjectByType<GameLevel>();
 			if (gameLevel == null) return;
 			canJoinInGame = true;
@@ -138,7 +129,6 @@ namespace __SCRIPTS
 			if (restartedLevelScene == null)
 			{
 				// Fallback to the main starting scene if we lost the restart reference
-				Debug.Log("loading starting scene because restartedLevelScene is null");
 				LoadLevel(Services.assetManager.Scenes.startingScene);
 				return;
 			}

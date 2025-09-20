@@ -6,89 +6,58 @@ namespace __SCRIPTS
 {
 	public interface IAimAbility
 	{
-		RaycastHit2D CheckRaycastHit(Vector3 targetDirection, LayerMask mask);
 		bool hasEnoughMagnitude();
 		Vector2 AimDir { get; }
 		Vector2 GetAimPoint();
 	}
-	[DisallowMultipleComponent]
-	public class AimAbility : Ability, IAimAbility
-	{
-		[HideInInspector] public Vector2 AimDir { get; set; }
-		public bool hasEnoughMagnitude() => player.Controller.AimAxis.isActive;
-		private float maxAimDistance = 30;
 
+	[DisallowMultipleComponent]
+	public class AimAbility : MonoBehaviour, IAimAbility, INeedPlayer
+	{
+		public Vector2 AimDir { get; private set; }
+		private const float aimSmoothSpeed = 10;
+		private const float maxAimDistance = 30;
+		public bool hasEnoughMagnitude() => player.Controller.AimAxis.isActive;
 		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
-		public float aimSmoothSpeed = 8;
 
-		public override string AbilityName => "Aim";
+		private Player player;
+		private Body body => _body ??= GetComponent<Body>();
+		private Body _body;
 
-		public override bool canStop(IDoableAbility abilityToStopFor)
+		public void SetPlayer(Player _player)
 		{
-			Debug.Log("testing can stop");
-			return true;
-		}
-
-		protected override bool requiresArms() => false;
-
-		protected override bool requiresLegs() => false;
-
-		public override bool canDo()
-		{
-			if (!base.canDo()) return false;
-			return true;
-		}
-
-		private Vector2 lastAimDir;
-		protected override void DoAbility()
-		{
-			if(GetRealAimDir().magnitude != 0)AimDir = Vector2.Lerp(lastAimDir, GetRealAimDir().normalized, aimSmoothSpeed * Time.deltaTime);
-			lastAimDir = AimDir;
-
-			//AimDir = GetRealAimDir();
-			RotateAimObjects(AimDir);
-			FaceAimDir();
-		}
-
-		public override void SetPlayer(Player _player)
-		{
-			base.SetPlayer(_player);
-
+			player = _player;
 			player.Controller.AimAxis.OnChange += AimerOnAim;
-			Debug.Log("subscribed to aim axis changes");
 		}
-
-		private void OnDisable()
+		private void OnDestroy()
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;
 			player.Controller.AimAxis.OnChange -= AimerOnAim;
 		}
 
+		private void Update()
+		{
+			Aim();
+		}
+
 		private void AimerOnAim(IControlAxis controlAxis, Vector2 newAimDir)
 		{
-			if (hasEnoughMagnitude()) AimDir = Vector2.Lerp(AimDir, GetRealAimDir().normalized, aimSmoothSpeed * Time.deltaTime);
-			Do();
+			//Aim();
 		}
 
-		protected void Update()
+		private void Aim()
 		{
-			Do();
+			if (hasEnoughMagnitude()) AimDir = Vector2.Lerp(AimDir, GetRealAimDir().normalized, aimSmoothSpeed * Time.deltaTime);
+			RotateAimObjects(AimDir);
+			BottomFaceAimDir();
 		}
 
-		private void FaceAimDir()
+		private void BottomFaceAimDir()
 		{
 			if (moveAbility.IsMoving()) return;
-			//if (body.legs.isActive) return;
 			body.BottomFaceDirection(AimDir.x >= 0);
-		}
-
-		public RaycastHit2D CheckRaycastHit(Vector3 targetDirection, LayerMask layer)
-		{
-			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, targetDirection.normalized, life.PrimaryAttackRange, layer);
-
-			return raycastHit;
 		}
 
 		private void RotateAimObjects(Vector2 direction)
@@ -111,10 +80,8 @@ namespace __SCRIPTS
 
 		private Vector3 GetRealAimDir()
 		{
-		if (player.isUsingMouse) return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
+			if (player.isUsingMouse) return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
 			return player.Controller.AimAxis.GetCurrentAngle();
 		}
-
-
 	}
 }

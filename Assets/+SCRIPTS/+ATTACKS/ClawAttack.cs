@@ -35,15 +35,10 @@ namespace __SCRIPTS
 
 			ai.OnAttack += AI_Attack;
 			anim.animEvents.OnAttackHit += OnAttackHit;
-			anim.animEvents.OnAttackStop += OnAttackStop;
 
 		}
 
 
-		private void OnAttackStop(int obj)
-		{
-			body.arms.Stop(this);
-		}
 
 		private void OnDisable()
 		{
@@ -51,7 +46,6 @@ namespace __SCRIPTS
 			ai.OnAttack -= AI_Attack;
 			if (anim == null) return;
 			anim.animEvents.OnAttackHit -= OnAttackHit;
-			anim.animEvents.OnAttackStop -= OnAttackStop;
 
 		}
 

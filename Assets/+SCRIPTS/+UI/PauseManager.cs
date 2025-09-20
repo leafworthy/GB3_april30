@@ -33,7 +33,6 @@ namespace __SCRIPTS
 		private void ListenToJoinedLevelSpawnedPlayer(Player newPlayer)
 		{
 			if (playersBeingListenedTo.Contains(newPlayer)) return;
-			Debug.Log("Listening to joined player");
 			playersBeingListenedTo.Add(newPlayer);
 			newPlayer.Controller.Pause.OnPress += PlayerPressedPause;
 			newPlayer.Controller.Unpause.OnPress += PlayerPressedPause;
@@ -56,7 +55,6 @@ namespace __SCRIPTS
 			isListening = false;
 			foreach (var joinedPlayer in playersBeingListenedTo)
 			{
-				Debug.Log("Level menu stopped listening to player");
 				joinedPlayer.Controller.Pause.OnPress -= PlayerPressedPause;
 				joinedPlayer.Controller.Unpause.OnPress -= PlayerPressedPause;
 				joinedPlayer.Controller.Select.OnPress -= PlayerPressedSelect;
@@ -115,7 +113,6 @@ namespace __SCRIPTS
 
 		private void PlayerPressedPause(NewControlButton newControlButton)
 		{
-			Debug.Log("Pause pressed");
 			if (IsPaused)
 			{
 				if (pausingPlayer != newControlButton.owner) return;
@@ -132,7 +129,6 @@ namespace __SCRIPTS
 		public void Pause(Player player)
 		{
 			if (IsPaused) return;
-			Debug.Log("Pause");
 			graphic.SetActive(true);
 			OnPause?.Invoke(player);
 			IsPaused = true;
@@ -149,7 +145,6 @@ namespace __SCRIPTS
 		public void Unpause()
 		{
 			if (!IsPaused) return;
-			Debug.Log("unPause ");
 			graphic.SetActive(false);
 			OnUnpause?.Invoke(pausingPlayer);
 			IsPaused = false;

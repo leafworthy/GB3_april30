@@ -89,7 +89,6 @@ namespace __SCRIPTS
 
 		public void UseAmmo(int amount)
 		{
-			Debug.Log("using ammo: " + amount);
 			Use(amount);
 		}
 
@@ -97,21 +96,17 @@ namespace __SCRIPTS
 		{
 			if (!reloads)
 			{
-				Debug.Log("cant reload, this weapon doesn't reload");
 				return false;
 			}
 			if (reserveAmmo <= 0)
 			{
-				Debug.Log("cant reload, no reserve ammo");
 				return false;
 			}
 			if (AmmoInClip >= clipSize)
 			{
-				Debug.Log("cant reload, clip is full");
 				return false;
 			}
 
-			Debug.Log("can reload");
 			return true;
 
 		}

@@ -29,7 +29,6 @@ namespace __SCRIPTS
                     go.AddComponent<T>();
                 }
                 _instance = go.GetComponent<T>();
-                Debug.Log("Singleton " + typeof(T).Name + "actually created", go);
             }
         }
 
@@ -40,18 +39,12 @@ namespace __SCRIPTS
             if (_instance == null || _instance == this)
             {
 	            _instance = this as T;
-            Debug.Log("SINGLETON ONLINE: " + typeof(T).Name, this);
             }
             else
             {
-	            Debug.Log("SINGLETON DUPLICATE DESTROYED: " + typeof(T).Name, this);
 	            Destroy(this);
             }
         }
 
-        private void OnDisable()
-        {
-            Debug.Log("SINGLETON OFFLINE: " + typeof(T).Name, this);
-        }
     }
 }

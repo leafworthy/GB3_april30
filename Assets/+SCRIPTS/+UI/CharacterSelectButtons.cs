@@ -17,7 +17,6 @@ namespace __SCRIPTS
 
 		public void Init(Player player)
 		{
-			//Debug.Log("buttons initialized");
 			hasSelected = false;
 			_player = player;
 			player.Controller.UIAxis.OnLeft += OnLeft;

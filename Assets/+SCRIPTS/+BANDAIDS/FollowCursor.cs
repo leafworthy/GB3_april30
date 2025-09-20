@@ -14,11 +14,7 @@ namespace __SCRIPTS
 				// Cache the AimAbility component reference to avoid GetComponent calls
 				cachedAimAbility = player.SpawnedPlayerGO.GetComponentInChildren<IAimAbility>();
 
-				if (cachedAimAbility == null)
-				{
-					Debug.LogWarning($"AimAbility not found in children of {player.SpawnedPlayerGO.name}", this);
-					return;
-				}
+				if (cachedAimAbility == null) return;
 
 				// Initialize position
 				transform.position = cachedAimAbility.GetAimPoint();

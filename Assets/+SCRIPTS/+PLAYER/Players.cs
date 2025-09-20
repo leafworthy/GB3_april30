@@ -27,8 +27,6 @@ namespace __SCRIPTS
 		public event Action<Player> OnPlayerJoins;
 		public event Action<Player> OnPlayerDies;
 
-
-
 		public void StartService()
 		{
 			_inputManager = GetComponent<PlayerInputManager>();
@@ -57,7 +55,6 @@ namespace __SCRIPTS
 			if (_inputManager != null) _inputManager.onPlayerJoined -= Input_OnPlayerJoins;
 		}
 
-
 		public void ClearAllJoinedPlayers()
 		{
 			var playersToDestroy = new List<Player>(AllJoinedPlayers);
@@ -65,18 +62,15 @@ namespace __SCRIPTS
 			foreach (var player in playersToDestroy)
 			{
 				if (player == null) continue;
-					if (player.SpawnedPlayerGO != null) Destroy(player.SpawnedPlayerGO);
-					Destroy(player.gameObject);
-
+				if (player.SpawnedPlayerGO != null) Destroy(player.SpawnedPlayerGO);
+				Destroy(player.gameObject);
 			}
 
 			AllJoinedPlayers.Clear();
-			Debug.Log("clear all players");
 		}
 
 		private void Input_OnPlayerJoins(PlayerInput newPlayerInput)
 		{
-			Debug.Log($"PlayerInput {newPlayerInput.playerIndex} joined the input");
 			var joiningPlayer = newPlayerInput.GetComponent<Player>();
 			if (joiningPlayer == null) return;
 			AddPlayerToJoinedPlayers(newPlayerInput, joiningPlayer);
@@ -84,46 +78,31 @@ namespace __SCRIPTS
 
 		private void AddPlayerToJoinedPlayers(PlayerInput newPlayerInput, Player joiningPlayer)
 		{
-			Debug.Log($"Player {joiningPlayer.name} is trying to join with input {newPlayerInput.playerIndex}");
+			if (AllJoinedPlayers.Contains(joiningPlayer)) return;
 
-			if (AllJoinedPlayers.Contains(joiningPlayer))
-			{
-				Debug.Log($"Player {joiningPlayer.name} is already joined.");
-				return;
-			}
-
-			if (AllJoinedPlayers.Count >= 4)
-			{
-				Debug.Log("too many players joined, max is 4");
-				return;
-			}
+			if (AllJoinedPlayers.Count >= 4) return;
 
 			joiningPlayer.ConnectPlayerToController(newPlayerInput, playerPresets[newPlayerInput.playerIndex], newPlayerInput.playerIndex);
 
 			AllJoinedPlayers.Add(joiningPlayer);
-			Debug.Log("PLAYERS: player joins" + joiningPlayer.name + " with input " + newPlayerInput.playerIndex);
 			OnPlayerJoins?.Invoke(joiningPlayer);
 			joiningPlayer.OnPlayerDies += Player_PlayerDies;
 		}
 
-
 		private void Player_PlayerDies(Player deadPlayer)
 		{
 			OnPlayerDies?.Invoke(deadPlayer);
-			Debug.Log("player dies, players left: " + AllJoinedPlayers.Count(t => t.state == Player.State.Alive));
 			if (AllJoinedPlayersAreDead()) OnAllJoinedPlayersDead?.Invoke();
 		}
 
 		private bool AllJoinedPlayersAreDead()
 		{
 			var playersAlive = AllJoinedPlayers.Where(t => t.state == Player.State.Alive).ToList();
-			Debug.Log(playersAlive.Count <= 0 ? "all players dead" : "players still alive: " + playersAlive.Count);
 			return playersAlive.Count <= 0;
 		}
 
 		public void SetActionMaps(string actionMap)
 		{
-			Debug.Log("PLAYERS: SetActionMaps: " + actionMap);
 			foreach (var player in AllJoinedPlayers)
 			{
 				SetActionMap(player, actionMap);
@@ -141,6 +120,5 @@ namespace __SCRIPTS
 
 			player.input.SwitchCurrentActionMap(actionMap);
 		}
-
 	}
 }

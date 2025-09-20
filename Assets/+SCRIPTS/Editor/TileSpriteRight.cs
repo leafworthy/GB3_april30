@@ -45,7 +45,6 @@ public class SpriteTiler : EditorWindow
 
         Undo.CollapseUndoOperations(undoGroup);
 
-        Debug.Log($"Tiled object to position: {newPosition}");
     }
 
     [MenuItem("Tools/Tile Sprite Left")]
@@ -90,7 +89,6 @@ public class SpriteTiler : EditorWindow
 
         Undo.CollapseUndoOperations(undoGroup);
 
-        Debug.Log($"Tiled object to position: {newPosition}");
     }
 
     [MenuItem("Tools/Tile Sprite Isometric Top Right")]

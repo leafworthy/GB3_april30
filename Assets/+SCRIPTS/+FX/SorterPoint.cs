@@ -11,35 +11,22 @@ public class SorterPoint : MonoBehaviour
 	[Button]
 	public static void SortScene()
 	{
-		Debug.Log("scene sorted");
 		var sorterPoints = FindObjectsByType<SorterPoint>(FindObjectsSortMode.None);
 		foreach (var sorterPoint in sorterPoints)
 		{
-			if (sorterPoint == null || sorterPoint.transform == null)
-			{
-				Debug.LogWarning("SorterPoint or its transform is null.", sorterPoint);
-				continue;
-			}
+			if (sorterPoint == null || sorterPoint.transform == null) continue;
 
 			var renderers = sorterPoint.GetComponentsInChildren<SpriteRenderer>();
 			if (renderers == null || renderers.Length == 0) continue;
 			foreach (var renderer in renderers)
 			{
-				if (renderer == null)
-				{
-					Debug.LogWarning("Renderer is null.", sorterPoint);
-					continue;
-				}
+				if (renderer == null) continue;
 
 				var sorterModifier = renderer.GetComponent<SorterPointDepthModifier>();
 				if (sorterModifier != null)
-				{
-					renderer.sortingOrder += sorterPoint.sorterPosition+sorterModifier.SorterPointDepthModification - 1000;
-				}
+					renderer.sortingOrder += sorterPoint.sorterPosition + sorterModifier.SorterPointDepthModification - 1000;
 				else
-				{
 					renderer.sortingOrder = sorterPoint.sorterPosition - 1000;
-				}
 			}
 		}
 	}

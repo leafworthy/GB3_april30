@@ -22,7 +22,6 @@ namespace __SCRIPTS.Projectiles
 			RotateToDirection();
 			rotationRate = 0;
 			isActive = true;
-
 		}
 
 		private void RotateToDirection()
@@ -35,43 +34,33 @@ namespace __SCRIPTS.Projectiles
 
 		protected override void FixedUpdate()
 		{
-
 			if (!isActive)
 			{
 				base.FixedUpdate();
 				return;
 			}
 
-			var nextPos = direction.normalized * speed * Time.fixedDeltaTime+ (Vector2)transform.position;
+			var nextPos = direction.normalized * speed * Time.fixedDeltaTime + (Vector2) transform.position;
 			var colliderLife = CheckForCollisions(nextPos);
 			if (colliderLife == null)
 			{
 				if (moveAbility != null)
 				{
 					moveAbility.MoveInDirection(direction.normalized, speed);
-					if(height >= 0)
+					if (height >= 0)
 					{
-						if (isAirThrow)
-						{
-							height -= speed * Time.fixedDeltaTime;
-						}
+						if (isAirThrow) height -= speed * Time.fixedDeltaTime;
 
 						SetDistanceToGround(height);
 					}
 					else
-					{
 						Land();
-					}
 				}
 				else
-				{
-					transform.position += (Vector3)nextPos;
-				}
+					transform.position += (Vector3) nextPos;
 			}
 			else
-			{
 				HandleHit(colliderLife);
-			}
 		}
 
 		private void Land()
@@ -79,7 +68,7 @@ namespace __SCRIPTS.Projectiles
 			rotationRate = 300;
 			moveAbility.StopMoving();
 			isActive = false;
-			Services.objectMaker.Unmake(gameObject,3);
+			Services.objectMaker.Unmake(gameObject, 3);
 		}
 
 		private void HandleHit(Life hitLife)
@@ -105,13 +94,8 @@ namespace __SCRIPTS.Projectiles
 				if (hit2D.collider == null) continue;
 				if (hit2D.collider.gameObject == gameObject) continue;
 				var life = hit2D.collider.GetComponent<Life>();
-				if(life == null)
-				{
-					Debug.Log("hit but no life", hit2D.collider.gameObject);
-
-					continue;
-				}
-				Debug.DrawLine( transform.position, target, Color.red);
+				if (life == null) continue;
+				Debug.DrawLine(transform.position, target, Color.red);
 
 				return life;
 			}
