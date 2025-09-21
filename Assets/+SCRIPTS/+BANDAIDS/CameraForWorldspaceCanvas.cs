@@ -9,7 +9,6 @@ namespace __SCRIPTS
         {
             var canvas = GetComponentInChildren<Canvas>();
             canvas.worldCamera = CursorManager.GetCamera();
-            Debug.Log("got camera: " );
         }
 
 

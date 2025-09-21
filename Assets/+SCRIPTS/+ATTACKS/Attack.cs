@@ -6,7 +6,7 @@ namespace __SCRIPTS
 	[Serializable]
 	public class Attack
 	{
-		private void MakeNewAttack(Life originLife, Vector2 originFloorPoint, Vector2 destinationFloorPoint, Life destinationLife, float damageAmount)
+		private void MakeNewAttack(Life originLife, Vector2 originFloorPoint, Vector2 destinationFloorPoint, Life destinationLife, float damageAmount, float extraPush = 0)
 		{
 			OriginFloorPoint = originFloorPoint;
 			OriginLife = originLife;
@@ -15,6 +15,7 @@ namespace __SCRIPTS
 			DestinationFloorPoint = destinationFloorPoint;
 			DestinationLife = destinationLife;
 			DestinationHeight = 5;
+			ExtraPush = extraPush;
 
 			DamageAmount = damageAmount;
 		}
@@ -31,7 +32,7 @@ namespace __SCRIPTS
 
 
 
-		public Attack(Life attacker, Vector2 attackPointWithHeight, Life defender, float damageAmount)
+		public Attack(Life attacker, Vector2 attackPointWithHeight, Life defender, float damageAmount, float extraPush = 0)
 		{
 			MakeNewAttack(attacker, attackPointWithHeight - new Vector2(0, attacker.AttackHeight), defender.transform.position, defender, damageAmount);
 		}
@@ -41,7 +42,7 @@ namespace __SCRIPTS
 			MakeNewAttack(attacker, attackPointWithHeight - new Vector2(0, 5), destinationPointWithHeight - new Vector2(0, 5), defender, damageAmount);
 		}
 
-		public Attack(Life attacker, Vector2 attackPointWithHeight, Vector2 destinationFloorPoint, float damageAmount)
+		public Attack(Life attacker, Vector2 attackPointWithHeight, Vector2 destinationFloorPoint, float damageAmount, float extraPush = 0)
 		{
 			MakeNewAttack(attacker, attackPointWithHeight - new Vector2(0, attacker.AttackHeight), destinationFloorPoint, null, damageAmount);
 		}
@@ -62,6 +63,7 @@ namespace __SCRIPTS
 
 		public Vector2 DestinationFloorPoint;
 		public Vector2 OriginFloorPoint;
+		public float ExtraPush;
 		public Color color = Color.red;
 	}
 }

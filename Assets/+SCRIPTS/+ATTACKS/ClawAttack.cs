@@ -22,6 +22,7 @@ namespace __SCRIPTS
 		private UnitAnimations anim;
 		private Body body;
 		private Targetter targetter;
+		public AnimationClip clawAttackAnimationClip;
 
 		public override string AbilityName => "MeleeAttack";
 
@@ -94,11 +95,11 @@ namespace __SCRIPTS
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (currentTargetLife == null) return;
-			if (TargetIsInvalid(currentTargetLife)) return;
 
 			if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= base.life.PrimaryAttackRange*1.25f)
 			{
-				AttackUtilities.HitTarget(life, currentTargetLife, life.PrimaryAttackDamageWithExtra);
+				var hitPoint = AttackUtilities.RaycastToObject(currentTargetLife, life.EnemyLayer);
+				AttackUtilities.HitTarget(life, currentTargetLife, hitPoint.point, life.PrimaryAttackDamageWithExtra);
 			}
 
 

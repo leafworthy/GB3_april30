@@ -8,13 +8,11 @@ namespace __SCRIPTS
 		public AnimationClip dashAnimationClip_Bottom;
 		public AnimationClip dashAnimationClip_Top;
 		private AnimationEvents animEvents;
-		protected MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
+		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
 
-		private CharacterJumpAbility jumps  => _jumps ??= GetComponent<CharacterJumpAbility>();
+		private CharacterJumpAbility jumps => _jumps ??= GetComponent<CharacterJumpAbility>();
 		private CharacterJumpAbility _jumps;
-
-		public bool teleport;
 
 		public override string AbilityName => "Dash";
 		protected override bool requiresArms() => true;
@@ -23,12 +21,7 @@ namespace __SCRIPTS
 
 		public override bool canDo() => base.canDo() && jumps.IsResting;
 
-		public override bool canStop(IDoableAbility abilityToStopFor)
-		{
-			if (abilityToStopFor is CharacterJumpAbility) return true;
-
-			return false;
-		}
+		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is CharacterJumpAbility or KnifeAttack;
 
 		public override void Stop()
 		{
@@ -61,12 +54,8 @@ namespace __SCRIPTS
 
 		private void UnsubscribeFromEvents()
 		{
-			// These won't throw exceptions even if not subscribed
 			if (player?.Controller != null)
 				player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
-
-			if (animEvents != null)
-				animEvents.OnTeleport -= Anim_Teleport;
 		}
 
 		public override void SetPlayer(Player _player)
@@ -78,32 +67,13 @@ namespace __SCRIPTS
 
 			animEvents = anim.animEvents;
 			player.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
-			animEvents.OnTeleport += Anim_Teleport;
 		}
 
-		private void OnDisable()
+		private void OnDestroy()
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;
-			if (animEvents != null) animEvents.OnTeleport -= Anim_Teleport;
 			player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
-		}
-
-		private void Anim_Teleport()
-		{
-			var teleportDirection = moveAbility.GetMoveDir();
-			if (teleportDirection.magnitude < 0.1f)
-			{
-				teleportDirection = moveAbility.GetLastMoveAimDirOffset().normalized;
-				if (teleportDirection.magnitude < 0.1f) teleportDirection = body.BottomIsFacingRight ? Vector2.right : Vector2.left;
-			}
-
-			var teleportDistance = life.DashSpeed;
-			var teleportOffset = teleportDirection.normalized * teleportDistance;
-			var newPoint = (Vector2) transform.position + teleportOffset;
-
-			body.ChangeLayer(Body.BodyLayer.grounded);
-			transform.position = newPoint;
 		}
 
 		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)

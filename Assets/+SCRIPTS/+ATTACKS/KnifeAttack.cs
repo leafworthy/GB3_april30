@@ -2,7 +2,7 @@ using System;
 using __SCRIPTS;
 using UnityEngine;
 
-public class DoableKnifeAttack : Ability
+public class KnifeAttack : Ability
 {
 	public override string AbilityName => "KnifeAttack";
 
@@ -100,7 +100,8 @@ public class DoableKnifeAttack : Ability
 
 		var targetLife = targetHit.transform.gameObject.GetComponentInParent<Life>();
 		if (targetLife == null) return;
-		AttackUtilities.HitTarget(life, targetLife, life.TertiaryAttackDamageWithExtra);
+		var hitPoint = AttackUtilities.RaycastToObject(targetLife, life.EnemyLayer);
+		AttackUtilities.HitTarget(life, targetLife, hitPoint.point, life.TertiaryAttackDamageWithExtra);
 		OnHit?.Invoke(targetHit.transform.position);
 	}
 }

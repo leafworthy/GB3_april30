@@ -4,11 +4,11 @@ namespace __SCRIPTS
 {
 	public class KnifeAttacks_FX : MonoBehaviour
 	{
-		private DoableKnifeAttack knifeAttack;
+		private KnifeAttack knifeAttack;
 
 		void OnEnable()
 		{
-			knifeAttack = GetComponent<DoableKnifeAttack>();
+			knifeAttack = GetComponent<KnifeAttack>();
 			if (knifeAttack == null) return;
 			knifeAttack.OnHit += KnifeAttackOnHit;
 

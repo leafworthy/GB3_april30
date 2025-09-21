@@ -561,8 +561,8 @@ GameObject:
   - component: {fileID: 5636858269508795379}
   - component: {fileID: 1547629825238236334}
   - component: {fileID: 6438088722743322343}
-  - component: {fileID: 8019141755725131464}
   - component: {fileID: 6524197863214219341}
+  - component: {fileID: 8019141755725131464}
   - component: {fileID: 3543835829479452941}
   - component: {fileID: 4716467258387394285}
   - component: {fileID: 5548372319585306732}
@@ -1023,20 +1023,6 @@ MonoBehaviour:
   dashAnimationClip_Bottom: {fileID: 7400000, guid: fe7d378efbd3f4623be03cdd452b4bd1, type: 2}
   dashAnimationClip_Top: {fileID: 0}
   teleport: 0
---- !u!114 &8019141755725131464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aa06a83324c4ef5b39e8910fbcb88ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 3833892833308743022}
-  DefaultBottomAnimation: {fileID: 7400000, guid: 4f55359b4945d459997a2333342ddf7f, type: 2}
 --- !u!114 &6524197863214219341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1052,6 +1038,20 @@ MonoBehaviour:
   text: Hello World!
   fontColor: {r: 1, g: 1, b: 1, a: 1}
   padding: {x: 10, y: 10}
+--- !u!114 &8019141755725131464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aa06a83324c4ef5b39e8910fbcb88ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 3833892833308743022}
+  DefaultBottomAnimation: {fileID: 7400000, guid: 4f55359b4945d459997a2333342ddf7f, type: 2}
 --- !u!114 &3543835829479452941
 MonoBehaviour:
   m_ObjectHideFlags: 0

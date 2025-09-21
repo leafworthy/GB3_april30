@@ -8,19 +8,19 @@ namespace __SCRIPTS
 		private AnimationEvents animEvents;
 		private Life life;
 		private SimpleJumpAbility simpleJump;
-		private TertiaryAttack_BatAttack meleeAttack;
-		private SecondaryAttack_ChargeAttack secondaryAttackChargeAttack;
+		private BatAttack meleeAttack;
+		private ChargeAttack chargeAttack;
 
-		private PrimaryAttack_Kunai primaryAttackKunai;
+		private KunaiAttack kunaiAttack;
 
 		private void OnEnable()
 		{
 			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
 			simpleJump = GetComponent<SimpleJumpAbility>();
-			meleeAttack = GetComponent<TertiaryAttack_BatAttack>();
-			secondaryAttackChargeAttack = GetComponent<SecondaryAttack_ChargeAttack>();
-			primaryAttackKunai = GetComponent<PrimaryAttack_Kunai>();
+			meleeAttack = GetComponent<BatAttack>();
+			chargeAttack = GetComponent<ChargeAttack>();
+			kunaiAttack = GetComponent<KunaiAttack>();
 
 			animEvents = anim.animEvents;
 			animEvents.OnStep += Anim_OnStep;
@@ -32,17 +32,17 @@ namespace __SCRIPTS
 			life.OnDying += Life_OnDying;
 			simpleJump.OnJump += SimpleJumpOnSimpleJump;
 			simpleJump.OnLand += SimpleJumpOnLand;
-			meleeAttack.OnSwing += MeleeAttackOnSwing;
-			meleeAttack.OnHit += MeleeAttackOnHit;
-			secondaryAttackChargeAttack.OnChargePress += SecondaryAttackChargeAttackOnSecondaryAttackChargePress;
-			secondaryAttackChargeAttack.OnSpecialAttackHit += SecondaryAttackChargeAttackOnSpecialAttackHit;
-			secondaryAttackChargeAttack.OnChargeStop += SecondaryAttackChargeStop;
-			primaryAttackKunai.OnThrow += PrimaryAttackKunaiOnThrow;
+			meleeAttack.OnAttack += MeleeAttackOnAttack;
+			meleeAttack.OnHitTarget += MeleeAttackOnHitTarget;
+			chargeAttack.OnChargePress += ChargeAttackOnChargeAttackChargePress;
+			chargeAttack.OnSpecialAttackHit += ChargeAttackOnSpecialAttackHit;
+			chargeAttack.OnChargeStop += ChargeAttackChargeStop;
+			kunaiAttack.OnThrow += KunaiAttackOnThrow;
 		}
 
 
 
-		private void SecondaryAttackChargeStop()
+		private void ChargeAttackChargeStop()
 		{
 			Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 			Services.sfx.sounds.brock_special_attack_sounds.PlayRandomAt(transform.position);
@@ -59,25 +59,25 @@ namespace __SCRIPTS
 			animEvents.OnTeleport -= Anim_Teleport;
 			simpleJump.OnJump -= SimpleJumpOnSimpleJump;
 			simpleJump.OnLand -= SimpleJumpOnLand;
-			secondaryAttackChargeAttack.OnChargePress -= SecondaryAttackChargeAttackOnSecondaryAttackChargePress;
-			secondaryAttackChargeAttack.OnSpecialAttackHit -= SecondaryAttackChargeAttackOnSpecialAttackHit;
-			secondaryAttackChargeAttack.OnAttackHit -= ChargeAttack_OnAttackHit;
-			primaryAttackKunai.OnThrow -= PrimaryAttackKunaiOnThrow;
+			chargeAttack.OnChargePress -= ChargeAttackOnChargeAttackChargePress;
+			chargeAttack.OnSpecialAttackHit -= ChargeAttackOnSpecialAttackHit;
+			chargeAttack.OnAttackHit -= ChargeAttack_OnAttackHit;
+			kunaiAttack.OnThrow -= KunaiAttackOnThrow;
 
 		}
 
-		private void MeleeAttackOnSwing() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
+		private void MeleeAttackOnAttack() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 
 		private void Life_OnDying(Attack attack) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
 
-		private void MeleeAttackOnHit(Vector2 vector2) => Services.sfx.sounds.brock_bathit_sounds.PlayRandomAt(vector2);
+		private void MeleeAttackOnHitTarget(Vector2 vector2) => Services.sfx.sounds.brock_bathit_sounds.PlayRandomAt(vector2);
 		private void ChargeAttack_OnAttackHit() => Services.sfx.sounds.brock_bathit_sounds.PlayRandomAt(transform.position);
 
-		private void PrimaryAttackKunaiOnThrow(Vector3 vector3, Vector3 vector4, float arg3, Life arg4, bool arg5) =>
+		private void KunaiAttackOnThrow() =>
 			Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 
-		private void SecondaryAttackChargeAttackOnSpecialAttackHit() => Services.sfx.sounds.brock_homerunhit_sounds.PlayRandomAt(transform.position);
-		private void SecondaryAttackChargeAttackOnSecondaryAttackChargePress() => Services.sfx.StartOngoingSound();
+		private void ChargeAttackOnSpecialAttackHit() => Services.sfx.sounds.brock_homerunhit_sounds.PlayRandomAt(transform.position);
+		private void ChargeAttackOnChargeAttackChargePress() => Services.sfx.StartOngoingSound();
 		private void SimpleJumpOnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
 		private void SimpleJumpOnSimpleJump(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 		private void Life_OnWounded(Attack obj)  {

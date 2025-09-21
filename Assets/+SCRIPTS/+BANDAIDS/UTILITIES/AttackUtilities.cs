@@ -42,7 +42,7 @@ public static class AttackUtilities
 
 		foreach (var targetLife in closestHits)
 		{
-			HitTarget(attackerLife, targetLife, attackDamage);
+			HitTarget(attackerLife, targetLife, attackPosition, attackDamage, extraPush);
 		}
 	}
 
@@ -79,11 +79,12 @@ public static class AttackUtilities
 		return closest.gameObject;
 	}
 
-	public static void HitTarget(Life originLife, Life targetLife, float attackDamage, float extraPush = .1f)
+	public static bool HitTarget(Life originLife, Life targetLife, Vector2 attackPosition, float attackDamage, float extraPush = .1f)
 	{
-		if (targetLife == null) return;
-		if (!IsValidTarget(originLife, targetLife)) return;
-		targetLife.TakeDamage(new Attack(originLife, targetLife, attackDamage));
+		if (targetLife == null) return false;
+		if (!IsValidTarget(originLife, targetLife)) return false;
+		targetLife.TakeDamage(new Attack(originLife, attackPosition, targetLife, attackDamage, extraPush));
+		return true;
 	}
 
 	public static RaycastHit2D RaycastToObject(Life currentTargetLife, LayerMask layerMask)

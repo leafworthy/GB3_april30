@@ -13,7 +13,7 @@ namespace __SCRIPTS
 		private AK47 ak47 => _ak47 ??= GetComponent<AK47>();
 		private AK47 _ak47;
 		private ReloadAbility reloadAbility;
-		private DoableKnifeAttack knifeAttack;
+		private KnifeAttack knifeAttack;
 		private NadeAttack nadeAttack;
 
 		private void OnEnable()
@@ -30,7 +30,7 @@ namespace __SCRIPTS
 			}
 
 			reloadAbility = GetComponent<ReloadAbility>();
-			knifeAttack = GetComponent<DoableKnifeAttack>();
+			knifeAttack = GetComponent<KnifeAttack>();
 			nadeAttack = GetComponent<NadeAttack>();
 
 			animEvents = anim.animEvents;
