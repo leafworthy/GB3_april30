@@ -107,7 +107,7 @@ namespace __SCRIPTS
 
 
 			SetupAnimationEvents();
-			foreach (var component in GetComponents<INeedPlayer>())
+			foreach (var component in GetComponentsInChildren<INeedPlayer>())
 			{
 				if (component != this)
 					component.SetPlayer(Player);

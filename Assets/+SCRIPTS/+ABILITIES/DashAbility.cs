@@ -32,7 +32,23 @@ namespace __SCRIPTS
 
 		public override void Stop()
 		{
-			base.Stop();
+			CoreStop();
+			StopDashing();
+			if (lastArmAbility is GunAttack)
+			{
+				Debug.Log("Resuming Shield Ability");
+				CoreStop();
+				lastArmAbility?.Resume();
+			}
+			else
+			{
+				CoreStop();
+				lastArmAbility?.Do();
+			}
+		}
+
+		protected void StopDashing()
+		{
 			body.ChangeLayer(Body.BodyLayer.grounded);
 			moveAbility.StopPush();
 			anim.RevertBottomToDefault();

@@ -9,10 +9,14 @@ public class ShieldAbility : WeaponAbility
 	public GameObject shieldObject;
 	private AimAbility aimAbility => _aimAbility ??= GetComponent<AimAbility>();
 	private AimAbility _aimAbility;
+
 	protected override bool requiresArms() => true;
 	protected override bool requiresLegs() => false;
 
-	public override bool canStop(IDoableAbility abilityToStopFor) => currentState == weaponState.idle;
+	public override bool canStop(IDoableAbility abilityToStopFor)  {
+		Debug.Log( "Can stop called on ShieldAbility, current state: " + currentState + ", abilityToStopFor: " + abilityToStopFor?.AbilityName);
+		return currentState == weaponState.idle || abilityToStopFor is ShieldDashAbility;
+	}
 
 	protected override void PullOut()
 	{
@@ -20,19 +24,16 @@ public class ShieldAbility : WeaponAbility
 		SetShielding(true);
 	}
 
-	public override void PutAway()
-	{
-		base.PutAway();
-		SetShielding(false);
-	}
+
 	private void Update()
 	{
 		if (isActive) body.TopFaceDirection(aimAbility.AimDir.x >= 0);
 	}
 
 
-	private void SetShielding(bool isOn)
+	public void SetShielding(bool isOn)
 	{
+		Debug.Log("Shielding set to " + isOn);
 		shieldObject.SetActive(isOn);
 		anim.SetBool(UnitAnimations.IsShielding, isOn);
 		life.SetShielding(isOn);
@@ -41,8 +42,7 @@ public class ShieldAbility : WeaponAbility
 
 	public override void Stop()
 	{
-		life.SetShielding(false);
-		isActive = false;
+		SetShielding(false);
 		base.Stop();
 	}
 

@@ -39,7 +39,10 @@ namespace __SCRIPTS
 			if (cameraFollowTargetGroup == null) cameraFollowTargetGroup = FindFirstObjectByType<CinemachineTargetGroup>();
 			if (player.SpawnedPlayerGO != null)
 			{
-				cameraFollowTargetGroup.AddMember(player.SpawnedPlayerGO.transform, 1, 0);
+				if(cameraFollowTargetGroup.Targets.Count == 0)
+				{
+					cameraFollowTargetGroup.AddMember(player.SpawnedPlayerGO.transform, 1, 0);
+				}
 				var stickTarget = Services.objectMaker.Make(Services.assetManager.Players.followStickPrefab).GetComponent<FollowCursor>();
 				stickTarget.Init(player);
 			}

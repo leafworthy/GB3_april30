@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using GangstaBean.Core;
 using UnityEngine;
 
@@ -22,6 +20,7 @@ namespace __SCRIPTS
 
 		public override bool canDo() => base.canDo() && gunAttack.CurrentGun.CanReload();
 
+		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is DashAbility or CharacterJumpAbility;
 
 		protected override void DoAbility()
 		{
@@ -35,20 +34,16 @@ namespace __SCRIPTS
 			anim.SetBool(UnitAnimations.IsBobbing, false);
 
 			if (!gunAttack.IsUsingPrimaryGun)
-			{
 				PlayAnimationClip(ReloadUnlimitedGunAnimationClip, 1);
-			}
 			else
-			{
 				PlayAnimationClip(ReloadPrimaryGunAnimationClip, 1);
-			}
 		}
 
 		public override void Stop()
 		{
 			base.Stop();
 			Debug.Log("Reload Stopped, doing gun attack");
-			gunAttack.ResumeFromReload();
+			gunAttack.Resume();
 		}
 
 		private void Reload()
@@ -70,9 +65,8 @@ namespace __SCRIPTS
 			if (player != null) player.Controller.ReloadTriangle.OnPress -= Player_Reload;
 			if (gunAttack != null) gunAttack.OnNeedsReload -= Gun_OnNeedsReload;
 			player.Controller.ReloadTriangle.OnPress += Player_Reload;
-		gunAttack.OnNeedsReload += Gun_OnNeedsReload;
+			gunAttack.OnNeedsReload += Gun_OnNeedsReload;
 		}
-
 
 		private void Gun_OnNeedsReload()
 		{

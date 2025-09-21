@@ -7,26 +7,53 @@ public class ShieldDashAbility : DashAbility
 {
 	private float extraDashPushFactor = 1.5f;
 	public override string AbilityName => "Shield-Dash";
-	private IDoableAbility lastAbility;
+	private ShieldAbility shieldAbility => _shieldAbility ??= GetComponent<ShieldAbility>();
+	private ShieldAbility _shieldAbility;
 
-	private bool isDashing;
+
+	protected override void AnimationComplete()
+	{
+
+		base.AnimationComplete();
+	}
+
 	protected override void DoAbility()
 	{
 		base.DoAbility();
 		ShieldDash();
-		isDashing = true;
 	}
 
 	public override void Stop()
 	{
-		isDashing = false;
-		base.Stop();
-		lastAbility?.Do();
+		StopDashing();
+
+		if (lastArmAbility is ShieldAbility or GunAttack)
+		{
+			Debug.Log( "Resuming Ability");
+			if (lastArmAbility is ShieldAbility)
+			{
+				shieldAbility.SetShielding(true);
+			}
+			else
+			{
+				shieldAbility.SetShielding(false);
+			}
+
+			CoreStop();
+			lastArmAbility?.Resume();
+		}
+		else
+		{
+			shieldAbility.SetShielding(false);
+			CoreStop();
+			lastArmAbility?.Do();
+		}
 	}
 
 	private void ShieldDash()
 	{
 		var hits = Physics2D.OverlapCircleAll(transform.position, 30, life.EnemyLayer);
+		shieldAbility.SetShielding(true);
 		foreach (var hit in hits)
 		{
 			var _life = hit.GetComponentInParent<Life>();
@@ -68,13 +95,7 @@ public class ShieldDashAbility : DashAbility
 	private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 	{
 
-		if (isDashing)
-		{
-			Debug.LogWarning( "Already Dashing");
-			return;
-		}
 
-		lastAbility = body.doableArms.CurrentAbility;
 		Do();
 	}
 

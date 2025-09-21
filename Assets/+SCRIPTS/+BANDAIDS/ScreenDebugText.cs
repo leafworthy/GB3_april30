@@ -18,8 +18,8 @@ public class ScreenDebugText : MonoBehaviour
 	private ShieldAbility _shieldAbility;
 	private GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
 	private GunAttack _gunAttack;
-
-
+	private   ShieldDashAbility shieldDashAbility  => _shieldDashAbility ??= GetComponent<ShieldDashAbility>();
+	private   ShieldDashAbility _shieldDashAbility ;
 
 	private void Awake()
 	{
@@ -30,14 +30,14 @@ public class ScreenDebugText : MonoBehaviour
 	}
 
 	private void Update()
-	{/*
-		SetText("Arms: " + (body.doableArms.CurrentAbility?.AbilityName ?? "Idle") +
-		        "\nLegs: " + (body.doableLegs.CurrentAbility?.AbilityName ?? "Idle")+
-		        "\nChainsaw: " + (chainsawAttack?.AbilityName + " " + chainsawAttack.currentState) +
-		        "\nShield: " + (shieldAbility?.AbilityName + " " + shieldAbility.currentState) +
-		        "\nGunAttack: " + (gunAttack?.AbilityName + " " + gunAttack.currentState) +
-		        "\nCurrentWeapon: " + (threeWeaponSwitchAbility.currentWeapon?.AbilityName + " " + threeWeaponSwitchAbility.currentWeapon?.AbilityName)) ;
-	*/}
+	{
+		SetText("Arms: " + (body?.doableArms.CurrentAbility?.AbilityName ?? "Idle") +
+		        "\nLegs: " + (body?.doableLegs.CurrentAbility?.AbilityName ?? "Idle")+
+		        "\nChainsaw: " + (chainsawAttack?.AbilityName + " " + chainsawAttack?.currentState) +
+		        "\nShield: " + (shieldAbility?.AbilityName + " " + shieldAbility?.currentState) +
+		        "\nGunAttack: " + (gunAttack?.AbilityName + " " + gunAttack?.currentState) +
+		        "\nCurrentWeapon: " + (threeWeaponSwitchAbility?.currentWeapon?.AbilityName + " " + threeWeaponSwitchAbility?.currentWeapon?.AbilityName)) ;
+	}
 
 	private void OnGUI()
 	{

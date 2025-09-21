@@ -1,4 +1,4 @@
-using __SCRIPTS.Cursor;
+ using __SCRIPTS.Cursor;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -9,9 +9,11 @@ namespace __SCRIPTS
         {
             var canvas = GetComponentInChildren<Canvas>();
             canvas.worldCamera = CursorManager.GetCamera();
+            Debug.Log("got camera: " );
         }
 
 
 
     }
+
 }

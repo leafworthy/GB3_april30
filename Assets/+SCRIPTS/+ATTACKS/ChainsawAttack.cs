@@ -30,11 +30,20 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
-			PullOut();
+			Debug.Log("got here");
+
+			if (currentState != weaponState.resuming) PullOut();
+			else
+			{
+				return;
+
+				StartIdle();
+			}
 		}
 
 		protected override void PullOut()
 		{
+			Debug.Log("it was base pullout");
 			base.PullOut();
 			isActive = true;
 			anim.SetBool(UnitAnimations.IsChainsawing, true);
@@ -70,6 +79,7 @@ namespace __SCRIPTS
 				SetState(weaponState.not);
 				return;
 			}
+
 			StopAttacking();
 		}
 
@@ -107,21 +117,18 @@ namespace __SCRIPTS
 
 		private void AttackContinuously()
 		{
+			Debug.Log("it was this");
+
 			cooldownCounter += Time.fixedDeltaTime;
 			if (!(cooldownCounter >= life.TertiaryAttackRate)) return;
 			cooldownCounter = 0;
 			AttackUtilities.HitTargetsWithinRange(life, body.AttackStartPoint.transform.position, life.TertiaryAttackRange, life.TertiaryAttackDamageWithExtra);
 		}
 
-		public override void PutAway()
-		{
-			base.PutAway();
-			anim.SetBool(UnitAnimations.IsChainsawing, false);
-			OnStopChainsawing?.Invoke(transform.position);
-		}
-
 		public override void Stop()
 		{
+			anim.SetBool(UnitAnimations.IsChainsawing, false);
+			OnStopChainsawing?.Invoke(transform.position);
 			SetState(weaponState.not);
 			base.Stop();
 		}

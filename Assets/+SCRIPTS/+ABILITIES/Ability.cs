@@ -12,6 +12,8 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 	protected Body body => _body ?? GetComponent<Body>();
 	private Life _life;
 	protected Life life => _life ?? GetComponent<Life>();
+	protected IDoableAbility lastLegAbility;
+	protected IDoableAbility lastArmAbility;
 	public abstract string AbilityName { get; }
 
 	protected abstract bool requiresArms();
@@ -24,7 +26,13 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public void Do()
 	{
+		Debug.Log("trying to do ability: " + AbilityName);
 		if (!canDo()) return;
+
+		Debug.Log("Doing ability: " + AbilityName);
+
+		lastLegAbility = body.doableLegs.CurrentAbility;
+		lastArmAbility = body.doableArms.CurrentAbility;
 		if (requiresArms()) body.doableArms.DoActivity(this);
 
 		if (requiresLegs()) body.doableLegs.DoActivity(this);
@@ -36,6 +44,12 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public virtual void Stop()
 	{
+		CoreStop();
+	}
+
+	protected void CoreStop()
+	{
+		Debug.Log("called base stop");
 		if (requiresArms()) body.doableArms.Stop(this);
 
 		if (requiresLegs()) body.doableLegs.Stop(this);
@@ -43,13 +57,33 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 		CancelInvoke();
 	}
 
+	public virtual void Resume()
+	{
+		Do();
+	}
+
 	private bool BodyCanDo(IDoableAbility abilityToDo)
 	{
 		if (Services.pauseManager.IsPaused) return false;
-		if (life.IsDead()) return false;
-		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo)) return false;
-		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo)) return false;
+		if (life.IsDead())
+		{
+			Debug.Log($"{AbilityName} cannot do because dead");
+			return false;
+		}
 
+		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo))
+		{
+			Debug.Log($"{AbilityName} cannot do because arms cannot do");
+			return false;
+		}
+
+		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo))
+		{
+			Debug.Log($"{AbilityName} cannot do because legs cannot do");
+			return false;
+		}
+
+		Debug.Log($"{AbilityName} body can do");
 		return true;
 	}
 
@@ -59,6 +93,12 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 	}
 
 	protected void PlayAnimationClip(string clipName, float length, int layer = 0)
+	{
+		anim.Play(clipName, layer, 0);
+		if (length != 0) Invoke(nameof(AnimationComplete), length);
+	}
+
+	protected void PlayAnimationClip(string clipName, float length, float startingPoint = 0, int layer = 0)
 	{
 		anim.Play(clipName, layer, 0);
 		if (length != 0) Invoke(nameof(AnimationComplete), length);

@@ -5,13 +5,34 @@ namespace __SCRIPTS
 {
 	public abstract class Gun : MonoBehaviour
 	{
+		private static readonly string[] PrimaryAnimationClips =
+		{
+			"E",
+			"EES",
+			"ES",
+			"SE",
+			"SSE",
+			"SSE",
+			"SE",
+			"ES",
+			"EES",
+			"E",
+			"EEN",
+			"EN",
+			"NE",
+			"NNE",
+			"NNE",
+			"NE",
+			"EN",
+			"EEN"
+		};
 		public event Action<Attack> OnShotHitTarget;
 		public event Action<Attack> OnShotMissed;
 		public event Action OnNeedsReload;
 		public event Action OnEmpty;
 		public event Action<Vector2> OnShoot;
-		private UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
-		private UnitAnimations _anim;
+
+		public AnimationClip pullOutAnimationClip;
 		protected AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
 		private AmmoInventory _ammoInventory;
 		private IAimAbility gunAimAbility => _gunAimAbility ??= GetComponent<IAimAbility>();
@@ -23,6 +44,7 @@ namespace __SCRIPTS
 		private Life _life;
 		private bool isCoolingDown;
 		private float currentCooldownTime;
+		public string AnimationClipSuffix => this is PrimaryGun ? "": "_Glock";
 		public virtual float reloadTime => .5f;
 		public abstract float AttackRate { get; }
 		protected abstract float Damage { get; }
@@ -53,11 +75,9 @@ namespace __SCRIPTS
 			}
 
 			currentCooldownTime = Time.time + AttackRate;
-
 			OnShoot?.Invoke(shootDirection);
 			Ammo.UseAmmo(1);
 
-			if (simpleShoot) anim.SetTrigger(UnitAnimations.ShootingTrigger);
 			for (var i = 0; i < numberOfBulletsPerShot; i++)
 			{
 				var randomSpread = new Vector2(UnityEngine.Random.Range(-Spread, Spread), UnityEngine.Random.Range(-Spread, Spread));
@@ -65,8 +85,36 @@ namespace __SCRIPTS
 			}
 		}
 
+		private float GetDegreesFromAimDir()
+		{
+			var radians = Mathf.Atan2(-gunAimAbility.AimDir.y, gunAimAbility.AimDir.x); // NEGATE y-axis
+			var degrees = radians * Mathf.Rad2Deg;
+			if (degrees < 0)
+				degrees += 360f;
+			return degrees;
+		}
+
+		public string GetClipNameFromDegrees()
+		{
+			var degrees = GetDegreesFromAimDir();
+			var whichPortion = GetDirectionPortion(degrees);
+			if (whichPortion > PrimaryAnimationClips.Length) whichPortion = 0;
+			return PrimaryAnimationClips[whichPortion] + AnimationClipSuffix;
+		}
+
+		private static int GetDirectionPortion(float degrees)
+		{
+			var normalizedDegrees = degrees % 360;
+			if (normalizedDegrees < 0) normalizedDegrees += 360;
+			var offsetDegrees = (normalizedDegrees + 10) % 360;
+			var portionWidth = 360f / PrimaryAnimationClips.Length;
+			var portionNumber = Mathf.FloorToInt(offsetDegrees / portionWidth);
+			portionNumber = Mathf.Clamp(portionNumber, 0, PrimaryAnimationClips.Length - 1);
+			return portionNumber;
+		}
 		private void ShootBullet(Vector3 shootDirection)
 		{
+
 
 			var hitObject = Physics2D.Linecast(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange,
 				life.EnemyLayer);
@@ -77,6 +125,8 @@ namespace __SCRIPTS
 			else
 				ShotMissed();
 		}
+
+
 
 		private void ShotMissed()
 		{
@@ -99,6 +149,7 @@ namespace __SCRIPTS
 
 			var newAttack = new Attack(life, target, body.AttackStartPoint.transform.position, hitObject.point, Damage);
 			OnShotHitTarget?.Invoke(newAttack);
+
 			target.TakeDamage(newAttack);
 		}
 	}

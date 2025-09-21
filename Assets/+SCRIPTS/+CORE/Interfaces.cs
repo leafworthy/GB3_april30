@@ -18,6 +18,7 @@ namespace GangstaBean.Core
         bool canStop(IDoableAbility abilityToStopFor);
         void Do();
         void Stop();
+        void Resume();
     }
 
 

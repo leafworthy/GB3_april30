@@ -17,22 +17,11 @@ namespace __SCRIPTS
 			if (CurrentAbility == null) return;
 			if (CurrentAbility != abilityToStop) return;
 			_currentAbility = null;
-
-			if (_bufferedAbility == null) return;
-			var next = _bufferedAbility;
-			_bufferedAbility = null;
-			DoActivity(next);
 		}
 
 		public void DoActivity(IDoableAbility newAbility)
 		{
-			if (CanDoActivity(newAbility))
-			{
-				ActuallyDo(newAbility);
-				return;
-			}
-
-			//BufferAbility(newAbility);
+			if (CanDoActivity(newAbility)) ActuallyDo(newAbility);
 		}
 
 		private void ActuallyDo(IDoableAbility newAbility)
@@ -40,6 +29,7 @@ namespace __SCRIPTS
 			if (_currentAbility != null && _currentAbility.canStop(newAbility)) _currentAbility.Stop();
 
 			_currentAbility = newAbility;
+			Debug.Log("current ability is now: " + CurrentAbility.AbilityName);
 			CurrentAbility.Do();
 		}
 
@@ -59,15 +49,18 @@ namespace __SCRIPTS
 		{
 			if (newAbility == null)
 			{
+				Debug.Log("New Ability is null");
 				return false;
 			}
 
 			if (ActivitiesAreTheSame(newAbility, CurrentAbility))
 			{
+				Debug.Log("New Ability: " + newAbility.AbilityName + " is the same as current ability: " + CurrentAbility.AbilityName);
 				return false;
 			}
 
 			if (!IsActive) return true;
+			Debug.Log("Can Stop: " + CurrentAbility.AbilityName + " " + CurrentAbility.canStop(newAbility));
 			return CurrentAbility.canStop(newAbility);
 		}
 	}

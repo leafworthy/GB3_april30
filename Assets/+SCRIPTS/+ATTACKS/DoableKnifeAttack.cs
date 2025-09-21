@@ -2,7 +2,7 @@ using System;
 using __SCRIPTS;
 using UnityEngine;
 
-public class DoableKnifeAttack : WeaponAbility
+public class DoableKnifeAttack : Ability
 {
 	public override string AbilityName => "KnifeAttack";
 
@@ -87,7 +87,6 @@ public class DoableKnifeAttack : WeaponAbility
 		isAttacking = true;
 		PlayAnimationClip(animationClip, 1);
 		Invoke(nameof(Anim_AttackHit), .1f);
-		anim.SetBool(UnitAnimations.IsBobbing, false);
 	}
 
 	private void Anim_AttackHit()

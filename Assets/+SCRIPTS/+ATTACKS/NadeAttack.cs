@@ -53,6 +53,7 @@ namespace __SCRIPTS
 		{
 			base.Stop();
 			HideAiming();
+			lastArmAbility.Resume();
 		}
 
 		public override void SetPlayer(Player _player)
@@ -108,11 +109,6 @@ namespace __SCRIPTS
 
 		private void Player_NadeRelease(NewControlButton newControlButton)
 		{
-			if (!canDo())
-			{
-				Stop();
-			}
-
 			Do();
 		}
 

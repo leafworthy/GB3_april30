@@ -12,7 +12,6 @@ namespace __SCRIPTS
 			pullOut,
 			idle,
 			attacking,
-			putAway,
 			resuming
 		}
 
@@ -22,11 +21,8 @@ namespace __SCRIPTS
 			currentState = state;
 		}
 		protected bool  isActive = true;
-
 		public weaponState currentState {get; private set;}
-		public event Action OnPutAwayComplete;
 		public AnimationClip pullOutAnimationClip;
-		public AnimationClip putAwayAnimationClip;
 		public override string AbilityName => "Weapon-Ability";
 
 		protected override bool requiresArms() => true;
@@ -37,42 +33,30 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
-			PullOut();
+			if(currentState != weaponState.resuming)PullOut();
+			else
+			{
+				StartIdle();
+			}
 		}
 
 		protected virtual void PullOut()
 		{
 			SetState(weaponState.pullOut);
+			Debug.Log("it was pull out");
 			PlayAnimationClip(pullOutAnimationClip, 1);
 
 		}
 
-		public virtual void PutAway()
+		public override void Resume()
 		{
-			SetState(weaponState.putAway);
-			PlayAnimationClip(putAwayAnimationClip, 1);
+			SetState(weaponState.resuming);
+			Do();
 		}
-
 
 		protected override void AnimationComplete()
 		{
-			switch (currentState)
-			{
-				case weaponState.putAway:
-					base.AnimationComplete();
-					OnPutAwayComplete?.Invoke();
-					Stop();
-					Debug.Log("[WEAPON] put away complete in weapon ability base", this);
-					return;
-				case weaponState.pullOut:
-					Debug.Log("[WEAPON] pull out complete in weapon ability base", this);
-					StartIdle();
-					break;
-				case weaponState.attacking:
-					Debug.Log("[WEAPON] attack complete in weapon ability base", this);
-					 StartIdle();
-					 break;
-			}
+			StartIdle();
 		}
 
 		public override void Stop()
