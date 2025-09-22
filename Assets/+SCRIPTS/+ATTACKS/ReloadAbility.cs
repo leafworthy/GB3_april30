@@ -20,7 +20,7 @@ namespace __SCRIPTS
 
 		public override bool canDo() => base.canDo() && gunAttack.CurrentGun.CanReload();
 
-		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is DashAbility or CharacterJumpAbility;
+		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is DashAbility or JumpAbility;
 
 		protected override void DoAbility()
 		{

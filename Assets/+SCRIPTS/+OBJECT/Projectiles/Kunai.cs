@@ -11,6 +11,8 @@ namespace __SCRIPTS.Projectiles
 		public GameObject rotationObject;
 		private bool isActive;
 		private bool isAirThrow;
+		private Life life => _life ??= GetComponent<Life>();
+		private Life _life;
 
 		public void Throw(Vector3 throwDirection, Vector3 pos, float throwHeight, Life thrower)
 		{
@@ -22,6 +24,7 @@ namespace __SCRIPTS.Projectiles
 			RotateToDirection();
 			rotationRate = 0;
 			isActive = true;
+			Debug.Log("throw, direction: " + direction);
 		}
 
 		private void RotateToDirection()
@@ -73,6 +76,7 @@ namespace __SCRIPTS.Projectiles
 
 		private void HandleHit(Life hitLife)
 		{
+			Debug.Log("already hit something", hitLife);
 			isActive = false;
 			if (hitLife == null) return;
 			var attack = new Attack(owner, hitLife, owner.PrimaryAttackDamageWithExtra);
@@ -88,13 +92,13 @@ namespace __SCRIPTS.Projectiles
 
 		private Life CheckForCollisions(Vector2 target)
 		{
-			var lineCast = Physics2D.LinecastAll(transform.position, target, Services.assetManager.LevelAssets.EnemyLayer);
+			var lineCast = Physics2D.LinecastAll(transform.position, target, owner.EnemyLayer);
 			foreach (var hit2D in lineCast)
 			{
 				if (hit2D.collider == null) continue;
 				if (hit2D.collider.gameObject == gameObject) continue;
-				var life = hit2D.collider.GetComponent<Life>();
-				if (life == null) continue;
+				var lifeHit = hit2D.collider.GetComponent<Life>();
+				if (lifeHit == null) continue;
 				Debug.DrawLine(transform.position, target, Color.red);
 
 				return life;

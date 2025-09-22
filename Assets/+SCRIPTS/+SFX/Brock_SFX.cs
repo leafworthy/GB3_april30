@@ -4,23 +4,25 @@ namespace __SCRIPTS
 {
 	public class Brock_SFX : MonoBehaviour
 	{
-		private UnitAnimations anim;
 		private AnimationEvents animEvents;
-		private Life life;
-		private SimpleJumpAbility simpleJump;
-		private BatAttack meleeAttack;
-		private ChargeAttack chargeAttack;
+		private Life life => _life ??= GetComponent<Life>();
+		private Life _life;
+		private JumpAbility jumps  => _jumps ??=GetComponent<JumpAbility>();
+		private JumpAbility _jumps;
+		private BatAttack meleeAttack => _meleeAttack ??= GetComponent<BatAttack>();
+		private BatAttack _meleeAttack;
+		private BatJumpAttack meleeJumpAttack => _meleeJumpAttack ??= GetComponent<BatJumpAttack>();
+		private BatJumpAttack _meleeJumpAttack;
+		private ChargeAttack chargeAttack  => _chargeAttack ??= GetComponent<ChargeAttack>();
+		private ChargeAttack _chargeAttack;
 
-		private KunaiAttack kunaiAttack;
+		private KunaiAttack kunaiAttack  => _kunaiAttack ??= GetComponent<KunaiAttack>();
+		private KunaiAttack _kunaiAttack;
+		private UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
+		private UnitAnimations _anim;
 
 		private void OnEnable()
 		{
-			anim = GetComponent<UnitAnimations>();
-			life = GetComponent<Life>();
-			simpleJump = GetComponent<SimpleJumpAbility>();
-			meleeAttack = GetComponent<BatAttack>();
-			chargeAttack = GetComponent<ChargeAttack>();
-			kunaiAttack = GetComponent<KunaiAttack>();
 
 			animEvents = anim.animEvents;
 			animEvents.OnStep += Anim_OnStep;
@@ -29,14 +31,21 @@ namespace __SCRIPTS
 			animEvents.OnDieStart += Anim_OnDie;
 			animEvents.OnDash += Anim_Dash;
 			animEvents.OnTeleport += Anim_Teleport;
+
 			life.OnDying += Life_OnDying;
-			simpleJump.OnJump += SimpleJumpOnSimpleJump;
-			simpleJump.OnLand += SimpleJumpOnLand;
-			meleeAttack.OnAttack += MeleeAttackOnAttack;
+
+			jumps.OnJump += JumpsOnJumps;
+			jumps.OnLand += JumpsOnLand;
+
+			meleeAttack.OnSwing += MeleeSwingOnSwing;
 			meleeAttack.OnHitTarget += MeleeAttackOnHitTarget;
+			meleeJumpAttack .OnSwing += MeleeSwingOnSwing;
+			meleeJumpAttack.OnHitTarget += MeleeAttackOnHitTarget;
+
 			chargeAttack.OnChargePress += ChargeAttackOnChargeAttackChargePress;
 			chargeAttack.OnSpecialAttackHit += ChargeAttackOnSpecialAttackHit;
 			chargeAttack.OnChargeStop += ChargeAttackChargeStop;
+
 			kunaiAttack.OnThrow += KunaiAttackOnThrow;
 		}
 
@@ -57,16 +66,24 @@ namespace __SCRIPTS
 			animEvents.OnDieStart -= Anim_OnDie;
 			animEvents.OnDash -= Anim_Dash;
 			animEvents.OnTeleport -= Anim_Teleport;
-			simpleJump.OnJump -= SimpleJumpOnSimpleJump;
-			simpleJump.OnLand -= SimpleJumpOnLand;
+			jumps.OnJump -= JumpsOnJumps;
+			jumps.OnLand -= JumpsOnLand;
 			chargeAttack.OnChargePress -= ChargeAttackOnChargeAttackChargePress;
 			chargeAttack.OnSpecialAttackHit -= ChargeAttackOnSpecialAttackHit;
 			chargeAttack.OnAttackHit -= ChargeAttack_OnAttackHit;
 			kunaiAttack.OnThrow -= KunaiAttackOnThrow;
+			life.OnDying -= Life_OnDying;
+			meleeAttack.OnSwing -= MeleeSwingOnSwing;
+			meleeAttack.OnHitTarget -= MeleeAttackOnHitTarget;
+
+			meleeJumpAttack.OnSwing -= MeleeSwingOnSwing;
+			meleeJumpAttack.OnHitTarget -= MeleeAttackOnHitTarget;
+			chargeAttack.OnChargeStop -= ChargeAttackChargeStop;
+
 
 		}
 
-		private void MeleeAttackOnAttack() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
+		private void MeleeSwingOnSwing() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 
 		private void Life_OnDying(Attack attack) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
 
@@ -78,12 +95,8 @@ namespace __SCRIPTS
 
 		private void ChargeAttackOnSpecialAttackHit() => Services.sfx.sounds.brock_homerunhit_sounds.PlayRandomAt(transform.position);
 		private void ChargeAttackOnChargeAttackChargePress() => Services.sfx.StartOngoingSound();
-		private void SimpleJumpOnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
-		private void SimpleJumpOnSimpleJump(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
-		private void Life_OnWounded(Attack obj)  {
-			Services.sfx.sounds.brock_gethit_sounds.PlayRandomAt(transform.position);
-			Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
-		}
+		private void JumpsOnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
+		private void JumpsOnJumps(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 		private void Anim_Dash() => Services.sfx.sounds.bean_roll_sounds.PlayRandomAt(transform.position);
 		private void Anim_Teleport() => Services.sfx.sounds.brock_teleport_sounds.PlayRandomAt(transform.position);
 		private void Anim_OnDie() => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);

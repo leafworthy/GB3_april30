@@ -184,6 +184,7 @@ namespace __SCRIPTS
 		{
 			if (animator == null) return;
 			animator.StopPlayback();
+			if (DefaultBottomAnimation == null) return;
 			animator.Play(DefaultBottomAnimation.name, 0 );
 		}
 	}

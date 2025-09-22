@@ -21,7 +21,7 @@ public static class AttackUtilities
 	public static List<Life> CircleCastForXClosestTargets(Life originLife, float range, int howMany = 2)
 	{
 		var result = new List<Life>();
-		var circleCast = Physics2D.OverlapCircleAll(originLife.transform.position, range, Services.assetManager.LevelAssets.EnemyLayer);
+		var circleCast = Physics2D.OverlapCircleAll(originLife.transform.position, range, originLife.EnemyLayer);
 		var closest2 = circleCast.OrderBy(item => Vector2.Distance(item.gameObject.transform.position, originLife.transform.position)).Take(howMany);
 		foreach (var col in closest2)
 		{

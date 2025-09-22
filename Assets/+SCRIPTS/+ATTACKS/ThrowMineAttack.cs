@@ -14,8 +14,8 @@ namespace __SCRIPTS
 		public event Action<Vector2, Player> OnThrow;
 		private AmmoInventory ammo => _ammo ??= GetComponent<AmmoInventory>();
 		private AmmoInventory _ammo;
-		private CharacterJumpAbility jumpAbility => _jumpAbility ??= GetComponent<CharacterJumpAbility>();
-		private CharacterJumpAbility _jumpAbility;
+		private JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
+		private JumpAbility _jumpAbility;
 
 		private List<Mine> ActiveMines = new();
 		private bool isPressingThrowMine;

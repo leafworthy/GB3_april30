@@ -8,7 +8,7 @@ namespace __SCRIPTS
 		private UnitAnimations anim;
 		private AnimationEvents animEvents;
 		private Life life;
-		private CharacterJumpAbility jump;
+		private JumpAbility jump;
 		private Shotgun shotgunAttack;
 		private ChainsawAttack chainsawAttack;
 		private ThrowMineAttack mineAttack;
@@ -19,7 +19,7 @@ namespace __SCRIPTS
 		{
 			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
-			jump = GetComponent<CharacterJumpAbility>();
+			jump = GetComponent<JumpAbility>();
 			shotgunAttack = GetComponent<Shotgun>();
 			chainsawAttack = GetComponent<ChainsawAttack>();
 			mineAttack = GetComponent<ThrowMineAttack>();

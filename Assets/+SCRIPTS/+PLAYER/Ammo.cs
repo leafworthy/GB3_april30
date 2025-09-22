@@ -31,6 +31,12 @@ namespace __SCRIPTS
 			return reserveAmmo + AmmoInClip > 0;
 		}
 
+		public void SetAmmoReserve(int amount)
+        {
+            reserveAmmo = Mathf.Clamp(amount, 0, maxReserveAmmo);
+            OnAmmoGained?.Invoke();
+        }
+
 		public void AddAmmoToReserve(int amount)
 		{
 			reserveAmmo = Mathf.Min(reserveAmmo + amount, maxReserveAmmo);

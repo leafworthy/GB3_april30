@@ -6,14 +6,14 @@ namespace __SCRIPTS
 	{
 		public GameObject ObjectToHide;
 
-		private CharacterJumpAbility jumps;
+		private JumpAbility jumps;
 		private AnimationEvents events;
 
 		private bool hasRecovered;
 
 		private void Start()
 		{
-			jumps = GetComponent<CharacterJumpAbility>();
+			jumps = GetComponent<JumpAbility>();
 			if (jumps == null) return;
 			jumps.OnJump += JumpsOnJump;
 			jumps.OnLand += JumpsOnLand;

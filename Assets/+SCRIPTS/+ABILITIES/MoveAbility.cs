@@ -52,6 +52,7 @@ namespace __SCRIPTS
 		public bool IsMoving() => isMoving;
 
 		public bool IsIdle() => mover.IsMoving();
+
 		public void SetPlayer(Player _player)
 		{
 			player = _player;
@@ -109,10 +110,7 @@ namespace __SCRIPTS
 		{
 			if (Services.pauseManager.IsPaused) return;
 
-			if (isTryingToMove)
-			{
-					MoveInDirection(GetMoveAimDir(), life.MoveSpeed);
-			}
+			if (isTryingToMove) MoveInDirection(GetMoveAimDir(), life.MoveSpeed);
 
 			if (isMoving && IsActive) AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
 
@@ -151,7 +149,7 @@ namespace __SCRIPTS
 			if (direction.magnitude != 0)
 			{
 				moveDir = direction.normalized;
-				body.BottomFaceDirection(direction.x > 0);
+				body?.BottomFaceDirection(direction.x > 0);
 			}
 			else
 			{
@@ -165,7 +163,7 @@ namespace __SCRIPTS
 				return;
 			}
 
-			anim.SetBool(UnitAnimations.IsMoving, true);
+			anim?.SetBool(UnitAnimations.IsMoving, true);
 
 			moveSpeed = newSpeed;
 			isMoving = true;
@@ -222,8 +220,6 @@ namespace __SCRIPTS
 			pushVelocity = Vector2.zero;
 		}
 
-
-
 		private void OnDisable()
 		{
 			StopListeningToPlayer();
@@ -237,8 +233,6 @@ namespace __SCRIPTS
 
 		private void StartListeningToPlayer()
 		{
-
-			hasListened = true;
 			if (life == null) return;
 			life.OnAttackHit += Life_AttackHit;
 			life.OnDying += Life_OnDying;
@@ -252,9 +246,8 @@ namespace __SCRIPTS
 		private void Life_AttackHit(Attack attack)
 		{
 			if (life.IsDead()) return;
-			Push( attack.Direction, attack.DamageAmount+attack.ExtraPush);
+			Push(attack.Direction, attack.DamageAmount + attack.ExtraPush);
 		}
 
-		private bool hasListened;
 	}
 }

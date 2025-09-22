@@ -18,8 +18,8 @@ namespace __SCRIPTS
 		private AmmoInventory ammo;
 
 		public override string AbilityName => "Nade";
-		private CharacterJumpAbility jump => _jump ??= GetComponent<CharacterJumpAbility>();
-		private CharacterJumpAbility _jump;
+		private JumpAbility jump => _jump ??= GetComponent<JumpAbility>();
+		private JumpAbility _jump;
 		private DoableArms arms => body.doableArms;
 
 		public event Action<Vector2, Vector2, float, Player> OnThrow;

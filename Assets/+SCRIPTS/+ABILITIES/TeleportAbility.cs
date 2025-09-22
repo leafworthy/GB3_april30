@@ -9,8 +9,8 @@ public class TeleportAbility : Ability
 	private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
 	private MoveAbility _moveAbility;
 
-	private CharacterJumpAbility jumps => _jumps ??= GetComponent<CharacterJumpAbility>();
-	private CharacterJumpAbility _jumps;
+	private JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
+	private JumpAbility _jumps;
 	private const float teleportTime = .2f;
 	protected override bool requiresArms() => true;
 

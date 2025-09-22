@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class CharacterJumpAbility : Ability
+
+	public class JumpAbility : Ability
 	{
 		private float verticalVelocity;
 
@@ -19,11 +20,11 @@ namespace __SCRIPTS
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnJump;
 		public event Action<Vector2> OnResting;
+		public event Action OnFalling;
 
 		public bool IsResting => isResting;
 		private bool isResting;
 		private bool isOverLandable;
-		private float currentLandableHeight;
 		public bool IsJumping => isJumping;
 		private bool isJumping;
 
@@ -34,6 +35,7 @@ namespace __SCRIPTS
 		private float maxFlyTime = 2.5f;
 
 		private bool isFlying;
+		public bool IsFalling { get; private set; }
 
 		protected override bool requiresArms() => false;
 
@@ -58,18 +60,24 @@ namespace __SCRIPTS
 
 		private void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
 		{
-			anim.Play(isFlying ? flyingAnimationClip.name : jumpingAnimationClip.name, 0, 0);
-			isFlying = false;
+			StartJumpAnimation();
 			airTimer = 0;
 			minBounceVelocity = minBounce;
+			isFlying = false;
 			isJumping = true;
 			isResting = false;
+			IsFalling = false;
 			OnJump?.Invoke(transform.position + new Vector3(0, startingHeight, 0));
 
 			verticalVelocity = verticalSpeed;
 
 			body.SetDistanceToGround(startingHeight);
 			body.ChangeLayer(Body.BodyLayer.jumping);
+		}
+
+		protected virtual void StartJumpAnimation()
+		{
+			anim.Play(isFlying ? flyingAnimationClip.name : jumpingAnimationClip.name, 0, 0);
 		}
 
 		public override void SetPlayer(Player _player)
@@ -129,25 +137,48 @@ namespace __SCRIPTS
 			}
 
 			verticalVelocity -= Services.assetManager.Vars.Gravity.y * Time.fixedDeltaTime;
-			if (body.GetDistanceToGround() + verticalVelocity <= currentLandableHeight && verticalVelocity < 0)
-				Land();
+			if (!IsFalling && verticalVelocity < 0)
+			{
+				IsFalling = true;
+				OnFalling?.Invoke();
+				StartFalling();
+			}
+
+			IsFalling = verticalVelocity < 0 && !isResting;
+			if (body.GetDistanceToGround() + verticalVelocity <= 0 && verticalVelocity < 0)
+			{
+				if (Mathf.Abs(verticalVelocity) > minBounceVelocity)
+				{
+					Bounce();
+				}
+				else
+				{
+					Land();
+				}
+			}
 			else
 				body.SetDistanceToGround(body.GetDistanceToGround() + verticalVelocity);
 		}
 
+		protected virtual void StartFalling()
+		{
+
+			anim.Play(fallingAnimationClip.name, 0, 0);
+		}
+
 		private void Land()
 		{
-			if (Mathf.Abs(verticalVelocity) > minBounceVelocity)
-			{
-				Bounce();
-				return;
-			}
 
 			isJumping = false;
-			OnLand?.Invoke(transform.position + new Vector3(0, currentLandableHeight, 0));
 			moveAbility.SetCanMove(false);
 			body.SetGrounded();
 			verticalVelocity = 0;
+			OnLand?.Invoke(transform.position  );
+			StartLandingAnimation();
+		}
+
+		protected virtual void StartLandingAnimation()
+		{
 			PlayAnimationClip(!life.IsDead() ? landingAnimationClip : deathAnimationClip);
 		}
 
@@ -166,6 +197,13 @@ namespace __SCRIPTS
 			isResting = true;
 			OnResting?.Invoke(transform.position);
 			Stop();
+		}
+
+		public void BounceUpwards(int bounceForce)
+		{
+			if (!isJumping) return;
+			if (verticalVelocity < 0) verticalVelocity = 0;
+			verticalVelocity += bounceForce;
 		}
 	}
 }

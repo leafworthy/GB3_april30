@@ -5,6 +5,8 @@ namespace __SCRIPTS
 {
 	public class CameraStunner_FX : MonoBehaviour
 	{
+		private const float stunMultiplier = 1.5f;
+
 		public enum StunLength
 		{
 			Short,
@@ -15,6 +17,14 @@ namespace __SCRIPTS
 		}
 		private static bool isStunned;
 		private static float currentStunDuration;
+
+		 [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+		private static void ResetStatics()
+		{
+			isStunned = false;
+			currentStunDuration = 0;
+			Time.timeScale = 1;
+		}
 		public static void StartStun(StunLength length)
 		{
 			var duration = GetDurationFromLength(length);
@@ -37,11 +47,11 @@ namespace __SCRIPTS
 		{
 			return length switch
 			       {
-				       StunLength.Short => .01f,
-				       StunLength.Normal => .0175f,
-				       StunLength.Long => .025f,
-				       StunLength.Special => .5f,
-				       StunLength.None =>0,
+				       StunLength.Short => .01f*stunMultiplier,
+				       StunLength.Normal => .0175f * stunMultiplier,
+				       StunLength.Long => .025f * stunMultiplier,
+				       StunLength.Special => .5f * stunMultiplier,
+				       StunLength.None =>0 * stunMultiplier,
 				       _ => throw new ArgumentOutOfRangeException(nameof(length), length, null)
 			       };
 		}

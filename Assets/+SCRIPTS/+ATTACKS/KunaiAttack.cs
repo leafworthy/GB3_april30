@@ -31,15 +31,15 @@ namespace __SCRIPTS
 			Invoke( nameof(ThrowKunai), throwKunaiAnimationClip.length / 2);
 		}
 
-		public override bool canDo() => !ammoInventory.primaryAmmo.hasReserveAmmo();
+		public override bool canDo() => ammoInventory.primaryAmmo.hasReserveAmmo();
 
 
 
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
-			player.Controller.Attack1RightTrigger.OnPress += StartPress;
-			player.Controller.Attack1RightTrigger.OnRelease += StopPressing;
+			player.Controller.Attack2LeftTrigger.OnPress += StartPress;
+			player.Controller.Attack2LeftTrigger.OnRelease += StopPressing;
 		}
 
 		private void StopPressing(NewControlButton obj)
@@ -49,8 +49,8 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			player.Controller.Attack1RightTrigger.OnPress -= StartPress;
-			player.Controller.Attack1RightTrigger.OnRelease -= StopPressing;
+			player.Controller.Attack2LeftTrigger.OnPress -= StartPress;
+			player.Controller.Attack2LeftTrigger.OnRelease -= StopPressing;
 		}
 
 		private void ThrowKunai()
@@ -77,7 +77,6 @@ namespace __SCRIPTS
 
 		private void StartPress(NewControlButton newControlButton)
 		{
-			if (isPressingAttack) return;
 			isPressingAttack = true;
 			Do();
 		}

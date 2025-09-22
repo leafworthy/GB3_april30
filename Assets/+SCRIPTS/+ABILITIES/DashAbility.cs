@@ -11,8 +11,8 @@ namespace __SCRIPTS
 		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
 
-		private CharacterJumpAbility jumps => _jumps ??= GetComponent<CharacterJumpAbility>();
-		private CharacterJumpAbility _jumps;
+		private JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
+		private JumpAbility _jumps;
 
 		public override string AbilityName => "Dash";
 		protected override bool requiresArms() => true;
@@ -21,7 +21,7 @@ namespace __SCRIPTS
 
 		public override bool canDo() => base.canDo() && jumps.IsResting;
 
-		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is CharacterJumpAbility or KnifeAttack;
+		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is JumpAbility or KnifeAttack;
 
 		public override void Stop()
 		{
