@@ -67,6 +67,11 @@ namespace __SCRIPTS
 		private void RegularAttackHit(int attackType)
 		{
 			var hits = AttackUtilities.CircleCastForXClosestTargets(life, life.TertiaryAttackRange);
+			if (hits == null)
+			{
+				Debug.Log("no targets hit");
+				return;
+			}
 			foreach (var hit in hits)
 			{
 				AttackUtilities.HitTarget(life, hit, hit.transform.position, GetAttackDamage(attackType));
@@ -99,7 +104,7 @@ namespace __SCRIPTS
 				                      _ => Attack3AnimationClip
 			                      };
 			PlayAnimationClip(attackAnimation);
-			Invoke(nameof(CurrentAttackHit), attackAnimation.length / 2);
+			Invoke(nameof(CurrentAttackHit), attackAnimation.length / 4);
 		}
 
 		public override void Stop()

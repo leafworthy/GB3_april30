@@ -140,8 +140,8 @@ namespace __SCRIPTS
 			if (!IsFalling && verticalVelocity < 0)
 			{
 				IsFalling = true;
-				OnFalling?.Invoke();
 				StartFalling();
+				OnFalling?.Invoke();
 			}
 
 			IsFalling = verticalVelocity < 0 && !isResting;
@@ -173,8 +173,8 @@ namespace __SCRIPTS
 			moveAbility.SetCanMove(false);
 			body.SetGrounded();
 			verticalVelocity = 0;
-			OnLand?.Invoke(transform.position  );
 			StartLandingAnimation();
+			OnLand?.Invoke(transform.position  );
 		}
 
 		protected virtual void StartLandingAnimation()

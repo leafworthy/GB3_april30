@@ -61,6 +61,14 @@ namespace __SCRIPTS
 			jumps.OnFalling += FallWithAttack;
 		}
 
+		public void OnDisable()
+		{
+			if (player == null) return;
+			jumps.OnLand -= LandWithAttack;
+			jumps.OnFalling -= FallWithAttack;
+			player.Controller.Attack1RightTrigger.OnPress -= Player_AttackPress;
+		}
+
 		protected override void AnimationComplete()
 		{
 			if (currentState == state.landingAttack)
@@ -89,6 +97,7 @@ namespace __SCRIPTS
 
 		public override void Stop()
 		{
+			SetState(state.not);
 			jumps.OnLand -= LandWithAttack;
 			jumps.OnFalling -= FallWithAttack;
 			base.Stop();
@@ -113,6 +122,7 @@ namespace __SCRIPTS
 		private void RegularAttackHit()
 		{
 			var hits = AttackUtilities.CircleCastForXClosestTargets(life, life.TertiaryAttackRange);
+			if (hits == null) return;
 			foreach (var hit in hits)
 			{
 				AttackUtilities.HitTarget(life, hit, hit.transform.position, GetAttackDamage());

@@ -212,7 +212,7 @@ namespace __SCRIPTS
 		{
 			isMoving = false;
 			moveVelocity = Vector2.zero;
-			anim.SetBool(UnitAnimations.IsMoving, false);
+			anim?.SetBool(UnitAnimations.IsMoving, false);
 		}
 
 		public void StopPush()

@@ -126,4 +126,22 @@ public static class AttackUtilities
 			defence.TakeDamage(newAttack);
 		}
 	}
+
+	public static Life CheckForCollisions(Vector2 target, GameObject gameObject, LayerMask layer)
+	{
+		var lineCast = Physics2D.LinecastAll(gameObject.transform.position, target, layer);
+		foreach (var hit2D in lineCast)
+		{
+			if (hit2D.collider == null) continue;
+			if (hit2D.collider.gameObject == gameObject) continue;
+			var lifeHit = hit2D.collider.GetComponent<Life>();
+			if (lifeHit == null) continue;
+			Debug.Log("hit", lifeHit);
+			return lifeHit;
+		}
+
+		Debug.DrawLine(gameObject.transform.position, target, Color.green);
+
+		return null;
+	}
 }

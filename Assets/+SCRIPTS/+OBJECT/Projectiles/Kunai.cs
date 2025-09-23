@@ -11,8 +11,6 @@ namespace __SCRIPTS.Projectiles
 		public GameObject rotationObject;
 		private bool isActive;
 		private bool isAirThrow;
-		private Life life => _life ??= GetComponent<Life>();
-		private Life _life;
 
 		public void Throw(Vector3 throwDirection, Vector3 pos, float throwHeight, Life thrower)
 		{
@@ -44,9 +42,15 @@ namespace __SCRIPTS.Projectiles
 			}
 
 			var nextPos = direction.normalized * speed * Time.fixedDeltaTime + (Vector2) transform.position;
-			var colliderLife = CheckForCollisions(nextPos);
-			if (colliderLife == null)
+			var colliderLife = AttackUtilities.CheckForCollisions(nextPos, gameObject, owner.EnemyLayer);
+			if (colliderLife != null)
 			{
+				Debug.Log("[KUNAI] about to handle hit");
+				HandleHit(colliderLife);
+			}
+			else
+			{
+				Debug.Log("_______");
 				if (moveAbility != null)
 				{
 					moveAbility.MoveInDirection(direction.normalized, speed);
@@ -62,8 +66,6 @@ namespace __SCRIPTS.Projectiles
 				else
 					transform.position += (Vector3) nextPos;
 			}
-			else
-				HandleHit(colliderLife);
 		}
 
 		private void Land()
@@ -76,7 +78,7 @@ namespace __SCRIPTS.Projectiles
 
 		private void HandleHit(Life hitLife)
 		{
-			Debug.Log("already hit something", hitLife);
+			Debug.Log("[KUNAI] already hit something", hitLife);
 			isActive = false;
 			if (hitLife == null) return;
 			var attack = new Attack(owner, hitLife, owner.PrimaryAttackDamageWithExtra);
@@ -90,23 +92,6 @@ namespace __SCRIPTS.Projectiles
 			Services.objectMaker.Unmake(gameObject, 3);
 		}
 
-		private Life CheckForCollisions(Vector2 target)
-		{
-			var lineCast = Physics2D.LinecastAll(transform.position, target, owner.EnemyLayer);
-			foreach (var hit2D in lineCast)
-			{
-				if (hit2D.collider == null) continue;
-				if (hit2D.collider.gameObject == gameObject) continue;
-				var lifeHit = hit2D.collider.GetComponent<Life>();
-				if (lifeHit == null) continue;
-				Debug.DrawLine(transform.position, target, Color.red);
 
-				return life;
-			}
-
-			Debug.DrawLine(transform.position, target, Color.green);
-
-			return null;
-		}
 	}
 }

@@ -27,17 +27,22 @@ namespace __SCRIPTS
 
 		private void StartAttack()
 		{
+			Debug.Log("start kunai attacka ");
 			PlayAnimationClip(throwKunaiAnimationClip);
-			Invoke( nameof(ThrowKunai), throwKunaiAnimationClip.length / 2);
+			Invoke(nameof(ThrowKunai), throwKunaiAnimationClip.length / 2);
 		}
 
-		public override bool canDo() => ammoInventory.primaryAmmo.hasReserveAmmo();
+		public override bool canDo() => base.canDo() && ammoInventory.primaryAmmo.hasReserveAmmo();
 
-
+		private bool alreadyDone;
 
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
+			if (alreadyDone) Debug.LogWarning("double dip");
+			alreadyDone = true;
+			player.Controller.Attack2LeftTrigger.OnPress -= StartPress;
+			player.Controller.Attack2LeftTrigger.OnRelease -= StopPressing;
 			player.Controller.Attack2LeftTrigger.OnPress += StartPress;
 			player.Controller.Attack2LeftTrigger.OnRelease += StopPressing;
 		}
@@ -55,6 +60,7 @@ namespace __SCRIPTS
 
 		private void ThrowKunai()
 		{
+			Debug.Log("throw kunai");
 			ammoInventory.primaryAmmo.UseAmmo(1);
 			var throwHeight = body.ThrowPoint.transform.position.y - transform.position.y;
 			var newProjectile = Services.objectMaker.Make(Services.assetManager.FX.kunaiPrefab, transform.position);
@@ -67,20 +73,19 @@ namespace __SCRIPTS
 		{
 			if (isPressingAttack)
 			{
+				Debug.Log("re-attack");
 				StartAttack();
 			}
 			else
-			{
 				base.AnimationComplete();
-			}
 		}
 
 		private void StartPress(NewControlButton newControlButton)
 		{
+			if (isPressingAttack) return;
 			isPressingAttack = true;
+			Debug.Log("start press kunai");
 			Do();
 		}
-
-
 	}
 }
