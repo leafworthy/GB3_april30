@@ -28,7 +28,7 @@ public static class AttackUtilities
 			if (col == null) continue;
 			var _life = col.gameObject.GetComponent<Life>();
 			if (_life == null) continue;
-			if (!IsValidTarget(originLife, _life)) return null;
+			if (!IsValidTarget(originLife, _life)) continue;
 			result.Add(_life);
 		}
 
