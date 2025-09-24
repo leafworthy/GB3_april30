@@ -11,6 +11,8 @@ namespace __SCRIPTS
 		[SerializeField] private Player player;
 		[SerializeField] private UnitStats unitStats;
 		[SerializeField] private UnitHealth unitHealth;
+
+
 		private UnitAnimations animations => _animations ??= GetComponent<UnitAnimations>();
 		private UnitAnimations _animations;
 		public bool IsDead() => unitHealth.IsDead;
@@ -41,7 +43,7 @@ namespace __SCRIPTS
 		public bool IsPlayerAttackable => unitStats.IsPlayerAttackable;
 		public DebrisType DebrisType => unitStats.DebrisType;
 		public bool showLifeBar => unitStats.Data.showLifeBar;
-		public float MaxHealth => unitStats.MaxHealth;
+		public float MaxHealth => unitStats.MaxHealth();
 		public bool IsNotInvincible => !unitStats.Data.isInvincible;
 
 		#endregion
@@ -76,7 +78,7 @@ namespace __SCRIPTS
 		private void Awake()
 		{
 			unitStats = new UnitStats(gameObject.name);
-			unitHealth = new UnitHealth(unitStats.Data);
+			unitHealth = new UnitHealth(unitStats);
 			unitHealth.OnFractionChanged += Health_OnFractionChanged;
 			unitHealth.OnDead += HealthOnDead;
 			unitHealth.OnAttackHit += Health_AttackHit;
@@ -184,7 +186,7 @@ namespace __SCRIPTS
 		public float GetFraction()  {
 			if(unitHealth != null)
 			{
-				return unitHealth.GetFraction();
+				return unitHealth.CurrentHealth/unitStats.MaxHealth();
 			}
 			return 1;
 		}
@@ -207,6 +209,13 @@ namespace __SCRIPTS
 		public void SetExtraMaxSpeedFactor(float factor)
 		{
 			if (unitStats != null) unitStats.ExtraSpeedFactor = factor;
+		}
+
+		public void SetEnemyTier(int tier)
+		{
+			Debug.Log("enemy tier set to " + tier + " for " + gameObject.name);
+			unitStats.SetEnemyTier(tier);
+			unitHealth.FillHealth();
 		}
 	}
 }

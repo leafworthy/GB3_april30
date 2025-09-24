@@ -55,7 +55,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a352cbfbf94364268af325aed32ab73f, type: 2}
+  - {fileID: 2100000, guid: 9c22e92884a3e41b8ad8067c182c1188, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 424
   m_Sprite: {fileID: 21300000, guid: d05a7e8267163498eb88de5acc7fe973, type: 3}
-  m_Color: {r: 1, g: 0, b: 0.066131115, a: 0.6156863}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.6156863}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -97,10 +97,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8992335030761151587}
   - component: {fileID: 1173450330498093313}
+  - component: {fileID: 6916533077420568464}
   m_Layer: 0
   m_Name: Toast Placer
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -112,7 +113,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6691433793441944831}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -389.0407, y: -30.119589, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -133,3 +134,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 7431454428826219940, guid: cb879157170f74c019dcfb56c1da9382, type: 3}
+  cam: {fileID: 0}
+  isBehindSpawner: 0
+  EnemyTier: 1
+--- !u!114 &6916533077420568464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691433793441944831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd748a8e8c6541bc8a0a93a01251830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pallettes:
+  - {fileID: 2100000, guid: a352cbfbf94364268af325aed32ab73f, type: 2}
+  - {fileID: 2100000, guid: 55d73fdec6a3c446c817ee2b4eb8e71d, type: 2}
+  - {fileID: 2100000, guid: 9c22e92884a3e41b8ad8067c182c1188, type: 2}
+  - {fileID: 2100000, guid: fdae30f0854b54b158616aa60955364b, type: 2}
+  spriteRenderer: {fileID: 8782589273106123198}

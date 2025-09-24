@@ -6,13 +6,14 @@ namespace __SCRIPTS
 {
 	public class GameLevelCameraTargetGroupManager : MonoBehaviour
 	{
-		private CinemachineTargetGroup cameraFollowTargetGroup;
+		private CinemachineTargetGroup cameraFollowTargetGroup => _cameraFollowTargetGroup ??= FindFirstObjectByType<CinemachineTargetGroup>();
+		private CinemachineTargetGroup _cameraFollowTargetGroup;
 
 
 		private void Start()
 		{
 
-			Services.levelManager.OnLevelSpawnedPlayer += AddMembersToCameraFollowTargetGroup;
+			Services.levelManager.OnLevelSpawnedPlayer += AddPlayerToCameraFollowTargetGroup;
 			Services.playerManager.OnPlayerDies += Player_PlayerDies;
 			Services.levelManager.OnStopLevel += LevelManager_OnStopLevel;
 
@@ -33,10 +34,9 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void AddMembersToCameraFollowTargetGroup(Player player)
+		private void AddPlayerToCameraFollowTargetGroup(Player player)
 		{
 
-			if (cameraFollowTargetGroup == null) cameraFollowTargetGroup = FindFirstObjectByType<CinemachineTargetGroup>();
 			if (player.SpawnedPlayerGO != null)
 			{
 				if(cameraFollowTargetGroup.Targets.Count == 0)
@@ -46,21 +46,19 @@ namespace __SCRIPTS
 				var stickTarget = Services.objectMaker.Make(Services.assetManager.Players.followStickPrefab).GetComponent<FollowCursor>();
 				stickTarget.Init(player);
 			}
-			else
-			{
-
-			}
 		}
 
 		private void Player_PlayerDies(Player deadPlayer)
 		{
+
 			RemoveFromCameraFollow(deadPlayer);
+			AddPlayerToCameraFollowTargetGroup(Services.playerManager.mainPlayer);
 		}
+
 
 		// Method to remove player from camera target group
 		private void RemoveFromCameraFollow(Player player)
 		{
-			if (cameraFollowTargetGroup == null) cameraFollowTargetGroup = FindFirstObjectByType<CinemachineTargetGroup>();
 			var tempTargetsGroup = cameraFollowTargetGroup.Targets.ToList();
 			foreach (var t in tempTargetsGroup)
 			{

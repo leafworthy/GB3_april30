@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5065610112398966539}
   - component: {fileID: 409489899340405301}
+  - component: {fileID: 7201860733062825602}
   m_Layer: 0
   m_Name: Donut Placer
   m_TagString: Untagged
@@ -46,6 +47,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 4019382462400588572, guid: fc554a50617d541a6993aa31d6e2d64e, type: 3}
+  cam: {fileID: 0}
+  isBehindSpawner: 0
+  EnemyTier: 0
+--- !u!114 &7201860733062825602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7967551083451599767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd748a8e8c6541bc8a0a93a01251830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pallettes:
+  - {fileID: 2100000, guid: 235f4913e33484f34bb0d694e1773723, type: 2}
+  - {fileID: 2100000, guid: ebe76b4c9758d4d8788a56f43fd04d5a, type: 2}
+  - {fileID: 2100000, guid: 73ba2b8856dc74af8a713b378c5ced67, type: 2}
+  - {fileID: 2100000, guid: 178b9b6d55da942fda1bb43ddd7d91fc, type: 2}
+  spriteRenderer: {fileID: 1525667420248535554}
 --- !u!1 &8532168223994901226
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,7 +124,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 178b9b6d55da942fda1bb43ddd7d91fc, type: 2}
+  - {fileID: 2100000, guid: 235f4913e33484f34bb0d694e1773723, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -124,7 +146,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: -4824133633647570842, guid: a3efce83c860d439aa1508e457a35946, type: 3}
-  m_Color: {r: 1, g: 0, b: 0.06666667, a: 0.6156863}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.6156863}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

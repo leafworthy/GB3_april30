@@ -27,6 +27,8 @@ namespace __SCRIPTS
 		public event Action<Player> OnPlayerJoins;
 		public event Action<Player> OnPlayerDies;
 
+		public Player mainPlayer;
+
 		public void StartService()
 		{
 			_inputManager = GetComponent<PlayerInputManager>();
@@ -83,7 +85,7 @@ namespace __SCRIPTS
 			if (AllJoinedPlayers.Count >= 4) return;
 
 			joiningPlayer.ConnectPlayerToController(newPlayerInput, playerPresets[newPlayerInput.playerIndex], newPlayerInput.playerIndex);
-
+			if(mainPlayer == null) mainPlayer = joiningPlayer;
 			AllJoinedPlayers.Add(joiningPlayer);
 			OnPlayerJoins?.Invoke(joiningPlayer);
 			joiningPlayer.OnPlayerDies += Player_PlayerDies;
@@ -91,7 +93,13 @@ namespace __SCRIPTS
 
 		private void Player_PlayerDies(Player deadPlayer)
 		{
+			if (deadPlayer == mainPlayer)
+			{
+				var nextPlayer = AllJoinedPlayers.FirstOrDefault(t => t != deadPlayer && t.state == Player.State.Alive);
+				mainPlayer = nextPlayer;
+			}
 			OnPlayerDies?.Invoke(deadPlayer);
+
 			if (AllJoinedPlayersAreDead()) OnAllJoinedPlayersDead?.Invoke();
 		}
 
@@ -120,5 +128,7 @@ namespace __SCRIPTS
 
 			player.input.SwitchCurrentActionMap(actionMap);
 		}
+
+
 	}
 }

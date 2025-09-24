@@ -47,7 +47,6 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void Start()
 		{
-			Services.enemyManager.ConfigureNewEnemy(gameObject);
 			_targetter = GetComponent<Targetter>();
 		}
 

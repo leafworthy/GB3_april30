@@ -7,30 +7,48 @@ public class BoundsSwitcher : MonoBehaviour
 {
 	public CinemachineConfiner2D confiner;
 
-	public List<Collider2D> colliders  = new List<Collider2D>();
+	public List<Zone> zones  = new ();
 	public int colliderIndex;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+	public Zone currentZone;
+	public Zone nextZone =>  GetNextZone();
+
+	private Zone GetNextZone()
+	{
+		if (zones.Count == 0) return null;
+		var nextIndex = colliderIndex + 1;
+		if (nextIndex >= zones.Count) nextIndex = 0;
+		return zones[nextIndex];
+	}
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
 
     [Button]
     void Switch()
     {
-	    if (colliders.Count == 0) return;
+	    if (zones.Count == 0) return;
 	    colliderIndex++;
-	    SetCollider();
+	    SetZone(colliderIndex);
     }
 
-
-    public void SetBounds(int newIndex)
+    [Button]
+    void Set()
     {
-	    if (colliders.Count == 0) return;
+	    if (zones.Count == 0) return;
+	    SetZone(colliderIndex);
+    }
+
+    public void SetZone(int newIndex)
+    {
+	    if (zones.Count == 0) return;
 	    colliderIndex = newIndex;
-	    SetCollider();
+	    currentZone = zones[colliderIndex];
+	    SetCamera(currentZone.zoneCamera);
     }
 
-    private void SetCollider()
+    private void SetCamera(CinemachineVirtualCameraBase newZoneCamera)
     {
-	    if (colliderIndex >= colliders.Count) colliderIndex = 0;
-	    confiner.BoundingShape2D = colliders[colliderIndex];
-	    confiner.InvalidateBoundingShapeCache();
+	    foreach (var zone in zones)
+	    {
+		    zone.zoneCamera.Priority = zone.zoneCamera == newZoneCamera ? 10 : 0;
+	    }
     }
 }

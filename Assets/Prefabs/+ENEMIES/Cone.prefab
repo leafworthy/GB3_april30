@@ -311,7 +311,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 41
+  m_SortingOrder: 421
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.72156864}
   m_FlipX: 0
@@ -437,20 +437,20 @@ MonoBehaviour:
   player: {fileID: 0}
   unitStats:
     _unitData:
-      unitName: 
-      category: 0
+      unitName: Cone
+      category: 1
       debrisType: 0
-      isPlayerSwingHittable: 0
-      showLifeBar: 0
+      isPlayerSwingHittable: 1
+      showLifeBar: 1
       isInvincible: 0
-      healthMax: 0
-      moveSpeed: 0
+      healthMax: 60
+      moveSpeed: 20
       dashSpeed: 0
       jumpSpeed: 0
-      aggroRange: 0
-      attack1Damage: 0
-      attack1Rate: 0
-      attack1Range: 0
+      aggroRange: 100
+      attack1Damage: 30
+      attack1Rate: 1
+      attack1Range: 8
       attack2Damage: 0
       attack2Rate: 0
       attack2Range: 0
@@ -460,11 +460,12 @@ MonoBehaviour:
       attack4Damage: 0
       attack4Rate: 0
       attack4Range: 0
-      hasData: 0
+      hasData: 1
       isDefault: 0
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
+    isInvincible: 0
   unitHealth:
     IsTemporarilyInvincible: 0
     IsShielded: 0
@@ -591,7 +592,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  isAboveZeroSortingOrder: 0
+  isBelowZeroSortingOrder: 0
   isMovable: 1
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -666,10 +667,8 @@ MonoBehaviour:
   BottomScaleObject: {fileID: 2734829698557367498}
   arms:
     isActive: 0
-    ActivityStory: Activity Story Start
   legs:
     isActive: 0
-    ActivityStory: Activity Story Start
   BottomIsFacingRight: 1
   TopIsFacingRight: 1
 --- !u!114 &-8310225930428712308
@@ -889,7 +888,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 40
+  m_SortingOrder: 420
   m_Sprite: {fileID: -8211092813343881559, guid: fbf22108cb0fd475abdcea7dc50e572b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

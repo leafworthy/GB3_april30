@@ -32,9 +32,9 @@ namespace __SCRIPTS
 
 
 
-		public Attack(Life attacker, Vector2 attackPointWithHeight, Life defender, float damageAmount, float extraPush = 0)
+		public Attack(Life attacker, Vector2 attackPosition, Life defender, float damageAmount, float extraPush = 0)
 		{
-			MakeNewAttack(attacker, attackPointWithHeight - new Vector2(0, attacker.AttackHeight), defender.transform.position, defender, damageAmount);
+			MakeNewAttack(attacker, attackPosition, defender.transform.position, defender, damageAmount);
 		}
 
 		public Attack(Life attacker, Life defender, Vector2 attackPointWithHeight, Vector2 destinationPointWithHeight,  float damageAmount)
@@ -42,9 +42,9 @@ namespace __SCRIPTS
 			MakeNewAttack(attacker, attackPointWithHeight - new Vector2(0, 5), destinationPointWithHeight - new Vector2(0, 5), defender, damageAmount);
 		}
 
-		public Attack(Life attacker, Vector2 attackPointWithHeight, Vector2 destinationFloorPoint, float damageAmount, float extraPush = 0)
+		public Attack(Life attacker, Vector2 attackPosition, Vector2 destinationFloorPoint, float damageAmount, float extraPush = 0)
 		{
-			MakeNewAttack(attacker, attackPointWithHeight - new Vector2(0, attacker.AttackHeight), destinationFloorPoint, null, damageAmount);
+			MakeNewAttack(attacker, attackPosition - new Vector2(0, attacker.AttackHeight), destinationFloorPoint, null, damageAmount);
 		}
 
 		public Life OriginLife;

@@ -24,10 +24,14 @@ namespace __SCRIPTS
 		public float ExtraHealthFactor;
 		public float ExtraDamageFactor;
 		public float ExtraSpeedFactor;
-		private int extraMaxDamageFactor;
 
-		public float MaxHealth => Data.healthMax + ExtraHealthFactor * Data.healthMax;
-		public float MoveSpeed => Data.moveSpeed + ExtraSpeedFactor * Data.moveSpeed;
+		private int extraMaxDamageFactor;
+		private int EnemyTier;
+		public bool isInvincible;
+
+		public float MaxHealth() => Data.healthMax + ExtraHealthFactor * Data.healthMax + Data.healthMax * (EnemyTier);
+
+		public float MoveSpeed => Data.moveSpeed + ExtraSpeedFactor * Data.moveSpeed  + Data.moveSpeed * (EnemyTier * 0.3f);
 		public float DashSpeed => Data.dashSpeed + ExtraSpeedFactor * Data.dashSpeed;
 		public float JumpSpeed => Data.jumpSpeed;
 		public float AggroRange => Data.aggroRange;
@@ -38,10 +42,10 @@ namespace __SCRIPTS
 
 		public float GetAttackDamage(int attackIndex) => attackIndex switch
 		                                                 {
-			                                                 1 => Data.attack1Damage + ExtraDamageFactor * Data.attack1Damage,
-			                                                 2 => Data.attack2Damage + ExtraDamageFactor * Data.attack2Damage,
-			                                                 3 => Data.attack3Damage + ExtraDamageFactor * Data.attack3Damage,
-			                                                 4 => Data.attack4Damage + ExtraDamageFactor * Data.attack4Damage,
+			                                                 1 => Data.attack1Damage + ExtraDamageFactor * Data.attack1Damage + Data.attack1Damage * (EnemyTier),
+			                                                 2 => Data.attack2Damage + ExtraDamageFactor * Data.attack2Damage + Data.attack2Damage * (EnemyTier),
+			                                                 3 => Data.attack3Damage + ExtraDamageFactor * Data.attack3Damage + Data.attack3Damage * (EnemyTier),
+			                                                 4 => Data.attack4Damage + ExtraDamageFactor * Data.attack4Damage + Data.attack4Damage * (EnemyTier),
 			                                                 _ => 0f
 		                                                 };
 
@@ -68,5 +72,15 @@ namespace __SCRIPTS
 			_unitData = null;
 			unitName = null;
 		}
+
+		public int GetEnemyTier() => EnemyTier;
+
+		public void SetEnemyTier(int tier) {
+			Debug.Log("setting tier to " + tier + " for " + unitName);
+			EnemyTier = tier;
+
+		}
+
+
 	}
 }

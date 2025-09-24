@@ -17,6 +17,7 @@ namespace __SCRIPTS
 		public void SetPlayer(Player _player)
 		{
 			player = _player;
+			if (player == null) return;
 			player.Controller.MoveAxis.OnChange += Player_MoveInDirection;
 			player.Controller.MoveAxis.OnInactive += Player_StopMoving;
 		}

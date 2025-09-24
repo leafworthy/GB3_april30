@@ -12,27 +12,26 @@ namespace __SCRIPTS
 		public bool IsShielded;
 		public bool IsDead => isDead;
 		public float CurrentHealth => currentHealth;
+		private float currentHealth;
 
 		public event Action<float> OnFractionChanged;
 		public event Action<Attack> OnDead;
 		public event Action<Attack> OnAttackHit;
 
-		private bool isInvincible;
+		private bool isInvincible =>  unitStats.isInvincible;
 
-		private float maxHealth;
+		private float maxHealth => unitStats.MaxHealth();
 
-		private float currentHealth;
+
 
 		private bool isDead;
 
-		private UnitStatsData unitData;
+		private UnitStats unitStats;
 
-		public UnitHealth(UnitStatsData data)
+		public UnitHealth(UnitStats _unitStats)
 		{
-			unitData = data;
-			isInvincible = data.isInvincible;
-			maxHealth = data.healthMax;
-			Initialize();
+			unitStats = _unitStats;
+			ResetHealth();
 		}
 
 		private void ResetHealth()
@@ -51,9 +50,9 @@ namespace __SCRIPTS
 			OnAttackHit?.Invoke(attack);
 		}
 
-		public void AddHealth(float amount)
+		public void SetHealth(float amount)
 		{
-			currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+			currentHealth = amount;
 			OnFractionChanged?.Invoke(GetFraction());
 		}
 
@@ -75,9 +74,18 @@ namespace __SCRIPTS
 			IsTemporarilyInvincible = invincible;
 		}
 
-		private void Initialize()
+		public void AddHealth(float amount)
 		{
-			ResetHealth();
+			if (isDead) return;
+			currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+			OnFractionChanged?.Invoke(GetFraction());
+		}
+
+		public void FillHealth()
+		{
+			if (isDead) return;
+			currentHealth = maxHealth;
+			OnFractionChanged?.Invoke(GetFraction());
 		}
 	}
 }

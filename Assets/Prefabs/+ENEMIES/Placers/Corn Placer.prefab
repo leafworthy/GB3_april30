@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &689978671271519760
+--- !u!1 &1160999296364040708
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,37 +8,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8362356592781391670}
-  - component: {fileID: 7403494078755657922}
-  m_Layer: 10
-  m_Name: Graphic.001
-  m_TagString: bottom
+  - component: {fileID: 9163723205115180436}
+  - component: {fileID: 7572914541687950194}
+  m_Layer: 0
+  m_Name: candycorn_0
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8362356592781391670
+--- !u!4 &9163723205115180436
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 689978671271519760}
+  m_GameObject: {fileID: 1160999296364040708}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.1, y: -5.5, z: 0}
-  m_LocalScale: {x: 28.31526, y: 28.315262, z: 28.315262}
+  m_LocalPosition: {x: 0.7449188, y: 2.1744194, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8109708472226455993}
+  m_Father: {fileID: 8457695261301950330}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &7403494078755657922
+--- !u!212 &7572914541687950194
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 689978671271519760}
+  m_GameObject: {fileID: 1160999296364040708}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -55,7 +55,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 62f29fea3d4ce470a9f936935d28ed71, type: 2}
+  - {fileID: 2100000, guid: 09db2b44b1dea438d998b72fc2d0454a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -75,19 +75,19 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 40
-  m_Sprite: {fileID: -8211092813343881559, guid: fbf22108cb0fd475abdcea7dc50e572b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.6156863}
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 1507674004, guid: 30324b7226b7c4387963cd2c1d903ccc, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.49803922}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 6.4, y: 6.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &2845388062699235981
+--- !u!1 &7789804023190413555
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,63 +95,64 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8109708472226455993}
-  - component: {fileID: 3386481724487922495}
-  - component: {fileID: 5023003883972716348}
+  - component: {fileID: 8457695261301950330}
+  - component: {fileID: 4558442833381557113}
+  - component: {fileID: 9177939218784803857}
   m_Layer: 0
-  m_Name: Cone Placer
+  m_Name: Corn Placer
   m_TagString: Untagged
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8109708472226455993
+--- !u!4 &8457695261301950330
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2845388062699235981}
+  m_GameObject: {fileID: 7789804023190413555}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -430.1, y: -36.3, z: 0}
+  m_LocalPosition: {x: -256.7, y: -39.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8362356592781391670}
+  - {fileID: 9163723205115180436}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3386481724487922495
+--- !u!114 &4558442833381557113
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2845388062699235981}
+  m_GameObject: {fileID: 7789804023190413555}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f878428c30e704370877039cf9b1e93c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 9136819711188386144, guid: f6af586f359ab4790b5c693ec2970f09, type: 3}
+  EnemyPrefab: {fileID: 5317405891896899284, guid: 3488ee15b61ad4963b1b258f1b974183, type: 3}
   cam: {fileID: 0}
   isBehindSpawner: 0
   EnemyTier: 0
---- !u!114 &5023003883972716348
+--- !u!114 &9177939218784803857
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2845388062699235981}
+  m_GameObject: {fileID: 7789804023190413555}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddd748a8e8c6541bc8a0a93a01251830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pallettes:
-  - {fileID: 2100000, guid: 62f29fea3d4ce470a9f936935d28ed71, type: 2}
-  - {fileID: 2100000, guid: f2225536de5a54f678b090880b106dad, type: 2}
-  - {fileID: 2100000, guid: 468e6b834c0844f9fa022630f15d8ca9, type: 2}
-  - {fileID: 2100000, guid: d2c375b89dcba41c482f28a14d78122d, type: 2}
-  spriteRenderer: {fileID: 7403494078755657922}
+  - {fileID: 2100000, guid: c0053c1e0e5d44d058cabce14c61b358, type: 2}
+  - {fileID: 2100000, guid: 2ac3b84af52a94602a54bc139783a231, type: 2}
+  - {fileID: 2100000, guid: 2ded6403ebefe4f74acc5ea0694b7997, type: 2}
+  - {fileID: 2100000, guid: 6ebdbafe16c224eed9ebe66b34737571, type: 2}
+  - {fileID: 2100000, guid: 09db2b44b1dea438d998b72fc2d0454a, type: 2}
+  spriteRenderer: {fileID: 7572914541687950194}

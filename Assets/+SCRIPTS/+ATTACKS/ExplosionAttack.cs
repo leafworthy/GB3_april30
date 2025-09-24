@@ -1,5 +1,5 @@
 using System;
-using __SCRIPTS._ENEMYAI;
+using UnityEngine;
 
 namespace __SCRIPTS
 {
@@ -7,21 +7,20 @@ namespace __SCRIPTS
 	public class ExplosionAttack : Attacks
 	{
 		private Life currentTargetLife;
-		private EnemyAI ai;
-		private EnemyAI AI => ai ??= GetComponent<EnemyAI>();
+		private IAttack _attacker;
+		private IAttack attacker => _attacker ??= GetComponent<IAttack>();
 		private UnitAnimations anim;
 		private float explosionRadius = 5;
 		public override string AbilityName => "ExplosionAttack";
+		public AnimationClip attackAnimation;
+		private bool isAttacking;
 
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
 			anim = GetComponent<UnitAnimations>();
 			anim.animEvents.OnAttackHit += AttackHit;
-			if (life.IsHuman)
-				life.Player.Controller.Attack1RightTrigger.OnPress += Player_Attack;
-			else
-				AI.OnAttack += AIAttack;
+			attacker.OnAttack += AttackerAttack;
 		}
 
 		private void OnDisable()
@@ -29,7 +28,7 @@ namespace __SCRIPTS
 			if (life.IsHuman)
 				life.Player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
 			else
-				AI.OnAttack -= AIAttack;
+				attacker.OnAttack -= AttackerAttack;
 
 			if (anim == null) return;
 			if (anim.animEvents == null) return;
@@ -46,14 +45,17 @@ namespace __SCRIPTS
 			life.DieNow();
 		}
 
-		private void AIAttack(Life newTarget)
+		private void AttackerAttack(Life newTarget)
 		{
 			if (newTarget == null) return;
 			if (Services.pauseManager.IsPaused) return;
 			if (life.IsDead()) return;
+			if (isAttacking) return;
+			isAttacking = true;
 			var move = GetComponent<MoveAbility>();
 			currentTargetLife = newTarget;
-			anim.SetTrigger(UnitAnimations.Attack1Trigger);
+			anim.Play(attackAnimation.name, 0, 0);
+			move.StopMoving();
 			move.Push(currentTargetLife.transform.position - transform.position, 4);
 		}
 
@@ -68,7 +70,8 @@ namespace __SCRIPTS
 
 			currentTargetLife = hitObject.collider.gameObject.GetComponent<Life>();
 			if (currentTargetLife == null) return;
-			anim.SetTrigger(UnitAnimations.Attack1Trigger);
+			anim.Play(attackAnimation.name, 0, 0);
+			//anim.SetTrigger(UnitAnimations.Attack1Trigger);
 		}
 	}
 }

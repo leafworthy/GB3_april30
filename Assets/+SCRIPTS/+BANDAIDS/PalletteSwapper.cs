@@ -1,24 +1,11 @@
 using System.Collections.Generic;
-using GangstaBean.Core;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-
-[ExecuteAlways]
-public class PalletteSwapper : MonoBehaviour, IPoolable
+public class PalletteSwapper : MonoBehaviour
 {
 	public List<Material> pallettes = new();
 	public SpriteRenderer spriteRenderer;
-
-	private void Start()
-	{
-		Swap();
-	}
-
-	public void OnPoolSpawn()
-	{
-		Swap();
-	}
 
 	[Button]
 	public void Swap()
@@ -26,7 +13,10 @@ public class PalletteSwapper : MonoBehaviour, IPoolable
 		spriteRenderer.material = pallettes[Random.Range(0, pallettes.Count)];
 	}
 
-	public void OnPoolDespawn()
+	public void SetPallette(int index)
 	{
+		Debug.Log("pallette set to " + index);
+		if (index < 0 || index >= pallettes.Count) return;
+		spriteRenderer.material = pallettes[index];
 	}
 }

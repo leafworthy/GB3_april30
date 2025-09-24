@@ -23,10 +23,10 @@ namespace __SCRIPTS
 			levelManager.OnStopLevel += ClearEnemies;
 		}
 
-		public void SpawnNewEnemy(GameObject enemyPrefab, Vector3 position)
+		public void SpawnNewEnemy(GameObject enemyPrefab, Vector3 position, int enemyTier)
 		{
 			var newEnemy = objectMaker.Make(enemyPrefab, position);
-			ConfigureNewEnemy(newEnemy);
+			ConfigureNewEnemy(newEnemy, enemyTier);
 		}
 
 		private void CollectEnemy(GameObject enemy)
@@ -61,14 +61,16 @@ namespace __SCRIPTS
 			OnPlayerKillsEnemy?.Invoke(killer, life);
 		}
 
-		public void ConfigureNewEnemy(GameObject enemy)
+		public void ConfigureNewEnemy(GameObject enemy, int enemyTier = 0)
 		{
 			// Set up the Life component
 			var life = enemy.GetComponent<Life>();
 			if (life != null)
 			{
 				life.SetPlayer(players.enemyPlayer);
-				life.AddHealth(life.MaxHealth);
+				life.SetEnemyTier(enemyTier);
+				var paletteSwapper = enemy.GetComponent<PalletteSwapper>();
+				paletteSwapper.SetPallette(enemyTier);
 			}
 
 			CollectEnemy(enemy);
