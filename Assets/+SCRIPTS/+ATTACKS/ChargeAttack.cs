@@ -47,12 +47,14 @@ namespace __SCRIPTS
 
 		private float SpecialAttackDistance = 3;
 		private float SpecialAttackWidth = 3;
-		private float SpecialAttackExtraPush = 2;
-		private int chargeRate = 4;
+		private float SpecialAttackExtraPush = 200;
+		private float chargeRate = .2f;
 		private GameObject currentArrowHead;
 
 		private JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
 		private JumpAbility _jumpAbility;
+		private int rate = 5;
+		private int counter;
 
 		public override bool canDo() => base.canDo() && currentState == state.not && jumpAbility.IsResting;
 
@@ -67,6 +69,7 @@ namespace __SCRIPTS
 
 		private void StartCharging()
 		{
+			Debug.Log("charging start");
 			SetState(state.startingCharge);
 			moveAbility.SetCanMove(false);
 			isFullyCharged = false;
@@ -88,6 +91,7 @@ namespace __SCRIPTS
 			ammoInventory.tertiaryAmmo.reserveAmmo = 0;
 			SetState(state.not);
 			InstantiateArrowHead();
+			UseAllAmmo();
 		}
 
 		private void OnDisable()
@@ -111,14 +115,12 @@ namespace __SCRIPTS
 		private void AddCharge()
 		{
 			if (isFullyCharged) return;
-			if (!isPressingCharge)
-			{
-				StopCharging();
-				return;
-			}
+			counter++;
+			if (counter < rate) return;
+			counter = 0;
 			if (currentState != state.charged && currentState != state.startingCharge) return;
 			if (ammoInventory.secondaryAmmo.reserveAmmo < 100)
-				ammoInventory.secondaryAmmo.reserveAmmo += chargeRate;
+				ammoInventory.secondaryAmmo.reserveAmmo += 1;
 			else if (!isFullyCharged)
 				FullyCharged();
 
@@ -133,7 +135,8 @@ namespace __SCRIPTS
 		private void ShowAiming()
 		{
 			currentArrowHead.SetActive(true);
-			currentArrowHead.transform.position = moveAbility.GetMoveAimPoint();
+			var endPoint = !player.Controller.AimAxis.isActive ? moveAbility.GetMoveAimPoint() : aimAbility.GetAimPoint();
+			currentArrowHead.transform.position = endPoint;
 			body.BottomFaceDirection(moveAbility.GetMoveAimDir().x > 0);
 		}
 
@@ -150,41 +153,33 @@ namespace __SCRIPTS
 		{
 			isPressingCharge = false;
 			if (Services.pauseManager.IsPaused) return;
-			switch (currentState)
-			{
-				case state.startingCharge:
-					DoWeakAttack();
-					break;
-				case state.charged:
 
-					break;
-			}
-
-			StopCharging();
+			if(currentState == state.not) return;
+			SetState(state.attacking);
 			if (isFullyCharged)
-				StartAttack();
+				StartSpecialAttack();
 			else
-				Stop();
+				DoWeakAttack();
 		}
 
 		private void DoWeakAttack()
 		{
-			Stop();
+			StopCharging();
 			batAttack.Do();
 		}
 
 		private void StopCharging()
 		{
-			SetState(state.not);
 			anim.SetBool(UnitAnimations.IsCharging, false);
 			UseAllAmmo();
 			OnChargeStop?.Invoke();
 			Stop();
 		}
 
-		private void StartAttack()
+		private void StartSpecialAttack()
 		{
 			UseAllAmmo();
+			OnChargeStop?.Invoke();
 			anim.SetTrigger(UnitAnimations.ChargeAttackTrigger);
 			anim.SetBool(UnitAnimations.IsCharging, false);
 			PlayAnimationClip(chargeAttackAnimationClip);
@@ -210,12 +205,12 @@ namespace __SCRIPTS
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
-			base.AnimationComplete();
 		}
 
 		public override void Stop()
 		{
 			moveAbility.SetCanMove(true);
+			SetState(state.not);
 			base.Stop();
 		}
 
@@ -225,20 +220,21 @@ namespace __SCRIPTS
 			PlayAnimationClip(chargedAnimationClip);
 		}
 
-		private void Anim_AttackHit(int attackType)
+		private void Anim_AttackHit()
 		{
-			if (attackType != 5) return;
-			SpecialAttackHit(attackType);
+			SpecialAttackHit();
 		}
 
 		private void FullyCharged()
 		{
+			Debug.Log("fully charged");
 			isFullyCharged = true;
 			ammoInventory.secondaryAmmo.SetAmmoReserve(100);
 		}
 
-		private void SpecialAttackHit(int attackType)
+		private void SpecialAttackHit()
 		{
+			Debug.Log("special hit");
 			var attackPosition = body.AimCenter.transform.position;
 			var bestTargetPoint = GetBestTargetPoint(attackPosition);
 			var connect = false;
@@ -257,7 +253,7 @@ namespace __SCRIPTS
 			}
 
 			var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position + moveAbility.GetMoveAimDir() * SpecialAttackDistance,
-				GetHitRange(attackType));
+				GetHitRange(), life.EnemyLayer);
 
 			foreach (var hit2D in circleCast)
 			{
@@ -273,11 +269,6 @@ namespace __SCRIPTS
 
 		private Vector2 GetBestTargetPoint(Vector3 attackPosition) => moveAbility.IsIdle() ? aimAbility.GetAimPoint() : (Vector2) attackPosition + moveAbility.GetLastMoveAimDirOffset();
 
-		private float GetHitRange(int attackType)
-		{
-			if (attackType == 5)
-				return life.PrimaryAttackRange * 2;
-			return life.PrimaryAttackRange;
-		}
+		private float GetHitRange() => life.PrimaryAttackRange;
 	}
 }

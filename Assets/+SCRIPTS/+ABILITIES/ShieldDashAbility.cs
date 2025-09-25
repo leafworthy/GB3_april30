@@ -5,7 +5,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class ShieldDashAbility : DashAbility
 {
-	private float extraDashPushFactor = 1.5f;
+	private float extraDashPushFactor = 3f;
 	public override string AbilityName => "Shield-Dash";
 	private ShieldAbility shieldAbility => _shieldAbility ??= GetComponent<ShieldAbility>();
 	private ShieldAbility _shieldAbility;

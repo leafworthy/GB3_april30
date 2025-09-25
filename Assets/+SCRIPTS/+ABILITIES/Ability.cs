@@ -26,10 +26,7 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public void Do()
 	{
-		Debug.Log("trying to do ability: " + AbilityName);
 		if (!canDo()) return;
-
-		Debug.Log("Doing ability: " + AbilityName);
 
 		lastLegAbility = body.doableLegs.CurrentAbility;
 		lastArmAbility = body.doableArms.CurrentAbility;
@@ -49,7 +46,6 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	protected void CoreStop()
 	{
-		Debug.Log("called base stop");
 		if (requiresArms()) body.doableArms.Stop(this);
 
 		if (requiresLegs()) body.doableLegs.Stop(this);
@@ -65,25 +61,12 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 	private bool BodyCanDo(IDoableAbility abilityToDo)
 	{
 		if (Services.pauseManager.IsPaused) return false;
-		if (life.IsDead())
-		{
-			Debug.Log($"{AbilityName} cannot do because dead");
-			return false;
-		}
+		if (life.IsDead()) return false;
 
-		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo))
-		{
-			Debug.Log($"{AbilityName} cannot do because arms cannot do");
-			return false;
-		}
+		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo)) return false;
 
-		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo))
-		{
-			Debug.Log($"{AbilityName} cannot do because legs cannot do");
-			return false;
-		}
+		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo)) return false;
 
-		Debug.Log($"{AbilityName} body can do");
 		return true;
 	}
 

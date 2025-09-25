@@ -19,7 +19,7 @@ namespace Utilities
 
 			return positions;
 		}
-
+#if UNITY_EDITOR
 		public static GameObject MakePrefab(GameObject gridPrefab, Vector3 position)
 		{
 			if (gridPrefab == null) return null;
@@ -36,5 +36,6 @@ namespace Utilities
 			instance.transform.position = position;
 			return instance;
 		}
+#endif
 	}
 }

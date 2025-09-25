@@ -9,8 +9,6 @@ namespace __SCRIPTS
 {
 	public class Life_FX : MonoBehaviour, IPoolable, INeedPlayer
 	{
-		public Image slowBarImage;
-		public Image fastBarImage;
 		public Color DebreeTint = Color.white;
 		private List<Renderer> renderersToTint = new();
 		private Color materialTintColor;
@@ -32,7 +30,8 @@ namespace __SCRIPTS
 		private float smoothingFactor = .25f;
 		private Life _life;
 		private Life life => _life ??= GetComponentInParent<Life>();
-		public GameObject healthBar;
+		private HealthBar healthBar  => _healthBar ??= GetComponentInChildren<HealthBar>(true);
+		private HealthBar _healthBar;
 		public bool BlockTint;
 
 		public void Start()
@@ -44,7 +43,7 @@ namespace __SCRIPTS
 			life.OnAttackHit += Life_AttackHit;
 			life.OnShielded += Life_Shielded;
 			if (life.showLifeBar) return;
-			if (healthBar != null) healthBar.SetActive(false);
+			if (healthBar != null) healthBar.gameObject.SetActive(false);
 		}
 
 		private void Life_Shielded(Attack obj)
@@ -54,7 +53,7 @@ namespace __SCRIPTS
 
 		public void SetPlayer(Player player)
 		{
-			if (!player.IsPlayer()) return;
+			if (!player.IsHuman()) return;
 
 			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
 			foreach (var r in renderersToTint)
@@ -174,21 +173,19 @@ namespace __SCRIPTS
 
 		private void UpdateGradient()
 		{
-			var time = _life == null ? targetFill : life.GetFraction();
+			var time = life == null ? targetFill : life.GetFraction();
+			if (float.IsNaN(time))
+			{
+				this.enabled = false;
+				Debug.Log("NaN time in Life_FX.cs", this);
+				return;
+			}
 			if (colorMode == ColorMode.Gradient)
-				fastBarImage.color = barGradient.Evaluate(time);
+				healthBar.FastBar.color = barGradient.Evaluate(time);
 		}
 
 		#region PUBLIC FUNCTIONS
 
-		public void UpdateBar(float currentValue, float maxValue)
-		{
-			if (slowBarImage == null)
-				return;
-			targetFill = currentValue / maxValue;
-			UpdateGradient();
-			UpdateBarFill();
-		}
 
 		private void UpdateBarFill()
 		{
@@ -197,13 +194,14 @@ namespace __SCRIPTS
 
 			if (!life.showLifeBar) return;
 			targetFill = _life.GetFraction();
+			Debug.Log("targetFill: " + targetFill, this);
 			if (targetFill > .9f || targetFill <= 0)
-				healthBar.SetActive(false);
+				healthBar.gameObject.SetActive(false);
 			else
 			{
-				healthBar.SetActive(true);
-				if (slowBarImage != null) slowBarImage.fillAmount = Mathf.Lerp(slowBarImage.fillAmount, targetFill, smoothingFactor);
-				if (fastBarImage != null) fastBarImage.fillAmount = targetFill;
+				healthBar.gameObject.SetActive(true);
+				if (healthBar.SlowBar != null) healthBar.SlowBar.fillAmount = Mathf.Lerp(healthBar.SlowBar.fillAmount, targetFill, smoothingFactor);
+				if (healthBar.FastBar != null) healthBar.FastBar.fillAmount = targetFill;
 			}
 		}
 
@@ -227,15 +225,15 @@ namespace __SCRIPTS
 
 		private void UpdateColor(Color targetColor)
 		{
-			if (colorMode != ColorMode.Single || slowBarImage == null)
+			if (colorMode != ColorMode.Single || healthBar == null || healthBar?.SlowBar == null)
 				return;
 			slowBarColor = targetColor;
-			slowBarImage.color = slowBarColor;
+			healthBar.SlowBar.color = slowBarColor;
 		}
 
 		private void UpdateColor(Gradient targetGradient)
 		{
-			if (colorMode != ColorMode.Gradient || slowBarImage == null)
+			if (colorMode != ColorMode.Gradient || healthBar == null || healthBar?.SlowBar == null)
 				return;
 
 			barGradient = targetGradient;

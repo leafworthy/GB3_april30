@@ -1,14 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using __SCRIPTS;
-using UnityEditor;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public static class AttackUtilities
 {
 	private const float PushFactor = 10;
-
+#if UNITY_EDITOR
 	[MenuItem("Tools/Select Player Unit Animator")]
+
 	public static void SelectPlayerUnitAnimator()
 	{
 		var component = Object.FindFirstObjectByType(typeof(PlayerUnitController)) as PlayerUnitController;
@@ -18,6 +21,7 @@ public static class AttackUtilities
 		// Optionally, you can also ping it in the hierarchy to highlight it
 		EditorGUIUtility.PingObject(unitAnimations.animator.gameObject);
 	}
+#endif
 	public static List<Life> CircleCastForXClosestTargets(Life originLife, float range, int howMany = 2)
 	{
 		var result = new List<Life>();
@@ -54,8 +58,9 @@ public static class AttackUtilities
 
 	public static bool IsValidTarget(Life originLife, Life targetLife)
 	{
+		//took out && targetLife.IsPlayerAttackable
 		if (targetLife == null) return false;
-		return originLife.IsEnemyOf(targetLife) && targetLife.IsNotInvincible && targetLife.IsPlayerAttackable && !targetLife.IsObstacle &&
+		return originLife.IsEnemyOf(targetLife) && targetLife.IsNotInvincible  && !targetLife.IsObstacle &&
 		       targetLife.CanTakeDamage;
 	}
 
@@ -82,7 +87,11 @@ public static class AttackUtilities
 	public static bool HitTarget(Life originLife, Life targetLife, Vector2 attackPosition, float attackDamage, float extraPush = .1f)
 	{
 		if (targetLife == null) return false;
-		if (!IsValidTarget(originLife, targetLife)) return false;
+		if (!IsValidTarget(originLife, targetLife))
+		{
+			Debug.LogWarning("invalid target", targetLife);
+			return false;
+		}
 		targetLife.TakeDamage(new Attack(originLife, attackPosition, targetLife, attackDamage, extraPush));
 		return true;
 	}
@@ -96,7 +105,7 @@ public static class AttackUtilities
 		return Physics2D.Raycast(position, direction, distance, layer);
 	}
 
-	public static void Explode(Vector3 explosionPosition, float explosionRadius, float explosionDamage, Player _owner)
+	public static void Explode(Vector3 explosionPosition, float explosionRadius, float explosionDamage, Life _owner)
 	{
 		var assets = ServiceLocator.Get<AssetManager>();
 		var objectMaker = ServiceLocator.Get<ObjectMaker>();
@@ -105,7 +114,7 @@ public static class AttackUtilities
 		objectMaker.Make(assets.FX.explosions.GetRandom(), explosionPosition);
 		objectMaker.Make(assets.FX.fires.GetRandom(), explosionPosition);
 
-		var layer = _owner.spawnedPlayerDefence.EnemyLayer;
+		var layer = _owner.EnemyLayer;
 
 		CameraShaker.ShakeCamera(explosionPosition, CameraShaker.ShakeIntensityType.high);
 		CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);
@@ -122,7 +131,7 @@ public static class AttackUtilities
 			var otherMove = defence.GetComponent<MoveAbility>();
 			if (otherMove != null)
 				otherMove.Push(explosionPosition - defence.transform.position, PushFactor * ratio);
-			var newAttack = new Attack(_owner.spawnedPlayerDefence, explosionPosition, defence.transform.position, defence, explosionDamage * ratio);
+			var newAttack = new Attack(_owner, explosionPosition, defence.transform.position, defence, explosionDamage * ratio);
 			defence.TakeDamage(newAttack);
 		}
 	}

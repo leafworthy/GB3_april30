@@ -6,7 +6,6 @@ namespace __SCRIPTS
 	[Serializable]
 	public class UnitHealth
 	{
-		public float GetFraction() => maxHealth > 0 ? currentHealth / maxHealth : 0f;
 
 		public bool IsTemporarilyInvincible;
 		public bool IsShielded;
@@ -14,31 +13,35 @@ namespace __SCRIPTS
 		public float CurrentHealth => currentHealth;
 		private float currentHealth;
 
-		public event Action<float> OnFractionChanged;
 		public event Action<Attack> OnDead;
 		public event Action<Attack> OnAttackHit;
 
-		private bool isInvincible =>  unitStats.isInvincible;
+		private bool isInvincible =>  unitStats.Data.isInvincible;
 
-		private float maxHealth => unitStats.MaxHealth();
+		private float maxHealth => Data.healthMax + unitStats.GetExtraHealth();
 
+		public float GetFraction() => currentHealth / maxHealth;
+
+		private UnitStatsData Data;
 
 
 		private bool isDead;
 
 		private UnitStats unitStats;
+		public float MaxHealth  => maxHealth;
 
 		public UnitHealth(UnitStats _unitStats)
 		{
 			unitStats = _unitStats;
-			ResetHealth();
+			Data = unitStats.Data;
+			FillHealth();
 		}
 
-		private void ResetHealth()
+		public void FillHealth()
 		{
 			currentHealth = maxHealth;
 			isDead = false;
-			OnFractionChanged?.Invoke(GetFraction());
+
 		}
 
 		public void TakeDamage(Attack attack)
@@ -46,15 +49,10 @@ namespace __SCRIPTS
 			if (isDead || IsTemporarilyInvincible || isInvincible) return;
 			currentHealth = Mathf.Max(0, currentHealth - attack.DamageAmount);
 			if (currentHealth <= 0 && !isInvincible) StartDeath(attack);
-			OnFractionChanged?.Invoke(GetFraction());
+
 			OnAttackHit?.Invoke(attack);
 		}
 
-		public void SetHealth(float amount)
-		{
-			currentHealth = amount;
-			OnFractionChanged?.Invoke(GetFraction());
-		}
 
 		public void KillInstantly()
 		{
@@ -78,14 +76,8 @@ namespace __SCRIPTS
 		{
 			if (isDead) return;
 			currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
-			OnFractionChanged?.Invoke(GetFraction());
+
 		}
 
-		public void FillHealth()
-		{
-			if (isDead) return;
-			currentHealth = maxHealth;
-			OnFractionChanged?.Invoke(GetFraction());
-		}
 	}
 }

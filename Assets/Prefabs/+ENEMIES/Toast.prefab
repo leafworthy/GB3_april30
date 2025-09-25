@@ -605,7 +605,6 @@ MonoBehaviour:
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
-    isInvincible: 0
   unitHealth:
     IsTemporarilyInvincible: 0
     IsShielded: 0
@@ -621,24 +620,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowBarImage: {fileID: 0}
-  fastBarImage: {fileID: 0}
-  DebreeTint: {r: 0.061502814, g: 1, b: 0, a: 1}
-  colorMode: 0
+  DebreeTint: {r: 0.3490566, g: 0.28155038, b: 0.29955202, a: 1}
+  colorMode: 1
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
   barGradient:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 0.95496154, b: 0, a: 1}
+    key2: {r: 0.19127488, g: 1, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65535
-    ctime2: 0
+    ctime1: 16577
+    ctime2: 65535
     ctime3: 0
     ctime4: 0
     ctime5: 0
@@ -654,9 +651,8 @@ MonoBehaviour:
     atime7: 0
     m_Mode: 0
     m_ColorSpace: -1
-    m_NumColorKeys: 2
+    m_NumColorKeys: 3
     m_NumAlphaKeys: 2
-  healthBar: {fileID: 0}
   BlockTint: 0
 --- !u!114 &7431454428826219941
 MonoBehaviour:
@@ -670,7 +666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b8960fe6731f6340b129e39e485df8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clawAttackAnimationClip: {fileID: 0}
+  clawAttackAnimationClip: {fileID: 7400000, guid: b7d518e233f904e1c9e0de5668beb764, type: 2}
 --- !u!114 &536371090444542826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1000,7 +996,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242737, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Pivot.x
@@ -1102,6 +1098,10 @@ PrefabInstance:
       propertyPath: HideWhenFull
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6159643716270242748, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 4294967287
+      objectReference: {fileID: 0}
     - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Color.a
       value: 1
@@ -1114,8 +1114,7 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.19127488
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6159643716270242739, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

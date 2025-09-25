@@ -61,6 +61,7 @@ namespace __SCRIPTS
 		private void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
 		{
 			StartJumpAnimation();
+			life.SetTemporarilyInvincible(true);
 			airTimer = 0;
 			minBounceVelocity = minBounce;
 			isFlying = false;
@@ -75,7 +76,7 @@ namespace __SCRIPTS
 			body.ChangeLayer(Body.BodyLayer.jumping);
 		}
 
-		protected virtual void StartJumpAnimation()
+		private void StartJumpAnimation()
 		{
 			anim.Play(isFlying ? flyingAnimationClip.name : jumpingAnimationClip.name, 0, 0);
 		}
@@ -160,7 +161,7 @@ namespace __SCRIPTS
 				body.SetDistanceToGround(body.GetDistanceToGround() + verticalVelocity);
 		}
 
-		protected virtual void StartFalling()
+		private void StartFalling()
 		{
 
 			anim.Play(fallingAnimationClip.name, 0, 0);
@@ -169,6 +170,7 @@ namespace __SCRIPTS
 		private void Land()
 		{
 
+			life.SetTemporarilyInvincible(false);
 			isJumping = false;
 			moveAbility.SetCanMove(false);
 			body.SetGrounded();
@@ -177,7 +179,7 @@ namespace __SCRIPTS
 			OnLand?.Invoke(transform.position  );
 		}
 
-		protected virtual void StartLandingAnimation()
+		private void StartLandingAnimation()
 		{
 			PlayAnimationClip(!life.IsDead() ? landingAnimationClip : deathAnimationClip);
 		}

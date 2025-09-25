@@ -50,7 +50,7 @@ namespace __SCRIPTS
 			
 			}
 
-			if (!player.IsPlayer()) return;
+			if (!player.IsHuman()) return;
 			if (playersInside.Contains(player)) playersInside.Remove(player);
 			if (playersInside.Count == 0) Hide();
 		}

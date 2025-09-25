@@ -182,8 +182,9 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				return SortingPoint1.y;
 			}
 		}
-
+#if ENABLE_UNITYEDITOR
 		[MenuItem("Tools/Update Sorters")]
+#endif
 		public static void UpdateSorters()
 		{
 #if UNITY_EDITOR

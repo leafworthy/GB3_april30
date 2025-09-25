@@ -25,7 +25,9 @@ namespace __SCRIPTS
 		{
 			base.SetPlayer(_player);
 			player.Controller.Attack2LeftTrigger.OnPress += PlayerChainsawPress;
+			player.Controller.Attack3Circle.OnPress += PlayerChainsawPress;
 			player.Controller.Attack2LeftTrigger.OnRelease += PlayerChainsawRelease;
+			player.Controller.Attack3Circle.OnRelease += PlayerChainsawRelease;
 		}
 
 		protected override void DoAbility()

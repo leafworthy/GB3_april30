@@ -43,13 +43,13 @@ namespace __SCRIPTS
 		public bool IsPlayerAttackable => unitStats.IsPlayerAttackable;
 		public DebrisType DebrisType => unitStats.DebrisType;
 		public bool showLifeBar => unitStats.Data.showLifeBar;
-		public float MaxHealth => unitStats.MaxHealth();
+		public float MaxHealth => unitHealth.MaxHealth + unitStats.GetExtraHealth();
 		public bool IsNotInvincible => !unitStats.Data.isInvincible;
 
 		#endregion
 
 
-		public bool IsHuman => Player != null && Player.IsPlayer();
+		public bool IsHuman => Player != null && Player.IsHuman();
 		public LayerMask EnemyLayer => IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
 		public bool CanTakeDamage => !unitHealth.IsDead && !unitHealth.IsTemporarilyInvincible && !unitStats.Data.isInvincible;
 
@@ -62,6 +62,7 @@ namespace __SCRIPTS
 		public event Action<Player> OnDeathComplete;
 		public event Action<Attack> OnShielded;
 		private Collider2D[] colliders;
+		private bool hasInitialized;
 
 		[Sirenix.OdinInspector.Button]
 		public void ClearStats()
@@ -74,15 +75,27 @@ namespace __SCRIPTS
 			unitStats = new UnitStats(gameObject.name);
 		}
 
-
 		private void Awake()
 		{
+			Init();
+		}
+
+		private void Init()
+		{
+			if (hasInitialized) return;
+			Debug.Log("initializing", this);
+			hasInitialized = true;
 			unitStats = new UnitStats(gameObject.name);
 			unitHealth = new UnitHealth(unitStats);
-			unitHealth.OnFractionChanged += Health_OnFractionChanged;
 			unitHealth.OnDead += HealthOnDead;
 			unitHealth.OnAttackHit += Health_AttackHit;
+			FillHealth();
 			if (unitStats.Data.category != UnitCategory.Character) SetPlayer(Services.playerManager.enemyPlayer);
+		}
+
+		private void FillHealth()
+		{
+			unitHealth.FillHealth();
 		}
 
 		private void SetupAnimationEvents()
@@ -96,7 +109,6 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			if (unitHealth == null) return;
-			unitHealth.OnFractionChanged -= Health_OnFractionChanged;
 			unitHealth.OnDead -= HealthOnDead;
 			unitHealth.OnAttackHit -= Health_AttackHit;
 		}
@@ -106,6 +118,7 @@ namespace __SCRIPTS
 		public void SetPlayer(Player newPlayer)
 		{
 			player = newPlayer;
+			Init();
 
 
 			SetupAnimationEvents();
@@ -179,17 +192,17 @@ namespace __SCRIPTS
 			}
 
 			unitHealth?.TakeDamage(attack);
+			OnFractionChanged?.Invoke(GetFraction());
 		}
 
-		public void AddHealth(float amount) => unitHealth.AddHealth(amount);
-		public void DieNow() => unitHealth.KillInstantly();
-		public float GetFraction()  {
-			if(unitHealth != null)
-			{
-				return unitHealth.CurrentHealth/unitStats.MaxHealth();
-			}
-			return 1;
+		public void AddHealth(float amount)
+		{
+			unitHealth.AddHealth(amount);
+			OnFractionChanged?.Invoke(GetFraction());
 		}
+
+		public void DieNow() => unitHealth.KillInstantly();
+		public float GetFraction() => unitHealth.GetFraction();
 
 		public void SetShielding(bool isOn)
 		{
@@ -216,6 +229,12 @@ namespace __SCRIPTS
 			Debug.Log("enemy tier set to " + tier + " for " + gameObject.name);
 			unitStats.SetEnemyTier(tier);
 			unitHealth.FillHealth();
+			OnFractionChanged?.Invoke(GetFraction());
+		}
+
+		public void SetTemporarilyInvincible(bool isOn)
+		{
+			if (unitHealth != null) unitHealth.IsTemporarilyInvincible = isOn;
 		}
 	}
 }

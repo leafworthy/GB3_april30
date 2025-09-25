@@ -73,6 +73,7 @@ namespace __SCRIPTS
 
 		private void Input_OnPlayerJoins(PlayerInput newPlayerInput)
 		{
+			if (Services.pauseManager.IsPaused) return;
 			var joiningPlayer = newPlayerInput.GetComponent<Player>();
 			if (joiningPlayer == null) return;
 			AddPlayerToJoinedPlayers(newPlayerInput, joiningPlayer);
@@ -85,7 +86,7 @@ namespace __SCRIPTS
 			if (AllJoinedPlayers.Count >= 4) return;
 
 			joiningPlayer.ConnectPlayerToController(newPlayerInput, playerPresets[newPlayerInput.playerIndex], newPlayerInput.playerIndex);
-			if(mainPlayer == null) mainPlayer = joiningPlayer;
+			if(mainPlayer == null) SetMainPlayer(joiningPlayer);
 			AllJoinedPlayers.Add(joiningPlayer);
 			OnPlayerJoins?.Invoke(joiningPlayer);
 			joiningPlayer.OnPlayerDies += Player_PlayerDies;
@@ -93,14 +94,35 @@ namespace __SCRIPTS
 
 		private void Player_PlayerDies(Player deadPlayer)
 		{
-			if (deadPlayer == mainPlayer)
+			if (deadPlayer.IsMainPlayer())
 			{
+				Debug.Log("main character died");
 				var nextPlayer = AllJoinedPlayers.FirstOrDefault(t => t != deadPlayer && t.state == Player.State.Alive);
-				mainPlayer = nextPlayer;
+				if (nextPlayer == null)
+				{
+					Debug.Log("no other players to switch to");
+					return;
+				}
+				if(nextPlayer == mainPlayer)
+				{
+					Debug.Log("next player is already main player");
+					return;
+				}
+				SetMainPlayer(nextPlayer);
 			}
+
+			Debug.Log("OnPlayerDies called");
 			OnPlayerDies?.Invoke(deadPlayer);
 
 			if (AllJoinedPlayersAreDead()) OnAllJoinedPlayersDead?.Invoke();
+		}
+
+		private void SetMainPlayer(Player nextPlayer)
+		{
+			mainPlayer = nextPlayer;
+			if (mainPlayer == null) return;
+			if (mainPlayer.input == null) return;
+			mainPlayer.SetIsMainPlayer(true);
 		}
 
 		private bool AllJoinedPlayersAreDead()

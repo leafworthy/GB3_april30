@@ -38,7 +38,7 @@ namespace __SCRIPTS
 
 			var newProjectile = Services.objectMaker.Make(Services.assetManager.FX.minePrefab, startPoint);
 			var newMine = newProjectile.GetComponent<Mine>();
-			newMine.Launch(startPoint, player);
+			newMine.Launch(startPoint, life);
 			newMine.OnSelfDetonate += RemoveMine;
 			ActiveMines.Add(newMine);
 		}
@@ -70,8 +70,6 @@ namespace __SCRIPTS
 			if (player.Controller == null) return;
 			player.Controller.SwapWeaponSquare.OnPress -= Player_ThrowPress;
 			player.Controller.SwapWeaponSquare.OnRelease -= Player_ThrowRelease;
-			//player.Controller.Attack3Circle.OnPress -= Player_DetonatePress;
-			//player.Controller.Attack3Circle.OnRelease -= Player_DetonateRelease;
 		}
 
 		private void ListenToPlayer()
@@ -80,8 +78,6 @@ namespace __SCRIPTS
 			if (player.Controller == null) return;
 			player.Controller.SwapWeaponSquare.OnPress += Player_ThrowPress;
 			player.Controller.SwapWeaponSquare.OnRelease += Player_ThrowRelease;
-			//player.Controller.Attack3Circle.OnPress += Player_DetonatePress;
-			//player.Controller.Attack3Circle.OnRelease += Player_DetonateRelease;
 		}
 
 		private void Player_DetonateRelease(NewControlButton obj) => isPressingDetonate = false;

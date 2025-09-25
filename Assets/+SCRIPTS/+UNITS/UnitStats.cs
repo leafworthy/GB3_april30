@@ -16,7 +16,6 @@ namespace __SCRIPTS
 		{
 			unitName = _name;
 			_unitData = UnitStatsManager.GetUnitStats(unitName);
-			GetData();
 		}
 
 		private UnitStatsData GetData() => _unitData ??= UnitStatsManager.GetUnitStats(unitName);
@@ -27,9 +26,12 @@ namespace __SCRIPTS
 
 		private int extraMaxDamageFactor;
 		private int EnemyTier;
-		public bool isInvincible;
 
-		public float MaxHealth() => Data.healthMax + ExtraHealthFactor * Data.healthMax + Data.healthMax * (EnemyTier);
+
+		public float GetExtraHealth() {
+			Debug.Log("Extra health for " + unitName + " is " + (ExtraHealthFactor * Data.healthMax + Data.healthMax * (EnemyTier)));
+			return ExtraHealthFactor * Data.healthMax + Data.healthMax * (EnemyTier);
+		}
 
 		public float MoveSpeed => Data.moveSpeed + ExtraSpeedFactor * Data.moveSpeed  + Data.moveSpeed * (EnemyTier * 0.3f);
 		public float DashSpeed => Data.dashSpeed + ExtraSpeedFactor * Data.dashSpeed;

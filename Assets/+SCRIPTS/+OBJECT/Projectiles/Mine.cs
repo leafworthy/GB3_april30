@@ -6,12 +6,12 @@ public class Mine : MonoBehaviour
 {
 	private bool hasLaunched;
 	public bool isProximityMine;
-	private Player player;
+	private Life life;
 	public Action<Mine> OnSelfDetonate;
 
-	public void Launch(Vector2 _start, Player _player)
+	public void Launch(Vector2 _start, Life _mineLayerLife)
 	{
-		player = _player;
+		life = _mineLayerLife;
 		transform.position = _start;
 		hasLaunched = true;
 	}
@@ -27,7 +27,7 @@ public class Mine : MonoBehaviour
 			if (otherLife == null) return;
 		}
 
-		if (otherLife.IsEnemyOf(player.spawnedPlayerDefence))
+		if (otherLife.IsEnemyOf(life))
 		{
 			OnSelfDetonate?.Invoke(this);
 			Explode();
@@ -36,8 +36,8 @@ public class Mine : MonoBehaviour
 
 	private void Explode()
 	{
-		AttackUtilities.Explode(transform.position, player.spawnedPlayerDefence.SecondaryAttackRange,
-			player.spawnedPlayerDefence.SecondaryAttackDamageWithExtra, player);
+		AttackUtilities.Explode(transform.position, life.SecondaryAttackRange,
+			life.SecondaryAttackDamageWithExtra, life);
 		Services.objectMaker.Unmake(gameObject);
 
 	}

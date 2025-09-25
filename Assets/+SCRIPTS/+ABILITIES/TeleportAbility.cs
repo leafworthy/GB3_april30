@@ -11,7 +11,7 @@ public class TeleportAbility : Ability
 
 	private JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
 	private JumpAbility _jumps;
-	private const float teleportTime = .2f;
+	private const float teleportTime = .1f;
 	protected override bool requiresArms() => true;
 
 	protected override bool requiresLegs() => true;
@@ -25,6 +25,7 @@ public class TeleportAbility : Ability
 	private void Teleport()
 	{
 		if (teleportAnimationClip != null) PlayAnimationClip(teleportAnimationClip);
+		life.SetTemporarilyInvincible(true);
 		Invoke(nameof(Anim_Teleport), teleportTime);
 	}
 
@@ -65,6 +66,7 @@ public class TeleportAbility : Ability
 
 	public override void Stop()
 	{
+		life.SetTemporarilyInvincible(false);
 		base.Stop();
 		lastLegAbility?.Do();
 	}

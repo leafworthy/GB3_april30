@@ -96,7 +96,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void Nade_OnThrow(Vector2 startPoint, Vector2 velocity, float time, Player player)
+		private void Nade_OnThrow(Vector2 startPoint, Vector2 velocity, float time, Life life)
 		{
 			if (Services.assetManager.FX.nadePrefab == null) return;
 
@@ -106,7 +106,7 @@ namespace __SCRIPTS
 			var nadeThrower = newProjectile.GetComponent<Nade>();
 			if (nadeThrower == null) return;
 
-			nadeThrower.Launch(startPoint, velocity, time, player);
+			nadeThrower.Launch(startPoint, velocity, time, life);
 		}
 
 		private void PlaceMarkers(Vector2 pointA, Vector2 pointB)

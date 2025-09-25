@@ -52,7 +52,7 @@ namespace __SCRIPTS
 		{
 			if (!canEnter(player)) return;
 			if (playersListening.Contains(player)) return;
-			if (!player.IsPlayer()) return;
+			if (!player.IsHuman()) return;
 			playersListening.Add(player);
 
 

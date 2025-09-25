@@ -22,7 +22,7 @@ namespace __SCRIPTS
 		private JumpAbility _jump;
 		private DoableArms arms => body.doableArms;
 
-		public event Action<Vector2, Vector2, float, Player> OnThrow;
+		public event Action<Vector2, Vector2, float, Life> OnThrow;
 		public event Action OnShowAiming;
 		public event Action OnHideAiming;
 		public event Action<Vector2, Vector2> OnAimAt;
@@ -118,7 +118,7 @@ namespace __SCRIPTS
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = body.AimCenter.transform.position;
 			var velocity = new Vector3((endPoint.x - startPoint.x) / throwTime, (endPoint.y - startPoint.y) / throwTime);
-			OnThrow?.Invoke(startPoint, velocity, throwTime, life.Player);
+			OnThrow?.Invoke(startPoint, velocity, throwTime, life);
 			HideAiming();
 		}
 

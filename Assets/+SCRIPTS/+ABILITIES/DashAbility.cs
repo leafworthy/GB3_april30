@@ -27,6 +27,7 @@ namespace __SCRIPTS
 		{
 			CoreStop();
 			StopDashing();
+			life.SetTemporarilyInvincible(false);
 			if (lastArmAbility is GunAttack)
 			{
 				Debug.Log("Resuming Shield Ability");
@@ -82,10 +83,13 @@ namespace __SCRIPTS
 			Do();
 		}
 
+
+
 		protected void Dash()
 		{
 			if (dashAnimationClip_Bottom != null) PlayAnimationClip(dashAnimationClip_Bottom);
 			if (dashAnimationClip_Top != null) PlayAnimationClip(dashAnimationClip_Top, 1);
+			life.SetTemporarilyInvincible(true);
 
 			moveAbility.Push(moveAbility.GetMoveDir(), life.DashSpeed);
 		}

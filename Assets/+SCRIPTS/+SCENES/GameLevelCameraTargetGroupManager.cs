@@ -32,17 +32,27 @@ namespace __SCRIPTS
 			{
 				cameraFollowTargetGroup.RemoveMember(t.Object);
 			}
+
+			_cameraFollowTargetGroup = null;
 		}
 
 		private void AddPlayerToCameraFollowTargetGroup(Player player)
 		{
+			Debug.Log("Trying to add player to camera follow target group: " + player.name);
 
 			if (player.SpawnedPlayerGO != null)
 			{
-				if(cameraFollowTargetGroup.Targets.Count == 0)
+				if (player.IsMainPlayer())
 				{
+					Debug.Log("adding the main character to camera",this);
+					cameraFollowTargetGroup.Targets.Clear();
 					cameraFollowTargetGroup.AddMember(player.SpawnedPlayerGO.transform, 1, 0);
 				}
+				else
+				{
+					Debug.Log("this was not the main character",this);
+				}
+
 				var stickTarget = Services.objectMaker.Make(Services.assetManager.Players.followStickPrefab).GetComponent<FollowCursor>();
 				stickTarget.Init(player);
 			}
@@ -52,6 +62,7 @@ namespace __SCRIPTS
 		{
 
 			RemoveFromCameraFollow(deadPlayer);
+			if (Services.playerManager.mainPlayer.isDead()) return;
 			AddPlayerToCameraFollowTargetGroup(Services.playerManager.mainPlayer);
 		}
 

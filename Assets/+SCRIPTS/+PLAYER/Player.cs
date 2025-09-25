@@ -45,9 +45,16 @@ namespace __SCRIPTS
 
 		private PlayerUpgrades playerUpgrades;
 		private int buildingLayer;
+		private bool isMainPlayer;
+
+		public void SetIsMainPlayer(bool value)
+		{
+			Debug.Log("setting main player to " + value,this);
+			isMainPlayer = value;
+		}
 		public int BuildingLayer => Services.assetManager.LevelAssets.BuildingLayer;
 
-		public bool IsPlayer() => data != null && data.isPlayer;
+		public bool IsHuman() => data != null && data.isPlayer;
 
 		private void Start()
 		{
@@ -184,5 +191,9 @@ namespace __SCRIPTS
 		{
 			OnPlayerLeavesUpgradeSetupMenu?.Invoke(this);
 		}
+
+		public bool IsMainPlayer() => isMainPlayer;
+
+		public LayerMask GetEnemyLayer() => IsHuman()?  Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
 	}
 }

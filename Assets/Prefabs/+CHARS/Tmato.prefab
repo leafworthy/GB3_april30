@@ -238,11 +238,11 @@ MonoBehaviour:
       isInvincible: 0
       healthMax: 450
       moveSpeed: 45
-      dashSpeed: 250
+      dashSpeed: 100
       jumpSpeed: 2
       aggroRange: 0
       attack1Damage: 40
-      attack1Rate: 1
+      attack1Rate: 0.5
       attack1Range: 100
       attack2Damage: 300
       attack2Rate: 1
@@ -258,6 +258,7 @@ MonoBehaviour:
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
+    isInvincible: 0
   unitHealth:
     IsTemporarilyInvincible: 0
     IsShielded: 0
@@ -528,9 +529,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f9bbda06e4b42c0b7bd61ba870b743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: Hello World!
-  fontColor: {r: 1, g: 1, b: 1, a: 1}
-  padding: {x: 10, y: 10}
 --- !u!114 &3952349814418493022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -913,7 +911,6 @@ MonoBehaviour:
     SerializationNodes: []
   dashAnimationClip_Bottom: {fileID: 7400000, guid: 746c1ced39b2848bf8d0f07abac95286, type: 2}
   dashAnimationClip_Top: {fileID: 7400000, guid: d62be2764810a43fc8ebb4378c925085, type: 2}
-  teleport: 0
 --- !u!114 &8733494531752375043
 MonoBehaviour:
   m_ObjectHideFlags: 0

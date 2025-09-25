@@ -110,7 +110,7 @@ namespace __SCRIPTS
 			Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 		}
 
-		private void NadeAttackOnThrow(Vector2 v, Vector2 v2, float f, Player p) => Services.sfx.sounds.bean_nade_throw_sounds.PlayRandomAt(transform.position);
+		private void NadeAttackOnThrow(Vector2 v, Vector2 v2, float f, Life p) => Services.sfx.sounds.bean_nade_throw_sounds.PlayRandomAt(transform.position);
 
 		private void GunAttackAkGlockOnEmpty() => Services.sfx.sounds.ak47_empty_shoot_sounds.PlayRandomAt(transform.position);
 		private void KnifeAttackOnMiss() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
