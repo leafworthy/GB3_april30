@@ -183,18 +183,13 @@ namespace __SCRIPTS
 		private void ClearOldSpawnedPlayer(Player pausingPlayer)
 		{
 			Services.objectMaker.Unmake(pausingPlayer.SpawnedPlayerGO);
-			UnjoinPlayer(pausingPlayer);
-		}
-
-		public void UnjoinPlayer(Player pausingPlayer)
-		{
-			Services.playerManager.UnjoinPlayer(pausingPlayer);
+			pausingPlayer.Unalive();
 		}
 
 		public void UnspawnPlayer(Player unspawnPlayer)
 		{
 			if (unspawnPlayer == null) return;
-			ClearOldSpawnedPlayer(unspawnPlayer);
+			unspawnPlayer.Unalive();
 		}
 	}
 }

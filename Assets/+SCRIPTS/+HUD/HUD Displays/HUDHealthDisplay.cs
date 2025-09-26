@@ -35,13 +35,7 @@ namespace __SCRIPTS.HUD_Displays
 			UpdateDisplay(playerDefence.GetFraction());
 		}
 
-		private void Start()
-		{
-			playerDefence = player.SpawnedPlayerGO.GetComponentInChildren<Life>();
-			UpdateDisplay(playerDefence.GetFraction());
-		}
-
-		private void UpdateDisplay(float fraction)
+	private void UpdateDisplay(float fraction)
 		{
 			healthText.text = Mathf.Ceil(playerDefence.CurrentHealth).ToString();
 			MaxHealthText.text = "/" + Mathf.Ceil(playerDefence.MaxHealth).ToString();

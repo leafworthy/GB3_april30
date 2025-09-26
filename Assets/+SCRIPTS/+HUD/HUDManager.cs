@@ -72,29 +72,42 @@ namespace __SCRIPTS
 		private void LevelSceneOnStartLevel(GameLevel gameLevel)
 		{
 			isInGame = true;
-			CreateHUDForPlayers(playerManager.AllJoinedPlayers);
-
 			Vignette.SetActive(true);
-		}
-
-
-		private void CreateHUDForPlayers(List<Player> players)
-		{
-			foreach (var player in players)
-			{
-				SetHUDSlotPlayer(player);
-			}
 		}
 
 		private void SetHUDSlotPlayer(Player player, bool withMenu = false)
 		{
-			var slot = currentHUDSlots[player.input.playerIndex];
+
+			Debug.Log("here in set hud slot player for " + player.playerIndex);
+			if (player == null) return;
+			var slot = GetFirstOpenSlot();
+			if(slot == null)
+			{
+				Debug.Log("no open slots");
+				return;
+			}
 			slot.gameObject.SetActive(true);
 
 			if (withMenu)
 				slot.OpenCharacterSelectMenu(player);
 			else
 				slot.SetPlayer(player);
+		}
+
+		private HUDSlot GetFirstOpenSlot()
+		{
+			if (currentHUDSlots.Count == 0)
+			{
+				currentHUDSlots = GetComponentsInChildren<HUDSlot>(true).ToList();
+			}
+
+			foreach (var hudSlot in currentHUDSlots.Where(hudSlot => !hudSlot.IsActive))
+			{
+				return hudSlot;
+			}
+
+
+			return null;
 		}
 
 		private void DisableAllHUDSlots()

@@ -9,14 +9,25 @@ namespace __SCRIPTS
 		private Player currentPlayer;
 		public GameObject characterHUD;
 
+		public bool IsActive { get; private set; }
 
 		public void SetPlayer(Player player)
 		{
-			if (player == null)
+
+			if (IsActive)
 			{
-				characterHUD.gameObject.SetActive(false);
+				Debug.Log("[HUD]here in hudslot already active", this);
 				return;
 			}
+			if (player == null)
+			{
+				Debug.Log("[HUD]here in hudslot player null or active", this);
+				characterHUD.gameObject.SetActive(false);
+				charSelectMenu.StopSetupMenu();
+				return;
+			}
+
+			IsActive = true;
 			currentPlayer = player;
 
 			var playerStats = player.GetComponent<PlayerStats>();
@@ -33,7 +44,9 @@ namespace __SCRIPTS
 			}
 
 			charSelectMenu.gameObject.SetActive(false);
+			Debug.Log("[HUD] here in hudslot and sets player", this);
 			characterHUD.gameObject.SetActive(true);
+			Debug.Log("[HUD] gets here and registers to die event", this);
 			currentPlayer.OnPlayerDies += SetCharacterHudInvisible;
 		}
 
@@ -45,6 +58,7 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			charSelectMenu.OnCharacterChosen -= SetCharacterHudVisible;
+			IsActive = false;
 		}
 
 
@@ -58,13 +72,12 @@ namespace __SCRIPTS
 
 		}
 
-		private void SetCharacterHudInvisible(Player player)
+		private void SetCharacterHudInvisible(Player player, bool b)
 		{
-			if (currentPlayer == null) return;
-			if (currentPlayer != player) return;
+			Debug.Log("got here");
 			currentPlayer = null;
+			IsActive = false;
 			SetPlayer(null);
-			charSelectMenu.gameObject.SetActive(false);
 			characterHUD.gameObject.SetActive(false);
 
 		}
@@ -73,8 +86,11 @@ namespace __SCRIPTS
 		{
 			currentPlayer = player;
 			characterHUD.gameObject.SetActive(false);
-			charSelectMenu.gameObject.SetActive(true);
 			charSelectMenu.StartSetupMenu(player);
+			Debug.Log("[HUD] here happened");
+			IsActive = true;
 		}
+
+
 	}
 }

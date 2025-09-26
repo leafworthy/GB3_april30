@@ -92,10 +92,10 @@ namespace __SCRIPTS
 			joiningPlayer.OnPlayerDies += Player_PlayerDies;
 		}
 
-		private void Player_PlayerDies(Player deadPlayer)
+		private void Player_PlayerDies(Player deadPlayer, bool isRespawning)
 		{
 			PlayerDead(deadPlayer);
-
+			if (isRespawning) return;
 			if (AllJoinedPlayersAreDead())
 			{
 				Debug.Log("all players dead");

@@ -30,6 +30,8 @@ namespace __SCRIPTS
 		public event Action OnChargePress;
 		public event Action OnChargeStop;
 
+		private Vector2 targetPosition;
+
 		private BatAttack batAttack => _batAttack ??= GetComponent<BatAttack>();
 		private BatAttack _batAttack;
 
@@ -78,12 +80,16 @@ namespace __SCRIPTS
 
 		public override void SetPlayer(Player _player)
 		{
+			if (_player == null) return;
 			base.SetPlayer(_player);
 
 			if (life != null)
 			{
-				life.Player.Controller.InteractRightShoulder.OnPress += Player_ChargePress;
-				life.Player.Controller.InteractRightShoulder.OnRelease += Player_ChargeRelease;
+				player.Controller.InteractRightShoulder.OnPress -= Player_ChargePress;
+				player.Controller.InteractRightShoulder.OnRelease -= Player_ChargeRelease;
+
+				player.Controller.InteractRightShoulder.OnPress += Player_ChargePress;
+				player.Controller.InteractRightShoulder.OnRelease += Player_ChargeRelease;
 			}
 
 			ammoInventory.tertiaryAmmo.reserveAmmo = 0;
@@ -95,8 +101,8 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			if (life != null) return;
-			life.Player.Controller.InteractRightShoulder.OnPress -= Player_ChargePress;
-			life.Player.Controller.InteractRightShoulder.OnRelease -= Player_ChargeRelease;
+			player.Controller.InteractRightShoulder.OnPress -= Player_ChargePress;
+			player.Controller.InteractRightShoulder.OnRelease -= Player_ChargeRelease;
 		}
 
 		private void FixedUpdate()
@@ -121,7 +127,6 @@ namespace __SCRIPTS
 				ammoInventory.secondaryAmmo.AddAmmoToReserve(2);
 			else if (!isFullyCharged)
 				FullyCharged();
-
 		}
 
 		private void InstantiateArrowHead()
@@ -135,17 +140,28 @@ namespace __SCRIPTS
 			currentArrowHead.SetActive(true);
 			if (!player.Controller.AimAxis.isActive && !player.Controller.MoveAxis.isActive)
 			{
-				var whichDir = body.TopIsFacingRight;
-				currentArrowHead.transform.position =
-					whichDir ? (Vector2) transform.position + Vector2.right * 30 : (Vector2) transform.position + Vector2.left * 30;
+				if (targetPosition == Vector2.zero)
+				{
+					var _targetPosition = (Vector2)transform.position + (body.TopIsFacingRight ? Vector2.right * 30 : Vector2.left * 30);
+					SetTargetPosition(_targetPosition);
+				}
+				else
+				{
+					SetTargetPosition(targetPosition);
+				}
 			}
 			else
 			{
-				var endPoint = !player.Controller.AimAxis.isActive ? moveAbility.GetMoveAimPoint() : aimAbility.GetAimPoint();
-				currentArrowHead.transform.position = endPoint;
-
-				body.BottomFaceDirection(moveAbility.GetMoveAimDir().x > 0);
+				var _targetPosition = !player.Controller.AimAxis.isActive ? moveAbility.GetMoveAimPoint() : aimAbility.GetAimPoint();
+				SetTargetPosition(_targetPosition);
 			}
+		}
+
+		private void SetTargetPosition(Vector2 _targetPosition)
+		{
+			targetPosition = _targetPosition;
+			currentArrowHead.transform.position = (Vector2) targetPosition;
+			body.BottomFaceDirection(targetPosition.x > 0);
 		}
 
 		private void HideAiming() => currentArrowHead.SetActive(false);
@@ -161,7 +177,7 @@ namespace __SCRIPTS
 		{
 			isPressingCharge = false;
 			if (Services.pauseManager.IsPaused) return;
-			if(currentState == state.not) return;
+			if (currentState == state.not) return;
 			if (!jumpAbility.IsResting) return;
 			if (life.IsDead()) return;
 			SetState(state.attacking);
@@ -194,7 +210,7 @@ namespace __SCRIPTS
 			anim.SetBool(UnitAnimations.IsCharging, false);
 			PlayAnimationClip(chargeAttackAnimationClip);
 			Invoke(nameof(Anim_AttackHit), chargeAttackAnimationClip.length / 2);
-			if(player.Controller.MoveAxis.isActive) moveAbility.Push(moveAbility.GetMoveAimDir(), SpecialAttackExtraPush);
+			if (player.Controller.MoveAxis.isActive) moveAbility.Push(moveAbility.GetMoveAimDir(), SpecialAttackExtraPush);
 			else if (player.Controller.AimAxis.isActive) moveAbility.Push(aimAbility.AimDir, SpecialAttackExtraPush);
 			else
 			{
@@ -203,7 +219,6 @@ namespace __SCRIPTS
 					faceRight ? (Vector2) transform.position + Vector2.right * 30 : (Vector2) transform.position + Vector2.left * 30;
 				moveAbility.Push(faceRight ? Vector2.right : Vector2.left, SpecialAttackExtraPush);
 			}
-
 		}
 
 		protected override void AnimationComplete()
@@ -259,9 +274,7 @@ namespace __SCRIPTS
 
 			SpecialAttackDistance = Vector2.Distance(attackPosition, bestTargetPoint);
 
-
-			var raycastHits = Physics2D.CircleCastAll(attackPosition, SpecialAttackWidth, moveAbility.GetMoveAimDir(), SpecialAttackDistance,
-				life.EnemyLayer);
+			var raycastHits = Physics2D.CircleCastAll(attackPosition, SpecialAttackWidth, moveAbility.GetMoveAimDir(), SpecialAttackDistance, life.EnemyLayer);
 			OnSpecialAttackHit?.Invoke();
 
 			foreach (var raycastHit2D in raycastHits)
@@ -270,8 +283,8 @@ namespace __SCRIPTS
 				AttackUtilities.HitTarget(life, otherLife, life.SecondaryAttackDamageWithExtra);
 			}
 
-			var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position + moveAbility.GetMoveAimDir() * SpecialAttackDistance,
-				GetHitRange(), life.EnemyLayer);
+			var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position + moveAbility.GetMoveAimDir() * SpecialAttackDistance, GetHitRange(),
+				life.EnemyLayer);
 
 			foreach (var hit2D in circleCast)
 			{
@@ -285,7 +298,8 @@ namespace __SCRIPTS
 			OnAttackHit?.Invoke();
 		}
 
-		private Vector2 GetBestTargetPoint(Vector3 attackPosition) => moveAbility.IsIdle() ? aimAbility.GetAimPoint() : (Vector2) attackPosition + moveAbility.GetLastMoveAimDirOffset();
+		private Vector2 GetBestTargetPoint(Vector3 attackPosition) =>
+			moveAbility.IsIdle() ? aimAbility.GetAimPoint() : (Vector2) attackPosition + moveAbility.GetLastMoveAimDirOffset();
 
 		private float GetHitRange() => life.PrimaryAttackRange;
 	}

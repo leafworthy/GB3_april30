@@ -91,7 +91,7 @@ namespace __SCRIPTS
 
 		private void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction) => MoveInDirection(direction);
 
-		private void Life_DeathComplete(Player obj)
+		private void Life_DeathComplete(Player obj, bool b)
 		{
 			pushVelocity = Vector2.zero;
 			moveVelocity = Vector2.zero;

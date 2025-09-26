@@ -41,7 +41,7 @@ namespace __SCRIPTS
 		private void Update()
 		{
 			if (Services.pauseManager.IsPaused) return;
-			if(life != null && life.IsDead()) return;
+			if(life.IsDead()) return;
 			Aim();
 		}
 

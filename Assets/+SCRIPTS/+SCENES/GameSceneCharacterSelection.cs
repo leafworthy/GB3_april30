@@ -25,9 +25,22 @@ namespace __SCRIPTS
 		{
 			CleanUp();
 			Services.playerManager.OnPlayerJoins += PlayerStartsSelecting;
-			foreach (var player in Services.playerManager.AllJoinedPlayers) PlayerStartsSelecting(player);
-			foreach (var button in Buttons) button.SetPlayerColors();
+			foreach (var player in Services.playerManager.AllJoinedPlayers)
+			{
+				PlayerStartsSelectingWithoutSFX(player);
+			}
+
+			foreach (var button in Buttons)
+			{
+				button.SetPlayerColors();
+			}
+
 			isActive = true;
+		}
+
+		private void PlayerStartsSelectingWithoutSFX(Player player)
+		{
+			StartSelecting(player);
 		}
 
 		private void OnDisable()
@@ -37,7 +50,11 @@ namespace __SCRIPTS
 
 		private void CleanUp()
 		{
-			foreach (var button in Buttons) button.CleanUp();
+			foreach (var button in Buttons)
+			{
+				button.CleanUp();
+			}
+
 			HideGoGoGo();
 			playersAllChosen = false;
 			playersBeingListenedTo.Clear();
@@ -45,13 +62,19 @@ namespace __SCRIPTS
 
 		private void PlayerStartsSelecting(Player player)
 		{
-			if (playersBeingListenedTo.Contains(player)) return;
+			if (StartSelecting(player)) return;
+			OnPlayerStartsSelecting?.Invoke();
+		}
+
+		private bool StartSelecting(Player player)
+		{
+			if (playersBeingListenedTo.Contains(player)) return true;
 			player.SetState(Player.State.SelectingCharacter);
 			player.CurrentButton = Buttons[0];
 			player.CurrentButton.HighlightButton(player);
-			OnPlayerStartsSelecting?.Invoke();
 			ListenToPlayer(player);
 			HideGoGoGo();
+			return false;
 		}
 
 		private void PlayerUnjoins(Player player)
@@ -72,10 +95,7 @@ namespace __SCRIPTS
 			var player = obj.owner;
 			player.Controller.Select.OnPress -= OnUnjoinedPlayerPressSelect;
 
-			if (!Services.playerManager.AllJoinedPlayers.Contains(player))
-			{
-				Services.playerManager.AllJoinedPlayers.Add(player);
-			}
+			if (!Services.playerManager.AllJoinedPlayers.Contains(player)) Services.playerManager.AllJoinedPlayers.Add(player);
 
 			PlayerStartsSelecting(player);
 		}
@@ -101,7 +121,10 @@ namespace __SCRIPTS
 		private void StopListeningToPlayers()
 		{
 			var tempList = playersBeingListenedTo.ToList();
-			foreach (var player in tempList) StopListeningToPlayer(player);
+			foreach (var player in tempList)
+			{
+				StopListeningToPlayer(player);
+			}
 
 			playersBeingListenedTo.Clear();
 		}
@@ -166,14 +189,10 @@ namespace __SCRIPTS
 			}
 		}
 
-
 		private void TryToStartGame(Player player)
 		{
 			CheckIfPlayersAllSelected();
-			if (!playersAllChosen)
-			{
-				return;
-			}
+			if (!playersAllChosen) return;
 			OnTryToStartGame?.Invoke(); //SFX
 			titlePressStart.gameObject.SetActive(false);
 			StopListeningToPlayers();
@@ -185,7 +204,10 @@ namespace __SCRIPTS
 
 		private void ClearAllPlayerButtons()
 		{
-			foreach (var player in Services.playerManager.AllJoinedPlayers) player.CurrentButton = null;
+			foreach (var player in Services.playerManager.AllJoinedPlayers)
+			{
+				player.CurrentButton = null;
+			}
 		}
 
 		private void PlayerPressCancel(NewControlButton newControlButton)
@@ -236,14 +258,12 @@ namespace __SCRIPTS
 		{
 			titlePressStart.Set(1);
 			playersAllChosen = true;
-
 		}
 
 		private void HideGoGoGo()
 		{
 			playersAllChosen = false;
 			titlePressStart.Set(0);
-
 		}
 	}
 }

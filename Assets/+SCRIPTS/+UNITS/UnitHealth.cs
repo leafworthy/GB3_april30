@@ -59,12 +59,7 @@ namespace __SCRIPTS
 		}
 
 
-		public void KillInstantly()
-		{
-			if (!isInvincible) return;
-			currentHealth = 0;
-			StartDeath(new Attack(null, null, 0));
-		}
+
 
 		private void StartDeath(Attack killingAttack)
 		{

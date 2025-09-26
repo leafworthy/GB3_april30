@@ -23,6 +23,24 @@ public class UnitStatsDatabase : ScriptableObject
 	// Internal coroutine runner - singleton pattern
 	private static CoroutineRunner coroutineRunner;
 
+
+
+	// Overloaded method - backwards compatible
+	public void LoadFromGoogleSheets(MonoBehaviour _coroutineRunner = null)
+	{
+		if (string.IsNullOrEmpty(googleSheetsConfig.documentId))
+		{
+			OnDataLoaded?.Invoke(false);
+			return;
+		}
+
+		if (_coroutineRunner != null)
+			_coroutineRunner.StartCoroutine(LoadDataCoroutine());
+		else
+			RunAndCleanup(LoadDataCoroutine());
+
+	}
+
 	private static CoroutineRunner GetCoroutineRunner()
 	{
 		if (coroutineRunner == null)
@@ -34,20 +52,25 @@ public class UnitStatsDatabase : ScriptableObject
 		return coroutineRunner;
 	}
 
-	// Overloaded method - backwards compatible
-	public void LoadFromGoogleSheets(MonoBehaviour coroutineRunner = null)
+	/// <summary>
+	/// Helper to run a coroutine and then auto-destroy the runner when done.
+	/// </summary>
+	private static void RunAndCleanup(IEnumerator routine)
 	{
-		if (string.IsNullOrEmpty(googleSheetsConfig.documentId))
-		{
-			OnDataLoaded?.Invoke(false);
-			return;
-		}
+		var runner = GetCoroutineRunner();
+		runner.StartCoroutine(RunWithCleanup(routine));
+	}
 
-		// Use provided runner or create our own
+	private static IEnumerator RunWithCleanup(IEnumerator routine)
+	{
+		yield return routine;
+
 		if (coroutineRunner != null)
-			coroutineRunner.StartCoroutine(LoadDataCoroutine());
-		else
-			GetCoroutineRunner().StartCoroutine(LoadDataCoroutine());
+		{
+			Debug.Log("huh");
+			DestroyImmediate(coroutineRunner.gameObject);
+			coroutineRunner = null;
+		}
 	}
 
 [Button]

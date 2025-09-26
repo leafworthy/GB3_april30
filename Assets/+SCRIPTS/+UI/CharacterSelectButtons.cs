@@ -10,7 +10,6 @@ namespace __SCRIPTS
 
 		private CharacterSelectButton currentlySelectedButton;
 		private bool hasSelected;
-		private bool hasJoined;
 
 		[SerializeField] private CharacterSelectButton[] buttons;
 		private Player _player;
@@ -33,7 +32,6 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			hasSelected = false;
-			hasJoined = false;
 			if(_player == null) return;
 			_player.Controller.UIAxis.OnLeft -= OnLeft;
 			_player.Controller.UIAxis.OnRight -= OnRight;
@@ -72,13 +70,6 @@ namespace __SCRIPTS
 			SelectCharacter();
 		}
 
-		private bool SelectButtonIsPressedFromJoining()
-		{
-			if (hasJoined) return false;
-			hasJoined = true;
-			return true;
-
-		}
 
 		private void SelectCharacter()
 		{
@@ -97,7 +88,6 @@ namespace __SCRIPTS
 		{
 			if (hasSelected) return;
 			Services.sfx.sounds.charSelect_move_sounds.PlayRandom();
-			hasJoined = true;
 			currentlySelectedButton.Unhighlight();
 			currentlySelectedButton = currentlySelectedButton.buttonToRight;
 			currentlySelectedButton.Highlight();
@@ -106,11 +96,22 @@ namespace __SCRIPTS
 		private void OnLeft(NewInputAxis obj)
 		{
 			if (hasSelected) return;
-			hasJoined = true;
 			Services.sfx.sounds.charSelect_move_sounds.PlayRandom();
 			currentlySelectedButton.Unhighlight();
 			currentlySelectedButton = currentlySelectedButton.buttonToLeft;
 			currentlySelectedButton.Highlight();
+		}
+
+		public void CleanUp()
+		{
+			hasSelected = false;
+			DeselectAllButtons();
+			currentlySelectedButton = DefaultButton;
+			if (_player == null) return;
+			_player.Controller.UIAxis.OnLeft -= OnLeft;
+			_player.Controller.UIAxis.OnRight -= OnRight;
+			_player.Controller.Select.OnPress -= OnSelect;
+			_player.Controller.Cancel.OnPress -= OnCancel;
 		}
 	}
 }

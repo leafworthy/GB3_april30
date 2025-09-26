@@ -5,10 +5,8 @@ namespace __SCRIPTS
 {
 	public class PlayerSetupMenu : MonoBehaviour
 	{
-		[SerializeField] private GameObject readyPanel;
 		[SerializeField] private GameObject menuPanel;
 		public GameObject Visible;
-		[SerializeField] private GameObject readyText;
 
 		public CharacterSelectButtons buttons;
 
@@ -26,10 +24,19 @@ namespace __SCRIPTS
 			owner = player;
 
 			Visible.SetActive(true);
-			readyText.SetActive(false);
 			ignoreInputTime = Time.time + ignoreInputTime;
 			buttons.OnCharacterChosen += Buttons_OnCharacterChosen;
 			buttons.Init(player);
+		}
+
+		public void StopSetupMenu()
+		{
+			Visible.SetActive(false);
+			buttons.OnCharacterChosen -= Buttons_OnCharacterChosen;
+			buttons.CleanUp();
+			owner = null;
+			inputEnabled = false;
+			menuPanel.SetActive(false);
 		}
 
 		private void Buttons_OnCharacterChosen(Character character)
@@ -37,8 +44,6 @@ namespace __SCRIPTS
 			if (!inputEnabled) return;
 			owner.CurrentCharacter = character;
 
-			readyText.SetActive(true);
-			readyPanel.SetActive(true);
 			menuPanel.SetActive(false);
 			var levelManager = ServiceLocator.Get<LevelManager>();
 			levelManager.SpawnPlayerFromInGame(owner);
@@ -52,5 +57,7 @@ namespace __SCRIPTS
 		{
 			if (Time.time > ignoreInputTime) inputEnabled = true;
 		}
+
+
 	}
 }

@@ -37,8 +37,9 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
-			player.Controller.Attack1RightTrigger.OnPress += Player_AttackPress;
-			player.Controller.Attack3Circle.OnPress += Player_AttackPress;
+			player.Controller.Attack1RightTrigger.OnPress -= Player_AttackPress;
+			player.Controller.Attack3Circle.OnPress -= Player_AttackPress;
+
 			player.Controller.Attack1RightTrigger.OnRelease += Player_AttackRelease;
 			player.Controller.Attack3Circle.OnRelease += Player_AttackRelease;
 		}

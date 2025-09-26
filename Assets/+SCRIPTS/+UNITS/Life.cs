@@ -4,14 +4,12 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-
 	public class Life : MonoBehaviour, INeedPlayer
 	{
 		public Player Player => player;
 		[SerializeField] private Player player;
 		[SerializeField] private UnitStats unitStats;
 		[SerializeField] private UnitHealth unitHealth;
-
 
 		private UnitAnimations animations => _animations ??= GetComponent<UnitAnimations>();
 		private UnitAnimations _animations;
@@ -48,18 +46,15 @@ namespace __SCRIPTS
 
 		#endregion
 
-
 		public bool IsHuman => Player != null && Player.IsHuman();
 		public LayerMask EnemyLayer => IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
 		public bool CanTakeDamage => !unitHealth.IsDead && !unitHealth.IsTemporarilyInvincible && !unitStats.Data.isInvincible;
-
-
 
 		public event Action<Attack> OnAttackHit;
 		public event Action<float> OnFractionChanged;
 		public event Action<Attack> OnDying;
 		public event Action<Player, Life> OnKilled;
-		public event Action<Player> OnDeathComplete;
+		public event Action<Player, bool> OnDeathComplete;
 		public event Action<Attack> OnShielded;
 		public event Action<Attack> OnFlying;
 		private Collider2D[] colliders;
@@ -70,6 +65,7 @@ namespace __SCRIPTS
 		{
 			unitStats = null;
 		}
+
 		[Sirenix.OdinInspector.Button]
 		public void GetStats()
 		{
@@ -120,16 +116,12 @@ namespace __SCRIPTS
 			unitHealth.OnDead -= Health_OnDead;
 			unitHealth.OnAttackHit -= Health_AttackHit;
 			unitHealth.OnFlying -= Health_OnFlying;
-
 		}
-
-
 
 		public void SetPlayer(Player newPlayer)
 		{
 			player = newPlayer;
 			Init();
-
 
 			SetupAnimationEvents();
 			foreach (var component in GetComponentsInChildren<INeedPlayer>())
@@ -139,39 +131,30 @@ namespace __SCRIPTS
 			}
 		}
 
-
-
 		private void SetInvincible(bool inOn)
 		{
 			unitHealth.SetTemporaryInvincible(inOn);
 		}
 
-		private void CompleteDeath()
+		public void CompleteDeath()
 		{
-			OnDeathComplete?.Invoke(Player);
+			Debug.Log("complete death", this);
+			OnDeathComplete?.Invoke(Player, true);
 			Services.objectMaker.Unmake(gameObject);
 		}
-
 
 		private void Health_AttackHit(Attack attack)
 		{
 			OnAttackHit?.Invoke(attack);
 		}
 
-
-
 		public bool IsEnemyOf(Life other) => IsHuman != other.IsHuman;
-
-
 
 		private void Health_OnDead(Attack attack)
 		{
 			EnableColliders(false);
 			OnDying?.Invoke(attack);
-			if (attack.OriginLife.player != null)
-			{
-				OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
-			}
+			if (attack.OriginLife.player != null) OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
 			gameObject.layer = LayerMask.NameToLayer("Dead");
 			animations?.SetTrigger(UnitAnimations.DeathTrigger);
 			animations?.SetBool(UnitAnimations.IsDead, true);
@@ -211,7 +194,14 @@ namespace __SCRIPTS
 			OnFractionChanged?.Invoke(GetFraction());
 		}
 
-		public void DieNow() => unitHealth.KillInstantly();
+		public void DieNow()
+		{
+			Debug.Log("die now");
+			var killingBlow = AttackBuilder.Create().WithDamage(9999).FromLife(this).ToLife(this).Build();
+			unitHealth.TakeDamage(killingBlow);
+			 CompleteDeath();
+		}
+
 		public float GetFraction() => unitHealth.GetFraction();
 
 		public void SetShielding(bool isOn)

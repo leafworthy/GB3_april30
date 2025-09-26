@@ -4,101 +4,94 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-    public class OffScreenPointer : MonoBehaviour, INeedPlayer
-    {
-        public Transform target;
-        public RectTransform pointer;
-        public Camera cam;
-        public float edgeOffset = 30f;
-        public CanvasGroup pointerCanvasGroup;
-        private Player player;
+	public class OffScreenPointer : MonoBehaviour, INeedPlayer
+	{
+		public Transform target;
+		public RectTransform pointer;
+		public Camera cam;
+		public float edgeOffset = 30f;
+		public CanvasGroup pointerCanvasGroup;
+		private Player player;
+		private float marginPercent = .2f;
 
-        void Update()
-        {
-            if (cam == null) cam = CursorManager.GetCamera();
-            if (target == null)
-            {
-                var interaction = FindFirstObjectByType<ShoppeInteraction>();
-                if (interaction != null) target = interaction.transform;
-            }
-            if (target == null || pointer == null || cam == null) return;
+		private void Update()
+		{
+			if (cam == null) cam = CursorManager.GetCamera();
+			if (target == null)
+			{
+				var interaction = FindFirstObjectByType<ShoppeInteraction>();
+				if (interaction != null) target = interaction.transform;
+			}
 
-            // Check if target is off screen
-            Vector3 viewportPos = cam.WorldToViewportPoint(target.position);
-            bool isOffScreen = viewportPos.x < 0 || viewportPos.x > 1 ||
-                               viewportPos.y < 0 || viewportPos.y > 1 ||
-                               viewportPos.z < 0;
+			if (target == null || pointer == null || cam == null) return;
 
-            // Show/hide pointer
-            pointerCanvasGroup.alpha = isOffScreen ? 1 : 0;
-            if (!isOffScreen) return;
+			var viewportPos = cam.WorldToViewportPoint(target.position);
+			float leftMargin = marginPercent;
+			var rightMargin = 1f - marginPercent;
+			float bottomMargin = marginPercent;
+			var topMargin = 1f - marginPercent;
 
-            // Handle behind-camera case by inverting direction
-            if (viewportPos.z < 0)
-            {
-                viewportPos.x = -viewportPos.x;
-                viewportPos.y = -viewportPos.y;
-            }
+			var isOffScreen = viewportPos.x < leftMargin || viewportPos.x > rightMargin || viewportPos.y < bottomMargin || viewportPos.y > topMargin;
 
-            // Calculate screen bounds in canvas space
-            RectTransform canvasRect = (RectTransform)pointer.parent;
-            float canvasWidth = canvasRect.rect.width;
-            float canvasHeight = canvasRect.rect.height;
+			// Show/hide pointer
+			pointerCanvasGroup.alpha = isOffScreen ? 1 : 0;
+			if (!isOffScreen) return;
 
-            // Get direction from screen center to target
-            Vector2 screenCenter = new Vector2(canvasWidth/2, canvasHeight/2);
-            Vector2 targetPosOnCanvas = new Vector2(
-                (viewportPos.x * canvasWidth),
-                (viewportPos.y * canvasHeight)
-            );
+			// Calculate screen bounds in canvas space
+			var canvasRect = (RectTransform) pointer.parent;
+			var canvasWidth = canvasRect.rect.width;
+			var canvasHeight = canvasRect.rect.height;
 
-            Vector2 direction = (targetPosOnCanvas - screenCenter).normalized;
+			// Get direction from screen center to target
+			var screenCenter = new Vector2(canvasWidth / 2, canvasHeight / 2);
+			var targetPosOnCanvas = new Vector2(viewportPos.x * canvasWidth, viewportPos.y * canvasHeight);
 
-            // Calculate intersection with screen rectangle
-            float halfWidth = (canvasWidth/2) + edgeOffset;
-            float halfHeight = (canvasHeight/2) + edgeOffset;
+			var direction = (targetPosOnCanvas - screenCenter).normalized;
 
-            // Find where ray intersects rectangle borders
-            float absX = Mathf.Abs(direction.x);
-            float absY = Mathf.Abs(direction.y);
+			// Calculate intersection with screen rectangle
+			var halfWidth = canvasWidth / 2 + edgeOffset;
+			var halfHeight = canvasHeight / 2 + edgeOffset;
 
-            float scaleX = halfWidth / (absX > 0.0001f ? absX : 0.0001f);
-            float scaleY = halfHeight / (absY > 0.0001f ? absY : 0.0001f);
+			// Find where ray intersects rectangle borders
+			var absX = Mathf.Abs(direction.x);
+			var absY = Mathf.Abs(direction.y);
 
-            // Take the smaller scale to ensure we hit the closest edge
-            float scale = Mathf.Min(scaleX, scaleY);
+			var scaleX = halfWidth / (absX > 0.0001f ? absX : 0.0001f);
+			var scaleY = halfHeight / (absY > 0.0001f ? absY : 0.0001f);
 
-            // Calculate position on screen edge
-            Vector2 edgePosition = screenCenter + direction * scale;
+			// Take the smaller scale to ensure we hit the closest edge
+			var scale = Mathf.Min(scaleX, scaleY);
 
-            // Set arrow position
-            pointer.position = edgePosition;
+			// Calculate position on screen edge
+			var edgePosition = screenCenter + direction * scale;
 
-            // Set arrow rotation
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
-            pointer.localRotation = Quaternion.Euler(0, 0, angle);
-        }
+			// Set arrow position
+			pointer.position = edgePosition;
 
-        public void SetPlayer(Player _player)
-        {
-	         player = _player;
-	         player.OnPlayerDies += Player_OnPlayerDies;
+			// Set arrow rotation
+			var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+			pointer.localRotation = Quaternion.Euler(0, 0, angle);
+		}
 
-        }
+		public void SetPlayer(Player _player)
+		{
+			player = _player;
+			player.OnPlayerDies += Player_OnPlayerDies;
+		}
 
-        private void Player_OnPlayerDies(Player obj)
-        {
-	        enabled = false;
+		private void Player_OnPlayerDies(Player obj, bool b)
+		{
+			enabled = false;
 
-	        pointer?.gameObject.SetActive(false);
+			pointer?.gameObject.SetActive(false);
 
-	        player.OnPlayerDies -= Player_OnPlayerDies;
-        }
+			player.OnPlayerDies -= Player_OnPlayerDies;
+		}
 
-        private void OnDestroy()
-        {
-	        if (player != null)
-		        player.OnPlayerDies -= Player_OnPlayerDies;
-        }
-    }
+		private void OnDestroy()
+		{
+			if (player != null)
+				player.OnPlayerDies -= Player_OnPlayerDies;
+		}
+	}
 }

@@ -99,6 +99,7 @@ namespace __SCRIPTS
 				 case MenuButton.ButtonType.Respawn:
 					var keepPlayer = pausingPlayer;
 					 Unpause();
+					 Services.levelManager.UnspawnPlayer(keepPlayer);
 					 Services.levelManager.RespawnPlayer(keepPlayer);
 					 break;
 				case MenuButton.ButtonType.Unspawn:

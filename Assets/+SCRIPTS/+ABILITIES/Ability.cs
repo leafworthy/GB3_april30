@@ -7,11 +7,11 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 {
 	protected Player player;
 	private UnitAnimations _anim;
-	protected UnitAnimations anim => _anim ?? GetComponent<UnitAnimations>();
+	protected UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
 	private Body _body;
-	protected Body body => _body ?? GetComponent<Body>();
+	protected Body body => _body ??= GetComponent<Body>();
 	private Life _life;
-	protected Life life => _life ?? GetComponent<Life>();
+	protected Life life => _life ??= GetComponent<Life>();
 	protected IDoableAbility lastLegAbility;
 	protected IDoableAbility lastArmAbility;
 	public abstract string AbilityName { get; }
@@ -28,13 +28,11 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public void Do()
 	{
-
-			if (!canDo())
-			{
-				Debug.Log("cant do ability: "  + AbilityName,this);
-				return;
-			}
-
+		if (!canDo())
+		{
+			Debug.Log("cant do ability: " + AbilityName, this);
+			return;
+		}
 
 		lastLegAbility = body.doableLegs.CurrentAbility;
 		Debug.Log("lastlegAbility set to: " + (lastLegAbility != null ? lastLegAbility.AbilityName : "null"), this);

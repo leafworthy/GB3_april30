@@ -40,7 +40,7 @@ namespace __SCRIPTS
 		public int playerIndex;
 		public bool hasKey;
 
-		public event Action<Player> OnPlayerDies;
+		public event Action<Player, bool> OnPlayerDies;
 		public event Action<Player> OnPlayerLeavesUpgradeSetupMenu;
 
 		private PlayerUpgrades playerUpgrades;
@@ -62,10 +62,11 @@ namespace __SCRIPTS
 			gameObject.transform.SetParent(GameManager.I.gameObject.transform);
 		}
 
-		public void OnPlayerDied(Player player)
+		public void OnPlayerDied(Player player, bool isRespawning)
 		{
+			Debug.Log("player died",this);
 			SetState(State.Dead);
-			OnPlayerDies?.Invoke(this);
+			OnPlayerDies?.Invoke(this, isRespawning);
 			Services.playerStatsManager.SetStatAmount(this, PlayerStat.StatType.TimeSurvived, Services.levelManager.GetCurrentLevelTimeElapsed());
 		}
 
@@ -91,6 +92,8 @@ namespace __SCRIPTS
 			SpawnedPlayerGO = newGO;
 			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
 			if (spawnedPlayerDefence == null) return;
+
+			Debug.Log("setting player defence, registering ondeathcomplete",this);
 
 			spawnedPlayerDefence.OnDeathComplete += OnPlayerDied;
 			spawnedPlayerDefence.SetPlayer(this);
@@ -195,5 +198,15 @@ namespace __SCRIPTS
 		public bool IsMainPlayer() => isMainPlayer;
 
 		public LayerMask GetEnemyLayer() => IsHuman()?  Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
+
+		public void Unalive()
+		{
+			if (spawnedPlayerDefence == null)
+			{
+				Debug.Log("no spawned player defence to unalive",this);
+				return;
+			}
+			spawnedPlayerDefence.DieNow();
+		}
 	}
 }
