@@ -16,6 +16,9 @@ namespace __SCRIPTS
 		private LootTable _lootTable;
 		private LootTable lootTable => _lootTable??  ServiceLocator.Get<LootTable>();
 
+		private Life life =>_life ??= GetComponentInChildren<Life>();
+		private Life _life;
+
 		public enum LootContainerType
 		{
 			chest,
@@ -25,6 +28,7 @@ namespace __SCRIPTS
 		}
 		protected void Start()
 		{
+			life.OnDying += Life_OnDying;
 			hideRevealObjects = GetComponentInChildren<HideRevealObjects>();
 			hideRevealObjects.Set(0);
 			howMuchLoot =  Random.Range(1, howMuchLoot); // Randomly add 0-2 loot items to the container
@@ -33,6 +37,17 @@ namespace __SCRIPTS
 			OnPlayerExits += interactable_PlayerExits;
 		}
 
+		private void Life_OnDying(Attack obj)
+		{
+			FinishInteraction(null);
+			interactable_OnInteract(null);
+			var selector = obj?.OriginLife?.Player?.SpawnedPlayerGO?.GetComponent<InteractableSelector>();
+			selector?.RemoveInteractable(this);
+			OnActionPress -= interactable_OnInteract;
+			OnPlayerEnters -= interactable_PlayerEnters;
+			OnPlayerExits -= interactable_PlayerExits;
+			life.OnDying -= Life_OnDying;
+		}
 
 		protected override bool canInteract(Player player)
 		{

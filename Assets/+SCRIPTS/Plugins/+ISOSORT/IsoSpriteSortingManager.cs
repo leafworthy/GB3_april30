@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using UnityEngine;
 
 namespace __SCRIPTS.Plugins._ISOSORT
 {
-	[ExecuteInEditMode]
-	[Serializable]
+	[ExecuteAlways, Serializable]
 	public class IsoSpriteSortingManager : SerializedMonoBehaviour
 	{
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> fgSpriteList = new(1024);
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> floorSpriteList = new(1024);
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> staticSpriteList = new(1024);
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new(1024);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> fgSpriteList = new(1024);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> floorSpriteList = new(1024);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> staticSpriteList = new(1024);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new(1024);
 
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> moveableSpriteList = new(1024);
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new(1024);
-		[ShowInInspector]private static readonly List<IsoSpriteSorting> sortedSprites = new(1024);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> moveableSpriteList = new(1024);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new(1024);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> sortedSprites = new(1024);
 
 		public static void RegisterSprite(IsoSpriteSorting newSprite)
 		{
@@ -189,12 +187,12 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		private static void SetSortOrderBasedOnListOrder(List<IsoSpriteSorting> spriteList)
 		{
-			var orderCurrent = 420;
+			var orderCurrent = 420;//was 420
 			var count = spriteList.Count;
 			for (var i = 0; i < count; ++i)
 			{
 				spriteList[i].RendererSortingOrder = orderCurrent;
-				orderCurrent += 1 + spriteList[i].renderersToSort.Count;
+				orderCurrent += 10 + spriteList[i].renderersToSort.Count; // was 1 +
 			}
 		}
 
@@ -210,6 +208,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		private static void SetSortOrderTop(List<IsoSpriteSorting> spriteList)
 		{
+			Debug.LogWarning("rener above all");
 			var currentIndex = 10000;
 			for (var i = 0; i < spriteList.Count; ++i)
 			{

@@ -129,14 +129,16 @@ public static class AttackUtilities
 		}
 	}
 
-	private static void ExplosionFX(Vector3 explosionPosition)
+	public static void ExplosionFX(Vector3 explosionPosition, float scale = 1)
 	{
 		var assets = Services.assetManager;
 		var objectMaker = Services.objectMaker;
 		var sfx = Services.sfx;
 
-		objectMaker.Make(assets.FX.explosions.GetRandom(), explosionPosition);
-		objectMaker.Make(assets.FX.fires.GetRandom(), explosionPosition);
+		var obj = objectMaker.Make(assets.FX.explosions.GetRandom(), explosionPosition);
+		obj.transform.localScale = new Vector3(scale, scale, scale);
+		obj = objectMaker.Make(assets.FX.fires.GetRandom(), explosionPosition);
+		obj.transform.localScale = new Vector3(scale, scale, scale);
 		CameraShaker.ShakeCamera(explosionPosition, CameraShaker.ShakeIntensityType.high);
 		CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);
 		Debug.Log("explosion sound");

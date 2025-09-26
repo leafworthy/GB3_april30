@@ -298,9 +298,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7793050045941005233}
-  - component: {fileID: 4452630467684277988}
-  - component: {fileID: 5257497258729950390}
-  - component: {fileID: 2904438316488722577}
   m_Layer: 0
   m_Name: Fence - Wood
   m_TagString: Untagged
@@ -329,45 +326,6 @@ Transform:
   - {fileID: 8261954018458076442}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4452630467684277988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4685610276856213878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d92d042a2c2a48ebb9176d04bebe44b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SorterPointDepthModification: 14
---- !u!114 &5257497258729950390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4685610276856213878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34ec0dd55342476182347e7d8733d99d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sorterPosition: 0
---- !u!114 &2904438316488722577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4685610276856213878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5781eb60dc63d4cc3be42545c5fcf7f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lockChildren: 0
 --- !u!1 &5573440163460037136
 GameObject:
   m_ObjectHideFlags: 0

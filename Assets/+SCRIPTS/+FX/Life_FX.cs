@@ -152,6 +152,30 @@ namespace __SCRIPTS
 			}
 		}
 
+		public void ExplodeDebreeEverywhere(float explosionSize)
+		{
+			if (life.DebrisType == DebrisType.none) return;
+			var randAmount = Random.Range(5, 10);
+			for (var j = 0; j < randAmount; j++)
+			{
+				//----->
+				var forwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), transform.position);
+
+				forwardDebree.GetComponent<FallToFloor>().Explode(explosionSize);
+				Services.objectMaker.Unmake(forwardDebree, 3);
+
+				//<-----
+				var backwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), transform.position);
+				backwardDebree.GetComponent<FallToFloor>().Explode(explosionSize);
+				Services.objectMaker.Unmake(backwardDebree, 3);
+
+				var sprite = forwardDebree.GetComponentInChildren<SpriteRenderer>();
+				if (sprite != null) sprite.color = DebreeTint;
+				sprite = backwardDebree.GetComponentInChildren<SpriteRenderer>();
+				if (sprite != null) sprite.color = DebreeTint;
+			}
+		}
+
 		private void CreateDamageRisingText(Attack attack)
 		{
 			if (attack.DamageAmount <= 0) return;

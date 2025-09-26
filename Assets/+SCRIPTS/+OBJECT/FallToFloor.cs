@@ -70,5 +70,20 @@ namespace __SCRIPTS
 		{
 			JumpObject.transform.Rotate(new Vector3(0, 0, rotationSpeed * Time.fixedDeltaTime * 10));
 		}
+
+		public void Explode(float explosionSize)
+		{
+			RotationRate = Random.Range(0, rotationRate);
+			SimpleJumpAbility.OnBounce += SimpleJumpAbilityOnBounce;
+			SimpleJumpAbility.OnResting += SimpleJumpAbilityOnResting;
+			var verticalSpeed = Random.Range(0, explosionSize);
+			SimpleJumpAbility.Jump(0, verticalSpeed);
+			var randomDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+			moveAbility.SetDragging(false);
+			moveAbility.Push(randomDirection + new Vector2(Random.Range(-.4f* explosionSize, .4f * explosionSize), Random.Range(-.4f * explosionSize, .4f *
+					explosionSize)),
+				Random.Range(0, PushSpeed));
+
+		}
 	}
 }

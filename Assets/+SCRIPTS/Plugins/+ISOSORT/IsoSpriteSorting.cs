@@ -6,8 +6,7 @@ using UnityEngine;
 
 namespace __SCRIPTS.Plugins._ISOSORT
 {
-	//[ExecuteInEditMode]
-	[Serializable]
+	[ExecuteAlways, Serializable]
 	public class IsoSpriteSorting : SerializedMonoBehaviour
 	{
 		public bool isBelowZeroSortingOrder;
@@ -338,7 +337,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		public static int CompareIsoSortersBelow(IsoSpriteSorting sprite1, IsoSpriteSorting sprite2)
 		{
-			if (sprite1.renderBelowSortingOrder == sprite2.renderBelowSortingOrder) return 0;
+			if (sprite1.renderBelowSortingOrder == sprite2.renderBelowSortingOrder) return 1; //return 0
 			return sprite1.renderBelowSortingOrder > sprite2.renderBelowSortingOrder ? 1 : -1;
 		}
 
@@ -420,7 +419,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				{
 					if (renderersToSort[j] == null) continue;
 
-					renderersToSort[j].sortingOrder = value + j- (isBelowZeroSortingOrder? 1000:0);
+					renderersToSort[j].sortingOrder = value + j - (isBelowZeroSortingOrder ? 1000 : 0) + renderBelowSortingOrder;
 				}
 			}
 		}

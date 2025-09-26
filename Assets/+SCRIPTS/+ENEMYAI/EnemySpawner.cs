@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using __SCRIPTS;
+using __SCRIPTS.Cursor;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -24,11 +26,23 @@ public class EnemySpawner : MonoBehaviour
 	private float spawnTimer;
 	private float durationTimer;
 	private bool isSpawning;
+	private bool isFinished;
+	public bool IsFinished => isFinished;
+
+	protected virtual void OnTriggerEnter2D(Collider2D other)
+	{
+
+		var otherLife = other.GetComponent<Life>();
+		if(otherLife == null) return;
+		if(otherLife.IsDead()) return;
+		if (!otherLife.Player.IsHuman()) return;
+		StartSpawning();
+	}
 
 	private void Start()
 	{
 		// Get the main camera reference
-		mainCamera = Camera.main;
+		mainCamera = CursorManager.GetCamera();
 
 		if (mainCamera == null) Debug.LogError("No main camera found!");
 
@@ -61,13 +75,9 @@ public class EnemySpawner : MonoBehaviour
 	// Public method to start spawning
 	public void StartSpawning()
 	{
-		if (enemyPrefabs.Count == 0)
-		{
-			Debug.LogError("Cannot start spawning - no enemy prefabs assigned!");
-			return;
-		}
-
+		if(isSpawning) return;
 		isSpawning = true;
+		isFinished = false;
 		spawnTimer = 0f;
 		durationTimer = 0f;
 		Debug.Log("Enemy spawning started");
@@ -77,6 +87,7 @@ public class EnemySpawner : MonoBehaviour
 	public void StopSpawning()
 	{
 		isSpawning = false;
+		isFinished = true;
 		Debug.Log("Enemy spawning stopped");
 	}
 
