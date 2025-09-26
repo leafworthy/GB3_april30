@@ -168,7 +168,14 @@ namespace __SCRIPTS
 
 	public class UnlimitedGun : Gun
 	{
-		public override float AttackRate => life.UnlimitedAttackRate;
+		public override float AttackRate => GetAttackRate();
+
+		private float GetAttackRate()
+		{
+			Debug.Log("unlimited attack rate: " + life.UnlimitedAttackRate);
+			return life.UnlimitedAttackRate;
+		}
+
 		protected override float Damage => life.UnlimitedAttackDamageWithExtra;
 		protected override Ammo Ammo => ammoInventory.unlimitedAmmo;
 		protected override float AttackRange => life.UnlimitedAttackRange;

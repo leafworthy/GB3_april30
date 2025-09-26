@@ -36,7 +36,7 @@ namespace __SCRIPTS
 		protected override bool requiresLegs() => false;
 
 		public override bool canStop(IDoableAbility abilityToStopFor) => IsAiming;
-		public override bool canDo() => ammo.secondaryAmmo.hasReserveAmmo() && !jump.IsJumping && base.canDo();
+		public override bool canDo() => ammo.secondaryAmmo.hasReserveAmmo() && !jump.IsInAir && base.canDo();
 
 		protected override void DoAbility()
 		{
@@ -45,6 +45,7 @@ namespace __SCRIPTS
 
 		private void ShowAiming()
 		{
+			if (IsAiming) return;
 			IsAiming = true;
 			OnShowAiming?.Invoke();
 		}
@@ -95,17 +96,16 @@ namespace __SCRIPTS
 			if (IsAiming)
 			{
 				Aim();
-				OnShowAiming?.Invoke();
+				ShowAiming();
 			}
 			else
-				OnHideAiming?.Invoke();
+				HideAiming();
 		}
 
 		private void Player_NadePress(NewControlButton newControlButton)
 		{
 			if (!IsAiming && canDo()) ShowAiming();
 		}
-
 
 		private void Player_NadeRelease(NewControlButton newControlButton)
 		{
@@ -124,12 +124,15 @@ namespace __SCRIPTS
 
 		private void HideAiming()
 		{
+			if (!IsAiming) return;
 			IsAiming = false;
 			OnHideAiming?.Invoke();
 		}
 
 		private void Player_OnAim(IControlAxis controlAxis, Vector2 aimDir)
 		{
+			if (life.IsDead()) return;
+			if (Services.pauseManager.IsPaused) return;
 			if (!IsAiming) return;
 			Aim();
 		}
@@ -139,7 +142,13 @@ namespace __SCRIPTS
 			if (body == null) return;
 
 			startPoint = body.AimCenter.transform.position;
-			endPoint = !player.Controller.AimAxis.isActive ? move.GetMoveAimPoint() : aim.GetAimPoint();
+			if (!player.Controller.AimAxis.isActive && !player.Controller.MoveAxis.isActive)
+			{
+				var whichDir = body.TopIsFacingRight;
+				endPoint = whichDir ? (Vector2) transform.position + Vector2.right * 30 : (Vector2) transform.position + Vector2.left * 30;
+			}
+			else
+				endPoint = !player.Controller.AimAxis.isActive ? move.GetMoveAimPoint() : aim.GetAimPoint();
 
 			OnAimInDirection?.Invoke(startPoint, endPoint);
 		}

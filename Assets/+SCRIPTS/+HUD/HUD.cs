@@ -1,5 +1,6 @@
 using __SCRIPTS.HUD_Displays;
 using GangstaBean.Core;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -40,14 +41,33 @@ namespace __SCRIPTS
 
 		public HideRevealObjects CharIcon;
 
+		[Button]
+		public void SetButtons()
+		{
+			primaryAmmoDisplay.SetButton(WeaponButton.buttons.R2);
+			secondaryAmmoDisplay.SetButton(WeaponButton.buttons.L2);
+			tertiaryAmmoDisplay.SetButton(WeaponButton.buttons.Circle);
+		}
 		public void SetPlayer(Player _player)
 		{
 			gameObject.SetActive(true);
 
 			_currentAmmoInventory = _player.SpawnedPlayerGO.GetComponent<AmmoInventory>();
-			if (primaryAmmoDisplay != null) primaryAmmoDisplay.SetAmmo(_currentAmmoInventory.primaryAmmo);
-			if (secondaryAmmoDisplay != null) secondaryAmmoDisplay.SetAmmo(_currentAmmoInventory.secondaryAmmo);
-			if (tertiaryAmmoDisplay != null) tertiaryAmmoDisplay.SetAmmo(_currentAmmoInventory.tertiaryAmmo);
+			if (primaryAmmoDisplay != null)
+			{
+				primaryAmmoDisplay.SetAmmo(_currentAmmoInventory.primaryAmmo);
+				primaryAmmoDisplay.SetButton(WeaponButton.buttons.R2);
+			}
+			if (secondaryAmmoDisplay != null)
+			{
+				secondaryAmmoDisplay.SetAmmo(_currentAmmoInventory.secondaryAmmo);
+				secondaryAmmoDisplay.SetButton(WeaponButton.buttons.L2);
+			}
+			if (tertiaryAmmoDisplay != null)
+			{
+				tertiaryAmmoDisplay.SetAmmo(_currentAmmoInventory.tertiaryAmmo);
+				tertiaryAmmoDisplay.SetButton(WeaponButton.buttons.Circle);
+			}
 
 			var playerAmmo = _player.SpawnedPlayerGO.GetComponent<AmmoInventory>();
 

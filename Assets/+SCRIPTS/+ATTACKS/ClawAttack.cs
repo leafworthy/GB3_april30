@@ -98,8 +98,7 @@ namespace __SCRIPTS
 
 			if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= base.life.PrimaryAttackRange*1.25f)
 			{
-				//var hitPoint = AttackUtilities.RaycastToObject(currentTargetLife, life.EnemyLayer);
-				AttackUtilities.HitTarget(life, currentTargetLife, currentTargetLife.transform.position, life.PrimaryAttackDamageWithExtra);
+				AttackUtilities.HitTarget(life, currentTargetLife, life.PrimaryAttackDamageWithExtra);
 			}
 
 

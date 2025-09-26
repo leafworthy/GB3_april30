@@ -32,7 +32,7 @@ namespace __SCRIPTS
 		protected override bool requiresArms() => true;
 		protected override bool requiresLegs() => false;
 
-		public override bool canDo() => base.canDo() && !jumps.IsJumping;
+		public override bool canDo() => base.canDo() && !jumps.IsInAir;
 
 		public override void SetPlayer(Player _player)
 		{
@@ -69,14 +69,10 @@ namespace __SCRIPTS
 		private void RegularAttackHit(int attackType)
 		{
 			var hits = AttackUtilities.CircleCastForXClosestTargets(life, life.TertiaryAttackRange);
-			if (hits == null)
-			{
-				Debug.Log("no targets hit");
-				return;
-			}
+			if (hits == null) return;
 			foreach (var hit in hits)
 			{
-				AttackUtilities.HitTarget(life, hit, hit.transform.position, GetAttackDamage(attackType));
+				AttackUtilities.HitTarget(life, hit, GetAttackDamage(attackType));
 				OnHitTarget?.Invoke(hit.gameObject.transform.position);
 			}
 		}

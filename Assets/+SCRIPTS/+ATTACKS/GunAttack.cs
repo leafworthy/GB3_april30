@@ -25,6 +25,8 @@ namespace __SCRIPTS
 		public override bool canStop(IDoableAbility abilityToStopFor) => currentState == weaponState.idle || currentState == weaponState.resuming;
 		public bool IsUsingPrimaryGun => currentGun is PrimaryGun;
 		private bool isPressingShoot;
+		private JumpAbility jumpAbility  => _jumpAbility ??= GetComponent<JumpAbility>();
+		private JumpAbility _jumpAbility;
 
 		public event Action OnNeedsReload;
 
@@ -60,7 +62,7 @@ namespace __SCRIPTS
 
 		private void StartAttacking()
 		{
-			if (!isActive || currentState != weaponState.idle) return;
+			if (!isActive || currentState != weaponState.idle || !jumpAbility.IsResting) return;
 			SetState(weaponState.attacking);
 			CurrentGun.Shoot(AimDir);
 			PlayShootAnimation();
@@ -75,7 +77,7 @@ namespace __SCRIPTS
 
 				PlayAnimationClip(simpleShootAnimationClip.name, CurrentGun.AttackRate, 1);
 			else
-				PlayAnimationClip(currentGun.GetClipNameFromDegrees(), CurrentGun.AttackRate, .25f,1);
+				PlayAnimationClip(CurrentGun.GetClipNameFromDegrees(), CurrentGun.AttackRate, .25f,1);
 		}
 		private void TopFaceCorrectDirection()
 		{
@@ -139,6 +141,11 @@ namespace __SCRIPTS
 		}
 
 		private void OnDestroy()
+		{
+			StopListeningToEvents();
+		}
+
+		private void OnDisable()
 		{
 			StopListeningToEvents();
 		}

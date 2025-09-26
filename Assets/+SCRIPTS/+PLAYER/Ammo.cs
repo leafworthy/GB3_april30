@@ -19,10 +19,10 @@ namespace __SCRIPTS
 
 		public bool hasAmmoInClip() => AmmoInClip > 0;
 
-		public bool hasReserveAmmo(int min = 0)
+		public bool hasReserveAmmo(int min = 1)
 		{
 			if (unlimited) return true;
-			return reserveAmmo > min;
+			return reserveAmmo >= min;
 		}
 
 		public bool hasAmmoInReserveOrClip()

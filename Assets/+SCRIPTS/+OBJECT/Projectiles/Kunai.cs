@@ -12,17 +12,18 @@ namespace __SCRIPTS.Projectiles
 		private bool isActive;
 		private bool isAirThrow;
 
-		public void Throw(Vector3 throwDirection, Vector3 pos, float throwHeight, Life thrower)
+		public void Throw(Vector3 throwDirection, Vector3 pos, float throwHeight, Life thrower, bool _isAirThrow)
 		{
 			direction = throwDirection;
 			transform.position = pos;
 			height = throwHeight;
+			Debug.Log("throw height: " + height, this);
 			owner = thrower;
+			isAirThrow = _isAirThrow;
 			SetDistanceToGround(height);
 			RotateToDirection();
 			rotationRate = 0;
 			isActive = true;
-			Debug.Log("throw, direction: " + direction);
 		}
 
 		private void RotateToDirection()
@@ -37,20 +38,20 @@ namespace __SCRIPTS.Projectiles
 		{
 			if (!isActive)
 			{
+				Debug.Log("not active");
 				base.FixedUpdate();
 				return;
 			}
 
 			var nextPos = direction.normalized * speed * Time.fixedDeltaTime + (Vector2) transform.position;
+
 			var colliderLife = AttackUtilities.CheckForCollisions(nextPos, gameObject, owner.EnemyLayer);
 			if (colliderLife != null)
 			{
-				Debug.Log("[KUNAI] about to handle hit");
 				HandleHit(colliderLife);
 			}
 			else
 			{
-				Debug.Log("_______");
 				if (moveAbility != null)
 				{
 					moveAbility.MoveInDirection(direction.normalized, speed);
@@ -70,6 +71,7 @@ namespace __SCRIPTS.Projectiles
 
 		private void Land()
 		{
+			Debug.Log("land",this);
 			rotationRate = 300;
 			moveAbility.StopMoving();
 			isActive = false;
@@ -78,7 +80,7 @@ namespace __SCRIPTS.Projectiles
 
 		private void HandleHit(Life hitLife)
 		{
-			Debug.Log("[KUNAI] already hit something", hitLife);
+			Debug.Log("hit",this);
 			isActive = false;
 			if (hitLife == null) return;
 			var attack = new Attack(owner, hitLife, owner.PrimaryAttackDamageWithExtra);

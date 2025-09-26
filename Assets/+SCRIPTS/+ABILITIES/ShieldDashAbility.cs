@@ -39,13 +39,13 @@ public class ShieldDashAbility : DashAbility
 				shieldAbility.SetShielding(false);
 			}
 
-			CoreStop();
+			StopBody();
 			lastArmAbility?.Resume();
 		}
 		else
 		{
 			shieldAbility.SetShielding(false);
-			CoreStop();
+			StopBody();
 			lastArmAbility?.Do();
 		}
 	}

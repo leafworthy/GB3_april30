@@ -1,4 +1,3 @@
-using System;
 using __SCRIPTS;
 using GangstaBean.Core;
 using UnityEngine;
@@ -13,10 +12,7 @@ public class ShieldAbility : WeaponAbility
 	protected override bool requiresArms() => true;
 	protected override bool requiresLegs() => false;
 
-	public override bool canStop(IDoableAbility abilityToStopFor)  {
-		Debug.Log( "Can stop called on ShieldAbility, current state: " + currentState + ", abilityToStopFor: " + abilityToStopFor?.AbilityName);
-		return currentState == weaponState.idle || abilityToStopFor is ShieldDashAbility;
-	}
+	public override bool canStop(IDoableAbility abilityToStopFor) => currentState == weaponState.idle || abilityToStopFor is ShieldDashAbility;
 
 	protected override void PullOut()
 	{
@@ -24,16 +20,13 @@ public class ShieldAbility : WeaponAbility
 		SetShielding(true);
 	}
 
-
 	private void Update()
 	{
 		if (isActive) body.TopFaceDirection(aimAbility.AimDir.x >= 0);
 	}
 
-
 	public void SetShielding(bool isOn)
 	{
-		Debug.Log("Shielding set to " + isOn);
 		shieldObject.SetActive(isOn);
 		anim.SetBool(UnitAnimations.IsShielding, isOn);
 		life.SetShielding(isOn);
@@ -45,6 +38,4 @@ public class ShieldAbility : WeaponAbility
 		SetShielding(false);
 		base.Stop();
 	}
-
-
 }

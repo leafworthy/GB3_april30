@@ -1,4 +1,5 @@
 using System;
+using __SCRIPTS.Cursor;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -60,7 +61,7 @@ namespace __SCRIPTS
 		public void SpawnPlayerFromInGame(Player player)
 		{
 			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
-			player.Spawn(currentLevel.DefaultPlayerSpawnPoint.transform.position);
+			player.Spawn(CursorManager.GetCamera().transform.position);
 			OnLevelSpawnedPlayer?.Invoke(player);
 		}
 
@@ -170,6 +171,30 @@ namespace __SCRIPTS
 
 		public void StartWinningGame()
 		{
+		}
+
+		public void RespawnPlayer(Player pausingPlayer)
+		{
+			if (currentLevel == null) return;
+			ClearOldSpawnedPlayer(pausingPlayer);
+			SpawnPlayerFromInGame(pausingPlayer);
+		}
+
+		private void ClearOldSpawnedPlayer(Player pausingPlayer)
+		{
+			Services.objectMaker.Unmake(pausingPlayer.SpawnedPlayerGO);
+			UnjoinPlayer(pausingPlayer);
+		}
+
+		public void UnjoinPlayer(Player pausingPlayer)
+		{
+			Services.playerManager.UnjoinPlayer(pausingPlayer);
+		}
+
+		public void UnspawnPlayer(Player unspawnPlayer)
+		{
+			if (unspawnPlayer == null) return;
+			ClearOldSpawnedPlayer(unspawnPlayer);
 		}
 	}
 }

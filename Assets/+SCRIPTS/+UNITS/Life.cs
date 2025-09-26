@@ -61,6 +61,7 @@ namespace __SCRIPTS
 		public event Action<Player, Life> OnKilled;
 		public event Action<Player> OnDeathComplete;
 		public event Action<Attack> OnShielded;
+		public event Action<Attack> OnFlying;
 		private Collider2D[] colliders;
 		private bool hasInitialized;
 
@@ -87,10 +88,17 @@ namespace __SCRIPTS
 			hasInitialized = true;
 			unitStats = new UnitStats(gameObject.name);
 			unitHealth = new UnitHealth(unitStats);
-			unitHealth.OnDead += HealthOnDead;
+			unitHealth.OnDead += Health_OnDead;
+			unitHealth.OnFlying += Health_OnFlying;
 			unitHealth.OnAttackHit += Health_AttackHit;
 			FillHealth();
 			if (unitStats.Data.category != UnitCategory.Character) SetPlayer(Services.playerManager.enemyPlayer);
+		}
+
+		private void Health_OnFlying(Attack attack)
+		{
+			Debug.Log("on life flying");
+			OnFlying?.Invoke(attack);
 		}
 
 		private void FillHealth()
@@ -109,8 +117,10 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			if (unitHealth == null) return;
-			unitHealth.OnDead -= HealthOnDead;
+			unitHealth.OnDead -= Health_OnDead;
 			unitHealth.OnAttackHit -= Health_AttackHit;
+			unitHealth.OnFlying -= Health_OnFlying;
+
 		}
 
 
@@ -154,7 +164,7 @@ namespace __SCRIPTS
 
 
 
-		private void HealthOnDead(Attack attack)
+		private void Health_OnDead(Attack attack)
 		{
 			EnableColliders(false);
 			OnDying?.Invoke(attack);
@@ -226,7 +236,6 @@ namespace __SCRIPTS
 
 		public void SetEnemyTier(int tier)
 		{
-			Debug.Log("enemy tier set to " + tier + " for " + gameObject.name);
 			unitStats.SetEnemyTier(tier);
 			unitHealth.FillHealth();
 			OnFractionChanged?.Invoke(GetFraction());

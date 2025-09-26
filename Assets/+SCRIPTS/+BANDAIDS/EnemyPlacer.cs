@@ -7,7 +7,7 @@ public class EnemyPlacer : MonoBehaviour
 	public GameObject EnemyPrefab;
 	public Camera cam;
 	public bool isBehindSpawner; // true = spawns when spawner is beyond left side, false = spawns when spawner enters from right
-	private float margin = 0.2f; // Margin for spawn trigger (0.1 = 10% of screen width)
+	private float margin = -0.2f; // Margin for spawn trigger (0.1 = 10% of screen width)
 	public int EnemyTier = 0;
 
 

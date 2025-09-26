@@ -177,7 +177,6 @@ namespace __SCRIPTS
 			if (float.IsNaN(time))
 			{
 				this.enabled = false;
-				Debug.Log("NaN time in Life_FX.cs", this);
 				return;
 			}
 			if (colorMode == ColorMode.Gradient)
@@ -194,7 +193,6 @@ namespace __SCRIPTS
 
 			if (!life.showLifeBar) return;
 			targetFill = _life.GetFraction();
-			Debug.Log("targetFill: " + targetFill, this);
 			if (targetFill > .9f || targetFill <= 0)
 				healthBar.gameObject.SetActive(false);
 			else

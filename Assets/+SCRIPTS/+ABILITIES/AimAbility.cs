@@ -14,6 +14,8 @@ namespace __SCRIPTS
 	[DisallowMultipleComponent]
 	public class AimAbility : MonoBehaviour, IAimAbility, INeedPlayer
 	{
+		private Life life  => _life ??= GetComponent<Life>();
+		private Life _life;
 		public Vector2 AimDir { get; private set; }
 		private const float aimSmoothSpeed = 10;
 		private const float maxAimDistance = 30;
@@ -28,24 +30,21 @@ namespace __SCRIPTS
 		public void SetPlayer(Player _player)
 		{
 			player = _player;
-			player.Controller.AimAxis.OnChange += AimerOnAim;
+			AimDir = Vector2.right;
 		}
 		private void OnDestroy()
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;
-			player.Controller.AimAxis.OnChange -= AimerOnAim;
 		}
 
 		private void Update()
 		{
+			if (Services.pauseManager.IsPaused) return;
+			if(life != null && life.IsDead()) return;
 			Aim();
 		}
 
-		private void AimerOnAim(IControlAxis controlAxis, Vector2 newAimDir)
-		{
-			//Aim();
-		}
 
 		private void Aim()
 		{

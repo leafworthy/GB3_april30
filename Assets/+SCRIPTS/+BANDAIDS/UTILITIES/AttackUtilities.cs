@@ -8,10 +8,9 @@ using UnityEditor;
 
 public static class AttackUtilities
 {
-	private const float PushFactor = 10;
+	private const float PushFactor = 3;
 #if UNITY_EDITOR
 	[MenuItem("Tools/Select Player Unit Animator")]
-
 	public static void SelectPlayerUnitAnimator()
 	{
 		var component = Object.FindFirstObjectByType(typeof(PlayerUnitController)) as PlayerUnitController;
@@ -46,7 +45,7 @@ public static class AttackUtilities
 
 		foreach (var targetLife in closestHits)
 		{
-			HitTarget(attackerLife, targetLife, attackPosition, attackDamage, extraPush);
+			HitTarget(attackerLife, targetLife, attackDamage, extraPush);
 		}
 	}
 
@@ -60,8 +59,7 @@ public static class AttackUtilities
 	{
 		//took out && targetLife.IsPlayerAttackable
 		if (targetLife == null) return false;
-		return originLife.IsEnemyOf(targetLife) && targetLife.IsNotInvincible  && !targetLife.IsObstacle &&
-		       targetLife.CanTakeDamage;
+		return originLife.IsEnemyOf(targetLife) && targetLife.IsNotInvincible && !targetLife.IsObstacle && targetLife.CanTakeDamage;
 	}
 
 	public static GameObject FindClosestHit(Life originLife, Vector2 attackPosition, float attackRange, LayerMask layerMask)
@@ -84,7 +82,8 @@ public static class AttackUtilities
 		return closest.gameObject;
 	}
 
-	public static bool HitTarget(Life originLife, Life targetLife, Vector2 attackPosition, float attackDamage, float extraPush = .1f)
+
+	public static bool HitTarget(Life originLife, Life targetLife, float attackDamage, float extraPush = .1f)
 	{
 		if (targetLife == null) return false;
 		if (!IsValidTarget(originLife, targetLife))
@@ -92,7 +91,9 @@ public static class AttackUtilities
 			Debug.LogWarning("invalid target", targetLife);
 			return false;
 		}
-		targetLife.TakeDamage(new Attack(originLife, attackPosition, targetLife, attackDamage, extraPush));
+
+		var attack = AttackBuilder.Create().FromLife(originLife).ToLife(targetLife).WithDamage(attackDamage).WithExtraPush(extraPush).Build();
+		targetLife.TakeDamage(attack);
 		return true;
 	}
 
@@ -107,18 +108,9 @@ public static class AttackUtilities
 
 	public static void Explode(Vector3 explosionPosition, float explosionRadius, float explosionDamage, Life _owner)
 	{
-		var assets = ServiceLocator.Get<AssetManager>();
-		var objectMaker = ServiceLocator.Get<ObjectMaker>();
-		var sfx = ServiceLocator.Get<SFX>();
-
-		objectMaker.Make(assets.FX.explosions.GetRandom(), explosionPosition);
-		objectMaker.Make(assets.FX.fires.GetRandom(), explosionPosition);
+		ExplosionFX(explosionPosition);
 
 		var layer = _owner.EnemyLayer;
-
-		CameraShaker.ShakeCamera(explosionPosition, CameraShaker.ShakeIntensityType.high);
-		CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);
-		sfx.sounds.bean_nade_explosion_sounds.PlayRandomAt(explosionPosition);
 		var hits = Physics2D.OverlapCircleAll(explosionPosition, explosionRadius, layer);
 
 		if (hits == null) return;
@@ -131,9 +123,24 @@ public static class AttackUtilities
 			var otherMove = defence.GetComponent<MoveAbility>();
 			if (otherMove != null)
 				otherMove.Push(explosionPosition - defence.transform.position, PushFactor * ratio);
-			var newAttack = new Attack(_owner, explosionPosition, defence.transform.position, defence, explosionDamage * ratio);
-			defence.TakeDamage(newAttack);
+
+			var attack = AttackBuilder.Create().FromLife(_owner).ToLife(defence).WithDamage(explosionDamage * ratio).WithFlying(true).Build();
+			defence.TakeDamage(attack);
 		}
+	}
+
+	private static void ExplosionFX(Vector3 explosionPosition)
+	{
+		var assets = Services.assetManager;
+		var objectMaker = Services.objectMaker;
+		var sfx = Services.sfx;
+
+		objectMaker.Make(assets.FX.explosions.GetRandom(), explosionPosition);
+		objectMaker.Make(assets.FX.fires.GetRandom(), explosionPosition);
+		CameraShaker.ShakeCamera(explosionPosition, CameraShaker.ShakeIntensityType.high);
+		CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);
+		Debug.Log("explosion sound");
+		sfx.sounds.bean_nade_explosion_sounds.PlayRandomAt(explosionPosition);
 	}
 
 	public static Life CheckForCollisions(Vector2 target, GameObject gameObject, LayerMask layer)

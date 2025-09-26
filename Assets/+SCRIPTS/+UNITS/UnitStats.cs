@@ -6,8 +6,7 @@ namespace __SCRIPTS
 	[Serializable]
 	public class UnitStats
 	{
-
-		[SerializeField]private UnitStatsData _unitData;
+		[SerializeField] private UnitStatsData _unitData;
 
 		public UnitStatsData Data => GetData();
 		private string unitName;
@@ -27,13 +26,9 @@ namespace __SCRIPTS
 		private int extraMaxDamageFactor;
 		private int EnemyTier;
 
+		public float GetExtraHealth() => ExtraHealthFactor * Data.healthMax + Data.healthMax * EnemyTier;
 
-		public float GetExtraHealth() {
-			Debug.Log("Extra health for " + unitName + " is " + (ExtraHealthFactor * Data.healthMax + Data.healthMax * (EnemyTier)));
-			return ExtraHealthFactor * Data.healthMax + Data.healthMax * (EnemyTier);
-		}
-
-		public float MoveSpeed => Data.moveSpeed + ExtraSpeedFactor * Data.moveSpeed  + Data.moveSpeed * (EnemyTier * 0.3f);
+		public float MoveSpeed => Data.moveSpeed + ExtraSpeedFactor * Data.moveSpeed + Data.moveSpeed * (EnemyTier * 0.3f);
 		public float DashSpeed => Data.dashSpeed + ExtraSpeedFactor * Data.dashSpeed;
 		public float JumpSpeed => Data.jumpSpeed;
 		public float AggroRange => Data.aggroRange;
@@ -44,10 +39,10 @@ namespace __SCRIPTS
 
 		public float GetAttackDamage(int attackIndex) => attackIndex switch
 		                                                 {
-			                                                 1 => Data.attack1Damage + ExtraDamageFactor * Data.attack1Damage + Data.attack1Damage * (EnemyTier),
-			                                                 2 => Data.attack2Damage + ExtraDamageFactor * Data.attack2Damage + Data.attack2Damage * (EnemyTier),
-			                                                 3 => Data.attack3Damage + ExtraDamageFactor * Data.attack3Damage + Data.attack3Damage * (EnemyTier),
-			                                                 4 => Data.attack4Damage + ExtraDamageFactor * Data.attack4Damage + Data.attack4Damage * (EnemyTier),
+			                                                 1 => Data.attack1Damage + ExtraDamageFactor * Data.attack1Damage + Data.attack1Damage * EnemyTier,
+			                                                 2 => Data.attack2Damage + ExtraDamageFactor * Data.attack2Damage + Data.attack2Damage * EnemyTier,
+			                                                 3 => Data.attack3Damage + ExtraDamageFactor * Data.attack3Damage + Data.attack3Damage * EnemyTier,
+			                                                 4 => Data.attack4Damage + ExtraDamageFactor * Data.attack4Damage + Data.attack4Damage * EnemyTier,
 			                                                 _ => 0f
 		                                                 };
 
@@ -77,12 +72,9 @@ namespace __SCRIPTS
 
 		public int GetEnemyTier() => EnemyTier;
 
-		public void SetEnemyTier(int tier) {
-			Debug.Log("setting tier to " + tier + " for " + unitName);
+		public void SetEnemyTier(int tier)
+		{
 			EnemyTier = tier;
-
 		}
-
-
 	}
 }

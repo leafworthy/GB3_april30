@@ -26,7 +26,7 @@ MonoBehaviour:
     isInvincible: 0
     healthMax: 400
     moveSpeed: 60
-    dashSpeed: 30
+    dashSpeed: 25
     jumpSpeed: 2
     aggroRange: 0
     attack1Damage: 100
@@ -64,7 +64,7 @@ MonoBehaviour:
     attack3Rate: 1
     attack3Range: 20
     attack4Damage: 35
-    attack4Rate: 1
+    attack4Rate: 0.35
     attack4Range: 100
     hasData: 1
     isDefault: 0
@@ -77,15 +77,15 @@ MonoBehaviour:
     healthMax: 450
     moveSpeed: 45
     dashSpeed: 100
-    jumpSpeed: 2
+    jumpSpeed: 1.5
     aggroRange: 0
     attack1Damage: 40
     attack1Rate: 0.5
     attack1Range: 100
-    attack2Damage: 300
+    attack2Damage: 150
     attack2Rate: 1
-    attack2Range: 50
-    attack3Damage: 25
+    attack2Range: 70
+    attack3Damage: 15
     attack3Rate: 0.1
     attack3Range: 20
     attack4Damage: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
     showLifeBar: 1
     isInvincible: 0
     healthMax: 15
-    moveSpeed: 18
+    moveSpeed: 30
     dashSpeed: 0
     jumpSpeed: 0
     aggroRange: 100
@@ -769,5 +769,5 @@ MonoBehaviour:
     hasData: 1
     isDefault: 0
   isLoading: 0
-  lastLoadTime: 2025-09-24 14:07:57
+  lastLoadTime: 2025-09-25 17:27:09
   lastError: 

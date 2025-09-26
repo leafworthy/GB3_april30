@@ -37,11 +37,19 @@ namespace __SCRIPTS
 
 		protected override bool requiresLegs() => false;
 
-		public override bool canDo() => base.canDo() && jumps.IsJumping;
+		public override bool canDo() => base.canDo() && jumps.IsInAir;
 
 		protected override void DoAbility()
 		{
 			StartJumpAttack();
+		}
+
+		private void Update()
+		{
+			if (currentState == state.jumpDownAttack)
+			{
+				body.BottomFaceDirection(aimAbility.AimDir.x >= 0);
+			}
 		}
 
 		private void StartJumpAttack()
@@ -53,7 +61,7 @@ namespace __SCRIPTS
 
 			body.BottomFaceDirection(aimAbility.AimDir.x >= 0);
 
-			jumps.BounceUpwards(jumps.IsFalling ? 2 : 1);
+			jumps.DoubleJump(jumps.IsFalling ? 1 : .5f);
 
 			Debug.Log("jump attack started");
 
@@ -125,7 +133,7 @@ namespace __SCRIPTS
 			if (hits == null) return;
 			foreach (var hit in hits)
 			{
-				AttackUtilities.HitTarget(life, hit, hit.transform.position, GetAttackDamage());
+				AttackUtilities.HitTarget(life, hit, GetAttackDamage());
 				OnHitTarget?.Invoke(hit.gameObject.transform.position);
 			}
 		}

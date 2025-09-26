@@ -4,9 +4,25 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-
 	public class JumpAbility : Ability
 	{
+		private enum state
+		{
+			resting,
+			jumpingUp,
+			falling,
+			landing,
+			flying,
+			onGround,
+			gettingUp,
+			dead
+		}
+		private void SetState(state newState)
+		{
+			currentState = newState;
+		}
+
+		private state currentState;
 		private float verticalVelocity;
 
 		public AnimationClip jumpingAnimationClip;
@@ -14,28 +30,25 @@ namespace __SCRIPTS
 		public AnimationClip landingAnimationClip;
 		public AnimationClip flyingAnimationClip;
 		public AnimationClip deathAnimationClip;
-
+		public AnimationClip onGroundAnimationClip;
+		public AnimationClip getUpAnimationClip;
+		public AnimationClip standingAnimationClip;
 		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
+
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnJump;
-		public event Action<Vector2> OnResting;
 		public event Action OnFalling;
 
-		public bool IsResting => isResting;
-		private bool isResting;
-		private bool isOverLandable;
-		public bool IsJumping => isJumping;
-		private bool isJumping;
 
-		private float FallInDistance = 80;
-		private float minBounceVelocity = 1000;
-		private float bounceVelocityDragFactor = .2f;
+		private const float FallInDistance = 80;
+		private const float maxAirTime = 2.5f;
 		private float airTimer;
-		private float maxFlyTime = 2.5f;
+		private bool IsFlying  => currentState == state.flying;
 
-		private bool isFlying;
-		public bool IsFalling { get; private set; }
+		public bool IsFalling => currentState == state.falling;
+		public bool IsResting => currentState == state.resting;
+		public bool IsInAir => currentState is state.jumpingUp or state.falling or state.flying;
 
 		protected override bool requiresArms() => false;
 
@@ -43,63 +56,92 @@ namespace __SCRIPTS
 
 		public override string AbilityName => "Jump";
 
-		public override bool canDo() => base.canDo() && IsResting;
+		public override bool canDo()
+		{
+			if(!IsResting && !IsFlying) Debug.Log("cant cuz NOT RESTING");
+			return base.canDo() && (IsResting || IsFlying);
+		}
 
 		public override bool canStop(IDoableAbility abilityToStopFor) => false;
 
 		protected override void DoAbility()
 		{
-			Jump(0, life.JumpSpeed, 99);
+			Jump();
 		}
 
 		public override void Stop()
 		{
-			base.Stop();
+			verticalVelocity = 0;
+			SetState(state.resting);
+			moveAbility.SetCanMove(true);
 			body.SetDistanceToGround(0);
+			base.Stop();
 		}
 
-		private void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
+		private void Jump()
 		{
-			StartJumpAnimation();
-			life.SetTemporarilyInvincible(true);
+			if (currentState is state.flying)
+			{
+				StartFlyingAnimation();
+			}
+			else
+			{
+				SetState(state.jumpingUp);
+				StartJumpAnimation();
+			}
+
 			airTimer = 0;
-			minBounceVelocity = minBounce;
-			isFlying = false;
-			isJumping = true;
-			isResting = false;
-			IsFalling = false;
-			OnJump?.Invoke(transform.position + new Vector3(0, startingHeight, 0));
-
-			verticalVelocity = verticalSpeed;
-
-			body.SetDistanceToGround(startingHeight);
+			life.SetTemporarilyInvincible(true);
+			OnJump?.Invoke(transform.position);
+			verticalVelocity = life.JumpSpeed;
+			body.SetDistanceToGround(0);
 			body.ChangeLayer(Body.BodyLayer.jumping);
 		}
 
 		private void StartJumpAnimation()
 		{
-			anim.Play(isFlying ? flyingAnimationClip.name : jumpingAnimationClip.name, 0, 0);
+			Debug.Log("tryin reg jump");
+			PlayAnimationClip(jumpingAnimationClip);
+		}
+
+		private void StartFlyingAnimation()
+		{
+			Debug.Log("should play flying anim");
+			PlayAnimationClip(flyingAnimationClip);
 		}
 
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
 			life.OnDying += Life_OnDying;
+			life.OnFlying += Life_OnFlying;
 			_player.Controller.Jump.OnPress += Controller_Jump;
+			SetState(state.resting);
 			FallFromHeight(FallInDistance);
+		}
+
+		private void Life_OnFlying(Attack obj)
+		{
+			if(Services.pauseManager.IsPaused) return;
+			Debug.Log("should start flying");
+			StartFlying();
 		}
 
 		private void Controller_Jump(NewControlButton newControlButton)
 		{
-			if (!canDo()) return;
-
 			Do();
 		}
 
 		private void Life_OnDying(Attack attack)
 		{
-			isFlying = true;
-			Jump();
+			StartFlying();
+		}
+
+		private void StartFlying()
+		{
+			forceIt = true;
+			SetState(state.flying);
+			DoAbility();
 		}
 
 		private void OnDisable()
@@ -112,18 +154,16 @@ namespace __SCRIPTS
 
 		private void FallFromHeight(float fallHeight)
 		{
+			SetState(state.falling);
 			body.SetDistanceToGround(fallHeight);
-			isJumping = true;
-			isResting = false;
-			anim.Play(fallingAnimationClip.name, 0, 0);
+			PlayAnimationClip(fallingAnimationClip.name, 0, 0);
 			airTimer = 0;
 		}
 
 		protected void FixedUpdate()
 		{
 			if (Services.pauseManager.IsPaused) return;
-			if (isResting) return;
-			if (!isJumping) return;
+			if (!IsInAir) return;
 
 			Fly();
 		}
@@ -131,81 +171,98 @@ namespace __SCRIPTS
 		private void Fly()
 		{
 			airTimer += Time.fixedDeltaTime;
-			if (airTimer > maxFlyTime)
+			if (airTimer > maxAirTime)
 			{
-				Land();
+				HitGround();
 				return;
 			}
 
 			verticalVelocity -= Services.assetManager.Vars.Gravity.y * Time.fixedDeltaTime;
-			if (!IsFalling && verticalVelocity < 0)
-			{
-				IsFalling = true;
-				StartFalling();
-				OnFalling?.Invoke();
-			}
+			if (!IsFalling && verticalVelocity < 0) StartFalling();
 
-			IsFalling = verticalVelocity < 0 && !isResting;
 			if (body.GetDistanceToGround() + verticalVelocity <= 0 && verticalVelocity < 0)
-			{
-				if (Mathf.Abs(verticalVelocity) > minBounceVelocity)
-				{
-					Bounce();
-				}
-				else
-				{
-					Land();
-				}
-			}
+				HitGround();
 			else
 				body.SetDistanceToGround(body.GetDistanceToGround() + verticalVelocity);
 		}
 
 		private void StartFalling()
 		{
-
-			anim.Play(fallingAnimationClip.name, 0, 0);
-		}
-
-		private void Land()
-		{
-
-			life.SetTemporarilyInvincible(false);
-			isJumping = false;
-			moveAbility.SetCanMove(false);
-			body.SetGrounded();
-			verticalVelocity = 0;
-			StartLandingAnimation();
-			OnLand?.Invoke(transform.position  );
-		}
-
-		private void StartLandingAnimation()
-		{
-			PlayAnimationClip(!life.IsDead() ? landingAnimationClip : deathAnimationClip);
-		}
-
-		private void Bounce()
-		{
-			verticalVelocity *= -1;
-			var velocity = bounceVelocityDragFactor;
-			verticalVelocity *= velocity;
+			if (!IsInAir) return;
+			if (currentState is not state.jumpingUp) return;
+			OnFalling?.Invoke();
+			SetState(state.falling);
+			PlayAnimationClip(fallingAnimationClip);
 		}
 
 		protected override void AnimationComplete()
 		{
-			verticalVelocity = 0;
-			isJumping = false;
-			moveAbility.SetCanMove(true);
-			isResting = true;
-			OnResting?.Invoke(transform.position);
-			Stop();
+			switch (currentState)
+			{
+				case state.resting:
+				case state.jumpingUp:
+				case state.falling:
+					break;
+				case state.landing:
+					Stop();
+					break;
+				case state.flying:
+					break;
+				case state.onGround:
+					StartGettingUp();
+					break;
+				case state.gettingUp:
+					anim.Play(standingAnimationClip.name,0,0);
+					Stop();
+					break;
+				case state.dead:
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
 		}
 
-		public void BounceUpwards(int bounceForce)
+		private void StartGettingUp()
 		{
-			if (!isJumping) return;
+			PlayAnimationClip(getUpAnimationClip);
+			SetState(state.gettingUp);
+		}
+
+		private void HitGround()
+		{
+			if (life.IsDead())
+			{
+				PlayAnimationClip(deathAnimationClip);
+				SetState(state.dead);
+			}
+			else if (currentState == state.flying)
+			{
+				PlayAnimationClip(onGroundAnimationClip);
+				SetState(state.onGround);
+			}
+			else
+			{
+				PlayAnimationClip(landingAnimationClip);
+				SetState(state.landing);
+			}
+
+			Land();
+		}
+
+		private void Land()
+		{
+			life.SetTemporarilyInvincible(false);
+			moveAbility.SetCanMove(false);
+			body.SetGrounded();
+			verticalVelocity = 0;
+			OnLand?.Invoke(transform.position);
+		}
+
+		public void DoubleJump(float doubleJumpForce)
+		{
+			if (!IsInAir) return;
 			if (verticalVelocity < 0) verticalVelocity = 0;
-			verticalVelocity += bounceForce;
+			verticalVelocity += doubleJumpForce;
 		}
 	}
 }

@@ -56,8 +56,8 @@ namespace __SCRIPTS
 			playersListening.Add(player);
 
 
-			player.Controller.InteractRightShoulder.OnPress += PlayerOnInteractButton;
-			player.Controller.InteractRightShoulder.OnRelease += Player_OnRelease;
+			player.Controller.ReloadTriangle.OnPress += PlayerOnInteractButton;
+			player.Controller.ReloadTriangle.OnRelease += Player_OnRelease;
 
 			OnPlayerEnters?.Invoke(player);
 		}
@@ -146,8 +146,8 @@ namespace __SCRIPTS
 		{
 			if (!playersListening.Contains(player)) return;
 			playersListening.Remove(player);
-			player.Controller.InteractRightShoulder.OnPress -= PlayerOnInteractButton;
-			player.Controller.InteractRightShoulder.OnRelease -= Player_OnRelease;
+			player.Controller.ReloadTriangle.OnPress -= PlayerOnInteractButton;
+			player.Controller.ReloadTriangle.OnRelease -= Player_OnRelease;
 			OnPlayerExits?.Invoke(player);
 		}
 

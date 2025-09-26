@@ -24,16 +24,26 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public virtual bool canStop(IDoableAbility abilityToStopFor) => false;
 
+	public bool forceIt;
+
 	public void Do()
 	{
-		if (!canDo()) return;
+
+			if (!canDo())
+			{
+				Debug.Log("cant do ability: "  + AbilityName,this);
+				return;
+			}
+
 
 		lastLegAbility = body.doableLegs.CurrentAbility;
+		Debug.Log("lastlegAbility set to: " + (lastLegAbility != null ? lastLegAbility.AbilityName : "null"), this);
 		lastArmAbility = body.doableArms.CurrentAbility;
 		if (requiresArms()) body.doableArms.DoActivity(this);
 
 		if (requiresLegs()) body.doableLegs.DoActivity(this);
 
+		forceIt = false;
 		DoAbility();
 	}
 
@@ -41,10 +51,10 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public virtual void Stop()
 	{
-		CoreStop();
+		StopBody();
 	}
 
-	protected void CoreStop()
+	protected void StopBody()
 	{
 		if (requiresArms()) body.doableArms.Stop(this);
 

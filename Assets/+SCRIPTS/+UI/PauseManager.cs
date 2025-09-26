@@ -69,6 +69,7 @@ namespace __SCRIPTS
 		private void PlayerPressedDown(IControlAxis controlAxis)
 		{
 			if (controlAxis.owner != pausingPlayer) return;
+			Debug.Log("DOWN");
 			menuButtons.Down();
 			OnPlayerPressedDown?.Invoke();
 		}
@@ -95,12 +96,23 @@ namespace __SCRIPTS
 				case MenuButton.ButtonType.Quit:
 					Services.levelManager.QuitGame();
 					break;
+				 case MenuButton.ButtonType.Respawn:
+					var keepPlayer = pausingPlayer;
+					 Unpause();
+					 Services.levelManager.RespawnPlayer(keepPlayer);
+					 break;
+				case MenuButton.ButtonType.Unspawn:
+					var unspawnPlayer = pausingPlayer;
+					Unpause();
+					Services.levelManager.UnspawnPlayer(unspawnPlayer);
+					break;
 			}
 		}
 
 		private void PlayerPressedUp(IControlAxis controlAxis)
 		{
 			if (controlAxis.owner != pausingPlayer) return;
+			Debug.Log("UP");
 			menuButtons.Up();
 			OnPlayerPressedUp?.Invoke();
 		}

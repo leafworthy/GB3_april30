@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -9,6 +10,15 @@ namespace __SCRIPTS
 		public int CurrentButtonIndex;
 		protected MenuButton CurrentlySelectedButton;
 
+		[Button]
+		public void ListButtonIndexes()
+		{
+			for (int i = 0; i < menuButtons.Count; i++)
+			{
+				Debug.Log($"Button {i}: {menuButtons[i].name}");
+			}
+		}
+		[Button]
 		public void InitButtons()
 		{
 			UnhighlightButtons();
@@ -54,6 +64,7 @@ namespace __SCRIPTS
 			menuButtons[buttonIndex].UnHighlight();
 		}
 
+		[Button]
 		public void Up()
 		{
 			UnHighlightButton(CurrentButtonIndex);
@@ -61,6 +72,7 @@ namespace __SCRIPTS
 			HighlightButton(CurrentButtonIndex);
 		}
 
+		[Button]
 		public void Down()
 		{
 			UnHighlightButton(CurrentButtonIndex);

@@ -7,7 +7,6 @@ namespace __SCRIPTS
 	{
 		public AnimationClip dashAnimationClip_Bottom;
 		public AnimationClip dashAnimationClip_Top;
-		private AnimationEvents animEvents;
 		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
 
@@ -21,22 +20,21 @@ namespace __SCRIPTS
 
 		public override bool canDo() => base.canDo() && jumps.IsResting;
 
-		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is JumpAbility or KnifeAttack;
+		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is JumpAbility;
 
 		public override void Stop()
 		{
-			CoreStop();
+			StopBody();
 			StopDashing();
 			life.SetTemporarilyInvincible(false);
 			if (lastArmAbility is GunAttack)
 			{
-				Debug.Log("Resuming Shield Ability");
-				CoreStop();
+				StopBody();
 				lastArmAbility?.Resume();
 			}
 			else
 			{
-				CoreStop();
+				StopBody();
 				lastArmAbility?.Do();
 			}
 		}
@@ -63,10 +61,8 @@ namespace __SCRIPTS
 		{
 			base.SetPlayer(_player);
 
-			Debug.LogWarning("Set player in dash");
 			UnsubscribeFromEvents();
 
-			animEvents = anim.animEvents;
 			player.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
 		}
 
@@ -79,7 +75,6 @@ namespace __SCRIPTS
 
 		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 		{
-			Debug.LogWarning("dash pressed inside dash");
 			Do();
 		}
 

@@ -8,6 +8,7 @@ namespace __SCRIPTS
 	{
 		public override string AbilityName => "Throw-Kunai";
 		public AnimationClip throwKunaiAnimationClip;
+		public AnimationClip throwAirKunaiAnimationClip;
 		public event Action OnThrow;
 
 		private bool isPressingAttack;
@@ -28,13 +29,40 @@ namespace __SCRIPTS
 		private void StartAttack()
 		{
 			Debug.Log("start kunai attacka ");
-			PlayAnimationClip(throwKunaiAnimationClip);
-			Invoke(nameof(ThrowKunai), throwKunaiAnimationClip.length / 2);
+
+			if (jumpAbility.IsInAir)
+			{
+				PlayAnimationClip(throwAirKunaiAnimationClip);
+				Invoke(nameof(ThrowAirKunai), throwAirKunaiAnimationClip.length / 4);
+			}
+			else
+			{
+				PlayAnimationClip(throwKunaiAnimationClip);
+				Invoke(nameof(ThrowRegularKunai), throwKunaiAnimationClip.length / 4);
+			}
+		}
+
+		private void ThrowRegularKunai()
+		{
+			if (!ammoInventory.primaryAmmo.hasReserveAmmo(1)) return;
+			ThrowKunai(aim.AimDir, body.ThrowPoint.transform.position);
+		}
+
+		private void ThrowAirKunai()
+		{
+			if (!ammoInventory.primaryAmmo.hasReserveAmmo(3)) return;
+			var directionMult = body.BottomIsFacingRight ? 1 : -1;
+			ThrowKunai(new Vector3(directionMult, -.5f, 0), body.ThrowPoint.transform.position, true);
+			ThrowKunai(new Vector3(directionMult, -1f, 0), body.ThrowPoint.transform.position, true);
+			ThrowKunai(new Vector3(directionMult, -.75f, 0), body.ThrowPoint.transform.position, true);
 		}
 
 		public override bool canDo() => base.canDo() && ammoInventory.primaryAmmo.hasReserveAmmo();
 
 		private bool alreadyDone;
+		private JumpAbility jumpAbility  => _jumpAbility ??= GetComponent<JumpAbility>();
+		private JumpAbility _jumpAbility;
+
 
 		public override void SetPlayer(Player _player)
 		{
@@ -58,16 +86,21 @@ namespace __SCRIPTS
 			player.Controller.Attack2LeftTrigger.OnRelease -= StopPressing;
 		}
 
-		private void ThrowKunai()
+		private void ThrowKunai(Vector2 direction, Vector2 position, bool isAirThrow = false)
 		{
 			Debug.Log("throw kunai");
 			ammoInventory.primaryAmmo.UseAmmo(1);
-			var throwHeight = body.ThrowPoint.transform.position.y - transform.position.y;
-			var newProjectile = Services.objectMaker.Make(Services.assetManager.FX.kunaiPrefab, transform.position);
+			var throwHeight = position.y - transform.position.y;
+			Debug.Log("throw height " + throwHeight);
+			var newProjectile = Services.objectMaker.Make(Services.assetManager.FX.kunaiPrefab, position);
 			var kunaiScript = newProjectile.GetComponent<Kunai>();
-			kunaiScript.Throw(aim.AimDir, transform.position, throwHeight, player.spawnedPlayerDefence);
+
+			kunaiScript.Throw(direction, position, throwHeight, player.spawnedPlayerDefence, isAirThrow);
 			OnThrow?.Invoke();
 		}
+
+
+
 
 		protected override void AnimationComplete()
 		{

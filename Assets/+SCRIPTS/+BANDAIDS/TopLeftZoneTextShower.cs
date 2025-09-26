@@ -8,7 +8,7 @@ using UnityEngine;
 public class TopLeftZoneTextShower : GUIDebugTextShower
 {
 	protected override TextAnchor alignment => TextAnchor.UpperLeft;
-	public BoundsSwitcher boundsSwitcher;
+	public BoundsSwitcher boundsSwitcher => GetComponent<BoundsSwitcher>();
 	private int counter;
 	private int rate = 20;
 	private List<Collider2D> overlappingColliders = new();
@@ -17,14 +17,19 @@ public class TopLeftZoneTextShower : GUIDebugTextShower
 	private bool tryingToChange;
 	public GameObject gogogo;
 
-	private void Start()
+	private void OnEnable()
 	{
-		if (boundsSwitcher == null) boundsSwitcher = GetComponent<BoundsSwitcher>();
 		Services.enemyManager.OnEnemyDying -= EnemyManager_OnEnemyDying;
 		Services.enemyManager.OnEnemyDying += EnemyManager_OnEnemyDying;
+		index = 0;
+		boundsSwitcher.SetZone(index);
 		SetTextToEnemiesInThisZone();
 	}
 
+	private void OnDisable()
+	{
+		Services.enemyManager.OnEnemyDying -= EnemyManager_OnEnemyDying;
+	}
 
 	private void Update()
 	{
@@ -42,7 +47,9 @@ public class TopLeftZoneTextShower : GUIDebugTextShower
 		var enemiesInThisZone = FindOverlappingEnemyColliders(Services.assetManager.LevelAssets.EnemyLayer);
 		if (enemiesInThisZone == 0)
 		{
-			if (Collider2DExtensions.IsObjectWithinCollider(boundsSwitcher.nextZone.zoneCollider, Services.playerManager.mainPlayer.SpawnedPlayerGO))
+			// Add null check for nextZone and its collider
+			if (boundsSwitcher.nextZone != null && boundsSwitcher.nextZone.zoneCollider != null &&
+			    Collider2DExtensions.IsObjectWithinCollider(boundsSwitcher.nextZone.zoneCollider, Services.playerManager.mainPlayer.SpawnedPlayerGO))
 			{
 				gogogo.SetActive(false);
 				boundsSwitcher.SetZone(index + 1);
@@ -60,30 +67,27 @@ public class TopLeftZoneTextShower : GUIDebugTextShower
 		SetText("Enemies left: " + enemiesInThisZone);
 	}
 
-	[Button]
-	private void DoIt()
-	{
-		GetPlayersInThisAndNextZone();
-	}
 
-	private bool GetPlayersInThisAndNextZone()
-	{
-		var playersInThisZone = FindOverlappingPlayerColliders(index, Services.assetManager.LevelAssets.PlayerLayer);
-		if (playersInThisZone == null || playersInThisZone.Count == 0) return false;
-		var playersInNextsZone = FindOverlappingPlayerColliders(index + 1, Services.assetManager.LevelAssets.PlayerLayer);
-		if (playersInNextsZone == null) return false;
-		if (playersInNextsZone.Count == 0) return false;
-		Debug.Log(HasCommonItem(playersInThisZone, playersInNextsZone));
-		return HasCommonItem(playersInThisZone, playersInNextsZone);
-	}
 
-	public bool HasCommonItem(List<Life> list1, List<Life> list2) => list1.Intersect(list2).Any();
 
 	private int FindOverlappingEnemyColliders(LayerMask targetLayerMask)
 	{
 		overlappingColliders.Clear();
 		overlappingPlayers.Clear();
+
+		// Add null checks before using the collider
+		if (boundsSwitcher == null || boundsSwitcher.currentZone == null || boundsSwitcher.currentZone.zoneCollider == null)
+		{
+			Debug.LogWarning("BoundsSwitcher or currentZone or zoneCollider is null");
+			return 0;
+		}
+
 		var bounds = boundsSwitcher.currentZone.zoneCollider;
+		if (bounds == null)
+		{
+			Debug.Log("bounds is null");
+			return 0;
+		}
 
 		Physics2D.OverlapCollider(bounds, new ContactFilter2D {layerMask = targetLayerMask, useLayerMask = true, useTriggers = true}, overlappingColliders);
 
@@ -106,28 +110,5 @@ public class TopLeftZoneTextShower : GUIDebugTextShower
 		var collided = Collider2DExtensions.FindEnemyPlacersWithinCollider(boundsSwitcher.currentZone.zoneCollider, spawnPoints);
 
 		return overlappingEnemies.Count + collided.Count;
-	}
-
-	private List<Life> FindOverlappingPlayerColliders(int _index, LayerMask targetLayerMask)
-	{
-		Debug.Log("here");
-		overlappingColliders.Clear();
-		overlappingPlayers.Clear();
-		var bounds = boundsSwitcher.currentZone.zoneCollider;
-		Debug.Log(bounds, bounds);
-
-		Physics2D.OverlapCollider(bounds, new ContactFilter2D {layerMask = targetLayerMask, useLayerMask = true, useTriggers = true}, overlappingColliders);
-
-		if (overlappingColliders.Count == 0) return null;
-
-		foreach (var col in overlappingColliders)
-		{
-			var life = col.GetComponent<Life>();
-			if (life == null) continue;
-			var playerController = life.GetComponent<PlayerUnitController>();
-			if (playerController != null) overlappingPlayers.Add(life);
-		}
-
-		return overlappingPlayers;
 	}
 }

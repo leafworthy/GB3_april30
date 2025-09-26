@@ -12,7 +12,7 @@ namespace __SCRIPTS
 		private float effectTime = 5f;
 		private Vector2 heightCorrectionForDepth = new(0, -1.25f);
 
-		private void OnEnable()
+		private void Start()
 		{
 			foreach (var gun in guns)
 			{
@@ -21,7 +21,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void OnDisable()
+		private void OnDestroy()
 		{
 			foreach (var gun in guns)
 			{

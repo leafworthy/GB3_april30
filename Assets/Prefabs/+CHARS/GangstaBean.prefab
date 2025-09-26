@@ -741,7 +741,7 @@ MonoBehaviour:
       jumpSpeed: 2
       aggroRange: 0
       attack1Damage: 40
-      attack1Rate: 0.2
+      attack1Rate: 0.15
       attack1Range: 100
       attack2Damage: 300
       attack2Rate: 1
@@ -750,7 +750,7 @@ MonoBehaviour:
       attack3Rate: 1
       attack3Range: 20
       attack4Damage: 35
-      attack4Rate: 0.25
+      attack4Rate: 0.35
       attack4Range: 100
       hasData: 1
       isDefault: 0
@@ -772,8 +772,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowBarImage: {fileID: 0}
-  fastBarImage: {fileID: 0}
   DebreeTint: {r: 1, g: 0, b: 0, a: 1}
   colorMode: 0
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
@@ -807,7 +805,6 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  healthBar: {fileID: 0}
   BlockTint: 0
 --- !u!114 &2279997984956709696
 MonoBehaviour:
@@ -982,11 +979,15 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  forceIt: 0
   jumpingAnimationClip: {fileID: 7400000, guid: 572dcdab6062047b68838e6b201a485c, type: 2}
-  fallingAnimationClip: {fileID: 7400000, guid: 572dcdab6062047b68838e6b201a485c, type: 2}
+  fallingAnimationClip: {fileID: 7400000, guid: bb46fb70775024d3e982d8fac47242f6, type: 2}
   landingAnimationClip: {fileID: 7400000, guid: f5e16cc96fff344e2b7b6fe2cb948588, type: 2}
   flyingAnimationClip: {fileID: 7400000, guid: ae4ada2c244254b9498e516924b7a730, type: 2}
   deathAnimationClip: {fileID: 7400000, guid: 1f967d2e339f1437287980568bd40b1a, type: 2}
+  onGroundAnimationClip: {fileID: 7400000, guid: 7d10353e6724b48b3996a2f6239df3d9, type: 2}
+  getUpAnimationClip: {fileID: 7400000, guid: db029bd52b1084cb1ad80e7033e7aab1, type: 2}
+  standingAnimationClip: {fileID: 7400000, guid: 4f55359b4945d459997a2333342ddf7f, type: 2}
 --- !u!114 &1547629825238236334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1020,9 +1021,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  forceIt: 0
   dashAnimationClip_Bottom: {fileID: 7400000, guid: fe7d378efbd3f4623be03cdd452b4bd1, type: 2}
   dashAnimationClip_Top: {fileID: 0}
-  teleport: 0
 --- !u!114 &6524197863214219341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1035,9 +1036,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f9bbda06e4b42c0b7bd61ba870b743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: Hello World!
-  fontColor: {r: 1, g: 1, b: 1, a: 1}
-  padding: {x: 10, y: 10}
 --- !u!114 &8019141755725131464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1073,6 +1071,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  forceIt: 0
   attackPoint: {fileID: 8971666602374333099}
   animationClip: {fileID: 7400000, guid: aaf890dfb175341beab9a356227816a3, type: 2}
 --- !u!114 &4716467258387394285
@@ -1108,6 +1107,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  forceIt: 0
   ReloadPrimaryGunAnimationClip: {fileID: 7400000, guid: c282e12111bd1461a9470c82ea4f48bc, type: 2}
   ReloadUnlimitedGunAnimationClip: {fileID: 7400000, guid: d390762771f9949fab1938be26f2c783, type: 2}
 --- !u!114 &3647936817641516148
@@ -1144,6 +1144,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  forceIt: 0
   IsAiming: 0
   animationClip: {fileID: 7400000, guid: 1f41528348e2145adb8726fd2438630d, type: 2}
 --- !u!114 &5892735826027873934
@@ -1179,6 +1180,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  forceIt: 0
   pullOutAnimationClip: {fileID: 0}
   simpleShootAnimationClip: {fileID: 0}
 --- !u!114 &4284111403091859338
@@ -1264,6 +1266,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  forceIt: 0
 --- !u!1 &3833892834326608145
 GameObject:
   m_ObjectHideFlags: 0

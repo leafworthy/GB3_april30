@@ -21,7 +21,7 @@ namespace __SCRIPTS
 
 		public void DoActivity(IDoableAbility newAbility)
 		{
-			if (CanDoActivity(newAbility)) ActuallyDo(newAbility);
+			ActuallyDo(newAbility);
 		}
 
 		private void ActuallyDo(IDoableAbility newAbility)
@@ -45,7 +45,7 @@ namespace __SCRIPTS
 		private bool ActivitiesAreTheSame(IDoableAbility activity1, IDoableAbility activity2) =>
 			activity1?.AbilityName == activity2?.AbilityName;
 
-		public bool CanDoActivity(IDoableAbility newAbility)
+		public bool CanDoActivity(IDoableAbility newAbility, bool forceIt = false)
 		{
 			if (newAbility == null)
 			{
@@ -60,6 +60,11 @@ namespace __SCRIPTS
 			}
 
 			if (!IsActive) return true;
+			if (forceIt)
+			{
+				Debug.Log("forced it in body part");
+				return true;
+			}
 			Debug.Log("Can Stop: " + CurrentAbility.AbilityName + " " + CurrentAbility.canStop(newAbility));
 			return CurrentAbility.canStop(newAbility);
 		}

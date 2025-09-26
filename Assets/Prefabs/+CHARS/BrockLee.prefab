@@ -135,7 +135,7 @@ Transform:
   m_GameObject: {fileID: 1007893601546250073}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.295, y: 0.494, z: 0}
+  m_LocalPosition: {x: 0.556, y: 0.469, z: 0}
   m_LocalScale: {x: 0.07762363, y: 0.07762363, z: 0.07762363}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1373,6 +1373,7 @@ MonoBehaviour:
   - {fileID: 3924160363560415009}
   - {fileID: 234699790523443938}
   - {fileID: 1185514299834675743}
+  - {fileID: 8649755567016641007}
   renderAboveAll: 0
 --- !u!114 &8309946106496796689
 MonoBehaviour:
@@ -1432,8 +1433,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowBarImage: {fileID: 0}
-  fastBarImage: {fileID: 0}
   DebreeTint: {r: 1, g: 0, b: 0, a: 1}
   colorMode: 0
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
@@ -1467,7 +1466,6 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  healthBar: {fileID: 0}
   BlockTint: 0
 --- !u!114 &3133539343243147869
 MonoBehaviour:
@@ -1654,11 +1652,15 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  forceIt: 0
   jumpingAnimationClip: {fileID: 7400000, guid: 0da3ea9ae941c46cc8a7fdd4fa338dc3, type: 2}
   fallingAnimationClip: {fileID: 7400000, guid: 70697226afaa6447681371cfa6d7e050, type: 2}
   landingAnimationClip: {fileID: 7400000, guid: 6f9b65c51b621489597a7acd56a13cb7, type: 2}
   flyingAnimationClip: {fileID: 7400000, guid: 6e1fa621fb69043daacdbd8b22bfb83d, type: 2}
   deathAnimationClip: {fileID: 7400000, guid: 056d2e7cd7a7f40d6b614776e9fb9621, type: 2}
+  onGroundAnimationClip: {fileID: 7400000, guid: 4e1500ff6cdb640358ae998e7e27c30b, type: 2}
+  getUpAnimationClip: {fileID: 7400000, guid: 997138eaa2b604da584979b728b28354, type: 2}
+  standingAnimationClip: {fileID: 7400000, guid: d05e8e5a3c07f4186844edb158733a2c, type: 2}
 --- !u!114 &-5537217035217268067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1683,9 +1685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5f9bbda06e4b42c0b7bd61ba870b743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: Hello World!
-  fontColor: {r: 1, g: 1, b: 1, a: 1}
-  padding: {x: 10, y: 10}
 --- !u!114 &4296806838304676772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1746,7 +1745,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  forceIt: 0
   throwKunaiAnimationClip: {fileID: 7400000, guid: 26673658f918b41e297fe5aeb9008698, type: 2}
+  throwAirKunaiAnimationClip: {fileID: 7400000, guid: 6dce986b761a8416d918e30c4c61d699, type: 2}
 --- !u!114 &1964895978986862838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1768,6 +1769,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  forceIt: 0
   Attack1AnimationClip: {fileID: 7400000, guid: c53884e3b66df4a5c9a34968335afb94, type: 2}
   Attack2AnimationClip: {fileID: 7400000, guid: 5d1c321a6aa5d4dc48da1dac6cb0d7d0, type: 2}
   Attack3AnimationClip: {fileID: 7400000, guid: 59d70ac3559524ba5b41d2f62dc19f70, type: 2}
@@ -1792,6 +1794,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  forceIt: 0
   JumpAttackUpAnimationClip: {fileID: 7400000, guid: 5422ddb890cc046adbedc9b920a152c7, type: 2}
   JumpAttackFallingAnimationClip: {fileID: 7400000, guid: 24b0ae5dae84149c7a3488f843b1df3d, type: 2}
   LandAttackAnimationClip: {fileID: 7400000, guid: 59d70ac3559524ba5b41d2f62dc19f70, type: 2}
@@ -1816,6 +1819,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  forceIt: 0
   chargeStartAnimationClip: {fileID: 7400000, guid: 0c01ca22aead94b82bec7b6848ba6881, type: 2}
   chargeAttackAnimationClip: {fileID: 7400000, guid: cf82f8cfa37c94b10836f5f98863f56a, type: 2}
   chargedAnimationClip: {fileID: 7400000, guid: 4cd1aaa119f6e49ddb31da030704ad74, type: 2}
@@ -1852,6 +1856,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  forceIt: 0
   teleportAnimationClip: {fileID: 7400000, guid: a759834f2a11d4819a458490bd905561, type: 2}
 --- !u!1 &4583028489892907819
 GameObject:
@@ -1864,6 +1869,7 @@ GameObject:
   - component: {fileID: 4870803809673766678}
   - component: {fileID: 5168781308437090969}
   - component: {fileID: 1665155936750670451}
+  - component: {fileID: 8649755567016641007}
   m_Layer: 0
   m_Name: Animations
   m_TagString: bottom
@@ -1928,6 +1934,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 235b0dca957a44663ae0a9256d23c975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &8649755567016641007
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4583028489892907819}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 423
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &4908606974526057423
 GameObject:
   m_ObjectHideFlags: 0

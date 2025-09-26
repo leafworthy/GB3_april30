@@ -3,10 +3,20 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
+	public static class AttackBuilderExtensions
+	{
+		public static AttackBuilder AttackWith(this Life attacker, float damage) =>
+			AttackBuilder.Create().FromLife(attacker).WithDamage(damage);
+	}
+}
+
+namespace __SCRIPTS
+{
 	[Serializable]
 	public class Attack
 	{
-		private void MakeNewAttack(Life originLife, Vector2 originFloorPoint, Vector2 destinationFloorPoint, Life destinationLife, float damageAmount, float extraPush = 0)
+		private void MakeNewAttack(Life originLife, Vector2 originFloorPoint, Vector2 destinationFloorPoint, Life destinationLife, float damageAmount,
+		                           float extraPush = 0)
 		{
 			OriginFloorPoint = originFloorPoint;
 			OriginLife = originLife;
@@ -30,14 +40,12 @@ namespace __SCRIPTS
 			MakeNewAttack(attacker, attackFloorPoint, destinationFloorPoint, defender, damageAmount);
 		}
 
-
-
 		public Attack(Life attacker, Vector2 attackPosition, Life defender, float damageAmount, float extraPush = 0)
 		{
 			MakeNewAttack(attacker, attackPosition, defender.transform.position, defender, damageAmount);
 		}
 
-		public Attack(Life attacker, Life defender, Vector2 attackPointWithHeight, Vector2 destinationPointWithHeight,  float damageAmount)
+		public Attack(Life attacker, Life defender, Vector2 attackPointWithHeight, Vector2 destinationPointWithHeight, float damageAmount)
 		{
 			MakeNewAttack(attacker, attackPointWithHeight - new Vector2(0, 5), destinationPointWithHeight - new Vector2(0, 5), defender, damageAmount);
 		}
@@ -65,5 +73,6 @@ namespace __SCRIPTS
 		public Vector2 OriginFloorPoint;
 		public float ExtraPush;
 		public Color color = Color.red;
+		public bool CausesFlying;
 	}
 }

@@ -5,26 +5,27 @@ namespace __SCRIPTS
 	public class Tmato_SFX : MonoBehaviour
 	{
 
-		private UnitAnimations anim;
-		private AnimationEvents animEvents;
-		private Life life;
-		private JumpAbility jump;
-		private Shotgun shotgunAttack;
-		private ChainsawAttack chainsawAttack;
-		private ThrowMineAttack mineAttack;
+		private UnitAnimations anim  => _anim ??= GetComponent<UnitAnimations>();
+		private UnitAnimations _anim;
+		private AnimationEvents animEvents  => _animEvents ??= anim.animEvents;
+		private AnimationEvents _animEvents;
+		private Life life  => _life ??= GetComponent<Life>();
+		private Life _life;
+		private JumpAbility jump  => _jump ??= GetComponent<JumpAbility>();
+		private JumpAbility _jump;
+		private Shotgun shotgunAttack  => _shotgunAttack ??= GetComponent<Shotgun>();
+		private Shotgun _shotgunAttack;
+		private ChainsawAttack chainsawAttack => _chainsawAttack ??= GetComponent<ChainsawAttack>();
+		private ChainsawAttack _chainsawAttack;
+		private ThrowMineAttack mineAttack => _mineAttack ??= GetComponent<ThrowMineAttack>();
+		private ThrowMineAttack _mineAttack;
+		private ReloadAbility reload => _reload ??= GetComponent<ReloadAbility>();
+		private ReloadAbility _reload;
 		public AudioSource idleSound;
 		public AudioSource chainsawAttackIdleSound;
 
 		private void OnEnable()
 		{
-			anim = GetComponent<UnitAnimations>();
-			life = GetComponent<Life>();
-			jump = GetComponent<JumpAbility>();
-			shotgunAttack = GetComponent<Shotgun>();
-			chainsawAttack = GetComponent<ChainsawAttack>();
-			mineAttack = GetComponent<ThrowMineAttack>();
-
-			animEvents = anim.animEvents;
 			animEvents.OnStep += Anim_OnStep;
 			animEvents.OnHitStart += Anim_OnHit;
 			animEvents.OnDash += Anim_Dash;

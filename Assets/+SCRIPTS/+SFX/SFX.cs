@@ -12,7 +12,7 @@ namespace __SCRIPTS
 		private AudioAssets _audio;
 		public AudioSource UIaudioSource;
 		public AudioSource SFXaudioSource;
-		private const float maxDistance = 100;
+		private const float maxDistance = 200;
 		public void StartService()
 		{
 		}

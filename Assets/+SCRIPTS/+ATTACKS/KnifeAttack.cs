@@ -16,6 +16,8 @@ public class KnifeAttack : Ability
 	private JumpAbility _jumpAbility;
 
 	[SerializeField] private AnimationClip animationClip;
+	private GunAttack gunAttack  => _gunAttack ??= GetComponent<GunAttack>();
+	private GunAttack _gunAttack;
 
 	protected override bool requiresArms() => true;
 	protected override bool requiresLegs() => false;
@@ -56,9 +58,9 @@ public class KnifeAttack : Ability
 
 	protected override void AnimationComplete()
 	{
-		base.AnimationComplete();
 		anim.SetBool(UnitAnimations.IsBobbing, true);
 		isAttacking = false;
+		base.AnimationComplete();
 		if (!isPressing) return;
 
 		PlayerKnifePress(null);
@@ -77,8 +79,22 @@ public class KnifeAttack : Ability
 
 	public override void Stop()
 	{
-		base.Stop();
 		isAttacking = false;
+
+		if (lastArmAbility != null)
+		{
+			if (lastArmAbility is GunAttack)
+			{
+				lastArmAbility.Resume();
+			}
+			base.Stop();
+			lastArmAbility.Do();
+		}
+		else
+		{
+			base.Stop();
+			gunAttack.Do();
+		}
 	}
 
 	private void StartAttack()
@@ -100,8 +116,7 @@ public class KnifeAttack : Ability
 
 		var targetLife = targetHit.transform.gameObject.GetComponentInParent<Life>();
 		if (targetLife == null) return;
-		var hitPoint = AttackUtilities.RaycastToObject(targetLife, life.EnemyLayer);
-		AttackUtilities.HitTarget(life, targetLife, hitPoint.point, life.TertiaryAttackDamageWithExtra);
+		AttackUtilities.HitTarget(life, targetLife, life.TertiaryAttackDamageWithExtra);
 		OnHit?.Invoke(targetHit.transform.position);
 	}
 }

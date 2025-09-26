@@ -1,4 +1,5 @@
 ﻿using GangstaBean.Core;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,14 +46,14 @@ namespace __SCRIPTS.HUD_Displays
 			if (player.CurrentCharacter != Character.Bean) return;
 			if (!isGlock)
 			{
-				AKIcon.enabled = false;
-				PistolIcon.enabled = true;
+				AKIcon.gameObject.SetActive(false);
+				PistolIcon.gameObject.SetActive(true);
 				ammoDisplay.SetAmmo( player.SpawnedPlayerGO.GetComponent<AmmoInventory>().unlimitedAmmo);
 			}
 			else
 			{
-				AKIcon.enabled = true;
-				PistolIcon.enabled = false;
+				AKIcon.gameObject.SetActive(true);
+				PistolIcon.gameObject.SetActive(false);
 				ammoDisplay.SetAmmo(player.SpawnedPlayerGO.GetComponent<AmmoInventory>().primaryAmmo);
 			}
 		}

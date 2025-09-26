@@ -86,13 +86,24 @@ namespace __SCRIPTS
 			if (AllJoinedPlayers.Count >= 4) return;
 
 			joiningPlayer.ConnectPlayerToController(newPlayerInput, playerPresets[newPlayerInput.playerIndex], newPlayerInput.playerIndex);
-			if(mainPlayer == null) SetMainPlayer(joiningPlayer);
+			if (mainPlayer == null) SetMainPlayer(joiningPlayer);
 			AllJoinedPlayers.Add(joiningPlayer);
 			OnPlayerJoins?.Invoke(joiningPlayer);
 			joiningPlayer.OnPlayerDies += Player_PlayerDies;
 		}
 
 		private void Player_PlayerDies(Player deadPlayer)
+		{
+			PlayerDead(deadPlayer);
+
+			if (AllJoinedPlayersAreDead())
+			{
+				Debug.Log("all players dead");
+				OnAllJoinedPlayersDead?.Invoke();
+			}
+		}
+
+		private void PlayerDead(Player deadPlayer)
 		{
 			if (deadPlayer.IsMainPlayer())
 			{
@@ -103,18 +114,18 @@ namespace __SCRIPTS
 					Debug.Log("no other players to switch to");
 					return;
 				}
-				if(nextPlayer == mainPlayer)
+
+				if (nextPlayer == mainPlayer)
 				{
 					Debug.Log("next player is already main player");
 					return;
 				}
+
 				SetMainPlayer(nextPlayer);
 			}
 
 			Debug.Log("OnPlayerDies called");
 			OnPlayerDies?.Invoke(deadPlayer);
-
-			if (AllJoinedPlayersAreDead()) OnAllJoinedPlayersDead?.Invoke();
 		}
 
 		private void SetMainPlayer(Player nextPlayer)
@@ -151,6 +162,19 @@ namespace __SCRIPTS
 			player.input.SwitchCurrentActionMap(actionMap);
 		}
 
+		public void UnjoinPlayer(Player pausingPlayer)
+		{
+			if (!AllJoinedPlayers.Contains(pausingPlayer)) return;
+			AllJoinedPlayers.Remove(pausingPlayer);
+			pausingPlayer.OnPlayerDies -= Player_PlayerDies;
+			if (pausingPlayer.IsMainPlayer())
+			{
+				var nextPlayer = AllJoinedPlayers.FirstOrDefault(t => t != pausingPlayer && t.state == Player.State.Alive);
+				SetMainPlayer(nextPlayer);
+			}
 
+			if (pausingPlayer.SpawnedPlayerGO != null) Destroy(pausingPlayer.SpawnedPlayerGO);
+			Services.objectMaker.Unmake(pausingPlayer.gameObject);
+		}
 	}
 }

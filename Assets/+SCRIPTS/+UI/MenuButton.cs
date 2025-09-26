@@ -16,16 +16,17 @@ namespace __SCRIPTS
 			Damage,
 			Speed,
 			Nades,
-			Gas
+			Gas,
+			Respawn,
+			Unspawn
 		}
 		public Sprite OnSprite;
 		public Sprite OffSprite;
-		public Image sprite;
+		public Image sprite => GetComponentInChildren<Image>();
 		public ButtonType type;
 
 		private void Awake()
 		{
-			if(sprite == null) sprite = GetComponentInChildren<Image>();
 			UnHighlight();
 		}
 

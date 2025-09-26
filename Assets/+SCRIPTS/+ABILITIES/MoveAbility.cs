@@ -245,7 +245,7 @@ namespace __SCRIPTS
 
 		private void Life_AttackHit(Attack attack)
 		{
-			if (life.IsDead()) return;
+			//if (life.IsDead()) return;
 			Push(attack.Direction, attack.DamageAmount + attack.ExtraPush);
 		}
 

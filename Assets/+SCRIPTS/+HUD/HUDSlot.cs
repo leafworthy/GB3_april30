@@ -12,6 +12,11 @@ namespace __SCRIPTS
 
 		public void SetPlayer(Player player)
 		{
+			if (player == null)
+			{
+				characterHUD.gameObject.SetActive(false);
+				return;
+			}
 			currentPlayer = player;
 
 			var playerStats = player.GetComponent<PlayerStats>();
@@ -29,6 +34,7 @@ namespace __SCRIPTS
 
 			charSelectMenu.gameObject.SetActive(false);
 			characterHUD.gameObject.SetActive(true);
+			currentPlayer.OnPlayerDies += SetCharacterHudInvisible;
 		}
 
 		private void OnEnable()
@@ -49,6 +55,17 @@ namespace __SCRIPTS
 			SetPlayer(currentPlayer);
 			charSelectMenu.gameObject.SetActive(false);
 			characterHUD.gameObject.SetActive(true);
+
+		}
+
+		private void SetCharacterHudInvisible(Player player)
+		{
+			if (currentPlayer == null) return;
+			if (currentPlayer != player) return;
+			currentPlayer = null;
+			SetPlayer(null);
+			charSelectMenu.gameObject.SetActive(false);
+			characterHUD.gameObject.SetActive(false);
 
 		}
 

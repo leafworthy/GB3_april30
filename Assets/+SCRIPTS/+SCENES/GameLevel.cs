@@ -11,16 +11,19 @@ namespace __SCRIPTS
 
 		private void Start()
 		{
+
 			Services.playerManager.OnAllJoinedPlayersDead += LoseLevel;
 		}
 
 		public void StopLevel()
 		{
+
 			Services.playerManager.OnAllJoinedPlayersDead -= LoseLevel;
 		}
 
 		private void LoseLevel()
 		{
+			Debug.Log("lose level");
 			OnGameOver?.Invoke();
 		}
 	}

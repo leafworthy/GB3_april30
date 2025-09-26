@@ -11,6 +11,8 @@ namespace __SCRIPTS.HUD_Displays
 		public TMP_Text totalText;
 		private Ammo ammoToDisplay;
 		public CanvasGroup ammoDisplayCanvas;
+		public WeaponButton weaponButton =>  _weaponButton ??= GetComponentInChildren<WeaponButton>();
+		private WeaponButton _weaponButton;
 
 		public bool greys;
 		private bool init;
@@ -44,6 +46,11 @@ namespace __SCRIPTS.HUD_Displays
 		private void Ungrey()
 		{
 			if (greys) ammoDisplayCanvas.alpha = 1;
+		}
+
+		public void SetButton(WeaponButton.buttons button)
+		{
+			weaponButton.Set(button);
 		}
 
 		public void SetAmmo(Ammo newAmmo)

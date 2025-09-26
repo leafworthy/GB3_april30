@@ -15,6 +15,7 @@ namespace __SCRIPTS
 
 		public event Action<Attack> OnDead;
 		public event Action<Attack> OnAttackHit;
+		public event Action<Attack> OnFlying;
 
 		private bool isInvincible =>  unitStats.Data.isInvincible;
 
@@ -49,7 +50,11 @@ namespace __SCRIPTS
 			if (isDead || IsTemporarilyInvincible || isInvincible) return;
 			currentHealth = Mathf.Max(0, currentHealth - attack.DamageAmount);
 			if (currentHealth <= 0 && !isInvincible) StartDeath(attack);
-
+			if (attack.CausesFlying)
+			{
+				Debug.Log("on attack sent flying");
+				OnFlying?.Invoke(attack);
+			}
 			OnAttackHit?.Invoke(attack);
 		}
 
