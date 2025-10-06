@@ -1,23 +1,26 @@
 using System.Collections.Generic;
 using __SCRIPTS;
 using __SCRIPTS.Cursor;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
+public class EnemySpawner : SerializedMonoBehaviour
 {
-	[Header("Enemy Prefabs"), SerializeField]
+	private struct PrefabAndEnemyTier
+	{
+		public GameObject prefab;
+		public int EnemyTier;
+	}
 
-	private List<GameObject> enemyPrefabs = new();
+	[SerializeField] private List<PrefabAndEnemyTier> enemyPrefabsDictionary = new();
 	[SerializeField] private bool randomizeEnemy = true;
 
 	[Header("Spawn Settings"), SerializeField]
-
 	private float spawnInterval = 2f;
-	[SerializeField] private float spawnMargin = 1f;
+	private float spawnMargin = -2f;
 	[SerializeField] private float spawnDuration = 30f; // 0 for infinite
 
 	[Header("Spawn Sides"), SerializeField]
-
 	private bool spawnLeft = true;
 	[SerializeField] private bool spawnRight = true;
 	[SerializeField] private bool spawnBottom = true;
@@ -29,13 +32,13 @@ public class EnemySpawner : MonoBehaviour
 	private bool isFinished;
 	public bool IsFinished => isFinished;
 
-	protected virtual void OnTriggerEnter2D(Collider2D other)
+	protected void OnTriggerEnter2D(Collider2D other)
 	{
-
 		var otherLife = other.GetComponent<Life>();
-		if(otherLife == null) return;
-		if(otherLife.IsDead()) return;
+		if (otherLife == null) return;
+		if (otherLife.IsDead()) return;
 		if (!otherLife.Player.IsHuman()) return;
+		if (isFinished) return;
 		StartSpawning();
 	}
 
@@ -46,7 +49,7 @@ public class EnemySpawner : MonoBehaviour
 
 		if (mainCamera == null) Debug.LogError("No main camera found!");
 
-		if (enemyPrefabs.Count == 0) Debug.LogWarning("No enemy prefabs assigned to spawner!");
+		if (enemyPrefabsDictionary.Count == 0) Debug.LogWarning("No enemy prefabs assigned to spawner!");
 	}
 
 	private void Update()
@@ -65,17 +68,15 @@ public class EnemySpawner : MonoBehaviour
 		}
 
 		// Spawn enemy at interval
-		if (spawnTimer >= spawnInterval)
-		{
-			SpawnAtRandomEdge();
-			spawnTimer = 0f;
-		}
+		if (!(spawnTimer >= spawnInterval)) return;
+		SpawnAtRandomEdge();
+		spawnTimer = 0f;
 	}
 
 	// Public method to start spawning
-	public void StartSpawning()
+	private void StartSpawning()
 	{
-		if(isSpawning) return;
+		if (isSpawning) return;
 		isSpawning = true;
 		isFinished = false;
 		spawnTimer = 0f;
@@ -84,7 +85,7 @@ public class EnemySpawner : MonoBehaviour
 	}
 
 	// Public method to stop spawning
-	public void StopSpawning()
+	private void StopSpawning()
 	{
 		isSpawning = false;
 		isFinished = true;
@@ -98,47 +99,27 @@ public class EnemySpawner : MonoBehaviour
 		StartSpawning();
 	}
 
-	// Toggle spawning on/off
-	public void ToggleSpawning()
-	{
-		if (isSpawning)
-			StopSpawning();
-		else
-			StartSpawning();
-	}
-
-	// Check if currently spawning
-	public bool IsSpawning() => isSpawning;
-
-	// Get remaining spawn time
-	public float GetRemainingTime()
-	{
-		if (spawnDuration <= 0) return -1f; // Infinite duration
-		return Mathf.Max(0f, spawnDuration - durationTimer);
-	}
-
 	private void SpawnAtRandomEdge()
 	{
+		if (enemyPrefabsDictionary.Count == 0) return;
 		// Get spawn position and enemy prefab
 		var spawnPos = GetRandomSpawnPosition();
 		var enemyPrefab = GetEnemyPrefab();
 
-		if (enemyPrefab != null) SpawnEnemy(enemyPrefab, spawnPos);
+		SpawnEnemy(enemyPrefab, spawnPos);
 	}
 
-	private GameObject GetEnemyPrefab()
+	private PrefabAndEnemyTier GetEnemyPrefab()
 	{
-		if (enemyPrefabs.Count == 0) return null;
-
 		if (randomizeEnemy)
 		{
 			// Pick random enemy from list
-			return enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+			return enemyPrefabsDictionary[Random.Range(0, enemyPrefabsDictionary.Count)];
 		}
 
 		// Cycle through enemies in order
-		var index = Mathf.FloorToInt(durationTimer / spawnInterval) % enemyPrefabs.Count;
-		return enemyPrefabs[index];
+		var index = Mathf.FloorToInt(durationTimer / spawnInterval) % enemyPrefabsDictionary.Count;
+		return enemyPrefabsDictionary[index];
 	}
 
 	private Vector3 GetRandomSpawnPosition()
@@ -187,30 +168,10 @@ public class EnemySpawner : MonoBehaviour
 		return spawnPosition;
 	}
 
-	private void SpawnEnemy(GameObject prefab, Vector3 position)
+	private void SpawnEnemy(PrefabAndEnemyTier prefab, Vector3 position)
 	{
-		var enemy = Instantiate(prefab, position, Quaternion.identity);
+		Services.enemyManager.SpawnNewEnemy(prefab.prefab, position, prefab.EnemyTier);
 
-		// Optional: parent to a container for organization
-		// enemy.transform.SetParent(transform);
-
-		Debug.Log($"Spawned {prefab.name} at {position}");
-	}
-
-	// Optional: Clean up all spawned enemies
-	public void DestroyAllEnemies()
-	{
-		// If enemies are parented to this object
-		foreach (Transform child in transform)
-		{
-			Destroy(child.gameObject);
-		}
-
-		// Or find by tag
-		// GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-		// foreach (GameObject enemy in enemies)
-		// {
-		//     Destroy(enemy);
-		// }
+		Debug.Log($"Spawned {prefab.prefab.name} at {position}");
 	}
 }

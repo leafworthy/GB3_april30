@@ -18,10 +18,10 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		public Collider2D sortingBounds;
 
-		[NonSerialized] public readonly List<IsoSpriteSorting> staticDependencies = new(1024);
-		[NonSerialized] public readonly List<IsoSpriteSorting> inverseStaticDependencies = new(1024);
-		[NonSerialized] public readonly List<IsoSpriteSorting> movingDependencies = new(1024);
-		[NonSerialized] private readonly List<IsoSpriteSorting> visibleStaticDependencies = new(1024);
+		[NonSerialized] public readonly List<IsoSpriteSorting> staticDependencies = new(2048);
+		[NonSerialized] public readonly List<IsoSpriteSorting> inverseStaticDependencies = new(2048);
+		[NonSerialized] public readonly List<IsoSpriteSorting> movingDependencies = new(2048);
+		[NonSerialized] private readonly List<IsoSpriteSorting> visibleStaticDependencies = new(2048);
 
 		public int renderBelowSortingOrder;
 		private int visibleStaticLastRefreshFrame;

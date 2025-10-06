@@ -8,8 +8,8 @@ namespace __SCRIPTS
 		//public PlayerIndex playerIndex;
 		public Color playerColor;
 		public bool isPlayer = true;
-		public int startingCash = 1500;
-		public int startingGas = 3;
+		public int startingCash = 0;
+		public int startingGas = 0;
 
 	}
 }

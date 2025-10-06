@@ -1,3 +1,4 @@
+using System;
 using __SCRIPTS;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class ExplodeOnDeath : MonoBehaviour
 	public float explosionSize = 3f;
 
 	public GameObject transformToDestroy;
+	public event Action OnExplode;
 
 	private void OnEnable()
 	{
@@ -29,6 +31,7 @@ public class ExplodeOnDeath : MonoBehaviour
 		lifeFX.ExplodeDebreeEverywhere(explosionSize);
 		 life.OnDying -= Life_OnDying;
 		 AttackUtilities.ExplosionFX(transformToDestroy.transform.position, explosionSize/5);
+		 OnExplode?.Invoke();
 		 Services.objectMaker.Unmake(transformToDestroy);
 	}
 }

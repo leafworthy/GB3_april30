@@ -23,7 +23,8 @@ namespace __SCRIPTS
 
 		public void StartService()
 		{
-			Services.levelManager.OnLevelSpawnedPlayer += ListenToJoinedLevelSpawnedPlayer;
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel += ListenToJoinedLevelSpawnedPlayer;
+			Services.levelManager.OnLevelSpawnedPlayerFromPlayerSetupMenu += ListenToJoinedLevelSpawnedPlayer;
 
 			// Hide menu graphic initially
 			if (graphic != null)
@@ -46,7 +47,7 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			StopListeningToJoinedPlayers();
-			Services.levelManager.OnLevelSpawnedPlayer -= ListenToJoinedLevelSpawnedPlayer;
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel -= ListenToJoinedLevelSpawnedPlayer;
 		}
 
 		private void StopListeningToJoinedPlayers()

@@ -63,9 +63,9 @@ using UnityEngine.InputSystem.Utilities;
 ///     }
 ///
 ///     // Invoked when "Attack" action is either started, performed or canceled.
-///     public void OnSwing(InputAction.CallbackContext context)
+///     public void OnAttack(InputAction.CallbackContext context)
 ///     {
-///         Debug.Log($"OnSwing: {context.ReadValue&lt;float&gt;()}");
+///         Debug.Log($"OnAttack: {context.ReadValue&lt;float&gt;()}");
 ///     }
 ///
 ///     #endregion

@@ -40,7 +40,7 @@ namespace __SCRIPTS
 		public int playerIndex;
 		public bool hasKey;
 
-		public event Action<Player, bool> OnPlayerDies;
+		public event Action<Player,bool> OnPlayerDies;
 		public event Action<Player> OnPlayerLeavesUpgradeSetupMenu;
 
 		private PlayerUpgrades playerUpgrades;
@@ -64,6 +64,7 @@ namespace __SCRIPTS
 
 		public void OnPlayerDied(Player player, bool isRespawning)
 		{
+			spawnedPlayerDefence.OnDeathComplete -= OnPlayerDied;
 			Debug.Log("player died",this);
 			SetState(State.Dead);
 			OnPlayerDies?.Invoke(this, isRespawning);
@@ -89,6 +90,10 @@ namespace __SCRIPTS
 		{
 			if (newGO == null) return;
 
+			if (spawnedPlayerDefence != null)
+			{
+				spawnedPlayerDefence.OnDeathComplete -= OnPlayerDied;
+			}
 			SpawnedPlayerGO = newGO;
 			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
 			if (spawnedPlayerDefence == null) return;
@@ -188,7 +193,11 @@ namespace __SCRIPTS
 			Services.playerStatsManager.ChangeStat(this, PlayerStat.StatType.TotalCash, -amount);
 		}
 
-		public bool isDead() => spawnedPlayerDefence.IsDead();
+		public bool isDead()
+		{
+			if (spawnedPlayerDefence == null) return true;
+			return spawnedPlayerDefence.IsDead();
+		}
 
 		public void LeaveUpgradeSetupMenu()
 		{
@@ -207,6 +216,7 @@ namespace __SCRIPTS
 				return;
 			}
 			spawnedPlayerDefence.DieNow();
+
 		}
 	}
 }

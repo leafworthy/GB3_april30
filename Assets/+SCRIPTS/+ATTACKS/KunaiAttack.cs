@@ -82,6 +82,7 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
+			if (player == null) return;
 			player.Controller.Attack2LeftTrigger.OnPress -= StartPress;
 			player.Controller.Attack2LeftTrigger.OnRelease -= StopPressing;
 		}

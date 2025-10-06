@@ -23,7 +23,7 @@ namespace __SCRIPTS.Cursor
 		{
 			UnityEngine.Cursor.visible = false;
 			Services.levelManager.OnStartLevel += LevelStartsLevel;
-			Services.levelManager.OnLevelSpawnedPlayer += InitCursor;
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel += InitCursor;
 		}
 
 		private void LevelStartsLevel(GameLevel level)
@@ -38,7 +38,7 @@ namespace __SCRIPTS.Cursor
 		private void OnDisable()
 		{
 			Services.levelManager.OnStartLevel -= LevelStartsLevel;
-			Services.levelManager.OnLevelSpawnedPlayer -= InitCursor;
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel -= InitCursor;
 			currentCursors.Clear();
 		}
 

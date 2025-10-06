@@ -16,8 +16,9 @@ public class TopLeftZoneTextShower : GUIDebugTextShower
 	public int index;
 	private bool tryingToChange;
 	public GameObject gogogo;
+	private float cooldownTimer;
 
-	private void OnEnable()
+	private void Start()
 	{
 		Services.enemyManager.OnEnemyDying -= EnemyManager_OnEnemyDying;
 		Services.enemyManager.OnEnemyDying += EnemyManager_OnEnemyDying;
@@ -33,6 +34,8 @@ public class TopLeftZoneTextShower : GUIDebugTextShower
 
 	private void Update()
 	{
+
+
 		SetTextToEnemiesInThisZone();
 	}
 
@@ -45,14 +48,15 @@ public class TopLeftZoneTextShower : GUIDebugTextShower
 	private void SetTextToEnemiesInThisZone()
 	{
 		var enemiesInThisZone = FindOverlappingEnemyColliders(Services.assetManager.LevelAssets.EnemyLayer);
-		if (enemiesInThisZone == 0)
+		if (enemiesInThisZone <=3 )
 		{
 			// Add null check for nextZone and its collider
 			if (boundsSwitcher.nextZone != null && boundsSwitcher.nextZone.zoneCollider != null &&
-			    Collider2DExtensions.IsObjectWithinCollider(boundsSwitcher.nextZone.zoneCollider, Services.playerManager.mainPlayer.SpawnedPlayerGO))
+			    Collider2DExtensions.IsObjectWithinCollider(boundsSwitcher.nextZone?.zoneCollider, Services.playerManager?.mainPlayer?.SpawnedPlayerGO))
 			{
 				gogogo.SetActive(false);
-				boundsSwitcher.SetZone(index + 1);
+				index++;
+				boundsSwitcher.SetZone(index);
 				Debug.Log("DID IT");
 			}
 			else
@@ -64,11 +68,9 @@ public class TopLeftZoneTextShower : GUIDebugTextShower
 		else
 			gogogo.SetActive(false);
 
-		SetText("Enemies left: " + enemiesInThisZone);
+		Debug.Log("enemiesInThisZone: " + enemiesInThisZone);
+		SetText(enemiesInThisZone.ToString());
 	}
-
-
-
 
 	private int FindOverlappingEnemyColliders(LayerMask targetLayerMask)
 	{
@@ -106,9 +108,9 @@ public class TopLeftZoneTextShower : GUIDebugTextShower
 			overlappingEnemies.Add(ai);
 		}
 
-		var spawnPoints = FindObjectsByType<EnemyPlacer>(FindObjectsSortMode.None).ToList();
-		var collided = Collider2DExtensions.FindEnemyPlacersWithinCollider(boundsSwitcher.currentZone.zoneCollider, spawnPoints);
+		var spawnPoints = boundsSwitcher.currentZone.GetComponentsInChildren<EnemyPlacer>(true).ToList();
+		var unfinishedEnemySpawners = boundsSwitcher.currentZone.GetComponentsInChildren<EnemySpawner>(true).Where(  s => !s.IsFinished).ToList();
 
-		return overlappingEnemies.Count + collided.Count;
+		return overlappingEnemies.Count + spawnPoints.Count + unfinishedEnemySpawners.Count;
 	}
 }

@@ -18,11 +18,14 @@ namespace __SCRIPTS
 		private Players playerManager => _playerManager ?? ServiceLocator.Get<Players>();
 		private bool isInGame;
 
+		public HealthBar bossHealthbar;
+
 		public void StartService()
 		{
 			Vignette.SetActive(false);
 			levelManager.OnStartLevel += LevelSceneOnStartLevel;
-			levelManager.OnLevelSpawnedPlayer += LevelSceneOnLevelSpawnedPlayer;
+			levelManager.OnLevelSpawnedPlayerFromLevel += LevelSceneOnLevelSpawnedPlayerFromLevel;
+			levelManager.OnLevelSpawnedPlayerFromPlayerSetupMenu += LevelSceneOnLevelSpawnedPlayerFromPlayerSetupMenu;
 			levelManager.OnGameOver += Level_OnGameOver;
 			levelManager.OnWinGame += Level_OnGameOver;
 			levelManager.OnStopLevel += t => Level_OnGameOver();
@@ -31,8 +34,18 @@ namespace __SCRIPTS
 			DisableAllHUDSlots();
 		}
 
+		private void LevelSceneOnLevelSpawnedPlayerFromPlayerSetupMenu(Player player)
+		{
+			var playerStats = player.GetComponent<PlayerStats>();
+			if (playerStats != null) playerStats.ResetStats();
+		}
 
-
+		private void LevelSceneOnLevelSpawnedPlayerFromLevel(Player player)
+		{
+			var playerStats = player.GetComponent<PlayerStats>();
+			if (playerStats != null) playerStats.ResetStats();
+			SetHUDSlotPlayer(player);
+		}
 		private void Level_OnGameOver()
 		{
 			Vignette.SetActive(false);
@@ -44,7 +57,7 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			levelManager.OnStartLevel -= LevelSceneOnStartLevel;
-			levelManager.OnLevelSpawnedPlayer -= LevelSceneOnLevelSpawnedPlayer;
+			levelManager.OnLevelSpawnedPlayerFromLevel -= LevelSceneOnLevelSpawnedPlayerFromLevel;
 			playerManager.OnPlayerJoins -= PlayerOnPlayerJoins;
 			levelManager.OnGameOver -= Level_OnGameOver;
 			levelManager.OnWinGame -= Level_OnGameOver;
@@ -62,12 +75,7 @@ namespace __SCRIPTS
 
 		}
 
-		private void LevelSceneOnLevelSpawnedPlayer(Player player)
-		{
-			var playerStats = player.GetComponent<PlayerStats>();
-			if (playerStats != null) playerStats.ResetStats();
-			SetHUDSlotPlayer(player);
-		}
+
 
 		private void LevelSceneOnStartLevel(GameLevel gameLevel)
 		{
@@ -103,6 +111,7 @@ namespace __SCRIPTS
 
 			foreach (var hudSlot in currentHUDSlots.Where(hudSlot => !hudSlot.IsActive))
 			{
+				Debug.Log("found open slot", hudSlot);
 				return hudSlot;
 			}
 
@@ -117,6 +126,14 @@ namespace __SCRIPTS
 			{
 				hudSlot.gameObject.SetActive(false);
 			}
+		}
+
+		public HealthBar GetBossLifeHealthbar() => bossHealthbar;
+
+		public void SetBossLifeHealthbarVisible(bool value)
+		{
+			if (bossHealthbar == null) return;
+			bossHealthbar.gameObject.SetActive(value);
 		}
 	}
 }

@@ -30,7 +30,7 @@ namespace __SCRIPTS
 		{
 			life.OnDying += Life_OnDying;
 			hideRevealObjects = GetComponentInChildren<HideRevealObjects>();
-			hideRevealObjects.Set(0);
+			hideRevealObjects?.Set(0);
 			howMuchLoot =  Random.Range(1, howMuchLoot); // Randomly add 0-2 loot items to the container
 			OnActionPress += interactable_OnInteract;
 			OnPlayerEnters += interactable_PlayerEnters;
@@ -74,14 +74,14 @@ namespace __SCRIPTS
 		private void interactable_OnInteract(Player player)
 		{
 			PlayLootOpenSound();
-			hideRevealObjects.Set(1);
+			hideRevealObjects?.Set(1);
 			lootTable.DropLoot(dropPosition + transform.position, lootType);
 			howMuchLoot--;
 			if (howMuchLoot >= 0) return;
-			hideRevealObjects.Set(2);
+			hideRevealObjects?.Set(2);
 			FinishInteraction(player);
-			var selector = player.SpawnedPlayerGO.GetComponent<InteractableSelector>();
-			selector.RemoveInteractable(this);
+			var selector = player?.SpawnedPlayerGO?.GetComponent<InteractableSelector>();
+			selector?.RemoveInteractable(this);
 		}
 
 		private void PlayLootOpenSound()

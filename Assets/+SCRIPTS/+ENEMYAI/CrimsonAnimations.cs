@@ -23,24 +23,32 @@ public class CrimsonAnimations : StateMachine<CrimsonAnimations>
 	private IdleState idleState;
 	private RunToPointState runToPointState;
 	private static PauseManager _pauseManager;
-	private static PauseManager pauseManager => _pauseManager ??= ServiceLocator.Get<PauseManager>();
+	private Life life => _life ??= GetComponentInChildren<Life>();
+	   private Life _life;
+	   private float cooldownTimer;
+	   private static PauseManager pauseManager => _pauseManager ??= ServiceLocator.Get<PauseManager>();
 
 	protected override void Start()
 	{
 		base.Start();
 
-		var enemyManager = ServiceLocator.Get<EnemyManager>();
-		enemyManager.ConfigureNewEnemy(gameObject);
+		Services.enemyManager.ConfigureNewEnemy(gameObject);
 
 		idleState = new IdleState();
 		runToPointState = new RunToPointState();
 		SwitchState(idleState);
 	}
 
-	private void OnEnable()
+	private void OnTriggerEnter2D(Collider2D other)
 	{
-		if (idleState != null)
-			SwitchState(idleState);
+		if (cooldownTimer > 0) return;
+		var otherLife = other.GetComponent<Life>();
+		if (otherLife == null) return;
+		if (otherLife.IsDead()) return;
+		if (!otherLife.Player.IsHuman()) return;
+		otherLife.TakeDamage(AttackBuilder.Create().FromLife(life).ToLife(otherLife).WithDamage(0).WithFlying(true).Build());
+		cooldownTimer += 4;
+
 	}
 
 	public float CalculateSpeed()
@@ -76,6 +84,7 @@ public class CrimsonAnimations : StateMachine<CrimsonAnimations>
 
 		public override void Update(CrimsonAnimations machine)
 		{
+			machine.cooldownTimer -= Time.deltaTime;
 			if (machine.currentSpeed > machine.minimumSpeed)
 				machine.currentSpeed = Mathf.Clamp(machine.currentSpeed - machine.deceleration * Time.deltaTime, 0, machine.maxSpeed);
 			else

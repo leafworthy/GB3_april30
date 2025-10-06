@@ -14,7 +14,7 @@ namespace __SCRIPTS
 		private UnitAnimations animations => _animations ??= GetComponent<UnitAnimations>();
 		private UnitAnimations _animations;
 		public bool IsDead() => unitHealth.IsDead;
-		public bool IsShielded => unitHealth.IsShielded;
+		public bool IsShielded => false; //changed this
 		public float CurrentHealth => unitHealth.CurrentHealth;
 
 		#region UnitStats Wrappers
@@ -48,8 +48,11 @@ namespace __SCRIPTS
 
 		public bool IsHuman => Player != null && Player.IsHuman();
 		public LayerMask EnemyLayer => IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
-		public bool CanTakeDamage => !unitHealth.IsDead && !unitHealth.IsTemporarilyInvincible && !unitStats.Data.isInvincible;
-
+		public bool CanTakeDamage()
+		{
+			Debug.Log(!unitHealth.IsDead +"[BOY]dead"+!unitHealth.IsTemporarilyInvincible + "is temporary invis" + !unitStats.Data.isInvincible + "is invincible" );
+			return !unitHealth.IsDead && !unitHealth.IsTemporarilyInvincible && !unitStats.Data.isInvincible;
+		}
 		public event Action<Attack> OnAttackHit;
 		public event Action<float> OnFractionChanged;
 		public event Action<Attack> OnDying;
@@ -88,6 +91,7 @@ namespace __SCRIPTS
 			unitHealth.OnFlying += Health_OnFlying;
 			unitHealth.OnAttackHit += Health_AttackHit;
 			FillHealth();
+			Debug.Log("done initializing for " + player?.playerIndex);
 			if (unitStats.Data.category != UnitCategory.Character) SetPlayer(Services.playerManager.enemyPlayer);
 		}
 
@@ -107,7 +111,7 @@ namespace __SCRIPTS
 			if (animations == null) return;
 
 			animations.animEvents.OnDieStop += CompleteDeath;
-			animations.animEvents.OnInvincible += SetInvincible;
+			//animations.animEvents.OnInvincible += SetInvincible;
 		}
 
 		private void OnDisable()
@@ -121,11 +125,13 @@ namespace __SCRIPTS
 		public void SetPlayer(Player newPlayer)
 		{
 			player = newPlayer;
+			Debug.Log("Life setting player",this);
 			Init();
 
 			SetupAnimationEvents();
 			foreach (var component in GetComponentsInChildren<INeedPlayer>())
 			{
+				Debug.Log("setplayer for: " + component);
 				if (component != this)
 					component.SetPlayer(Player);
 			}
@@ -136,10 +142,10 @@ namespace __SCRIPTS
 			unitHealth.SetTemporaryInvincible(inOn);
 		}
 
-		public void CompleteDeath()
+		public void CompleteDeath(bool isRespawning)
 		{
 			Debug.Log("complete death", this);
-			OnDeathComplete?.Invoke(Player, true);
+			OnDeathComplete?.Invoke(Player, isRespawning);
 			Services.objectMaker.Unmake(gameObject);
 		}
 
@@ -199,14 +205,14 @@ namespace __SCRIPTS
 			Debug.Log("die now");
 			var killingBlow = AttackBuilder.Create().WithDamage(9999).FromLife(this).ToLife(this).Build();
 			unitHealth.TakeDamage(killingBlow);
-			 CompleteDeath();
+			 CompleteDeath(true);
 		}
 
 		public float GetFraction() => unitHealth.GetFraction();
 
 		public void SetShielding(bool isOn)
 		{
-			if (unitHealth != null) unitHealth.IsShielded = isOn;
+			if (unitHealth != null) unitHealth.IsShielded = false;
 		}
 
 		public void SetExtraMaxHealthFactor(float factor)

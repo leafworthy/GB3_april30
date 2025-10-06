@@ -30,12 +30,15 @@ namespace __SCRIPTS
 		private float smoothingFactor = .25f;
 		private Life _life;
 		private Life life => _life ??= GetComponentInParent<Life>();
-		private HealthBar healthBar  => _healthBar ??= GetComponentInChildren<HealthBar>(true);
-		private HealthBar _healthBar;
+		private HealthBar healthBar;
 		public bool BlockTint;
+		public bool isBoss = false;
 
 		public void Start()
 		{
+			if (!isBoss) healthBar = GetComponentInChildren<HealthBar>();
+			else healthBar = Services.hudManager.GetBossLifeHealthbar();
+			Services.hudManager.SetBossLifeHealthbarVisible(true);
 			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
 			if (life == null) return;
 			life.OnFractionChanged += DefenceOnDefenceChanged;
@@ -193,6 +196,8 @@ namespace __SCRIPTS
 		{
 			_life.OnFractionChanged -= DefenceOnDefenceChanged;
 			_life.OnDying -= DefenceOnDying;
+			if (!isBoss) return;
+			Services.hudManager.SetBossLifeHealthbarVisible(false);
 		}
 
 		private void UpdateGradient()

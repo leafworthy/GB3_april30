@@ -29,28 +29,22 @@ namespace __SCRIPTS
 			buttons.Init(player);
 		}
 
-		public void StopSetupMenu()
+		private void StopSetupMenu()
 		{
 			Visible.SetActive(false);
 			buttons.OnCharacterChosen -= Buttons_OnCharacterChosen;
 			buttons.CleanUp();
 			owner = null;
 			inputEnabled = false;
-			menuPanel.SetActive(false);
 		}
 
 		private void Buttons_OnCharacterChosen(Character character)
 		{
 			if (!inputEnabled) return;
 			owner.CurrentCharacter = character;
-
-			menuPanel.SetActive(false);
-			var levelManager = ServiceLocator.Get<LevelManager>();
-			levelManager.SpawnPlayerFromInGame(owner);
+			Services.levelManager.SpawnPlayerFromPlayerSetupMenu(owner);
 			OnCharacterChosen?.Invoke(character);
-			inputEnabled = false;
-			Visible.SetActive(false);
-			buttons.OnCharacterChosen -= Buttons_OnCharacterChosen;
+			StopSetupMenu();
 		}
 
 		private void Update()

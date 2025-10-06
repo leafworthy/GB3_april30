@@ -55,7 +55,7 @@ namespace __SCRIPTS
 			AddStat(new PlayerStat(PlayerStat.StatType.AttacksHit, 0));
 			AddStat(new PlayerStat(PlayerStat.StatType.AttacksTotal, 0));
 			if (owner == null) return;
-			AddStat(new PlayerStat(PlayerStat.StatType.TotalCash, owner.GetStartingCash()));
+			AddStat(new PlayerStat(PlayerStat.StatType.TotalCash,0));
 			AddStat(new PlayerStat(PlayerStat.StatType.Gas, 0));
 
 			OnStatsReset?.Invoke();

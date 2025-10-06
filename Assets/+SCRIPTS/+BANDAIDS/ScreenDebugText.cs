@@ -13,15 +13,20 @@ public class ScreenDebugText : GUIDebugTextShower
 	private GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
 	private GunAttack _gunAttack;
 
+	private void Start()
+	{
+		SetText("");
+	}
 
 	private void Update()
 	{
+		/*
 		SetText("Arms: " + (body?.doableArms.CurrentAbility?.AbilityName ?? "Idle") +
 		        "\nLegs: " + (body?.doableLegs.CurrentAbility?.AbilityName ?? "Idle")+
 		        "\nChainsaw: " + (chainsawAttack?.AbilityName + " " + chainsawAttack?.currentState) +
 		        "\nShield: " + (shieldAbility?.AbilityName + " " + shieldAbility?.currentState) +
 		        "\nGunAttack: " + (gunAttack?.AbilityName + " " + gunAttack?.currentState) +
-		        "\nCurrentWeapon: " + (threeWeaponSwitchAbility?.currentWeapon?.AbilityName + " " + threeWeaponSwitchAbility?.currentWeapon?.AbilityName)) ;
+		        "\nCurrentWeapon: " + (threeWeaponSwitchAbility?.currentWeapon?.AbilityName + " " + threeWeaponSwitchAbility?.currentWeapon?.AbilityName)) ;*/
 	}
 
 

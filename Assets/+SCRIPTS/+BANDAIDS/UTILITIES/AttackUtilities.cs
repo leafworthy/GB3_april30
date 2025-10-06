@@ -8,7 +8,7 @@ using UnityEditor;
 
 public static class AttackUtilities
 {
-	private const float PushFactor = 3;
+	private const float PushFactor = 2;
 #if UNITY_EDITOR
 	[MenuItem("Tools/Select Player Unit Animator")]
 	public static void SelectPlayerUnitAnimator()
@@ -59,7 +59,8 @@ public static class AttackUtilities
 	{
 		//took out && targetLife.IsPlayerAttackable
 		if (targetLife == null) return false;
-		return originLife.IsEnemyOf(targetLife) && targetLife.IsNotInvincible && !targetLife.IsObstacle && targetLife.CanTakeDamage;
+		  Debug.Log(originLife.IsEnemyOf(targetLife).ToString() + " enemy of" + targetLife.IsNotInvincible +  "is not invincible" + targetLife.CanTakeDamage() + "can take damage");
+		return originLife.IsEnemyOf(targetLife) && targetLife.IsNotInvincible && !targetLife.IsObstacle && targetLife.CanTakeDamage();
 	}
 
 	public static GameObject FindClosestHit(Life originLife, Vector2 attackPosition, float attackRange, LayerMask layerMask)

@@ -48,7 +48,7 @@ namespace __SCRIPTS.Projectiles
 
 
 
-		private void Dead()
+		private void Dead(bool b)
 		{
 			animationEvents.OnDieStop -= Dead;
 			Services.objectMaker.Unmake(gameObject);

@@ -13,7 +13,7 @@ public interface IService
 public class GameLauncher : MonoBehaviour
 {
 	[FormerlySerializedAs("assetsManager"),SerializeField] private AssetManager assetManagerManager;
-	[SerializeField] private HUDManager hudManagerManager;
+	[SerializeField] private HUDManager hudManager;
 	[SerializeField] private EnemyManager enemyManager;
 	[SerializeField] private LevelManager levelManager;
 	[SerializeField] private Players playersManager;
@@ -52,8 +52,8 @@ public class GameLauncher : MonoBehaviour
 		ServiceLocator.Register(objectMaker);
 
 		//REQUIRES levelManager + playerManager
-		hudManagerManager.StartService();
-		ServiceLocator.Register(hudManagerManager);
+		hudManager.StartService();
+		ServiceLocator.Register(hudManager);
 
 		//REQUIRES levelManaager
 		playerStatsManager.StartService();
@@ -85,7 +85,7 @@ public class GameLauncher : MonoBehaviour
 		private static string SceneName => "0_GameManagerScene";
 
 
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+		//[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 		private static void LoadGameManagerAtStart()
 		{
 			if (hasLaunched) return;

@@ -8,23 +8,22 @@ namespace __SCRIPTS
 		public PlayerSetupMenu charSelectMenu;
 		private Player currentPlayer;
 		public GameObject characterHUD;
+		private bool IsInMenu;
 
 		public bool IsActive { get; private set; }
 
 		public void SetPlayer(Player player)
 		{
 
-			if (IsActive)
+			if (IsActive && !IsInMenu)
 			{
 				Debug.Log("[HUD]here in hudslot already active", this);
 				return;
 			}
-			if (player == null)
+
+			if (currentPlayer != null)
 			{
-				Debug.Log("[HUD]here in hudslot player null or active", this);
-				characterHUD.gameObject.SetActive(false);
-				charSelectMenu.StopSetupMenu();
-				return;
+				currentPlayer.OnPlayerDies -= SetCharacterHudInvisible;
 			}
 
 			IsActive = true;
@@ -58,6 +57,7 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			charSelectMenu.OnCharacterChosen -= SetCharacterHudVisible;
+			if(currentPlayer != null)currentPlayer.OnPlayerDies -= SetCharacterHudInvisible;
 			IsActive = false;
 		}
 
@@ -66,18 +66,20 @@ namespace __SCRIPTS
 		private void SetCharacterHudVisible(Character currentCharacter)
 		{
 			if (currentPlayer == null) return;
+			Debug.Log("set hud visible");
 			SetPlayer(currentPlayer);
 			charSelectMenu.gameObject.SetActive(false);
 			characterHUD.gameObject.SetActive(true);
 
 		}
 
+
 		private void SetCharacterHudInvisible(Player player, bool b)
 		{
 			Debug.Log("got here");
-			currentPlayer = null;
 			IsActive = false;
-			SetPlayer(null);
+			currentPlayer.OnPlayerDies -= SetCharacterHudInvisible;
+			currentPlayer = null;
 			characterHUD.gameObject.SetActive(false);
 
 		}
@@ -89,6 +91,7 @@ namespace __SCRIPTS
 			charSelectMenu.StartSetupMenu(player);
 			Debug.Log("[HUD] here happened");
 			IsActive = true;
+			IsInMenu = true;
 		}
 
 

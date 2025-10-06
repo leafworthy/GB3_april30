@@ -18,7 +18,7 @@ namespace __SCRIPTS.HUD_Displays
 		private void Start()
 		{
 			Services.levelManager.OnStartLevel += (t) => UpdateDisplay();
-			Services.levelManager.OnLevelSpawnedPlayer += (t) => UpdateDisplay();
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel += (t) => UpdateDisplay();
 		}
 
 

@@ -29,8 +29,6 @@ namespace __SCRIPTS
 		}
 		public void InitializeAndLinkToPlayer(Player player)
 		{
-			if (initialized) return;
-			initialized = true;
 			if (player == null) return;
 
 			owner = player;

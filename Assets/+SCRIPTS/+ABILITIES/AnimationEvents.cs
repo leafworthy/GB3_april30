@@ -17,7 +17,7 @@ namespace __SCRIPTS
         public event Action OnHitStart;
         public event Action OnHitStop;
         public event Action OnDieStart;
-        public event Action OnDieStop;
+        public event Action<bool> OnDieStop;
         public event Action OnDashStart;
         public event Action OnDash;
         public event Action OnDashStop;
@@ -40,7 +40,7 @@ namespace __SCRIPTS
 
         public event Action OnMoveStop;
         public event Action OnMoveStart;
-    
+
         public event Action OnStep;
 
 
@@ -48,7 +48,7 @@ namespace __SCRIPTS
         {
             OnMoveStart?.Invoke();
         }
-     
+
         public void MoveStop()
         {
             OnMoveStop?.Invoke();
@@ -61,7 +61,7 @@ namespace __SCRIPTS
         {
             OnAnimationComplete?.Invoke();
         }
-    
+
         public void AfterHit()
         {
             OnAfterHit?.Invoke();
@@ -158,7 +158,7 @@ namespace __SCRIPTS
 
         public void DieStop()
         {
-            OnDieStop?.Invoke();
+            OnDieStop?.Invoke(false);
         }
 
         public void HitStart()

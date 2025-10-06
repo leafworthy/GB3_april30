@@ -1,3 +1,4 @@
+using System;
 using __SCRIPTS;
 using GangstaBean.Core;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class ShieldDashAbility : DashAbility
 {
+	public event Action OnShieldDash;
 	private float extraDashPushFactor = 3f;
 	public override string AbilityName => "Shield-Dash";
 	private ShieldAbility shieldAbility => _shieldAbility ??= GetComponent<ShieldAbility>();
@@ -13,7 +15,7 @@ public class ShieldDashAbility : DashAbility
 
 	protected override void AnimationComplete()
 	{
-
+		life.SetTemporarilyInvincible(false);
 		base.AnimationComplete();
 	}
 
@@ -66,6 +68,8 @@ public class ShieldDashAbility : DashAbility
 			{
 				continue;
 			}
+
+			OnShieldDash?.Invoke();
 			movement.Push((hit.transform.position - transform.position).normalized, life.DashSpeed * extraDashPushFactor);
 
 		}

@@ -5,4 +5,5 @@ public class Zone : MonoBehaviour
 {
 	public Collider2D zoneCollider;
 	public CinemachineVirtualCameraBase zoneCamera;
+	public bool isFinalBoss = false;
 }

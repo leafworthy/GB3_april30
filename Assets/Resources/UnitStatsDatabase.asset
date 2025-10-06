@@ -397,9 +397,9 @@ MonoBehaviour:
     category: 3
     debrisType: 1
     isPlayerSwingHittable: 1
-    showLifeBar: 0
-    isInvincible: 1
-    healthMax: 0
+    showLifeBar: 1
+    isInvincible: 0
+    healthMax: 600
     moveSpeed: 0
     dashSpeed: 0
     jumpSpeed: 0
@@ -749,7 +749,7 @@ MonoBehaviour:
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
-    healthMax: 600
+    healthMax: 2000
     moveSpeed: 50
     dashSpeed: 0
     jumpSpeed: 0
@@ -793,6 +793,56 @@ MonoBehaviour:
     attack4Range: 0
     hasData: 1
     isDefault: 0
+  - unitName: Military Truck
+    category: 3
+    debrisType: 1
+    isPlayerSwingHittable: 1
+    showLifeBar: 1
+    isInvincible: 0
+    healthMax: 800
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 0
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    hasData: 1
+    isDefault: 0
+  - unitName: Dumpster
+    category: 3
+    debrisType: 1
+    isPlayerSwingHittable: 1
+    showLifeBar: 1
+    isInvincible: 0
+    healthMax: 400
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 0
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    hasData: 1
+    isDefault: 0
   isLoading: 0
-  lastLoadTime: 2025-09-26 03:44:48
-  lastError: 
+  lastLoadTime: 2025-09-26 12:58:45
+  lastError: 'Network error: Cannot resolve destination host'

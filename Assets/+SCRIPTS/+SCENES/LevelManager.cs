@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using __SCRIPTS.Cursor;
 using UnityEngine;
 
@@ -11,18 +12,17 @@ namespace __SCRIPTS
 
 		public event Action<GameLevel> OnStopLevel;
 		public event Action<GameLevel> OnStartLevel;
-		public event Action<Player> OnLevelSpawnedPlayer;
+		public event Action<Player> OnLevelSpawnedPlayerFromLevel;
+		public event Action<Player> OnLevelSpawnedPlayerFromPlayerSetupMenu;
 		public event Action OnGameOver;
 		public event Action OnWinGame;
 		private float gameStartTime;
 		public bool loadInGame;
-		public bool canJoinInGame;
 
 		public void StartService()
 		{
 			gameObject.SetActive(true);
 			Services.sceneLoader.OnSceneReadyToStartLevel += SceneLoaderSceneReadyToStartLevel;
-			canJoinInGame = false;
 			if (loadInGame) StartGame(GetFirstLevelToLoad());
 			else StartGame(Services.assetManager.Scenes.mainMenu);
 		}
@@ -34,7 +34,6 @@ namespace __SCRIPTS
 
 		private void StartLevel(GameLevel newLevel)
 		{
-			canJoinInGame = true;
 			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
 			currentLevel = newLevel;
 			currentLevel.OnGameOver += newLevel_GameOver;
@@ -54,15 +53,22 @@ namespace __SCRIPTS
 
 			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
-				SpawnPlayerFromInGame(player);
+				SpawnPlayerFromLevel(player);
 			}
 		}
 
-		public void SpawnPlayerFromInGame(Player player)
+		public void SpawnPlayerFromLevel(Player player)
 		{
 			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
 			player.Spawn(CursorManager.GetCamera().transform.position);
-			OnLevelSpawnedPlayer?.Invoke(player);
+			OnLevelSpawnedPlayerFromLevel?.Invoke(player);
+		}
+
+		public void SpawnPlayerFromPlayerSetupMenu(Player player)
+		{
+			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
+			player.Spawn(CursorManager.GetCamera().transform.position);
+			OnLevelSpawnedPlayerFromPlayerSetupMenu?.Invoke(player);
 		}
 
 		private void newLevel_GameOver()
@@ -87,7 +93,6 @@ namespace __SCRIPTS
 		{
 			var gameLevel = FindFirstObjectByType<GameLevel>();
 			if (gameLevel == null) return;
-			canJoinInGame = true;
 			StartLevel(gameLevel);
 		}
 
@@ -95,7 +100,6 @@ namespace __SCRIPTS
 		{
 			if (currentLevel == null) return;
 			restartedLevelScene = currentLevel.scene;
-			canJoinInGame = false;
 			currentLevel.StopLevel();
 			currentLevel.OnGameOver -= newLevel_GameOver;
 			currentLevel = null;
@@ -111,10 +115,19 @@ namespace __SCRIPTS
 		{
 			StopLevel();
 			Services.objectMaker.DestroyAllUnits(null);
-
 			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.restartLevel);
 		}
 
+
+
+
+
+		private void ClearOldSpawnedPlayer(Player pausingPlayer)
+		{
+			Services.objectMaker.Unmake(pausingPlayer.SpawnedPlayerGO);
+			if (pausingPlayer == null) return;
+			pausingPlayer.Unalive();
+		}
 		public void ExitToMainMenu()
 		{
 			StopGame();
@@ -177,14 +190,10 @@ namespace __SCRIPTS
 		{
 			if (currentLevel == null) return;
 			ClearOldSpawnedPlayer(pausingPlayer);
-			SpawnPlayerFromInGame(pausingPlayer);
+			SpawnPlayerFromLevel(pausingPlayer);
 		}
 
-		private void ClearOldSpawnedPlayer(Player pausingPlayer)
-		{
-			Services.objectMaker.Unmake(pausingPlayer.SpawnedPlayerGO);
-			pausingPlayer.Unalive();
-		}
+
 
 		public void UnspawnPlayer(Player unspawnPlayer)
 		{

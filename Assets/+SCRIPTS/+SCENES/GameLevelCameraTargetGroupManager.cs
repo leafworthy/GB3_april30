@@ -13,7 +13,7 @@ namespace __SCRIPTS
 		private void Start()
 		{
 
-			Services.levelManager.OnLevelSpawnedPlayer += AddPlayerToCameraFollowTargetGroup;
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel += AddPlayerFromLevelToCameraFollowTargetGroup;
 			Services.playerManager.OnPlayerDies += Player_PlayerDies;
 			Services.levelManager.OnStopLevel += LevelManager_OnStopLevel;
 
@@ -36,7 +36,7 @@ namespace __SCRIPTS
 			_cameraFollowTargetGroup = null;
 		}
 
-		private void AddPlayerToCameraFollowTargetGroup(Player player)
+		private void AddPlayerFromLevelToCameraFollowTargetGroup(Player player)
 		{
 			Debug.Log("Trying to add player to camera follow target group: " + player.name);
 
@@ -63,7 +63,7 @@ namespace __SCRIPTS
 
 			RemoveFromCameraFollow(deadPlayer);
 			if (Services.playerManager.mainPlayer.isDead()) return;
-			AddPlayerToCameraFollowTargetGroup(Services.playerManager.mainPlayer);
+			AddPlayerFromLevelToCameraFollowTargetGroup(Services.playerManager.mainPlayer);
 		}
 
 

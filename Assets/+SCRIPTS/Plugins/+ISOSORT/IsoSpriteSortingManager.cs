@@ -8,14 +8,14 @@ namespace __SCRIPTS.Plugins._ISOSORT
 	[ExecuteAlways, Serializable]
 	public class IsoSpriteSortingManager : SerializedMonoBehaviour
 	{
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> fgSpriteList = new(1024);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> floorSpriteList = new(1024);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> staticSpriteList = new(1024);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new(1024);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> fgSpriteList = new(2048);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> floorSpriteList = new(2048);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> staticSpriteList = new(2049);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new(2048);
 
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> moveableSpriteList = new(1024);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new(1024);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> sortedSprites = new(1024);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> moveableSpriteList = new(2048);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new(2048);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> sortedSprites = new(2048);
 
 		public static void RegisterSprite(IsoSpriteSorting newSprite)
 		{

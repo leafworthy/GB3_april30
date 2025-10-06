@@ -27,6 +27,8 @@ namespace __SCRIPTS
 		public event Action<Player> OnPlayerJoins;
 		public event Action<Player> OnPlayerDies;
 
+		private List<Player> unjoinedPlayers = new();
+
 		public Player mainPlayer;
 
 		public void StartService()
@@ -81,7 +83,11 @@ namespace __SCRIPTS
 
 		private void AddPlayerToJoinedPlayers(PlayerInput newPlayerInput, Player joiningPlayer)
 		{
-			if (AllJoinedPlayers.Contains(joiningPlayer)) return;
+			if (AllJoinedPlayers.Contains(joiningPlayer))
+			{
+				Debug.LogWarning("already joined player tried to join again", this);
+				return;
+			}
 
 			if (AllJoinedPlayers.Count >= 4) return;
 
@@ -92,10 +98,11 @@ namespace __SCRIPTS
 			joiningPlayer.OnPlayerDies += Player_PlayerDies;
 		}
 
-		private void Player_PlayerDies(Player deadPlayer, bool isRespawning)
+		private void Player_PlayerDies(Player deadPlayer, bool forRespawn = false)
 		{
 			PlayerDead(deadPlayer);
-			if (isRespawning) return;
+			deadPlayer.OnPlayerDies -= Player_PlayerDies;
+			if (forRespawn) return;
 			if (AllJoinedPlayersAreDead())
 			{
 				Debug.Log("all players dead");
@@ -105,6 +112,7 @@ namespace __SCRIPTS
 
 		private void PlayerDead(Player deadPlayer)
 		{
+			Debug.Log("player dead");
 			if (deadPlayer.IsMainPlayer())
 			{
 				Debug.Log("main character died");
@@ -126,6 +134,7 @@ namespace __SCRIPTS
 
 			Debug.Log("OnPlayerDies called");
 			OnPlayerDies?.Invoke(deadPlayer);
+			//UnjoinPlayer(deadPlayer);
 		}
 
 		private void SetMainPlayer(Player nextPlayer)
@@ -162,19 +171,9 @@ namespace __SCRIPTS
 			player.input.SwitchCurrentActionMap(actionMap);
 		}
 
-		public void UnjoinPlayer(Player pausingPlayer)
-		{
-			if (!AllJoinedPlayers.Contains(pausingPlayer)) return;
-			AllJoinedPlayers.Remove(pausingPlayer);
-			pausingPlayer.OnPlayerDies -= Player_PlayerDies;
-			if (pausingPlayer.IsMainPlayer())
-			{
-				var nextPlayer = AllJoinedPlayers.FirstOrDefault(t => t != pausingPlayer && t.state == Player.State.Alive);
-				SetMainPlayer(nextPlayer);
-			}
 
-			if (pausingPlayer.SpawnedPlayerGO != null) Destroy(pausingPlayer.SpawnedPlayerGO);
-			Services.objectMaker.Unmake(pausingPlayer.gameObject);
-		}
+
+
+
 	}
 }

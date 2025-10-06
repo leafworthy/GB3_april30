@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using __SCRIPTS;
 using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -23,8 +24,13 @@ public class UnitStatsDatabase : ScriptableObject
 	// Internal coroutine runner - singleton pattern
 	private static CoroutineRunner coroutineRunner;
 
+#if UNITY_EDITOR
 
-
+	public void LoadUnitDataFromGoogleSheets()
+	{
+		LoadFromGoogleSheets();
+	}
+#endif
 	// Overloaded method - backwards compatible
 	public void LoadFromGoogleSheets(MonoBehaviour _coroutineRunner = null)
 	{

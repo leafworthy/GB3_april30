@@ -16,7 +16,7 @@ public class BoundsSwitcher : MonoBehaviour
 	{
 		if (zones.Count == 0) return null;
 		var nextIndex = colliderIndex + 1;
-		if (nextIndex >= zones.Count) nextIndex = 0;
+		if (nextIndex >= zones.Count) return null;
 		return zones[nextIndex];
 	}
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -39,6 +39,10 @@ public class BoundsSwitcher : MonoBehaviour
     public void SetZone(int newIndex)
     {
 	    if (zones.Count == 0) return;
+	    if (newIndex >= zones.Count)
+	    {
+		    return;
+	    }
 	    colliderIndex = newIndex;
 	    currentZone = zones[colliderIndex];
 	    SetCamera(currentZone.zoneCamera);

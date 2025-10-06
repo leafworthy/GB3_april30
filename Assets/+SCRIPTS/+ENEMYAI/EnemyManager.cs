@@ -70,7 +70,7 @@ namespace __SCRIPTS
 				life.SetPlayer(players.enemyPlayer);
 				life.SetEnemyTier(enemyTier);
 				var paletteSwapper = enemy.GetComponent<PalletteSwapper>();
-				paletteSwapper.SetPallette(enemyTier);
+				paletteSwapper?.SetPallette(enemyTier);
 			}
 
 			CollectEnemy(enemy);

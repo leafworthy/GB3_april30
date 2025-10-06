@@ -24,11 +24,14 @@ namespace __SCRIPTS
 		public AudioSource idleSound;
 		public AudioSource chainsawAttackIdleSound;
 
+		private ShieldDashAbility shieldDash => _shieldDash ??= GetComponent<ShieldDashAbility>();
+		private ShieldDashAbility _shieldDash;
+
 		private void OnEnable()
 		{
 			animEvents.OnStep += Anim_OnStep;
 			animEvents.OnHitStart += Anim_OnHit;
-			animEvents.OnDash += Anim_Dash;
+			shieldDash.OnShieldDash += Anim_Dash;
 			animEvents.OnReload += Anim_OnReload;
 			life.OnAttackHit += Life_AttackHit;
 			life.OnDying += Life_OnDying;
