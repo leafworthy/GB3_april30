@@ -19,6 +19,7 @@ namespace __SCRIPTS
 		private bool isInGame;
 
 		public HealthBar bossHealthbar;
+		public GameObject bossHealthbarGameObject;
 
 		public void StartService()
 		{
@@ -132,8 +133,9 @@ namespace __SCRIPTS
 
 		public void SetBossLifeHealthbarVisible(bool value)
 		{
+			Debug.Log("setting boss healthbar visible: " + value);
 			if (bossHealthbar == null) return;
-			bossHealthbar.gameObject.SetActive(value);
+			bossHealthbarGameObject.SetActive(value);
 		}
 	}
 }

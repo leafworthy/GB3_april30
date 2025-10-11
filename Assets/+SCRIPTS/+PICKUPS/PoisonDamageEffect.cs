@@ -45,8 +45,8 @@ namespace __SCRIPTS
 			var transformPosition = Target.transform.position;
 			var origin = (int) Random.Range(0, 2) == 1 ? transformPosition+new Vector3(-1,-1) : transformPosition+ new Vector3(1, -1);
 			var poisonAttack = new Attack(Owner, origin, transformPosition,Target, PoisonDamage);
-			poisonAttack.IsPoison = true;
-			poisonAttack.color = Color.green;
+			poisonAttack.MakesDebree = true;
+			poisonAttack.TintColor = Color.green;
 			Target.TakeDamage(poisonAttack);
 		}
 	}

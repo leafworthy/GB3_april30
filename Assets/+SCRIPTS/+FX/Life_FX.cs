@@ -13,7 +13,8 @@ namespace __SCRIPTS
 		private List<Renderer> renderersToTint = new();
 		private Color materialTintColor;
 		private const float tintFadeSpeed = 6f;
-		private static readonly int ColorReplaceColor = Shader.PropertyToID("_NewColorA");
+		private static readonly int ColorReplaceColorA = Shader.PropertyToID("_NewColorA");
+		private static readonly int ColorReplaceColorB = Shader.PropertyToID("_NewColorB");
 		private static readonly int Tint = Shader.PropertyToID("_Tint");
 
 		public enum ColorMode
@@ -37,8 +38,12 @@ namespace __SCRIPTS
 		public void Start()
 		{
 			if (!isBoss) healthBar = GetComponentInChildren<HealthBar>();
-			else healthBar = Services.hudManager.GetBossLifeHealthbar();
-			Services.hudManager.SetBossLifeHealthbarVisible(true);
+			else
+			{
+				Debug.Log("got here bruh FX");
+				healthBar = Services.hudManager.GetBossLifeHealthbar();
+				Services.hudManager.SetBossLifeHealthbarVisible(true);
+			}
 			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
 			if (life == null) return;
 			life.OnFractionChanged += DefenceOnDefenceChanged;
@@ -61,7 +66,8 @@ namespace __SCRIPTS
 			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
 			foreach (var r in renderersToTint)
 			{
-				r.material.SetColor(ColorReplaceColor, player.playerColor);
+				r.material.SetColor(ColorReplaceColorA, player.playerColor);
+				r.material.SetColor(ColorReplaceColorB, player.playerColor);
 			}
 		}
 
@@ -87,7 +93,8 @@ namespace __SCRIPTS
 
 		private void Life_AttackHit(Attack attack)
 		{
-			StartTint(attack.color);
+			Debug.Log("life fx attack hit, color " + attack.TintColor);
+			StartTint(attack.TintColor);
 			CreateDamageRisingText(attack);
 			SprayDebree(attack);
 			MakeHitMark(attack);
@@ -118,7 +125,7 @@ namespace __SCRIPTS
 
 		private void SprayDebree(Attack attack)
 		{
-			if (attack.IsPoison) return;
+			if (attack.MakesDebree) return;
 			MakeDebree(attack);
 			if (life.DebrisType != DebrisType.blood) return;
 			CreateBloodSpray(attack);
@@ -223,7 +230,9 @@ namespace __SCRIPTS
 			if (!life.showLifeBar) return;
 			targetFill = _life.GetFraction();
 			if (targetFill > .9f || targetFill <= 0)
-				healthBar.gameObject.SetActive(false);
+			{
+				if(!isBoss) healthBar.gameObject.SetActive(false);
+			}
 			else
 			{
 				healthBar.gameObject.SetActive(true);

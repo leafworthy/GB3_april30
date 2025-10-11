@@ -22,5 +22,21 @@ namespace __SCRIPTS
 			DrawX(attack.DestinationWithHeight, 2, Color.blue);
 			Debug.DrawLine(attack.OriginWithHeight, attack.DestinationWithHeight, lineColor);
 		}
+
+		public static void DrawCircle(Vector3 transformPosition, float radius, Color color)
+		{
+			Gizmos.color = color;
+			var segments = 15;
+			Vector3 center = transformPosition;
+			Vector3 prev = center + new Vector3(Mathf.Cos(0), Mathf.Sin(0)) * radius;
+
+			for (int i = 1; i <= segments; i++)
+			{
+				float angle = i * Mathf.PI * 2f / segments;
+				Vector3 next = center + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+				Gizmos.DrawLine(prev, next);
+				prev = next;
+			}
+		}
 	}
 }

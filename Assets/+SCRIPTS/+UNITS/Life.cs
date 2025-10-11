@@ -109,7 +109,8 @@ namespace __SCRIPTS
 		private void SetupAnimationEvents()
 		{
 			if (animations == null) return;
-
+			if (animations.animEvents == null) return;
+			animations.animEvents.OnDieStop -= CompleteDeath;
 			animations.animEvents.OnDieStop += CompleteDeath;
 			//animations.animEvents.OnInvincible += SetInvincible;
 		}

@@ -68,7 +68,6 @@ public class TopLeftZoneTextShower : GUIDebugTextShower
 		else
 			gogogo.SetActive(false);
 
-		Debug.Log("enemiesInThisZone: " + enemiesInThisZone);
 		SetText(enemiesInThisZone.ToString());
 	}
 

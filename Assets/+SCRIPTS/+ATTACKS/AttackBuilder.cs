@@ -13,8 +13,8 @@ namespace __SCRIPTS
 		private float _destinationHeight = 5f;
 		private float _damageAmount;
 		private float _extraPush;
-		private bool _isPoison;
-		private Color _color = Color.red;
+		private bool _makesDebree;
+		private Color _tintColor = Color.red;
 		private bool _causesFlying;
 
 		private AttackBuilder()
@@ -65,15 +65,15 @@ namespace __SCRIPTS
 			return this;
 		}
 
-		public AttackBuilder AsPoison(bool isPoison = true)
+		public AttackBuilder MakesDebree(bool makesDebree = true)
 		{
-			_isPoison = isPoison;
+			_makesDebree = makesDebree;
 			return this;
 		}
 
 		public AttackBuilder WithColor(Color color)
 		{
-			_color = color;
+			_tintColor = color;
 			return this;
 		}
 
@@ -102,8 +102,8 @@ namespace __SCRIPTS
 			attack.OriginHeight = _originHeight;
 			attack.DestinationHeight = _destinationHeight;
 			attack.ExtraPush = _extraPush;
-			attack.IsPoison = _isPoison;
-			attack.color = _color;
+			attack.MakesDebree = _makesDebree;
+			attack.TintColor = _tintColor;
 			attack.CausesFlying = _causesFlying;
 
 			return attack;

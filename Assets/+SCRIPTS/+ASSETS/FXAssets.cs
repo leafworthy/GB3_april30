@@ -68,6 +68,8 @@ namespace __SCRIPTS
 
 		public GameObject shotgunBlastPrefab;
 
+		public GameObject fireParticlesPrefab;
+
 		public List<GameObject> GetBulletHits(DebrisType debrisType)
 		{
 			switch (debrisType)

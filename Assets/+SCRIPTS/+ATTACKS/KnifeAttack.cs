@@ -2,6 +2,14 @@ using System;
 using __SCRIPTS;
 using UnityEngine;
 
+[Serializable]
+public class DamageOverTimeData
+{
+	public float fireDuration;
+	public float fireDamageRate;
+	public float fireDamageAmount;
+	public Color fireColor;
+}
 public class KnifeAttack : Ability
 {
 	public override string AbilityName => "KnifeAttack";
@@ -18,6 +26,8 @@ public class KnifeAttack : Ability
 	[SerializeField] private AnimationClip animationClip;
 	private GunAttack gunAttack  => _gunAttack ??= GetComponent<GunAttack>();
 	private GunAttack _gunAttack;
+
+	public DamageOverTimeData damageOverTimeData;
 
 	protected override bool requiresArms() => true;
 	protected override bool requiresLegs() => false;
@@ -116,7 +126,10 @@ public class KnifeAttack : Ability
 
 		var targetLife = targetHit.transform.gameObject.GetComponentInParent<Life>();
 		if (targetLife == null) return;
-		AttackUtilities.HitTarget(life, targetLife, life.TertiaryAttackDamageWithExtra);
+		var KnifeFireEffect = targetLife.gameObject.AddComponent<DamageOverTimeEffect>();
+		KnifeFireEffect.StartEffect( life, targetLife, damageOverTimeData.fireDuration, damageOverTimeData.fireDamageRate, damageOverTimeData.fireDamageAmount,
+			damageOverTimeData.fireColor);
+		AttackUtilities.HitTarget(life, targetLife, 0);//life.TertiaryAttackDamageWithExtra
 		OnHit?.Invoke(targetHit.transform.position);
 	}
 }

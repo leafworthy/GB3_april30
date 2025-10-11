@@ -67,12 +67,19 @@ namespace __SCRIPTS
 		public float OriginHeight;
 		public float DestinationHeight;
 		public float DamageAmount;
-		public bool IsPoison;
+		public bool MakesDebree;
 
 		public Vector2 DestinationFloorPoint;
 		public Vector2 OriginFloorPoint;
 		public float ExtraPush;
-		public Color color = Color.red;
+		public Color TintColor = Color.red;
 		public bool CausesFlying;
+
+		public void SetTarget(Life target)
+		{
+			DestinationLife = target;
+			if (target != null)
+				DestinationFloorPoint = target.transform.position;
+		}
 	}
 }

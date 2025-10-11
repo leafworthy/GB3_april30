@@ -20,6 +20,7 @@ namespace __SCRIPTS
 		private const float maxPushVelocity = 3000;
 		private const float maxAimDistance = 30;
 
+
 		private Player player;
 		private Rigidbody2D rb => _rb ??= GetComponent<Rigidbody2D>();
 		private Rigidbody2D _rb;
@@ -43,6 +44,12 @@ namespace __SCRIPTS
 		private bool canMove = true;
 		private Vector2 moveDir;
 		private Vector2 lastMoveAimDirOffset;
+
+		[SerializeField]private float acceleration;
+		public bool accelerates = false;
+		public float acceleratatonRate = 3;
+		public float acceleratatonMax = 20;
+		public Vector2 decelerationFactor = new Vector2(.97f, .97f);
 
 		public bool GetCanMove() => canMove;
 		public Vector2 GetLastMoveAimDirOffset() => lastMoveAimDirOffset;
@@ -118,6 +125,8 @@ namespace __SCRIPTS
 			DecayVelocity();
 		}
 
+
+
 		private void ApplyVelocity()
 		{
 			var totalVelocity = moveVelocity + pushVelocity;
@@ -127,8 +136,9 @@ namespace __SCRIPTS
 		private void DecayVelocity()
 		{
 			if (!isDragging) return;
-			var tempVel = moveVelocity * velocityDecayFactor;
+			var tempVel = accelerates? moveVelocity * decelerationFactor:  moveVelocity * velocityDecayFactor;
 			moveVelocity = tempVel;
+
 			tempVel = pushVelocity * velocityDecayFactor;
 			pushVelocity = tempVel;
 			if (pushVelocity.magnitude < .1f) pushVelocity = Vector2.zero;
@@ -145,6 +155,7 @@ namespace __SCRIPTS
 		public void MoveInDirection(Vector2 direction, float newSpeed)
 		{
 			if (!IsActive) return;
+
 
 			if (direction.magnitude != 0)
 			{
@@ -164,8 +175,17 @@ namespace __SCRIPTS
 			}
 
 			anim?.SetBool(UnitAnimations.IsMoving, true);
+			if(accelerates)
+			{
+				acceleration += acceleratatonRate;
+				if (acceleration > acceleratatonMax) acceleration = acceleratatonMax;
+				moveSpeed = newSpeed + acceleration;
+			}
+			else
+			{
+				moveSpeed = newSpeed;
+			}
 
-			moveSpeed = newSpeed;
 			isMoving = true;
 		}
 
@@ -210,8 +230,9 @@ namespace __SCRIPTS
 
 		public void StopMoving()
 		{
+			acceleration = 0;
 			isMoving = false;
-			moveVelocity = Vector2.zero;
+			if(!accelerates)moveVelocity = Vector2.zero;
 			anim?.SetBool(UnitAnimations.IsMoving, false);
 		}
 

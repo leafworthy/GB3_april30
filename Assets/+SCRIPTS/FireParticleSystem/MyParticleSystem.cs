@@ -12,7 +12,7 @@ public class MyParticleSystem : MonoBehaviour
 	public float lifeTime = 2;
 	public float minScale = 2;
 	public float maxScale = 8;
-	public float yRange = 2;
+	public float yRange = 3;
 	public float max;
 	private Vector3 lastPos;
 
@@ -34,7 +34,7 @@ public class MyParticleSystem : MonoBehaviour
 		{
 			currentTime = 0;
 			var newObj = Services.objectMaker.Make(prefab.GetRandom());
-			newObj.transform.position = origin.transform.position + new Vector3(Random.Range(-yRange/3, yRange / 3), Random.Range(-yRange, yRange), 0);
+			newObj.transform.position = origin.transform.position + new Vector3(Random.Range(-yRange/2, yRange / 2), Random.Range(-yRange, yRange), 0);
 			newObj.transform.localScale = Vector3.one * Random.Range(minScale, maxScale);
 			lastPos = origin.transform.position;
 		}

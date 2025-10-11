@@ -85,7 +85,7 @@ public class GameLauncher : MonoBehaviour
 		private static string SceneName => "0_GameManagerScene";
 
 
-		//[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 		private static void LoadGameManagerAtStart()
 		{
 			if (hasLaunched) return;
