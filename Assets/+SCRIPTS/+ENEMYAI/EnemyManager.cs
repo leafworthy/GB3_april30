@@ -29,6 +29,12 @@ namespace __SCRIPTS
 			ConfigureNewEnemy(newEnemy, enemyTier);
 		}
 
+		public void SpawnNewNPC(GameObject NPCPrefab, Vector3 position)
+		{
+			var newNPC = objectMaker.Make(NPCPrefab, position);
+			ConfigureNewNPC(newNPC);
+		}
+
 		private void CollectEnemy(GameObject enemy)
 		{
 			var enemyDefence = enemy.gameObject.GetComponent<Life>();
@@ -74,6 +80,17 @@ namespace __SCRIPTS
 			}
 
 			CollectEnemy(enemy);
+		}
+
+		public void ConfigureNewNPC(GameObject npc)
+		{
+			var life = npc.GetComponent<Life>();
+			if (life != null)
+			{
+				life.SetPlayer(players.NPCPlayer);
+			}
+
+			CollectEnemy(npc);
 		}
 	}
 }

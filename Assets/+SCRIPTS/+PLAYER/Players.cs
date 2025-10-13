@@ -9,11 +9,17 @@ namespace __SCRIPTS
 	public class Players : MonoBehaviour, IService
 	{
 		[SerializeField] private PlayerData EnemyPlayerData;
+		[SerializeField] private PlayerData NPCPlayerData;
 		[SerializeField] public List<PlayerData> playerPresets = new();
 
 		private PlayerInputManager _inputManager;
 		private Player _enemyPlayer;
-		public Player enemyPlayer => _enemyPlayer ?? CreateEnemyPlayer();
+		public Player enemyPlayer => _enemyPlayer ??= CreateEnemyPlayer();
+		public Player NPCPlayer => _NPCPlayer ??= CreateNPCPlayer();
+
+
+
+		private Player _NPCPlayer;
 		public List<Player> AllJoinedPlayers = new();
 		private PlayerInput testPlayerInput;
 		private Player testPlayer;
@@ -30,6 +36,7 @@ namespace __SCRIPTS
 		private List<Player> unjoinedPlayers = new();
 
 		public Player mainPlayer;
+
 
 		public void StartService()
 		{
@@ -49,6 +56,14 @@ namespace __SCRIPTS
 			return _enemyPlayer;
 		}
 
+		private Player CreateNPCPlayer()
+		{
+			var NPC = new GameObject("NPCPlayer");
+			_NPCPlayer = NPC.AddComponent<Player>();
+			_NPCPlayer.ConnectPlayerToController(null, NPCPlayerData, 6);
+			return _NPCPlayer;
+
+		}
 		private void OnDisable()
 		{
 			foreach (var player in AllJoinedPlayers)

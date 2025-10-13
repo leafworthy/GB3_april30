@@ -7,7 +7,7 @@ public static class Collider2DExtensions
 	/// <summary>
 	/// Finds all GameObjects whose positions are within the given Collider2D.
 	/// </summary>
-	public static List<GameObject> FindEnemyPlacersWithinCollider(Collider2D collider, List<EnemyPlacer> candidates = null)
+	public static List<GameObject> FindEnemyPlacersWithinCollider(Collider2D collider, List<PrefabPlacer> candidates = null)
 	{
 		var results = new List<GameObject>();
 

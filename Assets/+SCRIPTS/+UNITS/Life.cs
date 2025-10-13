@@ -19,6 +19,7 @@ namespace __SCRIPTS
 
 		#region UnitStats Wrappers
 
+		public UnitCategory category => unitStats.Data.category;
 		public float PrimaryAttackDamageWithExtra => unitStats.GetAttackDamage(1);
 		public float PrimaryAttackRange => unitStats.GetAttackRange(1);
 		public float PrimaryAttackRate => unitStats.GetAttackRate(1);
@@ -92,7 +93,8 @@ namespace __SCRIPTS
 			unitHealth.OnAttackHit += Health_AttackHit;
 			FillHealth();
 			Debug.Log("done initializing for " + player?.playerIndex);
-			if (unitStats.Data.category != UnitCategory.Character) SetPlayer(Services.playerManager.enemyPlayer);
+			if (unitStats.Data.category == UnitCategory.Enemy) SetPlayer(Services.playerManager.enemyPlayer);
+			else if (unitStats.Data.category == UnitCategory.NPC) SetPlayer(Services.playerManager.NPCPlayer);
 		}
 
 		private void Health_OnFlying(Attack attack)

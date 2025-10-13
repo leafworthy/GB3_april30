@@ -11,7 +11,8 @@ namespace __SCRIPTS
 		Character,
 		Enemy,
 		Obstacle,
-		Thing
+		Thing,
+		NPC
 	}
 
 	public enum DebrisType

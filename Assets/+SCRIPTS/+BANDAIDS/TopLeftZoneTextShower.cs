@@ -107,7 +107,7 @@ public class TopLeftZoneTextShower : GUIDebugTextShower
 			overlappingEnemies.Add(ai);
 		}
 
-		var spawnPoints = boundsSwitcher.currentZone.GetComponentsInChildren<EnemyPlacer>(true).ToList();
+		var spawnPoints = boundsSwitcher.currentZone.GetComponentsInChildren<PrefabPlacer>(true).ToList();
 		var unfinishedEnemySpawners = boundsSwitcher.currentZone.GetComponentsInChildren<EnemySpawner>(true).Where(  s => !s.IsFinished).ToList();
 
 		return overlappingEnemies.Count + spawnPoints.Count + unfinishedEnemySpawners.Count;

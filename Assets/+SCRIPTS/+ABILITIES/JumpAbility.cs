@@ -115,9 +115,9 @@ namespace __SCRIPTS
 			base.SetPlayer(_player);
 			life.OnDying += Life_OnDying;
 			life.OnFlying += Life_OnFlying;
-			_player.Controller.Jump.OnPress += Controller_Jump;
+			if(_player.Controller != null) _player.Controller.Jump.OnPress += Controller_Jump;
 			SetState(state.resting);
-			FallFromHeight(FallInDistance);
+			if(life.category == UnitCategory.Character)FallFromHeight(FallInDistance);
 		}
 
 		private void Life_OnFlying(Attack obj)
@@ -148,6 +148,7 @@ namespace __SCRIPTS
 		{
 			if (life == null) return;
 			if (life.Player == null) return;
+			if (life.Player.Controller == null) return;
 			life.Player.Controller.Jump.OnPress -= Controller_Jump;
 			life.OnDying -= Life_OnDying;
 		}

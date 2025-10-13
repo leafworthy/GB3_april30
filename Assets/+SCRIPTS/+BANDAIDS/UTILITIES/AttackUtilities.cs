@@ -93,6 +93,8 @@ public static class AttackUtilities
 			return false;
 		}
 
+		Debug.Log("hit target");
+
 		var attack = AttackBuilder.Create().FromLife(originLife).ToLife(targetLife).WithDamage(attackDamage).WithExtraPush(extraPush).Build();
 		targetLife.TakeDamage(attack);
 		return true;

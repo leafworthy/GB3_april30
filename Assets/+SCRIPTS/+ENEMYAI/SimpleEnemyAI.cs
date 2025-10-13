@@ -23,7 +23,7 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void Update()
 		{
-			_target = _targetter.GetClosestPlayer();
+			_target = _targetter.GetClosestPlayerInAggroRange();
 			if (_target == null) return;
 			if (CloseEnoughToPlayer())
 				AttackPlayer();

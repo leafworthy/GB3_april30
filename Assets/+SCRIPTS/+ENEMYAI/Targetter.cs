@@ -29,6 +29,21 @@ namespace __SCRIPTS._ENEMYAI
 
 		#region private functions
 
+		public Life GetClosestEnemyInRange(float range)
+		{
+			var playersInRange = GetActualEnemyTargetsInRange(Services.assetManager.LevelAssets.EnemyLayer, range);
+			var closest = GetClosest(playersInRange);
+			return closest;
+		}
+
+		private List<Life> GetActualEnemyTargetsInRange(LayerMask levelAssetsEnemyLayer, float range)
+		{
+
+			var enemiesInRange = GetValidTargetsInRange(levelAssetsEnemyLayer, range);
+			var actualEnemiesInRange = enemiesInRange.Where(x => x != null && !x.IsDead() && x.gameObject != gameObject && x.category == UnitCategory.Enemy).ToList();
+			return actualEnemiesInRange;
+		}
+
 		private Life GetClosest(List<Life> targets)
 		{
 			Life closest = null;
@@ -81,7 +96,7 @@ namespace __SCRIPTS._ENEMYAI
 
 		private List<Life> GetValidTargetsInRange(LayerMask layer, float range) =>
 			Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
-			         .Where(life => life != null && TargetIsValid(life)).ToList();
+			         .Where(life => life != null && TargetIsNotNullOrDead(life)).ToList();
 
 		private List<Life> GetValidObstaclesInRange(LayerMask layer, float range)
 		{
@@ -114,7 +129,7 @@ namespace __SCRIPTS._ENEMYAI
 
 		private List<Life> GetAttackableTargetsInRange(LayerMask layer, float range) =>
 			Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
-			         .Where(life => life != null && TargetIsValid(life) && HasLineOfSightWith(life.transform.position)).ToList();
+			         .Where(life => life != null && TargetIsNotNullOrDead(life) && HasLineOfSightWith(life.transform.position)).ToList();
 
 		private List<Life> GetAggroTargets(LayerMask layer) => GetValidTargetsInRange(layer, targetterLife.AggroRange);
 
@@ -149,14 +164,14 @@ namespace __SCRIPTS._ENEMYAI
 
 		private bool CanAttack(Life target)
 		{
-			if (!TargetIsValid(target)) return false;
+			if (!TargetIsNotNullOrDead(target)) return false;
 
 			if (!isWithinAttackRange(target.transform.position)) return false;
 
 			return HasLineOfSightWith(target.transform.position);
 		}
 
-		private bool TargetIsValid(Life target)
+		private bool TargetIsNotNullOrDead(Life target)
 		{
 			if (target != null && !target.IsDead()) return true;
 			return false;

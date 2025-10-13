@@ -133,9 +133,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f878428c30e704370877039cf9b1e93c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 5317405891896899284, guid: 3488ee15b61ad4963b1b258f1b974183, type: 3}
-  cam: {fileID: 0}
+  SpawnsNPCs: 0
+  Prefab: {fileID: 5317405891896899284, guid: 3488ee15b61ad4963b1b258f1b974183, type: 3}
   isBehindSpawner: 0
+  margin: -0.2
   EnemyTier: 0
 --- !u!114 &9177939218784803857
 MonoBehaviour:
