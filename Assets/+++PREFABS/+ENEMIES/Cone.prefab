@@ -311,7 +311,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 421
+  m_SortingOrder: 577
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.72156864}
   m_FlipX: 0
@@ -514,6 +514,7 @@ MonoBehaviour:
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
   BlockTint: 0
+  isBoss: 0
 --- !u!114 &1868243376366810163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -706,6 +707,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8e19e5c2974953b6d306f3bb0303ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceleration: 0
+  accelerates: 0
+  acceleratatonRate: 3
+  acceleratatonMax: 20
+  decelerationFactor: {x: 0.97, y: 0.97}
 --- !u!114 &7982459395188040733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -884,7 +890,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 420
+  m_SortingOrder: 576
   m_Sprite: {fileID: -8211092813343881559, guid: fbf22108cb0fd475abdcea7dc50e572b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1033,10 +1039,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthBar
       objectReference: {fileID: 0}
-    - target: {fileID: 6159643716270242737, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1044,10 +1046,6 @@ PrefabInstance:
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-      propertyPath: m_RootOrder
-      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1067,23 +1065,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1440
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 810
-      objectReference: {fileID: 0}
-    - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-      propertyPath: m_LocalScale.x
-      value: -1.4341999
-      objectReference: {fileID: 0}
-    - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.505
-      objectReference: {fileID: 0}
-    - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.01
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1133,24 +1119,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6159643716270242739, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-      propertyPath: HideWhenFull
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-      propertyPath: m_Color.r
-      value: 0.19127488
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6159643716270242739, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

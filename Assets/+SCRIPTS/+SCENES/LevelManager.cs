@@ -114,7 +114,6 @@ namespace __SCRIPTS
 		public void RestartLevel()
 		{
 			StopLevel();
-			Services.objectMaker.DestroyAllUnits(null);
 			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.restartLevel);
 		}
 
@@ -131,22 +130,11 @@ namespace __SCRIPTS
 		public void ExitToMainMenu()
 		{
 			StopGame();
-
-			// Explicitly clear object pools when exiting to main menu
-			Services.objectMaker.DestroyAllUnits(null);
-
 			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.mainMenu);
 		}
 
 		public void GoBackFromRestart()
 		{
-			if (restartedLevelScene == null)
-			{
-				// Fallback to the main starting scene if we lost the restart reference
-				LoadLevel(Services.assetManager.Scenes.startingScene);
-				return;
-			}
-
 			LoadLevel(restartedLevelScene);
 		}
 
@@ -199,6 +187,13 @@ namespace __SCRIPTS
 		{
 			if (unspawnPlayer == null) return;
 			unspawnPlayer.Unalive();
+		}
+
+		public void AdvanceToNextLevel(SceneDefinition newScene)
+		{
+			if (newScene == null) return;
+			Debug.Log("advancing to next level: " + newScene, this);
+			LoadLevel(newScene);
 		}
 	}
 }

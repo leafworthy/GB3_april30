@@ -16,32 +16,38 @@ public class CameraCapture
             return;
         }
 
+        Debug.Log(SystemInfo.maxTextureSize +  "max");
         // Use the Game View's current resolution.
-        int width = targetCamera.pixelWidth;
-        int height = targetCamera.pixelHeight;
+        int width = 3840*2;
+        int height = 2160*2;
 
-        if (width == 0 || height == 0)
+        var desc = new RenderTextureDescriptor(width, height, RenderTextureFormat.ARGB32, 24)
         {
-            Debug.LogError("The selected camera has a zero-sized output. Please ensure the Game View is visible and set to the correct aspect ratio.");
-            return;
-        }
+	        sRGB = true,
+	        useMipMap = false,
+	        autoGenerateMips = false,
+	        msaaSamples = 1
+        };
+        RenderTexture renderTexture = new RenderTexture(desc);
+        renderTexture.antiAliasing = 1;
+        renderTexture.useDynamicScale = false;
 
-        // Create a temporary render texture to capture the camera's output.
-        RenderTexture renderTexture = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32);
-
-        // Capture the camera's view into the render texture.
-        RenderTexture originalRenderTexture = targetCamera.targetTexture;
+        var originalRT = targetCamera.targetTexture;
+        targetCamera.allowDynamicResolution = false;
         targetCamera.targetTexture = renderTexture;
+
+
+
         targetCamera.Render();
 
-        // Restore the camera's original target texture.
-        targetCamera.targetTexture = originalRenderTexture;
-
-        // Convert the render texture to a readable Texture2D.
-        Texture2D texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
         RenderTexture.active = renderTexture;
+
+        Texture2D texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        texture.filterMode = FilterMode.Point;
         texture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-        texture.Apply();
+        texture.Apply(false, false);
+
+        Debug.Log($"Captured texture size: {texture.width}x{texture.height}");
 
         // Encode the texture to a PNG and save to a file.
         byte[] bytes = texture.EncodeToPNG();

@@ -70,6 +70,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
             if (GUILayout.Button("Get Renderersu"))
             {
+	            myScript.hasRenderers = false;
                  myScript.GetRenderers();
             }
         }

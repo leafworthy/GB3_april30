@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEditor;
 using UnityEngine;
 
@@ -65,7 +66,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		private Bounds2D cachedBounds;
 		private int lastBoundsCalculatedFrame;
-		private bool hasRenderers;
+		public bool hasRenderers;
 		private Transform t;
 
 		public void SetupStaticCache()
@@ -84,7 +85,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				return;
 			}
 
-			if (renderersToSort[0] == null) GetRenderers();
+			if (renderersToSort.Count == 0) GetRenderers();
 
 			if (renderersToSort[0] == null) return;
 			cachedBounds = new Bounds2D(renderersToSort[0].bounds);
@@ -218,7 +219,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		public void Setup()
 		{
 			t = transform; //This needs to be here AND in the Awake function
-			GetRenderers();
+			if (renderersToSort.Count == 0) GetRenderers();
 			IsoSpriteSortingManager.RegisterSprite(this);
 		}
 #if UNITY_EDITOR
@@ -230,19 +231,12 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			// Only proceed if we have a valid transform
 			if (t != null)
 			{
-				GetRenderers();
+				if (renderersToSort.Count == 0) GetRenderers();
 				forceSort = true;
 				IsoSpriteSortingManager.RegisterSprite(this);
 			}
 		}
 
-		private void OnTransformChildrenChanged()
-		{
-			if (t == null) t = transform;
-
-			GetRenderers();
-			forceSort = true;
-		}
 
 		private void OnDrawGizmosSelected()
 		{
@@ -293,7 +287,8 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		public void GetRenderers()
 		{
-			if (hasRenderers && Application.isPlaying) return;
+			if (hasRenderers) return;
+			Debug.Log("here");
 			hasRenderers = true;
 
 			RemoveNulls();
