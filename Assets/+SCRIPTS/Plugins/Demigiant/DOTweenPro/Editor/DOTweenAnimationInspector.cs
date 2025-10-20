@@ -171,10 +171,10 @@ namespace DG.DOTweenEditor
             "OTHER", "Will animate components on the given gameObject instead than on this one"
         );
         static readonly GUIContent _GuiC_tweenTargetIsTargetGO_true = new GUIContent(
-            "Use As Tween Target", "Will set the tween target (via SetTarget, used to control a tween directly from a target) to the \"OTHER\" gameObject"
+            "Use As Tween Target", "Will set the tween target (via WithDestinationLife, used to control a tween directly from a target) to the \"OTHER\" gameObject"
         );
         static readonly GUIContent _GuiC_tweenTargetIsTargetGO_false = new GUIContent(
-            "Use As Tween Target", "Will set the tween target (via SetTarget, used to control a tween directly from a target) to the gameObject containing this animation, not the \"OTHER\" one"
+            "Use As Tween Target", "Will set the tween target (via WithDestinationLife, used to control a tween directly from a target) to the gameObject containing this animation, not the \"OTHER\" one"
         );
 
         #region MonoBehaviour Methods

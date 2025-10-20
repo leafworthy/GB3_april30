@@ -252,7 +252,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 576
+  m_SortingOrder: 420
   m_Sprite: {fileID: 1507674004, guid: 30324b7226b7c4387963cd2c1d903ccc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -467,7 +467,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 577
+  m_SortingOrder: 421
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.72156864}
   m_FlipX: 0
@@ -653,6 +653,7 @@ MonoBehaviour:
   - {fileID: 3592491263529795654}
   - {fileID: 5317405890393258322}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!50 &3215703969351551404
 Rigidbody2D:
   serializedVersion: 5
@@ -692,9 +693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff264cf2d310481ea1df4e39814eef10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShadowObject: {fileID: 5317405890393258320}
-  JumpObject: {fileID: 7921273744536592311}
-  Sorting: {fileID: 6723279448116647766}
+  HeightObject: {fileID: 7921273744536592311}
   AttackStartPoint: {fileID: 7995052009112491741}
   FootPoint: {fileID: 550463281407547642}
   RotateWithAim: []

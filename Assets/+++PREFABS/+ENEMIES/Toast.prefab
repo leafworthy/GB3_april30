@@ -179,7 +179,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 577
+  m_SortingOrder: 421
   m_Sprite: {fileID: 21300000, guid: d05a7e8267163498eb88de5acc7fe973, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -421,7 +421,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 576
+  m_SortingOrder: 420
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.65882355}
   m_FlipX: 0
@@ -700,6 +700,7 @@ MonoBehaviour:
   - {fileID: 7431454427251243554}
   - {fileID: 4330567752162112095}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!114 &8057387513146874984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -751,9 +752,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff264cf2d310481ea1df4e39814eef10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShadowObject: {fileID: 7431454427251243552}
-  JumpObject: {fileID: 5859870553395041908}
-  Sorting: {fileID: 536371090444542826}
+  HeightObject: {fileID: 5859870553395041908}
   AttackStartPoint: {fileID: 1954379024209702067}
   FootPoint: {fileID: 2974996309260671882}
   RotateWithAim: []

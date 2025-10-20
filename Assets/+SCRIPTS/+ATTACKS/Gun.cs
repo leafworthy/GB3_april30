@@ -44,7 +44,7 @@ namespace __SCRIPTS
 		private Life _life;
 		private bool isCoolingDown;
 		private float currentCooldownTime;
-		public string AnimationClipSuffix => this is PrimaryGun ? "": "_Glock";
+		public string AnimationClipSuffix => this is PrimaryGun ? "" : "_Glock";
 		public virtual float reloadTime => .5f;
 		public abstract float AttackRate { get; }
 		protected abstract float Damage { get; }
@@ -112,10 +112,9 @@ namespace __SCRIPTS
 			portionNumber = Mathf.Clamp(portionNumber, 0, PrimaryAnimationClips.Length - 1);
 			return portionNumber;
 		}
+
 		private void ShootBullet(Vector3 shootDirection)
 		{
-
-
 			var hitObject = Physics2D.Linecast(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange,
 				life.EnemyLayer);
 			Debug.DrawLine(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange, Color.green, 3);
@@ -126,14 +125,13 @@ namespace __SCRIPTS
 				ShotMissed();
 		}
 
-
-
 		private void ShotMissed()
 		{
 			var missPosition = (Vector2) body.FootPoint.transform.position + gunAimAbility.AimDir.normalized * AttackRange;
 			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, gunAimAbility.AimDir.normalized, AttackRange, life.Player.BuildingLayer);
 			if (raycastHit) missPosition = raycastHit.point;
-			var newAttack = new Attack(life, body.AttackStartPoint.transform.position, missPosition, 0);
+			var newAttack = Attack.Create(life, null).WithOriginPoint(body.AttackStartPoint.transform.position).WithDestinationPoint(missPosition)
+			                      .WithDamage(0);
 
 			Debug.DrawLine(body.FootPoint.transform.position, missPosition, Color.red, 3);
 			OnShotMissed?.Invoke(newAttack);
@@ -142,12 +140,9 @@ namespace __SCRIPTS
 		private void ShotHitTarget(RaycastHit2D hitObject)
 		{
 			var target = hitObject.collider.gameObject.GetComponentInParent<Life>();
-			if (target == null)
-			{
-				target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
-			}
-
-			var newAttack = new Attack(life, target, body.AttackStartPoint.transform.position, hitObject.point, Damage);
+			if (target == null) target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
+			var newAttack = Attack.Create(life, target).WithOriginPoint(body.AttackStartPoint.transform.position).WithDestinationPoint(hitObject.point)
+			                      .WithDamage(Damage);
 			OnShotHitTarget?.Invoke(newAttack);
 
 			target.TakeDamage(newAttack);

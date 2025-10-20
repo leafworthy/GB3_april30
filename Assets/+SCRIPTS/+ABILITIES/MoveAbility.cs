@@ -57,8 +57,11 @@ namespace __SCRIPTS
 		public Vector2 GetMoveAimDir() => mover.GetMoveAimDir();
 		public Vector2 GetMoveAimPoint() => (Vector2) body.AimCenter.transform.position + GetMoveAimDir().normalized * maxAimDistance;
 		public bool IsMoving() => isMoving;
+		public bool IsMovingQuickly(float amount) => rb.linearVelocity.magnitude > amount;
 
 		public bool IsIdle() => mover.IsMoving();
+
+		public event Action<RaycastHit2D, EffectSurface.SurfaceAngle> OnHitWall;
 
 		public void SetPlayer(Player _player)
 		{
@@ -130,6 +133,16 @@ namespace __SCRIPTS
 		private void ApplyVelocity()
 		{
 			var totalVelocity = moveVelocity + pushVelocity;
+			//detect if hit a wall
+			var destination = (Vector2) transform.position + totalVelocity * Time.deltaTime;
+			var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.BuildingLayer);
+			if (hitWall)
+			{
+				var effectSurface = hitWall.collider.GetComponent<EffectSurface>();
+				if (effectSurface == null) return;
+				OnHitWall?.Invoke(hitWall, effectSurface.surfaceAngle);
+			}
+
 			MoveObjectTo((Vector2) transform.position + totalVelocity * Time.deltaTime);
 		}
 
@@ -271,4 +284,18 @@ namespace __SCRIPTS
 		}
 
 	}
+
+	public class EffectSurface:MonoBehaviour
+	{
+		public enum SurfaceAngle
+		{
+			Horizontal,
+			Vertical,
+			DiagonalFacingLeft,
+			DiagonalFacingRight
+		}
+		public SurfaceAngle surfaceAngle;
+	}
+
+
 }

@@ -9,7 +9,7 @@ public class ZoneProgressionController : MonoBehaviour
 	private ZoneSwitcher zoneSwitcher;
 	private ZoneEnemyTracker _currentTracker;
 
-	private void OnEnable()
+	private void Start()
 	{
 		SetZone(0);
 	}

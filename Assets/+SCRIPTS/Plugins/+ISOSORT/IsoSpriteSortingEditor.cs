@@ -51,7 +51,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
             }
 
             if (!GUI.changed) return;
-            Undo.RecordObject(target, "Updated Sorting Offset");
+            Undo.RecordObject(target, "Updated sorting Offset");
             EditorUtility.SetDirty(target);
         }
 

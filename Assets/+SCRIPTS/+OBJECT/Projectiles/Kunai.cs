@@ -2,98 +2,89 @@ using UnityEngine;
 
 namespace __SCRIPTS.Projectiles
 {
-	public class Kunai : FallToFloor
+	public class Kunai : MonoBehaviour
 	{
 		private Vector2 direction;
 		private float speed = 100;
 		private float height;
 		private Life owner;
 		public GameObject rotationObject;
-		private bool isActive;
+
 		private bool isAirThrow;
+		private IDebree fallToFloor => _fallToFloor ??= GetComponent<IDebree>();
+		private IDebree _fallToFloor;
+		private IRotate rotationAbility => _rotationAbility ??= GetComponent<IRotate>();
+		private IRotate _rotationAbility;
+		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
+		private MoveAbility _moveAbility;
+		private bool isFlying;
 
 		public void Throw(Vector3 throwDirection, Vector3 pos, float throwHeight, Life thrower, bool _isAirThrow)
 		{
 			direction = throwDirection;
 			transform.position = pos;
 			height = throwHeight;
-			Debug.Log("throw height: " + height, this);
 			owner = thrower;
 			isAirThrow = _isAirThrow;
-			SetDistanceToGround(height);
-			RotateToDirection();
-			rotationRate = 0;
-			isActive = true;
+			fallToFloor.SetDistanceToGround(height);
+			rotationAbility.RotateToDirection(direction, rotationObject);
+			rotationAbility.SetRotationRate(0);
+			isFlying = true;
 		}
 
-		private void RotateToDirection()
+		protected void FixedUpdate()
 		{
-			var rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-			if (rotationObject == null) return;
-			rotationObject.transform.eulerAngles = new Vector3(0, 0, rotation);
-		}
-
-		protected override void FixedUpdate()
-		{
-			if (!isActive)
-			{
-				Debug.Log("not active");
-				base.FixedUpdate();
-				return;
-			}
-
+			if (!isFlying) return;
 			var nextPos = direction.normalized * speed * Time.fixedDeltaTime + (Vector2) transform.position;
 
 			var colliderLife = AttackUtilities.CheckForCollisions(nextPos, gameObject, owner.EnemyLayer);
 			if (colliderLife != null)
-			{
 				HandleHit(colliderLife);
-			}
 			else
-			{
-				if (moveAbility != null)
-				{
-					moveAbility.MoveInDirection(direction.normalized, speed);
-					if (height >= 0)
-					{
-						if (isAirThrow) height -= speed * Time.fixedDeltaTime;
+				MoveTo(nextPos);
+		}
 
-						SetDistanceToGround(height);
-					}
-					else
-						Land();
+		private void MoveTo(Vector2 nextPos)
+		{
+			if (moveAbility != null)
+			{
+				moveAbility.MoveInDirection(direction.normalized, speed);
+				if (height >= 0)
+				{
+					if (isAirThrow) height -= speed * Time.fixedDeltaTime;
+
+					_fallToFloor.SetDistanceToGround(height);
 				}
 				else
-					transform.position += (Vector3) nextPos;
+					Land();
 			}
+			else
+				transform.position += (Vector3) nextPos;
 		}
 
 		private void Land()
 		{
-			Debug.Log("land",this);
-			rotationRate = 300;
+			Debug.Log("land", this);
+			rotationAbility.SetFreezeRotation(true);
+			isFlying = false;
 			moveAbility.StopMoving();
-			isActive = false;
 			Services.objectMaker.Unmake(gameObject, 3);
 		}
 
 		private void HandleHit(Life hitLife)
 		{
-			Debug.Log("hit",this);
-			isActive = false;
+			Debug.Log("hit", this);
+			isFlying = false;
 			if (hitLife == null) return;
-			var attack = new Attack(owner, hitLife, owner.PrimaryAttackDamageWithExtra);
+			var attack = Attack.Create(owner, hitLife).WithDamage(owner.PrimaryAttackDamageWithExtra);
 			hitLife.TakeDamage(attack);
-			rotationRate = 300;
+			rotationAbility.SetRotationRate(300);
 			moveAbility.StopMoving();
 			Services.sfx.sounds.kunai_hit_sounds.PlayRandomAt(transform.position);
 
 			Services.objectMaker.Make(Services.assetManager.FX.hit5_xstrike, transform.position);
-			Fire(attack, true);
+			_fallToFloor.FireFlipped(attack);
 			Services.objectMaker.Unmake(gameObject, 3);
 		}
-
-
 	}
 }

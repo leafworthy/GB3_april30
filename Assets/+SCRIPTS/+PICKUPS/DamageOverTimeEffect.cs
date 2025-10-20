@@ -56,10 +56,9 @@ namespace __SCRIPTS
 
 		private void ApplyDamage()
 		{
-			Debug.Log("damage tick",target.gameObject);
 			var transformPosition = target.transform.position;
 			var origin = Random.Range(0, 2) == 1 ? transformPosition + new Vector3(-1, -1) : transformPosition + new Vector3(1, -1);
-			var attack = AttackBuilder.Create().MakesDebree().WithColor(color).WithDamage(damage).FromLife(owner).FromPoint(origin).ToLife(target).Build();
+			var attack = Attack.Create(owner,target).WithDebree().WithTint(color).WithDamage(damage).WithOriginPoint(origin);
 			target.TakeDamage(attack);
 		}
 	}

@@ -84,7 +84,7 @@ public static class AttackUtilities
 	}
 
 
-	public static bool HitTarget(Life originLife, Life targetLife, float attackDamage, float extraPush = .1f)
+	public static bool HitTarget(Life originLife, Life targetLife, float attackDamage, float extraPush = .1f, bool causesFlying = false)
 	{
 		if (targetLife == null) return false;
 		if (!IsValidTarget(originLife, targetLife))
@@ -95,8 +95,9 @@ public static class AttackUtilities
 
 		Debug.Log("hit target");
 
-		var attack = AttackBuilder.Create().FromLife(originLife).ToLife(targetLife).WithDamage(attackDamage).WithExtraPush(extraPush).Build();
+		var attack = Attack.Create(originLife, targetLife).WithDamage(attackDamage).WithExtraPush(extraPush).WithFlying(causesFlying);
 		targetLife.TakeDamage(attack);
+		CameraShaker.ShakeCamera(targetLife.transform.position, CameraShaker.ShakeIntensityType.normal);
 		return true;
 	}
 
@@ -127,7 +128,7 @@ public static class AttackUtilities
 			if (otherMove != null)
 				otherMove.Push(explosionPosition - defence.transform.position, PushFactor * ratio);
 
-			var attack = AttackBuilder.Create().FromLife(_owner).ToLife(defence).WithDamage(explosionDamage * ratio).WithFlying(true).Build();
+			var attack = Attack.Create(_owner, defence).WithDamage(explosionDamage * ratio).WithFlying();
 			defence.TakeDamage(attack);
 		}
 	}

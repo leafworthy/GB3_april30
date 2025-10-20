@@ -1,20 +1,13 @@
 using __SCRIPTS.Plugins._ISOSORT;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ThingWithHeight : MonoBehaviour
 {
 
-	private float DistanceToGround;
-
-	public GameObject ShadowObject;
-	public GameObject JumpObject;
-	public IsoSpriteSorting Sorting;
+	private Vector2 DistanceToGround;
+	[FormerlySerializedAs("JumpObject")] public GameObject HeightObject;
 	private bool lands;
-
-	protected virtual void Start()
-	{
-		if (Sorting == null) Sorting = GetComponent<IsoSpriteSorting>();
-	}
 
 	protected virtual void FixedUpdate()
 	{
@@ -24,16 +17,16 @@ public class ThingWithHeight : MonoBehaviour
 
 	private void UpdateGraphics()
 	{
-		SetDistanceToGround(DistanceToGround);
+		SetDistanceToGround(DistanceToGround.y);
 	}
 
 
 	public void SetDistanceToGround(float height, bool _lands = true)
 	{
 		lands = _lands;
-		DistanceToGround = height;
-		JumpObject.transform.localPosition = new Vector3(0, DistanceToGround, 0);
+		DistanceToGround.y = height;
+		HeightObject.transform.localPosition = DistanceToGround;
 	}
 
-	public float GetDistanceToGround() => DistanceToGround;
+	public float GetDistanceToGround() => DistanceToGround.y;
 }

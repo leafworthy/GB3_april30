@@ -54,7 +54,7 @@ namespace __SCRIPTS
 
 		private JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
 		private JumpAbility _jumpAbility;
-		private int rate = 3;
+		private int rate = 1;
 		private int counter;
 
 		public override bool canDo() => base.canDo() && currentState == state.not && jumpAbility.IsResting;
@@ -124,7 +124,7 @@ namespace __SCRIPTS
 			counter = 0;
 			if (currentState != state.charged && currentState != state.startingCharge) return;
 			if (ammoInventory.secondaryAmmo.reserveAmmo < 100)
-				ammoInventory.secondaryAmmo.AddAmmoToReserve(2);
+				ammoInventory.secondaryAmmo.AddAmmoToReserve(5);
 			else if (!isFullyCharged)
 				FullyCharged();
 		}
@@ -206,6 +206,8 @@ namespace __SCRIPTS
 		{
 			UseAllAmmo();
 			OnChargeStop?.Invoke();
+			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Special);
+			TempCinemachine.CreateFollowCameraTemporary(transform, .75f, zoom: 35, orthographic: true);
 			anim.SetTrigger(UnitAnimations.ChargeAttackTrigger);
 			anim.SetBool(UnitAnimations.IsCharging, false);
 			PlayAnimationClip(chargeAttackAnimationClip);
@@ -289,7 +291,9 @@ namespace __SCRIPTS
 			foreach (var hit2D in circleCast)
 			{
 				var otherLife = hit2D.gameObject.GetComponent<Life>();
-				AttackUtilities.HitTarget(life, otherLife, otherLife.SecondaryAttackDamageWithExtra, SpecialAttackExtraPush);
+				if(otherLife == null) continue;
+				AttackUtilities.HitTarget(life, otherLife, otherLife.SecondaryAttackDamageWithExtra, SpecialAttackExtraPush, true);
+
 				connect = true;
 				Services.objectMaker.Make(Services.assetManager.FX.hits.GetRandom(), hit2D.transform.position);
 			}

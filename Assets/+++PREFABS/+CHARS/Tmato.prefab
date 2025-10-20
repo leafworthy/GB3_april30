@@ -216,6 +216,7 @@ MonoBehaviour:
   - {fileID: 4562298305781168460}
   - {fileID: 7840728949871741313}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!114 &6931421969339593940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,7 +308,6 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  healthBar: {fileID: 0}
   BlockTint: 0
   isBoss: 0
 --- !u!114 &8253285515779600483
@@ -322,9 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff264cf2d310481ea1df4e39814eef10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShadowObject: {fileID: 4731456876907379719}
-  JumpObject: {fileID: 1373179861667002548}
-  Sorting: {fileID: 2367419657709322461}
+  HeightObject: {fileID: 1373179861667002548}
   AttackStartPoint: {fileID: 5157628139186349314}
   FootPoint: {fileID: 3863578556289495954}
   RotateWithAim:
@@ -438,6 +436,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8e19e5c2974953b6d306f3bb0303ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceleration: 0
+  accelerates: 0
+  acceleratatonRate: 3
+  acceleratatonMax: 20
+  decelerationFactor: {x: 0.97, y: 0.97}
 --- !u!114 &425890416975624573
 MonoBehaviour:
   m_ObjectHideFlags: 0

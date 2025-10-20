@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class PoisonDamageEffect:MonoBehaviour
+	public class PoisonDamageEffect : MonoBehaviour
 	{
 		private float PoisonTime;
 		private float PoisonDamage;
@@ -35,18 +35,14 @@ namespace __SCRIPTS
 				}
 			}
 			else
-			{
 				Destroy(this);
-			}
 		}
 
 		private void ApplyPoisonDamage()
 		{
 			var transformPosition = Target.transform.position;
-			var origin = (int) Random.Range(0, 2) == 1 ? transformPosition+new Vector3(-1,-1) : transformPosition+ new Vector3(1, -1);
-			var poisonAttack = new Attack(Owner, origin, transformPosition,Target, PoisonDamage);
-			poisonAttack.MakesDebree = true;
-			poisonAttack.TintColor = Color.green;
+			var origin = Random.Range(0, 2) == 1 ? transformPosition + new Vector3(-1, -1) : transformPosition + new Vector3(1, -1);
+			var poisonAttack = Attack.Create(Owner, Target).WithOriginPoint(origin).WithDamage(PoisonDamage).WithDebree().WithTint(Color.green);
 			Target.TakeDamage(poisonAttack);
 		}
 	}

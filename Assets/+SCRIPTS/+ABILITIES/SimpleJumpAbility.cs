@@ -3,14 +3,19 @@ using GangstaBean.Core;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
+
 
 namespace __SCRIPTS
 {
-	public class SimpleJumpAbility : SerializedMonoBehaviour, IActivity
+	[ExecuteAlways]
+	public class SimpleJumpAbility : SerializedMonoBehaviour, IActivity, IRotate
 	{
 		public bool isResting;
 		private float verticalVelocity;
-
+		private float currentRotationRate;
+		private float maxRotationRate = 360;
+		private bool freezeRotation;
 
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnResting;
@@ -19,9 +24,9 @@ namespace __SCRIPTS
 
 		private bool isOverLandable;
 		public bool IsJumping;
-		private ThingWithHeight thing  =>  _thing ??= GetComponent<ThingWithHeight>();
-		private ThingWithHeight _thing;
+		private Vector2 DistanceToGround;
 
+		[FormerlySerializedAs("JumpObject")] public GameObject HeightObject;
 		private Body body => _body ??= GetComponent<Body>();
 		private Body _body;
 		private float currentLandableHeight;
@@ -33,9 +38,46 @@ namespace __SCRIPTS
 		private float maxFlyTime = 2.5f;
 		public string AbilityName => "Jump";
 
+		private void OnValidate()
+		{
+			if (HeightObject == null) HeightObject = transform.Find("HeightObject")?.gameObject;
+		}
+
+		public IRotate RotateToDirection(Vector2 direction, GameObject rotationObject)
+		{
+			var rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+			if (rotationObject == null) return this;
+			rotationObject.transform.eulerAngles = new Vector3(0, 0, rotation);
+			return this;
+		}
+
+
+
+		public IRotate SetRotationRate(float newRate)
+		{
+			maxRotationRate = newRate;
+			return this;
+		}
+
+
+
+		public IRotate SetFreezeRotation(bool freeze = true)
+		{
+			freezeRotation = freeze;
+			maxRotationRate = 0;
+			return this;
+		}
+
+		private void Rotate(float rotationSpeed)
+		{
+			if (freezeRotation) return;
+			HeightObject.transform.Rotate(new Vector3(0, 0, rotationSpeed * Time.fixedDeltaTime * 10));
+		}
 
 		public void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
 		{
+			currentRotationRate = Random.Range(0, maxRotationRate);
 			landTimer = 0;
 			minBounceVelocity = minBounce;
 			IsJumping = true;
@@ -44,12 +86,19 @@ namespace __SCRIPTS
 
 			verticalVelocity = verticalSpeed;
 
-			thing.SetDistanceToGround(startingHeight);
+			SetDistanceToGround(startingHeight);
 
 			if (body == null) return;
 			body?.ChangeLayer(Body.BodyLayer.jumping);
 		}
 
+		public void SetDistanceToGround(float height, bool _lands = true)
+		{
+			DistanceToGround.y = height;
+			HeightObject.transform.localPosition = DistanceToGround;
+		}
+
+		public float GetDistanceToGround() => DistanceToGround.y;
 		private void Start()
 		{
 			Init();
@@ -76,7 +125,7 @@ namespace __SCRIPTS
 			if (Services.pauseManager.IsPaused) return;
 			if (isResting) return;
 			if (!IsJumping) return;
-
+			 Rotate(currentRotationRate);
 			Fly();
 
 		}
@@ -93,13 +142,13 @@ namespace __SCRIPTS
 			}
 			currentLandableHeight = 0;
 			verticalVelocity -= (Services.assetManager.Vars.Gravity.y) * Time.fixedDeltaTime;
-			if ((thing.GetDistanceToGround() + verticalVelocity <= currentLandableHeight) && (verticalVelocity < 0))
+			if ((GetDistanceToGround() + verticalVelocity <= currentLandableHeight) && (verticalVelocity < 0))
 			{
 				Land();
 			}
 			else
 			{
-				thing.SetDistanceToGround(thing.GetDistanceToGround() + verticalVelocity);
+				SetDistanceToGround(GetDistanceToGround() + verticalVelocity);
 			}
 		}
 
@@ -114,7 +163,7 @@ namespace __SCRIPTS
 
 			IsJumping = false;
 			OnLand?.Invoke(transform.position);
-			thing.SetDistanceToGround(currentLandableHeight);
+			SetDistanceToGround(currentLandableHeight);
 
 			if (body != null) body.ChangeLayer( Body.BodyLayer.grounded);
 			StartResting();
@@ -133,6 +182,7 @@ namespace __SCRIPTS
 		{
 			isResting = true;
 			OnResting?.Invoke(transform.position);
+			if (freezeRotation) transform.rotation = Quaternion.identity;
 		}
 
 		private void StopResting()

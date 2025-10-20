@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DEBREE METAL.002 Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 972924970309542864, guid: 622b9740b5c7c46fd9b0fe2c534371cc, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 972924970309542864, guid: 622b9740b5c7c46fd9b0fe2c534371cc, type: 3}
     - target: {fileID: 6151863644800132824, guid: 622b9740b5c7c46fd9b0fe2c534371cc, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -64,32 +68,17 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6252824684496673169, guid: 622b9740b5c7c46fd9b0fe2c534371cc, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 6252824684496673169, guid: 622b9740b5c7c46fd9b0fe2c534371cc, type: 3}
     - target: {fileID: 8047778834297349048, guid: 622b9740b5c7c46fd9b0fe2c534371cc, type: 3}
       propertyPath: m_SortingOrder
       value: 6
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 97243714374872191, guid: 622b9740b5c7c46fd9b0fe2c534371cc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -8072037556033697614}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 622b9740b5c7c46fd9b0fe2c534371cc, type: 3}
---- !u!1 &6066327029966494638 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 97243714374872191, guid: 622b9740b5c7c46fd9b0fe2c534371cc, type: 3}
-  m_PrefabInstance: {fileID: 6158275496325216209}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &-8072037556033697614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6066327029966494638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

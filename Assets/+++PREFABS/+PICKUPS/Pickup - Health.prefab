@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 420
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.6156863}
   m_FlipX: 0
@@ -102,7 +102,6 @@ GameObject:
   - component: {fileID: 7371039815126729459}
   - component: {fileID: 2007420030888794911}
   - component: {fileID: -5354897563774274167}
-  - component: {fileID: 1965922824935984866}
   - component: {fileID: 2760216601298511495}
   - component: {fileID: -1556690003723646190}
   - component: {fileID: -876361791113029682}
@@ -194,7 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupTintColor: {r: 0.99074435, g: 0.5330188, b: 1, a: 1}
-  item: {fileID: 2760216601298511495}
+  pickupItem: {fileID: 2760216601298511495}
   amount: 20
 --- !u!114 &7371039815126729459
 MonoBehaviour:
@@ -208,6 +207,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 1
   renderBelowAll: 0
   sortingBounds: {fileID: 5024565233564702595}
@@ -219,6 +228,7 @@ MonoBehaviour:
   - {fileID: 4962759889450809248}
   - {fileID: 8650928308111112186}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!114 &2007420030888794911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,7 +241,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8e19e5c2974953b6d306f3bb0303ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDir: {x: 0, y: 0}
+  acceleration: 0
+  accelerates: 0
+  acceleratatonRate: 3
+  acceleratatonMax: 20
+  decelerationFactor: {x: 0.97, y: 0.97}
 --- !u!114 &-5354897563774274167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,26 +258,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a22135ef50477c89a5e717d44de835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   isResting: 0
   IsJumping: 0
---- !u!114 &1965922824935984866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3698000994739175437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fda5f38b4216f4ffa8b25cacc7aa0de0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isOverLandable: 0
-  ShadowObject: {fileID: 1538258295548206598}
-  JumpObject: {fileID: 4078421510611429231}
-  Sorting: {fileID: 7371039815126729459}
-  canLand: 0
-  spriteRendererToTint: {fileID: 8650928308111112186}
+  HeightObject: {fileID: 4078421510611429231}
 --- !u!114 &2760216601298511495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,8 +298,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowBarImage: {fileID: 0}
-  fastBarImage: {fileID: 0}
   DebreeTint: {r: 1, g: 1, b: 1, a: 1}
   colorMode: 0
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
@@ -327,8 +331,8 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  healthBar: {fileID: 0}
   BlockTint: 0
+  isBoss: 0
 --- !u!114 &-876361791113029682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,7 +367,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1970549722808084908}
   m_Layer: 23
-  m_Name: Height
+  m_Name: HeightObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -463,7 +467,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 421
   m_Sprite: {fileID: -5185649437945853404, guid: 5f34fe728c08a4f2f98fc3dc3f421938, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

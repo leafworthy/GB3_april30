@@ -5,7 +5,7 @@ namespace __SCRIPTS
 {
 	public class CameraStunner_FX : MonoBehaviour
 	{
-		private const float stunMultiplier = 1.5f;
+		private const float stunMultiplier = 8;//1.5f
 
 		public enum StunLength
 		{
@@ -50,7 +50,7 @@ namespace __SCRIPTS
 				       StunLength.Short => .01f*stunMultiplier,
 				       StunLength.Normal => .0175f * stunMultiplier,
 				       StunLength.Long => .025f * stunMultiplier,
-				       StunLength.Special => .5f * stunMultiplier,
+				       StunLength.Special => .2f * stunMultiplier,
 				       StunLength.None =>0 * stunMultiplier,
 				       _ => throw new ArgumentOutOfRangeException(nameof(length), length, null)
 			       };

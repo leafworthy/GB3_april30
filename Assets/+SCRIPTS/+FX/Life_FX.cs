@@ -134,6 +134,8 @@ namespace __SCRIPTS
 		private void CreateBloodSpray(Attack attack)
 		{
 			var blood = Services.objectMaker.Make(Services.assetManager.FX.bloodspray.GetRandom(), attack.DestinationFloorPoint);
+			var bloodHeightScript = blood.GetComponent<ThingWithHeight>();
+			bloodHeightScript.SetDistanceToGround(attack.DestinationHeight, false);
 			if (attack.Direction.x < 0) blood.transform.localScale = new Vector3(-blood.transform.localScale.x, blood.transform.localScale.y, 0);
 		}
 
@@ -145,44 +147,32 @@ namespace __SCRIPTS
 			{
 				//----->
 				var forwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), attack.DestinationFloorPoint);
-
-				forwardDebree.GetComponent<FallToFloor>().Fire(attack);
+				forwardDebree.GetComponent<IDebree>().Fire(attack).TintSprite(DebreeTint);
 				Services.objectMaker.Unmake(forwardDebree, 3);
 
 				//<-----
-				var flippedAttack = new Attack(life, attack.OriginLife, attack.DamageAmount);
-				var backwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), attack.DestinationFloorPoint);
-				backwardDebree.GetComponent<FallToFloor>().Fire(flippedAttack);
+				var flippedAttack = Attack.GetFlippedAttack(attack);
+				var backwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), flippedAttack.DestinationFloorPoint);
+				backwardDebree.GetComponent<IDebree>().Fire(flippedAttack).TintSprite(DebreeTint);
 				Services.objectMaker.Unmake(backwardDebree, 3);
-
-				var sprite = forwardDebree.GetComponentInChildren<SpriteRenderer>();
-				if (sprite != null) sprite.color = DebreeTint;
-				sprite = backwardDebree.GetComponentInChildren<SpriteRenderer>();
-				if (sprite != null) sprite.color = DebreeTint;
 			}
 		}
 
-		public void ExplodeDebreeEverywhere(float explosionSize)
+		public void ExplodeDebreeEverywhere(float explosionSize, int min = 5, int max = 10)
 		{
 			if (life.DebrisType == DebrisType.none) return;
-			var randAmount = Random.Range(5, 10);
+			var randAmount = Random.Range(min, max);
 			for (var j = 0; j < randAmount; j++)
 			{
 				//----->
 				var forwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), transform.position);
-
-				forwardDebree.GetComponent<FallToFloor>().Explode(explosionSize);
+				forwardDebree.GetComponent<IDebree>().Explode(explosionSize).TintSprite(DebreeTint);
 				Services.objectMaker.Unmake(forwardDebree, 3);
 
 				//<-----
 				var backwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), transform.position);
-				backwardDebree.GetComponent<FallToFloor>().Explode(explosionSize);
+				backwardDebree.GetComponent<IDebree>().Explode(explosionSize).TintSprite(DebreeTint);
 				Services.objectMaker.Unmake(backwardDebree, 3);
-
-				var sprite = forwardDebree.GetComponentInChildren<SpriteRenderer>();
-				if (sprite != null) sprite.color = DebreeTint;
-				sprite = backwardDebree.GetComponentInChildren<SpriteRenderer>();
-				if (sprite != null) sprite.color = DebreeTint;
 			}
 		}
 
@@ -296,5 +286,24 @@ namespace __SCRIPTS
 			_life.OnFractionChanged -= DefenceOnDefenceChanged;
 			_life.OnDying -= DefenceOnDying;
 		}
+	}
+
+
+	public interface IRotate
+	{
+		IRotate RotateToDirection(Vector2 direction, GameObject rotationObject);
+		IRotate SetRotationRate(float i);
+		IRotate SetFreezeRotation(bool freeze);
+	}
+	public interface IDebree
+	{
+		IDebree Fire(Attack attack);
+		IDebree Fire(Vector2 angle, float height);
+		IDebree Explode(float explosionSize);
+		IDebree TintSprite(Color debreeTint);
+
+		IDebree SetDistanceToGround(float height);
+
+		IDebree FireFlipped(Attack attack);
 	}
 }

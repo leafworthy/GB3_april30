@@ -24,6 +24,12 @@ namespace __SCRIPTS
 			Set(revealedObjectIndex);
 		}
 
+		public void SetRandom()
+		{
+			var index = Random.Range(0, objectsToReveal.Count);
+			Set(index);
+		}
+
 		[Button]
 		public void GetChildGameObjects()
 		{

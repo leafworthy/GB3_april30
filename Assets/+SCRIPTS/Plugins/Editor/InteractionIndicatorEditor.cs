@@ -18,7 +18,7 @@ namespace __SCRIPTS.Plugins.Editor
 				0.08f * HandleUtility.GetHandleSize(myTarget.transform.position), Vector3.zero, Handles.CircleHandleCap) - myTarget.transform.position;
 		
 			if (!GUI.changed) return;
-			Undo.RecordObject(target, "Updated Sorting Offset");
+			Undo.RecordObject(target, "Updated sorting Offset");
 			EditorUtility.SetDirty(target);
 		}
 

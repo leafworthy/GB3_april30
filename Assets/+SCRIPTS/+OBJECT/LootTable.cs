@@ -67,8 +67,10 @@ namespace __SCRIPTS
 			}
 
 			var prefab = Services.objectMaker.Make(lootPrefab, position);
-			var fallingObject = prefab.GetComponent<FallToFloor>();
-			fallingObject.FireForDrops(new Vector3(Random.Range(-1, 1), -1), Color.white, 5, true);
+			var debreeObject = prefab.GetComponent<IDebree>();
+			var angle = new Vector3(Random.Range(-1, 1), -1);
+			debreeObject.Fire(angle, 5);
+
 		}
 
 		private void MakeDropList()

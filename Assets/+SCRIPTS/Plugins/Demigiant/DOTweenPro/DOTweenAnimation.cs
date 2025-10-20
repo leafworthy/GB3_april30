@@ -67,7 +67,7 @@ namespace DG.Tweening
 
         public bool targetIsSelf = true; // If FALSE allows to set the target manually
         public GameObject targetGO = null; // Used in case targetIsSelf is FALSE
-        // If FALSE always uses the GO containing this DOTweenAnimation (and not the one containing the target) as DOTween's SetTarget target
+        // If FALSE always uses the GO containing this DOTweenAnimation (and not the one containing the target) as DOTween's WithDestinationLife target
         public bool tweenTargetIsTargetGO = true;
 
         public float delay;
@@ -876,7 +876,7 @@ namespace DG.Tweening
         }
 
         /// <summary>
-        /// Returns the GameObject which should be used/retrieved for SetTarget
+        /// Returns the GameObject which should be used/retrieved for WithDestinationLife
         /// </summary>
         GameObject GetTweenTarget()
         {

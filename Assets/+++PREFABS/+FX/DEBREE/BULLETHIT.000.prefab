@@ -48,6 +48,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 1
   renderBelowAll: 0
   sortingBounds: {fileID: 3417345086474082047}
@@ -58,6 +68,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 3771352450258512271}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!114 &6569350876974382177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,11 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00e2315f8dfae4db6aedec7d0eaf0bbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOverLandable: 0
-  ShadowObject: {fileID: 0}
-  JumpObject: {fileID: 5199577035477914735}
-  Sorting: {fileID: 3078182492140518300}
-  canLand: 0
+  HeightObject: {fileID: 5199577035477914735}
 --- !u!114 &7486689071115476701
 MonoBehaviour:
   m_ObjectHideFlags: 0

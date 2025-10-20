@@ -206,7 +206,7 @@ namespace __SCRIPTS
 		public void DieNow()
 		{
 			Debug.Log("die now");
-			var killingBlow = AttackBuilder.Create().WithDamage(9999).FromLife(this).ToLife(this).Build();
+			var killingBlow = Attack.Create(this,this).WithDamage(9999);
 			unitHealth.TakeDamage(killingBlow);
 			 CompleteDeath(true);
 		}

@@ -491,7 +491,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 473
+  m_SortingOrder: 424
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -714,6 +714,7 @@ MonoBehaviour:
   - {fileID: 7210983349185876981}
   - {fileID: 3194819042820860482}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!114 &5036427627969513471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -819,9 +820,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff264cf2d310481ea1df4e39814eef10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShadowObject: {fileID: 3833892834326608145}
-  JumpObject: {fileID: 3833892833502990261}
-  Sorting: {fileID: 5572898776388989025}
+  HeightObject: {fileID: 3833892833502990261}
   AttackStartPoint: {fileID: 2872526777515909649}
   FootPoint: {fileID: 8653315125031340046}
   RotateWithAim:
@@ -1353,7 +1352,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 471
+  m_SortingOrder: 422
   m_Sprite: {fileID: -6705101843040777358, guid: fb1f81bd2d9a84124aa238bbda987009, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1666,7 +1665,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 472
+  m_SortingOrder: 423
   m_Sprite: {fileID: 6030953102041393858, guid: 3bc1e2c9ed3c74d0584fb619f2af827b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1900,7 +1899,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 470
+  m_SortingOrder: 421
   m_Sprite: {fileID: -3232186448459339446, guid: 3bc1e2c9ed3c74d0584fb619f2af827b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2274,7 +2273,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2831824315133730421, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
       propertyPath: m_SortingOrder
-      value: 469
+      value: 420
       objectReference: {fileID: 0}
     - target: {fileID: 2831824315133730422, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2328,11 +2327,6 @@ PrefabInstance:
 --- !u!4 &3833892834326608144 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2831824315133730422, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
-  m_PrefabInstance: {fileID: 1330831343565662054}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3833892834326608145 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2831824315133730423, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
   m_PrefabInstance: {fileID: 1330831343565662054}
   m_PrefabAsset: {fileID: 0}
 --- !u!212 &3833892834326608147 stripped

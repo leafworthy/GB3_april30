@@ -30,7 +30,7 @@ namespace __SCRIPTS.Plugins.Editor
 
 			if (GUI.changed)
 			{
-				Undo.RecordObject(target, "Updated Sorting Offset");
+				Undo.RecordObject(target, "Updated sorting Offset");
 				EditorUtility.SetDirty(target);
 			}
 		}

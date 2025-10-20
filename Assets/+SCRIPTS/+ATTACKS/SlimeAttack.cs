@@ -70,8 +70,7 @@ namespace __SCRIPTS
 		{
 			if (currentTarget == null) return;
 
-			var newAttack = AttackBuilder.Create().  FromLife(life).ToLife(currentTarget).
-				WithDamage(life.PrimaryAttackDamageWithExtra).Build();
+			var newAttack = Attack.Create(life,currentTarget).WithDamage(life.PrimaryAttackDamageWithExtra);
 
 			if ((Vector2.Distance(transform.position, currentTarget.transform.position) <= life.PrimaryAttackRange) ||  (currentTarget.IsObstacle))
 			{

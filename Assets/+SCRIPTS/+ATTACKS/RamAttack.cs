@@ -89,7 +89,7 @@ namespace __SCRIPTS
 		private void AttackHit(Life other)
 		{
 			currentCooldown = coolDown;
-			var otherAttack = new Attack(life, other, life.PrimaryAttackDamageWithExtra);
+			 var otherAttack = Attack.Create( life,other).WithDamage(life.PrimaryAttackDamageWithExtra);
 
 			otherAttack.CausesFlying = causesFlying;
 			other.TakeDamage(otherAttack);
@@ -97,7 +97,7 @@ namespace __SCRIPTS
 			//WEIRD
 			if (!hasBounceBack)
 			{
-				var bouncebackAttack = new Attack(other, life, life.PrimaryAttackDamageWithExtra);
+				var bouncebackAttack =  Attack.Create(other, life).WithDamage(life.PrimaryAttackDamageWithExtra);
 				life.TakeDamage(bouncebackAttack);
 				mover.Push(bouncebackAttack.Direction, pushBackAmount);
 			}

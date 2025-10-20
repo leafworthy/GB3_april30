@@ -38,7 +38,7 @@ namespace DG.Tweening
         public static TweenerCore<Color, Color, ColorOptions> DOColor(this TMP_Text target, Color endValue, float duration)
         {
             TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.color, x => target.color = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -48,7 +48,7 @@ namespace DG.Tweening
         public static TweenerCore<Color, Color, ColorOptions> DOFaceColor(this TMP_Text target, Color32 endValue, float duration)
         {
             TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.faceColor, x => target.faceColor = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -58,7 +58,7 @@ namespace DG.Tweening
         public static TweenerCore<Color, Color, ColorOptions> DOOutlineColor(this TMP_Text target, Color32 endValue, float duration)
         {
             TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.outlineColor, x => target.outlineColor = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -71,7 +71,7 @@ namespace DG.Tweening
             TweenerCore<Color, Color, ColorOptions> t = useSharedMaterial
                 ? target.fontSharedMaterial.DOColor(endValue, "_GlowColor", duration)
                 : target.fontMaterial.DOColor(endValue, "_GlowColor", duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -81,7 +81,7 @@ namespace DG.Tweening
         public static TweenerCore<Color, Color, ColorOptions> DOFade(this TMP_Text target, float endValue, float duration)
         {
             TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -91,7 +91,7 @@ namespace DG.Tweening
         public static TweenerCore<Color, Color, ColorOptions> DOFaceFade(this TMP_Text target, float endValue, float duration)
         {
             TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.faceColor, x => target.faceColor = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -107,7 +107,7 @@ namespace DG.Tweening
             Transform trans = target.transform;
             Vector3 endValueV3 = new Vector3(endValue, endValue, endValue);
             TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => trans.localScale, x => trans.localScale = x, endValueV3, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -130,7 +130,7 @@ namespace DG.Tweening
                     ? v.ToString("N0", cInfo)
                     : v.ToString();
             }, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -140,7 +140,7 @@ namespace DG.Tweening
         public static TweenerCore<float, float, FloatOptions> DOFontSize(this TMP_Text target, float endValue, float duration)
         {
             TweenerCore<float, float, FloatOptions> t = DOTween.To(() => target.fontSize, x => target.fontSize = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -150,7 +150,7 @@ namespace DG.Tweening
         public static TweenerCore<int, int, NoOptions> DOMaxVisibleCharacters(this TMP_Text target, int endValue, float duration)
         {
             TweenerCore<int, int, NoOptions> t = DOTween.To(() => target.maxVisibleCharacters, x => target.maxVisibleCharacters = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -167,7 +167,7 @@ namespace DG.Tweening
         {
             TweenerCore<string, string, StringOptions> t = DOTween.To(() => target.text, x => target.text = x, endValue, duration);
             t.SetOptions(richTextEnabled, scrambleMode, scrambleChars)
-                .SetTarget(target);
+                .WithDestinationLife(target);
             return t;
         }
 

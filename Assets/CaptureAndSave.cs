@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
+#if UNITY_EDITOR
 public class CameraCapture
 {
     [MenuItem("GameObject/Export Camera View as PNG", false, 0)]
@@ -67,3 +68,4 @@ public class CameraCapture
         AssetDatabase.Refresh();
     }
 }
+#endif

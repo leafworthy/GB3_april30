@@ -1,89 +1,85 @@
-
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	[RequireComponent(typeof(MoveAbility)), RequireComponent(typeof(SimpleJumpAbility))]
-	public class FallToFloor : ThingWithHeight
+	[ExecuteAlways, RequireComponent(typeof(MoveAbility)), RequireComponent(typeof(SimpleJumpAbility))]
+	public class FallToFloor : MonoBehaviour, IDebree
 	{
-		public SpriteRenderer spriteRendererToTint;
-		private SimpleJumpAbility SimpleJumpAbility => simpleJumpAbility ??= GetComponent<SimpleJumpAbility>();
-		private SimpleJumpAbility simpleJumpAbility;
-		protected MoveAbility moveAbility  => _moveAbility ??= GetComponent<MoveAbility>();
+		protected SimpleJumpAbility simpleJumpAbility => _simpleJumpAbility ??= GetComponent<SimpleJumpAbility>();
+		private SimpleJumpAbility _simpleJumpAbility;
+		protected MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
 
-		protected float rotationRate = 100;
-		private float RotationRate;
-		private float PushSpeed = 40;
-		private float bounceSpeed = .25f;
-		private float jumpSpeed = .5f;
-		private bool freezeRotation;
+		private protected readonly float PushSpeed = 40;
+		protected readonly float bounceSpeed = .25f;
 
+		private Vector2 DistanceToGround;
 
-		public void FireForDrops(Vector3 shootAngle, Color color, float height, bool _freezeRotation = false)
+		private void Update()
 		{
-			RotationRate = Random.Range(0, rotationRate);
-			SimpleJumpAbility.OnBounce += SimpleJumpAbilityOnBounce;
-			SimpleJumpAbility.OnResting += SimpleJumpAbilityOnResting;
-			SimpleJumpAbility.Jump(height, jumpSpeed, bounceSpeed);
+			if(simpleJumpAbility.isResting) moveAbility.SetDragging(true);
+		}
+
+		public IDebree SetDistanceToGround(float height)
+		{
+			DistanceToGround.y = height;
+			simpleJumpAbility.HeightObject.transform.localPosition = DistanceToGround;
+			return this;
+		}
+
+		protected virtual void StartFiring(float originHeight, float verticalSpeed, float bounceSpeed = 0)
+		{
+			simpleJumpAbility.Jump(originHeight, verticalSpeed, bounceSpeed);
+			simpleJumpAbility.OnLand += SimpleJumpAbility_OnLand;
 			moveAbility.SetDragging(false);
-			moveAbility.Push(shootAngle, Random.Range(0, PushSpeed));
-			spriteRendererToTint.color = color;
-			freezeRotation = _freezeRotation;
 		}
 
-		private void SimpleJumpAbilityOnResting(Vector2 obj)
+		private void SimpleJumpAbility_OnLand(Vector2 obj)
 		{
-			if (freezeRotation)
-			{
-				transform.rotation = Quaternion.identity;
-			}
-		}
-
-		private void SimpleJumpAbilityOnBounce()
-		{
+			simpleJumpAbility.OnLand -= SimpleJumpAbility_OnLand;
 			moveAbility.SetDragging(true);
 		}
 
-		public void Fire(Attack attack, bool isFlipped = false)
+		public IDebree Explode(float explosionSize)
 		{
-			RotationRate = Random.Range(0, rotationRate);
-			SimpleJumpAbility.OnBounce += SimpleJumpAbilityOnBounce;
-			SimpleJumpAbility.OnResting += SimpleJumpAbilityOnResting;
-			var verticalSpeed = Random.Range(0, bounceSpeed);
-			SimpleJumpAbility.Jump(attack.OriginHeight, 0);
-			moveAbility.SetDragging(false);
-			moveAbility.Push(isFlipped ? attack.FlippedDirection : attack.Direction.normalized + new Vector2(Random.Range(-.4f, .4f), Random.Range(-.4f, .4f)),
-				Random.Range(0, PushSpeed));
-		}
-
-		protected override void FixedUpdate()
-		{
-			base.FixedUpdate();
-			if (SimpleJumpAbility.IsJumping && !freezeRotation)
-				Rotate(RotationRate);
-			else
-				moveAbility.SetDragging(true);
-		}
-
-		private void Rotate(float rotationSpeed)
-		{
-			JumpObject.transform.Rotate(new Vector3(0, 0, rotationSpeed * Time.fixedDeltaTime * 10));
-		}
-
-		public void Explode(float explosionSize)
-		{
-			RotationRate = Random.Range(0, rotationRate);
-			SimpleJumpAbility.OnBounce += SimpleJumpAbilityOnBounce;
-			SimpleJumpAbility.OnResting += SimpleJumpAbilityOnResting;
-			var verticalSpeed = Random.Range(0, explosionSize);
-			SimpleJumpAbility.Jump(0, verticalSpeed);
+			StartFiring(0, explosionSize);
 			var randomDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-			moveAbility.SetDragging(false);
-			moveAbility.Push(randomDirection + new Vector2(Random.Range(-.4f* explosionSize, .4f * explosionSize), Random.Range(-.4f * explosionSize, .4f *
-					explosionSize)),
+			moveAbility.Push(
+				randomDirection + new Vector2(Random.Range(-.4f * explosionSize, .4f * explosionSize), Random.Range(-.4f * explosionSize, .4f * explosionSize)),
 				Random.Range(0, PushSpeed));
 
+			return this;
+		}
+
+		public IDebree TintSprite(Color debreeTint)
+		{
+			var spriteToTint = GetComponentInChildren<SpriteRenderer>();
+			if (spriteToTint != null)
+				spriteToTint.color = debreeTint;
+			return this;
+		}
+
+		public virtual IDebree Fire(Vector2 angle, float height)
+		{
+			StartFiring(height, 0, bounceSpeed);
+			moveAbility.Push(angle, Random.Range(0, PushSpeed));
+			return this;
+		}
+
+		public virtual IDebree Fire(Attack attack)
+		{
+			StartFiring(attack.OriginHeight, 0);
+			moveAbility.Push(attack.Direction.normalized + new Vector2(Random.Range(-.4f, .4f), Random.Range(-.4f, .4f)), Random.Range(0, PushSpeed));
+
+			return this;
+		}
+
+		public virtual IDebree FireFlipped(Attack attack)
+		{
+			StartFiring(attack.OriginHeight, 0);
+			moveAbility.Push(attack.FlippedDirection, Random.Range(0, PushSpeed));
+
+			return this;
 		}
 	}
 }

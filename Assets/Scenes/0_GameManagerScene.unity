@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 2616225905856126391}
   - component: {fileID: 3570976834653433150}
   - component: {fileID: 3084799125442156473}
+  - component: {fileID: 7722900124837980854}
   m_Layer: 0
   m_Name: FXManager
   m_TagString: Untagged
@@ -3524,6 +3525,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c39ae7c48264cb5882e46eae7247e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7722900124837980854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775496218838613519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 320dc587c22904c489ce491dce44d116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
 --- !u!114 &7727572179257079737
 MonoBehaviour:
   m_ObjectHideFlags: 0

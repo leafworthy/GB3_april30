@@ -24,7 +24,7 @@ namespace DG.Tweening
         public static TweenerCore<Vector3, Vector3, VectorOptions> DOScale(this tk2dBaseSprite target, Vector3 endValue, float duration)
         {
             TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.scale, x => target.scale = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
         /// <summary>Tweens a Sprite's dimensions to the given value.
@@ -34,7 +34,7 @@ namespace DG.Tweening
         {
             TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.scale, x => target.scale = x, new Vector3(endValue, 0, 0), duration);
             t.SetOptions(AxisConstraint.X)
-                .SetTarget(target);
+                .WithDestinationLife(target);
             return t;
         }
         /// <summary>Tweens a Sprite's dimensions to the given value.
@@ -44,7 +44,7 @@ namespace DG.Tweening
         {
             TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.scale, x => target.scale = x, new Vector3(0, endValue, 0), duration);
             t.SetOptions(AxisConstraint.Y)
-                .SetTarget(target);
+                .WithDestinationLife(target);
             return t;
         }
         /// <summary>Tweens a Sprite's dimensions to the given value.
@@ -54,7 +54,7 @@ namespace DG.Tweening
         {
             TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.scale, x => target.scale = x, new Vector3(0, 0, endValue), duration);
             t.SetOptions(AxisConstraint.Z)
-                .SetTarget(target);
+                .WithDestinationLife(target);
             return t;
         }
 
@@ -64,7 +64,7 @@ namespace DG.Tweening
         public static TweenerCore<Color, Color, ColorOptions> DOColor(this tk2dBaseSprite target, Color endValue, float duration)
         {
             TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.color, x => target.color = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -74,7 +74,7 @@ namespace DG.Tweening
         public static TweenerCore<Color, Color, ColorOptions> DOFade(this tk2dBaseSprite target, float endValue, float duration)
         {
             TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -98,7 +98,7 @@ namespace DG.Tweening
                     : duration * (i == 0 ? c.time : c.time - colors[i - 1].time);
                 s.Append(target.DOColor(c.color, colorDuration).SetEase(Ease.Linear));
             }
-            s.SetTarget(target);
+            s.WithDestinationLife(target);
             return s;
         }
 
@@ -112,7 +112,7 @@ namespace DG.Tweening
         public static TweenerCore<Vector2, Vector2, VectorOptions> DOScaleDimensions(this tk2dSlicedSprite target, Vector2 endValue, float duration)
         {
             TweenerCore<Vector2, Vector2, VectorOptions> t = DOTween.To(() => target.dimensions, x => target.dimensions = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
         /// <summary>Tweens a SlicedSprite's dimensions to the given value.
@@ -122,7 +122,7 @@ namespace DG.Tweening
         {
             TweenerCore<Vector2, Vector2, VectorOptions> t = DOTween.To(() => target.dimensions, x => target.dimensions = x, new Vector2(endValue, 0), duration);
             t.SetOptions(AxisConstraint.X)
-                .SetTarget(target);
+                .WithDestinationLife(target);
             return t;
         }
         /// <summary>Tweens a SlicedSprite's dimensions to the given value.
@@ -132,7 +132,7 @@ namespace DG.Tweening
         {
             TweenerCore<Vector2, Vector2, VectorOptions> t = DOTween.To(() => target.dimensions, x => target.dimensions = x, new Vector2(0, endValue), duration);
             t.SetOptions(AxisConstraint.Y)
-                .SetTarget(target);
+                .WithDestinationLife(target);
             return t;
         }
 
@@ -146,7 +146,7 @@ namespace DG.Tweening
         public static TweenerCore<Vector3, Vector3, VectorOptions> DOScale(this tk2dTextMesh target, Vector3 endValue, float duration)
         {
             TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.scale, x => target.scale = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
         /// <summary>Tweens a 2D Toolkit TextMesh's dimensions to the given value.
@@ -156,7 +156,7 @@ namespace DG.Tweening
         {
             TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.scale, x => target.scale = x, new Vector3(endValue, 0, 0), duration);
             t.SetOptions(AxisConstraint.X)
-                .SetTarget(target);
+                .WithDestinationLife(target);
             return t;
         }
         /// <summary>Tweens a 2D Toolkit TextMesh's dimensions to the given value.
@@ -166,7 +166,7 @@ namespace DG.Tweening
         {
             TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.scale, x => target.scale = x, new Vector3(0, endValue, 0), duration);
             t.SetOptions(AxisConstraint.Y)
-                .SetTarget(target);
+                .WithDestinationLife(target);
             return t;
         }
         /// <summary>Tweens a 2D Toolkit TextMesh's dimensions to the given value.
@@ -176,7 +176,7 @@ namespace DG.Tweening
         {
             TweenerCore<Vector3, Vector3, VectorOptions> t = DOTween.To(() => target.scale, x => target.scale = x, new Vector3(0, 0, endValue), duration);
             t.SetOptions(AxisConstraint.Z)
-                .SetTarget(target);
+                .WithDestinationLife(target);
             return t;
         }
 
@@ -186,7 +186,7 @@ namespace DG.Tweening
         public static TweenerCore<Color, Color, ColorOptions> DOColor(this tk2dTextMesh target, Color endValue, float duration)
         {
             TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.color, x => target.color = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -196,7 +196,7 @@ namespace DG.Tweening
         public static TweenerCore<Color, Color, ColorOptions> DOFade(this tk2dTextMesh target, float endValue, float duration)
         {
             TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration);
-            t.SetTarget(target);
+            t.WithDestinationLife(target);
             return t;
         }
 
@@ -220,7 +220,7 @@ namespace DG.Tweening
                     : duration * (i == 0 ? c.time : c.time - colors[i - 1].time);
                 s.Append(target.DOColor(c.color, colorDuration).SetEase(Ease.Linear));
             }
-            s.SetTarget(target);
+            s.WithDestinationLife(target);
             return s;
         }
 
@@ -237,7 +237,7 @@ namespace DG.Tweening
         {
             TweenerCore<string, string, StringOptions> t = DOTween.To(() => target.text, x => target.text = x, endValue, duration);
             t.SetOptions(richTextEnabled, scrambleMode, scrambleChars)
-                .SetTarget(target);
+                .WithDestinationLife(target);
             return t;
         }
 

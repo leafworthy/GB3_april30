@@ -16,6 +16,14 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 6793162487200560436, guid: 3d772a47ef266468eb987c9709ddd601, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 6793162487200560436, guid: 3d772a47ef266468eb987c9709ddd601, type: 3}
+    - target: {fileID: 6943342580170341891, guid: 3d772a47ef266468eb987c9709ddd601, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 6943342580170341891, guid: 3d772a47ef266468eb987c9709ddd601, type: 3}
     - target: {fileID: 7109569647350442907, guid: 3d772a47ef266468eb987c9709ddd601, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -68,28 +76,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: DEBREE WOOD.004 Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8778398061163214733, guid: 3d772a47ef266468eb987c9709ddd601, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -7698038568028247030}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d772a47ef266468eb987c9709ddd601, type: 3}
---- !u!1 &5600989378723578790 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8778398061163214733, guid: 3d772a47ef266468eb987c9709ddd601, type: 3}
-  m_PrefabInstance: {fileID: 3776713233026675755}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &-7698038568028247030
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600989378723578790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
