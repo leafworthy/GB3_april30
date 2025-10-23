@@ -1,21 +1,19 @@
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	[RequireComponent(typeof(MoveAbility)), RequireComponent(typeof(SimpleJumpAbility))]
+	[ExecuteAlways, RequireComponent(typeof(MoveAbility)), RequireComponent(typeof(SimpleJumpAbility))]
 	public class BloodSplatterOnFloor : FallToFloor
 	{
 		private float jumpSpeed = .5f;
 		public List<GameObject> BloodFlying = new();
-		public List<GameObject> HitWallFlatAnimation  = new();
+		public List<GameObject> HitWallFlatAnimation = new();
 		public List<GameObject> HitWallAngledAnimation = new();
 		public List<GameObject> HitFloorAnimation = new();
 		public List<GameObject> HitFloorMovingAnimation = new();
 
-		private float fastEnoughSpeed = 3f;
-
+		private float fastEnoughSpeed = 100;
 
 		private void HideAllAnimations()
 		{
@@ -23,60 +21,39 @@ namespace __SCRIPTS
 			{
 				go.SetActive(false);
 			}
+
 			foreach (var go in HitWallFlatAnimation)
 			{
 				go.SetActive(false);
 			}
+
 			foreach (var go in HitWallAngledAnimation)
 			{
 				go.SetActive(false);
 			}
+
 			foreach (var go in HitFloorAnimation)
 			{
 				go.SetActive(false);
 			}
+
 			foreach (var go in HitFloorMovingAnimation)
 			{
 				go.SetActive(false);
 			}
 		}
 
-		[Button]
-		private void SimpleJumpAbilityOnResting(Vector2 obj)
+		public override IDebree Fire(Vector2 shootAngle, float height, float verticalSpeed = 0, float pushSpeed = 120)
 		{
-			Debug.Log("Landed, changing sprite");
-			HideAllAnimations();
-			StopMoving();
-			if (moveAbility.IsMovingQuickly(fastEnoughSpeed))
-			{
-
-				var anim = HitFloorMovingAnimation.GetRandom();
-				anim.SetActive(true);
-			}
-			else
-			{
-				var anim = HitFloorAnimation.GetRandom();
-				anim.SetActive(true);
-			}
-		}
-
-		public override IDebree Fire(Vector2 angle, float height)
-		{
-			Splatter(angle, height);
-			return this;
-		}
-
-		public void Splatter(Vector3 shootAngle, float height)
-		{
-			simpleJumpAbility.OnLand += SplatOnResting;
-			simpleJumpAbility.Jump(height, jumpSpeed, bounceSpeed);
+			Debug.Log("Firing blood splatter" + shootAngle + " height " + height + " vertical speed " + verticalSpeed);
+			base.Fire(shootAngle, height, verticalSpeed, pushSpeed*8);
 
 			HideAllAnimations();
 			BloodFlying.GetRandom().SetActive(true);
 
+			simpleJumpAbility.OnLand += SplatOnLand;
 			moveAbility.OnHitWall += SplatOnHitWall;
-			moveAbility.SetDragging(false);
-			moveAbility.Push(shootAngle, Random.Range(0, PushSpeed));
+			return this;
 		}
 
 		private void SplatOnHitWall(RaycastHit2D obj, EffectSurface.SurfaceAngle surfaceAngle)
@@ -96,16 +73,36 @@ namespace __SCRIPTS
 			StopMoving();
 		}
 
-		private void SplatOnResting(Vector2 obj)
+		private void SplatOnLand(Vector2 obj)
 		{
+			simpleJumpAbility.OnLand -= SplatOnLand;
+			moveAbility.OnHitWall -= SplatOnHitWall;
+			Debug.Log("Landed, changing sprite");
+			HideAllAnimations();
+			simpleJumpAbility.FreezeRotationAtIdentity();
+
+			Debug.Log( "fastenoughspeed " + fastEnoughSpeed + " current speed " + moveAbility.GetTotalVelocity().magnitude);
+			;
+			if (moveAbility.IsMovingQuickly(fastEnoughSpeed))
+			{
+				var anim = HitFloorMovingAnimation.GetRandom();
+				anim.SetActive(true);
+			}
+			else
+			{
+				var anim = HitFloorAnimation.GetRandom();
+				anim.SetActive(true);
+			}
+
 			StopMoving();
 		}
 
 		private void StopMoving()
 		{
-			simpleJumpAbility.OnResting -= SplatOnResting;
+			simpleJumpAbility.OnResting -= SplatOnLand;
 			moveAbility.OnHitWall -= SplatOnHitWall;
 			moveAbility.StopMoving();
+			moveAbility.StopPush();
 		}
 	}
 }

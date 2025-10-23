@@ -13,15 +13,15 @@ namespace __SCRIPTS
 			TintColor = Color.red;
 		}
 
-		public static Attack Create(Life originLife, Life destinationLife) =>
-			new()
-			{
-				OriginLife = originLife,
-				OriginFloorPoint = originLife.transform.position,
-				DestinationLife = destinationLife,
-				DestinationFloorPoint = destinationLife.transform.position
-			};
-
+		public static Attack Create(Life originLife, Life destinationLife)
+		{
+			var attack = new Attack();
+			attack.OriginLife = originLife;
+			if(originLife != null)attack.OriginFloorPoint = originLife.transform.position;
+			attack.DestinationLife = destinationLife;
+			if (destinationLife != null) attack.DestinationFloorPoint = destinationLife.transform.position;
+			return attack;
+		}
 
 		public Attack WithDamage(float damage)
 		{
@@ -53,6 +53,7 @@ namespace __SCRIPTS
 			if (target != null)
 				DestinationFloorPoint = target.transform.position;
 		}
+
 		public Attack WithDestinationPoint(Vector2 point)
 		{
 			DestinationFloorPoint = point;
@@ -100,17 +101,6 @@ namespace __SCRIPTS
 		public Vector2 FlippedDirection => OriginFloorPoint - DestinationFloorPoint;
 		public Vector2 DestinationWithHeight => DestinationFloorPoint + new Vector2(0, DestinationHeight);
 		public Vector2 OriginWithHeight => OriginFloorPoint + new Vector2(0, OriginHeight);
-
-		public static Attack GetFlippedAttack(Attack attack) =>
-			Create(attack.DestinationLife, attack.OriginLife)
-				.WithDamage(attack.DamageAmount)
-				.WithExtraPush(attack.ExtraPush)
-				.WithOriginHeight(attack.DestinationHeight)
-				.WithDestinationHeight(attack.OriginHeight)
-				.WithOriginPoint(attack.DestinationFloorPoint)
-				.WithDestinationPoint(attack.OriginFloorPoint)
-				.WithDebree(attack.MakesDebree)
-				.WithFlying(attack.CausesFlying)
-				.WithTint(attack.TintColor);
 	}
+
 }

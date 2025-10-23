@@ -1,23 +1,25 @@
 using System;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
+
 	[Serializable]
-	public class ExplosionAttack : Attacks
+	public class ExplosionAttack : MonoBehaviour, INeedPlayer
 	{
 		private Life currentTargetLife;
 		private IAttack _attacker;
 		private IAttack attacker => _attacker ??= GetComponent<IAttack>();
 		private UnitAnimations anim;
 		private float explosionRadius = 5;
-		public override string AbilityName => "ExplosionAttack";
 		public AnimationClip attackAnimation;
 		private bool isAttacking;
+		protected Life life => _life ?? GetComponent<Life>();
+		private Life _life;
 
-		public override void SetPlayer(Player _player)
+		public void SetPlayer(Player _player)
 		{
-			base.SetPlayer(_player);
 			anim = GetComponent<UnitAnimations>();
 			anim.animEvents.OnAttackHit += AttackHit;
 			attacker.OnAttack += AttackerAttack;

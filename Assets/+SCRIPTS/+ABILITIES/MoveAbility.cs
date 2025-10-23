@@ -12,6 +12,7 @@ namespace __SCRIPTS
 		bool IsMoving();
 	}
 
+	[ExecuteAlways]
 	public class MoveAbility : MonoBehaviour, INeedPlayer
 	{
 		private const float velocityDecayFactor = .90f;
@@ -19,7 +20,6 @@ namespace __SCRIPTS
 		private const float pushMultiplier = 1;
 		private const float maxPushVelocity = 3000;
 		private const float maxAimDistance = 30;
-
 
 		private Player player;
 		private Rigidbody2D rb => _rb ??= GetComponent<Rigidbody2D>();
@@ -45,11 +45,11 @@ namespace __SCRIPTS
 		private Vector2 moveDir;
 		private Vector2 lastMoveAimDirOffset;
 
-		[SerializeField]private float acceleration;
-		public bool accelerates = false;
+		[SerializeField] private float acceleration;
+		public bool accelerates;
 		public float acceleratatonRate = 3;
 		public float acceleratatonMax = 20;
-		public Vector2 decelerationFactor = new Vector2(.97f, .97f);
+		public Vector2 decelerationFactor = new(.97f, .97f);
 
 		public bool GetCanMove() => canMove;
 		public Vector2 GetLastMoveAimDirOffset() => lastMoveAimDirOffset;
@@ -57,7 +57,8 @@ namespace __SCRIPTS
 		public Vector2 GetMoveAimDir() => mover.GetMoveAimDir();
 		public Vector2 GetMoveAimPoint() => (Vector2) body.AimCenter.transform.position + GetMoveAimDir().normalized * maxAimDistance;
 		public bool IsMoving() => isMoving;
-		public bool IsMovingQuickly(float amount) => rb.linearVelocity.magnitude > amount;
+
+		public bool IsMovingQuickly(float amount) => GetTotalVelocity().magnitude > amount;
 
 		public bool IsIdle() => mover.IsMoving();
 
@@ -128,8 +129,6 @@ namespace __SCRIPTS
 			DecayVelocity();
 		}
 
-
-
 		private void ApplyVelocity()
 		{
 			var totalVelocity = moveVelocity + pushVelocity;
@@ -149,7 +148,7 @@ namespace __SCRIPTS
 		private void DecayVelocity()
 		{
 			if (!isDragging) return;
-			var tempVel = accelerates? moveVelocity * decelerationFactor:  moveVelocity * velocityDecayFactor;
+			var tempVel = accelerates ? moveVelocity * decelerationFactor : moveVelocity * velocityDecayFactor;
 			moveVelocity = tempVel;
 
 			tempVel = pushVelocity * velocityDecayFactor;
@@ -157,9 +156,9 @@ namespace __SCRIPTS
 			if (pushVelocity.magnitude < .1f) pushVelocity = Vector2.zero;
 		}
 
-		private Vector2 GetMoveVelocityWithDeltaTime() => GetVelocity() * Time.fixedDeltaTime;
+		private Vector2 GetMoveVelocityWithDeltaTime() => GetSpeed() * Time.fixedDeltaTime;
 
-		private Vector2 GetVelocity()
+		private Vector2 GetSpeed()
 		{
 			moveVelocity = GetMoveDir() * moveSpeed;
 			return moveVelocity;
@@ -168,7 +167,6 @@ namespace __SCRIPTS
 		public void MoveInDirection(Vector2 direction, float newSpeed)
 		{
 			if (!IsActive) return;
-
 
 			if (direction.magnitude != 0)
 			{
@@ -188,16 +186,14 @@ namespace __SCRIPTS
 			}
 
 			anim?.SetBool(UnitAnimations.IsMoving, true);
-			if(accelerates)
+			if (accelerates)
 			{
 				acceleration += acceleratatonRate;
 				if (acceleration > acceleratatonMax) acceleration = acceleratatonMax;
 				moveSpeed = newSpeed + acceleration;
 			}
 			else
-			{
 				moveSpeed = newSpeed;
-			}
 
 			isMoving = true;
 		}
@@ -210,6 +206,7 @@ namespace __SCRIPTS
 
 		private void AddPushVelocity(Vector2 tempVel)
 		{
+			Debug.Log("push vel before " + pushVelocity + " adding " + tempVel);
 			tempVel += pushVelocity;
 			pushVelocity = tempVel;
 		}
@@ -245,7 +242,7 @@ namespace __SCRIPTS
 		{
 			acceleration = 0;
 			isMoving = false;
-			if(!accelerates)moveVelocity = Vector2.zero;
+			if (!accelerates) moveVelocity = Vector2.zero;
 			anim?.SetBool(UnitAnimations.IsMoving, false);
 		}
 
@@ -283,9 +280,10 @@ namespace __SCRIPTS
 			Push(attack.Direction, attack.DamageAmount + attack.ExtraPush);
 		}
 
+		public Vector2 GetTotalVelocity() => moveVelocity + pushVelocity;
 	}
 
-	public class EffectSurface:MonoBehaviour
+	public class EffectSurface : MonoBehaviour
 	{
 		public enum SurfaceAngle
 		{
@@ -294,8 +292,7 @@ namespace __SCRIPTS
 			DiagonalFacingLeft,
 			DiagonalFacingRight
 		}
+
 		public SurfaceAngle surfaceAngle;
 	}
-
-
 }

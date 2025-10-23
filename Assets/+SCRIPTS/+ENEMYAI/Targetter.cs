@@ -1,46 +1,28 @@
 using System.Collections.Generic;
 using System.Linq;
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS._ENEMYAI
 {
-	public class Targetter : MonoBehaviour, IPoolable
+	public class Targetter : MonoBehaviour
 	{
-		private void Awake()
-		{
-			InitializeTargetter();
-		}
-
-		private void InitializeTargetter()
-		{
-			wanderPoint = transform.position;
-		}
-
 		private Life targetterLife => GetComponent<Life>();
-		public Vector3 WanderPoint
-		{
-			get => wanderPoint;
-			private set => wanderPoint = value;
-		}
-		public float WanderRadius = 50;
-		private Life specialTarget;
-		private Vector3 wanderPoint;
+
 
 		#region private functions
 
 		public Life GetClosestEnemyInRange(float range)
 		{
-			var playersInRange = GetActualEnemyTargetsInRange(Services.assetManager.LevelAssets.EnemyLayer, range);
+			var playersInRange = GetActualEnemyTargetsInRange(targetterLife.EnemyLayer, range);
 			var closest = GetClosest(playersInRange);
 			return closest;
 		}
 
 		private List<Life> GetActualEnemyTargetsInRange(LayerMask levelAssetsEnemyLayer, float range)
 		{
-
 			var enemiesInRange = GetValidTargetsInRange(levelAssetsEnemyLayer, range);
-			var actualEnemiesInRange = enemiesInRange.Where(x => x != null && !x.IsDead() && x.gameObject != gameObject && x.category == UnitCategory.Enemy).ToList();
+			var actualEnemiesInRange = enemiesInRange.Where(x => x != null && !x.IsDead() && x.gameObject != gameObject && x.category == UnitCategory.Enemy)
+			                                         .ToList();
 			return actualEnemiesInRange;
 		}
 
@@ -162,15 +144,6 @@ namespace __SCRIPTS._ENEMYAI
 
 		public bool HasLineOfSightWith(Vector3 transformPosition) => !buildingIsInTheWay(transformPosition);
 
-		private bool CanAttack(Life target)
-		{
-			if (!TargetIsNotNullOrDead(target)) return false;
-
-			if (!isWithinAttackRange(target.transform.position)) return false;
-
-			return HasLineOfSightWith(target.transform.position);
-		}
-
 		private bool TargetIsNotNullOrDead(Life target)
 		{
 			if (target != null && !target.IsDead()) return true;
@@ -195,24 +168,6 @@ namespace __SCRIPTS._ENEMYAI
 			if (door.isOpen) return false;
 
 			return true;
-		}
-
-		public bool FoundTargetInAggroRange()
-		{
-			var target = GetClosestPlayerInAggroRange();
-			return target != null;
-		}
-
-		public void OnPoolSpawn()
-		{
-			// Reinitialize targetter when spawned from pool
-			InitializeTargetter();
-		}
-
-		public void OnPoolDespawn()
-		{
-			// Clean up when returning to pool
-			specialTarget = null;
 		}
 	}
 }

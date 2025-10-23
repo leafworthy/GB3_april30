@@ -6,6 +6,7 @@ using UnityEngine;
 namespace __SCRIPTS
 {
 	//REQUIRES levelManager
+	[ExecuteAlways]
 	public class ObjectMaker : MonoBehaviour, IService
 	{
 		//CREATOR DESTROYER
@@ -75,6 +76,11 @@ namespace __SCRIPTS
 		public GameObject Make(GameObject prefab, Vector2 pos)
 		{
 			if (prefab == null) return null;
+			if (containerContainer == null)
+			{
+				containerContainer = new GameObject("Object Pools");
+				containerContainer.transform.SetParent(transform);
+			}
 			GameObject instance;
 			var recycledScript = prefab.GetComponent<RecycleGameObject>();
 			if (recycledScript == null)

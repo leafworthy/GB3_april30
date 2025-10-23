@@ -74,7 +74,7 @@ namespace __SCRIPTS
 			verticalVelocity = 0;
 			SetState(state.resting);
 			moveAbility.SetCanMove(true);
-			body.SetDistanceToGround(0);
+			body.SetHeight(0);
 			base.Stop();
 		}
 
@@ -94,7 +94,7 @@ namespace __SCRIPTS
 			life.SetTemporarilyInvincible(true);
 			OnJump?.Invoke(transform.position);
 			verticalVelocity = life.JumpSpeed;
-			body.SetDistanceToGround(0);
+			body.SetHeight(0);
 			body.ChangeLayer(Body.BodyLayer.jumping);
 		}
 
@@ -156,7 +156,7 @@ namespace __SCRIPTS
 		private void FallFromHeight(float fallHeight)
 		{
 			SetState(state.falling);
-			body.SetDistanceToGround(fallHeight);
+			body.SetHeight(fallHeight);
 			PlayAnimationClip(fallingAnimationClip.name, 0, 0);
 			airTimer = 0;
 		}
@@ -181,10 +181,10 @@ namespace __SCRIPTS
 			verticalVelocity -= Services.assetManager.Vars.Gravity.y * Time.fixedDeltaTime;
 			if (!IsFalling && verticalVelocity < 0) StartFalling();
 
-			if (body.GetDistanceToGround() + verticalVelocity <= 0 && verticalVelocity < 0)
+			if (body.GetHeight() + verticalVelocity <= 0 && verticalVelocity < 0)
 				HitGround();
 			else
-				body.SetDistanceToGround(body.GetDistanceToGround() + verticalVelocity);
+				body.SetHeight(body.GetHeight() + verticalVelocity);
 		}
 
 		private void StartFalling()

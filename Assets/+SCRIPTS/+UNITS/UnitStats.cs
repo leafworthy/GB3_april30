@@ -24,7 +24,7 @@ namespace __SCRIPTS
 		public float ExtraSpeedFactor;
 
 		private int extraMaxDamageFactor;
-		private int EnemyTier;
+		[SerializeField] private int EnemyTier;
 
 		public float GetExtraHealth() => ExtraHealthFactor * Data.healthMax + Data.healthMax * EnemyTier;
 

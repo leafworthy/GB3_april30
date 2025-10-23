@@ -11,8 +11,8 @@ namespace __SCRIPTS.Projectiles
 		public GameObject rotationObject;
 
 		private bool isAirThrow;
-		private IDebree fallToFloor => _fallToFloor ??= GetComponent<IDebree>();
-		private IDebree _fallToFloor;
+		private IDebree debree => _debree ??= GetComponent<IDebree>();
+		private IDebree _debree;
 		private IRotate rotationAbility => _rotationAbility ??= GetComponent<IRotate>();
 		private IRotate _rotationAbility;
 		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
@@ -26,7 +26,7 @@ namespace __SCRIPTS.Projectiles
 			height = throwHeight;
 			owner = thrower;
 			isAirThrow = _isAirThrow;
-			fallToFloor.SetDistanceToGround(height);
+			debree.SetHeight(height);
 			rotationAbility.RotateToDirection(direction, rotationObject);
 			rotationAbility.SetRotationRate(0);
 			isFlying = true;
@@ -53,7 +53,7 @@ namespace __SCRIPTS.Projectiles
 				{
 					if (isAirThrow) height -= speed * Time.fixedDeltaTime;
 
-					_fallToFloor.SetDistanceToGround(height);
+					_debree.SetHeight(height);
 				}
 				else
 					Land();
@@ -83,7 +83,7 @@ namespace __SCRIPTS.Projectiles
 			Services.sfx.sounds.kunai_hit_sounds.PlayRandomAt(transform.position);
 
 			Services.objectMaker.Make(Services.assetManager.FX.hit5_xstrike, transform.position);
-			_fallToFloor.FireFlipped(attack);
+			_debree.Fire(attack.FlippedDirection, attack.OriginHeight);
 			Services.objectMaker.Unmake(gameObject, 3);
 		}
 	}

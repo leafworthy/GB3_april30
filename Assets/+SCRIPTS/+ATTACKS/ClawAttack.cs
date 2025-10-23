@@ -1,6 +1,7 @@
 ﻿using System;
 using __SCRIPTS;
 using __SCRIPTS._ENEMYAI;
+using GangstaBean.Core;
 using UnityEngine;
 
 
@@ -13,10 +14,13 @@ public interface IAttack
 namespace __SCRIPTS
 {
 	[Serializable]
-	public class ClawAttack : Attacks
+	public class ClawAttack : MonoBehaviour, INeedPlayer
 	{
 		private float currentCooldownTime;
 		private Life currentTargetLife;
+
+		private Life life => _life ??= GetComponent<Life>();
+		private Life _life;
 
 		private IAttack ai;
 		private UnitAnimations anim;
@@ -24,11 +28,8 @@ namespace __SCRIPTS
 		private Targetter targetter;
 		public AnimationClip clawAttackAnimationClip;
 
-		public override string AbilityName => "MeleeAttack";
-
-		public override void SetPlayer(Player _player)
+		public void SetPlayer(Player _player)
 		{
-			base.SetPlayer(_player);
 			body = GetComponent<Body>();
 			anim = GetComponent<UnitAnimations>();
 			targetter = GetComponent<Targetter>();
@@ -68,7 +69,7 @@ namespace __SCRIPTS
 		{
 			if (!(Time.time >= currentCooldownTime)) return;
 
-			currentCooldownTime = Time.time + base.life.PrimaryAttackRate;
+			currentCooldownTime = Time.time + life.PrimaryAttackRate;
 
 			// Face the target only when starting a new attack
 			FaceTarget();
@@ -96,7 +97,7 @@ namespace __SCRIPTS
 			if (Services.pauseManager.IsPaused) return;
 			if (currentTargetLife == null) return;
 
-			if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= base.life.PrimaryAttackRange*1.25f)
+			if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= life.PrimaryAttackRange*1.25f)
 			{
 				AttackUtilities.HitTarget(life, currentTargetLife, life.PrimaryAttackDamageWithExtra);
 			}

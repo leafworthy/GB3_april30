@@ -14,7 +14,7 @@ namespace __SCRIPTS
 	}
 
 	[Serializable]
-	public class Body : ThingWithHeight
+	public class Body : HeightAbility
 	{
 		public GameObject AttackStartPoint;
 		public GameObject FootPoint;
@@ -24,8 +24,6 @@ namespace __SCRIPTS
 		public GameObject TopScaleObject;
 		public GameObject BottomScaleObject;
 
-		public Arms arms = new();
-		public Legs legs = new();
 		[HideInInspector] public bool BottomIsFacingRight = true;
 		[HideInInspector] public bool TopIsFacingRight = true;
 		public DoableArms doableArms = new();
@@ -100,7 +98,7 @@ namespace __SCRIPTS
 
 		public void SetGrounded()
 		{
-			SetDistanceToGround(0);
+			SetHeight(0);
 			ChangeLayer(Body.BodyLayer.grounded);
 		}
 	}

@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 namespace __SCRIPTS
 {
 	[ExecuteAlways]
-	public class SimpleJumpAbility : SerializedMonoBehaviour, IActivity, IRotate
+	public class SimpleJumpAbility : HeightAbility, IRotate
 	{
 		public bool isResting;
 		private float verticalVelocity;
@@ -20,13 +20,10 @@ namespace __SCRIPTS
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnResting;
 		public event Action<Vector2> OnJump;
-		public event Action OnBounce;
 
 		private bool isOverLandable;
 		public bool IsJumping;
 		private Vector2 DistanceToGround;
-
-		[FormerlySerializedAs("JumpObject")] public GameObject HeightObject;
 		private Body body => _body ??= GetComponent<Body>();
 		private Body _body;
 		private float currentLandableHeight;
@@ -36,12 +33,6 @@ namespace __SCRIPTS
 		private float bounceVelocityDragFactor = .2f;
 		private float landTimer;
 		private float maxFlyTime = 2.5f;
-		public string AbilityName => "Jump";
-
-		private void OnValidate()
-		{
-			if (HeightObject == null) HeightObject = transform.Find("HeightObject")?.gameObject;
-		}
 
 		public IRotate RotateToDirection(Vector2 direction, GameObject rotationObject)
 		{
@@ -51,8 +42,6 @@ namespace __SCRIPTS
 			rotationObject.transform.eulerAngles = new Vector3(0, 0, rotation);
 			return this;
 		}
-
-
 
 		public IRotate SetRotationRate(float newRate)
 		{
@@ -86,35 +75,10 @@ namespace __SCRIPTS
 
 			verticalVelocity = verticalSpeed;
 
-			SetDistanceToGround(startingHeight);
+			SetHeight(startingHeight);
 
 			if (body == null) return;
 			body?.ChangeLayer(Body.BodyLayer.jumping);
-		}
-
-		public void SetDistanceToGround(float height, bool _lands = true)
-		{
-			DistanceToGround.y = height;
-			HeightObject.transform.localPosition = DistanceToGround;
-		}
-
-		public float GetDistanceToGround() => DistanceToGround.y;
-		private void Start()
-		{
-			Init();
-		}
-
-		private void Init()
-		{
-			if (initiated) return;
-			initiated = true;
-
-		}
-
-		private void OnEnable()
-		{
-			Init();
-
 		}
 
 
@@ -142,19 +106,20 @@ namespace __SCRIPTS
 			}
 			currentLandableHeight = 0;
 			verticalVelocity -= (Services.assetManager.Vars.Gravity.y) * Time.fixedDeltaTime;
-			if ((GetDistanceToGround() + verticalVelocity <= currentLandableHeight) && (verticalVelocity < 0))
+			if ((GetHeight() + verticalVelocity <= currentLandableHeight) && (verticalVelocity < 0))
 			{
 				Land();
 			}
 			else
 			{
-				SetDistanceToGround(GetDistanceToGround() + verticalVelocity);
+				SetHeight(GetHeight() + verticalVelocity);
 			}
 		}
 
 
 		private void Land()
 		{
+			Debug.Log("landed", this);
 			if (Mathf.Abs(verticalVelocity) > minBounceVelocity)
 			{
 				Bounce();
@@ -163,7 +128,7 @@ namespace __SCRIPTS
 
 			IsJumping = false;
 			OnLand?.Invoke(transform.position);
-			SetDistanceToGround(currentLandableHeight);
+			SetHeight(currentLandableHeight);
 
 			if (body != null) body.ChangeLayer( Body.BodyLayer.grounded);
 			StartResting();
@@ -175,7 +140,6 @@ namespace __SCRIPTS
 			verticalVelocity *= -1;
 			var velocity = bounceVelocityDragFactor;
 			verticalVelocity *= velocity;
-			OnBounce?.Invoke();
 		}
 
 		private void StartResting()
@@ -190,7 +154,10 @@ namespace __SCRIPTS
 			isResting = false;
 		}
 
-
-
+		public void FreezeRotationAtIdentity()
+		{
+			freezeRotation = true;
+			HeightObject.transform.rotation = Quaternion.identity;
+		}
 	}
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
+	[ExecuteInEditMode]
 	public class Life : MonoBehaviour, INeedPlayer
 	{
 		public Player Player => player;
@@ -114,7 +115,7 @@ namespace __SCRIPTS
 			if (animations.animEvents == null) return;
 			animations.animEvents.OnDieStop -= CompleteDeath;
 			animations.animEvents.OnDieStop += CompleteDeath;
-			//animations.animEvents.OnInvincible += SetInvincible;
+			animations.animEvents.OnInvincible += SetInvincible;
 		}
 
 		private void OnDisable()
@@ -233,11 +234,14 @@ namespace __SCRIPTS
 			if (unitStats != null) unitStats.ExtraSpeedFactor = factor;
 		}
 
+		[Sirenix.OdinInspector.Button]
 		public void SetEnemyTier(int tier)
 		{
 			unitStats.SetEnemyTier(tier);
 			unitHealth.FillHealth();
 			OnFractionChanged?.Invoke(GetFraction());
+			var paletteSwapper = GetComponent<PalletteSwapper>();
+			paletteSwapper?.SetPallette(tier);
 		}
 
 		public void SetTemporarilyInvincible(bool isOn)

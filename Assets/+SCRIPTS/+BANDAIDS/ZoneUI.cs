@@ -13,7 +13,7 @@ public class ZoneUI : GUIDebugTextShower
 	[SerializeField] private GameObject goIndicator;
 
 
-	private void OnEnable()
+	private void Start()
 	{
 		Services.enemyManager.OnEnemyDying += OnEnemyDying;
 		zoneSwitcher = GetComponent<ZoneSwitcher>();
@@ -21,8 +21,9 @@ public class ZoneUI : GUIDebugTextShower
 		UpdateZoneText();
 	}
 
-	private void OnDisable()
+	private void OnDestroy()
 	{
+		if (Services.enemyManager == null) return;
 		Services.enemyManager.OnEnemyDying -= OnEnemyDying;
 	}
 

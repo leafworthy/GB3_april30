@@ -22,14 +22,6 @@ namespace GangstaBean.Core
     }
 
 
-    public interface IActivity
-    {
-        string AbilityName { get; }
-
-
-    }
-
-
     public interface IPoolable
     {
         void OnPoolSpawn();

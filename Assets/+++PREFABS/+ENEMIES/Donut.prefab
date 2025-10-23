@@ -352,8 +352,6 @@ GameObject:
   - component: {fileID: 4019382462400588588}
   - component: {fileID: 8277624868828922794}
   - component: {fileID: 8468380082729349932}
-  - component: {fileID: 5829456033049239119}
-  - component: {fileID: 3470467511461691860}
   - component: {fileID: 2505822213530538088}
   - component: {fileID: 2540430931499043486}
   - component: {fileID: 7433541532888936559}
@@ -530,46 +528,6 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   BlockTint: 0
   isBoss: 0
---- !u!114 &5829456033049239119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4019382462400588572}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  drawGizmos: 1
-  detailedGizmos: 1
-  startEndModifier:
-    addPoints: 0
-    exactStartPoint: 3
-    exactEndPoint: 3
-    useRaycasting: 0
-    mask:
-      serializedVersion: 2
-      m_Bits: 4294967295
-    useGraphRaycasting: 0
-  traversableTags: -1
-  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  graphMask:
-    value: -1
---- !u!114 &3470467511461691860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4019382462400588572}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d082acbe0e394fdab0da3224886adda7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2505822213530538088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -678,10 +636,6 @@ MonoBehaviour:
   ThrowPoint: {fileID: 0}
   TopScaleObject: {fileID: 0}
   BottomScaleObject: {fileID: 7854039214064336566}
-  arms:
-    isActive: 0
-  legs:
-    isActive: 0
   BottomIsFacingRight: 1
   TopIsFacingRight: 1
 --- !u!114 &2529326439228072115
@@ -696,7 +650,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a3858f7e7b44d4b8bf87aa6d65919f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WanderRadius: 50
 --- !u!114 &6592188322250801185
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ namespace __SCRIPTS
 		private List<Gun> _guns;
 		private GameObject bulletPrefab => Services.assetManager.FX.BulletPrefab;
 		private float effectTime = 5f;
-		private Vector2 heightCorrectionForDepth = new(0, -1.25f);
+		private Vector2 heightCorrectionForDepthInFrontOfWall = new(0, -1.25f);
 
 		private void Start()
 		{
@@ -48,15 +48,15 @@ namespace __SCRIPTS
 		private void MakeBulletShell(Attack attack)
 		{
 			var newBulletShell = Services.objectMaker.Make(Services.assetManager.FX.bulletShellPrefab, attack.OriginFloorPoint);
-			newBulletShell.GetComponent<IDebree>().Fire(Attack.GetFlippedAttack(attack));
+			newBulletShell.GetComponent<IDebree>().Fire(attack.FlippedDirection, attack.OriginHeight);
 			Services.objectMaker.Unmake(newBulletShell, effectTime);
 		}
 
 		private void CreateBulletHitAnimation(Attack attack)
 		{
-			var newBulletHitAnimation = Services.objectMaker.Make(Services.assetManager.FX.bulletHitAnimPrefab, attack.DestinationFloorPoint + heightCorrectionForDepth);
-			var bulletHitHeight = newBulletHitAnimation.GetComponent<ThingWithHeight>();
-			bulletHitHeight.SetDistanceToGround(attack.DestinationHeight - heightCorrectionForDepth.y);
+			var newBulletHitAnimation = Services.objectMaker.Make(Services.assetManager.FX.bulletHitAnimPrefab, attack.DestinationFloorPoint + heightCorrectionForDepthInFrontOfWall);
+			var bulletHitHeight = newBulletHitAnimation.GetComponent<HeightAbility>();
+			bulletHitHeight.SetHeight(attack.DestinationHeight - heightCorrectionForDepthInFrontOfWall.y);
 			Services.objectMaker.Unmake(newBulletHitAnimation, effectTime);
 		}
 	}

@@ -120,7 +120,7 @@ namespace DG.Tweening
 
         #region LayoutElement
 
-        /// <summary>Tweens an LayoutElement's flexibleWidth/Height to the given value.
+        /// <summary>Tweens an LayoutElement's flexibleWidth/HeightAbility to the given value.
         /// Also stores the LayoutElement as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
@@ -134,7 +134,7 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Tweens an LayoutElement's minWidth/Height to the given value.
+        /// <summary>Tweens an LayoutElement's minWidth/HeightAbility to the given value.
         /// Also stores the LayoutElement as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
@@ -148,7 +148,7 @@ namespace DG.Tweening
             return t;
         }
 
-        /// <summary>Tweens an LayoutElement's preferredWidth/Height to the given value.
+        /// <summary>Tweens an LayoutElement's preferredWidth/HeightAbility to the given value.
         /// Also stores the LayoutElement as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
@@ -354,7 +354,7 @@ namespace DG.Tweening
         /// <param name="duration">The duration of the tween</param>
         /// <param name="strength">The shake strength</param>
         /// <param name="vibrato">Indicates how much will the shake vibrate</param>
-        /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
+        /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware).
         /// Setting it to 0 will shake along a single direction.</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
@@ -369,7 +369,7 @@ namespace DG.Tweening
         /// <param name="duration">The duration of the tween</param>
         /// <param name="strength">The shake strength on each axis</param>
         /// <param name="vibrato">Indicates how much will the shake vibrate</param>
-        /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
+        /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware).
         /// Setting it to 0 will shake along a single direction.</param>
         /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
         /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>

@@ -1,15 +1,15 @@
 using System;
 using System.Linq;
-using FunkyCode;
-using UnityEditor;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	[ExecuteAlways]
-	[Serializable]
-	public class RamAttack : Attacks
+	[ExecuteAlways, Serializable]
+	public class RamAttack : MonoBehaviour, INeedPlayer
 	{
+		private Life life => _life ??= GetComponent<Life>();
+		private Life _life;
 		public bool hasBounceBack = true;
 		public bool causesFlying;
 		private float currentCooldown;
@@ -18,11 +18,9 @@ namespace __SCRIPTS
 		private MoveAbility mover;
 		[SerializeField] private float pushBackAmount = 3;
 
-		public override string AbilityName => "Ram-Attack";
 
-		public override void SetPlayer(Player _player)
+		public void SetPlayer(Player _player)
 		{
-			base.SetPlayer(_player);
 			mover = GetComponent<MoveAbility>();
 			isCooledDown = true;
 		}
@@ -70,8 +68,11 @@ namespace __SCRIPTS
 			var otherDefence = other.GetComponentInChildren<Life>();
 			var otherJump = other.GetComponentInChildren<JumpAbility>();
 			if (otherJump != null)
+			{
 				if (!otherJump.IsResting)
 					return;
+			}
+
 			if (otherDefence == null) return;
 			if (otherDefence.IsObstacle)
 			{
@@ -89,7 +90,7 @@ namespace __SCRIPTS
 		private void AttackHit(Life other)
 		{
 			currentCooldown = coolDown;
-			 var otherAttack = Attack.Create( life,other).WithDamage(life.PrimaryAttackDamageWithExtra);
+			var otherAttack = Attack.Create(life, other).WithDamage(life.PrimaryAttackDamageWithExtra);
 
 			otherAttack.CausesFlying = causesFlying;
 			other.TakeDamage(otherAttack);
@@ -97,7 +98,7 @@ namespace __SCRIPTS
 			//WEIRD
 			if (!hasBounceBack)
 			{
-				var bouncebackAttack =  Attack.Create(other, life).WithDamage(life.PrimaryAttackDamageWithExtra);
+				var bouncebackAttack = Attack.Create(other, life).WithDamage(life.PrimaryAttackDamageWithExtra);
 				life.TakeDamage(bouncebackAttack);
 				mover.Push(bouncebackAttack.Direction, pushBackAmount);
 			}

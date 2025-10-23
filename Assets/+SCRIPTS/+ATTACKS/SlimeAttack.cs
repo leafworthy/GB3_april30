@@ -1,20 +1,23 @@
 using __SCRIPTS._ENEMYAI;
 using __SCRIPTS.Projectiles;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class SlimeAttack : Attacks
+	public class SlimeAttack : MonoBehaviour
 	{
 		[SerializeField] private GameObject ProjectilePrefab;
 		private float currentCooldownTime;
 
+		private Life  life => _life ??= GetComponent<Life>();
+		private Life _life;
 		private Body body;
 		private UnitAnimations anim;
 		private IAttack ai;
 		private Life currentTarget;
 
-		private void OnEnable()
+		private void Start()
 		{
 			body = GetComponent<Body>();
 			anim = GetComponent<UnitAnimations>();
@@ -32,11 +35,11 @@ namespace __SCRIPTS
 		}
 
 
-		private void AIAttack(Life _life)
+		private void AIAttack(Life target)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (life.IsDead()) return;
-			AttackTarget(_life);
+			AttackTarget(target);
 		}
 
 		private void AttackTarget(Life targetLife)

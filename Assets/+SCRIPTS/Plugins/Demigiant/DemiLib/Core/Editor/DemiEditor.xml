@@ -1289,7 +1289,7 @@
             Sets the Y fixedWidth of the style
             </summary>
         </member>
-        <member name="M:DG.DemiEditor.GUIStyleExtensions.Height(UnityEngine.GUIStyle,System.Int32)">
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.HeightAbility(UnityEngine.GUIStyle,System.Int32)">
             <summary>
             Sets the fixedHeight of the style
             </summary>
@@ -2186,7 +2186,7 @@
             Returns a copy of the Rect resized so it fits proportionally within the given size limits
             </summary>
             <param name="w">Width to fit</param>
-            <param name="h">Height to fit</param>
+            <param name="h">HeightAbility to fit</param>
             <param name="shrinkOnly">If TRUE (default) only shrinks the rect if needed, if FALSE also enlarges it to fit</param>
             <returns></returns>
         </member>
