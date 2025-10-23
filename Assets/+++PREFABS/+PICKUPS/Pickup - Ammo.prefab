@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 421
+  m_SortingOrder: 517
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.6156863}
   m_FlipX: 0
@@ -164,7 +164,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 420
+  m_SortingOrder: 516
   m_Sprite: {fileID: 2853566114444752598, guid: 6377f9b70513c46608bacdf04c129ed9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -225,7 +225,6 @@ GameObject:
   - component: {fileID: 4671007800745611644}
   - component: {fileID: -4227207149739238331}
   - component: {fileID: -4041549823342214164}
-  - component: {fileID: -6390178230261155789}
   - component: {fileID: 3792166359372497063}
   - component: {fileID: 7540074022439218632}
   - component: {fileID: -7243091662481773707}
@@ -372,30 +371,6 @@ MonoBehaviour:
   acceleratatonRate: 3
   acceleratatonMax: 20
   decelerationFactor: {x: 0.97, y: 0.97}
---- !u!114 &-6390178230261155789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8411723760554169224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13a22135ef50477c89a5e717d44de835, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isResting: 0
-  IsJumping: 0
-  HeightObject: {fileID: 9184234644893955306}
 --- !u!114 &3792166359372497063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,6 +470,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda5f38b4216f4ffa8b25cacc7aa0de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HeightObject: {fileID: 9184234644893955306}
+  isResting: 0
+  IsJumping: 0
 --- !u!1 &9184234644893955306
 GameObject:
   m_ObjectHideFlags: 0

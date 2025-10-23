@@ -55,6 +55,8 @@ namespace __SCRIPTS
 		public void OnDestroy()
 		{
 			if (player == null) return;
+			if (player.Controller == null) return;
+			if (player.Controller.ReloadTriangle == null) return;
 			player.Controller.ReloadTriangle.OnPress -= Player_Reload;
 			base.Stop();
 		}

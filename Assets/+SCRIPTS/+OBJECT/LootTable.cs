@@ -67,7 +67,7 @@ namespace __SCRIPTS
 			}
 
 			var prefab = Services.objectMaker.Make(lootPrefab, position);
-			var debreeObject = prefab.GetComponent<IDebree>();
+			var debreeObject = prefab.GetComponent<MoveJumpAndRotateAbility>();
 			var angle = new Vector3(Random.Range(-1, 1), -1);
 			debreeObject.Fire(angle, 5);
 

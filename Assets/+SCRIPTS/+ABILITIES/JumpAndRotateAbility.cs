@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 namespace __SCRIPTS
 {
 	[ExecuteAlways]
-	public class SimpleJumpAbility : HeightAbility, IRotate
+	public class JumpAndRotateAbility : HeightAbility, IRotate
 	{
 		public bool isResting;
 		private float verticalVelocity;
@@ -27,8 +27,6 @@ namespace __SCRIPTS
 		private Body body => _body ??= GetComponent<Body>();
 		private Body _body;
 		private float currentLandableHeight;
-		private bool isJumping;
-		private bool initiated;
 		private float minBounceVelocity = 1000;
 		private float bounceVelocityDragFactor = .2f;
 		private float landTimer;
@@ -49,8 +47,6 @@ namespace __SCRIPTS
 			return this;
 		}
 
-
-
 		public IRotate SetFreezeRotation(bool freeze = true)
 		{
 			freezeRotation = freeze;
@@ -64,6 +60,11 @@ namespace __SCRIPTS
 			HeightObject.transform.Rotate(new Vector3(0, 0, rotationSpeed * Time.fixedDeltaTime * 10));
 		}
 
+		public void FreezeRotationAtIdentity()
+		{
+			freezeRotation = true;
+			HeightObject.transform.rotation = Quaternion.identity;
+		}
 		public void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
 		{
 			currentRotationRate = Random.Range(0, maxRotationRate);
@@ -117,9 +118,8 @@ namespace __SCRIPTS
 		}
 
 
-		private void Land()
+		protected virtual void Land()
 		{
-			Debug.Log("landed", this);
 			if (Mathf.Abs(verticalVelocity) > minBounceVelocity)
 			{
 				Bounce();
@@ -142,7 +142,7 @@ namespace __SCRIPTS
 			verticalVelocity *= velocity;
 		}
 
-		private void StartResting()
+		protected virtual void StartResting()
 		{
 			isResting = true;
 			OnResting?.Invoke(transform.position);
@@ -154,10 +154,11 @@ namespace __SCRIPTS
 			isResting = false;
 		}
 
-		public void FreezeRotationAtIdentity()
+		protected void FreezeHeight()
 		{
-			freezeRotation = true;
-			HeightObject.transform.rotation = Quaternion.identity;
+			verticalVelocity = 0;
+			IsJumping = false;
+			SetHeight(GetHeight());
 		}
 	}
 }

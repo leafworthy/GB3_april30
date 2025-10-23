@@ -101,11 +101,11 @@ GameObject:
   - component: {fileID: -6529683497788567960}
   - component: {fileID: 7371039815126729459}
   - component: {fileID: 2007420030888794911}
-  - component: {fileID: -5354897563774274167}
   - component: {fileID: 2760216601298511495}
   - component: {fileID: -1556690003723646190}
   - component: {fileID: -876361791113029682}
   - component: {fileID: 6524622929560056010}
+  - component: {fileID: -6610475015376682072}
   m_Layer: 23
   m_Name: Pickup - Health
   m_TagString: Untagged
@@ -246,30 +246,6 @@ MonoBehaviour:
   acceleratatonRate: 3
   acceleratatonMax: 20
   decelerationFactor: {x: 0.97, y: 0.97}
---- !u!114 &-5354897563774274167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3698000994739175437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13a22135ef50477c89a5e717d44de835, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isResting: 0
-  IsJumping: 0
-  HeightObject: {fileID: 4078421510611429231}
 --- !u!114 &2760216601298511495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,6 +333,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-6610475015376682072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3698000994739175437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda5f38b4216f4ffa8b25cacc7aa0de0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeightObject: {fileID: 4078421510611429231}
+  isResting: 0
+  IsJumping: 0
 --- !u!1 &4078421510611429231
 GameObject:
   m_ObjectHideFlags: 0

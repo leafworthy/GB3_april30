@@ -63,7 +63,6 @@ namespace __SCRIPTS
 			levelManager.OnGameOver -= Level_OnGameOver;
 			levelManager.OnWinGame -= Level_OnGameOver;
 
-			playerManager.SetActionMaps(Players.UIActionMap);
 			Vignette.SetActive(false);
 		}
 

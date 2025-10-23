@@ -11,12 +11,8 @@ namespace __SCRIPTS.Projectiles
 		public GameObject rotationObject;
 
 		private bool isAirThrow;
-		private IDebree debree => _debree ??= GetComponent<IDebree>();
-		private IDebree _debree;
-		private IRotate rotationAbility => _rotationAbility ??= GetComponent<IRotate>();
-		private IRotate _rotationAbility;
-		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
-		private MoveAbility _moveAbility;
+		private MoveJumpAndRotateAbility moveJumpAndRotateAbility => _moveJumpAndRotateAbility ??= GetComponent<MoveJumpAndRotateAbility>();
+		private MoveJumpAndRotateAbility _moveJumpAndRotateAbility;
 		private bool isFlying;
 
 		public void Throw(Vector3 throwDirection, Vector3 pos, float throwHeight, Life thrower, bool _isAirThrow)
@@ -26,9 +22,9 @@ namespace __SCRIPTS.Projectiles
 			height = throwHeight;
 			owner = thrower;
 			isAirThrow = _isAirThrow;
-			debree.SetHeight(height);
-			rotationAbility.RotateToDirection(direction, rotationObject);
-			rotationAbility.SetRotationRate(0);
+			moveJumpAndRotateAbility.SetHeight(height);
+			moveJumpAndRotateAbility.RotateToDirection(direction, rotationObject);
+			moveJumpAndRotateAbility.SetRotationRate(0);
 			isFlying = true;
 		}
 
@@ -46,14 +42,14 @@ namespace __SCRIPTS.Projectiles
 
 		private void MoveTo(Vector2 nextPos)
 		{
-			if (moveAbility != null)
+			if (moveJumpAndRotateAbility != null)
 			{
-				moveAbility.MoveInDirection(direction.normalized, speed);
+				moveJumpAndRotateAbility.moveAbility.MoveInDirection(direction.normalized, speed);
 				if (height >= 0)
 				{
 					if (isAirThrow) height -= speed * Time.fixedDeltaTime;
 
-					_debree.SetHeight(height);
+					moveJumpAndRotateAbility.SetHeight(height);
 				}
 				else
 					Land();
@@ -65,9 +61,9 @@ namespace __SCRIPTS.Projectiles
 		private void Land()
 		{
 			Debug.Log("land", this);
-			rotationAbility.SetFreezeRotation(true);
+			moveJumpAndRotateAbility.SetFreezeRotation(true);
 			isFlying = false;
-			moveAbility.StopMoving();
+			moveJumpAndRotateAbility.moveAbility.StopMoving();
 			Services.objectMaker.Unmake(gameObject, 3);
 		}
 
@@ -78,12 +74,12 @@ namespace __SCRIPTS.Projectiles
 			if (hitLife == null) return;
 			var attack = Attack.Create(owner, hitLife).WithDamage(owner.PrimaryAttackDamageWithExtra);
 			hitLife.TakeDamage(attack);
-			rotationAbility.SetRotationRate(300);
-			moveAbility.StopMoving();
+			moveJumpAndRotateAbility.SetRotationRate(300);
+			moveJumpAndRotateAbility.moveAbility.StopMoving();
 			Services.sfx.sounds.kunai_hit_sounds.PlayRandomAt(transform.position);
 
 			Services.objectMaker.Make(Services.assetManager.FX.hit5_xstrike, transform.position);
-			_debree.Fire(attack.FlippedDirection, attack.OriginHeight);
+			moveJumpAndRotateAbility.Fire(attack.FlippedDirection, attack.OriginHeight);
 			Services.objectMaker.Unmake(gameObject, 3);
 		}
 	}

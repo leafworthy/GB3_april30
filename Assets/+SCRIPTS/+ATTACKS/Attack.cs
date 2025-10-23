@@ -102,5 +102,4 @@ namespace __SCRIPTS
 		public Vector2 DestinationWithHeight => DestinationFloorPoint + new Vector2(0, DestinationHeight);
 		public Vector2 OriginWithHeight => OriginFloorPoint + new Vector2(0, OriginHeight);
 	}
-
 }

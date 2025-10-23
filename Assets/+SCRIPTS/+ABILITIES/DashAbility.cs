@@ -70,6 +70,7 @@ namespace __SCRIPTS
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;
+			if (player.Controller.DashRightShoulder == null) return;
 			player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 		}
 

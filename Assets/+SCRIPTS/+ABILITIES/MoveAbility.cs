@@ -139,7 +139,9 @@ namespace __SCRIPTS
 			{
 				var effectSurface = hitWall.collider.GetComponent<EffectSurface>();
 				if (effectSurface == null) return;
+				Debug.Log("hit wall " + hitWall.collider.name + " at " + hitWall.point + " angle " + effectSurface.surfaceAngle, this);
 				OnHitWall?.Invoke(hitWall, effectSurface.surfaceAngle);
+				return;
 			}
 
 			MoveObjectTo((Vector2) transform.position + totalVelocity * Time.deltaTime);
@@ -281,18 +283,5 @@ namespace __SCRIPTS
 		}
 
 		public Vector2 GetTotalVelocity() => moveVelocity + pushVelocity;
-	}
-
-	public class EffectSurface : MonoBehaviour
-	{
-		public enum SurfaceAngle
-		{
-			Horizontal,
-			Vertical,
-			DiagonalFacingLeft,
-			DiagonalFacingRight
-		}
-
-		public SurfaceAngle surfaceAngle;
 	}
 }

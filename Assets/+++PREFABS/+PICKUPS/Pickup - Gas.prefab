@@ -225,12 +225,12 @@ GameObject:
   - component: {fileID: -4227207149739238331}
   - component: {fileID: 4742764741184506843}
   - component: {fileID: -8814576700653843138}
-  - component: {fileID: -715868267680325430}
   - component: {fileID: -6415984341760094845}
   - component: {fileID: -5908550570833330664}
   - component: {fileID: 2437057948978903135}
   - component: {fileID: -5947683865623812453}
   - component: {fileID: -2230646666167456119}
+  - component: {fileID: -6651834197002787529}
   m_Layer: 23
   m_Name: Pickup - Gas
   m_TagString: Untagged
@@ -371,30 +371,6 @@ MonoBehaviour:
   acceleratatonRate: 3
   acceleratatonMax: 20
   decelerationFactor: {x: 0.97, y: 0.97}
---- !u!114 &-715868267680325430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8411723760554169224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13a22135ef50477c89a5e717d44de835, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isResting: 0
-  IsJumping: 0
-  HeightObject: {fileID: 9184234644893955306}
 --- !u!114 &-6415984341760094845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,6 +470,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-6651834197002787529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8411723760554169224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda5f38b4216f4ffa8b25cacc7aa0de0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeightObject: {fileID: 9184234644893955306}
+  isResting: 0
+  IsJumping: 0
 --- !u!1 &9184234644893955306
 GameObject:
   m_ObjectHideFlags: 0

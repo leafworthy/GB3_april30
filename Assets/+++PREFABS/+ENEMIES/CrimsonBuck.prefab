@@ -189,7 +189,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a3858f7e7b44d4b8bf87aa6d65919f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WanderRadius: 50
 --- !u!114 &3336217672993766619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,6 +223,7 @@ MonoBehaviour:
   - {fileID: 2832064834699186295}
   - {fileID: 6864343639827393813}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!114 &8924907394796459813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,7 +252,7 @@ MonoBehaviour:
       aggroRange: 100
       attack1Damage: 50
       attack1Rate: 1
-      attack1Range: 50
+      attack1Range: 10
       attack2Damage: 0
       attack2Rate: 0
       attack2Range: 0
@@ -267,6 +267,7 @@ MonoBehaviour:
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
+    EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
     IsShielded: 0
@@ -355,7 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebreeTint: {r: 1, g: 0.3529412, b: 0.5254902, a: 1}
+  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
   colorMode: 1
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
   barGradient:
@@ -406,7 +407,7 @@ MonoBehaviour:
   accelerates: 1
   acceleratatonRate: 3
   acceleratatonMax: 20
-  decelerationFactor: {x: 10, y: 10}
+  decelerationFactor: {x: 0.97, y: 0.97}
 --- !u!114 &7985030507518122798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,9 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff264cf2d310481ea1df4e39814eef10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShadowObject: {fileID: 6864343639827393815}
-  JumpObject: {fileID: 212006170907970652}
-  Sorting: {fileID: 3336217672993766619}
+  HeightObject: {fileID: 0}
   AttackStartPoint: {fileID: 0}
   FootPoint: {fileID: 7954856751282357660}
   RotateWithAim: []
@@ -444,10 +443,6 @@ MonoBehaviour:
   ThrowPoint: {fileID: 0}
   TopScaleObject: {fileID: 0}
   BottomScaleObject: {fileID: 8775283598853758929}
-  arms:
-    isActive: 0
-  legs:
-    isActive: 0
   BottomIsFacingRight: 1
   TopIsFacingRight: 1
 --- !u!114 &645081512479370059
@@ -826,7 +821,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -852,6 +847,7 @@ GameObject:
   m_Component:
   - component: {fileID: 768521585676464500}
   - component: {fileID: 6908380930154305988}
+  - component: {fileID: 2338084776522163618}
   m_Layer: 0
   m_Name: Animations
   m_TagString: Untagged
@@ -905,6 +901,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2338084776522163618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4558983203521070053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 235b0dca957a44663ae0a9256d23c975, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5924967626607910596
 GameObject:
   m_ObjectHideFlags: 0
@@ -960,7 +968,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 01c6688f9599dd947a1f9656be4be85b, type: 3}
+  - {fileID: 2100000, guid: 208734d8456064ae58684a496ce207b5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -980,7 +988,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 467
+  m_SortingOrder: 492
   m_Sprite: {fileID: 3626660519965036632, guid: 7b2df064cde7e43d1bad962cb8dd4f69, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1259,7 +1267,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 468
+  m_SortingOrder: 493
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1439,11 +1447,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1440
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 810
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_LocalScale.x
@@ -1546,7 +1554,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2831824315133730421, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
       propertyPath: m_SortingOrder
-      value: 469
+      value: 494
       objectReference: {fileID: 0}
     - target: {fileID: 2831824315133730422, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
       propertyPath: m_LocalScale.x
@@ -1617,10 +1625,5 @@ SpriteRenderer:
 --- !u!4 &6864343639827393814 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2831824315133730422, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
-  m_PrefabInstance: {fileID: 8651314957163672416}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6864343639827393815 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2831824315133730423, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
   m_PrefabInstance: {fileID: 8651314957163672416}
   m_PrefabAsset: {fileID: 0}

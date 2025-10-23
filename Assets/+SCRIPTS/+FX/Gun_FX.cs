@@ -48,7 +48,7 @@ namespace __SCRIPTS
 		private void MakeBulletShell(Attack attack)
 		{
 			var newBulletShell = Services.objectMaker.Make(Services.assetManager.FX.bulletShellPrefab, attack.OriginFloorPoint);
-			newBulletShell.GetComponent<IDebree>().Fire(attack.FlippedDirection, attack.OriginHeight);
+			newBulletShell.GetComponent<MoveJumpAndRotateAbility>().Fire(attack.FlippedDirection, attack.OriginHeight);
 			Services.objectMaker.Unmake(newBulletShell, effectTime);
 		}
 

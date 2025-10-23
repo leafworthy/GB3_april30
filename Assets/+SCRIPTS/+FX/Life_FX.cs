@@ -1,78 +1,53 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GangstaBean.Core;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace __SCRIPTS
 {
-	[ExecuteAlways]
-	public class PlayerTint
-	{
-		private List<Renderer> renderersToTint;
-		public Color DebreeTint = Color.white;
-		private Color materialTintColor;
-		private Player player;
-		private const float tintFadeSpeed = 6f;
-		public bool BlockTint;
 
-		public PlayerTint(Color color, GameObject go)
-		{
-			renderersToTint = go.GetComponentsInChildren<Renderer>().ToList();
-			foreach (var r in renderersToTint)
-			{
-				r.material.SetColor(ColorReplaceColorA, color);
-				r.material.SetColor(ColorReplaceColorB, color);
-			}
-		}
-
-		private static readonly int ColorReplaceColorA = Shader.PropertyToID("_NewColorA");
-		private static readonly int ColorReplaceColorB = Shader.PropertyToID("_NewColorB");
-		private static readonly int Tint = Shader.PropertyToID("_Tint");
-
-		public void TintSprite(GameObject debreeObject)
-		{
-			var spriteToTint = debreeObject.GetComponentInChildren<SpriteRenderer>();
-			if (spriteToTint != null)
-				spriteToTint.color = DebreeTint;
-		}
-
-		public void FadeOutTintAlpha()
-		{
-			if (!(materialTintColor.a > 0)) return;
-			materialTintColor.a = Mathf.Clamp01(materialTintColor.a - tintFadeSpeed * Time.deltaTime);
-			foreach (var r in renderersToTint)
-			{
-				r.material.SetColor(Tint, materialTintColor);
-			}
-		}
-
-		public void StartTint(Color tintColor)
-		{
-			if (BlockTint) return;
-			materialTintColor = new Color();
-			materialTintColor = tintColor;
-			foreach (var r in renderersToTint)
-			{
-				r.material.SetColor(Tint, materialTintColor);
-			}
-		}
-
-
-	}
 
 	[ExecuteAlways]
 	public class Life_FX : MonoBehaviour, IPoolable, INeedPlayer
 	{
-		private static readonly int Tint = Shader.PropertyToID("_Tint");
-
+		public Color DebreeTint = Color.red;
 		public enum ColorMode
 		{
 			Single,
 			Gradient
 		}
 
+		private List<Renderer> renderersToTint = new();
+
+		private Color materialTintColor;
+		private Player player;
+		private const float tintFadeSpeed = 6f;
+
+
+
+		private static readonly int ColorReplaceColorA = Shader.PropertyToID("_NewColorA");
+		private static readonly int ColorReplaceColorB = Shader.PropertyToID("_NewColorB");
+		private static readonly int Tint = Shader.PropertyToID("_Tint");
+
+
+
+		public void StartTint(Color tintColor)
+		{
+			Debug.Log("tint started with color " + tintColor);
+			if (BlockTint) return;
+			materialTintColor = tintColor;
+			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
+			if (renderersToTint == null) return;
+			foreach (var r in renderersToTint)
+			{
+				Debug.Log("tinting renderer " + r.name);
+				r.material.SetColor(Tint, materialTintColor);
+			}
+		}
 		public ColorMode colorMode;
 		public Color slowBarColor = Color.white;
 		public Gradient barGradient = new();
@@ -85,7 +60,6 @@ namespace __SCRIPTS
 		public bool BlockTint;
 		public bool isBoss;
 
-		private PlayerTint playerTint;
 
 		public void Start()
 		{
@@ -96,8 +70,6 @@ namespace __SCRIPTS
 				healthBar = Services.hudManager.GetBossLifeHealthbar();
 				Services.hudManager.SetBossLifeHealthbarVisible(true);
 			}
-
-			playerTint = new PlayerTint(Color.white, gameObject);
 			if (life == null) return;
 			life.OnFractionChanged += DefenceOnDefenceChanged;
 			life.OnDying += DefenceOnDying;
@@ -107,17 +79,32 @@ namespace __SCRIPTS
 			if (healthBar != null) healthBar.gameObject.SetActive(false);
 		}
 
+		private void TintSprite(GameObject debreeObject)
+		{
+			var spriteToTint = debreeObject.GetComponentInChildren<SpriteRenderer>();
+			if (spriteToTint != null)
+				spriteToTint.color = DebreeTint;
+		}
 		private void Life_Shielded(Attack obj)
 		{
-			playerTint?.StartTint(Color.yellow);
+		StartTint(Color.yellow);
 		}
 
-		public void SetPlayer(Player player)
+		public void SetPlayer(Player _player)
 		{
-			if (!player.IsHuman()) return;
-			playerTint = new PlayerTint(player.playerColor, gameObject);
+			if (!_player.IsHuman()) return;
+			PlayerTint(_player.playerColor);
 		}
 
+		private void PlayerTint(Color color)
+		{
+			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
+			foreach (var r in renderersToTint)
+			{
+				r.material.SetColor(ColorReplaceColorA, color);
+				r.material.SetColor(ColorReplaceColorB, color);
+			}
+		}
 		public void OnDisable()
 		{
 			if (life == null) return;
@@ -130,7 +117,7 @@ namespace __SCRIPTS
 		private void Life_AttackHit(Attack attack)
 		{
 			Debug.Log("life fx attack hit, color " + attack.TintColor);
-			playerTint?.StartTint(attack.TintColor);
+			StartTint(attack.TintColor);
 			CreateDamageRisingText(attack);
 			SprayDebree(attack);
 			MakeHitMark(attack);
@@ -140,7 +127,7 @@ namespace __SCRIPTS
 		private void Life_AttackHit()
 		{
 			var attack = Attack.Create(life, life).WithDamage(10).WithOriginPoint((Vector2)transform.position+Vector2.right).WithDestinationPoint(transform.position).WithDestinationHeight(15);
-			playerTint?.StartTint(attack.TintColor);
+			StartTint(attack.TintColor);
 			CreateDamageRisingText(attack);
 			SprayDebree(attack);
 			MakeHitMark(attack);
@@ -186,14 +173,15 @@ namespace __SCRIPTS
 		private void MakeDebree(Attack attack)
 		{
 			if (life.DebrisType == DebrisType.none) return;
-			var randAmount = Random.Range(2, 4);
+			var randAmount = Random.Range(2, 10);
 			for (var j = 0; j < randAmount; j++)
 			{
+				var randomAngle = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)).normalized;
 				//----->
-				FireDebree(attack.Direction, attack.OriginHeight, 0);
+				FireDebree(attack.Direction+ randomAngle, attack.OriginHeight, 1);
 
 				//<-----
-				FireDebree(attack.FlippedDirection, attack.OriginHeight, 0);
+				FireDebree(attack.FlippedDirection+ randomAngle, attack.OriginHeight, 1);
 			}
 		}
 
@@ -212,8 +200,8 @@ namespace __SCRIPTS
 		private void FireDebree(Vector2 angle, float height, float verticalSpeed)
 		{
 			var forwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), transform.position);
-			forwardDebree.GetComponent<IDebree>().Fire(angle, height, verticalSpeed);
-			playerTint?.TintSprite(forwardDebree);
+			forwardDebree.GetComponent<MoveJumpAndRotateAbility>().Fire(angle, height, verticalSpeed);
+			TintSprite(forwardDebree);
 			Services.objectMaker.Unmake(forwardDebree, 3);
 		}
 
@@ -277,9 +265,18 @@ namespace __SCRIPTS
 			UpdateColor(slowBarColor);
 			UpdateColor(barGradient);
 			UpdateBarFill();
-			playerTint?.FadeOutTintAlpha();
+			FadeOutTintAlpha();
 		}
 
+		private void FadeOutTintAlpha()
+		{
+			if (!(materialTintColor.a > 0)) return;
+			materialTintColor.a = Mathf.Clamp01(materialTintColor.a - tintFadeSpeed * Time.deltaTime);
+			foreach (var r in renderersToTint)
+			{
+				r.material.SetColor(Tint, materialTintColor);
+			}
+		}
 		private void UpdateColor(Color targetColor)
 		{
 			if (colorMode != ColorMode.Single || healthBar == null || healthBar?.SlowBar == null)
@@ -311,7 +308,6 @@ namespace __SCRIPTS
 			_life.OnDying -= DefenceOnDying;
 		}
 
-		public void StartTint(Color pickupTintColor) => playerTint?.StartTint(pickupTintColor);
 	}
 
 	public interface IRotate
@@ -327,8 +323,5 @@ namespace __SCRIPTS
 		float GetHeight();
 	}
 
-	public interface IDebree : IHaveHeight
-	{
-		IDebree Fire(Vector2 shootAngle, float height, float verticalSpeed = 0, float pushSpeed = 40);
-	}
+
 }

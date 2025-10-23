@@ -490,7 +490,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 424
+  m_SortingOrder: 493
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -709,10 +709,9 @@ MonoBehaviour:
   - {fileID: 3833892834326608147}
   - {fileID: 6613743014821493785}
   - {fileID: 3833892834760878399}
-  - {fileID: 0}
   - {fileID: 3194819042820860482}
   renderAboveAll: 0
-  hasRenderers: 0
+  hasRenderers: 1
 --- !u!114 &5036427627969513471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -756,6 +755,7 @@ MonoBehaviour:
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
+    EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
     IsShielded: 0
@@ -773,7 +773,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DebreeTint: {r: 1, g: 0, b: 0, a: 1}
   colorMode: 0
-  slowBarColor: {r: 1, g: 1, b: 1, a: 1}
+  slowBarColor: {r: 0.59607846, g: 0, b: 0, a: 1}
   barGradient:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1346,7 +1346,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 422
+  m_SortingOrder: 492
   m_Sprite: {fileID: -2205152827247349269, guid: 3bc1e2c9ed3c74d0584fb619f2af827b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1743,7 +1743,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 421
+  m_SortingOrder: 491
   m_Sprite: {fileID: -3232186448459339446, guid: 3bc1e2c9ed3c74d0584fb619f2af827b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2117,7 +2117,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2831824315133730421, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
       propertyPath: m_SortingOrder
-      value: 420
+      value: 490
       objectReference: {fileID: 0}
     - target: {fileID: 2831824315133730422, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
       propertyPath: m_LocalPosition.x

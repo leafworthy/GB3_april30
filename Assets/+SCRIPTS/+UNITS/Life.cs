@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	[ExecuteInEditMode]
+
 	public class Life : MonoBehaviour, INeedPlayer
 	{
 		public Player Player => player;
@@ -166,6 +166,7 @@ namespace __SCRIPTS
 			OnDying?.Invoke(attack);
 			if (attack.OriginLife.player != null) OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
 			gameObject.layer = LayerMask.NameToLayer("Dead");
+			Debug.Log("set here");
 			animations?.SetTrigger(UnitAnimations.DeathTrigger);
 			animations?.SetBool(UnitAnimations.IsDead, true);
 		}

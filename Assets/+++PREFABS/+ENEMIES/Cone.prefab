@@ -463,6 +463,7 @@ MonoBehaviour:
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
+    EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
     IsShielded: 0
@@ -478,7 +479,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebreeTint: {r: 1, g: 0.3529412, b: 0.5254902, a: 1}
   colorMode: 1
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
   barGradient:
@@ -513,6 +513,9 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   BlockTint: 0
   isBoss: 0
+  playerTint:
+    DebreeTint: {r: 0.59607846, g: 0, b: 0, a: 1}
+    BlockTint: 0
 --- !u!114 &668381582522397677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,10 +622,6 @@ MonoBehaviour:
   ThrowPoint: {fileID: 3504955075435949902}
   TopScaleObject: {fileID: 0}
   BottomScaleObject: {fileID: 2734829698557367498}
-  arms:
-    isActive: 0
-  legs:
-    isActive: 0
   BottomIsFacingRight: 1
   TopIsFacingRight: 1
 --- !u!114 &-8310225930428712308
@@ -637,7 +636,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a3858f7e7b44d4b8bf87aa6d65919f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WanderRadius: 50
 --- !u!114 &5775313337100439448
 MonoBehaviour:
   m_ObjectHideFlags: 0

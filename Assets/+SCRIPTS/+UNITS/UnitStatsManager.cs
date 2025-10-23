@@ -36,6 +36,7 @@ namespace __SCRIPTS
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void ResetStatics()
 		{
+			Debug.Log("resetting stats");
 			initialized = true;
 			database = Resources.Load<UnitStatsDatabase>("UnitStatsDatabase");
 			unitStatsLookup = BuildLookupDictionary();
@@ -75,19 +76,22 @@ namespace __SCRIPTS
 			if (!initialized) ResetStatics();
 			if (cleanedName is "Life" or "life")
 			{
-				if (unitStatsLookup.TryGetValue("Life", out var lifeStats))
+				if (unitStatsLookup.TryGetValue("DefaultThing", out var lifeStats))
 					return lifeStats;
 			}
 
 			if (unitStatsLookup.TryGetValue(cleanedName, out var stats)) return stats;
 
 			var fuzzyMatch = FindFuzzyMatch(cleanedName);
+			Debug.Log(" fuzzy match for " + cleanedName + " is " + (fuzzyMatch != null ? fuzzyMatch.unitName : "null"));
 			return fuzzyMatch ?? GetDefaultLifeStats();
 		}
 
 		private static UnitStatsData GetDefaultLifeStats() {
 			if (!initialized) ResetStatics();
-			return unitStatsLookup.GetValueOrDefault("Life");
+			var result = unitStatsLookup.GetValueOrDefault("DefaultThing");
+			Debug.Log(result);
+			return unitStatsLookup.GetValueOrDefault("DefaultThing");
 		}
 
 		private static string CleanUnitName(string unitName)

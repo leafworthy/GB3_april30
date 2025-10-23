@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	[ExecuteAlways, RequireComponent(typeof(MoveAbility)), RequireComponent(typeof(SimpleJumpAbility))]
-	public class BloodSplatterOnFloor : FallToFloor
+	[ExecuteAlways, RequireComponent(typeof(MoveAbility)), RequireComponent(typeof(JumpAndRotateAbility))]
+	public class BloodSplatterAbility : MoveJumpAndRotateAbility
 	{
-		private float jumpSpeed = .5f;
 		public List<GameObject> BloodFlying = new();
 		public List<GameObject> HitWallFlatAnimation = new();
 		public List<GameObject> HitWallAngledAnimation = new();
 		public List<GameObject> HitFloorAnimation = new();
 		public List<GameObject> HitFloorMovingAnimation = new();
 
-		private float fastEnoughSpeed = 100;
+		private Vector2 heightCorrectionForDepthInFrontOfWall = new(0, -1.5f);
+		private float fastEnoughSpeed = 25;
 
 		private void HideAllAnimations()
 		{
@@ -43,49 +43,54 @@ namespace __SCRIPTS
 			}
 		}
 
-		public override IDebree Fire(Vector2 shootAngle, float height, float verticalSpeed = 0, float pushSpeed = 120)
+		public override void Fire(Vector2 shootAngle, float height, float verticalSpeed = 0, float pushSpeed = 120)
 		{
-			Debug.Log("Firing blood splatter" + shootAngle + " height " + height + " vertical speed " + verticalSpeed);
-			base.Fire(shootAngle, height, verticalSpeed, pushSpeed*8);
+			base.Fire(shootAngle, height, verticalSpeed, pushSpeed*2);
 
 			HideAllAnimations();
 			BloodFlying.GetRandom().SetActive(true);
 
-			simpleJumpAbility.OnLand += SplatOnLand;
 			moveAbility.OnHitWall += SplatOnHitWall;
-			return this;
 		}
 
 		private void SplatOnHitWall(RaycastHit2D obj, EffectSurface.SurfaceAngle surfaceAngle)
 		{
+			Debug.Log("trying to splat on wall");
 			HideAllAnimations();
 			if (surfaceAngle == EffectSurface.SurfaceAngle.Horizontal)
 			{
-				var anim = HitWallFlatAnimation.GetRandom();
+				var  anim = HitWallFlatAnimation.GetRandom();
 				anim.SetActive(true);
 			}
-			else
+			else if (surfaceAngle == EffectSurface.SurfaceAngle.DiagonalFacingRight)
 			{
 				var anim = HitWallAngledAnimation.GetRandom();
 				anim.SetActive(true);
+			} else if (surfaceAngle == EffectSurface.SurfaceAngle.DiagonalFacingLeft)
+			{
+				var anim = HitWallAngledAnimation.GetRandom();
+				HeightObject.transform.localScale = new Vector3(-1, 1, 1);
+				anim.SetActive(true);
 			}
 
+			transform.position += (Vector3) heightCorrectionForDepthInFrontOfWall;
+			SetHeight(GetHeight() - heightCorrectionForDepthInFrontOfWall.y);
+			FreezeHeight();
 			StopMoving();
+
 		}
 
-		private void SplatOnLand(Vector2 obj)
+		protected override void Land()
 		{
-			simpleJumpAbility.OnLand -= SplatOnLand;
+			base.Land();
 			moveAbility.OnHitWall -= SplatOnHitWall;
-			Debug.Log("Landed, changing sprite");
 			HideAllAnimations();
-			simpleJumpAbility.FreezeRotationAtIdentity();
+			FreezeRotationAtIdentity();
 
-			Debug.Log( "fastenoughspeed " + fastEnoughSpeed + " current speed " + moveAbility.GetTotalVelocity().magnitude);
-			;
 			if (moveAbility.IsMovingQuickly(fastEnoughSpeed))
 			{
 				var anim = HitFloorMovingAnimation.GetRandom();
+				Rotate2DUtility.RotateTowardDirection2D(HeightObject.transform, moveAbility.GetTotalVelocity(), 0,-35);
 				anim.SetActive(true);
 			}
 			else
@@ -97,9 +102,14 @@ namespace __SCRIPTS
 			StopMoving();
 		}
 
+		protected override void StartResting()
+		{
+			base.StartResting();
+			StopMoving();
+		}
+
 		private void StopMoving()
 		{
-			simpleJumpAbility.OnResting -= SplatOnLand;
 			moveAbility.OnHitWall -= SplatOnHitWall;
 			moveAbility.StopMoving();
 			moveAbility.StopPush();

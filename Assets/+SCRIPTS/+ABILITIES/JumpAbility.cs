@@ -147,10 +147,11 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			if (life == null) return;
+			life.OnDying -= Life_OnDying;
 			if (life.Player == null) return;
 			if (life.Player.Controller == null) return;
+			if (life.Player.Controller.Jump == null) return;
 			life.Player.Controller.Jump.OnPress -= Controller_Jump;
-			life.OnDying -= Life_OnDying;
 		}
 
 		private void FallFromHeight(float fallHeight)

@@ -37,6 +37,8 @@ namespace __SCRIPTS
 		private void OnDestroy()
 		{
 			if (player == null) return;
+			if (player.Controller == null) return;
+			if (player.Controller.SwapWeaponSquare == null) return;
 			player.Controller.SwapWeaponSquare.OnPress -= Player_SwapWeapon;
 		}
 

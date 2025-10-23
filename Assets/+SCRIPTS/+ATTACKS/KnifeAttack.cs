@@ -55,6 +55,8 @@ public class KnifeAttack : Ability
 
 	private void StopListeningToPlayer()
 	{
+		if(player.Controller == null) return;
+		if (player.Controller.Attack3Circle == null) return;
 		player.Controller.Attack3Circle.OnPress -= PlayerKnifePress;
 		player.Controller.Attack3Circle.OnRelease -= PlayerKnifeRelease;
 	}

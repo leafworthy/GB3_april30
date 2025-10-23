@@ -120,7 +120,16 @@ namespace __SCRIPTS
 			Debug.DrawLine(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange, Color.green, 3);
 
 			if (hitObject)
-				ShotHitTarget(hitObject);
+			{
+				var target = hitObject.collider.gameObject.GetComponentInParent<Life>();
+				if (target == null) target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
+				if (target == null)
+				{
+					ShotMissed();
+					return;
+				}
+				ShotHitTarget(target, hitObject.point);
+			}
 			else
 				ShotMissed();
 		}
@@ -137,15 +146,13 @@ namespace __SCRIPTS
 			OnShotMissed?.Invoke(newAttack);
 		}
 
-		private void ShotHitTarget(RaycastHit2D hitObject)
+		private void ShotHitTarget(Life targetLife, Vector2 hitObjectPoint)
 		{
-			var target = hitObject.collider.gameObject.GetComponentInParent<Life>();
-			if (target == null) target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
-			var newAttack = Attack.Create(life, target).WithOriginPoint(body.AttackStartPoint.transform.position).WithDestinationPoint(hitObject.point)
+			var newAttack = Attack.Create(life, targetLife).WithOriginPoint(body.AttackStartPoint.transform.position).WithDestinationPoint(hitObjectPoint)
 			                      .WithDamage(Damage);
 			OnShotHitTarget?.Invoke(newAttack);
 
-			target.TakeDamage(newAttack);
+			targetLife.TakeDamage(newAttack);
 		}
 	}
 

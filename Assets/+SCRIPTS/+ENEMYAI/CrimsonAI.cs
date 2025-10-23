@@ -17,6 +17,9 @@ public class CrimsonAI : MonoBehaviour, IMove
 	private Animator animator => _animator ??= GetComponentInChildren<Animator>();
 	private Animator _animator;
 
+	private Life life => _life ??= GetComponent<Life>();
+	private Life _life;
+
 	private bool isIdle;
 	private float idleTimer;
 	private Vector2 currentTargetPosition;
@@ -26,6 +29,8 @@ public class CrimsonAI : MonoBehaviour, IMove
 	public Vector2 GetMoveAimDir() => currentDirection;
 	public bool IsMoving() => false;
 
+
+
 	protected void Start()
 	{
 		Services.enemyManager.ConfigureNewEnemy(gameObject);
@@ -33,9 +38,9 @@ public class CrimsonAI : MonoBehaviour, IMove
 	}
 
 
-
 	private void Update()
 	{
+		if (life.IsDead()) return;
 		if (isIdle)
 			IdleUpdate();
 		else

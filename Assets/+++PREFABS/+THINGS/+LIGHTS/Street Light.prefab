@@ -171,7 +171,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 588
+  m_SortingOrder: 592
   m_Sprite: {fileID: 21300000, guid: 24972f257ba89470ba05ec27589ec02c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -215,6 +215,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 827350551121471613}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!60 &5019062100462354449
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -513,7 +514,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5967172343948227318}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
@@ -521,13 +522,13 @@ MonoBehaviour:
   player: {fileID: 0}
   unitStats:
     _unitData:
-      unitName: Car
-      category: 3
-      debrisType: 1
-      isPlayerSwingHittable: 1
-      showLifeBar: 1
+      unitName: 
+      category: 0
+      debrisType: 0
+      isPlayerSwingHittable: 0
+      showLifeBar: 0
       isInvincible: 0
-      healthMax: 600
+      healthMax: 0
       moveSpeed: 0
       dashSpeed: 0
       jumpSpeed: 0
@@ -544,11 +545,12 @@ MonoBehaviour:
       attack4Damage: 0
       attack4Rate: 0
       attack4Range: 0
-      hasData: 1
+      hasData: 0
       isDefault: 0
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
+    EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
     IsShielded: 0
@@ -747,7 +749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242737, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Pivot.x

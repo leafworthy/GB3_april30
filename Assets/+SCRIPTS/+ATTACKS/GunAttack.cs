@@ -157,6 +157,7 @@ namespace __SCRIPTS
 
 			if (player == null) return;
 			if (player.Controller == null) return;
+			if (player.Controller.Attack1RightTrigger == null) return;
 			player.Controller.Attack1RightTrigger.OnPress -= PlayerControllerShootPress;
 			player.Controller.Attack1RightTrigger.OnRelease -= PlayerControllerShootRelease;
 		}

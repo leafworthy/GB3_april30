@@ -77,7 +77,9 @@ namespace __SCRIPTS
 			if (anim == null) return;
 			if (player == null) return;
 			if (player.Controller == null) return;
+			if (player.Controller.AimAxis == null) return;
 			player.Controller.AimAxis.OnChange -= Player_OnAim;
+			if (player.Controller.Attack2LeftTrigger == null) return;
 			player.Controller.Attack2LeftTrigger.OnPress -= Player_NadePress;
 			player.Controller.Attack2LeftTrigger.OnRelease -= Player_NadeRelease;
 		}
