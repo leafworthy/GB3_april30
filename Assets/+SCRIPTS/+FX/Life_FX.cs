@@ -1,20 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using GangstaBean.Core;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace __SCRIPTS
 {
-
-
 	[ExecuteAlways]
 	public class Life_FX : MonoBehaviour, IPoolable, INeedPlayer
 	{
 		public Color DebreeTint = Color.red;
+
 		public enum ColorMode
 		{
 			Single,
@@ -27,13 +24,9 @@ namespace __SCRIPTS
 		private Player player;
 		private const float tintFadeSpeed = 6f;
 
-
-
 		private static readonly int ColorReplaceColorA = Shader.PropertyToID("_NewColorA");
 		private static readonly int ColorReplaceColorB = Shader.PropertyToID("_NewColorB");
 		private static readonly int Tint = Shader.PropertyToID("_Tint");
-
-
 
 		public void StartTint(Color tintColor)
 		{
@@ -48,6 +41,7 @@ namespace __SCRIPTS
 				r.material.SetColor(Tint, materialTintColor);
 			}
 		}
+
 		public ColorMode colorMode;
 		public Color slowBarColor = Color.white;
 		public Gradient barGradient = new();
@@ -56,20 +50,22 @@ namespace __SCRIPTS
 		private float smoothingFactor = .25f;
 		private Life _life;
 		private Life life => _life ??= GetComponentInParent<Life>();
-		private HealthBar healthBar;
+		private HealthBar healthBar => _healthBar ??= InitHealthBar();
+		[SerializeField] private HealthBar _healthBar;
+
+		private HealthBar InitHealthBar()
+		{
+			if (!isBoss) return GetComponentInChildren<HealthBar>();
+			Services.hudManager.SetBossLifeHealthbarVisible(true);
+			return Services.hudManager.GetBossLifeHealthbar();
+
+		}
+
 		public bool BlockTint;
 		public bool isBoss;
 
-
 		public void Start()
 		{
-			if (!isBoss) healthBar = GetComponentInChildren<HealthBar>();
-			else
-			{
-				Debug.Log("got here bruh FX");
-				healthBar = Services.hudManager.GetBossLifeHealthbar();
-				Services.hudManager.SetBossLifeHealthbarVisible(true);
-			}
 			if (life == null) return;
 			life.OnFractionChanged += DefenceOnDefenceChanged;
 			life.OnDying += DefenceOnDying;
@@ -85,9 +81,10 @@ namespace __SCRIPTS
 			if (spriteToTint != null)
 				spriteToTint.color = DebreeTint;
 		}
+
 		private void Life_Shielded(Attack obj)
 		{
-		StartTint(Color.yellow);
+			StartTint(Color.yellow);
 		}
 
 		public void SetPlayer(Player _player)
@@ -105,6 +102,7 @@ namespace __SCRIPTS
 				r.material.SetColor(ColorReplaceColorB, color);
 			}
 		}
+
 		public void OnDisable()
 		{
 			if (life == null) return;
@@ -126,7 +124,8 @@ namespace __SCRIPTS
 		[Button]
 		private void Life_AttackHit()
 		{
-			var attack = Attack.Create(life, life).WithDamage(10).WithOriginPoint((Vector2)transform.position+Vector2.right).WithDestinationPoint(transform.position).WithDestinationHeight(15);
+			var attack = Attack.Create(life, life).WithDamage(10).WithOriginPoint((Vector2) transform.position + Vector2.right)
+			                   .WithDestinationPoint(transform.position).WithDestinationHeight(15);
 			StartTint(attack.TintColor);
 			CreateDamageRisingText(attack);
 			SprayDebree(attack);
@@ -178,10 +177,10 @@ namespace __SCRIPTS
 			{
 				var randomAngle = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)).normalized;
 				//----->
-				FireDebree(attack.Direction+ randomAngle, attack.OriginHeight, 1);
+				FireDebree(attack.Direction + randomAngle, attack.OriginHeight, 1);
 
 				//<-----
-				FireDebree(attack.FlippedDirection+ randomAngle, attack.OriginHeight, 1);
+				FireDebree(attack.FlippedDirection + randomAngle, attack.OriginHeight, 1);
 			}
 		}
 
@@ -195,7 +194,6 @@ namespace __SCRIPTS
 				FireDebree(randomAngle, 0, explosionSize);
 			}
 		}
-
 
 		private void FireDebree(Vector2 angle, float height, float verticalSpeed)
 		{
@@ -277,6 +275,7 @@ namespace __SCRIPTS
 				r.material.SetColor(Tint, materialTintColor);
 			}
 		}
+
 		private void UpdateColor(Color targetColor)
 		{
 			if (colorMode != ColorMode.Single || healthBar == null || healthBar?.SlowBar == null)
@@ -298,7 +297,6 @@ namespace __SCRIPTS
 
 		public void OnPoolSpawn()
 		{
-
 		}
 
 		public void OnPoolDespawn()
@@ -307,7 +305,6 @@ namespace __SCRIPTS
 			_life.OnFractionChanged -= DefenceOnDefenceChanged;
 			_life.OnDying -= DefenceOnDying;
 		}
-
 	}
 
 	public interface IRotate
@@ -322,6 +319,4 @@ namespace __SCRIPTS
 		IHaveHeight SetHeight(float height);
 		float GetHeight();
 	}
-
-
 }

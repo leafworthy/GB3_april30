@@ -11,7 +11,7 @@ namespace __SCRIPTS
 		public bool IsShielded;
 		public bool IsDead => isDead;
 		public float CurrentHealth => currentHealth;
-		private float currentHealth;
+		[SerializeField]private float currentHealth;
 
 		public event Action<Attack> OnDead;
 		public event Action<Attack> OnAttackHit;

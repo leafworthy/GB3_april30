@@ -2130,17 +2130,17 @@
             <param name="includeAlpha">If TRUE, also converts the alpha value and returns a hex of 8 characters,
             otherwise doesn't and returns a hex of 6 characters</param>
         </member>
-        <member name="T:DG.DemiEditor.ListExtensions">
+        <member name="T:DG.DemiEditor.MyExtensions">
             <summary>
-            Replicates parts of DeExtensions.ListExtensions for internal usage
+            Replicates parts of DeExtensions.MyExtensions for internal usage
             </summary>
         </member>
-        <member name="M:DG.DemiEditor.ListExtensions.Shift``1(System.Collections.Generic.IList{``0},System.Int32,System.Int32)">
+        <member name="M:DG.DemiEditor.MyExtensions.Shift``1(System.Collections.Generic.IList{``0},System.Int32,System.Int32)">
             <summary>
             Shifts an item from an index to another, without modifying the list except than by moving elements around
             </summary>
         </member>
-        <member name="M:DG.DemiEditor.ListExtensions.Shuffle``1(System.Collections.Generic.IList{``0})">
+        <member name="M:DG.DemiEditor.MyExtensions.Shuffle``1(System.Collections.Generic.IList{``0})">
             <summary>
             Shuffles the list
             </summary>

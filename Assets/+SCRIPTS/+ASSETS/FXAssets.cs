@@ -7,6 +7,7 @@ namespace __SCRIPTS
 	[CreateAssetMenu(menuName = "My Assets/DebreeAssets")]
 	public class FXAssets : ScriptableObject
 	{
+		public Gradient healthbarGradient = new();
 		[Header("Hit FX")] public List<GameObject> blood_debree = new();
 		public List<GameObject> bloodspray = new();
 		[Space] public List<GameObject> fires = new();

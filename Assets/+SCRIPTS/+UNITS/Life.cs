@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-
+	[ExecuteAlways]
 	public class Life : MonoBehaviour, INeedPlayer
 	{
 		public Player Player => player;
@@ -50,11 +50,14 @@ namespace __SCRIPTS
 
 		public bool IsHuman => Player != null && Player.IsHuman();
 		public LayerMask EnemyLayer => IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
+
 		public bool CanTakeDamage()
 		{
-			Debug.Log(!unitHealth.IsDead +"[BOY]dead"+!unitHealth.IsTemporarilyInvincible + "is temporary invis" + !unitStats.Data.isInvincible + "is invincible" );
+			Debug.Log(!unitHealth.IsDead + "[BOY]dead" + !unitHealth.IsTemporarilyInvincible + "is temporary invis" + !unitStats.Data.isInvincible +
+			          "is invincible");
 			return !unitHealth.IsDead && !unitHealth.IsTemporarilyInvincible && !unitStats.Data.isInvincible;
 		}
+
 		public event Action<Attack> OnAttackHit;
 		public event Action<float> OnFractionChanged;
 		public event Action<Attack> OnDying;
@@ -129,7 +132,7 @@ namespace __SCRIPTS
 		public void SetPlayer(Player newPlayer)
 		{
 			player = newPlayer;
-			Debug.Log("Life setting player",this);
+			Debug.Log("Life setting player", this);
 			Init();
 
 			SetupAnimationEvents();
@@ -208,9 +211,9 @@ namespace __SCRIPTS
 		public void DieNow()
 		{
 			Debug.Log("die now");
-			var killingBlow = Attack.Create(this,this).WithDamage(9999);
+			var killingBlow = Attack.Create(this, this).WithDamage(9999);
 			unitHealth.TakeDamage(killingBlow);
-			 CompleteDeath(true);
+			CompleteDeath(true);
 		}
 
 		public float GetFraction() => unitHealth.GetFraction();

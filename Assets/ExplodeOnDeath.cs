@@ -1,37 +1,61 @@
 using System;
+using System.Collections.Generic;
 using __SCRIPTS;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
+public interface ITakeDamage
+{
+	public void TakeDamage(Attack attack) { }
+	public event Action<Attack> OnDead;
+}
+public interface IExplodeOnDeath
+{
+	void ExplodeDebreeEverywhere(float explosionSize, int min = 5, int max = 10);
+
+}
 public class ExplodeOnDeath : MonoBehaviour
 {
-    private Life life => _life ??= GetComponent<Life>();
-	private Life _life;
-
-	private Life_FX lifeFX => _lifeFX ??= GetComponent<Life_FX>();
-	private Life_FX _lifeFX;
+	public int amount = 5;
+    private ITakeDamage life => _life ??= GetComponent<ITakeDamage>();
+	private ITakeDamage _life;
+	private IExplodeOnDeath lifeFX => _lifeFX ??= GetComponent<IExplodeOnDeath>();
+	private IExplodeOnDeath _lifeFX;
 
 	public float explosionSize = 3f;
 
 	public GameObject transformToDestroy;
 	public event Action OnExplode;
-
+	public List<LootType> lootTypes = new List<LootType>();
+	private LootTable lootTable => _lootTable ?? ServiceLocator.Get<LootTable>();
+	private LootTable _lootTable;
 	private void OnEnable()
 	{
-		life.OnDying += Life_OnDying;
+		life.OnDead += LifeOnDead;
 	}
 
 	private void OnDisable()
 	{
-		life.OnDying -= Life_OnDying;
+		life.OnDead -= LifeOnDead;
 	}
 
-	private void Life_OnDying(Attack obj)
+	private void LifeOnDead(Attack obj)
 	{
 		Debug.Log("boom");
 		lifeFX.ExplodeDebreeEverywhere(explosionSize);
-		 life.OnDying -= Life_OnDying;
+		 life.OnDead -= LifeOnDead;
 		 AttackUtilities.ExplosionFX(transformToDestroy.transform.position, explosionSize/5);
 		 OnExplode?.Invoke();
+		 DropLoot();
 		 Services.objectMaker.Unmake(transformToDestroy);
+	}
+
+	private void DropLoot()
+	{
+		for (int i = 0; i < amount; i++)
+		{
+			var lootType = lootTypes[Random.Range(0, lootTypes.Count)];
+			lootTable.DropLoot(transform.position, lootType);
+		}
 	}
 }

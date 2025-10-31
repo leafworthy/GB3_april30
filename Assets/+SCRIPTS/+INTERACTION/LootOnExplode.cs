@@ -10,14 +10,15 @@ namespace __SCRIPTS
 		public List<LootType> lootTypes = new List<LootType>();
 		public int amount = 5;
 
-		private LootTable lootTable => _lootTable ?? ServiceLocator.Get<LootTable>();
-		private LootTable _lootTable;
-		
+
+
 		protected void Start()
 		{
 			explodeOnDeath.OnExplode += ExplodeOnDeath_OnExplode;
 		}
 
+		private LootTable lootTable => _lootTable ?? ServiceLocator.Get<LootTable>();
+		private LootTable _lootTable;
 		private void ExplodeOnDeath_OnExplode()
 		{
 			for (int i = 0; i < amount; i++)

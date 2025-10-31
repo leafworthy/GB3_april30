@@ -328,7 +328,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1306
+  m_SortingOrder: 503
   m_Sprite: {fileID: 21300000, guid: 6c853b9147643440ebfb873457f435c1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -372,6 +372,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 8120744216234196888}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!61 &9074898527270778672
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -428,7 +429,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4493127657648342829}
   - component: {fileID: 7083399537326447762}
-  - component: {fileID: 2218217046426129423}
+  - component: {fileID: 8492878870747234022}
+  - component: {fileID: 6872984703532314614}
   m_Layer: 21
   m_Name: Life
   m_TagString: Untagged
@@ -503,7 +505,7 @@ PolygonCollider2D:
       - {x: -20.179085, y: 0.3781929}
       - {x: -5.851119, y: 8.426571}
   m_UseDelaunayMesh: 0
---- !u!114 &2218217046426129423
+--- !u!114 &8492878870747234022
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -512,43 +514,52 @@ MonoBehaviour:
   m_GameObject: {fileID: 5259419333584558834}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 0455abdae7264a0ca7c757667fc20f6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  unitStats:
-    _unitData:
-      unitName: 
-      category: 0
-      debrisType: 0
-      isPlayerSwingHittable: 0
-      showLifeBar: 0
-      isInvincible: 0
-      healthMax: 0
-      moveSpeed: 0
-      dashSpeed: 0
-      jumpSpeed: 0
-      aggroRange: 0
-      attack1Damage: 0
-      attack1Rate: 0
-      attack1Range: 0
-      attack2Damage: 0
-      attack2Rate: 0
-      attack2Range: 0
-      attack3Damage: 0
-      attack3Rate: 0
-      attack3Range: 0
-      attack4Damage: 0
-      attack4Rate: 0
-      attack4Range: 0
-      hasData: 0
-      isDefault: 0
-    ExtraHealthFactor: 0
-    ExtraDamageFactor: 0
-    ExtraSpeedFactor: 0
-  unitHealth:
-    IsTemporarilyInvincible: 0
-    IsShielded: 0
+  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
+  MaxHealth: 600
+  CurrentHealth: 500
+  IsDead: 0
+--- !u!114 &6872984703532314614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5259419333584558834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bb12a2bc475449c8e4cebd98de14a42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UnitName: Car
+  _data:
+    unitName: Car
+    category: 3
+    debrisType: 1
+    isPlayerSwingHittable: 1
+    showLifeBar: 1
+    isInvincible: 0
+    healthMax: 600
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 0
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    hasData: 1
+    isDefault: 0
 --- !u!1 &8523372881259158279
 GameObject:
   m_ObjectHideFlags: 0
@@ -705,20 +716,99 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Color.g
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Color.r
-      value: 0.19127488
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.8333333
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159643717769961305, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.68429786
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6159643716270242737, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5427179330543520090}
   m_SourcePrefab: {fileID: 100100000, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+--- !u!1 &1729449233044236868 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6159643716270242737, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+  m_PrefabInstance: {fileID: 5583143820048814581}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5427179330543520090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729449233044236868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
+  colorMode: 0
+  slowBarColor: {r: 1, g: 1, b: 1, a: 1}
+  barGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  _healthBar: {fileID: 8723564874712178113}
+  BlockTint: 0
+  isBoss: 0
 --- !u!224 &1729449233044236871 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
   m_PrefabInstance: {fileID: 5583143820048814581}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8723564874712178113 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+  m_PrefabInstance: {fileID: 5583143820048814581}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729449233044236868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c81ed4c3ba97643c4a1f86d373c41ee5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

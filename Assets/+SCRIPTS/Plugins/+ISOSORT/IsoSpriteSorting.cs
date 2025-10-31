@@ -291,21 +291,12 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			Debug.Log("here");
 			hasRenderers = true;
 
-			RemoveNulls();
+			renderersToSort.RemoveNulls();
 			var tempRenderersToSort = GetComponentsInChildren<SpriteRenderer>(true);
 			foreach (var spriteRenderer in tempRenderersToSort)
 			{
 				if (spriteRenderer.CompareTag("DontSort")) continue;
 				if (!renderersToSort.Contains(spriteRenderer)) renderersToSort.Add(spriteRenderer);
-			}
-		}
-
-		public void RemoveNulls()
-		{
-			for (var i = renderersToSort.Count - 1; i >= 0; i--)
-			{
-				if (renderersToSort[i] == null)
-					renderersToSort.RemoveAt(i);
 			}
 		}
 

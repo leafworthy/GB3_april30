@@ -31,6 +31,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 	private bool isSpawning;
 	private bool isFinished;
 	public bool IsFinished => isFinished;
+	private EnemySpawnArea currentSpawnArea;
 
 	protected void OnTriggerEnter2D(Collider2D other)
 	{
@@ -44,6 +45,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 
 	private void Start()
 	{
+		currentSpawnArea = FindFirstObjectByType<EnemySpawnArea>();
 		// Get the main camera reference
 		mainCamera = CursorManager.GetCamera();
 
@@ -103,10 +105,25 @@ public class EnemySpawner : SerializedMonoBehaviour
 	{
 		if (enemyPrefabsDictionary.Count == 0) return;
 		// Get spawn position and enemy prefab
-		var spawnPos = GetRandomSpawnPosition();
+		var spawnPos = FindRandomSpawnPosition();
+		if(spawnPos == default) return;
 		var enemyPrefab = GetEnemyPrefab();
 
 		SpawnEnemy(enemyPrefab, spawnPos);
+	}
+
+	private Vector3 FindRandomSpawnPosition()
+	{
+
+		 var randomPosition = GetRandomSpawnPosition();
+		 int maxTries = 30;
+		 for (int i = 0; i < maxTries; i++)
+		 {
+		 if(currentSpawnArea.AreaCollider.OverlapPoint(randomPosition)) return randomPosition;
+		 }
+
+		 return default;
+
 	}
 
 	private PrefabAndEnemyTier GetEnemyPrefab()

@@ -104,10 +104,9 @@ public static class AttackUtilities
 	public static RaycastHit2D RaycastToObject(Life currentTargetLife, LayerMask layerMask)
 	{
 		var position = currentTargetLife.transform.position;
-		var layer = layerMask;
 		var direction = (currentTargetLife.transform.position - position).normalized;
 		var distance = Vector3.Distance(position, currentTargetLife.transform.position);
-		return Physics2D.Raycast(position, direction, distance, layer);
+		return Physics2D.Raycast(position, direction, distance, layerMask);
 	}
 
 	public static void Explode(Vector3 explosionPosition, float explosionRadius, float explosionDamage, Life _owner)
@@ -145,7 +144,6 @@ public static class AttackUtilities
 		obj.transform.localScale = new Vector3(scale, scale, scale);
 		CameraShaker.ShakeCamera(explosionPosition, CameraShaker.ShakeIntensityType.high);
 		CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);
-		Debug.Log("explosion sound");
 		sfx.sounds.bean_nade_explosion_sounds.PlayRandomAt(explosionPosition);
 	}
 
@@ -158,7 +156,6 @@ public static class AttackUtilities
 			if (hit2D.collider.gameObject == gameObject) continue;
 			var lifeHit = hit2D.collider.GetComponent<Life>();
 			if (lifeHit == null) continue;
-			Debug.Log("hit", lifeHit);
 			return lifeHit;
 		}
 
