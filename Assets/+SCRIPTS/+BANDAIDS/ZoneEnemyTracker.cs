@@ -32,7 +32,7 @@ public class ZoneEnemyTracker : MonoBehaviour
 		Services.enemyManager.OnEnemyDying -= HandleEnemyDying;
 	}
 
-	private void HandleEnemyDying(Life _)
+	private void HandleEnemyDying(IGetAttacked _)
 	{
 		UpdateEnemyCount();
 	}

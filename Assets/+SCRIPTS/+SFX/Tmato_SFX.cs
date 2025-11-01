@@ -34,7 +34,7 @@ namespace __SCRIPTS
 			shieldDash.OnShieldDash += Anim_Dash;
 			animEvents.OnReload += Anim_OnReload;
 			life.OnAttackHit += Life_AttackHit;
-			life.OnDying += Life_OnDying;
+			life.OnDead += LifeOnDead;
 			jump.OnJump += JumpOnJump;
 			jump.OnLand += JumpOnLand;
 			shotgunAttack.OnShotHitTarget += ShotgunAttackOnOnShotHitTarget;
@@ -106,11 +106,11 @@ namespace __SCRIPTS
 
 		private void ShotgunAttackOnOnShotHitTarget(Attack attack)
 		{
-			Services.sfx.sounds.GetBulletHitSounds(attack.DestinationLife.DebrisType).PlayRandomAt(attack.DestinationFloorPoint);
+			Services.sfx.sounds.GetBulletHitSounds(attack.DestinationLife.debrisType).PlayRandomAt(attack.DestinationFloorPoint);
 			Services.sfx.sounds.tmato_shoot_hit_sounds.PlayRandomAt(attack.OriginFloorPoint);
 		}
 
-		private void Life_OnDying(Attack attack) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
+		private void LifeOnDead(Attack attack) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
 		private void MineAttackOnThrow(Vector2 vector2, Player player) => Services.sfx.sounds.tmato_mine_throw_sounds.PlayRandomAt(transform.position);
 		private void Life_AttackHit(Attack attack) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
 		private void TertiaryAttackKnifeOnMiss() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);

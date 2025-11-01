@@ -128,7 +128,6 @@ GameObject:
   - component: {fileID: 7182468830948332517}
   - component: {fileID: 7077040510206116457}
   - component: {fileID: 3336217672993766619}
-  - component: {fileID: 8924907394796459813}
   - component: {fileID: 224072405077294774}
   - component: {fileID: 7709028499278789206}
   - component: {fileID: 983243113739754923}
@@ -136,6 +135,8 @@ GameObject:
   - component: {fileID: 7985030507518122798}
   - component: {fileID: 7993900838109217435}
   - component: {fileID: 645081512479370059}
+  - component: {fileID: 6842088613844878970}
+  - component: {fileID: 2718724599664279209}
   m_Layer: 7
   m_Name: CrimsonBuck
   m_TagString: Untagged
@@ -216,7 +217,7 @@ MonoBehaviour:
   sortingBounds: {fileID: 5292037992982486049}
   renderBelowSortingOrder: 0
   sortType: 0
-  SorterPositionOffset: {x: 0.28979492, y: -3.1075401, z: 0}
+  SorterPositionOffset: {x: 0.28979492, y: -3.107544, z: 0}
   SorterPositionOffset2: {x: 0, y: 0, z: 0}
   renderersToSort:
   - {fileID: 5843643971457289528}
@@ -224,53 +225,6 @@ MonoBehaviour:
   - {fileID: 6864343639827393813}
   renderAboveAll: 0
   hasRenderers: 0
---- !u!114 &8924907394796459813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 912591045815131083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  unitStats:
-    _unitData:
-      unitName: CrimsonBuck
-      category: 1
-      debrisType: 0
-      isPlayerSwingHittable: 1
-      showLifeBar: 1
-      isInvincible: 0
-      healthMax: 2000
-      moveSpeed: 50
-      dashSpeed: 0
-      jumpSpeed: 0
-      aggroRange: 100
-      attack1Damage: 50
-      attack1Rate: 1
-      attack1Range: 10
-      attack2Damage: 0
-      attack2Rate: 0
-      attack2Range: 0
-      attack3Damage: 0
-      attack3Rate: 0
-      attack3Range: 0
-      attack4Damage: 0
-      attack4Rate: 0
-      attack4Range: 0
-      hasData: 1
-      isDefault: 0
-    ExtraHealthFactor: 0
-    ExtraDamageFactor: 0
-    ExtraSpeedFactor: 0
-    EnemyTier: 0
-  unitHealth:
-    IsTemporarilyInvincible: 0
-    IsShielded: 0
 --- !u!50 &224072405077294774
 Rigidbody2D:
   serializedVersion: 5
@@ -389,6 +343,7 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+  _healthBar: {fileID: 0}
   BlockTint: 0
   isBoss: 1
 --- !u!114 &3105616716522324279
@@ -459,6 +414,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 6908380930154305988}
   DefaultBottomAnimation: {fileID: 0}
+--- !u!114 &6842088613844878970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912591045815131083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bb12a2bc475449c8e4cebd98de14a42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UnitName: CrimsonBuck
+  _data:
+    unitName: CrimsonBuck
+    category: 1
+    debrisType: 0
+    isPlayerSwingHittable: 1
+    showLifeBar: 1
+    isInvincible: 0
+    healthMax: 2000
+    moveSpeed: 50
+    dashSpeed: 0
+    jumpSpeed: 0
+    aggroRange: 100
+    attack1Damage: 50
+    attack1Rate: 1
+    attack1Range: 10
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    hasData: 1
+    isDefault: 0
+  ExtraHealthFactor: 0
+  ExtraDamageFactor: 0
+  ExtraSpeedFactor: 0
+--- !u!114 &2718724599664279209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912591045815131083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0455abdae7264a0ca7c757667fc20f6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 2000
+  CurrentHealth: 2000
+  _healthbar: {fileID: 4963353712395978367}
 --- !u!1 &1830154128020281589
 GameObject:
   m_ObjectHideFlags: 0
@@ -988,7 +1000,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 492
+  m_SortingOrder: 420
   m_Sprite: {fileID: 3626660519965036632, guid: 7b2df064cde7e43d1bad962cb8dd4f69, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1267,7 +1279,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 493
+  m_SortingOrder: 421
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1409,13 +1421,49 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8439529202025194955}
     m_Modifications:
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.ctime1
+      value: 16577
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.ctime2
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.key0.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.key1.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.key1.g
+      value: 0.95496154
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.key2.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.key2.r
+      value: 0.19127488
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.m_NumColorKeys
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242737, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Name
       value: HealthBar
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242737, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Pivot.x
@@ -1527,11 +1575,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Color.g
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Color.r
-      value: 0.19127488
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: m_FillAmount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159643717769961305, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.75
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6159643716270242739, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
@@ -1544,6 +1600,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
   m_PrefabInstance: {fileID: 8109369215432821323}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4963353712395978367 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+  m_PrefabInstance: {fileID: 8109369215432821323}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c81ed4c3ba97643c4a1f86d373c41ee5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8651314957163672416
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1554,7 +1621,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2831824315133730421, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
       propertyPath: m_SortingOrder
-      value: 494
+      value: 422
       objectReference: {fileID: 0}
     - target: {fileID: 2831824315133730422, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
       propertyPath: m_LocalScale.x

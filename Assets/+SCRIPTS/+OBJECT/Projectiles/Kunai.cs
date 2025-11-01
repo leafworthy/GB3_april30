@@ -7,7 +7,7 @@ namespace __SCRIPTS.Projectiles
 		private Vector2 direction;
 		private float speed = 100;
 		private float height;
-		private Life owner;
+		private ICanAttack owner;
 		public GameObject rotationObject;
 
 		private bool isAirThrow;
@@ -15,7 +15,7 @@ namespace __SCRIPTS.Projectiles
 		private MoveJumpAndRotateAbility _moveJumpAndRotateAbility;
 		private bool isFlying;
 
-		public void Throw(Vector3 throwDirection, Vector3 pos, float throwHeight, Life thrower, bool _isAirThrow)
+		public void Throw(Vector3 throwDirection, Vector3 pos, float throwHeight, ICanAttack thrower, bool _isAirThrow)
 		{
 			direction = throwDirection;
 			transform.position = pos;
@@ -67,12 +67,12 @@ namespace __SCRIPTS.Projectiles
 			Services.objectMaker.Unmake(gameObject, 3);
 		}
 
-		private void HandleHit(Life hitLife)
+		private void HandleHit(IGetAttacked hitLife)
 		{
 			Debug.Log("hit", this);
 			isFlying = false;
 			if (hitLife == null) return;
-			var attack = Attack.Create(owner, hitLife).WithDamage(owner.PrimaryAttackDamageWithExtra);
+			var attack = Attack.Create(owner, hitLife).WithDamage(owner.Stats.PrimaryAttackDamageWithExtra);
 			hitLife.TakeDamage(attack);
 			moveJumpAndRotateAbility.SetRotationRate(300);
 			moveJumpAndRotateAbility.moveAbility.StopMoving();

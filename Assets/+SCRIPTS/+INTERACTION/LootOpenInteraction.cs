@@ -28,7 +28,7 @@ namespace __SCRIPTS
 		}
 		protected void Start()
 		{
-			life.OnDying += Life_OnDying;
+			life.OnDead += LifeOnDead;
 			hideRevealObjects = GetComponentInChildren<HideRevealObjects>();
 			hideRevealObjects?.Set(0);
 			howMuchLoot =  Random.Range(1, howMuchLoot); // Randomly add 0-2 loot items to the container
@@ -37,16 +37,16 @@ namespace __SCRIPTS
 			OnPlayerExits += interactable_PlayerExits;
 		}
 
-		private void Life_OnDying(Attack obj)
+		private void LifeOnDead(Attack obj)
 		{
 			FinishInteraction(null);
 			interactable_OnInteract(null);
-			var selector = obj?.OriginLife?.Player?.SpawnedPlayerGO?.GetComponent<InteractableSelector>();
+			var selector = obj?.OriginLife?.player?.SpawnedPlayerGO?.GetComponent<InteractableSelector>();
 			selector?.RemoveInteractable(this);
 			OnActionPress -= interactable_OnInteract;
 			OnPlayerEnters -= interactable_PlayerEnters;
 			OnPlayerExits -= interactable_PlayerExits;
-			life.OnDying -= Life_OnDying;
+			life.OnDead -= LifeOnDead;
 		}
 
 		protected override bool canInteract(Player player)

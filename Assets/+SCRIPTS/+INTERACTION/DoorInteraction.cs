@@ -33,7 +33,7 @@ namespace __SCRIPTS
 		{
 			base.OnEnable();
 			if(life == null) life = GetComponentInChildren<Life>();
-			life.OnDying += BreakDoor;
+			life.OnDead += BreakDoor;
 			OnPlayerExits += PlayerExits;
 			OnTimeComplete += Repair;
 			Init();
@@ -42,7 +42,7 @@ namespace __SCRIPTS
 		protected override void OnDisable()
 		{
 			if (life == null) return;
-			life.OnDying += BreakDoor;
+			life.OnDead += BreakDoor;
 			OnPlayerExits += PlayerExits;
 			OnTimeComplete += Repair;
 			base.OnDisable();
@@ -130,7 +130,7 @@ namespace __SCRIPTS
 			Services.sfx.sounds.door_break_sound.PlayRandomAt(transform.position);
 
 			SetCollidersEnabled(false);
-			OnBreak?.Invoke(attack.DestinationLife.Player);
+			OnBreak?.Invoke(attack.DestinationLife.player);
 		}
 
 		private void SetCollidersEnabled(bool collidersEnabled)

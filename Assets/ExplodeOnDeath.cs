@@ -4,11 +4,6 @@ using __SCRIPTS;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public interface ITakeDamage
-{
-	public void TakeDamage(Attack attack) { }
-	public event Action<Attack> OnDead;
-}
 public interface IExplodeOnDeath
 {
 	void ExplodeDebreeEverywhere(float explosionSize, int min = 5, int max = 10);
@@ -17,8 +12,8 @@ public interface IExplodeOnDeath
 public class ExplodeOnDeath : MonoBehaviour
 {
 	public int amount = 5;
-    private ITakeDamage life => _life ??= GetComponent<ITakeDamage>();
-	private ITakeDamage _life;
+    private IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
+	private IGetAttacked _life;
 	private IExplodeOnDeath lifeFX => _lifeFX ??= GetComponent<IExplodeOnDeath>();
 	private IExplodeOnDeath _lifeFX;
 

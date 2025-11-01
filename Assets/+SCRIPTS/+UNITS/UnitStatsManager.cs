@@ -74,7 +74,7 @@ namespace __SCRIPTS
 		private static UnitStatsData LookupUnitStats(string cleanedName)
 		{
 			if (!initialized) ResetStatics();
-			if (cleanedName is "Life" or "life")
+			if (cleanedName is "Life" or "stats")
 			{
 				if (unitStatsLookup.TryGetValue("DefaultThing", out var lifeStats))
 					return lifeStats;

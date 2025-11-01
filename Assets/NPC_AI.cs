@@ -3,7 +3,7 @@ using __SCRIPTS;
 using __SCRIPTS._ENEMYAI;
 using UnityEngine;
 
-public class NPC_AI : MonoBehaviour, IMove
+public class NPC_AI : MonoBehaviour, ICanMoveThings
 {
 	private enum state
 	{
@@ -19,11 +19,11 @@ public class NPC_AI : MonoBehaviour, IMove
 	public bool IsMoving() => isMoving;
 	private bool isMoving;
 
-	private Life _life;
-	private Life life => _life ??= GetComponent<Life>();
+	private IGetAttacked _life;
+	private IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
 
-	private Life cowerTarget;
-	private Life avoidTarget;
+	private IGetAttacked cowerTarget;
+	private IGetAttacked avoidTarget;
 	private Targetter targetter => _targetter ??= GetComponent<Targetter>();
 	private Targetter _targetter;
 
@@ -45,12 +45,12 @@ public class NPC_AI : MonoBehaviour, IMove
 	private void Start()
 	{
 		SetState(state.cowering);
-		life.OnDying += Life_OnDying;
+		life.OnDead += LifeOnDead;
 
 
 	}
 
-	private void Life_OnDying(Attack obj)
+	private void LifeOnDead(Attack obj)
 	{
 		OnStopMoving?.Invoke();
 		this.enabled = false;

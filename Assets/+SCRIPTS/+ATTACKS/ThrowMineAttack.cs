@@ -33,7 +33,7 @@ namespace __SCRIPTS
 		{
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = transform.position;
-			OnThrow?.Invoke(startPoint, life.Player);
+			OnThrow?.Invoke(startPoint, life.player);
 			isThrowing = true;
 
 			var newProjectile = Services.objectMaker.Make(Services.assetManager.FX.minePrefab, startPoint);

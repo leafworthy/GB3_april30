@@ -8,7 +8,7 @@ namespace __SCRIPTS
 		public override void StartEffect(Life life)
 		{
 			effectDuration = 0;
-			life.Player.GainKey();
+			life.player.GainKey();
 		}
 
 		public KeyPickupEffect(float _effectDuration, int _amount) : base(

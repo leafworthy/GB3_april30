@@ -8,10 +8,10 @@ namespace __SCRIPTS
 		private float PoisonDamage;
 		private float damageRate = .5f;
 		private float damageRateCounter;
-		private Life Target;
-		private Life Owner;
+		private IGetAttacked Target;
+		private ICanAttack Owner;
 
-		public void StartPoisonEffect(float poisonTime, float poisonDamage, Life target, Life owner)
+		public void StartPoisonEffect(float poisonTime, float poisonDamage, IGetAttacked target, ICanAttack owner)
 		{
 			Owner = owner;
 			Target = target;

@@ -12,8 +12,8 @@ namespace __SCRIPTS.Projectiles
 		private bool isDead;
 		private static readonly int IsDead = Animator.StringToHash("isDead");
 		private static readonly int Birth = Animator.StringToHash("Birth");
-		private Life owner;
-		public void Fire(int directionMult, Life _owner)
+		private ICanAttack owner;
+		public void Fire(int directionMult, ICanAttack _owner)
 		{
 			owner = _owner;
 			var tempScale = transform.localScale;

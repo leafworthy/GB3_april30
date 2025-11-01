@@ -76,13 +76,13 @@ namespace __SCRIPTS
 			foreach (var hit in hits)
 			{
 				AttackUtilities.HitTarget(life, hit, GetAttackDamage(attackType));
-				OnHitTarget?.Invoke(hit.gameObject.transform.position);
+				OnHitTarget?.Invoke(hit.transform.position);
 			}
 		}
 
 		private float GetAttackDamage(int attackType)
 		{
-			var extraDamageFactor = player.spawnedPlayerDefence.ExtraDamageFactor;
+			var extraDamageFactor = player.spawnedPlayerStats.ExtraDamageFactor;
 			return attackType switch
 			       {
 				       1 => Attack1Damage + Attack1Damage * extraDamageFactor,

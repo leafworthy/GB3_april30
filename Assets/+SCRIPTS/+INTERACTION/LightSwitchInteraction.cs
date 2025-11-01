@@ -14,8 +14,8 @@ namespace __SCRIPTS
 
         protected void OnEnable()
         {
-           // life = GetComponentInChildren<Life>();
-            //life.OnDeathComplete += Life_Dead;
+           // stats = GetComponentInChildren<Life>();
+            //stats.OnDeathComplete += Life_Dead;
             originalState = isOn;
             OnActionPress += Interactable_OnInteract;
             SetLightActive(originalState);

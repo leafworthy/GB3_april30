@@ -4,7 +4,7 @@ using __SCRIPTS._ENEMYAI;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CrimsonAI : MonoBehaviour, IMove
+public class CrimsonAI : MonoBehaviour, ICanMoveThings
 {
 	private static readonly int IsRunning = Animator.StringToHash("IsRunning");
 
@@ -17,8 +17,8 @@ public class CrimsonAI : MonoBehaviour, IMove
 	private Animator animator => _animator ??= GetComponentInChildren<Animator>();
 	private Animator _animator;
 
-	private Life life => _life ??= GetComponent<Life>();
-	private Life _life;
+	private IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
+	private IGetAttacked _life;
 
 	private bool isIdle;
 	private float idleTimer;
@@ -29,7 +29,9 @@ public class CrimsonAI : MonoBehaviour, IMove
 	public Vector2 GetMoveAimDir() => currentDirection;
 	public bool IsMoving() => false;
 
-
+	private IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
+	private IHaveAttackStats _stats;
+	public float MoveSpeed => stats.MoveSpeed;
 
 	protected void Start()
 	{
@@ -89,6 +91,6 @@ public class CrimsonAI : MonoBehaviour, IMove
 	private GameObject PickARandomTarget()
 	{
 		var targett = targets.GetClosestPlayer();
-		return targett != null ? targets.GetClosestPlayer().gameObject : null;
+		return targett != null ? targets.GetClosestPlayer().transform.gameObject : null;
 	}
 }

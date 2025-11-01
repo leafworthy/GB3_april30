@@ -62,7 +62,7 @@ namespace __SCRIPTS
 		}
 
 
-		private void EnemiesOnPlayerKillsEnemy(Player player, Life life)
+		private void EnemiesOnPlayerKillsEnemy(Player player, IGetAttacked life)
 		{if (player != owner) return;
 
 			ChangeStat(PlayerStat.StatType.Kills, 1);

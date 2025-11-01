@@ -68,7 +68,7 @@ namespace __SCRIPTS
 		{
 			if (life == null) return;
 			life.OnFractionChanged += DefenceOnDefenceChanged;
-			life.OnDying += DefenceOnDying;
+			life.OnDead += DefenceOnDead;
 			life.OnAttackHit += Life_AttackHit;
 			life.OnShielded += Life_Shielded;
 			if (life.showLifeBar) return;
@@ -107,14 +107,14 @@ namespace __SCRIPTS
 		{
 			if (life == null) return;
 			life.OnFractionChanged -= DefenceOnDefenceChanged;
-			life.OnDying -= DefenceOnDying;
+			life.OnDead -= DefenceOnDead;
 			life.OnAttackHit -= Life_AttackHit;
 			life.OnShielded -= Life_Shielded;
 		}
 
 		private void Life_AttackHit(Attack attack)
 		{
-			Debug.Log("life fx attack hit, color " + attack.TintColor);
+			Debug.Log("stats fx attack hit, color " + attack.TintColor);
 			StartTint(attack.TintColor);
 			CreateDamageRisingText(attack);
 			SprayDebree(attack);
@@ -134,7 +134,7 @@ namespace __SCRIPTS
 
 		private void MakeHitMark(Attack attack)
 		{
-			var hitList = Services.assetManager.FX.GetBulletHits(life.DebrisType);
+			var hitList = Services.assetManager.FX.GetBulletHits(life.debrisType);
 
 			if (hitList == null) return;
 
@@ -157,7 +157,7 @@ namespace __SCRIPTS
 		{
 			if (attack.MakesDebree) return;
 			MakeDebree(attack);
-			if (life.DebrisType != DebrisType.blood) return;
+			if (life.debrisType != DebrisType.blood) return;
 			CreateBloodSpray(attack);
 		}
 
@@ -171,7 +171,7 @@ namespace __SCRIPTS
 
 		private void MakeDebree(Attack attack)
 		{
-			if (life.DebrisType == DebrisType.none) return;
+			if (life.debrisType == DebrisType.none) return;
 			var randAmount = Random.Range(2, 10);
 			for (var j = 0; j < randAmount; j++)
 			{
@@ -186,7 +186,7 @@ namespace __SCRIPTS
 
 		public void ExplodeDebreeEverywhere(float explosionSize, int min = 5, int max = 10)
 		{
-			if (life.DebrisType == DebrisType.none) return;
+			if (life.debrisType == DebrisType.none) return;
 			var randAmount = Random.Range(min, max);
 			for (var j = 0; j < randAmount; j++)
 			{
@@ -197,7 +197,7 @@ namespace __SCRIPTS
 
 		private void FireDebree(Vector2 angle, float height, float verticalSpeed)
 		{
-			var forwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), transform.position);
+			var forwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.debrisType), transform.position);
 			forwardDebree.GetComponent<MoveJumpAndRotateAbility>().Fire(angle, height, verticalSpeed);
 			TintSprite(forwardDebree);
 			Services.objectMaker.Unmake(forwardDebree, 3);
@@ -206,7 +206,7 @@ namespace __SCRIPTS
 		private void CreateDamageRisingText(Attack attack)
 		{
 			if (attack.DamageAmount <= 0) return;
-			if (!life.IsNotInvincible) return;
+			if (!life.CanTakeDamage()) return;
 			var roundedDamage = Mathf.Round(attack.DamageAmount);
 			Services.risingText.CreateRisingText("-" + roundedDamage, attack.DestinationWithHeight, Color.red);
 		}
@@ -216,10 +216,10 @@ namespace __SCRIPTS
 			UpdateBarFill();
 		}
 
-		private void DefenceOnDying(Attack attack)
+		private void DefenceOnDead(Attack attack)
 		{
 			_life.OnFractionChanged -= DefenceOnDefenceChanged;
-			_life.OnDying -= DefenceOnDying;
+			_life.OnDead -= DefenceOnDead;
 			if (!isBoss) return;
 			Services.hudManager.SetBossLifeHealthbarVisible(false);
 		}
@@ -303,7 +303,7 @@ namespace __SCRIPTS
 		{
 			if (_life == null) return;
 			_life.OnFractionChanged -= DefenceOnDefenceChanged;
-			_life.OnDying -= DefenceOnDying;
+			_life.OnDead -= DefenceOnDead;
 		}
 	}
 

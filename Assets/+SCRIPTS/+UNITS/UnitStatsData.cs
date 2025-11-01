@@ -50,7 +50,7 @@ namespace __SCRIPTS
 				category = cat;
 
 			// Parse debris type
-			if (System.Enum.TryParse<DebrisType>(csvRow["DebrisType"], out var debris))
+			if (System.Enum.TryParse<DebrisType>(csvRow["debrisType"], out var debris))
 				debrisType = debris;
 
 			// Parse boolean values

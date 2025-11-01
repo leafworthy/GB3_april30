@@ -8,9 +8,9 @@ namespace __SCRIPTS
 	[Serializable]
 	public class ExplosionAttack : MonoBehaviour, INeedPlayer
 	{
-		private Life currentTargetLife;
-		private IAttack _attacker;
-		private IAttack attacker => _attacker ??= GetComponent<IAttack>();
+		private IGetAttacked currentTargetLife;
+		private ICanAttack _attacker;
+		private ICanAttack attacker => _attacker ??= GetComponent<ICanAttack>();
 		private UnitAnimations anim;
 		private float explosionRadius = 5;
 		public AnimationClip attackAnimation;
@@ -28,7 +28,7 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			if (life.IsHuman)
-				life.Player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
+				life.player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
 			else
 				attacker.OnAttack -= AttackerAttack;
 
@@ -47,7 +47,7 @@ namespace __SCRIPTS
 			life.DieNow();
 		}
 
-		private void AttackerAttack(Life newTarget)
+		private void AttackerAttack(IGetAttacked newTarget)
 		{
 			if (newTarget == null) return;
 			if (Services.pauseManager.IsPaused) return;

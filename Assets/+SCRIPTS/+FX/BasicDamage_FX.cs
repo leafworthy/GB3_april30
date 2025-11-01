@@ -16,14 +16,18 @@ public class BasicDamage_FX : MonoBehaviour,IExplodeOnDeath
 
 	public void Start()
 	{
-		if (health == null) return;
+		if (health == null)
+		{
+			Debug.Log("returned here");
+			return;
+		}
 		health.OnAttackHit += Life_AttackHit;
 		health.OnShielded += Life_Shielded;
 	}
 
 	private void Life_AttackHit(Attack attack)
 	{
-		if (!health.IsDead) return;
+		if (!health.IsDead()) return;
 		tintEffect.StartTint(attack.TintColor);
 		CreateDamageRisingText(attack);
 		SprayDebree(attack);
@@ -52,7 +56,7 @@ public class BasicDamage_FX : MonoBehaviour,IExplodeOnDeath
 
 	private void CreateDamageRisingText(Attack attack)
 	{
-		if (attack.DamageAmount <= 0|| !health.CanTakeDamage) return;
+		if (attack.DamageAmount <= 0|| !health.CanTakeDamage()) return;
 		Services.risingText.CreateRisingText("-" + Mathf.Round(attack.DamageAmount), attack.DestinationWithHeight, Color.red);
 	}
 

@@ -40,7 +40,7 @@ namespace __SCRIPTS
 			animEvents.OnTeleport += Anim_Teleport;
 
 			life.OnAttackHit += Life_AttackHit;
-			life.OnDying += Life_OnDying;
+			life.OnDead += LifeOnDead;
 
 			glock.OnShotHitTarget += GunAttackAkGlockOnOnShotHitTarget;
 			glock.OnShotMissed += GunAttackAkGlockOnShotMissed;
@@ -72,7 +72,7 @@ namespace __SCRIPTS
 			}
 
 
-			life.OnDying -= Life_OnDying;
+			life.OnDead -= LifeOnDead;
 
 			glock.OnShotHitTarget -= GunAttackAkGlockOnOnShotHitTarget;
 			glock.OnShotMissed -= GunAttackAkGlockOnShotMissed;
@@ -97,11 +97,11 @@ namespace __SCRIPTS
 		private void GunAttackAkGlockOnOnShotHitTarget(Attack attack)
 		{
 			if(attack.DestinationLife == null)Services.sfx.sounds.GetBulletHitSounds(DebrisType.none).PlayRandomAt(attack.DestinationFloorPoint);
-			else Services.sfx.sounds.GetBulletHitSounds(attack.DestinationLife.DebrisType).PlayRandomAt(attack.DestinationFloorPoint);
+			else Services.sfx.sounds.GetBulletHitSounds(attack.DestinationLife.debrisType).PlayRandomAt(attack.DestinationFloorPoint);
 			Services.sfx.sounds.ak47_shoot_sounds.PlayRandomAt(attack.OriginFloorPoint);
 		}
 
-		private void Life_OnDying(Attack attack) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
+		private void LifeOnDead(Attack attack) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
 
 		private void Life_AttackHit(Attack attack) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
 

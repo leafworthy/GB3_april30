@@ -10,7 +10,7 @@ namespace __SCRIPTS
 		private void Start()
 		{
 			breakList = GetComponent<HideRevealObjects>();
-			life.OnDying += Life_Dead;
+			life.OnDead += Life_Dead;
 			breakList.Set(0);
 		}
 

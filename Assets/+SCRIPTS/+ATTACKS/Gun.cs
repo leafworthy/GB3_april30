@@ -40,8 +40,10 @@ namespace __SCRIPTS
 
 		private Body body => _body ??= GetComponent<Body>();
 		private Body _body;
-		protected Life life => _life ??= GetComponent<Life>();
-		private Life _life;
+		protected ICanAttack attacker => _attacker ??= GetComponent<ICanAttack>();
+		private ICanAttack _attacker;
+		protected IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
+		private IHaveAttackStats _stats;
 		private bool isCoolingDown;
 		private float currentCooldownTime;
 		public string AnimationClipSuffix => this is PrimaryGun ? "" : "_Glock";
@@ -116,13 +118,13 @@ namespace __SCRIPTS
 		private void ShootBullet(Vector3 shootDirection)
 		{
 			var hitObject = Physics2D.Linecast(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange,
-				life.EnemyLayer);
+				attacker.EnemyLayer);
 			Debug.DrawLine(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange, Color.green, 3);
 
 			if (hitObject)
 			{
-				var target = hitObject.collider.gameObject.GetComponentInParent<Life>();
-				if (target == null) target = hitObject.collider.gameObject.GetComponentInChildren<Life>();
+				var target = hitObject.collider.gameObject.GetComponentInParent<IGetAttacked>();
+				if (target == null) target = hitObject.collider.gameObject.GetComponentInChildren<IGetAttacked>();
 				if (target == null)
 				{
 					ShotMissed();
@@ -137,18 +139,18 @@ namespace __SCRIPTS
 		private void ShotMissed()
 		{
 			var missPosition = (Vector2) body.FootPoint.transform.position + gunAimAbility.AimDir.normalized * AttackRange;
-			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, gunAimAbility.AimDir.normalized, AttackRange, life.Player.BuildingLayer);
+			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, gunAimAbility.AimDir.normalized, AttackRange, attacker.player.BuildingLayer);
 			if (raycastHit) missPosition = raycastHit.point;
-			var newAttack = Attack.Create(life, null).WithOriginPoint(body.AttackStartPoint.transform.position).WithDestinationPoint(missPosition)
+			var newAttack = Attack.Create(attacker, null).WithOriginPoint(body.AttackStartPoint.transform.position).WithDestinationPoint(missPosition)
 			                      .WithDamage(0);
 
 			Debug.DrawLine(body.FootPoint.transform.position, missPosition, Color.red, 3);
 			OnShotMissed?.Invoke(newAttack);
 		}
 
-		private void ShotHitTarget(Life targetLife, Vector2 hitObjectPoint)
+		private void ShotHitTarget(IGetAttacked targetLife, Vector2 hitObjectPoint)
 		{
-			var newAttack = Attack.Create(life, targetLife).WithOriginPoint(body.AttackStartPoint.transform.position).WithDestinationPoint(hitObjectPoint)
+			var newAttack = Attack.Create(attacker, targetLife).WithOriginPoint(body.AttackStartPoint.transform.position).WithDestinationPoint(hitObjectPoint)
 			                      .WithDamage(Damage);
 			OnShotHitTarget?.Invoke(newAttack);
 
@@ -156,13 +158,15 @@ namespace __SCRIPTS
 		}
 	}
 
+
+
 	public class PrimaryGun : Gun
 	{
 		private bool isShooting;
-		public override float AttackRate => life.PrimaryAttackRate;
-		protected override float Damage => life.PrimaryAttackDamageWithExtra;
+		public override float AttackRate => stats.PrimaryAttackRate;
+		protected override float Damage => stats.PrimaryAttackDamageWithExtra;
 		protected override Ammo Ammo => ammoInventory.primaryAmmo;
-		protected override float AttackRange => life.PrimaryAttackRange;
+		protected override float AttackRange => stats.PrimaryAttackRange;
 		protected override float Spread => 0;
 
 		protected override int numberOfBulletsPerShot => 1;
@@ -174,13 +178,13 @@ namespace __SCRIPTS
 
 		private float GetAttackRate()
 		{
-			Debug.Log("unlimited attack rate: " + life.UnlimitedAttackRate);
-			return life.UnlimitedAttackRate;
+			Debug.Log("unlimited attack rate: " + stats.UnlimitedAttackRate);
+			return stats.UnlimitedAttackRate;
 		}
 
-		protected override float Damage => life.UnlimitedAttackDamageWithExtra;
+		protected override float Damage => stats.UnlimitedAttackDamageWithExtra;
 		protected override Ammo Ammo => ammoInventory.unlimitedAmmo;
-		protected override float AttackRange => life.UnlimitedAttackRange;
+		protected override float AttackRange => stats.UnlimitedAttackRange;
 		protected override float Spread => 0;
 		protected override int numberOfBulletsPerShot => 1;
 	}

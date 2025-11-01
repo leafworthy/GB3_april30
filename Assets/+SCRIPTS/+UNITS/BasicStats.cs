@@ -8,9 +8,9 @@ namespace __SCRIPTS
 		//Handles UnitStatsData
 		public string UnitName;
 		public UnitStatsData Data => _data ??= UnitStatsManager.GetUnitStats(UnitName);
-		[SerializeField]private UnitStatsData _data;
+		[SerializeField] private UnitStatsData _data;
 
-		public bool isInvincible  => Data.isInvincible;
+		public bool isInvincible => Data.isInvincible;
 		public DebrisType DebrisType => Data.debrisType;
 
 		[Sirenix.OdinInspector.Button]
@@ -18,6 +18,7 @@ namespace __SCRIPTS
 		{
 			_data = UnitStatsManager.GetUnitStats(UnitName);
 		}
+
 		#region UnitStats Wrappers
 
 		public UnitCategory category => Data.category;
@@ -33,7 +34,7 @@ namespace __SCRIPTS
 		public float UnlimitedAttackDamageWithExtra => GetAttackDamage(4);
 		public float UnlimitedAttackRange => GetAttackRange(4);
 		public float UnlimitedAttackRate => GetAttackRate(4);
-		public float MoveSpeed => Data.moveSpeed + ExtraSpeedFactor * Data.moveSpeed + Data.moveSpeed * (EnemyTier ? EnemyTier.GetEnemyTier()* 0.3f: 0);
+		public float MoveSpeed => Data.moveSpeed + ExtraSpeedFactor * Data.moveSpeed + Data.moveSpeed * (EnemyTier ? EnemyTier.GetEnemyTier() * 0.3f : 0);
 		public float DashSpeed => Data.dashSpeed + ExtraSpeedFactor * Data.dashSpeed;
 		public float JumpSpeed => Data.jumpSpeed;
 		public float AggroRange => Data.aggroRange;
@@ -48,7 +49,7 @@ namespace __SCRIPTS
 		public float ExtraDamageFactor;
 		public float ExtraSpeedFactor;
 		private int extraMaxDamageFactor;
-		[SerializeField] private EnemyTier EnemyTier  => _enemyTier ??= GetComponent<EnemyTier>();
+		private EnemyTier EnemyTier => _enemyTier ??= GetComponent<EnemyTier>();
 		private EnemyTier _enemyTier;
 		private Player player;
 		public float GetExtraHealth() => ExtraHealthFactor * Data.healthMax + Data.healthMax * (EnemyTier ? EnemyTier.GetEnemyTier() : 0);
@@ -60,10 +61,14 @@ namespace __SCRIPTS
 
 		public float GetAttackDamage(int attackIndex) => attackIndex switch
 		                                                 {
-			                                                 1 => Data.attack1Damage + ExtraDamageFactor * Data.attack1Damage + Data.attack1Damage *(EnemyTier ? EnemyTier.GetEnemyTier(): 0),
-			                                                 2 => Data.attack2Damage + ExtraDamageFactor * Data.attack2Damage + Data.attack2Damage *(EnemyTier ? EnemyTier.GetEnemyTier(): 0),
-			                                                 3 => Data.attack3Damage + ExtraDamageFactor * Data.attack3Damage + Data.attack3Damage *(EnemyTier ? EnemyTier.GetEnemyTier(): 0),
-			                                                 4 => Data.attack4Damage + ExtraDamageFactor * Data.attack4Damage + Data.attack4Damage *(EnemyTier ? EnemyTier.GetEnemyTier(): 0),
+			                                                 1 => Data.attack1Damage + ExtraDamageFactor * Data.attack1Damage +
+			                                                      Data.attack1Damage * (EnemyTier ? EnemyTier.GetEnemyTier() : 0),
+			                                                 2 => Data.attack2Damage + ExtraDamageFactor * Data.attack2Damage +
+			                                                      Data.attack2Damage * (EnemyTier ? EnemyTier.GetEnemyTier() : 0),
+			                                                 3 => Data.attack3Damage + ExtraDamageFactor * Data.attack3Damage +
+			                                                      Data.attack3Damage * (EnemyTier ? EnemyTier.GetEnemyTier() : 0),
+			                                                 4 => Data.attack4Damage + ExtraDamageFactor * Data.attack4Damage +
+			                                                      Data.attack4Damage * (EnemyTier ? EnemyTier.GetEnemyTier() : 0),
 			                                                 _ => 0f
 		                                                 };
 

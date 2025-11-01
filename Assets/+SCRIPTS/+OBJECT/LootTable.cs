@@ -28,7 +28,7 @@ namespace __SCRIPTS
 		}
 
 
-		private void DropLootFromEnemy(Life life)
+		private void DropLootFromEnemy(IGetAttacked life)
 		{
 			DropLoot(life.transform.position);
 		}

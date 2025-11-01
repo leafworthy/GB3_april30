@@ -22,7 +22,9 @@ namespace __SCRIPTS
 		private PlayerData data;
 
 		public GameObject SpawnedPlayerGO;
-		public Life spawnedPlayerDefence;
+		public ICanAttack spawnedPlayerAttacker;
+		public IGetAttacked spawnedPlayerDefence;
+		public IHaveAttackStats spawnedPlayerStats;
 
 		public PlayerController Controller;
 		public PlayerInput input;
@@ -95,7 +97,8 @@ namespace __SCRIPTS
 				spawnedPlayerDefence.OnDeathComplete -= OnPlayerDied;
 			}
 			SpawnedPlayerGO = newGO;
-			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
+			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<IGetAttacked>();
+			spawnedPlayerStats = SpawnedPlayerGO.GetComponent<IHaveAttackStats>();
 			if (spawnedPlayerDefence == null) return;
 
 			Debug.Log("setting player defence, registering ondeathcomplete",this);

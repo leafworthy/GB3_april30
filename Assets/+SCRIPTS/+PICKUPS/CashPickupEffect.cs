@@ -10,7 +10,7 @@ namespace __SCRIPTS
 		{
 			effectDuration = 0;
 			var stats = ServiceLocator.Get<PlayerStatsManager>();
-			stats.ChangeStat(life.Player,PlayerStat.StatType.TotalCash,amount);
+			stats.ChangeStat(life.player,PlayerStat.StatType.TotalCash,amount);
 			base.StartEffect(life);
 		}
 

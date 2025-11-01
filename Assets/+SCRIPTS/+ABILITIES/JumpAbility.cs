@@ -113,7 +113,7 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player _player)
 		{
 			base.SetPlayer(_player);
-			life.OnDying += Life_OnDying;
+			life.OnDead += LifeOnDead;
 			life.OnFlying += Life_OnFlying;
 			if(_player.Controller != null) _player.Controller.Jump.OnPress += Controller_Jump;
 			SetState(state.resting);
@@ -132,7 +132,7 @@ namespace __SCRIPTS
 			Do();
 		}
 
-		private void Life_OnDying(Attack attack)
+		private void LifeOnDead(Attack attack)
 		{
 			StartFlying();
 		}
@@ -147,11 +147,11 @@ namespace __SCRIPTS
 		private void OnDisable()
 		{
 			if (life == null) return;
-			life.OnDying -= Life_OnDying;
-			if (life.Player == null) return;
-			if (life.Player.Controller == null) return;
-			if (life.Player.Controller.Jump == null) return;
-			life.Player.Controller.Jump.OnPress -= Controller_Jump;
+			life.OnDead -= LifeOnDead;
+			if (life.player == null) return;
+			if (life.player.Controller == null) return;
+			if (life.player.Controller.Jump == null) return;
+			life.player.Controller.Jump.OnPress -= Controller_Jump;
 		}
 
 		private void FallFromHeight(float fallHeight)

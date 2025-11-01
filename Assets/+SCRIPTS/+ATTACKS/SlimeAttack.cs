@@ -10,43 +10,43 @@ namespace __SCRIPTS
 		[SerializeField] private GameObject ProjectilePrefab;
 		private float currentCooldownTime;
 
-		private Life  life => _life ??= GetComponent<Life>();
-		private Life _life;
+		private IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
+		private IGetAttacked _life;
 		private Body body;
 		private UnitAnimations anim;
-		private IAttack ai;
-		private Life currentTarget;
+		private ICanAttack attacker;
+		private IGetAttacked currentTarget;
 
 		private void Start()
 		{
 			body = GetComponent<Body>();
 			anim = GetComponent<UnitAnimations>();
 
-			ai = GetComponent<IAttack>();
+			attacker = GetComponent<ICanAttack>();
 
-			ai.OnAttack += AIAttack;
+			attacker.OnAttack += AttackerAttack;
 			anim.animEvents.OnAttackHit += CreateSlime;
 		}
 
 		private void OnDisable()
 		{
-			ai.OnAttack -= AIAttack;
+			attacker.OnAttack -= AttackerAttack;
 			anim.animEvents.OnAttackHit -= CreateSlime;
 		}
 
 
-		private void AIAttack(Life target)
+		private void AttackerAttack(IGetAttacked target)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (life.IsDead()) return;
 			AttackTarget(target);
 		}
 
-		private void AttackTarget(Life targetLife)
+		private void AttackTarget(IGetAttacked targetLife)
 		{
 			if (!(Time.time >= currentCooldownTime)) return;
 			currentTarget = targetLife;
-			currentCooldownTime = Time.time + life.PrimaryAttackRate;
+			currentCooldownTime = Time.time + attacker.Stats.PrimaryAttackRate;
 
 			// Face the target only when starting a new attack
 			FaceTarget();
@@ -73,14 +73,14 @@ namespace __SCRIPTS
 		{
 			if (currentTarget == null) return;
 
-			var newAttack = Attack.Create(life,currentTarget).WithDamage(life.PrimaryAttackDamageWithExtra);
+			var newAttack = Attack.Create(attacker,currentTarget).WithDamage(attacker.Stats.PrimaryAttackDamageWithExtra);
 
-			if ((Vector2.Distance(transform.position, currentTarget.transform.position) <= life.PrimaryAttackRange) ||  (currentTarget.IsObstacle))
+			if ((Vector2.Distance(transform.position, currentTarget.transform.position) <= attacker.Stats.PrimaryAttackRange))
 			{
 				currentTarget.TakeDamage(newAttack);
 			}
 
-			var targetPos = (currentTarget.transform.position -transform.position).normalized * life.PrimaryAttackRange + transform.position;
+			var targetPos = (currentTarget.transform.position -transform.position).normalized * attacker.Stats.PrimaryAttackRange + transform.position;
 			CreateSlimePrefab(targetPos);
 		}
 
@@ -90,7 +90,7 @@ namespace __SCRIPTS
 			var newProjectile = Services.objectMaker.Make(ProjectilePrefab, pos);
 			var projectileScript = newProjectile.GetComponent<SlimePool>();
 			var directionMult = body.BottomIsFacingRight ? 1 : -1;
-			projectileScript.Fire(directionMult, life);
+			projectileScript.Fire(directionMult, attacker);
 		}
 
 	}

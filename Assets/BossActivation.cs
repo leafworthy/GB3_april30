@@ -11,7 +11,7 @@ public class BossActivation : MonoBehaviour
 		var otherLife = other.GetComponent<Life>();
 		if (otherLife == null) return;
 		if (otherLife.IsDead()) return;
-		if (!otherLife.Player.IsHuman()) return;
+		if (!otherLife.player.IsHuman()) return;
 		if (isFinished) return;
 		StartBossfight();
 	}

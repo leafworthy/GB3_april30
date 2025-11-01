@@ -1,8 +1,64 @@
 using System;
+using GangstaBean.Core;
 using UnityEngine;
+
+
 
 namespace __SCRIPTS
 {
+	public interface ICanMoveThings
+	{
+		event Action<Vector2> OnMoveInDirection;
+		event Action OnStopMoving;
+		Vector2 GetMoveAimDir();
+		bool IsMoving();
+
+	}
+
+
+	public interface IHaveAttackStats
+	{
+		float PrimaryAttackRate { get; }
+		float PrimaryAttackDamageWithExtra { get; }
+		float PrimaryAttackRange { get; }
+		float UnlimitedAttackRate { get; }
+		float UnlimitedAttackDamageWithExtra { get; }
+		float UnlimitedAttackRange { get; }
+		float ExtraDamageFactor { get; set; }
+		float AggroRange { get; }
+		float MoveSpeed { get; }
+	}
+
+
+	public interface ICanAttack
+	{
+		Transform transform { get; }
+		Player player { get; }
+		LayerMask EnemyLayer { get; }
+		IHaveAttackStats Stats { get; }
+
+		bool IsEnemyOf(IGetAttacked targetLife);
+		event Action<IGetAttacked> OnAttack;
+	}
+
+
+
+	public interface IGetAttacked : INeedPlayer
+	{
+		public void TakeDamage(Attack attack);
+
+		public event Action<Attack> OnDead;
+		public Player player { get; }
+		Transform transform { get; }
+		DebrisType debrisType { get; }
+		UnitCategory category { get; }
+		bool CanTakeDamage();
+		bool IsDead();
+		event Action<Player, bool> OnDeathComplete;
+		void DieNow();
+		event Action<Attack> OnAttackHit;
+	}
+
 	[Serializable]
 	public class Attack
 	{
@@ -13,11 +69,11 @@ namespace __SCRIPTS
 			TintColor = Color.red;
 		}
 
-		public static Attack Create(Life originLife, Life destinationLife)
+		public static Attack Create(ICanAttack originLife, IGetAttacked destinationLife)
 		{
 			var attack = new Attack();
 			attack.OriginLife = originLife;
-			if(originLife != null)attack.OriginFloorPoint = originLife.transform.position;
+			if (originLife != null) attack.OriginFloorPoint = originLife.transform.position;
 			attack.DestinationLife = destinationLife;
 			if (destinationLife != null) attack.DestinationFloorPoint = destinationLife.transform.position;
 			return attack;
@@ -47,7 +103,7 @@ namespace __SCRIPTS
 			return this;
 		}
 
-		public void WithDestinationLife(Life target)
+		public void WithDestinationLife(IGetAttacked target)
 		{
 			DestinationLife = target;
 			if (target != null)
@@ -86,8 +142,8 @@ namespace __SCRIPTS
 
 
 		// Properties
-		public Life OriginLife;
-		public Life DestinationLife;
+		public ICanAttack OriginLife;
+		public IGetAttacked DestinationLife;
 		public float OriginHeight;
 		public float DestinationHeight;
 		public float DamageAmount;

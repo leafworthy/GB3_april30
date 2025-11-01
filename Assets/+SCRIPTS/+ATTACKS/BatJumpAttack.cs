@@ -30,7 +30,7 @@ namespace __SCRIPTS
 		private AimAbility aimAbility => _aimAbility ??= GetComponent<AimAbility>();
 		private AimAbility _aimAbility;
 
-		private float GetAttackDamage() => player.spawnedPlayerDefence.PrimaryAttackDamageWithExtra;
+		private float GetAttackDamage() => player.spawnedPlayerStats.PrimaryAttackDamageWithExtra;
 		public override string AbilityName => "Bat-Air-Attack";
 
 		protected override bool requiresArms() => true;
@@ -134,7 +134,7 @@ namespace __SCRIPTS
 			foreach (var hit in hits)
 			{
 				AttackUtilities.HitTarget(life, hit, GetAttackDamage());
-				OnHitTarget?.Invoke(hit.gameObject.transform.position);
+				OnHitTarget?.Invoke(hit.transform.position);
 			}
 		}
 	}

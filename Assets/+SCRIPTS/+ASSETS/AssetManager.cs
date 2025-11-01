@@ -13,7 +13,7 @@ namespace __SCRIPTS
 		private GlobalVars _vars;
 		public GlobalVars Vars => _vars ?? Resources.Load<GlobalVars>("Assets/GlobalVars");
 
-		// Character/Player Assets
+		// Character/player Assets
 		private CharacterPrefabAssets _players;
 		public CharacterPrefabAssets Players => _players ?? Resources.Load<CharacterPrefabAssets>("Assets/Players");
 

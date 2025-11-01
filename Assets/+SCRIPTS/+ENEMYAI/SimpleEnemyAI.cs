@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace __SCRIPTS._ENEMYAI
 {
-	public class SimpleEnemyAI : MonoBehaviour, IMove, IAttack
+	public class SimpleEnemyAI : MonoBehaviour, ICanMoveThings, ICanAttack
 	{
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;
@@ -12,18 +12,25 @@ namespace __SCRIPTS._ENEMYAI
 
 		public bool IsMoving() => isMoving;
 		private bool isMoving;
-		public event Action<Life> OnAttack;
-		private Life _life;
-		private Life life => _life ??= GetComponent<Life>();
+		public Player player => player1;
+		public LayerMask EnemyLayer => Services.assetManager.LevelAssets.EnemyLayer;
 
-		private Life _target;
+		public bool IsEnemyOf(IGetAttacked targetLife) => player.IsHuman() != targetLife.player.IsHuman();
+
+		public event Action<IGetAttacked> OnAttack;
+
+		private IGetAttacked _target;
 		private Targetter _targetter;
 
-		private float minDistanceToPlayer => life.PrimaryAttackRange;
+		public IHaveAttackStats Stats => _stats ??= GetComponent<IHaveAttackStats>();
+		private IHaveAttackStats _stats;
+		private Player player1;
+		private LayerMask enemyLayer;
+		private float minDistanceToPlayer => Stats.PrimaryAttackRange;
 
 		private void Update()
 		{
-			_target = _targetter.GetClosestPlayerInAggroRange();
+			_target = _targetter.GetClosestPlayerWithinRange(Stats.AggroRange);
 			if (_target == null) return;
 			if (CloseEnoughToPlayer())
 				AttackPlayer();
@@ -41,7 +48,7 @@ namespace __SCRIPTS._ENEMYAI
 		private void WalkToPlayer()
 		{
 			isMoving = true;
-			moveDir = (_target.transform.position - transform.position).normalized * life.MoveSpeed;
+			moveDir = (_target.transform.position - transform.position).normalized * Stats.MoveSpeed;
 			OnMoveInDirection?.Invoke(moveDir);
 		}
 

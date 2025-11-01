@@ -171,7 +171,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 595
+  m_SortingOrder: 465
   m_Sprite: {fileID: 21300000, guid: 24972f257ba89470ba05ec27589ec02c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -210,7 +210,7 @@ MonoBehaviour:
   sortingBounds: {fileID: 0}
   renderBelowSortingOrder: 0
   sortType: 0
-  SorterPositionOffset: {x: -0.315979, y: -16.112976, z: 0.000004561982}
+  SorterPositionOffset: {x: -0.315979, y: -16.112984, z: 0.0000045468946}
   SorterPositionOffset2: {x: 9.042946, y: -31.237207, z: 0}
   renderersToSort:
   - {fileID: 827350551121471613}
@@ -478,12 +478,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5225984393265348810}
-  - component: {fileID: 8768560273732482992}
   - component: {fileID: 4342301813088269497}
-  - component: {fileID: 7789312003793967995}
   - component: {fileID: 6744616373768969005}
   - component: {fileID: 2736803200754490181}
   - component: {fileID: 1945555214387713723}
+  - component: {fileID: 5310077868107663261}
+  - component: {fileID: 7128871126931242848}
+  - component: {fileID: 4776881940616222571}
   m_Layer: 21
   m_Name: Life
   m_TagString: Untagged
@@ -507,54 +508,6 @@ Transform:
   - {fileID: 8659088831180549849}
   m_Father: {fileID: 9048459617251402012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8768560273732482992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5967172343948227318}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  unitStats:
-    _unitData:
-      unitName: DefaultThing
-      category: 3
-      debrisType: 7
-      isPlayerSwingHittable: 0
-      showLifeBar: 0
-      isInvincible: 1
-      healthMax: 100
-      moveSpeed: 35
-      dashSpeed: 0
-      jumpSpeed: 0
-      aggroRange: 0
-      attack1Damage: 0
-      attack1Rate: 0
-      attack1Range: 0
-      attack2Damage: 0
-      attack2Rate: 0
-      attack2Range: 0
-      attack3Damage: 0
-      attack3Rate: 0
-      attack3Range: 0
-      attack4Damage: 0
-      attack4Rate: 0
-      attack4Range: 0
-      hasData: 1
-      isDefault: 0
-    ExtraHealthFactor: 0
-    ExtraDamageFactor: 0
-    ExtraSpeedFactor: 0
-    EnemyTier: 0
-  unitHealth:
-    IsTemporarilyInvincible: 0
-    IsShielded: 0
-    currentHealth: 100
 --- !u!114 &4342301813088269497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -592,54 +545,6 @@ MonoBehaviour:
     maskType: 0
     maskPivot: 0
     transform: {fileID: 5225984393265348810}
---- !u!114 &7789312003793967995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5967172343948227318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DebreeTint: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
-  colorMode: 1
-  slowBarColor: {r: 1, g: 1, b: 1, a: 1}
-  barGradient:
-    serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 1}
-    key1: {r: 1, g: 0.95496154, b: 0, a: 1}
-    key2: {r: 0.19127488, g: 1, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 16577
-    ctime2: 65535
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 3
-    m_NumAlphaKeys: 2
-  _healthBar: {fileID: 0}
-  BlockTint: 0
-  isBoss: 0
 --- !u!114 &6744616373768969005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -706,6 +611,75 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1.57
+--- !u!114 &5310077868107663261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5967172343948227318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0455abdae7264a0ca7c757667fc20f6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 100
+  CurrentHealth: 100
+  _healthbar: {fileID: 1818094740406966623}
+--- !u!114 &7128871126931242848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5967172343948227318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bb12a2bc475449c8e4cebd98de14a42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UnitName: Street Light
+  _data:
+    unitName: DefaultThing
+    category: 3
+    debrisType: 4
+    isPlayerSwingHittable: 0
+    showLifeBar: 0
+    isInvincible: 1
+    healthMax: 100
+    moveSpeed: 35
+    dashSpeed: 0
+    jumpSpeed: 0
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    hasData: 1
+    isDefault: 0
+  ExtraHealthFactor: 0
+  ExtraDamageFactor: 0
+  ExtraSpeedFactor: 0
+--- !u!114 &4776881940616222571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5967172343948227318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 391f801571f9475395be25b57b2ae0f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5994490605341882432
 GameObject:
   m_ObjectHideFlags: 0
@@ -747,6 +721,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5225984393265348810}
     m_Modifications:
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.ctime1
+      value: 16577
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.ctime2
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.key0.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.key1.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.key1.g
+      value: 0.95496154
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.key2.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.key2.r
+      value: 0.19127488
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: barGradient.m_NumColorKeys
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242737, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Name
       value: HealthBar
@@ -861,17 +871,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Color.g
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Color.r
-      value: 0.19127488
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.4968
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159643717769961305, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.47513556
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+--- !u!114 &1818094740406966623 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+  m_PrefabInstance: {fileID: 3265162751857694059}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c81ed4c3ba97643c4a1f86d373c41ee5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8659088831180549849 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}

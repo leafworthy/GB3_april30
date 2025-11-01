@@ -131,7 +131,7 @@ public class KnifeAttack : Ability
 		var KnifeFireEffect = targetLife.gameObject.AddComponent<DamageOverTimeEffect>();
 		KnifeFireEffect.StartEffect( life, targetLife, damageOverTimeData.fireDuration, damageOverTimeData.fireDamageRate, damageOverTimeData.fireDamageAmount,
 			damageOverTimeData.fireColor);
-		AttackUtilities.HitTarget(life, targetLife, 0);//life.TertiaryAttackDamageWithExtra
+		AttackUtilities.HitTarget(life, targetLife, 0);//stats.TertiaryAttackDamageWithExtra
 		OnHit?.Invoke(targetHit.transform.position);
 	}
 }

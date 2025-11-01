@@ -15,7 +15,7 @@ public class AdvanceToNextLevelTrigger : MonoBehaviour
 	     var life = other.GetComponent<Life>();
 	     if (life == null) return;
 	     if (!life.IsHuman) return;
-	     Debug.Log("Player reached the end of the level");
+	     Debug.Log("player reached the end of the level");
 	    hasCompleted = true;
 	     Services.levelManager.AdvanceToNextLevel(nextScene);
     }

@@ -6,69 +6,46 @@ namespace __SCRIPTS._ENEMYAI
 {
 	public class Targetter : MonoBehaviour
 	{
-		private Life targetterLife => GetComponent<Life>();
-
+		private ICanAttack targetterLife => GetComponent<ICanAttack>();
 
 		#region private functions
 
-		public Life GetClosestEnemyInRange(float range)
+		public IGetAttacked GetClosestEnemyInRange(float range)
 		{
 			var playersInRange = GetActualEnemyTargetsInRange(targetterLife.EnemyLayer, range);
 			var closest = GetClosest(playersInRange);
 			return closest;
 		}
 
-		private List<Life> GetActualEnemyTargetsInRange(LayerMask levelAssetsEnemyLayer, float range)
+		private List<IGetAttacked> GetActualEnemyTargetsInRange(LayerMask levelAssetsEnemyLayer, float range)
 		{
 			var enemiesInRange = GetValidTargetsInRange(levelAssetsEnemyLayer, range);
-			var actualEnemiesInRange = enemiesInRange.Where(x => x != null && !x.IsDead() && x.gameObject != gameObject && x.category == UnitCategory.Enemy)
-			                                         .ToList();
+			var actualEnemiesInRange = enemiesInRange
+			                           .Where(x => x != null && !x.IsDead() && x.transform.gameObject != gameObject && x.category == UnitCategory.Enemy)
+			                           .ToList();
 			return actualEnemiesInRange;
 		}
 
-		private Life GetClosest(List<Life> targets)
+		private IGetAttacked GetClosest(List<IGetAttacked> targets)
 		{
-			Life closest = null;
+			IGetAttacked closest = null;
 			var minDistance = float.MaxValue;
-			// Cache transform.position
-			Vector2 pos = transform.position;
 
-			for (var i = 0; i < targets.Count; i++)
+			foreach (var target in targets)
 			{
-				var target = targets[i];
-				// Use SqrMagnitude to avoid the square root cost
-				var distance = Vector2.SqrMagnitude(target.transform.position - (Vector3) pos);
-				if (distance < minDistance)
-				{
-					minDistance = distance;
-					closest = target;
-				}
+				var distance = Vector2.SqrMagnitude(target.transform.position - transform.position);
+				if (!(distance < minDistance)) continue;
+				minDistance = distance;
+				closest = target;
 			}
 
 			return closest;
 		}
 
-		//private Life GetClosest(List<Life> targets) => targets.OrderBy(t => Vector2.Distance(t.transform.position, transform.position)).FirstOrDefault();
-		public Life GetClosestAttackableObstacle()
-		{
-			var obstacles = GetValidObstaclesInRange(Services.assetManager.LevelAssets.DoorLayer, targetterLife.PrimaryAttackRange);
-			var closest = GetClosest(obstacles);
+		public IGetAttacked GetClosestPlayerWithinRange(float range) => GetClosest(GetTargetsInRange(Services.assetManager.LevelAssets.PlayerLayer, range));
+		public IGetAttacked GetClosestPlayer() => GetClosest(GetPlayers());
 
-			// Debug logging to help identify door targeting issues
-			if (obstacles.Count > 0)
-			{
-			}
-
-			return closest;
-		}
-
-		public Life GetClosestAttackablePlayer() =>
-			GetClosest(GetAttackableTargetsInRange(Services.assetManager.LevelAssets.PlayerLayer, targetterLife.PrimaryAttackRange));
-
-		public Life GetClosestPlayerInAggroRange() => GetClosest(GetAggroTargets(Services.assetManager.LevelAssets.PlayerLayer));
-		public Life GetClosestPlayer() => GetClosest(GetPlayers());
-
-		private List<Life> GetPlayers()
+		private List<IGetAttacked> GetPlayers()
 		{
 			var playersWithGOs = Services.playerManager.AllJoinedPlayers.Where(x => x.spawnedPlayerDefence != null).ToList();
 			var playerLives = playersWithGOs.Select(x => x.spawnedPlayerDefence).Where(x => !x.IsDead()).ToList();
@@ -76,44 +53,11 @@ namespace __SCRIPTS._ENEMYAI
 			return playerLives;
 		}
 
-		private List<Life> GetValidTargetsInRange(LayerMask layer, float range) =>
-			Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
+		private List<IGetAttacked> GetValidTargetsInRange(LayerMask layer, float range) =>
+			Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<IGetAttacked>())
 			         .Where(life => life != null && TargetIsNotNullOrDead(life)).ToList();
 
-		private List<Life> GetValidObstaclesInRange(LayerMask layer, float range)
-		{
-			var colliders = Physics2D.OverlapCircleAll(transform.position, range, layer);
-			var validObstacles = new List<Life>();
-
-			foreach (var collider in colliders)
-			{
-				// Try multiple ways to find Life component on door objects
-				var life = collider.GetComponentInChildren<Life>();
-				if (life == null) life = collider.GetComponent<Life>();
-				if (life == null) life = collider.GetComponentInParent<Life>();
-
-				if (life != null && ObstacleIsValid(life))
-				{
-					// Additional validation: ensure we can actually reach the door
-					if (CanReachObstacle(life)) validObstacles.Add(life);
-				}
-			}
-
-			return validObstacles;
-		}
-
-		private bool CanReachObstacle(Life obstacle)
-		{
-			// Simple distance check - door should be reachable within attack range
-			var distance = Vector2.Distance(transform.position, obstacle.transform.position);
-			return distance <= targetterLife.PrimaryAttackRange;
-		}
-
-		private List<Life> GetAttackableTargetsInRange(LayerMask layer, float range) =>
-			Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
-			         .Where(life => life != null && TargetIsNotNullOrDead(life) && HasLineOfSightWith(life.transform.position)).ToList();
-
-		private List<Life> GetAggroTargets(LayerMask layer) => GetValidTargetsInRange(layer, targetterLife.AggroRange);
+		private List<IGetAttacked> GetTargetsInRange(LayerMask layer, float range) => GetValidTargetsInRange(layer, range);
 
 		private bool buildingIsInTheWay(Vector2 position)
 		{
@@ -122,11 +66,7 @@ namespace __SCRIPTS._ENEMYAI
 			return hit.collider != null;
 		}
 
-		private bool isWithinAttackRange(Vector3 target) => Vector3.Distance(transform.position, target) < targetterLife.PrimaryAttackRange;
-
 		#endregion
-
-		#region public functions
 
 		public Vector2 GetWanderPosition(Vector2 wanderPoint, float wanderDistance)
 		{
@@ -140,34 +80,8 @@ namespace __SCRIPTS._ENEMYAI
 			return wanderPoint;
 		}
 
-		#endregion
-
 		public bool HasLineOfSightWith(Vector3 transformPosition) => !buildingIsInTheWay(transformPosition);
 
-		private bool TargetIsNotNullOrDead(Life target)
-		{
-			if (target != null && !target.IsDead()) return true;
-			return false;
-		}
-
-		private bool ObstacleIsValid(Life target)
-		{
-			if (target == null || target.IsDead()) return false;
-
-			if (!target.IsObstacle) return false;
-
-			// Try multiple ways to find the door component for robustness
-			var door = target.GetComponentInParent<DoorInteraction>();
-			if (door == null) door = target.GetComponent<DoorInteraction>();
-			if (door == null) door = target.GetComponentInChildren<DoorInteraction>();
-
-			if (door == null) return false;
-
-			if (door.isBroken) return false;
-
-			if (door.isOpen) return false;
-
-			return true;
-		}
+		private bool TargetIsNotNullOrDead(IGetAttacked target) => target != null && !target.IsDead();
 	}
 }

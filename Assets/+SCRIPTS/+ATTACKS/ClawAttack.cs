@@ -5,10 +5,7 @@ using GangstaBean.Core;
 using UnityEngine;
 
 
-public interface IAttack
-{
-	event Action<Life> OnAttack;
-}
+
 
 
 namespace __SCRIPTS
@@ -17,12 +14,12 @@ namespace __SCRIPTS
 	public class ClawAttack : MonoBehaviour, INeedPlayer
 	{
 		private float currentCooldownTime;
-		private Life currentTargetLife;
+		private IGetAttacked currentTargetLife;
 
-		private Life life => _life ??= GetComponent<Life>();
-		private Life _life;
+		private IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
+		private IGetAttacked _life;
 
-		private IAttack ai;
+		private ICanAttack ai;
 		private UnitAnimations anim;
 		private Body body;
 		private Targetter targetter;
@@ -33,7 +30,7 @@ namespace __SCRIPTS
 			body = GetComponent<Body>();
 			anim = GetComponent<UnitAnimations>();
 			targetter = GetComponent<Targetter>();
-			ai = GetComponent<IAttack>();
+			ai = GetComponent<ICanAttack>();
 
 			ai.OnAttack += AI_Attack;
 			anim.animEvents.OnAttackHit += OnAttackHit;
@@ -51,7 +48,7 @@ namespace __SCRIPTS
 
 		}
 
-		private void AI_Attack(Life newTarget)
+		private void AI_Attack(IGetAttacked newTarget)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (TargetIsInvalid(newTarget)) return;
@@ -59,17 +56,17 @@ namespace __SCRIPTS
 			StartAttack();
 		}
 
-		private bool TargetIsInvalid(Life newTarget)
+		private bool TargetIsInvalid(IGetAttacked newTarget)
 		{
 			if (life == null ||life.IsDead() || newTarget.IsDead() ) return true;
-			return !targetter.HasLineOfSightWith(newTarget.transform.position) && !newTarget.IsObstacle;
+			return !targetter.HasLineOfSightWith(newTarget.transform.position);
 		}
 
 		private void StartAttack()
 		{
 			if (!(Time.time >= currentCooldownTime)) return;
 
-			currentCooldownTime = Time.time + life.PrimaryAttackRate;
+			currentCooldownTime = Time.time + ai.Stats.PrimaryAttackRate;
 
 			// Face the target only when starting a new attack
 			FaceTarget();
@@ -97,9 +94,9 @@ namespace __SCRIPTS
 			if (Services.pauseManager.IsPaused) return;
 			if (currentTargetLife == null) return;
 
-			if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= life.PrimaryAttackRange*1.25f)
+			if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= ai.Stats.PrimaryAttackRange*1.25f)
 			{
-				AttackUtilities.HitTarget(life, currentTargetLife, life.PrimaryAttackDamageWithExtra);
+				AttackUtilities.HitTarget(ai, currentTargetLife, ai.Stats.PrimaryAttackDamageWithExtra);
 			}
 
 

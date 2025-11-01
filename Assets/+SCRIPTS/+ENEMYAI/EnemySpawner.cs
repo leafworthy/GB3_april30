@@ -38,7 +38,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 		var otherLife = other.GetComponent<Life>();
 		if (otherLife == null) return;
 		if (otherLife.IsDead()) return;
-		if (!otherLife.Player.IsHuman()) return;
+		if (!otherLife.player.IsHuman()) return;
 		if (isFinished) return;
 		StartSpawning();
 	}

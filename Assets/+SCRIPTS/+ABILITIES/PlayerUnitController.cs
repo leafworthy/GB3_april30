@@ -5,7 +5,7 @@ using UnityEngine;
 namespace __SCRIPTS
 {
 	[DisallowMultipleComponent]
-	public class PlayerUnitController : MonoBehaviour, INeedPlayer, IMove
+	public class PlayerUnitController : MonoBehaviour, INeedPlayer, ICanMoveThings
 	{
 		private Player player;
 		public event Action<Vector2> OnMoveInDirection;

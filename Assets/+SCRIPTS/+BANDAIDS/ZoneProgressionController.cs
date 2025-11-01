@@ -63,7 +63,7 @@ public class ZoneProgressionController : MonoBehaviour
 
 		if (playerInNext)
 		{
-			Debug.Log("Player entered next zone, advancing");
+			Debug.Log("player entered next zone, advancing");
 			ZoneSwitcher.AdvanceZone();
 			SubscribeToCurrentZone();
 		}

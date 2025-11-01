@@ -96,7 +96,7 @@ namespace __SCRIPTS
 			var newProjectile = Services.objectMaker.Make(Services.assetManager.FX.kunaiPrefab, position);
 			var kunaiScript = newProjectile.GetComponent<Kunai>();
 
-			kunaiScript.Throw(direction, position, throwHeight, player.spawnedPlayerDefence, isAirThrow);
+			kunaiScript.Throw(direction, position, throwHeight, player.spawnedPlayerAttacker, isAirThrow);
 			OnThrow?.Invoke();
 		}
 

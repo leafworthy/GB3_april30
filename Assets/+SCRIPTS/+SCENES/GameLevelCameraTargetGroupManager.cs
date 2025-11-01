@@ -75,7 +75,7 @@ namespace __SCRIPTS
 			{
 				var life = t.Object.GetComponent<Life>();
 				if (life == null) continue;
-				if (life.Player == player) cameraFollowTargetGroup.RemoveMember(t.Object);
+				if (life.player == player) cameraFollowTargetGroup.RemoveMember(t.Object);
 			}
 		}
 	}

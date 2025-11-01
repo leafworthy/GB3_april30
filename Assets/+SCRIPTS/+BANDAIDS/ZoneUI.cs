@@ -32,7 +32,7 @@ public class ZoneUI : GUIDebugTextShower
 		UpdateZoneText();
 	}
 
-	private void OnEnemyDying(Life _) => UpdateZoneText();
+	private void OnEnemyDying(IGetAttacked _) => UpdateZoneText();
 
 	[Button]
 	private void UpdateZoneText()

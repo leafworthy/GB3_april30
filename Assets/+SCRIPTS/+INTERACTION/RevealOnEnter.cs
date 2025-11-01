@@ -21,7 +21,7 @@ namespace __SCRIPTS
 				if (life == null) return;
 			}
 
-			var player = life.Player;
+			var player = life.player;
 			if (player == null)
 			{
 				Hide();
@@ -43,7 +43,7 @@ namespace __SCRIPTS
 				if (life == null) return;
 			}
 
-			var player = life.Player;
+			var player = life.player;
 			if (player == null)
 			{
 				return;

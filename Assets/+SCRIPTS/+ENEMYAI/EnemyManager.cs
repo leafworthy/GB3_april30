@@ -7,8 +7,8 @@ namespace __SCRIPTS
 	public class EnemyManager : MonoBehaviour, IService
 	{
 		private List<Life> _allEnemies = new();
-		public event Action<Player, Life> OnPlayerKillsEnemy;
-		public event Action<Life> OnEnemyDying;
+		public event Action<Player, IGetAttacked> OnPlayerKillsEnemy;
+		public event Action<IGetAttacked> OnEnemyDying;
 		private LevelManager _levelManager;
 		private LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
 		private Players _players;
@@ -42,11 +42,11 @@ namespace __SCRIPTS
 			if (enemyDefence == null) return;
 			if (_allEnemies.Contains(enemyDefence)) return;
 			enemyDefence.OnKilled += EnemyKilled;
-			enemyDefence.OnDying += EnemyDying;
+			enemyDefence.OnDead += EnemyDead;
 			_allEnemies.Add(enemyDefence);
 		}
 
-		private void EnemyDying(Attack attack)
+		private void EnemyDead(Attack attack)
 		{
 			OnEnemyDying?.Invoke(attack.DestinationLife);
 		}
@@ -56,13 +56,13 @@ namespace __SCRIPTS
 			foreach (var enemy in _allEnemies)
 			{
 				enemy.OnKilled -= EnemyKilled;
-				enemy.OnDying -= EnemyDying;
+				enemy.OnDead -= EnemyDead;
 			}
 
 			_allEnemies.Clear();
 		}
 
-		private void EnemyKilled(Player killer, Life life)
+		private void EnemyKilled(Player killer, IGetAttacked life)
 		{
 			OnPlayerKillsEnemy?.Invoke(killer, life);
 		}
