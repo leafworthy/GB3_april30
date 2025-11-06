@@ -63,7 +63,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
             // Add custom buttons below the Inspector fields
             IsoSpriteSorting myScript = (IsoSpriteSorting)target;
 
-            if (GUILayout.Button("Sort Visible Scene"))
+            if (GUILayout.Button("SetSortingOrder Visible Scene"))
             {
                  IsoSpriteSorting.UpdateSorters();
             }

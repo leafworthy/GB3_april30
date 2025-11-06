@@ -67,5 +67,88 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4822271103040854639, guid: 9da3e6fa84a6e4e488cce8512f57b67e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1835258907661517905}
+    - targetCorrespondingSourceObject: {fileID: 3336550360037235611, guid: 9da3e6fa84a6e4e488cce8512f57b67e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6155188187721680647}
   m_SourcePrefab: {fileID: 100100000, guid: 9da3e6fa84a6e4e488cce8512f57b67e, type: 3}
+--- !u!1 &2484985024675648333 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3336550360037235611, guid: 9da3e6fa84a6e4e488cce8512f57b67e, type: 3}
+  m_PrefabInstance: {fileID: 878692761212913878}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6155188187721680647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2484985024675648333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cec4e7bc480a412b87964160ef30784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  order: 0
+  _spriteRenderer: {fileID: 5390756148162484639}
+--- !u!212 &5390756148162484639 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5115647511972270409, guid: 9da3e6fa84a6e4e488cce8512f57b67e, type: 3}
+  m_PrefabInstance: {fileID: 878692761212913878}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5682865902516441785 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4822271103040854639, guid: 9da3e6fa84a6e4e488cce8512f57b67e, type: 3}
+  m_PrefabInstance: {fileID: 878692761212913878}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1835258907661517905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5682865902516441785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7881c02ca46e4c25815fd7278a3c5630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 6155188187721680647}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _sprites
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[SpriteDepth, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  order: 0

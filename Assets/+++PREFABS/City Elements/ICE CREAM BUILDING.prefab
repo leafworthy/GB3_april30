@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1128208034857318048}
   - component: {fileID: 7205428202248924514}
-  - component: {fileID: 8025198547607915698}
+  - component: {fileID: 5736077582501733463}
   m_Layer: 0
   m_Name: ice cream building - building
   m_TagString: Untagged
@@ -89,7 +89,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8025198547607915698
+--- !u!114 &5736077582501733463
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,10 +98,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1874310020022374388}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d92d042a2c2a48ebb9176d04bebe44b, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cec4e7bc480a412b87964160ef30784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SorterPointDepthModification: 0
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  order: 0
+  _spriteRenderer: {fileID: 7205428202248924514}
 --- !u!1 &4042348135980029506
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,7 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 209013141099409911}
   - component: {fileID: 6774788971777917032}
-  - component: {fileID: 6727437765187889812}
+  - component: {fileID: 4946349396060209835}
   m_Layer: 0
   m_Name: ice cream building - building.001
   m_TagString: Untagged
@@ -191,7 +201,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6727437765187889812
+--- !u!114 &4946349396060209835
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -200,10 +210,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 4042348135980029506}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d92d042a2c2a48ebb9176d04bebe44b, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cec4e7bc480a412b87964160ef30784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SorterPointDepthModification: 0
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  order: 0
+  _spriteRenderer: {fileID: 6774788971777917032}
 --- !u!1 &6907131852301410998
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,6 +349,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8050137807630642331}
+  - component: {fileID: 8648368172855775246}
   m_Layer: 0
   m_Name: ICE CREAM BUILDING
   m_TagString: Untagged
@@ -359,6 +380,73 @@ Transform:
   - {fileID: 3650201992768849346}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8648368172855775246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7549822226434288230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7881c02ca46e4c25815fd7278a3c5630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 5736077582501733463}
+    - {fileID: 4946349396060209835}
+    - {fileID: 360946132444655667}
+    - {fileID: 3754124336834297411}
+    - {fileID: 2596615699499867938}
+    - {fileID: 6674949909043107938}
+    - {fileID: 4805003612075038571}
+    - {fileID: 1126152835110893271}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _sprites
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[SpriteDepth, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 8
+    - Name: 
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 10
+      Data: 3
+    - Name: 
+      Entry: 10
+      Data: 4
+    - Name: 
+      Entry: 10
+      Data: 5
+    - Name: 
+      Entry: 10
+      Data: 6
+    - Name: 
+      Entry: 10
+      Data: 7
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  order: 0
 --- !u!1 &8897698790344502063
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,11 +615,48 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2194182105867566383, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 586968314431786406, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4805003612075038571}
   m_SourcePrefab: {fileID: 100100000, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+--- !u!1 &1905407075373419251 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 586968314431786406, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+  m_PrefabInstance: {fileID: 1320690699942479701}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4805003612075038571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1905407075373419251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cec4e7bc480a412b87964160ef30784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  order: 0
+  _spriteRenderer: {fileID: 2821066680780928162}
+--- !u!212 &2821066680780928162 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3851272584286499831, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+  m_PrefabInstance: {fileID: 1320690699942479701}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3262242498460449019 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4544652595927531438, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
@@ -589,14 +714,51 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2194182105867566383, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 586968314431786406, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 360946132444655667}
   m_SourcePrefab: {fileID: 100100000, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+--- !u!1 &1419647767602087945 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 586968314431786406, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+  m_PrefabInstance: {fileID: 1988003390684431791}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &360946132444655667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419647767602087945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cec4e7bc480a412b87964160ef30784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  order: 0
+  _spriteRenderer: {fileID: 3379026348509787736}
 --- !u!4 &2632098861641218561 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4544652595927531438, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+  m_PrefabInstance: {fileID: 1988003390684431791}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &3379026348509787736 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3851272584286499831, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
   m_PrefabInstance: {fileID: 1988003390684431791}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4643168871441241379
@@ -651,11 +813,48 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2194182105867566383, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 586968314431786406, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2596615699499867938}
   m_SourcePrefab: {fileID: 100100000, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+--- !u!1 &5209131974940547205 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 586968314431786406, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+  m_PrefabInstance: {fileID: 4643168871441241379}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2596615699499867938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5209131974940547205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cec4e7bc480a412b87964160ef30784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  order: 0
+  _spriteRenderer: {fileID: 8439078840406435540}
+--- !u!212 &8439078840406435540 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3851272584286499831, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+  m_PrefabInstance: {fileID: 4643168871441241379}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9186780332726758029 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4544652595927531438, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
@@ -713,11 +912,48 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2194182105867566383, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 586968314431786406, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6674949909043107938}
   m_SourcePrefab: {fileID: 100100000, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+--- !u!1 &5594986022465391707 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 586968314431786406, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+  m_PrefabInstance: {fileID: 5008062943838765565}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6674949909043107938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5594986022465391707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cec4e7bc480a412b87964160ef30784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  order: 0
+  _spriteRenderer: {fileID: 8138654011677372938}
+--- !u!212 &8138654011677372938 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3851272584286499831, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+  m_PrefabInstance: {fileID: 5008062943838765565}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8832103968195722835 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4544652595927531438, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
@@ -775,14 +1011,51 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2194182105867566383, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 586968314431786406, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3754124336834297411}
   m_SourcePrefab: {fileID: 100100000, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+--- !u!1 &6146148190123810133 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 586968314431786406, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+  m_PrefabInstance: {fileID: 6732553399442641139}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3754124336834297411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6146148190123810133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cec4e7bc480a412b87964160ef30784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  order: 0
+  _spriteRenderer: {fileID: 7502062015330411268}
 --- !u!4 &7097405627314581341 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4544652595927531438, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
+  m_PrefabInstance: {fileID: 6732553399442641139}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &7502062015330411268 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3851272584286499831, guid: 6e518b9cc0d88427fb844cae086050b6, type: 3}
   m_PrefabInstance: {fileID: 6732553399442641139}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8703879054850475119
@@ -837,13 +1110,50 @@ PrefabInstance:
       propertyPath: m_Name
       value: fence
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 785404181204848425, guid: 517533d36ebb547799fb1d9c579e0633, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5378969907524568223, guid: 517533d36ebb547799fb1d9c579e0633, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1126152835110893271}
   m_SourcePrefab: {fileID: 100100000, guid: 517533d36ebb547799fb1d9c579e0633, type: 3}
+--- !u!1 &3634285341958455536 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5378969907524568223, guid: 517533d36ebb547799fb1d9c579e0633, type: 3}
+  m_PrefabInstance: {fileID: 8703879054850475119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1126152835110893271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634285341958455536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cec4e7bc480a412b87964160ef30784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  order: 0
+  _spriteRenderer: {fileID: 5491541823650995648}
 --- !u!4 &3650201992768849346 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5359983661225230765, guid: 517533d36ebb547799fb1d9c579e0633, type: 3}
+  m_PrefabInstance: {fileID: 8703879054850475119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &5491541823650995648 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3818915954846882223, guid: 517533d36ebb547799fb1d9c579e0633, type: 3}
   m_PrefabInstance: {fileID: 8703879054850475119}
   m_PrefabAsset: {fileID: 0}
