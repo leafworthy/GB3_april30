@@ -5,28 +5,32 @@ namespace __SCRIPTS
 {
 	public class LootOnExplode : MonoBehaviour
 	{
-		private ExplodeOnDeath explodeOnDeath  => _explodeOnDeath ??= GetComponentInChildren<ExplodeOnDeath>();
-		private ExplodeOnDeath _explodeOnDeath;
-		public List<LootType> lootTypes = new List<LootType>();
-		public int amount = 5;
+		private IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
+		private IGetAttacked _life;
+		private LootTable lootTable => _lootTable ?? ServiceLocator.Get<LootTable>();
+		private LootTable _lootTable;
 
-
+		public List<LootType> lootTypes = new();
+		public int amountOfLootDropped = 5;
 
 		protected void Start()
 		{
-			explodeOnDeath.OnExplode += ExplodeOnDeath_OnExplode;
+			life.OnDead += DebrisOnDeathOnDebris;
 		}
 
-		private LootTable lootTable => _lootTable ?? ServiceLocator.Get<LootTable>();
-		private LootTable _lootTable;
-		private void ExplodeOnDeath_OnExplode()
+		private void DebrisOnDeathOnDebris(Attack attack)
 		{
-			for (int i = 0; i < amount; i++)
+			for (var i = 0; i < amountOfLootDropped; i++)
 			{
+				if (lootTypes.Count == 0)
+				{
+					lootTable.DropLoot(transform.position);
+					continue;
+				}
+
 				var lootType = lootTypes[Random.Range(0, lootTypes.Count)];
 				lootTable.DropLoot(transform.position, lootType);
 			}
-			explodeOnDeath.OnExplode -= ExplodeOnDeath_OnExplode;
 		}
 	}
 }

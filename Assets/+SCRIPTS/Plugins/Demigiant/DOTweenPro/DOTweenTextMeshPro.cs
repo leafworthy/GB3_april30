@@ -542,10 +542,10 @@ namespace DG.Tweening
         }
 
         /// <summary>
-        /// Skews the given character horizontally along the X axis and returns the skew amount applied (based on the character's size)
+        /// Skews the given character horizontally along the X axis and returns the skew amountOfLootDropped applied (based on the character's size)
         /// </summary>
         /// <param name="charIndex">Character index</param>
-        /// <param name="skewFactor">skew amount</param>
+        /// <param name="skewFactor">skew amountOfLootDropped</param>
         /// <param name="skewTop">If TRUE skews the top side of the character, otherwise the bottom one</param>
         public float SkewCharX(int charIndex, float skewFactor, bool skewTop = true)
         {
@@ -559,10 +559,10 @@ namespace DG.Tweening
         }
 
         /// <summary>
-        /// Skews the given character vertically along the Y axis and returns the skew amount applied (based on the character's size)
+        /// Skews the given character vertically along the Y axis and returns the skew amountOfLootDropped applied (based on the character's size)
         /// </summary>
         /// <param name="charIndex">Character index</param>
-        /// <param name="skewFactor">skew amount</param>
+        /// <param name="skewFactor">skew amountOfLootDropped</param>
         /// <param name="skewRight">If TRUE skews the right side of the character, otherwise the left one</param>
         /// <param name="fixedSkew">If TRUE applies exactly the given <see cref="skewFactor"/>,
         /// otherwise modifies it based on the aspectRation of the character</param>

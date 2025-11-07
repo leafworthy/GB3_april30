@@ -4,7 +4,7 @@ namespace __SCRIPTS
 	{
 		private int amount = 25;
 		private AmmoInventory.AmmoType ammoType;
-		public override void StartEffect(Life life)
+		public override void StartEffect(IGetAttacked life)
 		{
 			base.StartEffect(life);
 			effectDuration = 0;

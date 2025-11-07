@@ -101,7 +101,7 @@ namespace DG.Tweening
         }
 
         /// <summary>
-        /// Controls the amount of blur applied to the outline
+        /// Controls the amountOfLootDropped of blur applied to the outline
         /// </summary>
         public static TweenerCore<float, float, FloatOptions> DOBlurShift(this Outlinable.OutlineProperties target, float endValue, float duration, bool snapping = false)
         {
@@ -111,7 +111,7 @@ namespace DG.Tweening
         }
 
         /// <summary>
-        /// Controls the amount of blur applied to the outline
+        /// Controls the amountOfLootDropped of blur applied to the outline
         /// </summary>
         public static TweenerCore<float, float, FloatOptions> DOBlurShift(this Outliner target, float endValue, float duration, bool snapping = false)
         {
@@ -121,7 +121,7 @@ namespace DG.Tweening
         }
 
         /// <summary>
-        /// Controls the amount of dilation applied to the outline
+        /// Controls the amountOfLootDropped of dilation applied to the outline
         /// </summary>
         public static TweenerCore<float, float, FloatOptions> DODilateShift(this Outlinable.OutlineProperties target, float endValue, float duration, bool snapping = false)
         {
@@ -131,7 +131,7 @@ namespace DG.Tweening
         }
 
         /// <summary>
-        /// Controls the amount of dilation applied to the outline
+        /// Controls the amountOfLootDropped of dilation applied to the outline
         /// </summary>
         public static TweenerCore<float, float, FloatOptions> DODilateShift(this Outliner target, float endValue, float duration, bool snapping = false)
         {

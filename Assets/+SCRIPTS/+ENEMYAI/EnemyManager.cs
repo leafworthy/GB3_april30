@@ -48,6 +48,8 @@ namespace __SCRIPTS
 
 		private void EnemyDead(Attack attack)
 		{
+			var loot = ServiceLocator.Get<LootTable>();
+			loot.DropLoot(attack.DestinationLife.transform.position);
 			OnEnemyDying?.Invoke(attack.DestinationLife);
 		}
 

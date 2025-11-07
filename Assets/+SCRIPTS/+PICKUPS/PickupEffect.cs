@@ -15,7 +15,7 @@ namespace __SCRIPTS
 		{
 			effectDuration = _effectDuration;
 		}
-		public virtual void StartEffect(Life life)
+		public virtual void StartEffect(IGetAttacked life)
 		{
 			timeLeft = effectDuration;
 			isRunning = true;

@@ -48,8 +48,10 @@ namespace __SCRIPTS
 
 		private float targetFill;
 		private float smoothingFactor = .25f;
-		private Life _life;
-		private Life life => _life ??= GetComponentInParent<Life>();
+		private IGetAttacked _life;
+		private IGetAttacked life => _life ??= GetComponentInParent<IGetAttacked>();
+		private ICanAttack _attack;
+		private ICanAttack attack => _attack ??= GetComponentInParent<ICanAttack>();
 		private HealthBar healthBar => _healthBar ??= InitHealthBar();
 		[SerializeField] private HealthBar _healthBar;
 
@@ -71,7 +73,6 @@ namespace __SCRIPTS
 			life.OnDead += DefenceOnDead;
 			life.OnAttackHit += Life_AttackHit;
 			life.OnShielded += Life_Shielded;
-			if (life.showLifeBar) return;
 			if (healthBar != null) healthBar.gameObject.SetActive(false);
 		}
 
@@ -124,7 +125,7 @@ namespace __SCRIPTS
 		[Button]
 		private void Life_AttackHit()
 		{
-			var attack = Attack.Create(life, life).WithDamage(10).WithOriginPoint((Vector2) transform.position + Vector2.right)
+			var attack = Attack.Create(_attack, life).WithDamage(10).WithOriginPoint((Vector2) transform.position + Vector2.right)
 			                   .WithDestinationPoint(transform.position).WithDestinationHeight(15);
 			StartTint(attack.TintColor);
 			CreateDamageRisingText(attack);
@@ -244,7 +245,6 @@ namespace __SCRIPTS
 			if (_life == null) return;
 			if (healthBar == null) return;
 
-			if (!life.showLifeBar) return;
 			targetFill = _life.GetFraction();
 			if (targetFill is > .9f or <= 0)
 			{

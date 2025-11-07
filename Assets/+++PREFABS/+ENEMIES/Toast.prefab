@@ -489,6 +489,8 @@ GameObject:
   - component: {fileID: 6129626247479662832}
   - component: {fileID: 5002742459162527955}
   - component: {fileID: 7813430567055621993}
+  - component: {fileID: 827414940448333298}
+  - component: {fileID: 3274164172194915261}
   m_Layer: 7
   m_Name: Toast
   m_TagString: Untagged
@@ -573,7 +575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  _player: {fileID: 0}
   unitStats:
     _unitData:
       unitName: Toast
@@ -608,6 +610,7 @@ MonoBehaviour:
   unitHealth:
     IsTemporarilyInvincible: 0
     IsShielded: 0
+    currentHealth: 40
 --- !u!114 &-8070408823439803412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -620,6 +623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
   colorMode: 1
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
   barGradient:
@@ -652,11 +656,9 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+  _healthBar: {fileID: 1484207148396373143}
   BlockTint: 0
   isBoss: 0
-  playerTint:
-    DebreeTint: {r: 0.59607846, g: 0, b: 0, a: 1}
-    BlockTint: 0
 --- !u!114 &7431454428826219941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -875,6 +877,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startAnimation: {fileID: 7400000, guid: 1a693cab405434b2d8fb19981653be07, type: 2}
+--- !u!114 &827414940448333298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7431454428826219940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bdf951a96014ab5bba94917db8b5a5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  jumpingAnimationClip: {fileID: 7400000, guid: b9a79e746e9dd459f9e1d1e982918d24, type: 2}
+  fallingAnimationClip: {fileID: 7400000, guid: e15ebdac4b7434e37b22b382262a78dc, type: 2}
+  landingAnimationClip: {fileID: 7400000, guid: a9ad2697bf0054517b1da2c377e399de, type: 2}
+  flyingAnimationClip: {fileID: 7400000, guid: d49d5b67f6ee04becb4fa469f03d5893, type: 2}
+  deathAnimationClip: {fileID: 7400000, guid: f520ec54d60dd4db780287a9cfd74423, type: 2}
+  onGroundAnimationClip: {fileID: 7400000, guid: d01dfcf32736940ca9085d6e684cdd32, type: 2}
+  getUpAnimationClip: {fileID: 7400000, guid: b1acc2d7b216b4571ae895941e54a228, type: 2}
+  standingAnimationClip: {fileID: 7400000, guid: 8091b8897a42f48cbb2b482201baa3fc, type: 2}
+--- !u!114 &3274164172194915261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7431454428826219940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aca3aeb21c8e24e93a712941174bc6c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8681001409653053418
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,7 +1041,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242737, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Pivot.x
@@ -1121,6 +1164,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+--- !u!114 &1484207148396373143 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+  m_PrefabInstance: {fileID: 2374502254047979683}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c81ed4c3ba97643c4a1f86d373c41ee5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8469193281830769425 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}

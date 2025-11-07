@@ -139,7 +139,6 @@ namespace __SCRIPTS
 
 		private void StartFlying()
 		{
-			forceIt = true;
 			SetState(state.flying);
 			DoAbility();
 		}

@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 479
+  m_SortingOrder: 442
   m_Sprite: {fileID: 21300000, guid: 485a5287ab7da4f8d94a6609deaf7d30, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 311641574648249027}
   - component: {fileID: 9009178031988213581}
   - component: {fileID: 7441606298206534473}
-  - component: {fileID: 9157992620045507076}
   - component: {fileID: 384952006585360031}
   - component: {fileID: 4216303568872327855}
   - component: {fileID: 9135723903843080668}
@@ -173,7 +172,7 @@ MonoBehaviour:
   amount: 5
   explosionSize: 4
   transformToDestroy: {fileID: 4463280722000133139}
-  lootTypes: 
+  lootTypes: 00000000
 --- !u!114 &9009178031988213581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,19 +230,6 @@ MonoBehaviour:
   ExtraHealthFactor: 0
   ExtraDamageFactor: 0
   ExtraSpeedFactor: 0
---- !u!114 &9157992620045507076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2839749138683596248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42b1ea44a01b4dbeb4f621604fac87c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DebreeTint: {r: 0.101960786, g: 0.31764707, b: 0.48235294, a: 1}
 --- !u!114 &384952006585360031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 391f801571f9475395be25b57b2ae0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebreeTint: {r: 0.101960786, g: 0.31764707, b: 0.48235294, a: 1}
 --- !u!60 &4216303568872327855
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -405,7 +392,7 @@ MonoBehaviour:
   renderBelowSortingOrder: 0
   sortType: 1
   SorterPositionOffset: {x: 11.614136, y: -5.331421, z: 0}
-  SorterPositionOffset2: {x: -10.671539, y: 4.4386806, z: 0}
+  SorterPositionOffset2: {x: -10.671509, y: 4.4386826, z: 0}
   renderersToSort:
   - {fileID: 7895570266123210095}
   renderAboveAll: 0

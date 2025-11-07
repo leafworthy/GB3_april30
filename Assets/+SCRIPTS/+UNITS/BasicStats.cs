@@ -1,5 +1,6 @@
 using GangstaBean.Core;
 using UnityEngine;
+using UnityUtils;
 
 namespace __SCRIPTS
 {
@@ -16,6 +17,7 @@ namespace __SCRIPTS
 		[Sirenix.OdinInspector.Button]
 		public void GetStats()
 		{
+			if(UnitName.IsBlank()) UnitName = gameObject.name;
 			_data = UnitStatsManager.GetUnitStats(UnitName);
 		}
 

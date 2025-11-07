@@ -1000,7 +1000,7 @@
         </member>
         <member name="M:DG.DemiEditor.DeScrollView.IncreaseContentHeightBy(System.Single)">
             <summary>
-            Increase the <see cref="P:DG.DemiEditor.DeScrollView.fullContentArea"/> height by the given amount
+            Increase the <see cref="P:DG.DemiEditor.DeScrollView.fullContentArea"/> height by the given amountOfLootDropped
             </summary>
             <param name="value"></param>
         </member>
@@ -2157,26 +2157,26 @@
         </member>
         <member name="M:DG.DemiEditor.RectExtensions.Expand(UnityEngine.Rect,System.Single)">
             <summary>
-            Returns a copy or the Rect expanded around its center by the given amount
+            Returns a copy or the Rect expanded around its center by the given amountOfLootDropped
             </summary>
-            <param name="amount">Indicates how much to expand the rect on each size</param>
+            <param name="amountOfLootDropped">Indicates how much to expand the rect on each size</param>
         </member>
         <member name="M:DG.DemiEditor.RectExtensions.Expand(UnityEngine.Rect,System.Single,System.Single)">
             <summary>
-            Returns a copy or the Rect expanded around its center by the given amount
+            Returns a copy or the Rect expanded around its center by the given amountOfLootDropped
             </summary>
             <param name="amountX">Indicates how much to expand the rect on each horizontal side</param>
             <param name="amountY">Indicates how much to expand the rect on each vertical side</param>
         </member>
         <member name="M:DG.DemiEditor.RectExtensions.Contract(UnityEngine.Rect,System.Single)">
             <summary>
-            Returns a copy or the Rect contracted around its center by the given amount
+            Returns a copy or the Rect contracted around its center by the given amountOfLootDropped
             </summary>
-            <param name="amount">Indicates how much to contract the rect on each size</param>
+            <param name="amountOfLootDropped">Indicates how much to contract the rect on each size</param>
         </member>
         <member name="M:DG.DemiEditor.RectExtensions.Contract(UnityEngine.Rect,System.Single,System.Single)">
             <summary>
-            Returns a copy or the Rect contracted around its center by the given amount
+            Returns a copy or the Rect contracted around its center by the given amountOfLootDropped
             </summary>
             <param name="amountX">Indicates how much to contract the rect on each horizontal side</param>
             <param name="amountY">Indicates how much to contract the rect on each vertical side</param>

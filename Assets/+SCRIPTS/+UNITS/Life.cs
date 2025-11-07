@@ -20,6 +20,7 @@ namespace __SCRIPTS
 
 		#region UnitStats Wrappers
 
+		public Color debrisColor => GetComponent<Life_FX>().DebreeTint;
 		public UnitCategory category => unitStats.Data.category;
 		public float PrimaryAttackDamageWithExtra => unitStats.GetAttackDamage(1);
 		public float PrimaryAttackRange => unitStats.GetAttackRange(1);
@@ -68,7 +69,7 @@ namespace __SCRIPTS
 		private Collider2D[] colliders;
 		private bool hasInitialized;
 		private Player player1;
-
+		private Color debrisColor1;
 
 		[Sirenix.OdinInspector.Button]
 		public void ClearStats()
@@ -188,10 +189,6 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void Health_OnFractionChanged(float fraction)
-		{
-			OnFractionChanged?.Invoke(fraction);
-		}
 
 		public void TakeDamage(Attack attack)
 		{
@@ -203,6 +200,7 @@ namespace __SCRIPTS
 
 			unitHealth?.TakeDamage(attack);
 			OnFractionChanged?.Invoke(GetFraction());
+			animations?.SetTrigger(UnitAnimations.HitTrigger);
 		}
 
 		public void AddHealth(float amount)

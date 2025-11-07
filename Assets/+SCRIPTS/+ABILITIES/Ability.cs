@@ -24,7 +24,6 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public virtual bool canStop(IDoableAbility abilityToStopFor) => false;
 
-	public bool forceIt;
 
 	public void Do()
 	{
@@ -41,7 +40,6 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 		if (requiresLegs()) body.doableLegs.DoActivity(this);
 
-		forceIt = false;
 		DoAbility();
 	}
 

@@ -229,7 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  _player: {fileID: 0}
   unitStats:
     _unitData:
       unitName: Tmato
@@ -241,15 +241,15 @@ MonoBehaviour:
       healthMax: 450
       moveSpeed: 45
       dashSpeed: 100
-      jumpSpeed: 2
+      jumpSpeed: 1.5
       aggroRange: 0
       attack1Damage: 40
       attack1Rate: 0.5
       attack1Range: 100
-      attack2Damage: 300
+      attack2Damage: 150
       attack2Rate: 1
-      attack2Range: 50
-      attack3Damage: 25
+      attack2Range: 70
+      attack3Damage: 15
       attack3Rate: 0.1
       attack3Range: 20
       attack4Damage: 0
@@ -264,6 +264,7 @@ MonoBehaviour:
   unitHealth:
     IsTemporarilyInvincible: 0
     IsShielded: 0
+    currentHealth: 450
 --- !u!114 &8674550254211582662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,6 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
   colorMode: 0
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
   barGradient:
@@ -308,11 +310,9 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  _healthBar: {fileID: 0}
   BlockTint: 0
   isBoss: 0
-  playerTint:
-    DebreeTint: {r: 0.59607846, g: 0, b: 0, a: 1}
-    BlockTint: 0
 --- !u!114 &8253285515779600483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HeightObject: {fileID: 1373179861667002548}
-  AttackStartPoint: {fileID: 5157628139186349314}
+  AttackStartPoint: {fileID: 4114560366310640261}
   FootPoint: {fileID: 3863578556289495954}
   RotateWithAim:
   - {fileID: 8937796698369178377}
@@ -487,7 +487,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   jumpingAnimationClip: {fileID: 7400000, guid: bc4f9adb58c3247ba8bbfd68dad87fe4, type: 2}
   fallingAnimationClip: {fileID: 7400000, guid: 88ef3b2dcfeb343b48ab9101a92172a6, type: 2}
   landingAnimationClip: {fileID: 7400000, guid: 72a4031bfded44760951bd83b2f0657b, type: 2}
@@ -568,7 +567,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   mineDropAnimation: {fileID: 7400000, guid: dd31d40d3b4ce49f1930c5a433a6312c, type: 2}
 --- !u!114 &4845799822202863552
 MonoBehaviour:
@@ -591,7 +589,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   pullOutAnimationClip: {fileID: 7400000, guid: d62be2764810a43fc8ebb4378c925085, type: 2}
   shieldObject: {fileID: 6342889343102697023}
 --- !u!82 &8932575119027580578
@@ -809,7 +806,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   pullOutAnimationClip: {fileID: 7400000, guid: 9c6b72059cf87434cbd154f8687d24f6, type: 2}
   simpleShootAnimationClip: {fileID: 7400000, guid: 4218fc9303352468bac9c1ad25b38e0e, type: 2}
 --- !u!114 &4717463248885601469
@@ -846,7 +842,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   ReloadPrimaryGunAnimationClip: {fileID: 7400000, guid: a93f9dd5c06ce4f52b3ad4a01aa7e6ad, type: 2}
   ReloadUnlimitedGunAnimationClip: {fileID: 7400000, guid: a93f9dd5c06ce4f52b3ad4a01aa7e6ad, type: 2}
 --- !u!114 &7542871471453855134
@@ -918,7 +913,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   dashAnimationClip_Bottom: {fileID: 7400000, guid: 746c1ced39b2848bf8d0f07abac95286, type: 2}
   dashAnimationClip_Top: {fileID: 7400000, guid: d62be2764810a43fc8ebb4378c925085, type: 2}
 --- !u!114 &8733494531752375043
@@ -942,7 +936,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   pullOutAnimationClip: {fileID: 7400000, guid: cad08c2ac4ae0488f812313ad1c6861c, type: 2}
 --- !u!114 &-412274678507543112
 MonoBehaviour:
@@ -1103,7 +1096,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 423
+  m_SortingOrder: 456
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1223,7 +1216,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 421
+  m_SortingOrder: 454
   m_Sprite: {fileID: 4177203009780351701, guid: 02c168e6bcc2f454cb5a24df665929e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1687,6 +1680,37 @@ MonoBehaviour:
     - {x: -0.4999999, y: -0.86602545}
   drawingEnabled: 1
   drawingTranslucencyEnabled: 0
+--- !u!1 &4114560366310640261
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 466642310629878671}
+  m_Layer: 0
+  m_Name: GunEndGroundPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &466642310629878671
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4114560366310640261}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.411, y: -0.029, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4094536803631354712}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4731456876907379719
 GameObject:
   m_ObjectHideFlags: 0
@@ -1762,7 +1786,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 420
+  m_SortingOrder: 453
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.79607844}
   m_FlipX: 0
@@ -2446,7 +2470,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 422
+  m_SortingOrder: 455
   m_Sprite: {fileID: -1745647754593519234, guid: bafefef3fd23d4be6971618229de2562, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2521,6 +2545,7 @@ Transform:
   m_Children:
   - {fileID: 8039085559515525120}
   - {fileID: 1816718377197769243}
+  - {fileID: 466642310629878671}
   m_Father: {fileID: 7210129026506792973}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 24.01}
 --- !u!1001 &1358004622246018136

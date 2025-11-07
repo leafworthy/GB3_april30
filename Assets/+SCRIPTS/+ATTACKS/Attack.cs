@@ -41,22 +41,29 @@ namespace __SCRIPTS
 		event Action<IGetAttacked> OnAttack;
 	}
 
-
+public interface IHaveData
+	{
+		UnitStatsData Data { get; }
+	}
 
 	public interface IGetAttacked : INeedPlayer
 	{
-		public void TakeDamage(Attack attack);
-
-		public event Action<Attack> OnDead;
 		public Player player { get; }
 		Transform transform { get; }
 		DebrisType debrisType { get; }
+		Color debrisColor { get; }
 		UnitCategory category { get; }
+		public void TakeDamage(Attack attack);
 		bool CanTakeDamage();
 		bool IsDead();
-		event Action<Player, bool> OnDeathComplete;
 		void DieNow();
+		float GetFraction();
+		void AddHealth(float amount);
+		public event Action<Attack> OnDead;
+		event Action<Player, bool> OnDeathComplete;
 		event Action<Attack> OnAttackHit;
+		event Action<Attack> OnShielded;
+		event Action<float> OnFractionChanged;
 	}
 
 	[Serializable]
@@ -156,6 +163,7 @@ namespace __SCRIPTS
 		public Vector2 Direction => DestinationFloorPoint - OriginFloorPoint;
 		public Vector2 FlippedDirection => OriginFloorPoint - DestinationFloorPoint;
 		public Vector2 DestinationWithHeight => DestinationFloorPoint + new Vector2(0, DestinationHeight);
-		public Vector2 OriginWithHeight => OriginFloorPoint + new Vector2(0, OriginHeight);
+		public Vector2 OriginWithHeight => OriginFloorPoint + new Vector2(
+0, OriginHeight);
 	}
 }

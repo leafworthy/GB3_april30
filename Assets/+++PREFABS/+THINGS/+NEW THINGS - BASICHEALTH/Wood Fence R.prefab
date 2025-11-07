@@ -125,8 +125,8 @@ MonoBehaviour:
   sortingBounds: {fileID: 0}
   renderBelowSortingOrder: 0
   sortType: 1
-  SorterPositionOffset: {x: 6.3175354, y: -2.0210571, z: 0}
-  SorterPositionOffset2: {x: -6.037018, y: -7.975189, z: 0}
+  SorterPositionOffset: {x: 6.317505, y: -2.0210571, z: 0}
+  SorterPositionOffset2: {x: -6.0369873, y: -7.975189, z: 0}
   renderersToSort:
   - {fileID: 7420153992208038789}
   renderAboveAll: 0
@@ -140,10 +140,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5950209665765171310}
-  - component: {fileID: 2921340912354039600}
   - component: {fileID: 4455766178734939263}
   - component: {fileID: 2361308756836944626}
-  - component: {fileID: 3850403511769748129}
   - component: {fileID: 8092971927716403573}
   - component: {fileID: 5661907829101139589}
   - component: {fileID: 6389306305762963306}
@@ -170,22 +168,6 @@ Transform:
   - {fileID: 3338483023808047015}
   m_Father: {fileID: 4862566543985930274}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2921340912354039600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5555151930070972908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6eb228a27f534451fbe11d196bcc7f07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  amount: 5
-  explosionSize: 4
-  transformToDestroy: {fileID: 4076769205754904625}
-  lootTypes: 
 --- !u!114 &4455766178734939263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,19 +225,6 @@ MonoBehaviour:
   ExtraHealthFactor: 0
   ExtraDamageFactor: 0
   ExtraSpeedFactor: 0
---- !u!114 &3850403511769748129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5555151930070972908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42b1ea44a01b4dbeb4f621604fac87c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DebreeTint: {r: 0.101960786, g: 0.31764707, b: 0.48235294, a: 1}
 --- !u!114 &8092971927716403573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,6 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 391f801571f9475395be25b57b2ae0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebreeTint: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &5661907829101139589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -423,7 +393,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 431
+  m_SortingOrder: 420
   m_Sprite: {fileID: 21300000, guid: a21b2ced9f7594f1cab4ac1843c39abd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

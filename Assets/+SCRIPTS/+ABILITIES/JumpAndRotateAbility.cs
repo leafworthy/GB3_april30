@@ -15,7 +15,7 @@ namespace __SCRIPTS
 		private float verticalVelocity;
 		private float currentRotationRate;
 		private float maxRotationRate = 360;
-		private bool freezeRotation;
+		[SerializeField]private bool freezeRotation;
 
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnResting;

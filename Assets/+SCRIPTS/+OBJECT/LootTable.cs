@@ -18,21 +18,12 @@ namespace __SCRIPTS
 
 	public class LootTable : MonoBehaviour, IService
 	{
-		private static List<GameObject> _dropsToSpawn = new();
-
+		private List<GameObject> _dropsToSpawn = new();
 
 		public void StartService()
 		{
-			Services.enemyManager.OnEnemyDying += DropLootFromEnemy;
 			MakeDropList();
 		}
-
-
-		private void DropLootFromEnemy(IGetAttacked life)
-		{
-			DropLoot(life.transform.position);
-		}
-
 
 		public void DropLoot(Vector2 position, LootType type = LootType.Random)
 		{
@@ -70,7 +61,6 @@ namespace __SCRIPTS
 			var debreeObject = prefab.GetComponent<MoveJumpAndRotateAbility>();
 			var angle = new Vector3(Random.Range(-1, 1), -1);
 			debreeObject.Fire(angle, 5);
-
 		}
 
 		private void MakeDropList()
