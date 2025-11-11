@@ -87,11 +87,11 @@ namespace __SCRIPTS.HUD_Displays
 			UpdateDisplay();
 		}
 
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
 			Services.levelManager.OnStopLevel += CleanUp;
 			barFX = GetComponentInChildren<Bar_FX>();
-			if (barFX.fastBarImage != null) barFX.fastBarImage.color = _player.playerColor;
+			if (barFX.fastBarImage != null) barFX.fastBarImage.color = newPlayer.playerColor;
 		}
 	}
 }

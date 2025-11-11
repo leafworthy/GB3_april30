@@ -8,12 +8,12 @@ namespace __SCRIPTS
 		private float damageRateCounter;
 		private float damageRate;
 		private Life target;
-		private Life owner;
+		private ICanAttack owner;
 		private Color color;
 		private float damage;
 		private GameObject particles;
 
-		public void StartEffect(Life _owner, Life _target, float _duration, float _damageRate, float _damage, Color _color)
+		public void StartEffect(ICanAttack _owner, Life _target, float _duration, float _damageRate, float _damage, Color _color)
 		{
 			owner = _owner;
 			target = _target;

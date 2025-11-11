@@ -27,9 +27,9 @@ namespace __SCRIPTS
 		private Body body => _body ??= GetComponent<Body>();
 		private Body _body;
 
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
-			player = _player;
+			player = newPlayer;
 			AimDir = Vector2.right;
 		}
 		private void OnDestroy()

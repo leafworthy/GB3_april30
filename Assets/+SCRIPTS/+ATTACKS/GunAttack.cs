@@ -94,7 +94,7 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
-			Debug.Log("gun attack start");
+			Debug.Log("gun offence start");
 			switch (currentState)
 			{
 				case weaponState.resuming:
@@ -112,9 +112,9 @@ namespace __SCRIPTS
 			PlayAnimationClip(currentGun.pullOutAnimationClip, 1);
 		}
 
-		public override void SetPlayer(Player _player)
+		public override void SetPlayer(Player newPlayer)
 		{
-			base.SetPlayer(_player);
+			base.SetPlayer(newPlayer);
 			currentGun = primaryGun;
 
 			StopListeningToEvents();

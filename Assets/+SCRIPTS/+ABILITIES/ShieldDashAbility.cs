@@ -15,7 +15,7 @@ public class ShieldDashAbility : DashAbility
 
 	protected override void AnimationComplete()
 	{
-		life.SetTemporarilyInvincible(false);
+		defence.SetTemporarilyInvincible(false);
 		base.AnimationComplete();
 	}
 
@@ -54,12 +54,12 @@ public class ShieldDashAbility : DashAbility
 
 	private void ShieldDash()
 	{
-		var hits = Physics2D.OverlapCircleAll(transform.position, 30, life.EnemyLayer);
+		var hits = Physics2D.OverlapCircleAll(transform.position, 30, offence.EnemyLayer);
 		shieldAbility.SetShielding(true);
 		foreach (var hit in hits)
 		{
 			var _life = hit.GetComponentInParent<Life>();
-			if (_life == null || !_life.IsEnemyOf(life))
+			if (_life == null || !_life.IsEnemyOf(defence))
 			{
 				continue;
 			}
@@ -70,15 +70,16 @@ public class ShieldDashAbility : DashAbility
 			}
 
 			OnShieldDash?.Invoke();
-			movement.Push((hit.transform.position - transform.position).normalized, life.DashSpeed * extraDashPushFactor);
+			defence.SetTemporarilyInvincible(true);
+			movement.Push((hit.transform.position - transform.position).normalized, offence.Stats.DashSpeed * extraDashPushFactor);
 
 		}
 	}
 
 	private bool hasInitialized = false;
-	public override void SetPlayer(Player _player)
+	public override void SetPlayer(Player newPlayer)
 	{
-		player = _player;
+		player = newPlayer;
 		player.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
 	}
 

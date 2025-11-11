@@ -10,10 +10,10 @@ namespace __SCRIPTS.Projectiles
 		private Vector3 jumpVel;
 		private float rotationSpeed = 330;
 		private float currentRotationSpeed = 130;
-		private Life owner;
+		private ICanAttack owner;
 
 
-		public void Launch(Vector2 _start, Vector2 startingVelocity, float _throwTime, Life _owner)
+		public void Launch(Vector2 _start, Vector2 startingVelocity, float _throwTime, ICanAttack _owner)
 		{
 			owner = _owner;
 			currentRotationSpeed = rotationSpeed;
@@ -31,7 +31,7 @@ namespace __SCRIPTS.Projectiles
 			Move();
 			timeLeft -= Time.fixedDeltaTime;
 			if (!(timeLeft <= 0)) return;
-			AttackUtilities.Explode(transform.position, owner.SecondaryAttackRange, owner.SecondaryAttackDamageWithExtra,owner);
+			AttackUtilities.Explode(transform.position, owner.Stats.SecondaryAttackRange, owner.Stats.SecondaryAttackDamageWithExtra,owner);
 			Services.objectMaker.Unmake(transform.gameObject);
 		}
 

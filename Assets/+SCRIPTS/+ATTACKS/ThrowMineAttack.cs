@@ -33,12 +33,12 @@ namespace __SCRIPTS
 		{
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = transform.position;
-			OnThrow?.Invoke(startPoint, life.player);
+			OnThrow?.Invoke(startPoint, defence.player);
 			isThrowing = true;
 
 			var newProjectile = Services.objectMaker.Make(Services.assetManager.FX.minePrefab, startPoint);
 			var newMine = newProjectile.GetComponent<Mine>();
-			newMine.Launch(startPoint, life);
+			newMine.Launch(startPoint, offence);
 			newMine.OnSelfDetonate += RemoveMine;
 			ActiveMines.Add(newMine);
 		}
@@ -53,9 +53,9 @@ namespace __SCRIPTS
 
 
 
-		public override void SetPlayer(Player _player)
+		public override void SetPlayer(Player newPlayer)
 		{
-			base.SetPlayer(_player);
+			base.SetPlayer(newPlayer);
 			ListenToPlayer();
 		}
 

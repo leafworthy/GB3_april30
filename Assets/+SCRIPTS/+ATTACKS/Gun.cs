@@ -151,7 +151,7 @@ namespace __SCRIPTS
 		private void ShotHitTarget(IGetAttacked targetLife, Vector2 hitObjectPoint)
 		{
 			var newAttack = Attack.Create(attacker, targetLife).WithOriginPoint(body.AttackStartPoint.transform.position).WithDestinationPoint(hitObjectPoint)
-			                      .WithDamage(Damage);
+			                      .WithDamage(Damage).WithFlying(); //DELETE WITHFLYING LATER
 			OnShotHitTarget?.Invoke(newAttack);
 
 			targetLife.TakeDamage(newAttack);
@@ -178,7 +178,7 @@ namespace __SCRIPTS
 
 		private float GetAttackRate()
 		{
-			Debug.Log("unlimited attack rate: " + stats.UnlimitedAttackRate);
+			Debug.Log("unlimited offence rate: " + stats.UnlimitedAttackRate);
 			return stats.UnlimitedAttackRate;
 		}
 

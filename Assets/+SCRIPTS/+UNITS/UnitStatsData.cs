@@ -65,7 +65,7 @@ namespace __SCRIPTS
 			float.TryParse(csvRow["JumpSpeed"], out jumpSpeed);
 			float.TryParse(csvRow["AggroRange"], out aggroRange);
 
-			// Parse attack Stats
+			// Parse offence Stats
 			float.TryParse(csvRow["Attack1Damage"], out attack1Damage);
 			float.TryParse(csvRow["Attack1Rate"], out attack1Rate);
 			float.TryParse(csvRow["Attack1Range"], out attack1Range);

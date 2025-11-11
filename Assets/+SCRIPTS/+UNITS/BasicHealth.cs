@@ -12,8 +12,8 @@ namespace __SCRIPTS
 		[SerializeField] private float MaxHealth;
 		[SerializeField] private float CurrentHealth;
 		public bool IsDead() => CurrentHealth <= 0;
-		public float GetFraction() => CurrentFraction;
 
+		public float GetFraction() => CurrentFraction;
 
 		public bool CanTakeDamage() => !IsDead() && !IsTemporarilyInvincible && !Data.Data.isInvincible;
 		private bool IsTemporarilyInvincible;
@@ -23,8 +23,6 @@ namespace __SCRIPTS
 		private HealthBar _healthbar;
 		private IHaveData Data => data ??= GetComponent<IHaveData>();
 		private IHaveData data;
-		private IGetAttacked health => _damageTaker ??= GetComponent<IGetAttacked>();
-		private IGetAttacked _damageTaker;
 		private List<SpriteRenderer> renderersToTint => _renderersToTint ??= GetComponentsInChildren<SpriteRenderer>(true).ToList();
 		private List<SpriteRenderer> _renderersToTint;
 
@@ -34,36 +32,32 @@ namespace __SCRIPTS
 		public Color debrisColor => DebreeTint;
 		public Color DebreeTint = Color.red;
 		private Color materialTintColor;
+		private bool isShielding;
 		public UnitCategory category => Data.Data.category;
 
 		public event Action<Attack> OnDead;
 		public event Action<Attack> OnAttackHit;
 		public event Action<Attack> OnShielded;
 		public event Action<float> OnFractionChanged;
-		private event Action<Attack> OnFlying;
+		public event Action<Attack> OnFlying;
+
+		public void SetTemporarilyInvincible(bool i)
+		{
+			IsTemporarilyInvincible = i;
+		}
+
+		public void SetShielding(bool isOn)
+		{
+			isShielding = isOn;
+		}
+
+		public bool IsEnemyOf(ICanAttack life) => life.IsEnemyOf(this);
+
 		public event Action<Player, bool> OnDeathComplete;
 
 		private void FixedUpdate()
 		{
 			AttackUtilities.FadeOutTintAlpha(ref materialTintColor, renderersToTint);
-		}
-
-		public void Start()
-		{
-			if (health == null) return;
-			health.OnAttackHit += Life_AttackHit;
-			health.OnShielded += Life_Shielded;
-		}
-
-		private void Life_AttackHit(Attack attack)
-		{
-			if (!health.IsDead()) return;
-			AttackUtilities.AttackHitFX(attack, renderersToTint, Data.Data.debrisType, DebreeTint);
-		}
-
-		private void Life_Shielded(Attack obj)
-		{
-			AttackUtilities.StartTint(Color.yellow, renderersToTint);
 		}
 
 		public void DieNow()
@@ -73,7 +67,7 @@ namespace __SCRIPTS
 			CompleteDeath(true);
 		}
 
-		public void CompleteDeath(bool isRespawning)
+		private void CompleteDeath(bool isRespawning)
 		{
 			OnDeathComplete?.Invoke(_player, isRespawning);
 			Services.objectMaker.Unmake(gameObject);
@@ -102,16 +96,24 @@ namespace __SCRIPTS
 
 		public void TakeDamage(Attack attack)
 		{
-			if (IsDead() || IsTemporarilyInvincible || Data.Data.isInvincible) return;
+			if (isShielding)
+			{
+				OnShielded?.Invoke(attack);
+				AttackUtilities.StartTint(Color.yellow, renderersToTint);
+				attack.DamageAmount *= 0.1f;
+			}
+
+			if (!CanTakeDamage()) return;
 			CurrentHealth = Mathf.Max(0, CurrentHealth - attack.DamageAmount);
 			if (CurrentHealth <= 0 && !Data.Data.isInvincible) StartDeath(attack);
 			if (attack.CausesFlying)
 			{
-				Debug.Log("on attack sent flying");
+				Debug.Log("on offence sent flying");
 				OnFlying?.Invoke(attack);
 			}
 
 			OnAttackHit?.Invoke(attack);
+			AttackUtilities.AttackHitFX(attack, renderersToTint, Data.Data.debrisType, DebreeTint);
 		}
 
 		public void AddHealth(float amount)
@@ -122,6 +124,8 @@ namespace __SCRIPTS
 
 		public void AddHealth(int amount)
 		{
+			if (IsDead()) return;
+			CurrentHealth = Mathf.Min(MaxHealth, CurrentHealth + amount);
 		}
 
 		private void StartDeath(Attack killingAttack)
@@ -130,9 +134,9 @@ namespace __SCRIPTS
 			OnDead?.Invoke(killingAttack);
 		}
 
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
-			this._player = _player;
+			_player = newPlayer;
 		}
 	}
 }

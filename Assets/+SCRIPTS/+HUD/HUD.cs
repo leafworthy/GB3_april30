@@ -48,11 +48,11 @@ namespace __SCRIPTS
 			secondaryAmmoDisplay.SetButton(WeaponButton.buttons.L2);
 			tertiaryAmmoDisplay.SetButton(WeaponButton.buttons.Circle);
 		}
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
 			gameObject.SetActive(true);
 
-			_currentAmmoInventory = _player.SpawnedPlayerGO.GetComponent<AmmoInventory>();
+			_currentAmmoInventory = newPlayer.SpawnedPlayerGO.GetComponent<AmmoInventory>();
 			if (primaryAmmoDisplay != null)
 			{
 				primaryAmmoDisplay.SetAmmo(_currentAmmoInventory.primaryAmmo);
@@ -69,13 +69,13 @@ namespace __SCRIPTS
 				tertiaryAmmoDisplay.SetButton(WeaponButton.buttons.Circle);
 			}
 
-			var playerAmmo = _player.SpawnedPlayerGO.GetComponent<AmmoInventory>();
+			var playerAmmo = newPlayer.SpawnedPlayerGO.GetComponent<AmmoInventory>();
 
 			primaryWeaponIcon.Set((int)playerAmmo.primaryAmmo.weaponType);
 			secondaryWeaponIcon.Set((int) playerAmmo.secondaryAmmo.weaponType);
 			tertiaryWeaponIcon.Set((int) playerAmmo.tertiaryAmmo.weaponType);
 
-			CharIcon.Set((int)_player.CurrentCharacter); // Set to the first character icon by default
+			CharIcon.Set((int)newPlayer.CurrentCharacter); // Set to the first character icon by default
 		}
 
 

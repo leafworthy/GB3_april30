@@ -18,9 +18,9 @@ namespace __SCRIPTS
 		private bool isPressingSecondary;
 		private bool isPressingPrimary;
 
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
-			player = _player;
+			player = newPlayer;
 			if (hasInitialized)
 			{
 				Debug.LogWarning(" [SWITCHER] already initialized, skipping");

@@ -64,7 +64,6 @@ public class ZoneUI : GUIDebugTextShower
 		else
 		{
 			goIndicator?.SetActive(true);
-			Debug.Log("Enemies cleared, waiting for player to enter next zone");
 		}
 	}
 

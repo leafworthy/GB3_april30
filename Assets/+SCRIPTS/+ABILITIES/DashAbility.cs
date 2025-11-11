@@ -26,7 +26,7 @@ namespace __SCRIPTS
 		{
 			StopBody();
 			StopDashing();
-			life.SetTemporarilyInvincible(false);
+			defence.SetTemporarilyInvincible(false);
 			if (lastArmAbility is GunAttack)
 			{
 				StopBody();
@@ -57,9 +57,9 @@ namespace __SCRIPTS
 				player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 		}
 
-		public override void SetPlayer(Player _player)
+		public override void SetPlayer(Player newPlayer)
 		{
-			base.SetPlayer(_player);
+			base.SetPlayer(newPlayer);
 
 			UnsubscribeFromEvents();
 
@@ -85,9 +85,9 @@ namespace __SCRIPTS
 		{
 			if (dashAnimationClip_Bottom != null) PlayAnimationClip(dashAnimationClip_Bottom);
 			if (dashAnimationClip_Top != null) PlayAnimationClip(dashAnimationClip_Top, 1);
-			life.SetTemporarilyInvincible(true);
+			defence.SetTemporarilyInvincible(true);
 
-			moveAbility.Push(moveAbility.GetMoveDir(), life.DashSpeed);
+			moveAbility.Push(moveAbility.GetMoveDir(), offence.Stats.DashSpeed);
 		}
 	}
 }

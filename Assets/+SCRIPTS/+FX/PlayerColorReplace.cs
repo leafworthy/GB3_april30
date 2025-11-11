@@ -10,9 +10,9 @@ public class PlayerColorReplace : MonoBehaviour, INeedPlayer
 	private static readonly int ColorReplaceColorB = Shader.PropertyToID("_NewColorB");
 	private Color materialTintColor;
 
-	public void SetPlayer(Player _player)
+	public void SetPlayer(Player newPlayer)
 	{
-		player = _player;
+		player = newPlayer;
 		PlayerTint(player.playerColor);
 	}
 

@@ -260,6 +260,7 @@ namespace __SCRIPTS
 			if (health == null) return;
 			health.OnAttackHit += Life_AttackHit;
 			health.OnDead += LifeOnDead;
+			health.OnFlying += LifeOnFlying;
 			health.OnDeathComplete += Life_DeathComplete;
 
 			if (mover == null) return;
@@ -267,9 +268,14 @@ namespace __SCRIPTS
 			mover.OnStopMoving += MoverStopTryingToMove;
 		}
 
+		private void LifeOnFlying(Attack obj)
+		{
+			StopMoving();
+		}
+
 		private void Life_AttackHit(Attack attack)
 		{
-			//if (stats.IsDead()) return;
+
 			Push(attack.Direction, attack.DamageAmount + attack.ExtraPush);
 		}
 

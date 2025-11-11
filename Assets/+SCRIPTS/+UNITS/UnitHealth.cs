@@ -6,18 +6,14 @@ namespace __SCRIPTS
 	[Serializable]
 	public class UnitHealth
 	{
-
 		public bool IsTemporarilyInvincible;
-		public bool IsShielded;
 		public bool IsDead => isDead;
 		public float CurrentHealth => currentHealth;
-		[SerializeField]private float currentHealth;
+		[SerializeField] private float currentHealth;
 
 		public event Action<Attack> OnDead;
-		public event Action<Attack> OnAttackHit;
-		public event Action<Attack> OnFlying;
 
-		private bool isInvincible =>  unitStats.Data.isInvincible;
+		private bool isInvincible => unitStats.Data.isInvincible;
 
 		private float maxHealth => Data.healthMax + unitStats.GetExtraHealth();
 
@@ -25,11 +21,12 @@ namespace __SCRIPTS
 
 		private UnitStatsData Data;
 
-
 		private bool isDead;
 
 		private UnitStats unitStats;
-		public float MaxHealth  => maxHealth;
+		public bool IsShielded;
+		private float ShieldDamageFactor = .1f;
+		public float MaxHealth => maxHealth;
 
 		public UnitHealth(UnitStats _unitStats)
 		{
@@ -42,24 +39,18 @@ namespace __SCRIPTS
 		{
 			currentHealth = maxHealth;
 			isDead = false;
-
 		}
 
 		public void TakeDamage(Attack attack)
 		{
 			if (isDead || IsTemporarilyInvincible || isInvincible) return;
+			if (IsShielded)
+			{
+				attack.DamageAmount *= ShieldDamageFactor;
+			}
 			currentHealth = Mathf.Max(0, currentHealth - attack.DamageAmount);
 			if (currentHealth <= 0 && !isInvincible) StartDeath(attack);
-			if (attack.CausesFlying)
-			{
-				Debug.Log("on attack sent flying");
-				OnFlying?.Invoke(attack);
-			}
-			OnAttackHit?.Invoke(attack);
 		}
-
-
-
 
 		private void StartDeath(Attack killingAttack)
 		{
@@ -77,8 +68,6 @@ namespace __SCRIPTS
 		{
 			if (isDead) return;
 			currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
-
 		}
-
 	}
 }

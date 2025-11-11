@@ -5,12 +5,13 @@ using UnityEngine;
 namespace __SCRIPTS
 {
 	[ExecuteAlways]
-	public class Life : MonoBehaviour, IGetAttacked, ICanAttack, IHaveAttackStats
+	public class Life : MonoBehaviour, IGetAttacked, IHaveAttackStats
 	{
 		public Player player => _player;
 		[SerializeField] private Player _player;
 		[SerializeField] private UnitStats unitStats;
 		[SerializeField] private UnitHealth unitHealth;
+
 
 		private UnitAnimations animations => _animations ??= GetComponent<UnitAnimations>();
 		private UnitAnimations _animations;
@@ -52,12 +53,11 @@ namespace __SCRIPTS
 
 		#endregion
 
-		public bool IsHuman => _player != null && _player.IsHuman();
-		public LayerMask EnemyLayer => IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
 		public IHaveAttackStats Stats => stats ??= GetComponent<IHaveAttackStats>();
 		private IHaveAttackStats stats;
 
 		public bool CanTakeDamage() => !unitHealth.IsDead && !unitHealth.IsTemporarilyInvincible && !unitStats.Data.isInvincible;
+		public bool IsEnemyOf(IGetAttacked other) => player.IsHuman() != other.player.IsHuman();
 
 		public event Action<Attack> OnAttackHit;
 		public event Action<float> OnFractionChanged;
@@ -68,8 +68,6 @@ namespace __SCRIPTS
 		public event Action<Attack> OnFlying;
 		private Collider2D[] colliders;
 		private bool hasInitialized;
-		private Player player1;
-		private Color debrisColor1;
 
 		[Sirenix.OdinInspector.Button]
 		public void ClearStats()
@@ -96,19 +94,12 @@ namespace __SCRIPTS
 			unitStats = new UnitStats(gameObject.name);
 			unitHealth = new UnitHealth(unitStats);
 			unitHealth.OnDead += Health_OnDead;
-			unitHealth.OnFlying += Health_OnFlying;
-			unitHealth.OnAttackHit += Health_AttackHit;
 			FillHealth();
 			Debug.Log("done initializing for " + player?.playerIndex);
 			if (unitStats.Data.category == UnitCategory.Enemy) SetPlayer(Services.playerManager.enemyPlayer);
 			else if (unitStats.Data.category == UnitCategory.NPC) SetPlayer(Services.playerManager.NPCPlayer);
 		}
 
-		private void Health_OnFlying(Attack attack)
-		{
-			Debug.Log("on stats flying");
-			OnFlying?.Invoke(attack);
-		}
 
 		private void FillHealth()
 		{
@@ -128,8 +119,6 @@ namespace __SCRIPTS
 		{
 			if (unitHealth == null) return;
 			unitHealth.OnDead -= Health_OnDead;
-			unitHealth.OnAttackHit -= Health_AttackHit;
-			unitHealth.OnFlying -= Health_OnFlying;
 		}
 
 		public void SetPlayer(Player newPlayer)
@@ -152,20 +141,16 @@ namespace __SCRIPTS
 			unitHealth.SetTemporaryInvincible(inOn);
 		}
 
-		public void CompleteDeath(bool isRespawning)
+		private void CompleteDeath(bool isRespawning)
 		{
 			Debug.Log("complete death", this);
 			OnDeathComplete?.Invoke(_player, isRespawning);
 			Services.objectMaker.Unmake(gameObject);
 		}
 
-		private void Health_AttackHit(Attack attack)
-		{
-			OnAttackHit?.Invoke(attack);
-		}
 
-		public bool IsEnemyOf(IGetAttacked other) => IsHuman != other.player.IsHuman();
-		public event Action<IGetAttacked> OnAttack;
+
+
 
 		private void Health_OnDead(Attack attack)
 		{
@@ -198,9 +183,22 @@ namespace __SCRIPTS
 				return;
 			}
 
+
+
+			if (!attack.CausesFlying)
+			{
+				animations?.SetTrigger(UnitAnimations.HitTrigger);
+			}
+			else
+			{
+				Debug.Log("on offence sent flying");
+				OnFlying?.Invoke(attack);
+				animations?.SetTrigger(UnitAnimations.FlyingTrigger);
+			}
+
 			unitHealth?.TakeDamage(attack);
+			OnAttackHit?.Invoke(attack);
 			OnFractionChanged?.Invoke(GetFraction());
-			animations?.SetTrigger(UnitAnimations.HitTrigger);
 		}
 
 		public void AddHealth(float amount)
@@ -212,8 +210,9 @@ namespace __SCRIPTS
 		public void DieNow()
 		{
 			Debug.Log("die now");
-			var killingBlow = Attack.Create(this, this).WithDamage(9999);
+			var killingBlow = Attack.Create(null, this).WithDamage(9999);
 			unitHealth.TakeDamage(killingBlow);
+			OnAttackHit?.Invoke(killingBlow);
 			CompleteDeath(true);
 		}
 
@@ -221,23 +220,12 @@ namespace __SCRIPTS
 
 		public void SetShielding(bool isOn)
 		{
-			if (unitHealth != null) unitHealth.IsShielded = false;
+			if (unitHealth != null) unitHealth.IsShielded = isOn;
 		}
 
-		public void SetExtraMaxHealthFactor(float factor)
-		{
-			if (unitStats != null) unitStats.ExtraHealthFactor = factor;
-		}
+		public bool IsEnemyOf(ICanAttack life) =>   player.IsHuman() != life.player.IsHuman();
 
-		public void SetExtraMaxDamageFactor(float factor)
-		{
-			if (unitStats != null) unitStats.ExtraDamageFactor = factor;
-		}
 
-		public void SetExtraMaxSpeedFactor(float factor)
-		{
-			if (unitStats != null) unitStats.ExtraSpeedFactor = factor;
-		}
 
 		[Sirenix.OdinInspector.Button]
 		public void SetEnemyTier(int tier)
@@ -249,9 +237,9 @@ namespace __SCRIPTS
 			paletteSwapper?.SetPallette(tier);
 		}
 
-		public void SetTemporarilyInvincible(bool isOn)
+		public void SetTemporarilyInvincible(bool i)
 		{
-			if (unitHealth != null) unitHealth.IsTemporarilyInvincible = isOn;
+			if (unitHealth != null) unitHealth.IsTemporarilyInvincible = i;
 		}
 	}
 }

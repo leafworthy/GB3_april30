@@ -67,7 +67,5 @@ public class ZoneProgressionController : MonoBehaviour
 			ZoneSwitcher.AdvanceZone();
 			SubscribeToCurrentZone();
 		}
-		else
-			Debug.Log("All enemies cleared, waiting for player to enter next zone");
 	}
 }

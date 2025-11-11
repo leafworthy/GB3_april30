@@ -63,7 +63,7 @@ namespace __SCRIPTS
 
 			jumps.DoubleJump(jumps.IsFalling ? 1 : .5f);
 
-			Debug.Log("jump attack started");
+			Debug.Log("jump offence started");
 
 			jumps.OnLand += LandWithAttack;
 			jumps.OnFalling += FallWithAttack;
@@ -85,9 +85,9 @@ namespace __SCRIPTS
 			}
 		}
 
-		public override void SetPlayer(Player _player)
+		public override void SetPlayer(Player newPlayer)
 		{
-			base.SetPlayer(_player);
+			base.SetPlayer(newPlayer);
 			player.Controller.Attack1RightTrigger.OnPress += Player_AttackPress;
 			SetState(state.not);
 		}
@@ -129,11 +129,11 @@ namespace __SCRIPTS
 
 		private void RegularAttackHit()
 		{
-			var hits = AttackUtilities.CircleCastForXClosestTargets(life, life.TertiaryAttackRange);
+			var hits = AttackUtilities.CircleCastForXClosestTargets(offence, offence.Stats.TertiaryAttackRange);
 			if (hits == null) return;
 			foreach (var hit in hits)
 			{
-				AttackUtilities.HitTarget(life, hit, GetAttackDamage());
+				AttackUtilities.HitTarget(offence, hit, GetAttackDamage());
 				OnHitTarget?.Invoke(hit.transform.position);
 			}
 		}

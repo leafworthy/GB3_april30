@@ -8,8 +8,10 @@ namespace __SCRIPTS
 	[ExecuteAlways, Serializable]
 	public class RamAttack : MonoBehaviour, INeedPlayer
 	{
-		private Life life => _life ??= GetComponent<Life>();
-		private Life _life;
+		private ICanAttack attacker => _attacker ??= GetComponent<ICanAttack>();
+		private ICanAttack _attacker;
+		private IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
+		private IGetAttacked _life;
 		public bool hasBounceBack = true;
 		public bool causesFlying;
 		private float currentCooldown;
@@ -18,8 +20,7 @@ namespace __SCRIPTS
 		private MoveAbility mover;
 		[SerializeField] private float pushBackAmount = 3;
 
-
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
 			mover = GetComponent<MoveAbility>();
 			isCooledDown = true;
@@ -27,7 +28,7 @@ namespace __SCRIPTS
 
 		private void OnDrawGizmos()
 		{
-			MyDebugUtilities.DrawCircle(transform.position, life.PrimaryAttackRange, Color.red);
+			MyDebugUtilities.DrawCircle(transform.position, attacker.Stats.PrimaryAttackRange, Color.red);
 		}
 
 		private void FixedUpdate()
@@ -40,8 +41,8 @@ namespace __SCRIPTS
 
 		private void CheckForEnemiesInRange()
 		{
-			var enemies = Physics2D.OverlapCircleAll(transform.position, life.PrimaryAttackRange, Services.assetManager.LevelAssets.PlayerLayer).ToList();
-			enemies.AddRange(Physics2D.OverlapCircleAll(transform.position, life.PrimaryAttackRange, Services.assetManager.LevelAssets.DoorLayer).ToList());
+			var enemies = Physics2D.OverlapCircleAll(transform.position, attacker.Stats.PrimaryAttackRange, Services.assetManager.LevelAssets.PlayerLayer).ToList();
+			enemies.AddRange(Physics2D.OverlapCircleAll(transform.position, attacker.Stats.PrimaryAttackRange, Services.assetManager.LevelAssets.DoorLayer).ToList());
 			if (enemies.Count <= 0) return;
 			foreach (var enemy in enemies)
 			{
@@ -66,6 +67,8 @@ namespace __SCRIPTS
 			if (other == null) return;
 			if (other.transform == transform) return;
 			var otherDefence = other.GetComponentInChildren<Life>();
+			if (otherDefence == null) return;
+			if (otherDefence.IsDead()) return;
 			var otherJump = other.GetComponentInChildren<JumpAbility>();
 			if (otherJump != null)
 			{
@@ -73,32 +76,20 @@ namespace __SCRIPTS
 					return;
 			}
 
-			if (otherDefence == null) return;
-			if (otherDefence.IsObstacle)
-			{
-				var door = other.GetComponentInChildren<DoorInteraction>();
-				if (door == null || door.isOpen || door.isBroken) return;
-			}
-			else
-			{
-				if (otherDefence.IsDead()) return;
-			}
 
 			AttackHit(otherDefence);
 		}
 
-		private void AttackHit(Life other)
+		private void AttackHit(IGetAttacked other)
 		{
 			currentCooldown = coolDown;
-			var otherAttack = Attack.Create(life, other).WithDamage(life.PrimaryAttackDamageWithExtra);
-
-			otherAttack.CausesFlying = causesFlying;
+			var otherAttack = Attack.Create(attacker, other).WithDamage(attacker.Stats.PrimaryAttackDamageWithExtra).WithFlying(causesFlying);
 			other.TakeDamage(otherAttack);
 
 			//WEIRD
 			if (!hasBounceBack)
 			{
-				var bouncebackAttack = Attack.Create(other, life).WithDamage(life.PrimaryAttackDamageWithExtra);
+				var bouncebackAttack = Attack.Create(attacker, life).WithDamage(attacker.Stats.PrimaryAttackDamageWithExtra);
 				life.TakeDamage(bouncebackAttack);
 				mover.Push(bouncebackAttack.Direction, pushBackAmount);
 			}

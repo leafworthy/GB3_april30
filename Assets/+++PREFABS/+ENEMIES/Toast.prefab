@@ -587,7 +587,7 @@ MonoBehaviour:
       healthMax: 40
       moveSpeed: 22
       dashSpeed: 0
-      jumpSpeed: 0
+      jumpSpeed: 1
       aggroRange: 400
       attack1Damage: 8
       attack1Rate: 1
@@ -609,8 +609,8 @@ MonoBehaviour:
     EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
-    IsShielded: 0
     currentHealth: 40
+    IsShielded: 0
 --- !u!114 &-8070408823439803412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -899,7 +899,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   jumpingAnimationClip: {fileID: 7400000, guid: b9a79e746e9dd459f9e1d1e982918d24, type: 2}
-  fallingAnimationClip: {fileID: 7400000, guid: e15ebdac4b7434e37b22b382262a78dc, type: 2}
+  fallingAnimationClip: {fileID: 7400000, guid: e452545cefb144d5182df4273da471c8, type: 2}
   landingAnimationClip: {fileID: 7400000, guid: a9ad2697bf0054517b1da2c377e399de, type: 2}
   flyingAnimationClip: {fileID: 7400000, guid: d49d5b67f6ee04becb4fa469f03d5893, type: 2}
   deathAnimationClip: {fileID: 7400000, guid: f520ec54d60dd4db780287a9cfd74423, type: 2}

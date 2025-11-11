@@ -48,7 +48,7 @@ namespace __SCRIPTS
 			currentTarget = targetLife;
 			currentCooldownTime = Time.time + attacker.Stats.PrimaryAttackRate;
 
-			// Face the target only when starting a new attack
+			// Face the target only when starting a new offence
 			FaceTarget();
 
 			anim.SetTrigger(UnitAnimations.Attack1Trigger);

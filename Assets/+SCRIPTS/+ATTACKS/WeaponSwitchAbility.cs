@@ -22,9 +22,9 @@ namespace __SCRIPTS
 			PlayAnimationClip(gunAttack.CurrentGun.pullOutAnimationClip, 1);
 		}
 
-		public override void SetPlayer(Player _player)
+		public override void SetPlayer(Player newPlayer)
 		{
-			base.SetPlayer(_player);
+			base.SetPlayer(newPlayer);
 			player.Controller.SwapWeaponSquare.OnPress -= Player_SwapWeapon;
 			player.Controller.SwapWeaponSquare.OnPress += Player_SwapWeapon;
 		}

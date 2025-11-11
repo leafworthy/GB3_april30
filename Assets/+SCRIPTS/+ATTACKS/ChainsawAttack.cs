@@ -21,9 +21,9 @@ namespace __SCRIPTS
 		protected override bool requiresArms() => true;
 		protected override bool requiresLegs() => false;
 
-		public override void SetPlayer(Player _player)
+		public override void SetPlayer(Player newPlayer)
 		{
-			base.SetPlayer(_player);
+			base.SetPlayer(newPlayer);
 			player.Controller.Attack2LeftTrigger.OnPress += PlayerChainsawPress;
 			player.Controller.Attack3Circle.OnPress += PlayerChainsawPress;
 			player.Controller.Attack2LeftTrigger.OnRelease += PlayerChainsawRelease;
@@ -122,9 +122,9 @@ namespace __SCRIPTS
 			Debug.Log("it was this");
 
 			cooldownCounter += Time.fixedDeltaTime;
-			if (!(cooldownCounter >= life.TertiaryAttackRate)) return;
+			if (!(cooldownCounter >= offence.Stats.TertiaryAttackRate)) return;
 			cooldownCounter = 0;
-			AttackUtilities.HitTargetsWithinRange(life, body.AttackStartPoint.transform.position, life.TertiaryAttackRange, life.TertiaryAttackDamageWithExtra);
+			AttackUtilities.HitTargetsWithinRange(offence, body.AttackStartPoint.transform.position, offence.Stats.TertiaryAttackRange, offence.Stats.TertiaryAttackDamageWithExtra);
 		}
 
 		public override void Stop()

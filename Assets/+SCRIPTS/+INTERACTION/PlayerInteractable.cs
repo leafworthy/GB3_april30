@@ -125,7 +125,7 @@ namespace __SCRIPTS
 			if (other == null) return;
 			var life = other.GetComponentInChildren<Life>();
 			if (life == null) return;
-			if (!life.IsHuman) return;
+			if (!life.player.IsHuman()) return;
 			if (!buildingIsInTheWay(life.transform.position))
 			{
 				ListenToPlayerActionButton(life.player);

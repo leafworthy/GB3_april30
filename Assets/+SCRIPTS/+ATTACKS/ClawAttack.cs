@@ -25,13 +25,15 @@ namespace __SCRIPTS
 		private Targetter targetter;
 		public AnimationClip clawAttackAnimationClip;
 
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
+			Debug.Log("claw offence set player");
 			body = GetComponent<Body>();
 			anim = GetComponent<UnitAnimations>();
 			targetter = GetComponent<Targetter>();
 			ai = GetComponent<ICanAttack>();
 
+			if(ai == null) Debug.LogWarning( "ClawAttack: ICanAttack component not found on " + gameObject.name);
 			ai.OnAttack += AI_Attack;
 			anim.animEvents.OnAttackHit += OnAttackHit;
 
@@ -50,8 +52,15 @@ namespace __SCRIPTS
 
 		private void AI_Attack(IGetAttacked newTarget)
 		{
+			Debug.Log("ai on offence");
 			if (Services.pauseManager.IsPaused) return;
-			if (TargetIsInvalid(newTarget)) return;
+			if (TargetIsInvalid(newTarget))
+			{
+				Debug.Log("ClawAttack: Target is invalid, cannot offence.");
+				return;
+			}
+
+			Debug.Log("target valid, starting offence");
 			currentTargetLife = newTarget;
 			StartAttack();
 		}
@@ -64,13 +73,18 @@ namespace __SCRIPTS
 
 		private void StartAttack()
 		{
-			if (!(Time.time >= currentCooldownTime)) return;
+			if (!(Time.time >= currentCooldownTime))
+			{
+				Debug.Log("cooling down, cannot offence yet");
+				return;
+			}
 
 			currentCooldownTime = Time.time + ai.Stats.PrimaryAttackRate;
 
-			// Face the target only when starting a new attack
+			// Face the target only when starting a new offence
 			FaceTarget();
 
+			Debug.Log("triggering offence");
 			anim.SetTrigger(UnitAnimations.Attack1Trigger);
 		}
 

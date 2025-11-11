@@ -21,9 +21,9 @@ public abstract class AbilityController : MonoBehaviour, INeedPlayer
 
 	private PauseManager _pauseManager;
 
-	public virtual void SetPlayer(Player _player)
+	public virtual void SetPlayer(Player newPlayer)
 	{
-		player = _player;
+		player = newPlayer;
 		StopListeningToPlayer();
 		ListenToPlayer();
 	}

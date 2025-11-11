@@ -96,7 +96,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void Nade_OnThrow(Vector2 startPoint, Vector2 velocity, float time, Life life)
+		private void Nade_OnThrow(Vector2 startPoint, Vector2 velocity, float time, ICanAttack life)
 		{
 			if (Services.assetManager.FX.nadePrefab == null) return;
 

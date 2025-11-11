@@ -60,7 +60,7 @@ namespace __SCRIPTS.Projectiles
 			if (other.transform == transform) return;
 			var defence = other.GetComponentInChildren<Life>();
 			if (defence is null) return;
-			if (!defence.IsHuman) return;
+			if (!defence.player.IsHuman()) return;
 			var poison = defence.gameObject.GetComponent<PoisonDamageEffect>() ?? defence.gameObject.AddComponent<PoisonDamageEffect>();
 
 			poison.StartPoisonEffect(poisonTime, poisonDamage, defence, owner);

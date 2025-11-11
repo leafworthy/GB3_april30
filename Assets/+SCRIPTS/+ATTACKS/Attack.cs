@@ -21,12 +21,20 @@ namespace __SCRIPTS
 		float PrimaryAttackRate { get; }
 		float PrimaryAttackDamageWithExtra { get; }
 		float PrimaryAttackRange { get; }
+		float SecondaryAttackRate { get; }
+		float SecondaryAttackDamageWithExtra { get; }
+		float SecondaryAttackRange { get; }
+		float TertiaryAttackRate { get; }
+		float TertiaryAttackDamageWithExtra { get; }
+		float TertiaryAttackRange { get; }
 		float UnlimitedAttackRate { get; }
 		float UnlimitedAttackDamageWithExtra { get; }
 		float UnlimitedAttackRange { get; }
-		float ExtraDamageFactor { get; set; }
+		float ExtraDamageFactor { get; }
 		float AggroRange { get; }
 		float MoveSpeed { get; }
+		float DashSpeed { get; }
+		float JumpSpeed { get; }
 	}
 
 
@@ -64,6 +72,10 @@ public interface IHaveData
 		event Action<Attack> OnAttackHit;
 		event Action<Attack> OnShielded;
 		event Action<float> OnFractionChanged;
+		event Action<Attack> OnFlying;
+		void SetTemporarilyInvincible(bool i);
+		void SetShielding(bool isOn);
+		bool IsEnemyOf(ICanAttack life);
 	}
 
 	[Serializable]

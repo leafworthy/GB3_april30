@@ -7,7 +7,7 @@ namespace __SCRIPTS
 	{
 		// Start is called before the first frame update
 		private HideRevealObjects hideRevealObjects;
-	
+
 		private List<Player> playersInside = new();
 
 		protected void OnTriggerEnter2D(Collider2D other)
@@ -34,7 +34,7 @@ namespace __SCRIPTS
 
 		private void OnTriggerExit2D(Collider2D other)
 		{
-	
+
 
 			var life = other.GetComponent<Life>();
 			if (life == null)
@@ -47,7 +47,7 @@ namespace __SCRIPTS
 			if (player == null)
 			{
 				return;
-			
+
 			}
 
 			if (!player.IsHuman()) return;

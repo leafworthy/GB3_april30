@@ -6,10 +6,10 @@ public class Mine : MonoBehaviour
 {
 	private bool hasLaunched;
 	public bool isProximityMine;
-	private Life life;
+	private ICanAttack life;
 	public Action<Mine> OnSelfDetonate;
 
-	public void Launch(Vector2 _start, Life _mineLayerLife)
+	public void Launch(Vector2 _start, ICanAttack _mineLayerLife)
 	{
 		life = _mineLayerLife;
 		transform.position = _start;
@@ -20,7 +20,7 @@ public class Mine : MonoBehaviour
 	{
 		if (!hasLaunched || !isProximityMine) return;
 		if (other.transform == transform) return;
-		var otherLife = other.GetComponent<Life>();
+		var otherLife = other.GetComponent<IGetAttacked>();
 		if (otherLife == null)
 		{
 			otherLife = other.GetComponentInParent<Life>();
@@ -36,8 +36,8 @@ public class Mine : MonoBehaviour
 
 	private void Explode()
 	{
-		AttackUtilities.Explode(transform.position, life.SecondaryAttackRange,
-			life.SecondaryAttackDamageWithExtra, life);
+		AttackUtilities.Explode(transform.position, life.Stats.SecondaryAttackRange,
+			life.Stats.SecondaryAttackDamageWithExtra, life);
 		Services.objectMaker.Unmake(gameObject);
 
 	}

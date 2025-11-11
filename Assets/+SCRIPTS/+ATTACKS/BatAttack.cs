@@ -34,10 +34,10 @@ namespace __SCRIPTS
 
 		public override bool canDo() => base.canDo() && !jumps.IsInAir;
 
-		public override void SetPlayer(Player _player)
+		public override void SetPlayer(Player newPlayer)
 		{
-			base.SetPlayer(_player);
-			Debug.Log("player set for back attack");
+			base.SetPlayer(newPlayer);
+			Debug.Log("player set for back offence");
 			player.Controller.Attack1RightTrigger.OnPress += Player_AttackPress;
 			player.Controller.Attack3Circle.OnPress += Player_AttackPress;
 
@@ -54,7 +54,7 @@ namespace __SCRIPTS
 
 		private void Player_AttackPress(NewControlButton newControlButton)
 		{
-			Debug.Log("bat attack");
+			Debug.Log("bat offence");
 			isPressingAttack = true;
 			Do();
 		}
@@ -71,11 +71,11 @@ namespace __SCRIPTS
 
 		private void RegularAttackHit(int attackType)
 		{
-			var hits = AttackUtilities.CircleCastForXClosestTargets(life, life.TertiaryAttackRange);
+			var hits = AttackUtilities.CircleCastForXClosestTargets(offence, offence.Stats.PrimaryAttackRange);
 			if (hits == null) return;
 			foreach (var hit in hits)
 			{
-				AttackUtilities.HitTarget(life, hit, GetAttackDamage(attackType));
+				AttackUtilities.HitTarget(offence, hit, GetAttackDamage(attackType));
 				OnHitTarget?.Invoke(hit.transform.position);
 			}
 		}

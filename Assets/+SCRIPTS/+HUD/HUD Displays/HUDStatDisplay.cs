@@ -22,9 +22,9 @@ namespace __SCRIPTS.HUD_Displays
 		}
 
 
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
-			owner = _player;
+			owner = newPlayer;
 			var playerStats = owner.GetComponent<PlayerStats>();
 			if(playerStats == null)
 			{

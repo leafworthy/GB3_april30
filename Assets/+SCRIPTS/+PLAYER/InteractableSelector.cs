@@ -73,9 +73,9 @@ public class InteractableSelector : MonoBehaviour, INeedPlayer
 		SelectClosestInteractable();
 	}
 
-	public void SetPlayer(Player _player)
+	public void SetPlayer(Player newPlayer)
 	{
-		player = _player;
+		player = newPlayer;
 		aimAbility = GetComponentInChildren<IAimAbility>();
 	}
 }

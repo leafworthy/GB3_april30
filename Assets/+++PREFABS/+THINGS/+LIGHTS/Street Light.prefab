@@ -171,7 +171,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 465
+  m_SortingOrder: 453
   m_Sprite: {fileID: 21300000, guid: 24972f257ba89470ba05ec27589ec02c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -210,7 +210,7 @@ MonoBehaviour:
   sortingBounds: {fileID: 0}
   renderBelowSortingOrder: 0
   sortType: 0
-  SorterPositionOffset: {x: -0.315979, y: -16.112984, z: 0.0000045468946}
+  SorterPositionOffset: {x: -0.315979, y: -16.112991, z: 0.000004530092}
   SorterPositionOffset2: {x: 9.042946, y: -31.237207, z: 0}
   renderersToSort:
   - {fileID: 827350551121471613}
@@ -479,12 +479,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5225984393265348810}
   - component: {fileID: 4342301813088269497}
-  - component: {fileID: 6744616373768969005}
   - component: {fileID: 2736803200754490181}
   - component: {fileID: 1945555214387713723}
   - component: {fileID: 5310077868107663261}
   - component: {fileID: 7128871126931242848}
-  - component: {fileID: 4776881940616222571}
   m_Layer: 21
   m_Name: Life
   m_TagString: Untagged
@@ -545,22 +543,6 @@ MonoBehaviour:
     maskType: 0
     maskPivot: 0
     transform: {fileID: 5225984393265348810}
---- !u!114 &6744616373768969005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5967172343948227318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6eb228a27f534451fbe11d196bcc7f07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  amount: 5
-  explosionSize: 3
-  transformToDestroy: {fileID: 5994490605341882432}
-  lootTypes: 
 --- !u!114 &2736803200754490181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,7 +556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lootTypes: 070000000100000002000000020000000300000004000000
-  amount: 10
+  amountOfLootDropped: 5
 --- !u!58 &1945555214387713723
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -625,7 +607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 100
   CurrentHealth: 100
-  _healthbar: {fileID: 1818094740406966623}
+  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &7128871126931242848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -668,18 +650,6 @@ MonoBehaviour:
   ExtraHealthFactor: 0
   ExtraDamageFactor: 0
   ExtraSpeedFactor: 0
---- !u!114 &4776881940616222571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5967172343948227318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 391f801571f9475395be25b57b2ae0f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5994490605341882432
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,17 +860,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
---- !u!114 &1818094740406966623 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-  m_PrefabInstance: {fileID: 3265162751857694059}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c81ed4c3ba97643c4a1f86d373c41ee5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &8659088831180549849 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}

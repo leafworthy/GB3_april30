@@ -39,10 +39,10 @@ public class KnifeAttack : Ability
 		StartAttack();
 	}
 
-	public override void SetPlayer(Player _player)
+	public override void SetPlayer(Player newPlayer)
 	{
-		base.SetPlayer(_player);
-		player = _player;
+		base.SetPlayer(newPlayer);
+		player = newPlayer;
 
 		ListenToPlayer();
 	}
@@ -119,7 +119,7 @@ public class KnifeAttack : Ability
 
 	private void Anim_AttackHit()
 	{
-		var targetHit = AttackUtilities.FindClosestHit(life, attackPoint.transform.position, life.TertiaryAttackRange, life.EnemyLayer);
+		var targetHit = AttackUtilities.FindClosestHit(offence, attackPoint.transform.position, offence.Stats.TertiaryAttackRange, offence.EnemyLayer);
 		if (targetHit == null)
 		{
 			OnMiss?.Invoke();
@@ -129,9 +129,9 @@ public class KnifeAttack : Ability
 		var targetLife = targetHit.transform.gameObject.GetComponentInParent<Life>();
 		if (targetLife == null) return;
 		var KnifeFireEffect = targetLife.gameObject.AddComponent<DamageOverTimeEffect>();
-		KnifeFireEffect.StartEffect( life, targetLife, damageOverTimeData.fireDuration, damageOverTimeData.fireDamageRate, damageOverTimeData.fireDamageAmount,
+		KnifeFireEffect.StartEffect(offence, targetLife, damageOverTimeData.fireDuration, damageOverTimeData.fireDamageRate, damageOverTimeData.fireDamageAmount,
 			damageOverTimeData.fireColor);
-		AttackUtilities.HitTarget(life, targetLife, 0);//stats.TertiaryAttackDamageWithExtra
+		AttackUtilities.HitTarget(offence, targetLife, 0);//stats.TertiaryAttackDamageWithExtra
 		OnHit?.Invoke(targetHit.transform.position);
 	}
 }

@@ -64,9 +64,9 @@ namespace __SCRIPTS
 		private JumpAbility _jumpAbility;
 
 
-		public override void SetPlayer(Player _player)
+		public override void SetPlayer(Player newPlayer)
 		{
-			base.SetPlayer(_player);
+			base.SetPlayer(newPlayer);
 			if (alreadyDone) Debug.LogWarning("double dip");
 			alreadyDone = true;
 			player.Controller.Attack2LeftTrigger.OnPress -= StartPress;
@@ -107,7 +107,7 @@ namespace __SCRIPTS
 		{
 			if (isPressingAttack)
 			{
-				Debug.Log("re-attack");
+				Debug.Log("re-offence");
 				StartAttack();
 			}
 			else

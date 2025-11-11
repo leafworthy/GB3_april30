@@ -15,7 +15,12 @@ namespace __SCRIPTS._ENEMYAI
 		public Player player => player1;
 		public LayerMask EnemyLayer => Services.assetManager.LevelAssets.EnemyLayer;
 
-		public bool IsEnemyOf(IGetAttacked targetLife) => player.IsHuman() != targetLife.player.IsHuman();
+		public bool IsEnemyOf(IGetAttacked targetLife)
+		{
+			if (targetLife == null) return false;
+			if (targetLife.player == null) return true;
+			return player.IsHuman() != targetLife.player.IsHuman();
+		}
 
 		public event Action<IGetAttacked> OnAttack;
 
@@ -40,6 +45,7 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void AttackPlayer()
 		{
+			Debug.Log("attacking player");
 			isMoving = false;
 			OnStopMoving?.Invoke();
 			OnAttack?.Invoke(_target);

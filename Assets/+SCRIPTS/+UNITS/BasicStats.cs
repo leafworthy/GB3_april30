@@ -1,24 +1,84 @@
 using GangstaBean.Core;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityUtils;
 
 namespace __SCRIPTS
 {
-	public class BasicStats : MonoBehaviour, INeedPlayer
+	public class BasicStats : MonoBehaviour, INeedPlayer, IHaveData
 	{
+		#region Serialized Fields
+
 		//Handles UnitStatsData
 		public string UnitName;
-		public UnitStatsData Data => _data ??= UnitStatsManager.GetUnitStats(UnitName);
 		[SerializeField] private UnitStatsData _data;
+
+		#endregion
 
 		public bool isInvincible => Data.isInvincible;
 		public DebrisType DebrisType => Data.debrisType;
 
-		[Sirenix.OdinInspector.Button]
+		public bool IsHuman => player != null && player.IsHuman();
+		public LayerMask EnemyLayer => IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
+
+		#region IHaveData Members
+
+		public UnitStatsData Data => _data ??= UnitStatsManager.GetUnitStats(UnitName);
+
+		#endregion
+
+		#region INeedPlayer Members
+
+		public void SetPlayer(Player newPlayer)
+		{
+			player = newPlayer;
+		}
+
+		#endregion
+
+		[Button]
 		public void GetStats()
 		{
-			if(UnitName.IsBlank()) UnitName = gameObject.name;
+			if (UnitName.IsBlank()) UnitName = gameObject.name;
 			_data = UnitStatsManager.GetUnitStats(UnitName);
+		}
+
+		public float GetAttackDamage(int attackIndex) => attackIndex switch
+		                                                 {
+			                                                 1 => Data.attack1Damage + ExtraDamageFactor * Data.attack1Damage +
+			                                                      Data.attack1Damage * (EnemyTier ? EnemyTier.GetEnemyTier() : 0),
+			                                                 2 => Data.attack2Damage + ExtraDamageFactor * Data.attack2Damage +
+			                                                      Data.attack2Damage * (EnemyTier ? EnemyTier.GetEnemyTier() : 0),
+			                                                 3 => Data.attack3Damage + ExtraDamageFactor * Data.attack3Damage +
+			                                                      Data.attack3Damage * (EnemyTier ? EnemyTier.GetEnemyTier() : 0),
+			                                                 4 => Data.attack4Damage + ExtraDamageFactor * Data.attack4Damage +
+			                                                      Data.attack4Damage * (EnemyTier ? EnemyTier.GetEnemyTier() : 0),
+			                                                 _ => 0f
+		                                                 };
+
+		public float GetAttackRange(int attackIndex) => attackIndex switch
+		                                                {
+			                                                1 => Data.attack1Range,
+			                                                2 => Data.attack2Range,
+			                                                3 => Data.attack3Range,
+			                                                4 => Data.attack4Range,
+			                                                _ => 0f
+		                                                };
+
+		public float GetAttackRate(int attackIndex) => attackIndex switch
+		                                               {
+			                                               1 => Data.attack1Rate,
+			                                               2 => Data.attack2Rate,
+			                                               3 => Data.attack3Rate,
+			                                               4 => Data.attack4Rate,
+			                                               _ => 0f
+		                                               };
+
+		public int GetEnemyTier() => EnemyTier.GetEnemyTier();
+
+		public void SetEnemyTier(int tier)
+		{
+			EnemyTier.SetEnemyTier(tier);
 		}
 
 		#region UnitStats Wrappers
@@ -57,51 +117,5 @@ namespace __SCRIPTS
 		public float GetExtraHealth() => ExtraHealthFactor * Data.healthMax + Data.healthMax * (EnemyTier ? EnemyTier.GetEnemyTier() : 0);
 
 		#endregion
-
-		public bool IsHuman => player != null && player.IsHuman();
-		public LayerMask EnemyLayer => IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
-
-		public float GetAttackDamage(int attackIndex) => attackIndex switch
-		                                                 {
-			                                                 1 => Data.attack1Damage + ExtraDamageFactor * Data.attack1Damage +
-			                                                      Data.attack1Damage * (EnemyTier ? EnemyTier.GetEnemyTier() : 0),
-			                                                 2 => Data.attack2Damage + ExtraDamageFactor * Data.attack2Damage +
-			                                                      Data.attack2Damage * (EnemyTier ? EnemyTier.GetEnemyTier() : 0),
-			                                                 3 => Data.attack3Damage + ExtraDamageFactor * Data.attack3Damage +
-			                                                      Data.attack3Damage * (EnemyTier ? EnemyTier.GetEnemyTier() : 0),
-			                                                 4 => Data.attack4Damage + ExtraDamageFactor * Data.attack4Damage +
-			                                                      Data.attack4Damage * (EnemyTier ? EnemyTier.GetEnemyTier() : 0),
-			                                                 _ => 0f
-		                                                 };
-
-		public float GetAttackRange(int attackIndex) => attackIndex switch
-		                                                {
-			                                                1 => Data.attack1Range,
-			                                                2 => Data.attack2Range,
-			                                                3 => Data.attack3Range,
-			                                                4 => Data.attack4Range,
-			                                                _ => 0f
-		                                                };
-
-		public float GetAttackRate(int attackIndex) => attackIndex switch
-		                                               {
-			                                               1 => Data.attack1Rate,
-			                                               2 => Data.attack2Rate,
-			                                               3 => Data.attack3Rate,
-			                                               4 => Data.attack4Rate,
-			                                               _ => 0f
-		                                               };
-
-		public void SetPlayer(Player _player)
-		{
-			player = _player;
-		}
-
-		public int GetEnemyTier() => EnemyTier.GetEnemyTier();
-
-		public void SetEnemyTier(int tier)
-		{
-			EnemyTier.SetEnemyTier(tier);
-		}
 	}
 }

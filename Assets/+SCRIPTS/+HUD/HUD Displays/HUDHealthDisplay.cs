@@ -14,9 +14,9 @@ namespace __SCRIPTS.HUD_Displays
 		private Player player;
 
 
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
-			player = _player;
+			player = newPlayer;
 			barFX = GetComponentInChildren<Bar_FX>();
 			playerDefence = player.SpawnedPlayerGO.GetComponentInChildren<Life>();
 			if (playerDefence != null)
@@ -27,7 +27,7 @@ namespace __SCRIPTS.HUD_Displays
 
 			if (barFX.fastBarImage != null)
 			{
-				barFX.fastBarImage.color = _player.playerColor;
+				barFX.fastBarImage.color = newPlayer.playerColor;
 			}
 
 			playerDefence.OnFractionChanged += UpdateDisplay;

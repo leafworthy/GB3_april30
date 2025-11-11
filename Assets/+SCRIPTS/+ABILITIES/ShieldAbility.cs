@@ -28,8 +28,8 @@ public class ShieldAbility : WeaponAbility
 	public void SetShielding(bool isOn)
 	{
 		shieldObject.SetActive(isOn);
-		//anim.SetBool(UnitAnimations.IsShielding, isOn);
-		life.SetShielding(isOn);
+	anim.SetBool(UnitAnimations.IsShielding, isOn);
+		defence.SetShielding(isOn);
 		isActive = isOn;
 	}
 

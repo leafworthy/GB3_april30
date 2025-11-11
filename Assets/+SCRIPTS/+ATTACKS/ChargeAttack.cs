@@ -78,12 +78,12 @@ namespace __SCRIPTS
 			ammoInventory.secondaryAmmo.reserveAmmo = 0;
 		}
 
-		public override void SetPlayer(Player _player)
+		public override void SetPlayer(Player newPlayer)
 		{
-			if (_player == null) return;
-			base.SetPlayer(_player);
+			if (newPlayer == null) return;
+			base.SetPlayer(newPlayer);
 
-			if (life != null)
+			if (defence != null)
 			{
 				player.Controller.InteractRightShoulder.OnPress -= Player_ChargePress;
 				player.Controller.InteractRightShoulder.OnRelease -= Player_ChargeRelease;
@@ -100,7 +100,7 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			if (life != null) return;
+			if (defence != null) return;
 			player.Controller.InteractRightShoulder.OnPress -= Player_ChargePress;
 			player.Controller.InteractRightShoulder.OnRelease -= Player_ChargeRelease;
 		}
@@ -179,7 +179,7 @@ namespace __SCRIPTS
 			if (Services.pauseManager.IsPaused) return;
 			if (currentState == state.not) return;
 			if (!jumpAbility.IsResting) return;
-			if (life.IsDead()) return;
+			if (defence.IsDead()) return;
 			SetState(state.attacking);
 			if (isFullyCharged)
 				StartSpecialAttack();
@@ -276,23 +276,23 @@ namespace __SCRIPTS
 
 			SpecialAttackDistance = Vector2.Distance(attackPosition, bestTargetPoint);
 
-			var raycastHits = Physics2D.CircleCastAll(attackPosition, SpecialAttackWidth, moveAbility.GetMoveAimDir(), SpecialAttackDistance, life.EnemyLayer);
+			var raycastHits = Physics2D.CircleCastAll(attackPosition, SpecialAttackWidth, moveAbility.GetMoveAimDir(), SpecialAttackDistance, offence.EnemyLayer);
 			OnSpecialAttackHit?.Invoke();
 
 			foreach (var raycastHit2D in raycastHits)
 			{
 				var otherLife = raycastHit2D.collider.GetComponent<Life>();
-				AttackUtilities.HitTarget(life, otherLife, life.SecondaryAttackDamageWithExtra);
+				AttackUtilities.HitTarget(offence, otherLife, offence.Stats.SecondaryAttackDamageWithExtra);
 			}
 
 			var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position + moveAbility.GetMoveAimDir() * SpecialAttackDistance, GetHitRange(),
-				life.EnemyLayer);
+				offence.EnemyLayer);
 
 			foreach (var hit2D in circleCast)
 			{
 				var otherLife = hit2D.gameObject.GetComponent<Life>();
 				if(otherLife == null) continue;
-				AttackUtilities.HitTarget(life, otherLife, otherLife.SecondaryAttackDamageWithExtra, SpecialAttackExtraPush, true);
+				AttackUtilities.HitTarget(offence, otherLife, otherLife.SecondaryAttackDamageWithExtra, SpecialAttackExtraPush, true);
 
 				connect = true;
 				Services.objectMaker.Make(Services.assetManager.FX.hits.GetRandom(), hit2D.transform.position);
@@ -305,6 +305,6 @@ namespace __SCRIPTS
 		private Vector2 GetBestTargetPoint(Vector3 attackPosition) =>
 			moveAbility.IsIdle() ? aimAbility.GetAimPoint() : (Vector2) attackPosition + moveAbility.GetLastMoveAimDirOffset();
 
-		private float GetHitRange() => life.PrimaryAttackRange;
+		private float GetHitRange() => offence.Stats.PrimaryAttackRange;
 	}
 }

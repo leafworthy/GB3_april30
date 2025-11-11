@@ -14,15 +14,15 @@ namespace __SCRIPTS.HUD_Displays
 		private GunAttack gunAttackAkGlock;
 		private bool isGlocking;
 
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
-			player = _player;
+			player = newPlayer;
 			if (player.CurrentCharacter != Character.Bean) return;
 
 			// Cache the component reference once during setup
-			if (_player.SpawnedPlayerGO != null)
+			if (newPlayer.SpawnedPlayerGO != null)
 			{
-				gunAttackAkGlock = _player.SpawnedPlayerGO.GetComponent<GunAttack>();
+				gunAttackAkGlock = newPlayer.SpawnedPlayerGO.GetComponent<GunAttack>();
 
 			}
 		}

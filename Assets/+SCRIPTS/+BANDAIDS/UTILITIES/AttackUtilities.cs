@@ -213,7 +213,7 @@ public static class AttackUtilities
 
 	private static void CreateDamageRisingText(Attack attack)
 	{
-		//if (attack.DamageAmount <= 0|| !health.CanTakeDamage()) return;
+		//if (offence.DamageAmount <= 0|| !health.CanTakeDamage()) return;
 		Services.risingText.CreateRisingText("-" + Mathf.Round(attack.DamageAmount), attack.DestinationWithHeight, Color.red);
 	}
 

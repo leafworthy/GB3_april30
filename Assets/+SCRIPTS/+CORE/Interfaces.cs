@@ -5,7 +5,7 @@ namespace GangstaBean.Core
     /// </summary>
     public interface INeedPlayer
     {
-        void SetPlayer(__SCRIPTS.Player _player);
+        void SetPlayer(__SCRIPTS.Player newPlayer);
     }
 
     /// <summary>

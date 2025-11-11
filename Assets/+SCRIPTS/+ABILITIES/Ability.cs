@@ -10,8 +10,10 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 	protected UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
 	private Body _body;
 	protected Body body => _body ??= GetComponent<Body>();
-	private Life _life;
-	protected Life life => _life ??= GetComponent<Life>();
+	protected IGetAttacked defence => _defence ??= GetComponent<IGetAttacked>();
+	private IGetAttacked _defence;
+	protected ICanAttack offence => _attack ??= GetComponent<ICanAttack>();
+	private ICanAttack _attack;
 	protected IDoableAbility lastLegAbility;
 	protected IDoableAbility lastArmAbility;
 	public abstract string AbilityName { get; }
@@ -67,7 +69,7 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 	private bool BodyCanDo(IDoableAbility abilityToDo)
 	{
 		if (Services.pauseManager.IsPaused) return false;
-		if (life.IsDead()) return false;
+		if (defence.IsDead()) return false;
 
 		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo)) return false;
 
@@ -99,8 +101,8 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 		Invoke(nameof(AnimationComplete), clip.length);
 	}
 
-	public virtual void SetPlayer(Player _player)
+	public virtual void SetPlayer(Player newPlayer)
 	{
-		player = _player;
+		player = newPlayer;
 	}
 }

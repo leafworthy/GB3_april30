@@ -88,10 +88,10 @@ namespace __SCRIPTS
 			StartTint(Color.yellow);
 		}
 
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
-			if (!_player.IsHuman()) return;
-			PlayerTint(_player.playerColor);
+			if (!newPlayer.IsHuman()) return;
+			PlayerTint(newPlayer.playerColor);
 		}
 
 		private void PlayerTint(Color color)
@@ -115,7 +115,7 @@ namespace __SCRIPTS
 
 		private void Life_AttackHit(Attack attack)
 		{
-			Debug.Log("stats fx attack hit, color " + attack.TintColor);
+			Debug.Log("stats fx offence hit, color " + attack.TintColor);
 			StartTint(attack.TintColor);
 			CreateDamageRisingText(attack);
 			SprayDebree(attack);

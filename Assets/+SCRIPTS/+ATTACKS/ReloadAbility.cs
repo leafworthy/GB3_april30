@@ -42,7 +42,7 @@ namespace __SCRIPTS
 		public override void Stop()
 		{
 			base.Stop();
-			Debug.Log("Reload Stopped, doing gun attack");
+			Debug.Log("Reload Stopped, doing gun offence");
 			gunAttack.Resume();
 		}
 
@@ -61,9 +61,9 @@ namespace __SCRIPTS
 			base.Stop();
 		}
 
-		public override void SetPlayer(Player _player)
+		public override void SetPlayer(Player newPlayer)
 		{
-			base.SetPlayer(_player);
+			base.SetPlayer(newPlayer);
 			if (player != null) player.Controller.ReloadTriangle.OnPress -= Player_Reload;
 			if (gunAttack != null) gunAttack.OnNeedsReload -= Gun_OnNeedsReload;
 			player.Controller.ReloadTriangle.OnPress += Player_Reload;

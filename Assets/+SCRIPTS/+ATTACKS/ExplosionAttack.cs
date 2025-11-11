@@ -15,10 +15,10 @@ namespace __SCRIPTS
 		private float explosionRadius = 5;
 		public AnimationClip attackAnimation;
 		private bool isAttacking;
-		protected Life life => _life ?? GetComponent<Life>();
-		private Life _life;
+		protected IGetAttacked life => _life ?? GetComponent<IGetAttacked>();
+		private IGetAttacked _life;
 
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
 			anim = GetComponent<UnitAnimations>();
 			anim.animEvents.OnAttackHit += AttackHit;
@@ -27,7 +27,7 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			if (life.IsHuman)
+			if (attacker.player.IsHuman())
 				life.player.Controller.Attack1RightTrigger.OnPress -= Player_Attack;
 			else
 				attacker.OnAttack -= AttackerAttack;
@@ -43,7 +43,7 @@ namespace __SCRIPTS
 			if (life.IsDead()) return;
 			if (currentTargetLife == null) return;
 
-			AttackUtilities.Explode(transform.position, explosionRadius, life.PrimaryAttackDamageWithExtra, life);
+			AttackUtilities.Explode(transform.position, explosionRadius, _attacker.Stats.PrimaryAttackDamageWithExtra, _attacker);
 			life.DieNow();
 		}
 
@@ -66,8 +66,7 @@ namespace __SCRIPTS
 			if (Services.pauseManager.IsPaused) return;
 			if (life.IsDead()) return;
 
-			var hitObject = AttackUtilities.RaycastToObject(currentTargetLife,
-				life.IsHuman ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer);
+			var hitObject = AttackUtilities.RaycastToObject(currentTargetLife, attacker.player.IsHuman() ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer);
 			if (hitObject.collider == null) return;
 
 			currentTargetLife = hitObject.collider.gameObject.GetComponent<Life>();

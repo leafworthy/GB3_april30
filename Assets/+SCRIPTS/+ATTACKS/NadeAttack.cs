@@ -22,7 +22,7 @@ namespace __SCRIPTS
 		private JumpAbility _jump;
 		private DoableArms arms => body.doableArms;
 
-		public event Action<Vector2, Vector2, float, Life> OnThrow;
+		public event Action<Vector2, Vector2, float, ICanAttack> OnThrow;
 		public event Action OnShowAiming;
 		public event Action OnHideAiming;
 		public event Action<Vector2, Vector2> OnAimAt;
@@ -57,9 +57,9 @@ namespace __SCRIPTS
 			lastArmAbility.Resume();
 		}
 
-		public override void SetPlayer(Player _player)
+		public override void SetPlayer(Player newPlayer)
 		{
-			base.SetPlayer(_player);
+			base.SetPlayer(newPlayer);
 			animationEvents = anim.animEvents;
 			move = GetComponent<MoveAbility>();
 			ammo = GetComponent<AmmoInventory>();
@@ -120,7 +120,7 @@ namespace __SCRIPTS
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = body.AimCenter.transform.position;
 			var velocity = new Vector3((endPoint.x - startPoint.x) / throwTime, (endPoint.y - startPoint.y) / throwTime);
-			OnThrow?.Invoke(startPoint, velocity, throwTime, life);
+			OnThrow?.Invoke(startPoint, velocity, throwTime, offence);
 			HideAiming();
 		}
 
@@ -133,7 +133,7 @@ namespace __SCRIPTS
 
 		private void Player_OnAim(IControlAxis controlAxis, Vector2 aimDir)
 		{
-			if (life.IsDead()) return;
+			if (defence.IsDead()) return;
 			if (Services.pauseManager.IsPaused) return;
 			if (!IsAiming) return;
 			Aim();

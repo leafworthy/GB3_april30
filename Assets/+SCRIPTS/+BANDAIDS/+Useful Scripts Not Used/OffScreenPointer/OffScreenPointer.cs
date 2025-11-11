@@ -73,9 +73,9 @@ namespace __SCRIPTS
 			pointer.localRotation = Quaternion.Euler(0, 0, angle);
 		}
 
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
-			player = _player;
+			player = newPlayer;
 			player.OnPlayerDies += Player_OnPlayerDies;
 		}
 

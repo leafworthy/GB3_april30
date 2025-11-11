@@ -25,13 +25,13 @@ public class TeleportAbility : Ability
 	private void Teleport()
 	{
 		if (teleportAnimationClip != null) PlayAnimationClip(teleportAnimationClip);
-		life.SetTemporarilyInvincible(true);
+		defence.SetTemporarilyInvincible(true);
 		Invoke(nameof(Anim_Teleport), teleportTime);
 	}
 
-	public override void SetPlayer(Player _player)
+	public override void SetPlayer(Player newPlayer)
 	{
-		base.SetPlayer(_player);
+		base.SetPlayer(newPlayer);
 		player.Controller.DashRightShoulder.OnPress += Controller_DashPress;
 	}
 
@@ -57,7 +57,7 @@ public class TeleportAbility : Ability
 			if (teleportDirection.magnitude < 0.1f) teleportDirection = body.BottomIsFacingRight ? Vector2.right : Vector2.left;
 		}
 
-		var teleportDistance = life.DashSpeed;
+		var teleportDistance = offence.Stats.DashSpeed;
 		var teleportOffset = teleportDirection.normalized * teleportDistance;
 		var newPoint = (Vector2) transform.position + teleportOffset;
 
@@ -66,7 +66,7 @@ public class TeleportAbility : Ability
 
 	public override void Stop()
 	{
-		life.SetTemporarilyInvincible(false);
+		defence.SetTemporarilyInvincible(false);
 		base.Stop();
 		lastLegAbility?.Do();
 	}

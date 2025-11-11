@@ -14,9 +14,9 @@ namespace __SCRIPTS
 
 		public bool IsMoving() => false;
 
-		public void SetPlayer(Player _player)
+		public void SetPlayer(Player newPlayer)
 		{
-			player = _player;
+			player = newPlayer;
 			if (player == null) return;
 			player.Controller.MoveAxis.OnChange += Player_MoveInDirection;
 			player.Controller.MoveAxis.OnInactive += Player_StopMoving;
