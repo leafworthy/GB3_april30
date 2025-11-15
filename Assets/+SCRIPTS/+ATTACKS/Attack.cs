@@ -43,10 +43,12 @@ namespace __SCRIPTS
 		Transform transform { get; }
 		Player player { get; }
 		LayerMask EnemyLayer { get; }
-		IHaveAttackStats Stats { get; }
+		IHaveAttackStats stats { get; }
 
 		bool IsEnemyOf(IGetAttacked targetLife);
 		event Action<IGetAttacked> OnAttack;
+		event Action OnAttackStop;
+		event Action OnAttackStart;
 	}
 
 public interface IHaveData

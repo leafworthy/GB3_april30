@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using __SCRIPTS;
+using __SCRIPTS.Plugins._ISOSORT;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -83,14 +83,10 @@ public static class AttackUtilities
 		return closest.transform.gameObject;
 	}
 
-
 	public static bool HitTarget(ICanAttack originLife, IGetAttacked targetLife, float attackDamage, float extraPush = .1f, bool causesFlying = false)
 	{
 		if (targetLife == null) return false;
-		if (!IsValidTarget(originLife, targetLife))
-		{
-			return false;
-		}
+		if (!IsValidTarget(originLife, targetLife)) return false;
 
 		Debug.Log("hit target");
 
@@ -175,20 +171,17 @@ public static class AttackUtilities
 
 	public static void TintDebreeColor(GameObject debreeObject, Color DebreeTint)
 	{
-
 		var spriteToTint = debreeObject.GetComponentInChildren<SpriteRenderer>();
 		if (spriteToTint != null)
 			spriteToTint.color = DebreeTint;
 	}
 
-
-
 	public static void AttackHitFX(Attack attack, List<SpriteRenderer> renderersToTint, DebrisType debrisType, Color debrisColor)
 	{
 		StartTint(attack.TintColor, renderersToTint);
 		CreateDamageRisingText(attack);
-		SprayDebree(attack,  debrisType, debrisColor);
-		MakeHitMark(attack,  debrisType);
+		SprayDebree(attack, debrisType, debrisColor);
+		MakeHitMark(attack, debrisType);
 	}
 
 	private static void MakeHitMark(Attack attack, DebrisType debrisType)
@@ -220,7 +213,7 @@ public static class AttackUtilities
 	private static void SprayDebree(Attack attack, DebrisType debrisType, Color debrisColor)
 	{
 		if (attack.MakesDebree) return;
-		MakeDebree(attack  , attack.DestinationFloorPoint, debrisType, Color.red);
+		MakeDebree(attack, attack.DestinationFloorPoint, debrisType, Color.red);
 		if (debrisType != DebrisType.blood) return;
 		CreateBloodSpray(attack);
 	}
@@ -241,7 +234,7 @@ public static class AttackUtilities
 		{
 			var randomAngle = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)).normalized;
 			//----->
-			FireDebree(attack.Direction + randomAngle, attack.OriginHeight, 1, position,debrisType,debrisColor);
+			FireDebree(attack.Direction + randomAngle, attack.OriginHeight, 1, position, debrisType, debrisColor);
 
 			//<-----
 			FireDebree(attack.FlippedDirection + randomAngle, attack.OriginHeight, 1, position, debrisType, debrisColor);
@@ -256,13 +249,13 @@ public static class AttackUtilities
 		Services.objectMaker.Unmake(forwardDebree, 3);
 	}
 
-	public static void ExplodeDebreeEverywhere(float explosionSize,  Vector2 position, DebrisType debrisType, Color debrisColor, int min = 5, int max = 10)
+	public static void ExplodeDebreeEverywhere(float explosionSize, Vector2 position, DebrisType debrisType, Color debrisColor, int min = 5, int max = 10)
 	{
 		var randAmount = Random.Range(min, max);
 		for (var j = 0; j < randAmount; j++)
 		{
 			var randomAngle = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-			FireDebree(randomAngle, 0, explosionSize,  position, debrisType, debrisColor);
+			FireDebree(randomAngle, 0, explosionSize, position, debrisType, debrisColor);
 		}
 	}
 
@@ -274,5 +267,22 @@ public static class AttackUtilities
 		{
 			r.material.SetColor(Tint, materialTintColor);
 		}
+	}
+
+	public static Bounds2D GetCombinedSpriteBounds(Transform t)
+	{
+		var spriteRenderers = t.GetComponentsInChildren<SpriteRenderer>();
+		var bounds = new Bounds(t.position, Vector3.zero);
+
+		if (spriteRenderers.Length == 0)
+		{
+			return new Bounds2D(bounds);
+
+		}
+
+		var combinedBounds = spriteRenderers[0].bounds;
+		for (var i = 1; i < spriteRenderers.Length; i++) combinedBounds.Encapsulate(spriteRenderers[i].bounds);
+
+		return new Bounds2D(bounds);
 	}
 }

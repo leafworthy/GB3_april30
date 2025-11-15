@@ -282,7 +282,7 @@ namespace __SCRIPTS
 			foreach (var raycastHit2D in raycastHits)
 			{
 				var otherLife = raycastHit2D.collider.GetComponent<Life>();
-				AttackUtilities.HitTarget(offence, otherLife, offence.Stats.SecondaryAttackDamageWithExtra);
+				AttackUtilities.HitTarget(offence, otherLife, offence.stats.SecondaryAttackDamageWithExtra);
 			}
 
 			var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position + moveAbility.GetMoveAimDir() * SpecialAttackDistance, GetHitRange(),
@@ -305,6 +305,6 @@ namespace __SCRIPTS
 		private Vector2 GetBestTargetPoint(Vector3 attackPosition) =>
 			moveAbility.IsIdle() ? aimAbility.GetAimPoint() : (Vector2) attackPosition + moveAbility.GetLastMoveAimDirOffset();
 
-		private float GetHitRange() => offence.Stats.PrimaryAttackRange;
+		private float GetHitRange() => offence.stats.PrimaryAttackRange;
 	}
 }

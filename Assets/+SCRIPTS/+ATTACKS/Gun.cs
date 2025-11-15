@@ -42,8 +42,6 @@ namespace __SCRIPTS
 		private Body _body;
 		protected ICanAttack attacker => _attacker ??= GetComponent<ICanAttack>();
 		private ICanAttack _attacker;
-		protected IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
-		private IHaveAttackStats _stats;
 		private bool isCoolingDown;
 		private float currentCooldownTime;
 		public string AnimationClipSuffix => this is PrimaryGun ? "" : "_Glock";
@@ -163,10 +161,10 @@ namespace __SCRIPTS
 	public class PrimaryGun : Gun
 	{
 		private bool isShooting;
-		public override float AttackRate => stats.PrimaryAttackRate;
-		protected override float Damage => stats.PrimaryAttackDamageWithExtra;
+		public override float AttackRate => attacker.stats.PrimaryAttackRate;
+		protected override float Damage => attacker.stats.PrimaryAttackDamageWithExtra;
 		protected override Ammo Ammo => ammoInventory.primaryAmmo;
-		protected override float AttackRange => stats.PrimaryAttackRange;
+		protected override float AttackRange => attacker.stats.PrimaryAttackRange;
 		protected override float Spread => 0;
 
 		protected override int numberOfBulletsPerShot => 1;
@@ -178,13 +176,13 @@ namespace __SCRIPTS
 
 		private float GetAttackRate()
 		{
-			Debug.Log("unlimited offence rate: " + stats.UnlimitedAttackRate);
-			return stats.UnlimitedAttackRate;
+			Debug.Log("unlimited offence rate: " + attacker.stats.UnlimitedAttackRate);
+			return attacker.stats.UnlimitedAttackRate;
 		}
 
-		protected override float Damage => stats.UnlimitedAttackDamageWithExtra;
+		protected override float Damage => attacker.stats.UnlimitedAttackDamageWithExtra;
 		protected override Ammo Ammo => ammoInventory.unlimitedAmmo;
-		protected override float AttackRange => stats.UnlimitedAttackRange;
+		protected override float AttackRange => attacker.stats.UnlimitedAttackRange;
 		protected override float Spread => 0;
 		protected override int numberOfBulletsPerShot => 1;
 	}

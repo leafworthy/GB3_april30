@@ -210,7 +210,7 @@ public class UnitStatsDatabase : ScriptableObject
 
 #if UNITY_EDITOR
 	// Editor utility methods
-	[UnityEditor.MenuItem("Tools/Stats/Force Reload All Databases")]
+	[UnityEditor.MenuItem("Tools/stats/Force Reload All Databases")]
 	private static void ForceReloadAllDatabases()
 	{
 		var databases = Resources.FindObjectsOfTypeAll<UnitStatsDatabase>();

@@ -28,7 +28,7 @@ namespace __SCRIPTS
 
 		private void OnDrawGizmos()
 		{
-			MyDebugUtilities.DrawCircle(transform.position, attacker.Stats.PrimaryAttackRange, Color.red);
+			MyDebugUtilities.DrawCircle(transform.position, attacker.stats.PrimaryAttackRange, Color.red);
 		}
 
 		private void FixedUpdate()
@@ -41,8 +41,8 @@ namespace __SCRIPTS
 
 		private void CheckForEnemiesInRange()
 		{
-			var enemies = Physics2D.OverlapCircleAll(transform.position, attacker.Stats.PrimaryAttackRange, Services.assetManager.LevelAssets.PlayerLayer).ToList();
-			enemies.AddRange(Physics2D.OverlapCircleAll(transform.position, attacker.Stats.PrimaryAttackRange, Services.assetManager.LevelAssets.DoorLayer).ToList());
+			var enemies = Physics2D.OverlapCircleAll(transform.position, attacker.stats.PrimaryAttackRange, Services.assetManager.LevelAssets.PlayerLayer).ToList();
+			enemies.AddRange(Physics2D.OverlapCircleAll(transform.position, attacker.stats.PrimaryAttackRange, Services.assetManager.LevelAssets.DoorLayer).ToList());
 			if (enemies.Count <= 0) return;
 			foreach (var enemy in enemies)
 			{
@@ -83,13 +83,13 @@ namespace __SCRIPTS
 		private void AttackHit(IGetAttacked other)
 		{
 			currentCooldown = coolDown;
-			var otherAttack = Attack.Create(attacker, other).WithDamage(attacker.Stats.PrimaryAttackDamageWithExtra).WithFlying(causesFlying);
+			var otherAttack = Attack.Create(attacker, other).WithDamage(attacker.stats.PrimaryAttackDamageWithExtra).WithFlying(causesFlying);
 			other.TakeDamage(otherAttack);
 
 			//WEIRD
 			if (!hasBounceBack)
 			{
-				var bouncebackAttack = Attack.Create(attacker, life).WithDamage(attacker.Stats.PrimaryAttackDamageWithExtra);
+				var bouncebackAttack = Attack.Create(attacker, life).WithDamage(attacker.stats.PrimaryAttackDamageWithExtra);
 				life.TakeDamage(bouncebackAttack);
 				mover.Push(bouncebackAttack.Direction, pushBackAmount);
 			}

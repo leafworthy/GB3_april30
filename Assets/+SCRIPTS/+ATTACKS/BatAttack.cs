@@ -71,7 +71,7 @@ namespace __SCRIPTS
 
 		private void RegularAttackHit(int attackType)
 		{
-			var hits = AttackUtilities.CircleCastForXClosestTargets(offence, offence.Stats.PrimaryAttackRange);
+			var hits = AttackUtilities.CircleCastForXClosestTargets(offence, offence.stats.PrimaryAttackRange);
 			if (hits == null) return;
 			foreach (var hit in hits)
 			{

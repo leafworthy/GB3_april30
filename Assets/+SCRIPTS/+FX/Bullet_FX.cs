@@ -34,7 +34,7 @@ namespace __SCRIPTS
 			isOn = true;
 			line(attack.OriginWithHeight, attack.DestinationWithHeight);
 
-			sorting.SorterPositionOffset = attack.OriginFloorPoint -(Vector2)transform.position;
+			sorting.SorterPositionOffset1 = attack.OriginFloorPoint -(Vector2)transform.position;
 			sorting.SorterPositionOffset2 = attack.DestinationFloorPoint - (Vector2)transform.position;
 			sorting.Setup();
 			IsoSpriteSortingManager.UpdateSorting();

@@ -72,7 +72,7 @@ namespace __SCRIPTS.Projectiles
 			Debug.Log("hit", this);
 			isFlying = false;
 			if (hitLife == null) return;
-			var attack = Attack.Create(owner, hitLife).WithDamage(owner.Stats.PrimaryAttackDamageWithExtra);
+			var attack = Attack.Create(owner, hitLife).WithDamage(owner.stats.PrimaryAttackDamageWithExtra);
 			hitLife.TakeDamage(attack);
 			moveJumpAndRotateAbility.SetRotationRate(300);
 			moveJumpAndRotateAbility.moveAbility.StopMoving();

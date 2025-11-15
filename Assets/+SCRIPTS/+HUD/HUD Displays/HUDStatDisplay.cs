@@ -47,7 +47,7 @@ namespace __SCRIPTS.HUD_Displays
 			if (owner == null) return;
 
 			var currentAmount = CurrentAmount;
-			// Don't display negative values (which indicate uninitialized Stats)
+			// Don't display negative values (which indicate uninitialized stats)
 			if (currentAmount < 0) currentAmount = 0;
 
 			if(hasMax)

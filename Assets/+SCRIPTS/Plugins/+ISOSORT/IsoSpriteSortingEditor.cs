@@ -20,19 +20,19 @@ namespace __SCRIPTS.Plugins._ISOSORT
         public void OnSceneGUI()
         {
             IsoSpriteSorting myTarget = (IsoSpriteSorting) target;
-
+            if (myTarget == null) return;
             // Get the local-to-world matrix to account for scaling
             Matrix4x4 localToWorld = myTarget.transform.localToWorldMatrix;
 
             // Calculate the world positions considering scaling
-            Vector3 worldPos1 = localToWorld.MultiplyPoint3x4(myTarget.SorterPositionOffset);
+            Vector3 worldPos1 = localToWorld.MultiplyPoint3x4(myTarget.SorterPositionOffset1);
 
             // First handle position
             Vector3 newPos = Handles.FreeMoveHandle(worldPos1, 0.08f * HandleUtility.GetHandleSize(myTarget.transform.position), Vector3.zero,
                 Handles.DotHandleCap);
 
             // Convert back to local offset
-            myTarget.SorterPositionOffset = myTarget.transform.worldToLocalMatrix.MultiplyPoint3x4(newPos);
+            myTarget.SorterPositionOffset1 = myTarget.transform.worldToLocalMatrix.MultiplyPoint3x4(newPos);
 
             if (myTarget.sortType == IsoSpriteSorting.SortType.Line)
             {
@@ -70,7 +70,6 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
             if (GUILayout.Button("Get Renderersu"))
             {
-	            myScript.hasRenderers = false;
                  myScript.GetRenderers();
             }
         }

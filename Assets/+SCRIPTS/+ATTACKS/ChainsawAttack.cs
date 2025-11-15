@@ -122,9 +122,9 @@ namespace __SCRIPTS
 			Debug.Log("it was this");
 
 			cooldownCounter += Time.fixedDeltaTime;
-			if (!(cooldownCounter >= offence.Stats.TertiaryAttackRate)) return;
+			if (!(cooldownCounter >= offence.stats.TertiaryAttackRate)) return;
 			cooldownCounter = 0;
-			AttackUtilities.HitTargetsWithinRange(offence, body.AttackStartPoint.transform.position, offence.Stats.TertiaryAttackRange, offence.Stats.TertiaryAttackDamageWithExtra);
+			AttackUtilities.HitTargetsWithinRange(offence, body.AttackStartPoint.transform.position, offence.stats.TertiaryAttackRange, offence.stats.TertiaryAttackDamageWithExtra);
 		}
 
 		public override void Stop()

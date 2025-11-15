@@ -57,7 +57,7 @@ namespace __SCRIPTS
 			SetDoorOpen(false);
 			if(closedSorting != null)
 			{
-				closedSortingSorterPositionOffset = closedSorting.SorterPositionOffset;
+				closedSortingSorterPositionOffset = closedSorting.SorterPositionOffset1;
 				closedSortingSorterPositionOffset2 = closedSorting.SorterPositionOffset2;
 			}
 			if (life == null) life = GetComponent<Life>();
@@ -108,12 +108,12 @@ namespace __SCRIPTS
 
 			if (open)
 			{
-				closedSorting.SorterPositionOffset = openSortingPoints.openSortingPoint1;
+				closedSorting.SorterPositionOffset1 = openSortingPoints.openSortingPoint1;
 				closedSorting.SorterPositionOffset2 = openSortingPoints.openSortingPoint2;
 			}
 			else
 			{
-				closedSorting.SorterPositionOffset = closedSortingSorterPositionOffset;
+				closedSorting.SorterPositionOffset1 = closedSortingSorterPositionOffset;
 				closedSorting.SorterPositionOffset2 = closedSortingSorterPositionOffset2;
 			}
 		}

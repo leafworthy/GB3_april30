@@ -15,7 +15,7 @@ namespace __SCRIPTS
 		public bool showLifeBar = false;
 		public bool isInvincible = false;
 
-		[Header("Core Stats")] public float healthMax;
+		[Header("Core stats")] public float healthMax;
 		public float moveSpeed;
 		public float dashSpeed;
 		public float jumpSpeed;
@@ -65,7 +65,7 @@ namespace __SCRIPTS
 			float.TryParse(csvRow["JumpSpeed"], out jumpSpeed);
 			float.TryParse(csvRow["AggroRange"], out aggroRange);
 
-			// Parse offence Stats
+			// Parse offence stats
 			float.TryParse(csvRow["Attack1Damage"], out attack1Damage);
 			float.TryParse(csvRow["Attack1Rate"], out attack1Rate);
 			float.TryParse(csvRow["Attack1Range"], out attack1Range);

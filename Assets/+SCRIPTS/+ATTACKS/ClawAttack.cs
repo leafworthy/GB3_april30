@@ -79,7 +79,7 @@ namespace __SCRIPTS
 				return;
 			}
 
-			currentCooldownTime = Time.time + ai.Stats.PrimaryAttackRate;
+			currentCooldownTime = Time.time + ai.stats.PrimaryAttackRate;
 
 			// Face the target only when starting a new offence
 			FaceTarget();
@@ -108,9 +108,9 @@ namespace __SCRIPTS
 			if (Services.pauseManager.IsPaused) return;
 			if (currentTargetLife == null) return;
 
-			if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= ai.Stats.PrimaryAttackRange*1.25f)
+			if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= ai.stats.PrimaryAttackRange*1.25f)
 			{
-				AttackUtilities.HitTarget(ai, currentTargetLife, ai.Stats.PrimaryAttackDamageWithExtra);
+				AttackUtilities.HitTarget(ai, currentTargetLife, ai.stats.PrimaryAttackDamageWithExtra);
 			}
 
 

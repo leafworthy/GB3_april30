@@ -71,7 +71,7 @@ public class ShieldDashAbility : DashAbility
 
 			OnShieldDash?.Invoke();
 			defence.SetTemporarilyInvincible(true);
-			movement.Push((hit.transform.position - transform.position).normalized, offence.Stats.DashSpeed * extraDashPushFactor);
+			movement.Push((hit.transform.position - transform.position).normalized, offence.stats.DashSpeed * extraDashPushFactor);
 
 		}
 	}

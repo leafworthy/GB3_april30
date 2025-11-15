@@ -5,9 +5,18 @@ using UnityEngine;
 namespace __SCRIPTS
 {
 	[DisallowMultipleComponent]
-	public class PlayerUnitController : MonoBehaviour, INeedPlayer, ICanMoveThings
+	public class PlayerUnitController : MonoBehaviour, INeedPlayer, ICanMoveThings, ICanAttack
 	{
-		private Player player;
+		public Player player => _player;
+		private Player _player;
+		public LayerMask EnemyLayer => player.GetEnemyLayer();
+		public IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
+		private IHaveAttackStats _stats;
+
+		public bool IsEnemyOf(IGetAttacked targetLife) => player.IsHuman() != targetLife.player.IsHuman();
+		public event Action<IGetAttacked> OnAttack;
+		public event Action OnAttackStart;
+		public event Action OnAttackStop;
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;
 		public Vector2 GetMoveAimDir() => player.Controller.MoveAxis.GetCurrentAngle();
@@ -16,10 +25,24 @@ namespace __SCRIPTS
 
 		public void SetPlayer(Player newPlayer)
 		{
-			player = newPlayer;
+			_player = newPlayer;
 			if (player == null) return;
 			player.Controller.MoveAxis.OnChange += Player_MoveInDirection;
 			player.Controller.MoveAxis.OnInactive += Player_StopMoving;
+			player.Controller.Attack1RightTrigger .OnPress += Player_Attack1Press;
+			player.Controller.Attack1RightTrigger.OnRelease += Player_Attack1Release;
+		}
+
+		private void Player_Attack1Release(NewControlButton obj)
+		{
+			if (Services.pauseManager.IsPaused) return;
+			OnAttackStop?.Invoke();
+		}
+
+		private void Player_Attack1Press(NewControlButton obj)
+		{
+			if (Services.pauseManager.IsPaused) return;
+			OnAttackStart?.Invoke();
 		}
 
 		private void Player_StopMoving(NewInputAxis obj)
