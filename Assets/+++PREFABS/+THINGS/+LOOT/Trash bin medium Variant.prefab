@@ -335,6 +335,10 @@ PrefabInstance:
       value: -9.862457
       objectReference: {fileID: 0}
     - target: {fileID: 5783664159353531371, guid: 868dfbf63919c42aab4744259b11dbcd, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 5783664159353531371, guid: 868dfbf63919c42aab4744259b11dbcd, type: 3}
+    - target: {fileID: 5783664159353531371, guid: 868dfbf63919c42aab4744259b11dbcd, type: 3}
       propertyPath: renderersToSort.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -492,6 +496,7 @@ MonoBehaviour:
   toTint:
   - {fileID: 9166802650191383561}
   - {fileID: 3069607071558288624}
+  autoRefresh: 1
 --- !u!212 &9166802650191383561 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 682604173969040475, guid: 868dfbf63919c42aab4744259b11dbcd, type: 3}

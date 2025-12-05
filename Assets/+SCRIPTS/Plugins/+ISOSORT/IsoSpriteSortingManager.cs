@@ -19,8 +19,11 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		public static void RegisterSprite(IsoSpriteSorting newSprite)
 		{
-			if (newSprite.registered) return;
-			if (!newSprite.gameObject.activeInHierarchy) return;
+			if (newSprite.registered)
+			{
+				return;
+			}
+			//if (!newSprite.gameObject.activeInHierarchy) return;
 			if (newSprite.renderBelowAll)
 			{
 				floorSpriteList.Add(newSprite);
@@ -123,7 +126,6 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		public void UpdateSortingButton()
 		{
 			IsoSpriteSorting.UpdateSorters();
-			UpdateSorting();
 		}
 
 		public static void UpdateSorting()

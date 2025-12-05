@@ -51,6 +51,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 1
   renderBelowAll: 0
   sortingBounds: {fileID: 8984657941347445225}
@@ -62,6 +72,7 @@ MonoBehaviour:
   - {fileID: 1117072631564886265}
   - {fileID: 5961430706084748447}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!114 &587933076764190101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,12 +85,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac4e346df68f43d6af642ec8bf0dd272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOverLandable: 0
-  ShadowObject: {fileID: 4135437011287995118}
-  JumpObject: {fileID: 4283239871663422632}
-  Sorting: {fileID: 4174183058637403511}
-  canLand: 0
-  spriteRendererToTint: {fileID: 0}
   rotationObject: {fileID: 8374887072781834304}
 --- !u!114 &3780351340129990144
 MonoBehaviour:
@@ -93,7 +98,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8e19e5c2974953b6d306f3bb0303ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDir: {x: 0, y: 0}
+  acceleration: 0
+  accelerates: 0
+  acceleratatonRate: 3
+  acceleratatonMax: 20
+  decelerationFactor: {x: 0.97, y: 0.97}
 --- !u!114 &8449509674850722507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,7 +115,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a22135ef50477c89a5e717d44de835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HeightObject: {fileID: 4283239871663422632}
   isResting: 0
+  freezeRotation: 0
   IsJumping: 0
 --- !u!61 &8984657941347445225
 BoxCollider2D:
@@ -241,7 +252,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1062
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.7647059}
   m_FlipX: 0
@@ -360,7 +371,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1061
   m_Sprite: {fileID: 21300000, guid: ae08d0fb288114943880495d6265027b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

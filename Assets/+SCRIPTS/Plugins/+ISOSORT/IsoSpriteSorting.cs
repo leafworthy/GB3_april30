@@ -220,6 +220,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		{
 			t = transform; //This needs to be here AND in the Awake function
 			if (renderersToSort.Count == 0) GetRenderers();
+			this.registered = false;
 			IsoSpriteSortingManager.RegisterSprite(this);
 		}
 #if UNITY_EDITOR

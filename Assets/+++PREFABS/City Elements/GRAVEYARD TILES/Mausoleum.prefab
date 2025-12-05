@@ -111,7 +111,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -9575
+  m_SortingOrder: -7580
   m_Sprite: {fileID: -112567766, guid: dc8b56793a8164b83b31f2f8d4c38bc4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -135,6 +135,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 1
   sortingBounds: {fileID: 0}
@@ -145,6 +155,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 6402759223015196061}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!1 &6402759223213668008
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,11 +202,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 0aae0210f0dee4921a6e58b0c9008305, type: 2}
-  cantDie: 1
-  isInvincible: 0
-  Health: 100
+  _player: {fileID: 0}
+  unitStats:
+    _unitData:
+      unitName: 
+      category: 0
+      debrisType: 0
+      isPlayerSwingHittable: 0
+      showLifeBar: 0
+      isInvincible: 0
+      healthMax: 0
+      moveSpeed: 0
+      dashSpeed: 0
+      jumpSpeed: 0
+      aggroRange: 0
+      attack1Damage: 0
+      attack1Rate: 0
+      attack1Range: 0
+      attack2Damage: 0
+      attack2Rate: 0
+      attack2Range: 0
+      attack3Damage: 0
+      attack3Rate: 0
+      attack3Range: 0
+      attack4Damage: 0
+      attack4Rate: 0
+      attack4Range: 0
+      hasData: 0
+      isDefault: 0
+    ExtraHealthFactor: 0
+    ExtraDamageFactor: 0
+    ExtraSpeedFactor: 0
+    EnemyTier: 0
+  unitHealth:
+    IsTemporarilyInvincible: 0
+    currentHealth: 0
+    IsShielded: 0
 --- !u!60 &6402759223213668013
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -263,7 +305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteForShape: {fileID: 0}
   shadowType: 3
   shadowLayer: 0
   shadowDistance: 0
@@ -389,6 +430,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -399,6 +450,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 6402759223369881970}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!1 &6402759223475908473
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,7 +643,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -9778
+  m_SortingOrder: -6832
   m_Sprite: {fileID: -112567766, guid: dc8b56793a8164b83b31f2f8d4c38bc4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -615,6 +667,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 1
   sortingBounds: {fileID: 0}
@@ -625,6 +687,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 6402759223540293079}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!1 &6402759223751097584
 GameObject:
   m_ObjectHideFlags: 0
@@ -725,6 +788,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -735,6 +808,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 6402759223751097590}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!1 &6402759223975388779
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,6 +909,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -845,6 +929,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 6402759223975388777}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!1 &6402759223994469131
 GameObject:
   m_ObjectHideFlags: 0
@@ -983,6 +1068,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -993,6 +1088,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 6402759224028210260}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!1 &6402759224048572093
 GameObject:
   m_ObjectHideFlags: 0
@@ -1039,11 +1135,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  unitData: {fileID: 11400000, guid: 0aae0210f0dee4921a6e58b0c9008305, type: 2}
-  cantDie: 1
-  isInvincible: 0
-  Health: 100
+  _player: {fileID: 0}
+  unitStats:
+    _unitData:
+      unitName: 
+      category: 0
+      debrisType: 0
+      isPlayerSwingHittable: 0
+      showLifeBar: 0
+      isInvincible: 0
+      healthMax: 0
+      moveSpeed: 0
+      dashSpeed: 0
+      jumpSpeed: 0
+      aggroRange: 0
+      attack1Damage: 0
+      attack1Rate: 0
+      attack1Range: 0
+      attack2Damage: 0
+      attack2Rate: 0
+      attack2Range: 0
+      attack3Damage: 0
+      attack3Rate: 0
+      attack3Range: 0
+      attack4Damage: 0
+      attack4Rate: 0
+      attack4Range: 0
+      hasData: 0
+      isDefault: 0
+    ExtraHealthFactor: 0
+    ExtraDamageFactor: 0
+    ExtraSpeedFactor: 0
+    EnemyTier: 0
+  unitHealth:
+    IsTemporarilyInvincible: 0
+    currentHealth: 0
+    IsShielded: 0
 --- !u!60 &6402759224048572066
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1116,7 +1243,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteForShape: {fileID: 0}
   shadowType: 3
   shadowLayer: 0
   shadowDistance: 0
@@ -1242,6 +1368,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -1252,6 +1388,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 6402759224610787773}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!1001 &4700136400564416927
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1260,10 +1397,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6402759223994469130}
     m_Modifications:
+    - target: {fileID: 428941666889031043, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 428941666889031043, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
     - target: {fileID: 450571320015912094, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
       propertyPath: m_SortingOrder
       value: 10006
       objectReference: {fileID: 0}
+    - target: {fileID: 2450089296644301639, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2450089296644301639, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
     - target: {fileID: 4107011661439997770, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -1314,11 +1459,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5749635723044350571, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
       propertyPath: m_SortingOrder
-      value: 10005
+      value: -5965
       objectReference: {fileID: 0}
+    - target: {fileID: 5893884410372198538, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 5893884410372198538, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
     - target: {fileID: 6210979069130973091, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
       propertyPath: m_SortingOrder
-      value: 10004
+      value: -5966
       objectReference: {fileID: 0}
     - target: {fileID: 7495126173670603414, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
       propertyPath: m_Name
@@ -1326,7 +1475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8552952992812699392, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
       propertyPath: m_SortingOrder
-      value: 10008
+      value: -5964
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1346,6 +1495,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6402759223994469130}
     m_Modifications:
+    - target: {fileID: 2895524324132518643, guid: 147dec640d5ad4ef2b33dd54d4b68349, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2895524324132518643, guid: 147dec640d5ad4ef2b33dd54d4b68349, type: 3}
     - target: {fileID: 2960215587932498742, guid: 147dec640d5ad4ef2b33dd54d4b68349, type: 3}
       propertyPath: m_RootOrder
       value: -1

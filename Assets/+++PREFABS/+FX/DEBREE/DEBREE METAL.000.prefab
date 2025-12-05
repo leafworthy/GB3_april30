@@ -84,18 +84,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a22135ef50477c89a5e717d44de835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isResting: 0
-  IsJumping: 0
   HeightObject: {fileID: 8047778833777015781}
+  isResting: 0
+  freezeRotation: 0
+  IsJumping: 0
 --- !u!114 &3952245511725959318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,6 +129,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda5f38b4216f4ffa8b25cacc7aa0de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HeightObject: {fileID: 8047778833777015781}
+  isResting: 0
+  freezeRotation: 0
+  IsJumping: 0
 --- !u!1 &7000019270999446092
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,7 +208,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 16
+  m_SortingOrder: 1561
   m_Sprite: {fileID: 307185710, guid: 9afff90c4b3a442f58c3f845e94090a9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -331,7 +327,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 15
+  m_SortingOrder: 1560
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.54509807}
   m_FlipX: 0

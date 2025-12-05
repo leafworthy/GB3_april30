@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10004
+  m_SortingOrder: -9302
   m_Sprite: {fileID: 655795118, guid: 21eb6815f0aba4e1aa5bfa4253a0b479, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -162,7 +162,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10005
+  m_SortingOrder: -9301
   m_Sprite: {fileID: 180487164, guid: 21eb6815f0aba4e1aa5bfa4253a0b479, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -250,7 +250,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -9541
+  m_SortingOrder: -9300
   m_Sprite: {fileID: -569704859, guid: 21eb6815f0aba4e1aa5bfa4253a0b479, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -274,6 +274,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 1
   sortingBounds: {fileID: 0}
@@ -286,6 +296,7 @@ MonoBehaviour:
   - {fileID: 5749635723044350571}
   - {fileID: 8552952992812699392}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!1 &5365685035806436997
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,7 +372,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10010
+  m_SortingOrder: 791
   m_Sprite: {fileID: 180487164, guid: 21eb6815f0aba4e1aa5bfa4253a0b479, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -481,7 +492,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10009
+  m_SortingOrder: 790
   m_Sprite: {fileID: -1889060716, guid: 21eb6815f0aba4e1aa5bfa4253a0b479, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -700,6 +711,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -711,6 +732,7 @@ MonoBehaviour:
   - {fileID: 6210979069130973091}
   - {fileID: 5749635723044350571}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!1 &6355931947428896796 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5322985732577467488, guid: 147dec640d5ad4ef2b33dd54d4b68349, type: 3}
@@ -728,6 +750,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -742,6 +774,7 @@ MonoBehaviour:
   - {fileID: 4341981316956580619}
   - {fileID: 8552952992812699392}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!4 &8092598036228627051 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7036146771027863063, guid: 147dec640d5ad4ef2b33dd54d4b68349, type: 3}

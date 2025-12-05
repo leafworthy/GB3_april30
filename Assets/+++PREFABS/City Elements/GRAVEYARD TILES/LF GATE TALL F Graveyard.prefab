@@ -96,7 +96,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteForShape: {fileID: 0}
   shadowType: 3
   shadowLayer: 0
   shadowDistance: 0
@@ -250,6 +249,10 @@ PrefabInstance:
       propertyPath: SorterPositionOffset2.y
       value: -4.5721436
       objectReference: {fileID: 0}
+    - target: {fileID: 8832262323648342622, guid: cdef366a89e59493db4b49db8e0f9d83, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8832262323648342622, guid: cdef366a89e59493db4b49db8e0f9d83, type: 3}
     m_RemovedComponents:
     - {fileID: 7152231165717763326, guid: cdef366a89e59493db4b49db8e0f9d83, type: 3}
     - {fileID: 1016467043840950721, guid: cdef366a89e59493db4b49db8e0f9d83, type: 3}

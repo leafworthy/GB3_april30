@@ -77,7 +77,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 492
+  m_SortingOrder: 2697
   m_Sprite: {fileID: 8065215198520230363, guid: fcd900d06e39f427e9bc1dcc9f768f54, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -262,6 +262,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 1
   renderBelowAll: 0
   sortingBounds: {fileID: 6097458721412697564}
@@ -272,6 +282,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 3254637234882740684}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!114 &1511797809675178676
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -47,6 +47,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 1
   renderBelowAll: 0
   sortingBounds: {fileID: 6042821411532282985}
@@ -57,6 +67,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 5737395016635491170}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!61 &6042821411532282985
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -192,7 +203,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1918
   m_Sprite: {fileID: -5306340334495283747, guid: 5c6feb061bf544a28a1143a5eaead6d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

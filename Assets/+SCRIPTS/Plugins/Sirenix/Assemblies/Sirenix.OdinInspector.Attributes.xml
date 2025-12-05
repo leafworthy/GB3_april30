@@ -703,7 +703,7 @@
         </member>
         <member name="F:Sirenix.OdinInspector.CustomContextMenuAttribute.MenuItem">
             <summary>
-            The name of the menu item.
+            A resolved string defining the name of the menu item.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.CustomContextMenuAttribute.MethodName">
@@ -720,7 +720,7 @@
             <summary>
             Adds a custom option to the context menu of the property.
             </summary>
-            <param name="menuItem">The name of the menu item.</param>
+            <param name="menuItem">A resolved string defining the name of the menu item.</param>
             <param name="action">A resolved string defining the action to take when the context menu is clicked.</param>
         </member>
         <member name="T:Sirenix.OdinInspector.CustomValueDrawerAttribute">
@@ -2952,11 +2952,11 @@
             <note type="note">Note that this attribute only works in the editor! Values changed from scripting will not be capped at a minimum.</note>
             </remarks>
             <example>
-            <para>The following example shows a player component that must have at least 1 defence.</para>
+            <para>The following example shows a player component that must have at least 1 life.</para>
             <code>
             public class Player : MonoBehaviour
             {
-            	// The defence value must be set to at least 1.
+            	// The life value must be set to at least 1.
             	[MinValue(1)]
             	public int Life;
             }

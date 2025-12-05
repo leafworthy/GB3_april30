@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10060
+  m_SortingOrder: 1468
   m_Sprite: {fileID: 555445320, guid: 1bfcdf4a216e0432f9d7f16f3e343583, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -162,7 +162,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10059
+  m_SortingOrder: 1467
   m_Sprite: {fileID: 580962758, guid: 1bfcdf4a216e0432f9d7f16f3e343583, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -349,6 +349,10 @@ PrefabInstance:
       propertyPath: SorterPositionOffset2.y
       value: -9.99968
       objectReference: {fileID: 0}
+    - target: {fileID: 5165320303165874937, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 5165320303165874937, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
     - target: {fileID: 5165320303165874937, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
       propertyPath: renderersToSort.Array.size
       value: 2

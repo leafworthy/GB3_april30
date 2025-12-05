@@ -154,7 +154,7 @@ PrefabInstance:
       objectReference: {fileID: -1436521346, guid: 00f72c242156b440d9982035bfd92911, type: 3}
     - target: {fileID: 6484305129628690066, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
       propertyPath: m_SortingOrder
-      value: 10035
+      value: 647
       objectReference: {fileID: 0}
     - target: {fileID: 6484305129628690067, guid: cb578c3eaf1984860819c385e7a8ccfd, type: 3}
       propertyPath: m_Controller
@@ -241,6 +241,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -251,3 +261,4 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 1646206617965166784}
   renderAboveAll: 0
+  hasRenderers: 0

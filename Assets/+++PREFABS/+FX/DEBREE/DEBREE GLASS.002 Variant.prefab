@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1043981308350632558, guid: 46104b86892924f13892b0a8d5cfdf46, type: 3}
       propertyPath: m_SortingOrder
-      value: 6
+      value: 2628
       objectReference: {fileID: 0}
     - target: {fileID: 3220609882814957800, guid: 46104b86892924f13892b0a8d5cfdf46, type: 3}
       propertyPath: m_Name
@@ -82,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 8369566631487148965, guid: 2ccddeeef28fb4216b823dee1a5c94f6, type: 3}
     - target: {fileID: 8167307246579830483, guid: 46104b86892924f13892b0a8d5cfdf46, type: 3}
       propertyPath: m_SortingOrder
-      value: 7
+      value: 2629
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
@@ -110,3 +110,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda5f38b4216f4ffa8b25cacc7aa0de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HeightObject: {fileID: 3585957958661640979}
+  isResting: 0
+  freezeRotation: 0
+  IsJumping: 0
+--- !u!1 &3585957958661640979 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1043981308394007175, guid: 46104b86892924f13892b0a8d5cfdf46, type: 3}
+  m_PrefabInstance: {fileID: 4593415108893079956}
+  m_PrefabAsset: {fileID: 0}

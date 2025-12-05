@@ -328,7 +328,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 503
+  m_SortingOrder: 636
   m_Sprite: {fileID: 21300000, guid: 6c853b9147643440ebfb873457f435c1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -517,10 +517,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0455abdae7264a0ca7c757667fc20f6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
   MaxHealth: 600
   CurrentHealth: 500
-  IsDead: 0
+  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &6872984703532314614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,6 +559,9 @@ MonoBehaviour:
     attack4Range: 0
     hasData: 1
     isDefault: 0
+  ExtraHealthFactor: 0
+  ExtraDamageFactor: 0
+  ExtraSpeedFactor: 0
 --- !u!1 &8523372881259158279
 GameObject:
   m_ObjectHideFlags: 0
