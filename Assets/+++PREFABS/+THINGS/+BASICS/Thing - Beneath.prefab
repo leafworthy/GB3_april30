@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -9470
+  m_SortingOrder: 9890
   m_Sprite: {fileID: 21300000, guid: c29ff29a4b42449de9de892fd9d61721, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -100,6 +100,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 1
   sortingBounds: {fileID: 0}
@@ -110,6 +120,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 1508170745}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!1 &1790287868580633023
 GameObject:
   m_ObjectHideFlags: 0

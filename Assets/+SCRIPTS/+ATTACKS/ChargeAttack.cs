@@ -170,7 +170,7 @@ namespace __SCRIPTS
 		private void Player_ChargePress(NewControlButton newControlButton)
 		{
 			isPressingCharge = true;
-			Do();
+			Try();
 		}
 
 		private void Player_ChargeRelease(NewControlButton newControlButton)
@@ -190,7 +190,7 @@ namespace __SCRIPTS
 		private void DoWeakAttack()
 		{
 			StopCharging();
-			batAttack.Do();
+			batAttack.Try();
 		}
 
 		private void StopCharging()

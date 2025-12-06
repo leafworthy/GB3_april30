@@ -35,7 +35,7 @@ namespace __SCRIPTS
 			else
 			{
 				StopBody();
-				lastArmAbility?.Do();
+				lastArmAbility?.Try();
 			}
 		}
 
@@ -76,7 +76,7 @@ namespace __SCRIPTS
 
 		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 		{
-			Do();
+			Try();
 		}
 
 

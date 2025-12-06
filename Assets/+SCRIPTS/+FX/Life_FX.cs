@@ -248,6 +248,7 @@ namespace __SCRIPTS
 			targetFill = _life.GetFraction();
 			if (targetFill is > .9f or <= 0)
 			{
+
 				if (!isBoss) healthBar.gameObject.SetActive(false);
 			}
 			else

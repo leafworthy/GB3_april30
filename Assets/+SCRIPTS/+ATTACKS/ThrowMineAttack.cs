@@ -108,7 +108,7 @@ namespace __SCRIPTS
 			}
 
 			base.AnimationComplete();
-			lastArmAbility?.Do();
+			lastArmAbility?.Try();
 		}
 
 		private void Player_ThrowPress(NewControlButton newControlButton)
@@ -122,7 +122,7 @@ namespace __SCRIPTS
 
 			if (isThrowing) return;
 			if(body.doableArms.CurrentAbility is not ThrowMineAttack) lastArmAbility = body.doableArms.CurrentAbility;
-			Do();
+			Try();
 		}
 
 		private void Player_ThrowRelease(NewControlButton obj)

@@ -43,6 +43,7 @@ namespace __SCRIPTS
 
 		public void SetTemporarilyInvincible(bool i)
 		{
+			Debug.Log("setting temporary invincibility to " + i);
 			IsTemporarilyInvincible = i;
 		}
 
@@ -103,17 +104,22 @@ namespace __SCRIPTS
 				attack.DamageAmount *= 0.1f;
 			}
 
-			if (!CanTakeDamage()) return;
-			CurrentHealth = Mathf.Max(0, CurrentHealth - attack.DamageAmount);
-			if (CurrentHealth <= 0 && !Data.Data.isInvincible) StartDeath(attack);
-			if (attack.CausesFlying)
+			if (!CanTakeDamage())
 			{
-				Debug.Log("on offence sent flying");
-				OnFlying?.Invoke(attack);
+				Debug.Log("already dead or invincible, no damage taken");
+				return;
 			}
+
+			CurrentHealth = Mathf.Max(0, CurrentHealth - attack.DamageAmount);
+			Debug.Log("took damage of " + attack.DamageAmount + ", current health is " + CurrentHealth);
+			if (CurrentHealth <= 0 && !Data.Data.isInvincible) StartDeath(attack);
+
 
 			OnAttackHit?.Invoke(attack);
 			AttackUtilities.AttackHitFX(attack, renderersToTint, Data.Data.debrisType, DebreeTint);
+			if (!attack.CausesFlying) return;
+			Debug.Log("on offence sent flying");
+			OnFlying?.Invoke(attack);
 		}
 
 		public void AddHealth(float amount)

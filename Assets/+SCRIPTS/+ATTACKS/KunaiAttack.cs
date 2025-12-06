@@ -119,7 +119,7 @@ namespace __SCRIPTS
 			if (isPressingAttack) return;
 			isPressingAttack = true;
 			Debug.Log("start press kunai");
-			Do();
+			Try();
 		}
 	}
 }

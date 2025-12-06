@@ -4,7 +4,7 @@ using GangstaBean.Core;
 
 namespace __SCRIPTS
 {
-	public class UnitAnimations : MonoBehaviour, IPoolable
+	public class UnitAnimations : MonoBehaviour, IPoolable, ISetBool
 	{
 		public AnimationEvents animEvents => _animEvents ??= GetComponentInChildren<AnimationEvents>();
 		private AnimationEvents _animEvents;
@@ -28,6 +28,7 @@ namespace __SCRIPTS
 		public static readonly int ChargeAttackTrigger = Animator.StringToHash("ChargeAttackTrigger");
 		public static readonly int JumpAttackTrigger = Animator.StringToHash("JumpAttackTrigger");
 		public static readonly int FlyingTrigger = Animator.StringToHash("FlyingTrigger");
+		public static readonly int GetUpTrigger = Animator.StringToHash("GetUpTrigger");
 		public static readonly int KnifeTrigger = Animator.StringToHash("KnifeTrigger");
 		public static readonly int ThrowTrigger = Animator.StringToHash("ThrowTrigger");
 		public static readonly int DashTrigger = Animator.StringToHash("DashTrigger");

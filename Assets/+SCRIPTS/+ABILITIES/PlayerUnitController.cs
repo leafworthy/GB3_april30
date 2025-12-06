@@ -13,7 +13,7 @@ namespace __SCRIPTS
 		public IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
 		private IHaveAttackStats _stats;
 
-		public bool IsEnemyOf(IGetAttacked targetLife) => player.IsHuman() != targetLife.player.IsHuman();
+		public bool IsEnemyOf(IGetAttacked targetLife) => player?.IsHuman() != targetLife.player?.IsHuman();
 		public event Action<IGetAttacked> OnAttack;
 		public event Action OnAttackStart;
 		public event Action OnAttackStop;

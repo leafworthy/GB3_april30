@@ -27,7 +27,7 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 	public virtual bool canStop(IDoableAbility abilityToStopFor) => false;
 
 
-	public void Do()
+	public void Try()
 	{
 		if (!canDo())
 		{
@@ -63,7 +63,7 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public virtual void Resume()
 	{
-		Do();
+		Try();
 	}
 
 	private bool BodyCanDo(IDoableAbility abilityToDo)

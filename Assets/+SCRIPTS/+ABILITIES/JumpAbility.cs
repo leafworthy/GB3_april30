@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using GangstaBean.Core;
 using UnityEngine;
 
@@ -33,8 +34,8 @@ namespace __SCRIPTS
 		public AnimationClip onGroundAnimationClip;
 		public AnimationClip getUpAnimationClip;
 		public AnimationClip standingAnimationClip;
-		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
-		private MoveAbility _moveAbility;
+		private ICanMove moveAbility => _moveAbility ??= GetComponent<ICanMove>();
+		private ICanMove _moveAbility;
 
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnJump;
@@ -44,6 +45,7 @@ namespace __SCRIPTS
 		private const float FallInDistance = 80;
 		private const float maxAirTime = 2.5f;
 		private float airTimer;
+		private float getUpTime = 2;
 		private bool IsFlying  => currentState == state.flying;
 
 		public bool IsFalling => currentState == state.falling;
@@ -71,6 +73,7 @@ namespace __SCRIPTS
 
 		public override void Stop()
 		{
+			Debug.Log("stopping jump ability");
 			verticalVelocity = 0;
 			SetState(state.resting);
 			moveAbility.SetCanMove(true);
@@ -82,12 +85,13 @@ namespace __SCRIPTS
 		{
 			if (currentState is state.flying)
 			{
-				StartFlyingAnimation();
+				moveAbility.SetCanMove(false);
+				PlayAnimationClip(flyingAnimationClip);
 			}
 			else
 			{
 				SetState(state.jumpingUp);
-				StartJumpAnimation();
+				PlayAnimationClip(jumpingAnimationClip);
 			}
 
 			airTimer = 0;
@@ -96,18 +100,6 @@ namespace __SCRIPTS
 			verticalVelocity = offence.stats.JumpSpeed;
 			body.SetHeight(0);
 			body.ChangeLayer(Body.BodyLayer.jumping);
-		}
-
-		private void StartJumpAnimation()
-		{
-			Debug.Log("tryin reg jump");
-			PlayAnimationClip(jumpingAnimationClip);
-		}
-
-		private void StartFlyingAnimation()
-		{
-			Debug.Log("should play flying anim");
-			PlayAnimationClip(flyingAnimationClip);
 		}
 
 		public override void SetPlayer(Player newPlayer)
@@ -129,7 +121,7 @@ namespace __SCRIPTS
 
 		private void Controller_Jump(NewControlButton newControlButton)
 		{
-			Do();
+			Try();
 		}
 
 		private void DefenceOnDead(Attack attack)
@@ -140,7 +132,7 @@ namespace __SCRIPTS
 		private void StartFlying()
 		{
 			SetState(state.flying);
-			DoAbility();
+			Try();
 		}
 
 		private void OnDisable()
@@ -225,6 +217,15 @@ namespace __SCRIPTS
 
 		private void StartGettingUp()
 		{
+			StartCoroutine(GettingUpCoroutine());
+
+		}
+
+		private IEnumerator GettingUpCoroutine()
+		{
+			Debug.Log("coroutine started");
+			yield return new WaitForSeconds(getUpTime);
+			Debug.Log("coroutine finished");
 			PlayAnimationClip(getUpAnimationClip);
 			SetState(state.gettingUp);
 		}
@@ -254,6 +255,7 @@ namespace __SCRIPTS
 		{
 			defence.SetTemporarilyInvincible(false);
 			moveAbility.SetCanMove(false);
+			Debug.Log("move should be false");
 			body.SetGrounded();
 			verticalVelocity = 0;
 			OnLand?.Invoke(transform.position);
@@ -266,4 +268,6 @@ namespace __SCRIPTS
 			verticalVelocity += doubleJumpForce;
 		}
 	}
+
+
 }

@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 563
+  m_SortingOrder: 461
   m_Sprite: {fileID: -2074473135, guid: a94f60398573741909b23deffd672f62, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -195,7 +195,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 561
+  m_SortingOrder: 455
   m_Sprite: {fileID: -3618512888083263205, guid: 83d9ff1ae9fd047a29d0c7550c994f2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -340,7 +340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  _player: {fileID: 0}
   unitStats:
     _unitData:
       unitName: 
@@ -371,8 +371,10 @@ MonoBehaviour:
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
+    EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
+    currentHealth: 0
     IsShielded: 0
 --- !u!114 &5619406683089942140
 MonoBehaviour:
@@ -386,8 +388,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowBarImage: {fileID: 5022462535569563434}
-  fastBarImage: {fileID: 5022462535748658259}
   DebreeTint: {r: 0.26666668, g: 0.43137255, b: 0.34117648, a: 1}
   colorMode: 1
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
@@ -421,8 +421,9 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
-  healthBar: {fileID: 5022462534954843074}
+  _healthBar: {fileID: 0}
   BlockTint: 0
+  isBoss: 0
 --- !u!1 &4044931759727801869
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,7 +499,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 563
+  m_SortingOrder: 459
   m_Sprite: {fileID: -2074473135, guid: a94f60398573741909b23deffd672f62, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -947,7 +948,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 563
+  m_SortingOrder: 460
   m_Sprite: {fileID: -7692083505610926101, guid: a94f60398573741909b23deffd672f62, type: 3}
   m_Color: {r: 0.745728, g: 0.7655153, b: 0.9245283, a: 1}
   m_FlipX: 0
@@ -1056,7 +1057,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  _player: {fileID: 0}
   unitStats:
     _unitData:
       unitName: 
@@ -1087,8 +1088,10 @@ MonoBehaviour:
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
+    EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
+    currentHealth: 0
     IsShielded: 0
 --- !u!114 &5914516213151894529
 MonoBehaviour:
@@ -1102,8 +1105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowBarImage: {fileID: 0}
-  fastBarImage: {fileID: 0}
   DebreeTint: {r: 0.26666668, g: 0.43137255, b: 0.34117648, a: 1}
   colorMode: 1
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
@@ -1137,8 +1138,9 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
-  healthBar: {fileID: 0}
+  _healthBar: {fileID: 0}
   BlockTint: 0
+  isBoss: 0
 --- !u!1 &6585261205826722841
 GameObject:
   m_ObjectHideFlags: 0
@@ -1217,7 +1219,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 560
+  m_SortingOrder: 456
   m_Sprite: {fileID: -716964298, guid: 83d9ff1ae9fd047a29d0c7550c994f2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1329,7 +1331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  _player: {fileID: 0}
   unitStats:
     _unitData:
       unitName: 
@@ -1360,8 +1362,10 @@ MonoBehaviour:
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
+    EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
+    currentHealth: 0
     IsShielded: 0
 --- !u!1 &7628873886596395453
 GameObject:
@@ -1438,7 +1442,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 560
+  m_SortingOrder: 454
   m_Sprite: {fileID: -3618512888083263205, guid: 83d9ff1ae9fd047a29d0c7550c994f2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1525,7 +1529,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 563
+  m_SortingOrder: 458
   m_Sprite: {fileID: -7692083505610926101, guid: a94f60398573741909b23deffd672f62, type: 3}
   m_Color: {r: 0.745728, g: 0.7655153, b: 0.9245283, a: 1}
   m_FlipX: 0
@@ -1595,6 +1599,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -1612,6 +1617,7 @@ MonoBehaviour:
   - {fileID: 2528156651842282712}
   - {fileID: 272354478085389389}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!1 &9136809418054616558
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,7 +1728,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 561
+  m_SortingOrder: 457
   m_Sprite: {fileID: -716964298, guid: 83d9ff1ae9fd047a29d0c7550c994f2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1834,7 +1840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  _player: {fileID: 0}
   unitStats:
     _unitData:
       unitName: 
@@ -1865,6 +1871,8 @@ MonoBehaviour:
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
+    EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
+    currentHealth: 0
     IsShielded: 0

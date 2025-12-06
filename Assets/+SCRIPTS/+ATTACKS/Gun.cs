@@ -115,23 +115,24 @@ namespace __SCRIPTS
 
 		private void ShootBullet(Vector3 shootDirection)
 		{
-			var hitObject = Physics2D.Linecast(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange,
+			var hitObject = Physics2D.LinecastAll(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange,
 				attacker.EnemyLayer);
 			Debug.DrawLine(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange, Color.green, 3);
 
-			if (hitObject)
+			if (hitObject != null)
 			{
-				var target = hitObject.collider.gameObject.GetComponentInParent<IGetAttacked>();
-				if (target == null) target = hitObject.collider.gameObject.GetComponentInChildren<IGetAttacked>();
-				if (target == null)
+				foreach (var hit in hitObject)
 				{
-					ShotMissed();
+					var target = hit.collider.gameObject.GetComponentInParent<IGetAttacked>();
+					if (target == null) target = hit.collider.gameObject.GetComponentInChildren<IGetAttacked>();
+					if (target == null) continue;
+					if (!target.CanTakeDamage()) continue;
+					ShotHitTarget(target, hit.point);
 					return;
 				}
-				ShotHitTarget(target, hitObject.point);
 			}
-			else
-				ShotMissed();
+
+			ShotMissed();
 		}
 
 		private void ShotMissed()
@@ -155,8 +156,6 @@ namespace __SCRIPTS
 			targetLife.TakeDamage(newAttack);
 		}
 	}
-
-
 
 	public class PrimaryGun : Gun
 	{

@@ -8,14 +8,14 @@ namespace __SCRIPTS.Plugins._ISOSORT
 	[ExecuteAlways, Serializable]
 	public class IsoSpriteSortingManager : SerializedMonoBehaviour
 	{
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> fgSpriteList = new(2048);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> floorSpriteList = new(2048);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> staticSpriteList = new(2049);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new(2048);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> fgSpriteList = new(256);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> floorSpriteList = new(256);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> staticSpriteList = new(256);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new(256);
 
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> moveableSpriteList = new(2048);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new(2048);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> sortedSprites = new(2048);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> moveableSpriteList = new(256);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new(256);
+		[ShowInInspector] private static readonly List<IsoSpriteSorting> sortedSprites = new(256);
 
 		public static void RegisterSprite(IsoSpriteSorting newSprite)
 		{
@@ -116,6 +116,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 #if UNITY_EDITOR
 			if (!Application.isPlaying)
 			{
+				CleanupNullReferences(); // Add this
 				// This line helps with editor refreshing
 				UnityEditor.EditorUtility.SetDirty(this);
 			}
@@ -226,6 +227,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			for (var i = 0; i < count; i++)
 			{
 				var sprite = fullList[i];
+				if (sprite == null) continue;
 				if (sprite.forceSort)
 				{
 					destinationList.Add(sprite);
@@ -264,6 +266,15 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 				return IsoSpriteSorting.CompareIsoSortersBelow(a, b);
 			});
+		}
+
+		[Button]
+		public static void CleanupNullReferences()
+		{
+			fgSpriteList.RemoveAll(sprite => sprite == null);
+			floorSpriteList.RemoveAll(sprite => sprite == null);
+			staticSpriteList.RemoveAll(sprite => sprite == null);
+			moveableSpriteList.RemoveAll(sprite => sprite == null);
 		}
 	}
 }

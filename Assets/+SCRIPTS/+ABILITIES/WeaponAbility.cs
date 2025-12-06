@@ -51,7 +51,7 @@ namespace __SCRIPTS
 		public override void Resume()
 		{
 			SetState(weaponState.resuming);
-			Do();
+			Try();
 		}
 
 		protected override void AnimationComplete()

@@ -7,7 +7,7 @@ namespace __SCRIPTS
 
 
 	[ExecuteAlways]
-	public class MoveAbility : MonoBehaviour
+	public class MoveAbility : MonoBehaviour, ICanMove
 	{
 		private const float velocityDecayFactor = .90f;
 		private const float overallVelocityMultiplier = 2;
@@ -19,13 +19,14 @@ namespace __SCRIPTS
 		private Rigidbody2D _rb;
 		private Body body => _body ??= GetComponent<Body>();
 		private Body _body;
-		private UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
-		private UnitAnimations _anim;
+		private ISetBool anim => _anim ??= GetComponent<ISetBool>();
+		private ISetBool _anim;
 		private ICanMoveThings mover => _mover ??= GetComponent<ICanMoveThings>();
 		private ICanMoveThings _mover;
-
 		private IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
 		private IHaveAttackStats _stats;
+		private IGetAttacked health => _health ??= GetComponent<IGetAttacked>();
+		private IGetAttacked _health;
 
 		private Vector2 moveVelocity;
 		private Vector2 pushVelocity;
@@ -44,10 +45,7 @@ namespace __SCRIPTS
 		public float acceleratatonRate = 3;
 		public float acceleratatonMax = 20;
 		public Vector2 decelerationFactor = new(.97f, .97f);
-		private IGetAttacked health  => _health ??= GetComponent<IGetAttacked>();
-		private IGetAttacked _health;
 
-		public bool GetCanMove() => canMove;
 		public Vector2 GetLastMoveAimDirOffset() => lastMoveAimDirOffset;
 		public Vector2 GetMoveDir() => moveDir;
 		public Vector2 GetMoveAimDir() => mover.GetMoveAimDir();
@@ -63,6 +61,7 @@ namespace __SCRIPTS
 
 		public void SetCanMove(bool _canMove)
 		{
+			Debug.Log("set can move to " + _canMove);
 			canMove = _canMove;
 			if (!_canMove || !isTryingToMove)
 				StopMoving();
@@ -268,9 +267,10 @@ namespace __SCRIPTS
 			mover.OnStopMoving += MoverStopTryingToMove;
 		}
 
-		private void LifeOnFlying(Attack obj)
+		private void LifeOnFlying(Attack attack)
 		{
 			StopMoving();
+			Push( attack.Direction, attack.DamageAmount + attack.ExtraPush);
 		}
 
 		private void Life_AttackHit(Attack attack)
@@ -282,5 +282,6 @@ namespace __SCRIPTS
 		public Vector2 GetTotalVelocity() => moveVelocity + pushVelocity;
 
 	}
+
 
 }

@@ -16,7 +16,7 @@ namespace GangstaBean.Core
         string AbilityName { get; }
        bool canDo();
         bool canStop(IDoableAbility abilityToStopFor);
-        void Do();
+        void Try();
         void Stop();
         void Resume();
     }
@@ -26,5 +26,15 @@ namespace GangstaBean.Core
     {
         void OnPoolSpawn();
         void OnPoolDespawn();
+    }
+
+    public interface ICanMove
+    {
+	    void SetCanMove(bool canMove);
+    }
+
+    internal interface ISetBool
+    {
+	    void SetBool(int hash, bool value);
     }
 }

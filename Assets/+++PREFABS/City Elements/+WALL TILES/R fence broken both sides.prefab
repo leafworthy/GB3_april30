@@ -101,7 +101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteForShape: {fileID: 2981255788004151221}
   shadowType: 3
   shadowLayer: 0
   shadowDistance: 1
@@ -262,6 +261,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: R fence broken both sides
       objectReference: {fileID: 0}
+    - target: {fileID: 7254167792636159537, guid: 8736d29a24f2b4dbdb33eed90caae366, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 7254167792636159537, guid: 8736d29a24f2b4dbdb33eed90caae366, type: 3}
     - target: {fileID: 7254167792636159537, guid: 8736d29a24f2b4dbdb33eed90caae366, type: 3}
       propertyPath: renderersToSort.Array.size
       value: 2

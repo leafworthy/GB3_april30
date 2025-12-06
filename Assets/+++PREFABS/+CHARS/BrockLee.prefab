@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 421
+  m_SortingOrder: 998
   m_Sprite: {fileID: -564358340089471014, guid: fe05a4e8e28c14a4180b7c6746c146de, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1075,7 +1075,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 422
+  m_SortingOrder: 999
   m_Sprite: {fileID: 7039712764132991997, guid: 1985a0f46e9f147078d6b30a7422c80c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1162,7 +1162,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 420
+  m_SortingOrder: 997
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.85882354}
   m_FlipX: 0
@@ -1390,7 +1390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  _player: {fileID: 0}
   unitStats:
     _unitData:
       unitName: BrockLee
@@ -1424,6 +1424,7 @@ MonoBehaviour:
     EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
+    currentHealth: 0
     IsShielded: 0
 --- !u!114 &6089603519093197841
 MonoBehaviour:
@@ -1437,6 +1438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
   colorMode: 0
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
   barGradient:
@@ -1469,11 +1471,9 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  _healthBar: {fileID: 0}
   BlockTint: 0
   isBoss: 0
-  playerTint:
-    DebreeTint: {r: 0.59607846, g: 0, b: 0, a: 1}
-    BlockTint: 0
 --- !u!114 &3133539343243147869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1658,7 +1658,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   jumpingAnimationClip: {fileID: 7400000, guid: 0da3ea9ae941c46cc8a7fdd4fa338dc3, type: 2}
   fallingAnimationClip: {fileID: 7400000, guid: 70697226afaa6447681371cfa6d7e050, type: 2}
   landingAnimationClip: {fileID: 7400000, guid: 6f9b65c51b621489597a7acd56a13cb7, type: 2}
@@ -1751,7 +1750,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   throwKunaiAnimationClip: {fileID: 7400000, guid: 26673658f918b41e297fe5aeb9008698, type: 2}
   throwAirKunaiAnimationClip: {fileID: 7400000, guid: 6dce986b761a8416d918e30c4c61d699, type: 2}
 --- !u!114 &1964895978986862838
@@ -1775,7 +1773,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   Attack1AnimationClip: {fileID: 7400000, guid: c53884e3b66df4a5c9a34968335afb94, type: 2}
   Attack2AnimationClip: {fileID: 7400000, guid: 5d1c321a6aa5d4dc48da1dac6cb0d7d0, type: 2}
   Attack3AnimationClip: {fileID: 7400000, guid: 59d70ac3559524ba5b41d2f62dc19f70, type: 2}
@@ -1800,7 +1797,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   JumpAttackUpAnimationClip: {fileID: 7400000, guid: 5422ddb890cc046adbedc9b920a152c7, type: 2}
   JumpAttackFallingAnimationClip: {fileID: 7400000, guid: 24b0ae5dae84149c7a3488f843b1df3d, type: 2}
   LandAttackAnimationClip: {fileID: 7400000, guid: 59d70ac3559524ba5b41d2f62dc19f70, type: 2}
@@ -1825,7 +1821,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   chargeStartAnimationClip: {fileID: 7400000, guid: 0c01ca22aead94b82bec7b6848ba6881, type: 2}
   chargeAttackAnimationClip: {fileID: 7400000, guid: cf82f8cfa37c94b10836f5f98863f56a, type: 2}
   chargedAnimationClip: {fileID: 7400000, guid: 4cd1aaa119f6e49ddb31da030704ad74, type: 2}
@@ -1862,7 +1857,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   teleportAnimationClip: {fileID: 7400000, guid: a759834f2a11d4819a458490bd905561, type: 2}
 --- !u!1 &4583028489892907819
 GameObject:
@@ -1981,7 +1975,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 423
+  m_SortingOrder: 1000
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

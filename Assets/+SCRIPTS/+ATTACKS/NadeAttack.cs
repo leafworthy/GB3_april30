@@ -111,7 +111,7 @@ namespace __SCRIPTS
 
 		private void Player_NadeRelease(NewControlButton newControlButton)
 		{
-			Do();
+			Try();
 		}
 
 		private void ThrowGrenade()

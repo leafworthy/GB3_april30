@@ -72,12 +72,12 @@ namespace __SCRIPTS
 
 		private void Gun_OnNeedsReload()
 		{
-			Do();
+			Try();
 		}
 
 		private void Player_Reload(NewControlButton btn)
 		{
-			Do();
+			Try();
 		}
 	}
 }

@@ -96,37 +96,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  _unitData:
-    unitName: 
-    category: 0
-    debrisType: 0
-    isPlayerSwingHittable: 0
-    showLifeBar: 0
-    isInvincible: 0
-    healthMax: 0
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 0
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-  ExtraMaxHealthFactor: 0
-  ExtraMaxSpeedFactor: 0
-  ExtraMaxDamageFactor: 0
-  cantDie: 0
-  isInvincible: 0
-  Health: 100
+  _player: {fileID: 0}
+  unitStats:
+    _unitData:
+      unitName: 
+      category: 0
+      debrisType: 0
+      isPlayerSwingHittable: 0
+      showLifeBar: 0
+      isInvincible: 0
+      healthMax: 0
+      moveSpeed: 0
+      dashSpeed: 0
+      jumpSpeed: 0
+      aggroRange: 0
+      attack1Damage: 0
+      attack1Rate: 0
+      attack1Range: 0
+      attack2Damage: 0
+      attack2Rate: 0
+      attack2Range: 0
+      attack3Damage: 0
+      attack3Rate: 0
+      attack3Range: 0
+      attack4Damage: 0
+      attack4Rate: 0
+      attack4Range: 0
+      hasData: 0
+      isDefault: 0
+    ExtraHealthFactor: 0
+    ExtraDamageFactor: 0
+    ExtraSpeedFactor: 0
+    EnemyTier: 0
+  unitHealth:
+    IsTemporarilyInvincible: 0
+    currentHealth: 0
+    IsShielded: 0
 --- !u!1 &2260240910022495033
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,6 +180,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -186,6 +201,7 @@ MonoBehaviour:
   - {fileID: 6471293830764233971}
   - {fileID: 446444561550738400}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!114 &2670922206207592567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,7 +308,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 3085
   m_Sprite: {fileID: -494833613, guid: 164bfa2353fed4a65b62733b8125497b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -381,7 +397,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 3084
   m_Sprite: {fileID: -1580104818, guid: 164bfa2353fed4a65b62733b8125497b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -572,34 +588,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  _unitData:
-    unitName: 
-    category: 0
-    debrisType: 0
-    isPlayerSwingHittable: 0
-    showLifeBar: 0
-    isInvincible: 0
-    healthMax: 0
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 0
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-  ExtraMaxHealthFactor: 0
-  ExtraMaxSpeedFactor: 0
-  ExtraMaxDamageFactor: 0
-  cantDie: 0
-  isInvincible: 0
-  Health: 0
+  _player: {fileID: 0}
+  unitStats:
+    _unitData:
+      unitName: 
+      category: 0
+      debrisType: 0
+      isPlayerSwingHittable: 0
+      showLifeBar: 0
+      isInvincible: 0
+      healthMax: 0
+      moveSpeed: 0
+      dashSpeed: 0
+      jumpSpeed: 0
+      aggroRange: 0
+      attack1Damage: 0
+      attack1Rate: 0
+      attack1Range: 0
+      attack2Damage: 0
+      attack2Rate: 0
+      attack2Range: 0
+      attack3Damage: 0
+      attack3Rate: 0
+      attack3Range: 0
+      attack4Damage: 0
+      attack4Rate: 0
+      attack4Range: 0
+      hasData: 0
+      isDefault: 0
+    ExtraHealthFactor: 0
+    ExtraDamageFactor: 0
+    ExtraSpeedFactor: 0
+    EnemyTier: 0
+  unitHealth:
+    IsTemporarilyInvincible: 0
+    currentHealth: 0
+    IsShielded: 0

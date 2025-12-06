@@ -48,7 +48,7 @@ public class ShieldDashAbility : DashAbility
 		{
 			shieldAbility.SetShielding(false);
 			StopBody();
-			lastArmAbility?.Do();
+			lastArmAbility?.Try();
 		}
 	}
 
@@ -101,7 +101,7 @@ public class ShieldDashAbility : DashAbility
 	{
 
 
-		Do();
+		Try();
 	}
 
 

@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 636
       objectReference: {fileID: 0}
+    - target: {fileID: 8970055810812046601, guid: bdd73774fda2747ea824d2aeeb287e57, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8970055810812046601, guid: bdd73774fda2747ea824d2aeeb287e57, type: 3}
     m_RemovedComponents:
     - {fileID: 4973708190988450799, guid: bdd73774fda2747ea824d2aeeb287e57, type: 3}
     - {fileID: 3519283188518870037, guid: bdd73774fda2747ea824d2aeeb287e57, type: 3}
@@ -115,7 +119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteForShape: {fileID: 0}
   shadowType: 3
   shadowLayer: 0
   shadowDistance: 0
@@ -229,6 +232,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6881266439540185120, guid: 9ecba6731ee744b9da9f1501cde886e7, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 6881266439540185120, guid: 9ecba6731ee744b9da9f1501cde886e7, type: 3}
     - target: {fileID: 6881266439540185120, guid: 9ecba6731ee744b9da9f1501cde886e7, type: 3}
       propertyPath: renderersToSort.Array.size
       value: 5
@@ -362,6 +369,10 @@ PrefabInstance:
       propertyPath: SorterPositionOffset2.x
       value: 6.618805
       objectReference: {fileID: 0}
+    - target: {fileID: 8970055810812046601, guid: bdd73774fda2747ea824d2aeeb287e57, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8970055810812046601, guid: bdd73774fda2747ea824d2aeeb287e57, type: 3}
     m_RemovedComponents:
     - {fileID: 4973708190988450799, guid: bdd73774fda2747ea824d2aeeb287e57, type: 3}
     - {fileID: 3519283188518870037, guid: bdd73774fda2747ea824d2aeeb287e57, type: 3}
@@ -422,8 +433,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowBarImage: {fileID: 0}
-  fastBarImage: {fileID: 0}
   DebreeTint: {r: 0.21960784, g: 0.21960784, b: 0.21960784, a: 1}
   colorMode: 0
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
@@ -457,8 +466,9 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  healthBar: {fileID: 0}
+  _healthBar: {fileID: 0}
   BlockTint: 0
+  isBoss: 0
 --- !u!1 &8509434581408092366 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7138904774226587776, guid: bdd73774fda2747ea824d2aeeb287e57, type: 3}
@@ -476,7 +486,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteForShape: {fileID: 0}
   shadowType: 3
   shadowLayer: 0
   shadowDistance: 0

@@ -18,7 +18,6 @@ public class HeightAbility : MonoBehaviour, IHaveHeight
 
 	public IHaveHeight SetHeight(float height)
 	{
-		Debug.Log("height set to " + height);
 		Height.y = height;
 		HeightObject.transform.localPosition = Height;
 		return this;

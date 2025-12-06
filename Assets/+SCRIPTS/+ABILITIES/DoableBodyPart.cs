@@ -30,7 +30,7 @@ namespace __SCRIPTS
 
 			_currentAbility = newAbility;
 			Debug.Log("current ability is now: " + CurrentAbility.AbilityName);
-			CurrentAbility.Do();
+			CurrentAbility.Try();
 		}
 
 		private void BufferAbility(IDoableAbility newAbility)

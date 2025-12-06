@@ -5,7 +5,7 @@ namespace __SCRIPTS
 {
 	public class CameraStunner_FX : MonoBehaviour
 	{
-		private const float stunMultiplier = 8;//1.5f
+		private const float stunMultiplier = 2;//1.5f
 
 		public enum StunLength
 		{

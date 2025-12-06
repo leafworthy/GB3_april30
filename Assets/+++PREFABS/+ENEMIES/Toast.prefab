@@ -159,7 +159,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fdae30f0854b54b158616aa60955364b, type: 2}
+  - {fileID: 2100000, guid: 55d73fdec6a3c446c817ee2b4eb8e71d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -179,7 +179,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2020
+  m_SortingOrder: 2593
   m_Sprite: {fileID: 21300000, guid: d05a7e8267163498eb88de5acc7fe973, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -401,7 +401,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5603fbcd325af4d23850d4a2b2cf7a71, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -421,7 +421,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2019
+  m_SortingOrder: 2592
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.65882355}
   m_FlipX: 0
@@ -587,7 +587,7 @@ MonoBehaviour:
       healthMax: 40
       moveSpeed: 22
       dashSpeed: 0
-      jumpSpeed: 1
+      jumpSpeed: 3
       aggroRange: 400
       attack1Damage: 8
       attack1Rate: 1

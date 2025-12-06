@@ -86,7 +86,7 @@ public class KnifeAttack : Ability
 	private void PlayerKnifePress(NewControlButton newControlButton)
 	{
 		isPressing = true;
-		Do();
+		Try();
 	}
 
 	public override void Stop()
@@ -100,12 +100,12 @@ public class KnifeAttack : Ability
 				lastArmAbility.Resume();
 			}
 			base.Stop();
-			lastArmAbility.Do();
+			lastArmAbility.Try();
 		}
 		else
 		{
 			base.Stop();
-			gunAttack.Do();
+			gunAttack.Try();
 		}
 	}
 

@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1005
+  m_SortingOrder: 1401
   m_Sprite: {fileID: -490088482243428576, guid: cdae669d6d6cd4d38891b96b558551b1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -163,7 +163,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1006
+  m_SortingOrder: 1402
   m_Sprite: {fileID: 1734954337644419791, guid: cdae669d6d6cd4d38891b96b558551b1, type: 3}
   m_Color: {r: 1, g: 0, b: 0.8078432, a: 1}
   m_FlipX: 0
@@ -251,7 +251,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1004
+  m_SortingOrder: 1400
   m_Sprite: {fileID: -478286111534681329, guid: cdae669d6d6cd4d38891b96b558551b1, type: 3}
   m_Color: {r: 1, g: 0, b: 0.8078432, a: 1}
   m_FlipX: 0
@@ -339,7 +339,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1008
+  m_SortingOrder: 1404
   m_Sprite: {fileID: -7549661240379742680, guid: cdae669d6d6cd4d38891b96b558551b1, type: 3}
   m_Color: {r: 1, g: 0, b: 0.8078432, a: 1}
   m_FlipX: 0
@@ -479,7 +479,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1009
+  m_SortingOrder: 1405
   m_Sprite: {fileID: 1965825809177152182, guid: cdae669d6d6cd4d38891b96b558551b1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -566,7 +566,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1007
+  m_SortingOrder: 1403
   m_Sprite: {fileID: -1442016204008724125, guid: cdae669d6d6cd4d38891b96b558551b1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -715,6 +715,10 @@ PrefabInstance:
       value: -0.0017299652
       objectReference: {fileID: 0}
     - target: {fileID: 5165320303165874937, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 5165320303165874937, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
+    - target: {fileID: 5165320303165874937, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
       propertyPath: renderersToSort.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -861,6 +865,7 @@ MonoBehaviour:
   - {fileID: 7301025384272635341}
   - {fileID: 4820291575015888079}
   - {fileID: 2318260888074056849}
+  autoRefresh: 1
 --- !u!4 &4440070050219592005 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2882792207722124589, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}

@@ -38,7 +38,7 @@ public class TeleportAbility : Ability
 	private void Controller_DashPress(NewControlButton obj)
 	{
 		Debug.LogWarning("dash pressed inside dash");
-		Do();
+		Try();
 	}
 
 	private void OnDestroy()
@@ -68,6 +68,6 @@ public class TeleportAbility : Ability
 	{
 		defence.SetTemporarilyInvincible(false);
 		base.Stop();
-		lastLegAbility?.Do();
+		lastLegAbility?.Try();
 	}
 }

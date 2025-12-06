@@ -81,7 +81,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 777
+  m_SortingOrder: 2039
   m_Sprite: {fileID: -1813658078, guid: 1e8d73d5b12974304a7f5103c0770cdc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -205,6 +205,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -216,6 +226,7 @@ MonoBehaviour:
   - {fileID: 5745287650752254288}
   - {fileID: 411430356}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!114 &5145241271401901129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,7 +239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteForShape: {fileID: 5745287650752254288}
   shadowType: 3
   shadowLayer: 0
   shadowDistance: 1
@@ -288,7 +298,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 3c423261f2f554b69979c5ffc07c1975, type: 3}
     - target: {fileID: 2510372473898905666, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
       propertyPath: m_SortingOrder
-      value: 776
+      value: 2424
       objectReference: {fileID: 0}
     - target: {fileID: 2718984212677611052, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -435,6 +445,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -445,6 +465,7 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 5745287650752254288}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!114 &5105539143515363228 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3150120706377430670, guid: 69c3de22621074bff8b671ad0b2b15a1, type: 3}

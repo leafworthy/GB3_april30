@@ -119,7 +119,7 @@ namespace __SCRIPTS
 
 			StopListeningToEvents();
 			ListenToEvents();
-			Do();
+			Try();
 		}
 
 		private void Gun_OnNeedsReload()
@@ -192,7 +192,7 @@ namespace __SCRIPTS
 		{
 			currentGun = toPrimary ? primaryGun : unlimitedGun;
 			Stop();
-			Do();
+			Try();
 		}
 
 		public void SwapGuns()

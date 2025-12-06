@@ -185,6 +185,11 @@ namespace __SCRIPTS
 
 
 
+
+
+			unitHealth?.TakeDamage(attack);
+			OnAttackHit?.Invoke(attack);
+			OnFractionChanged?.Invoke(GetFraction());
 			if (!attack.CausesFlying)
 			{
 				animations?.SetTrigger(UnitAnimations.HitTrigger);
@@ -195,10 +200,6 @@ namespace __SCRIPTS
 				OnFlying?.Invoke(attack);
 				animations?.SetTrigger(UnitAnimations.FlyingTrigger);
 			}
-
-			unitHealth?.TakeDamage(attack);
-			OnAttackHit?.Invoke(attack);
-			OnFractionChanged?.Invoke(GetFraction());
 		}
 
 		public void AddHealth(float amount)

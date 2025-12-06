@@ -264,6 +264,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -275,6 +276,7 @@ MonoBehaviour:
   - {fileID: 1034545238}
   - {fileID: 69468366}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!114 &1655654823741520327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,7 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  _player: {fileID: 0}
   unitStats:
     _unitData:
       unitName: 
@@ -415,8 +417,10 @@ MonoBehaviour:
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
+    EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
+    currentHealth: 0
     IsShielded: 0
 --- !u!1 &4005694300556281707
 GameObject:
@@ -514,7 +518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  _player: {fileID: 0}
   unitStats:
     _unitData:
       unitName: 
@@ -545,8 +549,10 @@ MonoBehaviour:
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
+    EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
+    currentHealth: 0
     IsShielded: 0
 --- !u!1001 &3617956460213414418
 PrefabInstance:
@@ -922,6 +928,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -934,6 +941,7 @@ MonoBehaviour:
   - {fileID: 1034545238}
   - {fileID: 69468366}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!212 &5378139544365309799 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 4060789362924438240, guid: 507ac12860c1e4fd98868573c0f85869, type: 3}

@@ -100,7 +100,7 @@ namespace __SCRIPTS
 		private void Player_AttackPress(NewControlButton obj)
 		{
 			if (currentState != state.not) return;
-			Do();
+			Try();
 		}
 
 		public override void Stop()

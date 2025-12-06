@@ -107,7 +107,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 592
+  m_SortingOrder: 1591
   m_Sprite: {fileID: -990047008721953031, guid: c85a37bd2c95a487cb953980ac72aa37, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -194,7 +194,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 592
+  m_SortingOrder: 1593
   m_Sprite: {fileID: -990047008721953031, guid: c85a37bd2c95a487cb953980ac72aa37, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -314,7 +314,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 592
+  m_SortingOrder: 1590
   m_Sprite: {fileID: -6615694795896192477, guid: c85a37bd2c95a487cb953980ac72aa37, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -403,7 +403,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 591
+  m_SortingOrder: 1589
   m_Sprite: {fileID: 4367468734885045425, guid: 94eae26f183e84e6aaa4f75486b60841, type: 3}
   m_Color: {r: 0.46337664, g: 0.56631184, b: 0.8396226, a: 1}
   m_FlipX: 0
@@ -770,7 +770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  _player: {fileID: 0}
   unitStats:
     _unitData:
       unitName: 
@@ -801,8 +801,10 @@ MonoBehaviour:
     ExtraHealthFactor: 0
     ExtraDamageFactor: 0
     ExtraSpeedFactor: 0
+    EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
+    currentHealth: 0
     IsShielded: 0
 --- !u!114 &4761353459917294874
 MonoBehaviour:
@@ -816,8 +818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowBarImage: {fileID: 5567651570556335747}
-  fastBarImage: {fileID: 3229913577128222730}
   DebreeTint: {r: 0.26666668, g: 0.43137255, b: 0.34117648, a: 1}
   colorMode: 1
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
@@ -851,8 +851,9 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
-  healthBar: {fileID: 9103981150834994917}
+  _healthBar: {fileID: 0}
   BlockTint: 0
+  isBoss: 0
 --- !u!61 &6984012515867665224
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -957,6 +958,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 0
   sortingBounds: {fileID: 0}
@@ -974,6 +976,7 @@ MonoBehaviour:
   - {fileID: 2711916055665113617}
   - {fileID: 8827672345017271530}
   renderAboveAll: 0
+  hasRenderers: 0
 --- !u!1 &7253841477042813141
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,7 +1052,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 589
+  m_SortingOrder: 1587
   m_Sprite: {fileID: -1237552141, guid: 94eae26f183e84e6aaa4f75486b60841, type: 3}
   m_Color: {r: 0.5471698, g: 0.28648984, b: 0.28648984, a: 1}
   m_FlipX: 0
@@ -1136,7 +1139,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 588
+  m_SortingOrder: 1586
   m_Sprite: {fileID: -1237552141, guid: 94eae26f183e84e6aaa4f75486b60841, type: 3}
   m_Color: {r: 0.5471698, g: 0.28648984, b: 0.28648984, a: 1}
   m_FlipX: 0
@@ -1225,7 +1228,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 590
+  m_SortingOrder: 1588
   m_Sprite: {fileID: 4367468734885045425, guid: 94eae26f183e84e6aaa4f75486b60841, type: 3}
   m_Color: {r: 0.46337664, g: 0.56631184, b: 0.8396226, a: 1}
   m_FlipX: 0
@@ -1430,7 +1433,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 592
+  m_SortingOrder: 1592
   m_Sprite: {fileID: -6615694795896192477, guid: c85a37bd2c95a487cb953980ac72aa37, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

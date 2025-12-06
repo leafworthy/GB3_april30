@@ -56,7 +56,7 @@ namespace __SCRIPTS
 		{
 			Debug.Log("bat offence");
 			isPressingAttack = true;
-			Do();
+			Try();
 		}
 
 		protected override void DoAbility()
