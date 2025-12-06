@@ -3915,8 +3915,8 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 874422915
-  m_SortingLayer: -3
-  m_SortingOrder: -8142
+  m_SortingLayer: -2
+  m_SortingOrder: -10084
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 25.4, y: 12.8, z: 0}
   m_MaxChunkCount: 16
@@ -3937,16 +3937,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
   isMovable: 0
   renderBelowAll: 1
   sortingBounds: {fileID: 0}
@@ -3957,4 +3947,3 @@ MonoBehaviour:
   renderersToSort:
   - {fileID: 7297947851482686275}
   renderAboveAll: 0
-  hasRenderers: 0
