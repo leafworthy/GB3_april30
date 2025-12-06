@@ -8,6 +8,11 @@ namespace __SCRIPTS.Plugins._ISOSORT
 	[ExecuteAlways, Serializable]
 	public class IsoSpriteSortingManager : SerializedMonoBehaviour
 	{
+		#if UNITY_EDITOR
+		private static float _lastEditorUpdateTime;
+		private const float EDITOR_UPDATE_INTERVAL = 0.2f; // Update 5x per second in editor (slower)
+		#endif
+
 		[ShowInInspector] private static readonly List<IsoSpriteSorting> fgSpriteList = new(2048);
 		[ShowInInspector] private static readonly List<IsoSpriteSorting> floorSpriteList = new(2048);
 		[ShowInInspector] private static readonly List<IsoSpriteSorting> staticSpriteList = new(2049);
@@ -17,13 +22,21 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		[ShowInInspector] private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new(2048);
 		[ShowInInspector] private static readonly List<IsoSpriteSorting> sortedSprites = new(2048);
 
+		// Track which sprites moved this frame
+		private static readonly List<IsoSpriteSorting> movedSprites = new(256);
+
+		// Spatial partitioning grid for faster intersection checks
+		private static SpatialGrid spatialGrid = new SpatialGrid(50f); // 50 unit cell size
+		private static bool useSpatialhashing = true;
+
+		// Cache for visibility checks
+		private static int lastVisibilityFrame = -1;
+		private static bool visibilityChanged = false;
+
 		public static void RegisterSprite(IsoSpriteSorting newSprite)
 		{
-			if (newSprite.registered)
-			{
-				return;
-			}
-			//if (!newSprite.gameObject.activeInHierarchy) return;
+			if (newSprite.registered) return;
+
 			if (newSprite.renderBelowAll)
 			{
 				floorSpriteList.Add(newSprite);
@@ -38,9 +51,11 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			}
 			else
 			{
-				// In editor mode, treat all sprites as movable for dynamic sorting
 				if (newSprite.isMovable || !Application.isPlaying)
+				{
 					moveableSpriteList.Add(newSprite);
+					newSprite.InitializePosition();
+				}
 				else
 				{
 					staticSpriteList.Add(newSprite);
@@ -55,45 +70,79 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		private static void SetupStaticDependencies(IsoSpriteSorting newSprite)
 		{
 			var the_count = staticSpriteList.Count;
-			for (var i = 0; i < the_count; i++)
+
+			if (useSpatialhashing && the_count > 100)
 			{
-				var otherSprite = staticSpriteList[i];
-				if (CalculateBoundsIntersection(newSprite, otherSprite))
+				// Use spatial hashing for large sprite counts
+				var nearbySprites = spatialGrid.GetNearby(newSprite.TheBounds);
+				foreach (var otherSprite in nearbySprites)
 				{
-					var compareResult = IsoSpriteSorting.CompareIsoSorters(newSprite, otherSprite);
-					if (compareResult == -1)
+					if (otherSprite == newSprite) continue;
+					if (!staticSpriteList.Contains(otherSprite)) continue;
+
+					if (CalculateBoundsIntersection(newSprite, otherSprite))
 					{
-						otherSprite.staticDependencies.Add(newSprite);
-						newSprite.inverseStaticDependencies.Add(otherSprite);
+						AddStaticDependency(newSprite, otherSprite);
 					}
-					else if (compareResult == 1)
+				}
+				spatialGrid.Add(newSprite);
+			}
+			else
+			{
+				// Brute force for small counts
+				for (var i = 0; i < the_count; i++)
+				{
+					var otherSprite = staticSpriteList[i];
+					if (CalculateBoundsIntersection(newSprite, otherSprite))
 					{
-						newSprite.staticDependencies.Add(otherSprite);
-						otherSprite.inverseStaticDependencies.Add(newSprite);
+						AddStaticDependency(newSprite, otherSprite);
 					}
 				}
 			}
 		}
 
+		private static void AddStaticDependency(IsoSpriteSorting newSprite, IsoSpriteSorting otherSprite)
+		{
+			var compareResult = IsoSpriteSorting.CompareIsoSorters(newSprite, otherSprite);
+			if (compareResult == -1)
+			{
+				otherSprite.staticDependencies.Add(newSprite);
+				newSprite.inverseStaticDependencies.Add(otherSprite);
+			}
+			else if (compareResult == 1)
+			{
+				newSprite.staticDependencies.Add(otherSprite);
+				otherSprite.inverseStaticDependencies.Add(newSprite);
+			}
+		}
+
 		public static void UnregisterSprite(IsoSpriteSorting spriteToRemove)
 		{
-			if (spriteToRemove.registered)
+			if (!spriteToRemove.registered) return;
+
+			if (spriteToRemove.renderBelowAll)
 			{
-				if (spriteToRemove.renderBelowAll)
-					floorSpriteList.Remove(spriteToRemove);
+				floorSpriteList.Remove(spriteToRemove);
+			}
+			else if (spriteToRemove.renderAboveAll)
+			{
+				fgSpriteList.Remove(spriteToRemove);
+			}
+			else
+			{
+				if (spriteToRemove.isMovable || !Application.isPlaying)
+				{
+					moveableSpriteList.Remove(spriteToRemove);
+				}
 				else
 				{
-					if (spriteToRemove.isMovable)
-						moveableSpriteList.Remove(spriteToRemove);
-					else
-					{
-						staticSpriteList.Remove(spriteToRemove);
-						RemoveStaticDependencies(spriteToRemove);
-					}
+					staticSpriteList.Remove(spriteToRemove);
+					spatialGrid.Remove(spriteToRemove);
+					RemoveStaticDependencies(spriteToRemove);
 				}
-
-				spriteToRemove.registered = false;
 			}
+
+			spriteToRemove.registered = false;
 		}
 
 		private static void RemoveStaticDependencies(IsoSpriteSorting spriteToRemove)
@@ -110,69 +159,192 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		private void Update()
 		{
-			IsoSpriteSorting.UpdateSorters();
-			UpdateSorting();
-
-#if UNITY_EDITOR
+			#if UNITY_EDITOR
 			if (!Application.isPlaying)
 			{
-				// This line helps with editor refreshing
-				UnityEditor.EditorUtility.SetDirty(this);
+				// Only update 5 times per second in editor mode
+				float currentTime = (float)UnityEditor.EditorApplication.timeSinceStartup;
+				if ((currentTime - _lastEditorUpdateTime) < EDITOR_UPDATE_INTERVAL)
+					return;
+
+				_lastEditorUpdateTime = currentTime;
 			}
-#endif
+			#endif
+
+			// Skip UpdateSorters call in play mode - it's editor-only
+			#if UNITY_EDITOR
+			if (!Application.isPlaying)
+			{
+				IsoSpriteSorting.UpdateSorters();
+			}
+			#endif
+
+			// Track movement for moveable sprites
+			UpdateMovementTracking();
+
+			// Only update if something changed
+			if (movedSprites.Count > 0 || visibilityChanged || !Application.isPlaying)
+			{
+				UpdateSorting();
+			}
 		}
 
 		[Button]
 		public void UpdateSortingButton()
 		{
 			IsoSpriteSorting.UpdateSorters();
+			UpdateSorting();
+		}
+
+		private static void UpdateMovementTracking()
+		{
+			movedSprites.Clear();
+
+			// Only check moveable sprites that are registered
+			var count = moveableSpriteList.Count;
+			for (var i = 0; i < count; i++)
+			{
+				var sprite = moveableSpriteList[i];
+				if (sprite == null) continue;
+
+				sprite.CheckForMovement();
+				if (sprite.HasMoved())
+				{
+					movedSprites.Add(sprite);
+				}
+			}
 		}
 
 		public static void UpdateSorting()
 		{
+			// Filter visibility - track if it changed
+			int prevStaticCount = currentlyVisibleStaticSpriteList.Count;
+			int prevMoveableCount = currentlyVisibleMoveableSpriteList.Count;
+
 			FilterListByVisibility(staticSpriteList, currentlyVisibleStaticSpriteList);
 			FilterListByVisibility(moveableSpriteList, currentlyVisibleMoveableSpriteList);
 
-			ClearMovingDependencies(currentlyVisibleStaticSpriteList);
-			ClearMovingDependencies(currentlyVisibleMoveableSpriteList);
+			visibilityChanged = (prevStaticCount != currentlyVisibleStaticSpriteList.Count) ||
+			                    (prevMoveableCount != currentlyVisibleMoveableSpriteList.Count);
+			lastVisibilityFrame = Time.frameCount;
 
-			AddMovingDependencies(currentlyVisibleMoveableSpriteList, currentlyVisibleStaticSpriteList);
+			// Only clear and recalculate if something changed
+			if (movedSprites.Count > 0 || visibilityChanged || !Application.isPlaying)
+			{
+				ClearMovingDependencies(currentlyVisibleStaticSpriteList);
+				ClearMovingDependencies(currentlyVisibleMoveableSpriteList);
+				AddMovingDependencies(currentlyVisibleMoveableSpriteList, currentlyVisibleStaticSpriteList);
+			}
 
+			// Sort and set order
 			sortedSprites.Clear();
 			TopologicalSort.Sort(currentlyVisibleStaticSpriteList, currentlyVisibleMoveableSpriteList, sortedSprites);
 			SetSortOrderBasedOnListOrder(sortedSprites);
+
+			// Clear moved flags after processing
+			for (var i = 0; i < movedSprites.Count; i++)
+			{
+				movedSprites[i].ClearMovedFlag();
+			}
 		}
 
 		private static void AddMovingDependencies(List<IsoSpriteSorting> moveableList, List<IsoSpriteSorting> staticList)
 		{
 			var moveableCount = moveableList.Count;
 			var staticCount = staticList.Count;
+
+			// Use spatial hashing for large sprite counts
+			if (useSpatialhashing && (moveableCount * staticCount) > 10000)
+			{
+				AddMovingDependenciesWithSpatialHash(moveableList, staticList);
+				return;
+			}
+
+			// Standard brute force for smaller counts
 			for (var i = 0; i < moveableCount; i++)
 			{
 				var moveSprite1 = moveableList[i];
-				if (moveSprite1 == null) return;
-				//Add Moving Dependencies to static sprites
+				if (moveSprite1 == null) continue;
+
+				var moveBounds = moveSprite1.TheBounds;
+
+				// Check against static sprites
 				for (var j = 0; j < staticCount; j++)
 				{
 					var staticSprite = staticList[j];
-					if (CalculateBoundsIntersection(moveSprite1, staticSprite))
+					if (moveBounds.Intersects(staticSprite.TheBounds))
 					{
 						var compareResult = IsoSpriteSorting.CompareIsoSorters(moveSprite1, staticSprite);
 						if (compareResult == -1)
 							staticSprite.movingDependencies.Add(moveSprite1);
-						else if (compareResult == 1) moveSprite1.movingDependencies.Add(staticSprite);
+						else if (compareResult == 1)
+							moveSprite1.movingDependencies.Add(staticSprite);
 					}
 				}
 
-				//Add Moving Dependencies to Moving Sprites
-				for (var j = 0; j < moveableCount; j++)
+				// Check against other moveable sprites
+				for (var j = i + 1; j < moveableCount; j++)
 				{
 					var moveSprite2 = moveableList[j];
-					if (moveSprite2 == null) return;
-					if (CalculateBoundsIntersection(moveSprite1, moveSprite2))
+					if (moveSprite2 == null) continue;
+
+					if (moveBounds.Intersects(moveSprite2.TheBounds))
 					{
 						var compareResult = IsoSpriteSorting.CompareIsoSorters(moveSprite1, moveSprite2);
-						if (compareResult == -1) moveSprite2.movingDependencies.Add(moveSprite1);
+						if (compareResult == -1)
+							moveSprite2.movingDependencies.Add(moveSprite1);
+						else if (compareResult == 1)
+							moveSprite1.movingDependencies.Add(moveSprite2);
+					}
+				}
+			}
+		}
+
+		private static void AddMovingDependenciesWithSpatialHash(List<IsoSpriteSorting> moveableList, List<IsoSpriteSorting> staticList)
+		{
+			// Update spatial grid with current static sprites
+			spatialGrid.Clear();
+			foreach (var sprite in staticList)
+			{
+				if (sprite != null) spatialGrid.Add(sprite);
+			}
+
+			var moveableCount = moveableList.Count;
+
+			for (var i = 0; i < moveableCount; i++)
+			{
+				var moveSprite1 = moveableList[i];
+				if (moveSprite1 == null) continue;
+
+				var moveBounds = moveSprite1.TheBounds;
+
+				// Only check nearby static sprites
+				var nearbyStatic = spatialGrid.GetNearby(moveBounds);
+				foreach (var staticSprite in nearbyStatic)
+				{
+					if (moveBounds.Intersects(staticSprite.TheBounds))
+					{
+						var compareResult = IsoSpriteSorting.CompareIsoSorters(moveSprite1, staticSprite);
+						if (compareResult == -1)
+							staticSprite.movingDependencies.Add(moveSprite1);
+						else if (compareResult == 1)
+							moveSprite1.movingDependencies.Add(staticSprite);
+					}
+				}
+
+				// Check against other moveable sprites
+				for (var j = i + 1; j < moveableCount; j++)
+				{
+					var moveSprite2 = moveableList[j];
+					if (moveSprite2 == null) continue;
+
+					if (moveBounds.Intersects(moveSprite2.TheBounds))
+					{
+						var compareResult = IsoSpriteSorting.CompareIsoSorters(moveSprite1, moveSprite2);
+						if (compareResult == -1)
+							moveSprite2.movingDependencies.Add(moveSprite1);
+						else if (compareResult == 1)
+							moveSprite1.movingDependencies.Add(moveSprite2);
 					}
 				}
 			}
@@ -181,7 +353,8 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		private static void ClearMovingDependencies(List<IsoSpriteSorting> sprites)
 		{
 			var count = sprites.Count;
-			for (var i = 0; i < count; i++) sprites[i].movingDependencies.Clear();
+			for (var i = 0; i < count; i++)
+				sprites[i].movingDependencies.Clear();
 		}
 
 		private static bool CalculateBoundsIntersection(IsoSpriteSorting sprite, IsoSpriteSorting otherSprite) =>
@@ -189,12 +362,12 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		private static void SetSortOrderBasedOnListOrder(List<IsoSpriteSorting> spriteList)
 		{
-			var orderCurrent = 420;//was 420
+			var orderCurrent = 420;
 			var count = spriteList.Count;
 			for (var i = 0; i < count; ++i)
 			{
 				spriteList[i].RendererSortingOrder = orderCurrent;
-				orderCurrent += 10 + spriteList[i].renderersToSort.Count; // was 1 +
+				orderCurrent += 10 + spriteList[i].renderersToSort.Count;
 			}
 		}
 
@@ -210,7 +383,6 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		private static void SetSortOrderTop(List<IsoSpriteSorting> spriteList)
 		{
-			Debug.LogWarning("rener above all");
 			var currentIndex = 10000;
 			for (var i = 0; i < spriteList.Count; ++i)
 			{
@@ -226,6 +398,8 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			for (var i = 0; i < count; i++)
 			{
 				var sprite = fullList[i];
+				if (sprite == null) continue;
+
 				if (sprite.forceSort)
 				{
 					destinationList.Add(sprite);
@@ -233,10 +407,12 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				}
 				else
 				{
-					for (var j = 0; j < sprite.renderersToSort.Count; j++)
+					var rendererCount = sprite.renderersToSort.Count;
+					for (var j = 0; j < rendererCount; j++)
 					{
-						if (sprite.renderersToSort[j] == null) continue;
-						if (sprite.renderersToSort[j].isVisible)
+						var renderer = sprite.renderersToSort[j];
+						if (renderer == null) continue;
+						if (renderer.isVisible)
 						{
 							destinationList.Add(sprite);
 							break;
@@ -251,7 +427,6 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			list.Sort((a, b) =>
 			{
 				if (!a || !b) return 0;
-
 				return IsoSpriteSorting.CompareIsoSorters(a, b);
 			});
 		}
@@ -261,9 +436,97 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			list.Sort((a, b) =>
 			{
 				if (!a || !b) return 0;
-
 				return IsoSpriteSorting.CompareIsoSortersBelow(a, b);
 			});
+		}
+	}
+
+	// Spatial grid for fast collision detection
+	public class SpatialGrid
+	{
+		private Dictionary<(int, int), List<IsoSpriteSorting>> grid = new Dictionary<(int, int), List<IsoSpriteSorting>>();
+		private float cellSize;
+		private List<IsoSpriteSorting> tempResults = new List<IsoSpriteSorting>(256);
+
+		public SpatialGrid(float cellSize)
+		{
+			this.cellSize = cellSize;
+		}
+
+		public void Add(IsoSpriteSorting sprite)
+		{
+			var bounds = sprite.TheBounds;
+			var cells = GetCellsForBounds(bounds);
+
+			foreach (var cell in cells)
+			{
+				if (!grid.ContainsKey(cell))
+					grid[cell] = new List<IsoSpriteSorting>();
+
+				if (!grid[cell].Contains(sprite))
+					grid[cell].Add(sprite);
+			}
+		}
+
+		public void Remove(IsoSpriteSorting sprite)
+		{
+			var bounds = sprite.TheBounds;
+			var cells = GetCellsForBounds(bounds);
+
+			foreach (var cell in cells)
+			{
+				if (grid.ContainsKey(cell))
+					grid[cell].Remove(sprite);
+			}
+		}
+
+		public List<IsoSpriteSorting> GetNearby(Bounds2D bounds)
+		{
+			tempResults.Clear();
+			var cells = GetCellsForBounds(bounds);
+
+			foreach (var cell in cells)
+			{
+				if (grid.ContainsKey(cell))
+				{
+					foreach (var sprite in grid[cell])
+					{
+						if (!tempResults.Contains(sprite))
+							tempResults.Add(sprite);
+					}
+				}
+			}
+
+			return tempResults;
+		}
+
+		public void Clear()
+		{
+			foreach (var list in grid.Values)
+			{
+				list.Clear();
+			}
+			grid.Clear();
+		}
+
+		private List<(int, int)> GetCellsForBounds(Bounds2D bounds)
+		{
+			var cells = new List<(int, int)>();
+
+			int minX = Mathf.FloorToInt(bounds.minX / cellSize);
+			int maxX = Mathf.FloorToInt(bounds.maxX / cellSize);
+			int minY = Mathf.FloorToInt(bounds.minY / cellSize);
+			int maxY = Mathf.FloorToInt(bounds.maxY / cellSize);
+
+			for (int x = minX; x <= maxX; x++)
+			{
+				for (int y = minY; y <= maxY; y++)
+				{
+					cells.Add((x, y));
+				}
+			}
+
+			return cells;
 		}
 	}
 }

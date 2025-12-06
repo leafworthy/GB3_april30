@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 422
+  m_SortingOrder: 1327
   m_Sprite: {fileID: 21300000, guid: f7b7d8afe8f434b929dabf9047b432f7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -162,7 +162,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 426
+  m_SortingOrder: 1331
   m_Sprite: {fileID: -1995475383352819360, guid: 914f5ea5e653c4ad1b18c8abfc8a53e4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -362,7 +362,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 421
+  m_SortingOrder: 1326
   m_Sprite: {fileID: 21300000, guid: a5ae728b9d80542f5ac757f990c2a6dd, type: 3}
   m_Color: {r: 1, g: 0.42745098, b: 0.6039216, a: 1}
   m_FlipX: 0
@@ -449,7 +449,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 427
+  m_SortingOrder: 1332
   m_Sprite: {fileID: 21300000, guid: ff488d8aaed814268a445499d6f58e1a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -536,7 +536,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 428
+  m_SortingOrder: 1333
   m_Sprite: {fileID: 21300000, guid: 9366fa9b69d864ce0aff0b4f86ff6ce3, type: 3}
   m_Color: {r: 1, g: 0.42745098, b: 0.6039216, a: 1}
   m_FlipX: 0
@@ -623,7 +623,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 423
+  m_SortingOrder: 1328
   m_Sprite: {fileID: -1026527845748506772, guid: 914f5ea5e653c4ad1b18c8abfc8a53e4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -878,7 +878,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 420
+  m_SortingOrder: 1325
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -996,7 +996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  _player: {fileID: 0}
   unitStats:
     _unitData:
       unitName: Fruit
@@ -1030,6 +1030,7 @@ MonoBehaviour:
     EnemyTier: 0
   unitHealth:
     IsTemporarilyInvincible: 0
+    currentHealth: 0
     IsShielded: 0
 --- !u!114 &8468380082729349932
 MonoBehaviour:
@@ -1043,6 +1044,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
   colorMode: 1
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
   barGradient:
@@ -1075,11 +1077,9 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+  _healthBar: {fileID: 0}
   BlockTint: 0
   isBoss: 0
-  playerTint:
-    DebreeTint: {r: 0.59607846, g: 0, b: 0, a: 1}
-    BlockTint: 0
 --- !u!114 &2540430931499043486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1267,7 +1267,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  forceIt: 0
   jumpingAnimationClip: {fileID: 7400000, guid: 909221cdb6818401f8a2290fb70ea3dc, type: 2}
   fallingAnimationClip: {fileID: 7400000, guid: 909221cdb6818401f8a2290fb70ea3dc, type: 2}
   landingAnimationClip: {fileID: 7400000, guid: 883cf357cb1b347eca7168011efa82d6, type: 2}
@@ -1438,7 +1437,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 424
+  m_SortingOrder: 1329
   m_Sprite: {fileID: -1598097067900705672, guid: 914f5ea5e653c4ad1b18c8abfc8a53e4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1525,7 +1524,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 425
+  m_SortingOrder: 1330
   m_Sprite: {fileID: 3005744853380003736, guid: 914f5ea5e653c4ad1b18c8abfc8a53e4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
