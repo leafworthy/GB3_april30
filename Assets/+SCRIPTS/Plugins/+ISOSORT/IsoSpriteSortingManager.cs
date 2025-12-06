@@ -1,29 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEngine;
 
 namespace __SCRIPTS.Plugins._ISOSORT
 {
-	[ExecuteAlways, Serializable]
+	//[ExecuteInEditMode]
+	[ExecuteInEditMode,Serializable]
 	public class IsoSpriteSortingManager : SerializedMonoBehaviour
 	{
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> fgSpriteList = new(2048);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> floorSpriteList = new(2048);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> staticSpriteList = new(2049);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new(2048);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> fgSpriteList = new(1080);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> floorSpriteList = new(1080);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> staticSpriteList = new(1080);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> currentlyVisibleStaticSpriteList = new(1080);
 
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> moveableSpriteList = new(2048);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new(2048);
-		[ShowInInspector] private static readonly List<IsoSpriteSorting> sortedSprites = new(2048);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> moveableSpriteList = new(1080);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> currentlyVisibleMoveableSpriteList = new(1080);
+		[ShowInInspector]private static readonly List<IsoSpriteSorting> sortedSprites = new(1080);
 
 		public static void RegisterSprite(IsoSpriteSorting newSprite)
 		{
-			if (newSprite.registered)
-			{
-				return;
-			}
-			//if (!newSprite.gameObject.activeInHierarchy) return;
+			if (newSprite.registered) return;
+			if (!newSprite.gameObject.activeInHierarchy) return;
 			if (newSprite.renderBelowAll)
 			{
 				floorSpriteList.Add(newSprite);
@@ -58,6 +57,9 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			for (var i = 0; i < the_count; i++)
 			{
 				var otherSprite = staticSpriteList[i];
+				if (otherSprite == null) continue;
+				if (otherSprite == newSprite) continue; // Don't compare with self
+
 				if (CalculateBoundsIntersection(newSprite, otherSprite))
 				{
 					var compareResult = IsoSpriteSorting.CompareIsoSorters(newSprite, otherSprite);
@@ -71,6 +73,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 						newSprite.staticDependencies.Add(otherSprite);
 						otherSprite.inverseStaticDependencies.Add(newSprite);
 					}
+					// If compareResult == 0, no dependency needed (they're equal)
 				}
 			}
 		}
@@ -81,9 +84,11 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			{
 				if (spriteToRemove.renderBelowAll)
 					floorSpriteList.Remove(spriteToRemove);
+				else if (spriteToRemove.renderAboveAll)
+					fgSpriteList.Remove(spriteToRemove);
 				else
 				{
-					if (spriteToRemove.isMovable)
+					if (spriteToRemove.isMovable || !Application.isPlaying)
 						moveableSpriteList.Remove(spriteToRemove);
 					else
 					{
@@ -101,7 +106,15 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			for (var i = 0; i < spriteToRemove.inverseStaticDependencies.Count; i++)
 			{
 				var otherSprite = spriteToRemove.inverseStaticDependencies[i];
-				otherSprite.staticDependencies.Remove(spriteToRemove);
+				if (otherSprite != null)
+					otherSprite.staticDependencies.Remove(spriteToRemove);
+			}
+
+			for (var i = 0; i < spriteToRemove.staticDependencies.Count; i++)
+			{
+				var otherSprite = spriteToRemove.staticDependencies[i];
+				if (otherSprite != null)
+					otherSprite.inverseStaticDependencies.Remove(spriteToRemove);
 			}
 
 			spriteToRemove.inverseStaticDependencies.Clear();
@@ -126,6 +139,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		public void UpdateSortingButton()
 		{
 			IsoSpriteSorting.UpdateSorters();
+			UpdateSorting();
 		}
 
 		public static void UpdateSorting()
@@ -147,32 +161,51 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		{
 			var moveableCount = moveableList.Count;
 			var staticCount = staticList.Count;
+
+			// Moving sprites vs Static sprites
 			for (var i = 0; i < moveableCount; i++)
 			{
-				var moveSprite1 = moveableList[i];
-				if (moveSprite1 == null) return;
-				//Add Moving Dependencies to static sprites
+				var moveSprite = moveableList[i];
+				if (moveSprite == null) continue; // FIXED: Changed from return to continue
+
+				// Add Moving Dependencies to static sprites
 				for (var j = 0; j < staticCount; j++)
 				{
 					var staticSprite = staticList[j];
-					if (CalculateBoundsIntersection(moveSprite1, staticSprite))
+					if (staticSprite == null) continue;
+
+					if (CalculateBoundsIntersection(moveSprite, staticSprite))
 					{
-						var compareResult = IsoSpriteSorting.CompareIsoSorters(moveSprite1, staticSprite);
+						var compareResult = IsoSpriteSorting.CompareIsoSorters(moveSprite, staticSprite);
 						if (compareResult == -1)
-							staticSprite.movingDependencies.Add(moveSprite1);
-						else if (compareResult == 1) moveSprite1.movingDependencies.Add(staticSprite);
+							staticSprite.movingDependencies.Add(moveSprite);
+						else if (compareResult == 1)
+							moveSprite.movingDependencies.Add(staticSprite);
+						// If compareResult == 0, no dependency needed
 					}
 				}
+			}
 
-				//Add Moving Dependencies to Moving Sprites
-				for (var j = 0; j < moveableCount; j++)
+			// Moving sprites vs Moving sprites - only compare each pair once
+			for (var i = 0; i < moveableCount; i++)
+			{
+				var moveSprite1 = moveableList[i];
+				if (moveSprite1 == null) continue; // FIXED: Changed from return to continue
+
+				// Start at i+1 to avoid comparing the same pair twice and comparing with self
+				for (var j = i + 1; j < moveableCount; j++)
 				{
 					var moveSprite2 = moveableList[j];
-					if (moveSprite2 == null) return;
+					if (moveSprite2 == null) continue; // FIXED: Changed from return to continue
+
 					if (CalculateBoundsIntersection(moveSprite1, moveSprite2))
 					{
 						var compareResult = IsoSpriteSorting.CompareIsoSorters(moveSprite1, moveSprite2);
-						if (compareResult == -1) moveSprite2.movingDependencies.Add(moveSprite1);
+						if (compareResult == -1)
+							moveSprite2.movingDependencies.Add(moveSprite1);
+						else if (compareResult == 1)
+							moveSprite1.movingDependencies.Add(moveSprite2);
+						// If compareResult == 0, no dependency needed
 					}
 				}
 			}
@@ -181,20 +214,35 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		private static void ClearMovingDependencies(List<IsoSpriteSorting> sprites)
 		{
 			var count = sprites.Count;
-			for (var i = 0; i < count; i++) sprites[i].movingDependencies.Clear();
+			for (var i = 0; i < count; i++)
+			{
+				if (sprites[i] != null)
+					sprites[i].movingDependencies.Clear();
+			}
 		}
 
-		private static bool CalculateBoundsIntersection(IsoSpriteSorting sprite, IsoSpriteSorting otherSprite) =>
-			sprite.TheBounds.Intersects(otherSprite.TheBounds);
+		private static bool CalculateBoundsIntersection(IsoSpriteSorting sprite, IsoSpriteSorting otherSprite)
+		{
+			// Add null checks for safety
+			if (sprite == null || otherSprite == null) return false;
+
+			Bounds2D b1 = sprite.TheBounds;
+			Bounds2D b2 = otherSprite.TheBounds;
+
+
+			return b1.Intersects(b2);
+		}
 
 		private static void SetSortOrderBasedOnListOrder(List<IsoSpriteSorting> spriteList)
 		{
-			var orderCurrent = 420;//was 420
+			var orderCurrent = 420;
 			var count = spriteList.Count;
 			for (var i = 0; i < count; ++i)
 			{
+				if (spriteList[i] == null) continue;
+
 				spriteList[i].RendererSortingOrder = orderCurrent;
-				orderCurrent += 10 + spriteList[i].renderersToSort.Count; // was 1 +
+				orderCurrent += 1 + spriteList[i].renderersToSort.Count;
 			}
 		}
 
@@ -203,6 +251,8 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			var currentIndex = -10000;
 			for (var i = 0; i < spriteList.Count; ++i)
 			{
+				if (spriteList[i] == null) continue;
+
 				spriteList[i].RendererSortingOrder = spriteList[i].renderBelowSortingOrder + currentIndex + i;
 				currentIndex += spriteList[i].renderersToSort.Count + 10;
 			}
@@ -210,10 +260,11 @@ namespace __SCRIPTS.Plugins._ISOSORT
 
 		private static void SetSortOrderTop(List<IsoSpriteSorting> spriteList)
 		{
-			Debug.LogWarning("rener above all");
 			var currentIndex = 10000;
 			for (var i = 0; i < spriteList.Count; ++i)
 			{
+				if (spriteList[i] == null) continue;
+
 				spriteList[i].RendererSortingOrder = currentIndex + i + spriteList[i].renderBelowSortingOrder;
 				currentIndex += spriteList[i].renderersToSort.Count + 10;
 			}
@@ -226,6 +277,8 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			for (var i = 0; i < count; i++)
 			{
 				var sprite = fullList[i];
+				if (sprite == null) continue;
+
 				if (sprite.forceSort)
 				{
 					destinationList.Add(sprite);
@@ -233,15 +286,19 @@ namespace __SCRIPTS.Plugins._ISOSORT
 				}
 				else
 				{
+					bool isVisible = false;
 					for (var j = 0; j < sprite.renderersToSort.Count; j++)
 					{
 						if (sprite.renderersToSort[j] == null) continue;
 						if (sprite.renderersToSort[j].isVisible)
 						{
-							destinationList.Add(sprite);
+							isVisible = true;
 							break;
 						}
 					}
+
+					if (isVisible)
+						destinationList.Add(sprite);
 				}
 			}
 		}
