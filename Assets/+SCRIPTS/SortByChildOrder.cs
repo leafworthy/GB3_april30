@@ -23,4 +23,8 @@ public class SortByChildOrder : MonoBehaviour
 		}
 	}
 
+	private void Update()
+	{
+		//if (!Application.isPlaying) SortAll();
+	}
 }

@@ -4,10 +4,10 @@ namespace __SCRIPTS.Plugins._ISOSORT
 {
     public struct Bounds2D
     {
-	    public float minX;
-	    public float minY;
-        public float maxX;
-        public float maxY;
+        private float minX;
+        private float minY;
+        private float maxX;
+        private float maxY;
 
         public Bounds2D(Bounds bounds)
         {
@@ -24,7 +24,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
             if (minX > otherBounds.maxX || otherBounds.minX > maxX)
                 return false;
 
-            // If one rectangle is above other
+            // If one rectangle is above other 
             if (maxY < otherBounds.minY || otherBounds.maxY < minY)
                 return false;
 

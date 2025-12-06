@@ -51,7 +51,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
             }
 
             if (!GUI.changed) return;
-            Undo.RecordObject(target, "Updated Sorting Offset");
+            Undo.RecordObject(target, "Updated sorting Offset");
             EditorUtility.SetDirty(target);
         }
 
@@ -63,13 +63,14 @@ namespace __SCRIPTS.Plugins._ISOSORT
             // Add custom buttons below the Inspector fields
             IsoSpriteSorting myScript = (IsoSpriteSorting)target;
 
-            if (GUILayout.Button("Sort Visible Scene"))
+            if (GUILayout.Button("SetSortingOrder Visible Scene"))
             {
                  IsoSpriteSorting.UpdateSorters();
             }
 
             if (GUILayout.Button("Get Renderersu"))
             {
+	            myScript.hasRenderers = false;
                  myScript.GetRenderers();
             }
         }
