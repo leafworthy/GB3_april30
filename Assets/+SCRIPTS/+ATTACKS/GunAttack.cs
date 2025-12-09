@@ -94,7 +94,6 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
-			Debug.Log("gun offence start");
 			switch (currentState)
 			{
 				case weaponState.resuming:
@@ -197,7 +196,6 @@ namespace __SCRIPTS
 
 		public void SwapGuns()
 		{
-			Debug.Log("swapping guns to isprimary= " + (!(currentGun is PrimaryGun)));
 			SwitchGuns(!(currentGun is PrimaryGun));
 		}
 	}

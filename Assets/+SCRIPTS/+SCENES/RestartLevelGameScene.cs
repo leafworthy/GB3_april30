@@ -13,7 +13,7 @@ namespace __SCRIPTS
             StartCoroutine(WaitOneSecondThenGoToScene());
         }
 
-        private IEnumerator WaitOneSecondThenGoToScene()
+        IEnumerator WaitOneSecondThenGoToScene()
         {
 
             yield return new WaitForSeconds(1);

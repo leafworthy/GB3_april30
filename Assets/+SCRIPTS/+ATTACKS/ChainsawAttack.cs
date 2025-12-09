@@ -8,15 +8,15 @@ namespace __SCRIPTS
 	{
 		public override string AbilityName => "Chainsaw-Attack";
 
-		private bool isPressingChainsawButton;
-		private AimAbility aimAbility => _aimAbility ??= GetComponent<AimAbility>();
-		private AimAbility _aimAbility;
+		bool isPressingChainsawButton;
+		AimAbility aimAbility => _aimAbility ??= GetComponent<AimAbility>();
+		AimAbility _aimAbility;
 
 		public event Action<Vector2> OnStartChainsawing;
 		public event Action<Vector2> OnStartAttacking;
 		public event Action<Vector2> OnStopAttacking;
 		public event Action<Vector2> OnStopChainsawing;
-		private float cooldownCounter;
+		float cooldownCounter;
 		public override bool canStop(IDoableAbility abilityToStopFor) => currentState == weaponState.idle || currentState == weaponState.not;
 		protected override bool requiresArms() => true;
 		protected override bool requiresLegs() => false;
@@ -32,8 +32,6 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
-			Debug.Log("got here");
-
 			if (currentState != weaponState.resuming) PullOut();
 			else
 			{
@@ -45,7 +43,6 @@ namespace __SCRIPTS
 
 		protected override void PullOut()
 		{
-			Debug.Log("it was base pullout");
 			base.PullOut();
 			isActive = true;
 			anim.SetBool(UnitAnimations.IsChainsawing, true);
@@ -58,14 +55,14 @@ namespace __SCRIPTS
 			StartAttacking();
 		}
 
-		private void PlayerChainsawPress(NewControlButton newControlButton)
+		void PlayerChainsawPress(NewControlButton newControlButton)
 		{
 			isPressingChainsawButton = true;
 			if (!isActive) return;
 			StartAttacking();
 		}
 
-		private void StartAttacking()
+		void StartAttacking()
 		{
 			if (!isPressingChainsawButton || currentState != weaponState.idle) return;
 			SetState(weaponState.attacking);
@@ -73,7 +70,7 @@ namespace __SCRIPTS
 			OnStartAttacking?.Invoke(transform.position);
 		}
 
-		private void PlayerChainsawRelease(NewControlButton newControlButton)
+		void PlayerChainsawRelease(NewControlButton newControlButton)
 		{
 			isPressingChainsawButton = false;
 			if (!isActive)
@@ -85,7 +82,7 @@ namespace __SCRIPTS
 			StopAttacking();
 		}
 
-		private void StopAttacking()
+		void StopAttacking()
 		{
 			if (currentState != weaponState.attacking) return;
 			anim.SetBool(UnitAnimations.IsAttacking, false);
@@ -93,7 +90,7 @@ namespace __SCRIPTS
 			StartIdle();
 		}
 
-		private void OnDestroy()
+		void OnDestroy()
 		{
 			SetState(weaponState.not);
 			isPressingChainsawButton = false;
@@ -102,7 +99,7 @@ namespace __SCRIPTS
 			player.Controller.Attack2LeftTrigger.OnRelease -= PlayerChainsawRelease;
 		}
 
-		private void FixedUpdate()
+		void FixedUpdate()
 		{
 			if (!isActive) return;
 			body.TopFaceDirection(aimAbility.AimDir.x > 0);
@@ -117,14 +114,14 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void AttackContinuously()
+		void AttackContinuously()
 		{
-			Debug.Log("it was this");
 
 			cooldownCounter += Time.fixedDeltaTime;
 			if (!(cooldownCounter >= offence.stats.TertiaryAttackRate)) return;
 			cooldownCounter = 0;
-			AttackUtilities.HitTargetsWithinRange(offence, body.AttackStartPoint.transform.position, offence.stats.TertiaryAttackRange, offence.stats.TertiaryAttackDamageWithExtra);
+			AttackUtilities.HitTargetsWithinRange(offence, body.AttackStartPoint.transform.position, offence.stats.TertiaryAttackRange,
+				offence.stats.TertiaryAttackDamageWithExtra);
 		}
 
 		public override void Stop()

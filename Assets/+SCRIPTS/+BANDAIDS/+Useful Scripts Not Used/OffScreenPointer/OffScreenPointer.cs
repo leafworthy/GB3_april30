@@ -88,7 +88,7 @@ namespace __SCRIPTS
 			player.OnPlayerDies -= Player_OnPlayerDies;
 		}
 
-		private void OnDestroy()
+		private void OnDisable()
 		{
 			if (player != null)
 				player.OnPlayerDies -= Player_OnPlayerDies;

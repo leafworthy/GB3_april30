@@ -5,7 +5,7 @@ namespace __SCRIPTS
 	public class GameManager : Singleton<GameManager>
 	{
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-		private static void ResetStatics()
+		static void ResetStatics()
 		{
 			hasInitialized = false;
 		}

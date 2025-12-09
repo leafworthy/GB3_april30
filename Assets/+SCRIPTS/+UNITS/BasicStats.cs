@@ -74,12 +74,7 @@ namespace __SCRIPTS
 			                                               _ => 0f
 		                                               };
 
-		public int GetEnemyTier() => EnemyTier.GetEnemyTier();
 
-		public void SetEnemyTier(int tier)
-		{
-			EnemyTier.SetEnemyTier(tier);
-		}
 
 		#region UnitStats Wrappers
 

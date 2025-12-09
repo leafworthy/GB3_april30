@@ -15,6 +15,12 @@ namespace __SCRIPTS
 		public GameObject CursorPrefab;
 		[FormerlySerializedAs("Indicator")] public GameObject InteractionIndicator;
 		public GameObject InventorySlotPrefab;
-		public GameObject LevelTransitionScreen;
+		public GameObject SpawnCellPrefab;
+		public Sprite Toast_Avatar;
+		public Sprite Cone_Avatar;
+		public Sprite Corn_Avatar;
+		public Sprite Donut_Avatar;
+		public Sprite Fruit_Avatar;
+
 	}
 }

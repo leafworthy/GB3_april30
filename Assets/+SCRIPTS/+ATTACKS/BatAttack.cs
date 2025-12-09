@@ -14,21 +14,21 @@ namespace __SCRIPTS
 		public AnimationClip Attack2AnimationClip;
 		public AnimationClip Attack3AnimationClip;
 
-		private bool isPressingAttack;
-		private float extraPush = 1.75f;
-		private JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
-		private JumpAbility _jumps;
-		private AimAbility aimAbility => _aimAbility ??= GetComponent<AimAbility>();
-		private AimAbility _aimAbility;
+		bool isPressingAttack;
+		float extraPush = 1.75f;
+		JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
+		JumpAbility _jumps;
+		AimAbility aimAbility => _aimAbility ??= GetComponent<AimAbility>();
+		AimAbility _aimAbility;
 
-		private int currentAttackIndex;
-		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
-		private MoveAbility _moveAbility;
+		int currentAttackIndex;
+		MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
+		MoveAbility _moveAbility;
 
-		private const float Attack1Damage = 50;
-		private const float Attack2Damage = 60;
-		private const float Attack3Damage = 100;
-		private const float Attack4Damage = 200;
+		const float Attack1Damage = 50;
+		const float Attack2Damage = 60;
+		const float Attack3Damage = 100;
+		const float Attack4Damage = 200;
 		protected override bool requiresArms() => true;
 		protected override bool requiresLegs() => false;
 
@@ -37,7 +37,6 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player newPlayer)
 		{
 			base.SetPlayer(newPlayer);
-			Debug.Log("player set for back offence");
 			player.Controller.Attack1RightTrigger.OnPress += Player_AttackPress;
 			player.Controller.Attack3Circle.OnPress += Player_AttackPress;
 
@@ -45,16 +44,16 @@ namespace __SCRIPTS
 			player.Controller.Attack3Circle.OnRelease += Player_AttackRelease;
 		}
 
-		private void OnDestroy()
+		void OnDestroy()
 		{
 			if (player == null) return;
+			if (player.Controller == null) return;
 			player.Controller.Attack1RightTrigger.OnPress -= Player_AttackPress;
 			player.Controller.Attack1RightTrigger.OnRelease -= Player_AttackRelease;
 		}
 
-		private void Player_AttackPress(NewControlButton newControlButton)
+		void Player_AttackPress(NewControlButton newControlButton)
 		{
-			Debug.Log("bat offence");
 			isPressingAttack = true;
 			Try();
 		}
@@ -64,12 +63,12 @@ namespace __SCRIPTS
 			StartRandomAttack();
 		}
 
-		private void Player_AttackRelease(NewControlButton obj)
+		void Player_AttackRelease(NewControlButton obj)
 		{
 			isPressingAttack = false;
 		}
 
-		private void RegularAttackHit(int attackType)
+		void RegularAttackHit(int attackType)
 		{
 			var hits = AttackUtilities.CircleCastForXClosestTargets(offence, offence.stats.PrimaryAttackRange);
 			if (hits == null) return;
@@ -80,7 +79,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private float GetAttackDamage(int attackType)
+		float GetAttackDamage(int attackType)
 		{
 			var extraDamageFactor = player.spawnedPlayerStats.ExtraDamageFactor;
 			return attackType switch
@@ -92,7 +91,7 @@ namespace __SCRIPTS
 			       };
 		}
 
-		private void StartRandomAttack()
+		void StartRandomAttack()
 		{
 			OnSwing?.Invoke();
 			moveAbility.SetCanMove(false);
@@ -120,7 +119,7 @@ namespace __SCRIPTS
 			if (isPressingAttack) Player_AttackPress(null);
 		}
 
-		private void CurrentAttackHit()
+		void CurrentAttackHit()
 		{
 			RegularAttackHit(currentAttackIndex);
 		}

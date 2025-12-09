@@ -6,7 +6,7 @@ namespace __SCRIPTS
 	public class InteractionIndicator : MonoBehaviour
 	{
 		private static readonly int HitTrigger = Animator.StringToHash("HitTrigger");
-		private static readonly int IsFinished = Animator.StringToHash("IsFinished");
+		private static readonly int IsFinished = Animator.StringToHash("IsFinishedSpawning");
 		private bool isFinished;
 		[FormerlySerializedAs("interactionOffset")] public Vector3 indicatorOffset;
 		private PlayerInteractable interactable;

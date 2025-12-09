@@ -54,7 +54,7 @@ public class ZoneUI : GUIDebugTextShower
 
 		bool playerInNextZone = nextZone != null &&
 		                        nextZone.zoneCollider != null &&
-		                        Collider2DExtensions.IsObjectWithinCollider(nextZone.zoneCollider, player);
+		                        MyExtensions.IsObjectWithinCollider(nextZone.zoneCollider, player);
 
 		if (playerInNextZone)
 		{
@@ -91,7 +91,7 @@ public class ZoneUI : GUIDebugTextShower
 
 		int pendingSpawns = zone.GetComponentsInChildren<PrefabPlacer>(true).Length;
 		int activeSpawners = zone.GetComponentsInChildren<EnemySpawner>(true)
-			.Count(s => !s.IsFinished);
+			.Count(s => !s.IsFinishedSpawning);
 
 		return activeEnemies + pendingSpawns + activeSpawners;
 	}

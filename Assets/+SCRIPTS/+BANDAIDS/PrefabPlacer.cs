@@ -5,7 +5,7 @@ using UnityEngine;
 public class PrefabPlacer : MonoBehaviour
 {
 	public bool SpawnsNPCs;
-	public GameObject Prefab;
+	public EnemySpawner.EnemyType EnemyType;
 	private Camera cam;
 	public bool isBehindSpawner;
 	public float margin = -0.2f; // Margin for spawn trigger (0.1 = 10% of screen width)
@@ -24,13 +24,14 @@ public class PrefabPlacer : MonoBehaviour
 	{
 		var paletteSwapper = GetComponent<PalletteSwapper>();
 		if (paletteSwapper == null) return;
-		paletteSwapper.SetPallette(EnemyTier);
+		paletteSwapper.SetPallette(EnemyType,EnemyTier);
 	}
 
 	private void Spawn()
 	{
+		var Prefab = EnemySpawner.GetPrefabFromType(EnemyType);
 		if (SpawnsNPCs) Services.enemyManager.SpawnNewNPC(Prefab, transform.position);
-		else Services.enemyManager.SpawnNewEnemy(Prefab, transform.position, EnemyTier);
+		else Services.enemyManager.SpawnNewEnemy(Prefab, EnemyType,transform.position, EnemyTier);
 		Destroy(gameObject);
 	}
 

@@ -25,7 +25,7 @@ public class GameSceneGameOver : GameScene
 
     }
 
-    private void ContinuePress(NewControlButton obj)
+    void ContinuePress(NewControlButton obj)
     {
 	    foreach (var player in Services.playerManager.AllJoinedPlayers)
 	    {

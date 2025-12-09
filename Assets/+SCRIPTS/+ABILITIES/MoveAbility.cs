@@ -4,43 +4,41 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-
-
 	[ExecuteAlways]
 	public class MoveAbility : MonoBehaviour, ICanMove
 	{
-		private const float velocityDecayFactor = .90f;
-		private const float overallVelocityMultiplier = 2;
-		private const float pushMultiplier = 1;
-		private const float maxPushVelocity = 3000;
-		private const float maxAimDistance = 30;
+		const float velocityDecayFactor = .90f;
+		const float overallVelocityMultiplier = 2;
+		const float pushMultiplier = 1;
+		const float maxPushVelocity = 3000;
+		const float maxAimDistance = 30;
 
-		private Rigidbody2D rb => _rb ??= GetComponent<Rigidbody2D>();
-		private Rigidbody2D _rb;
-		private Body body => _body ??= GetComponent<Body>();
-		private Body _body;
-		private ISetBool anim => _anim ??= GetComponent<ISetBool>();
-		private ISetBool _anim;
-		private ICanMoveThings mover => _mover ??= GetComponent<ICanMoveThings>();
-		private ICanMoveThings _mover;
-		private IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
-		private IHaveAttackStats _stats;
-		private IGetAttacked health => _health ??= GetComponent<IGetAttacked>();
-		private IGetAttacked _health;
+		Rigidbody2D rb => _rb ??= GetComponent<Rigidbody2D>();
+		Rigidbody2D _rb;
+		Body body => _body ??= GetComponent<Body>();
+		Body _body;
+		ISetBool anim => _anim ??= GetComponent<ISetBool>();
+		ISetBool _anim;
+		ICanMoveThings mover => _mover ??= GetComponent<ICanMoveThings>();
+		ICanMoveThings _mover;
+		IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
+		IHaveAttackStats _stats;
+		IGetAttacked health => _health ??= GetComponent<IGetAttacked>();
+		IGetAttacked _health;
 
-		private Vector2 moveVelocity;
-		private Vector2 pushVelocity;
-		private float moveSpeed;
-		private bool isTryingToMove;
-		private bool isMoving;
-		private bool isDragging = true;
-		private bool IsActive = true;
-		private bool IsPushed;
-		private bool canMove = true;
-		private Vector2 moveDir;
-		private Vector2 lastMoveAimDirOffset;
+		Vector2 moveVelocity;
+		Vector2 pushVelocity;
+		float moveSpeed;
+		bool isTryingToMove;
+		bool isMoving;
+		bool isDragging = true;
+		bool IsActive = true;
+		bool IsPushed;
+		bool canMove = true;
+		Vector2 moveDir;
+		Vector2 lastMoveAimDirOffset;
 
-		[SerializeField] private float acceleration;
+		[SerializeField] float acceleration;
 		public bool accelerates;
 		public float acceleratatonRate = 3;
 		public float acceleratatonMax = 20;
@@ -58,10 +56,8 @@ namespace __SCRIPTS
 
 		public event Action<RaycastHit2D, EffectSurface.SurfaceAngle> OnHitWall;
 
-
 		public void SetCanMove(bool _canMove)
 		{
-			Debug.Log("set can move to " + _canMove);
 			canMove = _canMove;
 			if (!_canMove || !isTryingToMove)
 				StopMoving();
@@ -71,7 +67,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void LifeOnDead(Attack attack)
+		void LifeOnDead(Attack attack)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			body.BottomFaceDirection(attack.Direction.x < 0);
@@ -81,7 +77,7 @@ namespace __SCRIPTS
 			StopListeningToPlayer();
 		}
 
-		private void MoveInDirection(Vector2 direction)
+		void MoveInDirection(Vector2 direction)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (health.IsDead()) return;
@@ -90,15 +86,15 @@ namespace __SCRIPTS
 			StartMoving(direction);
 		}
 
-		private void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction) => MoveInDirection(direction);
+		void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction) => MoveInDirection(direction);
 
-		private void Life_DeathComplete(Player obj, bool b)
+		void Life_DeathComplete(Player obj, bool b)
 		{
 			pushVelocity = Vector2.zero;
 			moveVelocity = Vector2.zero;
 		}
 
-		private void StopListeningToPlayer()
+		void StopListeningToPlayer()
 		{
 			if (health == null) return;
 			if (health != null) health.OnDead -= LifeOnDead;
@@ -107,7 +103,7 @@ namespace __SCRIPTS
 			mover.OnStopMoving -= MoverStopTryingToMove;
 		}
 
-		private void FixedUpdate()
+		void FixedUpdate()
 		{
 			if (Services.pauseManager.IsPaused) return;
 
@@ -119,7 +115,7 @@ namespace __SCRIPTS
 			DecayVelocity();
 		}
 
-		private void ApplyVelocity()
+		void ApplyVelocity()
 		{
 			var totalVelocity = moveVelocity + pushVelocity;
 			//detect if hit a wall
@@ -129,7 +125,6 @@ namespace __SCRIPTS
 			{
 				var effectSurface = hitWall.collider.GetComponent<EffectSurface>();
 				if (effectSurface == null) return;
-				Debug.Log("hit wall " + hitWall.collider.name + " at " + hitWall.point + " angle " + effectSurface.surfaceAngle, this);
 				OnHitWall?.Invoke(hitWall, effectSurface.surfaceAngle);
 				return;
 			}
@@ -137,7 +132,7 @@ namespace __SCRIPTS
 			MoveObjectTo((Vector2) transform.position + totalVelocity * Time.deltaTime);
 		}
 
-		private void DecayVelocity()
+		void DecayVelocity()
 		{
 			if (!isDragging) return;
 			var tempVel = accelerates ? moveVelocity * decelerationFactor : moveVelocity * velocityDecayFactor;
@@ -148,9 +143,9 @@ namespace __SCRIPTS
 			if (pushVelocity.magnitude < .1f) pushVelocity = Vector2.zero;
 		}
 
-		private Vector2 GetMoveVelocityWithDeltaTime() => GetSpeed() * Time.fixedDeltaTime;
+		Vector2 GetMoveVelocityWithDeltaTime() => GetSpeed() * Time.fixedDeltaTime;
 
-		private Vector2 GetSpeed()
+		Vector2 GetSpeed()
 		{
 			moveVelocity = GetMoveDir() * moveSpeed;
 			return moveVelocity;
@@ -190,20 +185,19 @@ namespace __SCRIPTS
 			isMoving = true;
 		}
 
-		private void AddMoveVelocity(Vector2 tempVel)
+		void AddMoveVelocity(Vector2 tempVel)
 		{
 			tempVel += moveVelocity;
 			moveVelocity = tempVel;
 		}
 
-		private void AddPushVelocity(Vector2 tempVel)
+		void AddPushVelocity(Vector2 tempVel)
 		{
-			Debug.Log("push vel before " + pushVelocity + " adding " + tempVel);
 			tempVel += pushVelocity;
 			pushVelocity = tempVel;
 		}
 
-		private void MoveObjectTo(Vector2 destination)
+		void MoveObjectTo(Vector2 destination)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (rb != null)
@@ -225,7 +219,7 @@ namespace __SCRIPTS
 			AddPushVelocity(tempVel);
 		}
 
-		private void StartMoving(Vector2 direction)
+		void StartMoving(Vector2 direction)
 		{
 			MoveInDirection(direction, stats.MoveSpeed);
 		}
@@ -243,18 +237,18 @@ namespace __SCRIPTS
 			pushVelocity = Vector2.zero;
 		}
 
-		private void OnDisable()
+		void OnDisable()
 		{
 			StopListeningToPlayer();
 		}
 
-		private void MoverStopTryingToMove()
+		void MoverStopTryingToMove()
 		{
 			isTryingToMove = false;
 			StopMoving();
 		}
 
-		private void Start()
+		void Start()
 		{
 			if (health == null) return;
 			health.OnAttackHit += Life_AttackHit;
@@ -267,21 +261,17 @@ namespace __SCRIPTS
 			mover.OnStopMoving += MoverStopTryingToMove;
 		}
 
-		private void LifeOnFlying(Attack attack)
+		void LifeOnFlying(Attack attack)
 		{
 			StopMoving();
-			Push( attack.Direction, attack.DamageAmount + attack.ExtraPush);
+			Push(attack.Direction, attack.DamageAmount + attack.ExtraPush);
 		}
 
-		private void Life_AttackHit(Attack attack)
+		void Life_AttackHit(Attack attack)
 		{
-
 			Push(attack.Direction, attack.DamageAmount + attack.ExtraPush);
 		}
 
 		public Vector2 GetTotalVelocity() => moveVelocity + pushVelocity;
-
 	}
-
-
 }

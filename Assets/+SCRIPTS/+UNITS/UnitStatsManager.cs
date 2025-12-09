@@ -29,19 +29,19 @@ namespace __SCRIPTS
 
 	public static class UnitStatsManager
 	{
-		private static UnitStatsDatabase database;
-		private static Dictionary<string, UnitStatsData> unitStatsLookup = new();
-		private static bool initialized;
+		static UnitStatsDatabase database;
+		static Dictionary<string, UnitStatsData> unitStatsLookup = new();
+		static bool initialized;
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-		private static void ResetStatics()
+		static void ResetStatics()
 		{
-			Debug.Log("resetting stats");
 			initialized = true;
 			database = Resources.Load<UnitStatsDatabase>("UnitStatsDatabase");
 			unitStatsLookup = BuildLookupDictionary();
 		}
-		private static Dictionary<string, UnitStatsData> BuildLookupDictionary()
+
+		static Dictionary<string, UnitStatsData> BuildLookupDictionary()
 		{
 			if(!initialized) ResetStatics();
 			var _unitStatsLookup = new Dictionary<string, UnitStatsData>();
@@ -71,7 +71,7 @@ namespace __SCRIPTS
 			return foundStats;
 		}
 
-		private static UnitStatsData LookupUnitStats(string cleanedName)
+		static UnitStatsData LookupUnitStats(string cleanedName)
 		{
 			if (!initialized) ResetStatics();
 			if (cleanedName is "Life" or "stats")
@@ -87,14 +87,14 @@ namespace __SCRIPTS
 			return fuzzyMatch ?? GetDefaultLifeStats();
 		}
 
-		private static UnitStatsData GetDefaultLifeStats() {
+		static UnitStatsData GetDefaultLifeStats() {
 			if (!initialized) ResetStatics();
 			var result = unitStatsLookup.GetValueOrDefault("DefaultThing");
 			Debug.Log(result);
 			return unitStatsLookup.GetValueOrDefault("DefaultThing");
 		}
 
-		private static string CleanUnitName(string unitName)
+		static string CleanUnitName(string unitName)
 		{
 			if (string.IsNullOrEmpty(unitName)) return unitName;
 
@@ -127,7 +127,7 @@ namespace __SCRIPTS
 			return cleanedName;
 		}
 
-		private static UnitStatsData FindFuzzyMatch(string cleanedName)
+		static UnitStatsData FindFuzzyMatch(string cleanedName)
 		{
 			var lowerName = cleanedName.ToLower();
 

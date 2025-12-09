@@ -48,7 +48,6 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void AttackPlayer()
 		{
-			Debug.Log("attacking player");
 			isMoving = false;
 			OnStopMoving?.Invoke();
 			OnAttack?.Invoke(_target);

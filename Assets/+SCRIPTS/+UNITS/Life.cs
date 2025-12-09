@@ -89,13 +89,11 @@ namespace __SCRIPTS
 		private void Init()
 		{
 			if (hasInitialized) return;
-			Debug.Log("initializing", this);
 			hasInitialized = true;
 			unitStats = new UnitStats(gameObject.name);
 			unitHealth = new UnitHealth(unitStats);
 			unitHealth.OnDead += Health_OnDead;
 			FillHealth();
-			Debug.Log("done initializing for " + player?.playerIndex);
 			if (unitStats.Data.category == UnitCategory.Enemy) SetPlayer(Services.playerManager.enemyPlayer);
 			else if (unitStats.Data.category == UnitCategory.NPC) SetPlayer(Services.playerManager.NPCPlayer);
 		}
@@ -124,13 +122,11 @@ namespace __SCRIPTS
 		public void SetPlayer(Player newPlayer)
 		{
 			_player = newPlayer;
-			Debug.Log("Life setting _player", this);
 			Init();
 
 			SetupAnimationEvents();
 			foreach (var component in GetComponentsInChildren<INeedPlayer>())
 			{
-				Debug.Log("setplayer for: " + component);
 				if (component != this)
 					component.SetPlayer(_player);
 			}
@@ -143,7 +139,6 @@ namespace __SCRIPTS
 
 		private void CompleteDeath(bool isRespawning)
 		{
-			Debug.Log("complete death", this);
 			OnDeathComplete?.Invoke(_player, isRespawning);
 			Services.objectMaker.Unmake(gameObject);
 		}
@@ -158,7 +153,7 @@ namespace __SCRIPTS
 			OnDead?.Invoke(attack);
 			if (attack.OriginLife.player != null) OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
 			gameObject.layer = LayerMask.NameToLayer("Dead");
-			Debug.Log("set here");
+
 			animations?.SetTrigger(UnitAnimations.DeathTrigger);
 			animations?.SetBool(UnitAnimations.IsDead, true);
 		}
@@ -229,13 +224,13 @@ namespace __SCRIPTS
 
 
 		[Sirenix.OdinInspector.Button]
-		public void SetEnemyTier(int tier)
+		public void SetEnemyTypeAndTier(EnemySpawner.EnemyType enemyType,int tier)
 		{
 			unitStats.SetEnemyTier(tier);
 			unitHealth.FillHealth();
 			OnFractionChanged?.Invoke(GetFraction());
 			var paletteSwapper = GetComponent<PalletteSwapper>();
-			paletteSwapper?.SetPallette(tier);
+			paletteSwapper?.SetPallette(enemyType,tier);
 		}
 
 		public void SetTemporarilyInvincible(bool i)

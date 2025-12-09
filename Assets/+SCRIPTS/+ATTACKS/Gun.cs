@@ -175,7 +175,6 @@ namespace __SCRIPTS
 
 		private float GetAttackRate()
 		{
-			Debug.Log("unlimited offence rate: " + attacker.stats.UnlimitedAttackRate);
 			return attacker.stats.UnlimitedAttackRate;
 		}
 

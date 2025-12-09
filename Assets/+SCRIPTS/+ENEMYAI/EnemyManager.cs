@@ -23,10 +23,11 @@ namespace __SCRIPTS
 			levelManager.OnStopLevel += ClearEnemies;
 		}
 
-		public void SpawnNewEnemy(GameObject enemyPrefab, Vector3 position, int enemyTier)
+		public GameObject SpawnNewEnemy(GameObject enemyPrefab, EnemySpawner.EnemyType enemyType, Vector3 position, int enemyTier)
 		{
 			var newEnemy = objectMaker.Make(enemyPrefab, position);
-			ConfigureNewEnemy(newEnemy, enemyTier);
+			ConfigureNewEnemy(newEnemy, enemyType,enemyTier);
+			return newEnemy;
 		}
 
 		public void SpawnNewNPC(GameObject NPCPrefab, Vector3 position)
@@ -69,14 +70,14 @@ namespace __SCRIPTS
 			OnPlayerKillsEnemy?.Invoke(killer, life);
 		}
 
-		public void ConfigureNewEnemy(GameObject enemy, int enemyTier = 0)
+		public void ConfigureNewEnemy(GameObject enemy, EnemySpawner.EnemyType enemyType, int enemyTier = 0)
 		{
 			// Set up the Life component
 			var life = enemy.GetComponent<Life>();
 			if (life != null)
 			{
 				life.SetPlayer(players.enemyPlayer);
-				life.SetEnemyTier(enemyTier);
+				life.SetEnemyTypeAndTier(enemyType,enemyTier);
 
 			}
 

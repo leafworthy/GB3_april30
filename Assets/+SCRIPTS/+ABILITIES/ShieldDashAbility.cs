@@ -1,17 +1,15 @@
 using System;
 using __SCRIPTS;
-using GangstaBean.Core;
 using UnityEngine;
 
 [DisallowMultipleComponent]
 public class ShieldDashAbility : DashAbility
 {
 	public event Action OnShieldDash;
-	private float extraDashPushFactor = 3f;
+	float extraDashPushFactor = 3f;
 	public override string AbilityName => "Shield-Dash";
-	private ShieldAbility shieldAbility => _shieldAbility ??= GetComponent<ShieldAbility>();
-	private ShieldAbility _shieldAbility;
-
+	ShieldAbility shieldAbility => _shieldAbility ??= GetComponent<ShieldAbility>();
+	ShieldAbility _shieldAbility;
 
 	protected override void AnimationComplete()
 	{
@@ -31,15 +29,7 @@ public class ShieldDashAbility : DashAbility
 
 		if (lastArmAbility is ShieldAbility or GunAttack)
 		{
-			Debug.Log( "Resuming Ability");
-			if (lastArmAbility is ShieldAbility)
-			{
-				shieldAbility.SetShielding(true);
-			}
-			else
-			{
-				shieldAbility.SetShielding(false);
-			}
+			shieldAbility.SetShielding(lastArmAbility is ShieldAbility);
 
 			StopBody();
 			lastArmAbility?.Resume();
@@ -52,57 +42,45 @@ public class ShieldDashAbility : DashAbility
 		}
 	}
 
-	private void ShieldDash()
+	void ShieldDash()
 	{
 		var hits = Physics2D.OverlapCircleAll(transform.position, 30, offence.EnemyLayer);
 		shieldAbility.SetShielding(true);
 		foreach (var hit in hits)
 		{
 			var _life = hit.GetComponentInParent<Life>();
-			if (_life == null || !_life.IsEnemyOf(defence))
-			{
-				continue;
-			}
+			if (_life == null || !_life.IsEnemyOf(defence)) continue;
 			var movement = _life.GetComponent<MoveAbility>();
-			if (movement == null)
-			{
-				continue;
-			}
+			if (movement == null) continue;
 
 			OnShieldDash?.Invoke();
 			defence.SetTemporarilyInvincible(true);
 			movement.Push((hit.transform.position - transform.position).normalized, offence.stats.DashSpeed * extraDashPushFactor);
-
 		}
 	}
 
-	private bool hasInitialized = false;
+	bool hasInitialized;
+
 	public override void SetPlayer(Player newPlayer)
 	{
 		player = newPlayer;
 		player.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
 	}
 
-	private void OnDestroy()
+	void OnDestroy()
 	{
 		if (player == null) return;
-		Debug.Log("ShieldDashAbility OnDestroy");
 		player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 	}
 
-	private void OnDisable()
+	void OnDisable()
 	{
 		if (player == null) return;
-		Debug.Log("ShieldDashAbility OnDisable");
 		player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 	}
 
-	private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
+	void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 	{
-
-
 		Try();
 	}
-
-
 }

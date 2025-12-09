@@ -6,17 +6,17 @@ public class PalletteSwapper : MonoBehaviour
 {
 	public List<Material> pallettes = new();
 	public SpriteRenderer spriteRenderer;
+	public List<Material> characterPallettes = new();
 
 	[Button]
 	public void Swap()
 	{
-		spriteRenderer.material = pallettes[Random.Range(0, pallettes.Count)];
+		spriteRenderer.material = characterPallettes[Random.Range(0, pallettes.Count)];
 	}
 
-	public void SetPallette(int index)
+	public void SetPallette(EnemySpawner.EnemyType type, int enemyTier)
 	{
-		Debug.Log("pallette set to " + index);
-		if (index < 0 || index >= pallettes.Count) return;
-		spriteRenderer.material = pallettes[index];
+		characterPallettes = Services.assetManager.Players.GetCharacterPalettes(type);
+		spriteRenderer.material = characterPallettes[enemyTier];
 	}
 }

@@ -6,12 +6,12 @@ public class TeleportAbility : Ability
 	public override string AbilityName => "Teleport";
 	public AnimationClip teleportAnimationClip;
 
-	private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
-	private MoveAbility _moveAbility;
+	MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
+	MoveAbility _moveAbility;
 
-	private JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
-	private JumpAbility _jumps;
-	private const float teleportTime = .1f;
+	JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
+	JumpAbility _jumps;
+	const float teleportTime = .1f;
 	protected override bool requiresArms() => true;
 
 	protected override bool requiresLegs() => true;
@@ -22,7 +22,7 @@ public class TeleportAbility : Ability
 		Teleport();
 	}
 
-	private void Teleport()
+	void Teleport()
 	{
 		if (teleportAnimationClip != null) PlayAnimationClip(teleportAnimationClip);
 		defence.SetTemporarilyInvincible(true);
@@ -35,20 +35,19 @@ public class TeleportAbility : Ability
 		player.Controller.DashRightShoulder.OnPress += Controller_DashPress;
 	}
 
-	private void Controller_DashPress(NewControlButton obj)
+	void Controller_DashPress(NewControlButton obj)
 	{
-		Debug.LogWarning("dash pressed inside dash");
 		Try();
 	}
 
-	private void OnDestroy()
+	void OnDestroy()
 	{
 		if (player == null) return;
 		if (player.Controller == null) return;
 		player.Controller.DashRightShoulder.OnPress -= Controller_DashPress;
 	}
 
-	private void Anim_Teleport()
+	void Anim_Teleport()
 	{
 		var teleportDirection = moveAbility.GetMoveDir();
 		if (teleportDirection.magnitude < 0.1f)

@@ -262,14 +262,12 @@ namespace __SCRIPTS
 
 		private void FullyCharged()
 		{
-			Debug.Log("fully charged");
 			isFullyCharged = true;
 			ammoInventory.secondaryAmmo.SetAmmoReserve(100);
 		}
 
 		private void SpecialAttackHit()
 		{
-			Debug.Log("special hit");
 			var attackPosition = body.AimCenter.transform.position;
 			var bestTargetPoint = GetBestTargetPoint(attackPosition);
 			var connect = false;

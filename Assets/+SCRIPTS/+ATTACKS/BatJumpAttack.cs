@@ -63,7 +63,6 @@ namespace __SCRIPTS
 
 			jumps.DoubleJump(jumps.IsFalling ? 1 : .5f);
 
-			Debug.Log("jump offence started");
 
 			jumps.OnLand += LandWithAttack;
 			jumps.OnFalling += FallWithAttack;

@@ -9,6 +9,46 @@ namespace __SCRIPTS
 	public static class MyExtensions
 	{
 
+		public static List<GameObject> FindEnemyPlacersWithinCollider(Collider2D collider, List<PrefabPlacer> candidates = null)
+		{
+			var results = new List<GameObject>();
+
+			if (collider == null)
+				return results;
+
+
+			foreach (var go in candidates)
+			{
+				if (!go.gameObject.activeInHierarchy)
+					continue;
+
+				Vector2 pos = go.transform.position;
+				if (collider.OverlapPoint(pos))
+				{
+					results.Add(go.gameObject);
+				}
+			}
+
+			return results;
+		}
+
+		public static bool IsObjectWithinCollider(Collider2D collider, GameObject ObjectToFind)
+		{
+			Vector2 pos = ObjectToFind.transform.position;
+			return collider.OverlapPoint(pos);
+		}
+		public static void RemoveChildren(this Transform transform)
+		{
+			for (int i = transform.childCount - 1; i >= 0; i--)
+			{
+				#if UNITY_EDITOR
+				Object.DestroyImmediate(transform.GetChild(i).gameObject);
+				#else
+				Object.Destroy(transform.GetChild(i).gameObject);
+				#endif
+			}
+		}
+
 		public static void RemoveNulls<T>(this List<T> list) where T : Object
 		{
 			list.RemoveAll(item => item == null);
@@ -31,7 +71,6 @@ namespace __SCRIPTS
 		{
 			if (col == null)
 			{
-				Debug.LogWarning("[Collider2DExtensions] Null collider passed to GetRandomPointInside.");
 				return Vector2.zero;
 			}
 
@@ -45,7 +84,6 @@ namespace __SCRIPTS
 					return randomPoint;
 			}
 
-			Debug.LogWarning($"[Collider2DExtensions] Failed to find a point inside {col.name} after {maxAttempts} attempts.");
 			return Vector2.zero;
 		}
 

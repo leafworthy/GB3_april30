@@ -1,31 +1,32 @@
+using __SCRIPTS;
 using UnityEngine;
 
 [RequireComponent(typeof(ZoneSwitcher))]
 public class ZoneProgressionController : MonoBehaviour
 {
 	[Tooltip("If enemy count drops to or below this number, advance to the next zone."), SerializeField]
-	private int advanceThreshold = 3;
-	private ZoneSwitcher ZoneSwitcher  => zoneSwitcher ??= GetComponent<ZoneSwitcher>();
-	private ZoneSwitcher zoneSwitcher;
-	private ZoneEnemyTracker _currentTracker;
+	int advanceThreshold = 3;
+	ZoneSwitcher ZoneSwitcher => zoneSwitcher ??= GetComponent<ZoneSwitcher>();
+	ZoneSwitcher zoneSwitcher;
+	ZoneEnemyTracker _currentTracker;
 
-	private void Start()
+	void Start()
 	{
 		SetZone(0);
 	}
 
-	private void OnDisable()
+	void OnDisable()
 	{
 		Unsubscribe();
 	}
 
-	private void SetZone(int index)
+	void SetZone(int index)
 	{
 		ZoneSwitcher.SetZone(index);
 		SubscribeToCurrentZone();
 	}
 
-	private void SubscribeToCurrentZone()
+	void SubscribeToCurrentZone()
 	{
 		Unsubscribe();
 
@@ -37,35 +38,28 @@ public class ZoneProgressionController : MonoBehaviour
 		HandleEnemyCountChanged(_currentTracker.GetEnemyCount());
 	}
 
-	private void Unsubscribe()
+	void Unsubscribe()
 	{
 		if (_currentTracker != null)
 			_currentTracker.OnEnemyCountChanged -= HandleEnemyCountChanged;
 	}
 
-	private void HandleEnemyCountChanged(int count)
+	void HandleEnemyCountChanged(int count)
 	{
 		if (count <= advanceThreshold)
 			TryAdvanceZone();
 	}
 
-	private void TryAdvanceZone()
+	void TryAdvanceZone()
 	{
 		var nextZone = ZoneSwitcher.nextZone;
-		if (nextZone == null)
-		{
-			Debug.Log("No next zone to advance to");
-			return;
-		}
+		if (nextZone == null) return;
 		var player = Services.playerManager?.mainPlayer?.SpawnedPlayerGO;
 
-		var playerInNext = nextZone != null && nextZone.zoneCollider != null && Collider2DExtensions.IsObjectWithinCollider(nextZone.zoneCollider, player);
+		var playerInNext = nextZone != null && nextZone.zoneCollider != null && MyExtensions.IsObjectWithinCollider(nextZone.zoneCollider, player);
 
-		if (playerInNext)
-		{
-			Debug.Log("player entered next zone, advancing");
-			ZoneSwitcher.AdvanceZone();
-			SubscribeToCurrentZone();
-		}
+		if (!playerInNext) return;
+		ZoneSwitcher.AdvanceZone();
+		SubscribeToCurrentZone();
 	}
 }

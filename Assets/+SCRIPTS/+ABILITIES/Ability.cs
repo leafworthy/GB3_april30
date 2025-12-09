@@ -6,14 +6,14 @@ using UnityEngine;
 public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPlayer
 {
 	protected Player player;
-	private UnitAnimations _anim;
+	UnitAnimations _anim;
 	protected UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
-	private Body _body;
+	Body _body;
 	protected Body body => _body ??= GetComponent<Body>();
 	protected IGetAttacked defence => _defence ??= GetComponent<IGetAttacked>();
-	private IGetAttacked _defence;
+	IGetAttacked _defence;
 	protected ICanAttack offence => _attack ??= GetComponent<ICanAttack>();
-	private ICanAttack _attack;
+	ICanAttack _attack;
 	protected IDoableAbility lastLegAbility;
 	protected IDoableAbility lastArmAbility;
 	public abstract string AbilityName { get; }
@@ -26,17 +26,11 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public virtual bool canStop(IDoableAbility abilityToStopFor) => false;
 
-
 	public void Try()
 	{
-		if (!canDo())
-		{
-			Debug.Log("cant do ability: " + AbilityName, this);
-			return;
-		}
+		if (!canDo()) return;
 
 		lastLegAbility = body.doableLegs.CurrentAbility;
-		Debug.Log("lastlegAbility set to: " + (lastLegAbility != null ? lastLegAbility.AbilityName : "null"), this);
 		lastArmAbility = body.doableArms.CurrentAbility;
 		if (requiresArms()) body.doableArms.DoActivity(this);
 
@@ -66,7 +60,7 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 		Try();
 	}
 
-	private bool BodyCanDo(IDoableAbility abilityToDo)
+	bool BodyCanDo(IDoableAbility abilityToDo)
 	{
 		if (Services.pauseManager.IsPaused) return false;
 		if (defence.IsDead()) return false;

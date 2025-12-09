@@ -4,7 +4,7 @@ namespace __SCRIPTS
 {
 	public class KnifeAttacks_FX : MonoBehaviour
 	{
-		private KnifeAttack knifeAttack;
+		KnifeAttack knifeAttack;
 
 		void OnEnable()
 		{
@@ -14,14 +14,14 @@ namespace __SCRIPTS
 
 		}
 
-		private void OnDisable()
+		void OnDisable()
 		{
 			if (knifeAttack == null) return;
 			knifeAttack.OnHit -= KnifeAttackOnHit;
 
 		}
 
-		private void KnifeAttackOnHit(Vector2 pos)
+		void KnifeAttackOnHit(Vector2 pos)
 		{
 			Services.objectMaker.Make(Services.assetManager.FX.hit5_xstrike, pos);
 			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);

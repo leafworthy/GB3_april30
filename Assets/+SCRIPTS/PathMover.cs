@@ -5,16 +5,16 @@ using UnityEngine;
 [ExecuteAlways]
 public class PathMover : MonoBehaviour
 {
-    private PolygonCollider2D _polygonCollider;
-    private PolygonCollider2D polygonCollider => _polygonCollider ??= GetComponent<PolygonCollider2D>();
+	PolygonCollider2D _polygonCollider;
+	PolygonCollider2D polygonCollider => _polygonCollider ??= GetComponent<PolygonCollider2D>();
 
-    private List<Vector2> originalPathPoints = new();
+	List<Vector2> originalPathPoints = new();
 
     public GameObject puller;
     public Vector2 pullerOriginalPosition;
 
-    [SerializeField] private int pathIndex = 1; // Most common case is path 0
-    [SerializeField] private bool updateInRealTime = true;
+    [SerializeField] int pathIndex = 1; // Most common case is path 0
+    [SerializeField] bool updateInRealTime = true;
 
     void Start()
     {

@@ -9,8 +9,8 @@ namespace __SCRIPTS
 		public float scrollSpeed = 0.5f;
 		public Vector2 scrollDirection = new Vector2(0, -1);
 
-		private TextMeshProUGUI textComponent;
-		private Material material;
+		TextMeshProUGUI textComponent;
+		Material material;
 
 		void Awake()
 		{

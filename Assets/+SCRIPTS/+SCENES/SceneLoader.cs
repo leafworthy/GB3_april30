@@ -44,7 +44,7 @@ namespace __SCRIPTS
 
 		private void OnDestroy()
 		{
-			SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
+			//SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
 		}
 
 		private void OnDisable()

@@ -48,7 +48,7 @@ public class ZoneEnemyTracker : MonoBehaviour
 		                                .Distinct().Count();
 
 		var pendingPrefabs = GetComponentsInChildren<PrefabPlacer>(true).Length;
-		var activeSpawners = GetComponentsInChildren<EnemySpawner>(true).Count(s => !s.IsFinished);
+		var activeSpawners = GetComponentsInChildren<EnemySpawner>(true).Count(s => !s.IsFinishedSpawning);
 
 		var total = activeEnemies + pendingPrefabs + activeSpawners;
 		OnEnemyCountChanged?.Invoke(total);

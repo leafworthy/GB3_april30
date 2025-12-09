@@ -4,7 +4,7 @@ namespace __SCRIPTS
 {
     public class PointerHandler : MonoBehaviour
     {
-        private Window_QuestPointer questPointer;
+	    Window_QuestPointer questPointer;
         public GameObject target;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()

@@ -6,19 +6,20 @@ namespace __SCRIPTS
 {
 	public class ObjectShaker : MonoBehaviour
 	{
-		private float ShakeIntensity;
-		private float ShakeDecaySpeed;
-		private float ShakeDuration;
-		private Vector2 originalPosition;
-		private Vector2 shakeFactorPosition;
-		private bool hasCapturedOriginalPosition;
-		private void OnDisable()
+		float ShakeIntensity;
+		float ShakeDecaySpeed;
+		float ShakeDuration;
+		Vector2 originalPosition;
+		Vector2 shakeFactorPosition;
+		bool hasCapturedOriginalPosition;
+
+		void OnDisable()
 		{
 			transform.localPosition = originalPosition;
 			
 		}
 
-		private void OnEnable()
+		void OnEnable()
 		{
 			if (hasCapturedOriginalPosition) return;
 			hasCapturedOriginalPosition = true;
@@ -70,7 +71,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void Shake(float intensity, float duration, float decay)
+		void Shake(float intensity, float duration, float decay)
 		{
 
 		

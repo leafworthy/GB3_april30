@@ -43,7 +43,6 @@ namespace __SCRIPTS
 		protected virtual void PullOut()
 		{
 			SetState(weaponState.pullOut);
-			Debug.Log("it was pull out");
 			PlayAnimationClip(pullOutAnimationClip, 1);
 
 		}

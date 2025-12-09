@@ -88,7 +88,6 @@ public static class AttackUtilities
 		if (targetLife == null) return false;
 		if (!IsValidTarget(originLife, targetLife)) return false;
 
-		Debug.Log("hit target");
 
 		var attack = Attack.Create(originLife, targetLife).WithDamage(attackDamage).WithExtraPush(extraPush).WithFlying(causesFlying);
 		targetLife.TakeDamage(attack);

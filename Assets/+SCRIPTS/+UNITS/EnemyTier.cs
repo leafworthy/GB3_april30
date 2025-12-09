@@ -6,6 +6,7 @@ namespace __SCRIPTS
 	{
 
 		[SerializeField] private int enemyTier;
+		public EnemySpawner.EnemyType enemyType;
 		private BasicHealth health => _health ??= GetComponent<BasicHealth>();
 		private BasicHealth _health;
 
@@ -16,7 +17,7 @@ namespace __SCRIPTS
 			enemyTier = tier;
 			health.FillHealth();
 			var paletteSwapper = GetComponent<PalletteSwapper>();
-			paletteSwapper?.SetPallette(tier);
+			paletteSwapper?.SetPallette(enemyType,tier);
 		}
 
 	}

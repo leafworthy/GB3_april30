@@ -35,7 +35,7 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings
 
 	protected void Start()
 	{
-		Services.enemyManager.ConfigureNewEnemy(gameObject);
+		Services.enemyManager.ConfigureNewEnemy(gameObject, EnemySpawner.EnemyType.Crimson);
 		StartIdle();
 	}
 

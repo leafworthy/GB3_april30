@@ -32,11 +32,7 @@ namespace __SCRIPTS
 			player = newPlayer;
 			AimDir = Vector2.right;
 		}
-		private void OnDestroy()
-		{
-			if (player == null) return;
-			if (player.Controller == null) return;
-		}
+
 
 		private void Update()
 		{

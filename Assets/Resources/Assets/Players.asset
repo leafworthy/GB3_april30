@@ -12,12 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeae6711249740dd9b19914098a2399a, type: 3}
   m_Name: Players
   m_EditorClassIdentifier: 
-  followMousePrefab: {fileID: 5225401671485582630, guid: d8c9dcaa872bcf446943c684a9f0ef97, type: 3}
+  followMousePrefab: {fileID: 0}
   followStickPrefab: {fileID: 3487802576575965936, guid: 9b84c0fabf035bf40a170977d0371591, type: 3}
   GangstaBeanPlayerPrefab: {fileID: 3833892833884059285, guid: 1a325f3dad89943fa9468c5741b061e4, type: 3}
   BrockLeePlayerPrefab: {fileID: 3924160363998699687, guid: 54f957676e1e244b2ba4c41e152189f1, type: 3}
   TMatoPlayerPrefab: {fileID: 1081200535837487843, guid: bd04a751eaebd4aa8801bbb3104c30d2, type: 3}
   ToastEnemyPrefab: {fileID: 7431454428826219940, guid: cb879157170f74c019dcfb56c1da9382, type: 3}
+  ToastEnemyMaterials:
+  - {fileID: 2100000, guid: a352cbfbf94364268af325aed32ab73f, type: 2}
+  - {fileID: 2100000, guid: 9c22e92884a3e41b8ad8067c182c1188, type: 2}
+  - {fileID: 2100000, guid: fdae30f0854b54b158616aa60955364b, type: 2}
+  - {fileID: 2100000, guid: 55d73fdec6a3c446c817ee2b4eb8e71d, type: 2}
+  - {fileID: 2100000, guid: b051c08fce40d4730b81bfdb5a635e0d, type: 2}
   ConeEnemyPrefab: {fileID: 9136819711188386144, guid: f6af586f359ab4790b5c693ec2970f09, type: 3}
+  ConeEnemyMaterials:
+  - {fileID: 2100000, guid: 62f29fea3d4ce470a9f936935d28ed71, type: 2}
+  - {fileID: 2100000, guid: f2225536de5a54f678b090880b106dad, type: 2}
+  - {fileID: 2100000, guid: 468e6b834c0844f9fa022630f15d8ca9, type: 2}
+  - {fileID: 2100000, guid: d2c375b89dcba41c482f28a14d78122d, type: 2}
   DonutEnemyPrefab: {fileID: 4019382462400588572, guid: fc554a50617d541a6993aa31d6e2d64e, type: 3}
+  DonutEnemyMaterials:
+  - {fileID: 2100000, guid: 235f4913e33484f34bb0d694e1773723, type: 2}
+  - {fileID: 2100000, guid: 178b9b6d55da942fda1bb43ddd7d91fc, type: 2}
+  - {fileID: 2100000, guid: ebe76b4c9758d4d8788a56f43fd04d5a, type: 2}
+  - {fileID: 2100000, guid: 73ba2b8856dc74af8a713b378c5ced67, type: 2}
   CornEnemyPrefab: {fileID: 5317405891896899284, guid: 3488ee15b61ad4963b1b258f1b974183, type: 3}
+  CornEnemyMaterials:
+  - {fileID: 2100000, guid: c0053c1e0e5d44d058cabce14c61b358, type: 2}
+  - {fileID: 2100000, guid: 2ac3b84af52a94602a54bc139783a231, type: 2}
+  - {fileID: 2100000, guid: 2ded6403ebefe4f74acc5ea0694b7997, type: 2}
+  - {fileID: 2100000, guid: 6ebdbafe16c224eed9ebe66b34737571, type: 2}
+  - {fileID: 2100000, guid: 09db2b44b1dea438d998b72fc2d0454a, type: 2}
+  FruitEnemyPrefab: {fileID: 4019382462400588572, guid: 79fc8901f2f23453687018e943aab4a2, type: 3}
+  FruitEnemyMaterials:
+  - {fileID: 2100000, guid: 208734d8456064ae58684a496ce207b5, type: 2}

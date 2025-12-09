@@ -1,7 +1,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class EnemySpawnArea : SerializedMonoBehaviour
+public class SpawnableArea : SerializedMonoBehaviour
 {
 	public Collider2D AreaCollider;
 }

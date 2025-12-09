@@ -17,13 +17,13 @@ namespace __SCRIPTS
 			Refresh();
 		}
 
-		private void Update()
+		void Update()
 		{
 			if(!Application.isPlaying && autoRefresh) Refresh();
 		}
 
 		[Button]
-		private void Refresh()
+		void Refresh()
 		{
 			foreach (var spriteRenderer in toTint)
 			{

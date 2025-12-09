@@ -7,7 +7,7 @@ namespace __SCRIPTS
 {
 	public class JumpAbility : Ability
 	{
-		private enum state
+		enum state
 		{
 			resting,
 			jumpingUp,
@@ -18,13 +18,14 @@ namespace __SCRIPTS
 			gettingUp,
 			dead
 		}
-		private void SetState(state newState)
+
+		void SetState(state newState)
 		{
 			currentState = newState;
 		}
 
-		private state currentState;
-		private float verticalVelocity;
+		state currentState;
+		float verticalVelocity;
 
 		public AnimationClip jumpingAnimationClip;
 		public AnimationClip fallingAnimationClip;
@@ -34,19 +35,18 @@ namespace __SCRIPTS
 		public AnimationClip onGroundAnimationClip;
 		public AnimationClip getUpAnimationClip;
 		public AnimationClip standingAnimationClip;
-		private ICanMove moveAbility => _moveAbility ??= GetComponent<ICanMove>();
-		private ICanMove _moveAbility;
+		ICanMove moveAbility => _moveAbility ??= GetComponent<ICanMove>();
+		ICanMove _moveAbility;
 
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnJump;
 		public event Action OnFalling;
 
-
-		private const float FallInDistance = 80;
-		private const float maxAirTime = 2.5f;
-		private float airTimer;
-		private float getUpTime = 2;
-		private bool IsFlying  => currentState == state.flying;
+		const float FallInDistance = 80;
+		const float maxAirTime = 2.5f;
+		float airTimer;
+		float getUpTime = 2;
+		bool IsFlying => currentState == state.flying;
 
 		public bool IsFalling => currentState == state.falling;
 		public bool IsResting => currentState == state.resting;
@@ -58,11 +58,7 @@ namespace __SCRIPTS
 
 		public override string AbilityName => "Jump";
 
-		public override bool canDo()
-		{
-			if(!IsResting && !IsFlying) Debug.Log("cant cuz NOT RESTING");
-			return base.canDo() && (IsResting || IsFlying);
-		}
+		public override bool canDo() => base.canDo() && (IsResting || IsFlying);
 
 		public override bool canStop(IDoableAbility abilityToStopFor) => false;
 
@@ -73,7 +69,6 @@ namespace __SCRIPTS
 
 		public override void Stop()
 		{
-			Debug.Log("stopping jump ability");
 			verticalVelocity = 0;
 			SetState(state.resting);
 			moveAbility.SetCanMove(true);
@@ -81,7 +76,7 @@ namespace __SCRIPTS
 			base.Stop();
 		}
 
-		private void Jump()
+		void Jump()
 		{
 			if (currentState is state.flying)
 			{
@@ -107,35 +102,34 @@ namespace __SCRIPTS
 			base.SetPlayer(newPlayer);
 			defence.OnDead += DefenceOnDead;
 			defence.OnFlying += DefenceOnFlying;
-			if(newPlayer.Controller != null) newPlayer.Controller.Jump.OnPress += Controller_Jump;
+			if (newPlayer.Controller != null) newPlayer.Controller.Jump.OnPress += Controller_Jump;
 			SetState(state.resting);
-			if(defence.category == UnitCategory.Character)FallFromHeight(FallInDistance);
+			if (defence.category == UnitCategory.Character) FallFromHeight(FallInDistance);
 		}
 
-		private void DefenceOnFlying(Attack obj)
+		void DefenceOnFlying(Attack obj)
 		{
-			if(Services.pauseManager.IsPaused) return;
-			Debug.Log("should start flying");
+			if (Services.pauseManager.IsPaused) return;
 			StartFlying();
 		}
 
-		private void Controller_Jump(NewControlButton newControlButton)
+		void Controller_Jump(NewControlButton newControlButton)
 		{
 			Try();
 		}
 
-		private void DefenceOnDead(Attack attack)
+		void DefenceOnDead(Attack attack)
 		{
 			StartFlying();
 		}
 
-		private void StartFlying()
+		void StartFlying()
 		{
 			SetState(state.flying);
 			Try();
 		}
 
-		private void OnDisable()
+		void OnDisable()
 		{
 			if (defence == null) return;
 			defence.OnDead -= DefenceOnDead;
@@ -145,7 +139,7 @@ namespace __SCRIPTS
 			defence.player.Controller.Jump.OnPress -= Controller_Jump;
 		}
 
-		private void FallFromHeight(float fallHeight)
+		void FallFromHeight(float fallHeight)
 		{
 			SetState(state.falling);
 			body.SetHeight(fallHeight);
@@ -161,7 +155,7 @@ namespace __SCRIPTS
 			Fly();
 		}
 
-		private void Fly()
+		void Fly()
 		{
 			airTimer += Time.fixedDeltaTime;
 			if (airTimer > maxAirTime)
@@ -179,7 +173,7 @@ namespace __SCRIPTS
 				body.SetHeight(body.GetHeight() + verticalVelocity);
 		}
 
-		private void StartFalling()
+		void StartFalling()
 		{
 			if (!IsInAir) return;
 			if (currentState is not state.jumpingUp) return;
@@ -205,7 +199,7 @@ namespace __SCRIPTS
 					StartGettingUp();
 					break;
 				case state.gettingUp:
-					anim.Play(standingAnimationClip.name,0,0);
+					anim.Play(standingAnimationClip.name, 0, 0);
 					Stop();
 					break;
 				case state.dead:
@@ -215,22 +209,19 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void StartGettingUp()
+		void StartGettingUp()
 		{
 			StartCoroutine(GettingUpCoroutine());
-
 		}
 
-		private IEnumerator GettingUpCoroutine()
+		IEnumerator GettingUpCoroutine()
 		{
-			Debug.Log("coroutine started");
 			yield return new WaitForSeconds(getUpTime);
-			Debug.Log("coroutine finished");
 			PlayAnimationClip(getUpAnimationClip);
 			SetState(state.gettingUp);
 		}
 
-		private void HitGround()
+		void HitGround()
 		{
 			if (defence.IsDead())
 			{
@@ -251,11 +242,10 @@ namespace __SCRIPTS
 			Land();
 		}
 
-		private void Land()
+		void Land()
 		{
 			defence.SetTemporarilyInvincible(false);
 			moveAbility.SetCanMove(false);
-			Debug.Log("move should be false");
 			body.SetGrounded();
 			verticalVelocity = 0;
 			OnLand?.Invoke(transform.position);
@@ -268,6 +258,4 @@ namespace __SCRIPTS
 			verticalVelocity += doubleJumpForce;
 		}
 	}
-
-
 }

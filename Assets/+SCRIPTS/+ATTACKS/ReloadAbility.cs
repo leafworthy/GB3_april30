@@ -29,7 +29,6 @@ namespace __SCRIPTS
 
 		private void StartReloading()
 		{
-			Debug.Log("Starting Reload");
 			Invoke(nameof(Reload), gunAttack.CurrentGun.reloadTime);
 			anim.SetBool(UnitAnimations.IsBobbing, false);
 
@@ -42,7 +41,6 @@ namespace __SCRIPTS
 		public override void Stop()
 		{
 			base.Stop();
-			Debug.Log("Reload Stopped, doing gun offence");
 			gunAttack.Resume();
 		}
 

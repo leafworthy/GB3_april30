@@ -33,9 +33,9 @@ namespace __SCRIPTS
 		public void OnDisable()
 		{
 			DestroyAllUnits(null);
-			if (Services.levelManager == null) return;
-			Services.levelManager.OnStartLevel -= PoolObjects;
-			Services.levelManager.OnStopLevel -= DestroyAllUnits;
+			//if (Services.levelManager == null) return;
+			//Services.levelManager.OnStartLevel -= PoolObjects;
+			//Services.levelManager.OnStopLevel -= DestroyAllUnits;
 		}
 
 

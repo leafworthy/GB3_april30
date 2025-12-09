@@ -7,7 +7,7 @@ namespace __SCRIPTS
     public class CopyText : MonoBehaviour
     {
         public TextMeshProUGUI TextToCopy;
-        private TextMeshProUGUI _text;
+        TextMeshProUGUI _text;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {

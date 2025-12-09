@@ -11,7 +11,7 @@ namespace __SCRIPTS
 
 		public List<RecycleGameObject> poolInstances = new List<RecycleGameObject> ();
 
-		private RecycleGameObject CreateInstance (Vector3 pos)
+		RecycleGameObject CreateInstance (Vector3 pos)
 		{
 			entities++;
 
