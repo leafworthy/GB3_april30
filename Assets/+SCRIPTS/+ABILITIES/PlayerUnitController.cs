@@ -8,10 +8,10 @@ namespace __SCRIPTS
 	public class PlayerUnitController : MonoBehaviour, INeedPlayer, ICanMoveThings, ICanAttack
 	{
 		public Player player => _player;
-		private Player _player;
+		Player _player;
 		public LayerMask EnemyLayer => player.GetEnemyLayer();
 		public IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
-		private IHaveAttackStats _stats;
+		IHaveAttackStats _stats;
 
 		public bool IsEnemyOf(IGetAttacked targetLife) => player?.IsHuman() != targetLife.player?.IsHuman();
 		public event Action<IGetAttacked> OnAttack;
@@ -29,29 +29,30 @@ namespace __SCRIPTS
 			if (player == null) return;
 			player.Controller.MoveAxis.OnChange += Player_MoveInDirection;
 			player.Controller.MoveAxis.OnInactive += Player_StopMoving;
-			player.Controller.Attack1RightTrigger .OnPress += Player_Attack1Press;
+			player.Controller.Attack1RightTrigger.OnPress += Player_Attack1Press;
 			player.Controller.Attack1RightTrigger.OnRelease += Player_Attack1Release;
 		}
 
-		private void Player_Attack1Release(NewControlButton obj)
+		void Player_Attack1Release(NewControlButton obj)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			OnAttackStop?.Invoke();
 		}
 
-		private void Player_Attack1Press(NewControlButton obj)
+		void Player_Attack1Press(NewControlButton obj)
 		{
 			if (Services.pauseManager.IsPaused) return;
+			OnAttack?.Invoke(null);
 			OnAttackStart?.Invoke();
 		}
 
-		private void Player_StopMoving(NewInputAxis obj)
+		void Player_StopMoving(NewInputAxis obj)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			OnStopMoving?.Invoke();
 		}
 
-		private void Player_MoveInDirection(NewInputAxis axis, Vector2 newDirection)
+		void Player_MoveInDirection(NewInputAxis axis, Vector2 newDirection)
 		{
 			if (Services.pauseManager.IsPaused) return;
 
@@ -62,9 +63,6 @@ namespace __SCRIPTS
 			}
 
 			OnMoveInDirection?.Invoke(newDirection);
-
 		}
-
-
 	}
 }

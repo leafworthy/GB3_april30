@@ -131,6 +131,7 @@ namespace Sirenix.OdinValidator.Editor
                 else if (EditorPrefs.GetBool("ODIN_VALIDATOR_SHOW_GETTING_STARTED", false))
                 {
                     EditorPrefs.SetBool("ODIN_VALIDATOR_SHOW_GETTING_STARTED", false);
+#pragma warning disable UDR0005
                     EditorApplication.delayCall += () =>
                     {
                         var t = Sirenix.Serialization.TwoWaySerializationBinder.Default.BindToType("Sirenix.OdinInspector.Editor.GettingStarted.GettingStartedWindow");
@@ -140,6 +141,7 @@ namespace Sirenix.OdinValidator.Editor
                             action.Invoke(false, true);
                         }
                     };
+#pragma warning restore UDR0005
                 }
 #endif
             }

@@ -56,6 +56,7 @@ namespace __SCRIPTS._ENEMYAI
 
 		private void WalkToPlayer()
 		{
+			if(!isMoving) OnAttackStop?.Invoke();
 			isMoving = true;
 			moveDir = (_target.transform.position - transform.position).normalized * stats.MoveSpeed;
 			OnMoveInDirection?.Invoke(moveDir);

@@ -106,6 +106,7 @@ namespace __SCRIPTS
 			if (!CanTakeDamage()) return;
 
 			CurrentHealth = Mathf.Max(0, CurrentHealth - attack.DamageAmount);
+			OnFractionChanged ?.Invoke(CurrentFraction);
 			if (CurrentHealth <= 0 && !Data.Data.isInvincible) StartDeath(attack);
 
 			OnAttackHit?.Invoke(attack);
