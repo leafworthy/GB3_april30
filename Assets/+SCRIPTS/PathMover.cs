@@ -45,7 +45,6 @@ public class PathMover : MonoBehaviour
         // Store the original local space points
         originalPathPoints.AddRange(tempPoints);
 
-        Debug.Log($"Captured {originalPathPoints.Count} path points for path index {pathIndex}");
     }
 
     [Button]

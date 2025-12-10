@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using __SCRIPTS.Cursor;
 using UnityEngine;
 
@@ -7,7 +6,7 @@ namespace __SCRIPTS
 {
 	public class LevelManager : MonoBehaviour, IService
 	{
-		private static SceneDefinition restartedLevelScene;
+		static SceneDefinition restartedLevelScene;
 		public GameLevel currentLevel;
 
 		public event Action<GameLevel> OnStopLevel;
@@ -16,8 +15,14 @@ namespace __SCRIPTS
 		public event Action<Player> OnLevelSpawnedPlayerFromPlayerSetupMenu;
 		public event Action OnGameOver;
 		public event Action OnWinGame;
-		private float gameStartTime;
+		float gameStartTime;
 		public bool loadInGame;
+
+		[RuntimeInitializeOnLoadMethod]
+		static void ResetStatics()
+		{
+			restartedLevelScene = null;
+		}
 
 		public void StartService()
 		{
@@ -32,7 +37,7 @@ namespace __SCRIPTS
 			Services.sceneLoader.GoToScene(startingScene);
 		}
 
-		private void StartLevel(GameLevel newLevel)
+		void StartLevel(GameLevel newLevel)
 		{
 			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
 			currentLevel = newLevel;
@@ -43,13 +48,9 @@ namespace __SCRIPTS
 			gameStartTime = Time.time;
 		}
 
-
-		private void SpawnPlayersIntoLevel(PlayerSpawnPoint playerSpawnPoint)
+		void SpawnPlayersIntoLevel(PlayerSpawnPoint playerSpawnPoint)
 		{
-			if (playerSpawnPoint == null)
-			{
-				return;
-			}
+			if (playerSpawnPoint == null) return;
 
 			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
@@ -71,32 +72,32 @@ namespace __SCRIPTS
 			OnLevelSpawnedPlayerFromPlayerSetupMenu?.Invoke(player);
 		}
 
-		private void newLevel_GameOver()
+		void newLevel_GameOver()
 		{
 			OnGameOver?.Invoke();
 			GoToGameOverScreen();
 		}
 
-		private void GoToGameOverScreen()
+		void GoToGameOverScreen()
 		{
 			StopLevel();
 			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.GameOverScene);
 		}
 
-		private void LoadLevel(SceneDefinition destinationScene)
+		void LoadLevel(SceneDefinition destinationScene)
 		{
 			StopLevel();
 			Services.sceneLoader.GoToScene(destinationScene);
 		}
 
-		private void SceneLoaderSceneReadyToStartLevel(SceneDefinition newScene)
+		void SceneLoaderSceneReadyToStartLevel(SceneDefinition newScene)
 		{
 			var gameLevel = FindFirstObjectByType<GameLevel>();
 			if (gameLevel == null) return;
 			StartLevel(gameLevel);
 		}
 
-		private void StopLevel()
+		void StopLevel()
 		{
 			if (currentLevel == null) return;
 			restartedLevelScene = currentLevel.scene;
@@ -106,7 +107,7 @@ namespace __SCRIPTS
 			OnStopLevel?.Invoke(currentLevel);
 		}
 
-		private void StopGame()
+		void StopGame()
 		{
 			StopLevel();
 		}
@@ -117,16 +118,13 @@ namespace __SCRIPTS
 			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.restartLevel);
 		}
 
-
-
-
-
-		private void ClearOldSpawnedPlayer(Player pausingPlayer)
+		void ClearOldSpawnedPlayer(Player pausingPlayer)
 		{
 			Services.objectMaker.Unmake(pausingPlayer.SpawnedPlayerGO);
 			if (pausingPlayer == null) return;
 			pausingPlayer.Unalive();
 		}
+
 		public void ExitToMainMenu()
 		{
 			StopGame();
@@ -138,8 +136,6 @@ namespace __SCRIPTS
 			LoadLevel(restartedLevelScene);
 		}
 
-
-
 		public void QuitGame()
 		{
 #if UNITY_EDITOR
@@ -149,16 +145,14 @@ namespace __SCRIPTS
 #endif
 		}
 
-
 		public void WinGame()
 		{
 			OnWinGame?.Invoke();
 		}
 
-
 		public float GetCurrentLevelTimeElapsed() => GetTimeElapsed();
 
-		private float GetTimeElapsed()
+		float GetTimeElapsed()
 		{
 			if (gameStartTime == 0) return 0f;
 			return Time.time - gameStartTime;
@@ -181,8 +175,6 @@ namespace __SCRIPTS
 			SpawnPlayerFromLevel(pausingPlayer);
 		}
 
-
-
 		public void UnspawnPlayer(Player unspawnPlayer)
 		{
 			if (unspawnPlayer == null) return;
@@ -192,7 +184,6 @@ namespace __SCRIPTS
 		public void AdvanceToNextLevel(SceneDefinition newScene)
 		{
 			if (newScene == null) return;
-			Debug.Log("advancing to next level: " + newScene, this);
 			LoadLevel(newScene);
 		}
 	}

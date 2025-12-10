@@ -125,10 +125,6 @@ public class EnemySpawner : SerializedMonoBehaviour
 			Debug.LogWarning("Failed to find valid spawn position!");
 			return;
 		}
-		else
-		{
-			Debug.Log( "Found spawn position at " + spawnPos);
-		}
 	}
 
 	void Update()

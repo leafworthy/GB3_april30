@@ -11,31 +11,22 @@ public class WallColors : MonoBehaviour
 	public TintSprites TrimColorTintSprite;
 	public TintSprites GlassColorTintSprite;
 
-	private void OnEnable()
+	void OnEnable()
 	{
 		Refresh();
 	}
 
-	private void Update()
+	void Update()
 	{
 		Refresh();
 	}
 
-	private void Refresh()
+	void Refresh()
 	{
-		if (WallColorTintSprite != null)
-		{
-			WallColorTintSprite.Tint = wallColor;
-		}
+		if (WallColorTintSprite != null) WallColorTintSprite.Tint = wallColor;
 
-		if (TrimColorTintSprite != null)
-		{
-			TrimColorTintSprite.Tint = trimColor;
-		}
+		if (TrimColorTintSprite != null) TrimColorTintSprite.Tint = trimColor;
 
-		if (GlassColorTintSprite != null)
-		{
-			GlassColorTintSprite.Tint = glassColor;
-		}
+		if (GlassColorTintSprite != null) GlassColorTintSprite.Tint = glassColor;
 	}
 }

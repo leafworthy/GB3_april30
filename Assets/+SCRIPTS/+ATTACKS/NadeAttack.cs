@@ -6,30 +6,27 @@ namespace __SCRIPTS
 {
 	public class NadeAttack : Ability
 	{
-		private AnimationEvents animationEvents;
-		private Vector2 startPoint;
-		private Vector2 endPoint;
+		Vector2 startPoint;
+		Vector2 endPoint;
 
-		private const int throwTime = 30;
+		const int throwTime = 30;
 
-		private IAimAbility aim => _aim ??= GetComponent<IAimAbility>();
-		private IAimAbility _aim;
-		private MoveAbility move;
-		private AmmoInventory ammo;
+		IAimAbility aim => _aim ??= GetComponent<IAimAbility>();
+		IAimAbility _aim;
+		MoveAbility move;
+		AmmoInventory ammo;
 
 		public override string AbilityName => "Nade";
-		private JumpAbility jump => _jump ??= GetComponent<JumpAbility>();
-		private JumpAbility _jump;
-		private DoableArms arms => body.doableArms;
+		JumpAbility jump => _jump ??= GetComponent<JumpAbility>();
+		JumpAbility _jump;
 
 		public event Action<Vector2, Vector2, float, ICanAttack> OnThrow;
 		public event Action OnShowAiming;
 		public event Action OnHideAiming;
-		public event Action<Vector2, Vector2> OnAimAt;
 		public event Action<Vector2, Vector2> OnAimInDirection;
 		public bool IsAiming;
-		private float currentCooldownTime;
-		[SerializeField] private AnimationClip animationClip;
+		float currentCooldownTime;
+		[SerializeField] AnimationClip animationClip;
 
 		protected override bool requiresArms() => true;
 
@@ -43,7 +40,7 @@ namespace __SCRIPTS
 			ThrowGrenade();
 		}
 
-		private void ShowAiming()
+		void ShowAiming()
 		{
 			if (IsAiming) return;
 			IsAiming = true;
@@ -60,19 +57,18 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player newPlayer)
 		{
 			base.SetPlayer(newPlayer);
-			animationEvents = anim.animEvents;
 			move = GetComponent<MoveAbility>();
 			ammo = GetComponent<AmmoInventory>();
 			StopListeningToPlayer();
 			ListenToPlayer();
 		}
 
-		private void OnDisable()
+		void OnDisable()
 		{
 			StopListeningToPlayer();
 		}
 
-		private void StopListeningToPlayer()
+		void StopListeningToPlayer()
 		{
 			if (anim == null) return;
 			if (player == null) return;
@@ -84,16 +80,15 @@ namespace __SCRIPTS
 			player.Controller.Attack2LeftTrigger.OnRelease -= Player_NadeRelease;
 		}
 
-		private void ListenToPlayer()
+		void ListenToPlayer()
 		{
 			if (player == null) return;
-			animationEvents = anim.animEvents;
 			player.Controller.AimAxis.OnChange += Player_OnAim;
 			player.Controller.Attack2LeftTrigger.OnPress += Player_NadePress;
 			player.Controller.Attack2LeftTrigger.OnRelease += Player_NadeRelease;
 		}
 
-		private void Update()
+		void Update()
 		{
 			if (IsAiming)
 			{
@@ -104,17 +99,17 @@ namespace __SCRIPTS
 				HideAiming();
 		}
 
-		private void Player_NadePress(NewControlButton newControlButton)
+		void Player_NadePress(NewControlButton newControlButton)
 		{
 			if (!IsAiming && canDo()) ShowAiming();
 		}
 
-		private void Player_NadeRelease(NewControlButton newControlButton)
+		void Player_NadeRelease(NewControlButton newControlButton)
 		{
 			Try();
 		}
 
-		private void ThrowGrenade()
+		void ThrowGrenade()
 		{
 			PlayAnimationClip(animationClip, 1);
 			ammo.secondaryAmmo.UseAmmo(1);
@@ -124,14 +119,14 @@ namespace __SCRIPTS
 			HideAiming();
 		}
 
-		private void HideAiming()
+		void HideAiming()
 		{
 			if (!IsAiming) return;
 			IsAiming = false;
 			OnHideAiming?.Invoke();
 		}
 
-		private void Player_OnAim(IControlAxis controlAxis, Vector2 aimDir)
+		void Player_OnAim(IControlAxis controlAxis, Vector2 aimDir)
 		{
 			if (defence.IsDead()) return;
 			if (Services.pauseManager.IsPaused) return;
@@ -139,7 +134,7 @@ namespace __SCRIPTS
 			Aim();
 		}
 
-		private void Aim()
+		void Aim()
 		{
 			if (body == null) return;
 

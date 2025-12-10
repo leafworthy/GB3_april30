@@ -74,7 +74,7 @@ namespace __SCRIPTS
 			if (hits == null) return;
 			foreach (var hit in hits)
 			{
-				AttackUtilities.HitTarget(offence, hit, GetAttackDamage(attackType));
+				AttackUtilities.HitTarget(offence, hit, GetAttackDamage(attackType), extraPush);
 				OnHitTarget?.Invoke(hit.transform.position);
 			}
 		}

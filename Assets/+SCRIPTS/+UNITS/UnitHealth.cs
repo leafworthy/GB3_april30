@@ -54,7 +54,6 @@ namespace __SCRIPTS
 
 		private void StartDeath(Attack killingAttack)
 		{
-			Debug.Log("death started");
 			isDead = true;
 			OnDead?.Invoke(killingAttack);
 		}

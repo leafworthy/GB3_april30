@@ -1,21 +1,28 @@
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace __SCRIPTS
 {
 	public class PlayerStatsManager : SerializedMonoBehaviour, IService
 	{
-		private static Dictionary<Player, PlayerStats> playerStats = new();
+		static Dictionary<Player, PlayerStats> playerStats = new();
 
 		public event Action<Player, PlayerStat.StatType, float> OnPlayerStatChange;
-		private bool hasStarted;
-		private int maxGas = 20;
-		private LevelManager _levelManager;
-		private LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
-		private Players _playerManager;
-		private Players playerManager => _playerManager ?? ServiceLocator.Get<Players>();
+		bool hasStarted;
+		int maxGas = 20;
+		LevelManager _levelManager;
+		LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
+		Players _playerManager;
+		Players playerManager => _playerManager ?? ServiceLocator.Get<Players>();
 		public int MaxGas => maxGas;
+
+		[RuntimeInitializeOnLoadMethod]
+		static void ResetStatics()
+		{
+			playerStats = new Dictionary<Player, PlayerStats>();
+		}
 
 		public void StartService()
 		{
@@ -39,7 +46,7 @@ namespace __SCRIPTS
 			return 0; // Return 0 instead of -999 for better display
 		}
 
-		private void GatherPlayerStats()
+		void GatherPlayerStats()
 		{
 			if (hasStarted) return;
 			playerStats.Clear();
@@ -60,7 +67,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void LevelSpawnedPlayersFromLevelOnLevelSpawnedPlayerFromLevelJoins(Player player)
+		void LevelSpawnedPlayersFromLevelOnLevelSpawnedPlayerFromLevelJoins(Player player)
 		{
 			var stats = player.GetComponent<PlayerStats>();
 			if (stats == null) return;

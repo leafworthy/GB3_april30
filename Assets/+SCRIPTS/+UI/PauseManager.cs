@@ -70,7 +70,7 @@ namespace __SCRIPTS
 		private void PlayerPressedDown(IControlAxis controlAxis)
 		{
 			if (controlAxis.owner != pausingPlayer) return;
-			Debug.Log("DOWN");
+
 			menuButtons.Down();
 			OnPlayerPressedDown?.Invoke();
 		}
@@ -114,7 +114,7 @@ namespace __SCRIPTS
 		private void PlayerPressedUp(IControlAxis controlAxis)
 		{
 			if (controlAxis.owner != pausingPlayer) return;
-			Debug.Log("UP");
+
 			menuButtons.Up();
 			OnPlayerPressedUp?.Invoke();
 		}

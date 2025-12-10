@@ -42,7 +42,6 @@ namespace __SCRIPTS
 		private IAimAbility _aimAbility;
 
 		private bool isFullyCharged;
-		private bool isPressingCharge;
 
 		private AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
 		private AmmoInventory _ammoInventory;
@@ -169,13 +168,11 @@ namespace __SCRIPTS
 
 		private void Player_ChargePress(NewControlButton newControlButton)
 		{
-			isPressingCharge = true;
 			Try();
 		}
 
 		private void Player_ChargeRelease(NewControlButton newControlButton)
 		{
-			isPressingCharge = false;
 			if (Services.pauseManager.IsPaused) return;
 			if (currentState == state.not) return;
 			if (!jumpAbility.IsResting) return;

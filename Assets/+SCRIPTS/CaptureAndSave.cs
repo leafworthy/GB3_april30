@@ -10,13 +10,6 @@ public class CameraCapture
     {
         Camera targetCamera = Selection.activeGameObject?.GetComponent<Camera>();
 
-        if (targetCamera == null)
-        {
-	        targetCamera = Camera.main;
-            if(targetCamera == null)Debug.LogError("Please select a GameObject with a Camera component in the Hierarchy.");
-            return;
-        }
-
         Debug.Log(SystemInfo.maxTextureSize +  "max");
         // Use the Game View's current resolution.
         int width = 3840*2;

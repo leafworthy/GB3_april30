@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -9,27 +8,24 @@ namespace __SCRIPTS
 	{
 		public override string AbilityName => "Throw-Mine";
 		public AnimationClip mineDropAnimation;
-		private Vector2 startPoint;
-		private Vector2 endPoint;
+		Vector2 startPoint;
+		Vector2 endPoint;
 		public event Action<Vector2, Player> OnThrow;
-		private AmmoInventory ammo => _ammo ??= GetComponent<AmmoInventory>();
-		private AmmoInventory _ammo;
-		private JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
-		private JumpAbility _jumpAbility;
+		AmmoInventory ammo => _ammo ??= GetComponent<AmmoInventory>();
+		AmmoInventory _ammo;
 
-		private List<Mine> ActiveMines = new();
-		private bool isPressingThrowMine;
-		private bool isPressingDetonate;
+		List<Mine> ActiveMines = new();
+		bool isPressingThrowMine;
+		bool isPressingDetonate;
 
-		private IDoableAbility lastArmAbility;
-		private bool isThrowing;
+		bool isThrowing;
 		protected override bool requiresArms() => true;
 
 		protected override bool requiresLegs() => false;
 
 		public override bool canDo() => base.canDo() && ammo.secondaryAmmo.hasReserveAmmo();
 
-		private void DropMine()
+		void DropMine()
 		{
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = transform.position;
@@ -51,20 +47,18 @@ namespace __SCRIPTS
 			anim.Play(mineDropAnimation.name, 1, 0);
 		}
 
-
-
 		public override void SetPlayer(Player newPlayer)
 		{
 			base.SetPlayer(newPlayer);
 			ListenToPlayer();
 		}
 
-		private void OnDestroy()
+		void OnDestroy()
 		{
 			StopListeningToPlayer();
 		}
 
-		private void StopListeningToPlayer()
+		void StopListeningToPlayer()
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;
@@ -72,7 +66,7 @@ namespace __SCRIPTS
 			player.Controller.SwapWeaponSquare.OnRelease -= Player_ThrowRelease;
 		}
 
-		private void ListenToPlayer()
+		void ListenToPlayer()
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;
@@ -80,16 +74,8 @@ namespace __SCRIPTS
 			player.Controller.SwapWeaponSquare.OnRelease += Player_ThrowRelease;
 		}
 
-		private void Player_DetonateRelease(NewControlButton obj) => isPressingDetonate = false;
 
-		private void Player_DetonatePress(NewControlButton obj)
-		{
-			if (isPressingDetonate) return;
-			isPressingDetonate = true;
-			DetonateMine();
-		}
-
-		private void DetonateMine()
+		void DetonateMine()
 		{
 			if (ActiveMines.Count <= 0) return;
 			if (ActiveMines[0] == null) return;
@@ -102,7 +88,6 @@ namespace __SCRIPTS
 			isThrowing = false;
 			if (isPressingThrowMine)
 			{
-
 				Player_ThrowPress(null);
 				return;
 			}
@@ -111,26 +96,26 @@ namespace __SCRIPTS
 			lastArmAbility?.Try();
 		}
 
-		private void Player_ThrowPress(NewControlButton newControlButton)
+		void Player_ThrowPress(NewControlButton newControlButton)
 		{
 			if (Services.pauseManager.IsPaused) return;
-			if(ActiveMines.Count >0)
+			if (ActiveMines.Count > 0)
 			{
 				DetonateMine();
 				return;
 			}
 
 			if (isThrowing) return;
-			if(body.doableArms.CurrentAbility is not ThrowMineAttack) lastArmAbility = body.doableArms.CurrentAbility;
+			if (body.doableArms.CurrentAbility is not ThrowMineAttack) lastArmAbility = body.doableArms.CurrentAbility;
 			Try();
 		}
 
-		private void Player_ThrowRelease(NewControlButton obj)
+		void Player_ThrowRelease(NewControlButton obj)
 		{
 			isPressingThrowMine = false;
 		}
 
-		private void RemoveMine(Mine mine)
+		void RemoveMine(Mine mine)
 		{
 			if (!ActiveMines.Contains(mine)) return;
 			ActiveMines.Remove(mine);

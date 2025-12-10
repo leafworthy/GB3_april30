@@ -5,11 +5,19 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class CameraShaker: MonoBehaviour
+	public class CameraShaker : MonoBehaviour
 	{
-		private static CinemachineImpulseSource cinemachineImpulseSource;
-		private static float shakeMultiplier = 0.3f;
-		private static float maxDistanceFromCamera = 40;
+		static CinemachineImpulseSource cinemachineImpulseSource;
+		static float shakeMultiplier = 0.3f;
+		static float maxDistanceFromCamera = 40;
+
+		[RuntimeInitializeOnLoadMethod]
+		static void ResetStatics()
+		{
+			cinemachineImpulseSource = null;
+			shakeMultiplier = 0.3f;
+			maxDistanceFromCamera = 40;
+		}
 
 		public enum ShakeIntensityType
 		{
@@ -17,14 +25,14 @@ namespace __SCRIPTS
 			normal,
 			high
 		}
-		private void Start()
+
+		void Start()
 		{
 			cinemachineImpulseSource = GetComponent<CinemachineImpulseSource>();
 			CinemachineImpulseManager.Instance.IgnoreTimeScale = true;
 		}
 
-
-		public static void ShakeCamera(Vector3 shakePosition,ShakeIntensityType type)
+		public static void ShakeCamera(Vector3 shakePosition, ShakeIntensityType type)
 		{
 			switch (type)
 			{
@@ -42,15 +50,14 @@ namespace __SCRIPTS
 			}
 		}
 
-		private static void ShakeCamera( Vector3 shakePosition,float shakeMagnitude)
+		static void ShakeCamera(Vector3 shakePosition, float shakeMagnitude)
 		{
-			var distanceFromCamera =  Vector3.Distance(shakePosition, CursorManager.GetCamera().transform.position);
-			if(distanceFromCamera >= maxDistanceFromCamera) return;
+			var distanceFromCamera = Vector3.Distance(shakePosition, CursorManager.GetCamera().transform.position);
+			if (distanceFromCamera >= maxDistanceFromCamera) return;
 			var distanceRatio = distanceFromCamera / maxDistanceFromCamera;
-		
-			var shakeVector = new Vector3(UnityEngine.Random.Range(-1,1), UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1));
-			cinemachineImpulseSource.GenerateImpulseWithVelocity(shakeVector * shakeMultiplier* shakeMagnitude*
-			                                                     distanceRatio);
+
+			var shakeVector = new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1));
+			cinemachineImpulseSource.GenerateImpulseWithVelocity(shakeVector * shakeMultiplier * shakeMagnitude * distanceRatio);
 		}
 	}
 }

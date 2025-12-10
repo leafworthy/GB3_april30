@@ -24,6 +24,16 @@ public class UnitStatsDatabase : ScriptableObject
 	// Internal coroutine runner - singleton pattern
 	private static CoroutineRunner coroutineRunner;
 
+	[RuntimeInitializeOnLoadMethod]
+	private static void ResetStatics()
+	{
+		if (coroutineRunner != null)
+		{
+			DestroyImmediate(coroutineRunner.gameObject);
+			coroutineRunner = null;
+		}
+	}
+
 #if UNITY_EDITOR
 
 	public void LoadUnitDataFromGoogleSheets()
@@ -73,7 +83,6 @@ public class UnitStatsDatabase : ScriptableObject
 
 		if (coroutineRunner != null)
 		{
-			Debug.Log("huh");
 			DestroyImmediate(coroutineRunner.gameObject);
 			coroutineRunner = null;
 		}

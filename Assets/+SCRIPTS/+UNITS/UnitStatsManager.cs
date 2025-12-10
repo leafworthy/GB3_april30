@@ -83,14 +83,12 @@ namespace __SCRIPTS
 			if (unitStatsLookup.TryGetValue(cleanedName, out var stats)) return stats;
 
 			var fuzzyMatch = FindFuzzyMatch(cleanedName);
-			Debug.Log(" fuzzy match for " + cleanedName + " is " + (fuzzyMatch != null ? fuzzyMatch.unitName : "null"));
 			return fuzzyMatch ?? GetDefaultLifeStats();
 		}
 
 		static UnitStatsData GetDefaultLifeStats() {
 			if (!initialized) ResetStatics();
 			var result = unitStatsLookup.GetValueOrDefault("DefaultThing");
-			Debug.Log(result);
 			return unitStatsLookup.GetValueOrDefault("DefaultThing");
 		}
 

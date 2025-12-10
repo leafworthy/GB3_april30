@@ -70,7 +70,11 @@ namespace __SCRIPTS
 		{
 			if (!CanShoot())
 			{
-				if (!Ammo.hasAmmoInClip()) OnNeedsReload?.Invoke();
+				if (!Ammo.hasAmmoInClip())
+				{
+					OnEmpty?.Invoke();
+					OnNeedsReload?.Invoke();
+				}
 				return;
 			}
 

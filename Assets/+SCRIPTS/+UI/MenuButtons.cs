@@ -10,14 +10,7 @@ namespace __SCRIPTS
 		public int CurrentButtonIndex;
 		protected MenuButton CurrentlySelectedButton;
 
-		[Button]
-		public void ListButtonIndexes()
-		{
-			for (int i = 0; i < menuButtons.Count; i++)
-			{
-				Debug.Log($"Button {i}: {menuButtons[i].name}");
-			}
-		}
+
 		[Button]
 		public void InitButtons()
 		{

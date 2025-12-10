@@ -30,14 +30,12 @@ namespace __SCRIPTS
 
 		public void StartTint(Color tintColor)
 		{
-			Debug.Log("tint started with color " + tintColor);
 			if (BlockTint) return;
 			materialTintColor = tintColor;
 			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
 			if (renderersToTint == null) return;
 			foreach (var r in renderersToTint)
 			{
-				Debug.Log("tinting renderer " + r.name);
 				r.material.SetColor(Tint, materialTintColor);
 			}
 		}
@@ -115,7 +113,6 @@ namespace __SCRIPTS
 
 		private void Life_AttackHit(Attack attack)
 		{
-			Debug.Log("stats fx offence hit, color " + attack.TintColor);
 			StartTint(attack.TintColor);
 			CreateDamageRisingText(attack);
 			SprayDebree(attack);

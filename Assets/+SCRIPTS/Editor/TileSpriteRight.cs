@@ -371,7 +371,6 @@ public class SpriteTiler : EditorWindow
 
         Undo.CollapseUndoOperations(undoGroup);
 
-        Debug.Log($"Tiled object isometrically to position: {newPosition}");
     }
 
     static bool HasSpriteRenderers(GameObject obj)

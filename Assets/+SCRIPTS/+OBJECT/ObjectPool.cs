@@ -11,6 +11,11 @@ namespace __SCRIPTS
 
 		public List<RecycleGameObject> poolInstances = new List<RecycleGameObject> ();
 
+		[RuntimeInitializeOnLoadMethod]
+		static void ResetStatics()
+		{
+			entities = 0;
+		}
 		RecycleGameObject CreateInstance (Vector3 pos)
 		{
 			entities++;

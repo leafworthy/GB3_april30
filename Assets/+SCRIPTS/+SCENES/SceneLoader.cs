@@ -13,23 +13,23 @@ namespace __SCRIPTS
 	{
 		// UI References
 		[Header("UI References"), SerializeField]
-		private Animator faderAnimator;
-		[SerializeField] private GameObject loadingScreen;
-		[SerializeField] private GameObject levelTransitionScreen;
-		[SerializeField] private Image progressBarImage;
-		[SerializeField] private TextMeshProUGUI percentLoadedText;
-		[SerializeField] private TextMeshProUGUI locationTitleText;
+		Animator faderAnimator;
+		[SerializeField] GameObject loadingScreen;
+		[SerializeField] GameObject levelTransitionScreen;
+		[SerializeField] Image progressBarImage;
+		[SerializeField] TextMeshProUGUI percentLoadedText;
+		[SerializeField] TextMeshProUGUI locationTitleText;
 		//[SerializeField] private Image locationImage;
-		[SerializeField] private GameObject pressAnyButtonText;
+		[SerializeField] GameObject pressAnyButtonText;
 
 		// State tracking
-		private AsyncOperation loadingOperation;
-		private bool isLoading;
-		private static readonly int IsFadedIn = Animator.StringToHash("IsFadedIn");
+		AsyncOperation loadingOperation;
+		bool isLoading;
+		static readonly int IsFadedIn = Animator.StringToHash("IsFadedIn");
 
 		// Scene transition weaponState tracking
-		private SceneDefinition currentlyLoadedScene;
-		private SceneDefinition loadingScene;
+		SceneDefinition currentlyLoadedScene;
+		SceneDefinition loadingScene;
 
 		public event Action<SceneDefinition> OnSceneReadyToStartLevel;
 
@@ -42,17 +42,17 @@ namespace __SCRIPTS
 			StartFadingIn();
 		}
 
-		private void OnDestroy()
-		{
-			//SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
-		}
-
-		private void OnDisable()
+		void OnDestroy()
 		{
 			SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
 		}
 
-		private void Update()
+		void OnDisable()
+		{
+			SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
+		}
+
+		void Update()
 		{
 			if (!isLoading) return;
 			var progressValue = UpdateLoadingProgress();
@@ -73,13 +73,12 @@ namespace __SCRIPTS
 
 		#endregion
 
-		private void SetCurrentSceneReady()
+		void SetCurrentSceneReady()
 		{
 			currentlyLoadedScene = loadingScene;
 			loadingScene = null;
 			OnSceneReadyToStartLevel?.Invoke(currentlyLoadedScene);
 		}
-
 
 		public void FadeInComplete()
 		{
@@ -93,27 +92,23 @@ namespace __SCRIPTS
 				levelTransitionScreen.SetActive(false);
 		}
 
-
 		#region Private Methods
 
-		private void SceneManager_OnSceneLoaded(Scene scene, LoadSceneMode mode)
+		void SceneManager_OnSceneLoaded(Scene scene, LoadSceneMode mode)
 		{
-			if (scene.name == Services.assetManager.Scenes.gameManager)
-			{
-				return;
-			}
+			if (scene.name == Services.assetManager.Scenes.gameManager) return;
 
 			isLoading = false;
 			SetCurrentSceneReady();
 		}
 
-		private void StartFadingIn()
+		void StartFadingIn()
 		{
 			faderAnimator.SetBool(IsFadedIn, true);
 			ResetProgressIndicators();
 		}
 
-		private void ResetProgressIndicators()
+		void ResetProgressIndicators()
 		{
 			// Reset progress indicators
 			if (progressBarImage != null)
@@ -127,13 +122,13 @@ namespace __SCRIPTS
 			percentLoadedText.gameObject.SetActive(true);
 		}
 
-		private void StartLoadingSceneAsync()
+		void StartLoadingSceneAsync()
 		{
 			isLoading = true;
 			loadingOperation = SceneManager.LoadSceneAsync(loadingScene.SceneName);
 		}
 
-		private float UpdateLoadingProgress()
+		float UpdateLoadingProgress()
 		{
 			// Progress is clamped at 0.9 until allowSceneActivation is true
 			var progressValue = Mathf.Clamp01(loadingOperation.progress / 0.9f);
@@ -147,7 +142,7 @@ namespace __SCRIPTS
 			return progressValue;
 		}
 
-		private void FadeOut()
+		void FadeOut()
 		{
 			faderAnimator.SetBool(IsFadedIn, false);
 

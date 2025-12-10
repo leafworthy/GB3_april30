@@ -51,7 +51,6 @@ namespace __SCRIPTS
 
 		public void SetIsMainPlayer(bool value)
 		{
-			Debug.Log("setting main player to " + value,this);
 			isMainPlayer = value;
 		}
 		public int BuildingLayer => Services.assetManager.LevelAssets.BuildingLayer;
@@ -67,7 +66,6 @@ namespace __SCRIPTS
 		public void OnPlayerDied(Player player, bool isRespawning)
 		{
 			spawnedPlayerDefence.OnDeathComplete -= OnPlayerDied;
-			Debug.Log("player died",this);
 			SetState(State.Dead);
 			OnPlayerDies?.Invoke(this, isRespawning);
 			Services.playerStatsManager.SetStatAmount(this, PlayerStat.StatType.TimeSurvived, Services.levelManager.GetCurrentLevelTimeElapsed());
@@ -101,7 +99,6 @@ namespace __SCRIPTS
 			spawnedPlayerStats = SpawnedPlayerGO.GetComponent<IHaveAttackStats>();
 			if (spawnedPlayerDefence == null) return;
 
-			Debug.Log("setting player defence, registering ondeathcomplete",this);
 
 			spawnedPlayerDefence.OnDeathComplete += OnPlayerDied;
 			spawnedPlayerDefence.SetPlayer(this);
@@ -215,7 +212,7 @@ namespace __SCRIPTS
 		{
 			if (spawnedPlayerDefence == null)
 			{
-				Debug.Log("no spawned player defence to unalive",this);
+
 				return;
 			}
 			spawnedPlayerDefence.DieNow();

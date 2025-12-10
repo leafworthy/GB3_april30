@@ -22,7 +22,6 @@ namespace __SCRIPTS
 			damageRateCounter = 0;
 			color = _color;
 			damage = _damage;
-			Debug.Log("effect started");
 			particles = Services.objectMaker.Make(Services.assetManager.FX.fireParticlesPrefab, transform.position);
 			particles.transform.SetParent(target.transform, true);
 
@@ -39,14 +38,12 @@ namespace __SCRIPTS
 				}
 				else
 				{
-					Debug.Log("effect tick");
 					duration -=   Time.fixedDeltaTime;
 					damageRateCounter -= Time.fixedDeltaTime;
 				}
 			}
 			else
 			{
-				Debug.Log("destroyed effect");
 				Destroy(particles);
 				Destroy(this);
 			}

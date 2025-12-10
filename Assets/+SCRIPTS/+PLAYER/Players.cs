@@ -147,9 +147,7 @@ namespace __SCRIPTS
 				SetMainPlayer(nextPlayer);
 			}
 
-			Debug.Log("OnPlayerDies called");
 			OnPlayerDies?.Invoke(deadPlayer);
-			//UnjoinPlayer(deadPlayer);
 		}
 
 		private void SetMainPlayer(Player nextPlayer)

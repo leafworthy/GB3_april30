@@ -17,33 +17,34 @@ public static class Services
 		_sceneLoader = null;
 		_assetManager = null;
 		_risingText = null;
+		_hudManager = null;
 	}
 
-	private static PlayerStatsManager _playerStatsManager;
+	static PlayerStatsManager _playerStatsManager;
 	public static PlayerStatsManager playerStatsManager => _playerStatsManager ?? ServiceLocator.Get<PlayerStatsManager>();
-	private static SFX _sfx;
+	static SFX _sfx;
 	public static SFX sfx => _sfx ?? ServiceLocator.Get<SFX>();
-	private static ObjectMaker _objectMaker;
+	static ObjectMaker _objectMaker;
 	public static ObjectMaker objectMaker => _objectMaker ?? ServiceLocator.Get<ObjectMaker>();
 
-	private static LevelManager _levelManager;
+	static LevelManager _levelManager;
 	public static LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
 
-	private static Players _playerManager;
+	static Players _playerManager;
 	public static Players playerManager => _playerManager ?? ServiceLocator.Get<Players>();
 
-	private static EnemyManager _enemyManager;
+	static EnemyManager _enemyManager;
 	public static EnemyManager enemyManager => _enemyManager ?? ServiceLocator.Get<EnemyManager>();
 
 	public static HUDManager hudManager => _hudManager ?? ServiceLocator.Get<HUDManager>();
-	private static HUDManager _hudManager;
-	private static PauseManager _pauseManager;
+	static HUDManager _hudManager;
+	static PauseManager _pauseManager;
 	public static PauseManager pauseManager => _pauseManager ?? ServiceLocator.Get<PauseManager>();
-	private static SceneLoader _sceneLoader;
+	static SceneLoader _sceneLoader;
 	public static SceneLoader sceneLoader => _sceneLoader ?? ServiceLocator.Get<SceneLoader>();
 
-	private static AssetManager _assetManager;
+	static AssetManager _assetManager;
 	public static AssetManager assetManager => _assetManager ?? ServiceLocator.Get<AssetManager>();
-	private static RisingTextCreator _risingText;
+	static RisingTextCreator _risingText;
 	public static RisingTextCreator risingText => _risingText ?? ServiceLocator.Get<RisingTextCreator>();
 }

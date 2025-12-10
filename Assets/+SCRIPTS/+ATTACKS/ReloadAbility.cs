@@ -9,10 +9,9 @@ namespace __SCRIPTS
 		public event Action OnReload;
 		public AnimationClip ReloadPrimaryGunAnimationClip;
 		public AnimationClip ReloadUnlimitedGunAnimationClip;
-		private GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
-		private GunAttack _gunAttack;
+		GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
+		GunAttack _gunAttack;
 
-		private float reloadTime = .5f;
 		public override string AbilityName => "Reloading";
 		protected override bool requiresArms() => true;
 
@@ -27,7 +26,7 @@ namespace __SCRIPTS
 			StartReloading();
 		}
 
-		private void StartReloading()
+		void StartReloading()
 		{
 			Invoke(nameof(Reload), gunAttack.CurrentGun.reloadTime);
 			anim.SetBool(UnitAnimations.IsBobbing, false);
@@ -44,7 +43,7 @@ namespace __SCRIPTS
 			gunAttack.Resume();
 		}
 
-		private void Reload()
+		void Reload()
 		{
 			gunAttack.CurrentGun.Reload();
 			OnReload?.Invoke();
@@ -68,12 +67,12 @@ namespace __SCRIPTS
 			gunAttack.OnNeedsReload += Gun_OnNeedsReload;
 		}
 
-		private void Gun_OnNeedsReload()
+		void Gun_OnNeedsReload()
 		{
 			Try();
 		}
 
-		private void Player_Reload(NewControlButton btn)
+		void Player_Reload(NewControlButton btn)
 		{
 			Try();
 		}

@@ -17,14 +17,8 @@ public class SortByChildOrder : MonoBehaviour
 		foreach (var sorter in _sprites)
 		{
 			sorter.sortingOrder = i + offsetOrder;
-			Debug.Log(i + offsetOrder);
-			Debug.Log(  "Setting sorting order of " + sorter.gameObject.name + " to " + sorter.sortingOrder + "offset is " + offsetOrder + "and i is " + i, this);
 			i++;
 		}
 	}
 
-	private void Update()
-	{
-		//if (!Application.isPlaying) SortAll();
-	}
 }

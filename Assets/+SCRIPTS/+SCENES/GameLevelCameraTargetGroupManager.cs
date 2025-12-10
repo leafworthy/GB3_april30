@@ -44,13 +44,8 @@ namespace __SCRIPTS
 			{
 				if (player.IsMainPlayer())
 				{
-					Debug.Log("adding the main character to camera",this);
 					cameraFollowTargetGroup.Targets.Clear();
 					cameraFollowTargetGroup.AddMember(player.SpawnedPlayerGO.transform, 1, 0);
-				}
-				else
-				{
-					Debug.Log("this was not the main character",this);
 				}
 
 				var stickTarget = Services.objectMaker.Make(Services.assetManager.Players.followStickPrefab).GetComponent<FollowCursor>();

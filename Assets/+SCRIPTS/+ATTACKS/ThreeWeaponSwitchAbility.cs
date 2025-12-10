@@ -10,13 +10,10 @@ namespace __SCRIPTS
 		public WeaponAbility Tertiary_Weapon;
 		public WeaponAbility currentWeapon;
 
-		private WeaponAbility weaponToSwitchTo;
-		private Player player;
+		WeaponAbility weaponToSwitchTo;
+		Player player;
 
-		private bool hasInitialized;
-		private bool isPressingTertiary;
-		private bool isPressingSecondary;
-		private bool isPressingPrimary;
+		bool hasInitialized;
 
 		public void SetPlayer(Player newPlayer)
 		{
@@ -30,64 +27,39 @@ namespace __SCRIPTS
 			hasInitialized = true;
 
 			player.Controller.InteractRightShoulder.OnPress += Player_SwapTertiary;
-			player.Controller.InteractRightShoulder.OnRelease += Player_ReleaseTertiary;
 
 			player.Controller.Attack2LeftTrigger.OnPress += Player_SwapSecondary;
-			player.Controller.Attack2LeftTrigger.OnRelease += Player_ReleaseSecondary;
 
 			player.Controller.Attack1RightTrigger.OnPress += Player_SwapPrimary;
-			player.Controller.Attack1RightTrigger.OnRelease += Player_ReleasePrimary;
 			StartSwitchingWeapons(Primary_Weapon);
 		}
 
-		private void Player_ReleasePrimary(NewControlButton obj)
+		void Player_SwapPrimary(NewControlButton obj)
 		{
-			isPressingPrimary = false;
-		}
-
-		private void Player_ReleaseSecondary(NewControlButton obj) => isPressingSecondary = false;
-
-		private void Player_ReleaseTertiary(NewControlButton obj) => isPressingTertiary = false;
-
-		private void Player_SwapPrimary(NewControlButton obj)
-		{
-			isPressingPrimary = true;
 			StartSwitchingWeapons(Primary_Weapon);
 		}
 
-		private void Player_SwapSecondary(NewControlButton obj)
+		void Player_SwapSecondary(NewControlButton obj)
 		{
-			isPressingSecondary = true;
 			StartSwitchingWeapons(Secondary_Weapon);
 		}
 
-		private void Player_SwapTertiary(NewControlButton obj)
+		void Player_SwapTertiary(NewControlButton obj)
 		{
-			isPressingTertiary = true;
 			StartSwitchingWeapons(Tertiary_Weapon);
 		}
 
-		private void Update()
-		{
-			//if (isPressingTertiary && weaponToSwitchTo != Tertiary_Weapon) StartSwitchingWeapons(Tertiary_Weapon);
-			//if (isPressingSecondary && weaponToSwitchTo != Secondary_Weapon) StartSwitchingWeapons(Secondary_Weapon);
-			//if (isPressingPrimary && weaponToSwitchTo != Primary_Weapon) StartSwitchingWeapons(Primary_Weapon);
-		}
-
-		private void OnDestroy()
+		void OnDestroy()
 		{
 			if (player == null) return;
 			player.Controller.InteractRightShoulder.OnPress -= Player_SwapTertiary;
-			player.Controller.InteractRightShoulder.OnRelease -= Player_ReleaseTertiary;
 
 			player.Controller.Attack2LeftTrigger.OnPress -= Player_SwapSecondary;
-			player.Controller.Attack2LeftTrigger.OnRelease -= Player_ReleaseSecondary;
 
 			player.Controller.Attack1RightTrigger.OnPress -= Player_SwapPrimary;
-			player.Controller.Attack1RightTrigger.OnRelease -= Player_ReleasePrimary;
 		}
 
-		private void StartSwitchingWeapons(WeaponAbility _weaponToSwitchTo)
+		void StartSwitchingWeapons(WeaponAbility _weaponToSwitchTo)
 		{
 			if (currentWeapon == null)
 			{
@@ -108,7 +80,7 @@ namespace __SCRIPTS
 			SwitchCurrentWeapon(weaponToSwitchTo);
 		}
 
-		private void SwitchCurrentWeapon(WeaponAbility _weaponToSwitchTo)
+		void SwitchCurrentWeapon(WeaponAbility _weaponToSwitchTo)
 		{
 			Debug.Log("trying to switch weapon");
 
@@ -126,8 +98,6 @@ namespace __SCRIPTS
 			}
 			else
 				Debug.Log(" [SWITCHER] can't do, switching to primary: " + Primary_Weapon.AbilityName);
-
-
 
 			if (currentWeapon == null)
 			{

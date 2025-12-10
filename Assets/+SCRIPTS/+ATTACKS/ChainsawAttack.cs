@@ -33,12 +33,6 @@ namespace __SCRIPTS
 		protected override void DoAbility()
 		{
 			if (currentState != weaponState.resuming) PullOut();
-			else
-			{
-				return;
-
-				StartIdle();
-			}
 		}
 
 		protected override void PullOut()

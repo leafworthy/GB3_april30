@@ -27,6 +27,12 @@ public class GameLauncher : MonoBehaviour
 	private static bool hasLaunched;
 	private static bool servicesStarted;
 
+	[RuntimeInitializeOnLoadMethod]
+	private void ResetStatics()
+	{
+		servicesStarted = false;
+		hasLaunched	 = false;
+	}
 	protected void OnEnable()
 	{
 		if (servicesStarted) return;

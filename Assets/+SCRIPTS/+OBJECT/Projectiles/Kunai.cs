@@ -60,7 +60,6 @@ namespace __SCRIPTS.Projectiles
 
 		private void Land()
 		{
-			Debug.Log("land", this);
 			moveJumpAndRotateAbility.SetFreezeRotation(true);
 			isFlying = false;
 			moveJumpAndRotateAbility.moveAbility.StopMoving();
@@ -69,7 +68,6 @@ namespace __SCRIPTS.Projectiles
 
 		private void HandleHit(IGetAttacked hitLife)
 		{
-			Debug.Log("hit", this);
 			isFlying = false;
 			if (hitLife == null) return;
 			var attack = Attack.Create(owner, hitLife).WithDamage(owner.stats.PrimaryAttackDamageWithExtra);

@@ -86,12 +86,10 @@ namespace __SCRIPTS
 		private void SetHUDSlotPlayer(Player player, bool withMenu = false)
 		{
 
-			Debug.Log("here in set hud slot player for " + player.playerIndex);
 			if (player == null) return;
 			var slot = GetFirstOpenSlot();
 			if(slot == null)
 			{
-				Debug.Log("no open slots");
 				return;
 			}
 			slot.gameObject.SetActive(true);
@@ -111,7 +109,6 @@ namespace __SCRIPTS
 
 			foreach (var hudSlot in currentHUDSlots.Where(hudSlot => !hudSlot.IsActive))
 			{
-				Debug.Log("found open slot", hudSlot);
 				return hudSlot;
 			}
 
@@ -132,7 +129,6 @@ namespace __SCRIPTS
 
 		public void SetBossLifeHealthbarVisible(bool value)
 		{
-			Debug.Log("setting boss healthbar visible: " + value);
 			if (bossHealthbar == null) return;
 			bossHealthbarGameObject.SetActive(value);
 		}

@@ -127,7 +127,7 @@ namespace __SCRIPTS
 			SetupAnimationEvents();
 			foreach (var component in GetComponentsInChildren<INeedPlayer>())
 			{
-				if (component != this)
+				if (!ReferenceEquals(component, this)) // was !=
 					component.SetPlayer(_player);
 			}
 		}
@@ -191,7 +191,6 @@ namespace __SCRIPTS
 			}
 			else
 			{
-				Debug.Log("on offence sent flying");
 				OnFlying?.Invoke(attack);
 				animations?.SetTrigger(UnitAnimations.FlyingTrigger);
 			}
@@ -205,7 +204,6 @@ namespace __SCRIPTS
 
 		public void DieNow()
 		{
-			Debug.Log("die now");
 			var killingBlow = Attack.Create(null, this).WithDamage(9999);
 			unitHealth.TakeDamage(killingBlow);
 			OnAttackHit?.Invoke(killingBlow);

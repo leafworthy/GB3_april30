@@ -7,26 +7,31 @@ namespace __SCRIPTS.Cursor
 {
 	public class CursorManager : MonoBehaviour
 	{
-		[SerializeField] private GameObject player1cursor;
-		[SerializeField] private GameObject player2cursor;
-		[SerializeField] private GameObject player3cursor;
-		[SerializeField] private GameObject player4cursor;
-		private Vector2 inGameCursorScale = new(5, 5);
-		private Vector2 inMenuCursorScale = new(0, 0);
-		private PlayerCursor currentCursor;
-		[SerializeField] private List<PlayerCursor> currentCursors = new();
+		[SerializeField] GameObject player1cursor;
+		[SerializeField] GameObject player2cursor;
+		[SerializeField] GameObject player3cursor;
+		[SerializeField] GameObject player4cursor;
+		Vector2 inGameCursorScale = new(5, 5);
+		PlayerCursor currentCursor;
+		[SerializeField] List<PlayerCursor> currentCursors = new();
 
-		private bool isActive;
-		private static Camera cam;
+		bool isActive;
+		static Camera cam;
 
-		private void Start()
+		[RuntimeInitializeOnLoadMethod]
+		static void ResetStatics()
+		{
+			cam = null;
+		}
+
+		void Start()
 		{
 			UnityEngine.Cursor.visible = false;
 			Services.levelManager.OnStartLevel += LevelStartsLevel;
 			Services.levelManager.OnLevelSpawnedPlayerFromLevel += InitCursor;
 		}
 
-		private void LevelStartsLevel(GameLevel level)
+		void LevelStartsLevel(GameLevel level)
 		{
 			isActive = true;
 			foreach (var player in Services.playerManager.AllJoinedPlayers)
@@ -35,16 +40,19 @@ namespace __SCRIPTS.Cursor
 			}
 		}
 
-		private void OnDisable()
+		void OnDisable()
 		{
 			Services.levelManager.OnStartLevel -= LevelStartsLevel;
+			Services.levelManager.OnStartLevel -= Level_OnStartLevel;
+			Services.pauseManager.OnPause -= Pause_OnPause;
+			Services.pauseManager.OnUnpause -= Pause_OnUnPause;
+			Services.levelManager.OnStopLevel -= Level_OnStopLevel;
 			Services.levelManager.OnLevelSpawnedPlayerFromLevel -= InitCursor;
 			currentCursors.Clear();
 		}
 
-		private void InitCursor(Player player)
+		void InitCursor(Player player)
 		{
-			//if (!player.isUsingMouse) return;
 			player.OnPlayerDies += Player_OnPlayerDies;
 
 			switch (player.playerIndex)
@@ -66,13 +74,12 @@ namespace __SCRIPTS.Cursor
 			if (currentCursor == null) return;
 			currentCursor.owner = player;
 			currentCursor.transform.localScale = inGameCursorScale;
-			//DontDestroyOnLoad(currentCursor);
 			var image = currentCursor.GetComponentInChildren<Image>();
 			if (image != null) image.color = player.playerColor;
-			Services.levelManager.OnStartLevel += t => { SetCursorsActive(true); };
-			Services.pauseManager.OnPause += x => { SetCursorsActive(false); };
-			Services.pauseManager.OnUnpause += x => { SetCursorsActive(true); };
-			Services.levelManager.OnStopLevel += t => { SetCursorsActive(false); };
+			Services.levelManager.OnStartLevel += Level_OnStartLevel;
+			Services.pauseManager.OnPause += Pause_OnPause;
+			Services.pauseManager.OnUnpause += Pause_OnUnPause;
+			Services.levelManager.OnStopLevel += Level_OnStopLevel;
 			currentCursor.gameObject.SetActive(true);
 			currentCursors.Add(currentCursor);
 			SetCursorsActive(true);
@@ -83,7 +90,28 @@ namespace __SCRIPTS.Cursor
 			if (Services.playerManager.AllJoinedPlayers.Count < 2) player2cursor.SetActive(false);
 		}
 
-		private void Player_OnPlayerDies(Player deadPlayer, bool b)
+		void Level_OnStopLevel(GameLevel obj)
+		{
+			SetCursorsActive(false);
+		}
+
+		void Pause_OnUnPause(Player obj)
+		{
+			SetCursorsActive(true);
+		}
+
+		void Level_OnStartLevel(GameLevel obj)
+		{
+			SetCursorsActive(true);
+		}
+
+		void Pause_OnPause(Player player)
+		{
+			SetCursorsActive(false);
+		}
+
+
+		void Player_OnPlayerDies(Player deadPlayer, bool b)
 		{
 			foreach (var cursor in currentCursors)
 			{
@@ -98,7 +126,7 @@ namespace __SCRIPTS.Cursor
 			}
 		}
 
-		private void SetCursorsActive(bool active)
+		void SetCursorsActive(bool active)
 		{
 			foreach (var cursor in currentCursors)
 			{
@@ -110,7 +138,7 @@ namespace __SCRIPTS.Cursor
 			isActive = active;
 		}
 
-		private void Update()
+		void Update()
 		{
 			UnityEngine.Cursor.visible = false;
 			if (!isActive) return;
@@ -120,7 +148,7 @@ namespace __SCRIPTS.Cursor
 			}
 		}
 
-		private void UpdateCursor(PlayerCursor cursor)
+		void UpdateCursor(PlayerCursor cursor)
 		{
 			if (cursor == null) return;
 			if (cursor.owner == null) return;
@@ -138,7 +166,7 @@ namespace __SCRIPTS.Cursor
 
 		public static Vector3 GetMousePosition()
 		{
-			var cam = GetCamera();
+			cam = GetCamera();
 			if (cam == null) return Vector3.zero;
 			var vec = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 			vec.z = 0;

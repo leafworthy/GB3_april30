@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,7 +13,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		public bool isMovable;
 		public bool renderBelowAll;
 
-		[NonSerialized] public bool registered = false;
+		[NonSerialized] public bool registered;
 		[NonSerialized] public bool forceSort;
 
 		public Collider2D sortingBounds;
@@ -22,15 +21,15 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		[NonSerialized] public readonly List<IsoSpriteSorting> staticDependencies = new(256);
 		[NonSerialized] public readonly List<IsoSpriteSorting> inverseStaticDependencies = new(256);
 		[NonSerialized] public readonly List<IsoSpriteSorting> movingDependencies = new(256);
-		[NonSerialized] private readonly List<IsoSpriteSorting> visibleStaticDependencies = new(256);
+		[NonSerialized] readonly List<IsoSpriteSorting> visibleStaticDependencies = new(256);
 
 		public int renderBelowSortingOrder;
-		private int visibleStaticLastRefreshFrame;
+		int visibleStaticLastRefreshFrame;
 
-		private static IsoSpriteSorting[] isoSorters = new IsoSpriteSorting[8];
+		static IsoSpriteSorting[] isoSorters = new IsoSpriteSorting[8];
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-		private static void ResetStatics()
+		static void ResetStatics()
 		{
 			isoSorters = new IsoSpriteSorting[8];
 		}
@@ -64,10 +63,10 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		public List<Renderer> renderersToSort = new();
 		public bool renderAboveAll;
 
-		private Bounds2D cachedBounds;
-		private int lastBoundsCalculatedFrame;
+		Bounds2D cachedBounds;
+		int lastBoundsCalculatedFrame;
 		public bool hasRenderers;
-		private Transform t;
+		Transform t;
 
 		public void SetupStaticCache()
 		{
@@ -76,7 +75,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			RefreshPoint2();
 		}
 
-		private void RefreshBounds()
+		void RefreshBounds()
 		{
 			if (renderersToSort.Count <= 0) return;
 			if (sortingBounds != null)
@@ -91,7 +90,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			cachedBounds = new Bounds2D(renderersToSort[0].bounds);
 		}
 
-		private void RefreshPoint1()
+		void RefreshPoint1()
 		{
 			if (t == null)
 			{
@@ -108,7 +107,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			}
 		}
 
-		private void RefreshPoint2()
+		void RefreshPoint2()
 		{
 			if (t == null) t = transform;
 
@@ -121,10 +120,10 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			}
 		}
 
-		private int lastPoint1CalculatedFrame;
-		private Vector2 cachedPoint1;
+		int lastPoint1CalculatedFrame;
+		Vector2 cachedPoint1;
 
-		private Vector3 SortingPoint1
+		Vector3 SortingPoint1
 		{
 			get
 			{
@@ -142,10 +141,10 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			}
 		}
 
-		private int lastPoint2CalculatedFrame;
-		private Vector2 cachedPoint2;
+		int lastPoint2CalculatedFrame;
+		Vector2 cachedPoint2;
 
-		private Vector3 SortingPoint2
+		Vector3 SortingPoint2
 		{
 			get
 			{
@@ -173,7 +172,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			}
 		}
 
-		private float SortingLineCenterHeight
+		float SortingLineCenterHeight
 		{
 			get
 			{
@@ -201,17 +200,17 @@ namespace __SCRIPTS.Plugins._ISOSORT
 #endif
 		}
 
-		private void Awake()
+		void Awake()
 		{
 			t = transform; //This needs to be here AND in the setup function
 		}
 
-		private void OnEnable()
+		void OnEnable()
 		{
 			Setup();
 		}
 
-		private void OnDisable()
+		void OnDisable()
 		{
 			Unregister();
 		}
@@ -220,11 +219,11 @@ namespace __SCRIPTS.Plugins._ISOSORT
 		{
 			t = transform; //This needs to be here AND in the Awake function
 			if (renderersToSort.Count == 0) GetRenderers();
-			this.registered = false;
+			registered = false;
 			IsoSpriteSortingManager.RegisterSprite(this);
 		}
 #if UNITY_EDITOR
-		private void OnValidate()
+		void OnValidate()
 		{
 			// Make sure transform reference is set
 			if (t == null) t = transform;
@@ -238,52 +237,28 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			}
 		}
 
+		Vector3 lastPosition;
+		Quaternion lastRotation;
+		Vector3 lastScale;
 
-		private void OnDrawGizmosSelected()
+		void OnDrawGizmos()
 		{
-			return;
-			// Force refresh in Scene view when object is selected
-			if (!Application.isPlaying)
-			{
-				if (t == null) t = transform;
+			if (Application.isPlaying || t == null || !(Time.realtimeSinceStartup - lastGizmosUpdateTime > 0.1f)) return;
+			var hasChanged = t.position != lastPosition || t.rotation != lastRotation || t.localScale != lastScale;
 
-				forceSort = true;
-				RefreshPoint1();
-				RefreshPoint2();
-				RefreshBounds();
+			if (!hasChanged) return;
+			lastPosition = t.position;
+			lastRotation = t.rotation;
+			lastScale = t.localScale;
 
-				IsoSpriteSortingManager.UpdateSorting();
-			}
+			forceSort = true;
+			RefreshPoint1();
+			RefreshPoint2();
+			RefreshBounds();
+			lastGizmosUpdateTime = Time.realtimeSinceStartup;
 		}
 
-		private Vector3 lastPosition;
-		private Quaternion lastRotation;
-		private Vector3 lastScale;
-
-		private void OnDrawGizmos()
-		{
-			// Check if transform has changed - limit frequency to prevent editor freezing
-			if (!Application.isPlaying && t != null && Time.realtimeSinceStartup - lastGizmosUpdateTime > 0.1f)
-			{
-				var hasChanged = t.position != lastPosition || t.rotation != lastRotation || t.localScale != lastScale;
-
-				if (hasChanged)
-				{
-					lastPosition = t.position;
-					lastRotation = t.rotation;
-					lastScale = t.localScale;
-
-					forceSort = true;
-					RefreshPoint1();
-					RefreshPoint2();
-					RefreshBounds();
-					// Don't call UpdateSorting and RepaintAll from OnDrawGizmos as it can cause infinite loops
-					lastGizmosUpdateTime = Time.realtimeSinceStartup;
-				}
-			}
-		}
-
-		private float lastGizmosUpdateTime;
+		float lastGizmosUpdateTime;
 #endif
 
 		public void GetRenderers()
@@ -328,7 +303,7 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			return sprite1.renderBelowSortingOrder > sprite2.renderBelowSortingOrder ? 1 : -1;
 		}
 
-		private static int CompareLineAndLine(IsoSpriteSorting line1, IsoSpriteSorting line2)
+		static int CompareLineAndLine(IsoSpriteSorting line1, IsoSpriteSorting line2)
 		{
 			Vector2 line1Point1 = line1.SortingPoint1;
 			Vector2 line1Point2 = line1.SortingPoint2;
@@ -376,10 +351,10 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			return CompareLineCenters(line1, line2);
 		}
 
-		private static int CompareLineCenters(IsoSpriteSorting line1, IsoSpriteSorting line2) =>
+		static int CompareLineCenters(IsoSpriteSorting line1, IsoSpriteSorting line2) =>
 			-line1.SortingLineCenterHeight.CompareTo(line2.SortingLineCenterHeight);
 
-		private static int ComparePointAndLine(Vector3 point, IsoSpriteSorting line)
+		static int ComparePointAndLine(Vector3 point, IsoSpriteSorting line)
 		{
 			var pointY = point.y;
 			if (pointY > line.SortingPoint1.y && pointY > line.SortingPoint2.y)
@@ -429,12 +404,12 @@ namespace __SCRIPTS.Plugins._ISOSORT
 			}
 		}
 
-		private void OnDestroy()
+		void OnDestroy()
 		{
 			if (Application.isPlaying) Unregister();
 		}
 
-		private void Unregister()
+		void Unregister()
 		{
 			IsoSpriteSortingManager.UnregisterSprite(this);
 		}

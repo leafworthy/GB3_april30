@@ -19,7 +19,6 @@ public class ChangeSpriteOnLand : MonoBehaviour
 	[Button]
 	private void JumpAndRotateAbilityOnResting(Vector2 obj)
 	{
-		Debug.Log("Landed, changing sprite");
 		hideRevealObjects.SetRandom();
 	}
 }
