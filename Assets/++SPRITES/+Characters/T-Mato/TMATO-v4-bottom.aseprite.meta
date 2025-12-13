@@ -43,7 +43,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
-  importerVersion: 1
+  importerVersion: 2
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -119,6 +119,8 @@ ScriptedImporter:
     generateAnimationClips: 1
     addSortingGroup: 0
     addShadowCasters: 0
+    generateIndividualEvents: 1
+    generateSpriteAtlas: 1
   asepriteImporterSettings:
     fileImportMode: 1
     importHiddenLayers: 0
@@ -132,6 +134,8 @@ ScriptedImporter:
     generateAnimationClips: 1
     addSortingGroup: 0
     addShadowCasters: 0
+    generateIndividualEvents: 1
+    generateSpriteAtlas: 1
   importFileNodeState: 1
   platformSettingsDirtyTick: 638828604316695010
   textureAssetName: 
@@ -810,8 +814,14 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 103, y: 4}
   spriteSheetImportData: []
+  tileSetImportData: []
   asepriteLayers:
   - layerIndex: 0
+    uuid:
+      value0: 3460251966
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -834715330
     name: TMATO-v4-bottom
     layerFlags: 0
@@ -1098,7 +1108,10 @@ ScriptedImporter:
         height: 61
       spriteId: ee6de64f0cd59486a9f020a965fb0208
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
+  tileSets: []
   platformSettings:
   - name: Default
     overridden: 0

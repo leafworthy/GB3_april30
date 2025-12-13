@@ -8,7 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
-  importerVersion: 1
+  importerVersion: 2
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -84,6 +84,8 @@ ScriptedImporter:
     generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
+    generateIndividualEvents: 1
+    generateSpriteAtlas: 1
   asepriteImporterSettings:
     fileImportMode: 1
     importHiddenLayers: 0
@@ -97,6 +99,8 @@ ScriptedImporter:
     generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
+    generateIndividualEvents: 1
+    generateSpriteAtlas: 1
   importFileNodeState: 1
   platformSettingsDirtyTick: 638984066802712020
   textureAssetName: 
@@ -271,8 +275,14 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData: []
+  tileSetImportData: []
   asepriteLayers:
   - layerIndex: 0
+    uuid:
+      value0: 1178973867
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 1178973867
     name: dirt
     layerFlags: 3
@@ -289,8 +299,15 @@ ScriptedImporter:
         height: 406
       spriteId: 08a37ddb75f024ab1b3b74f46b1a4b81
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 1
+    uuid:
+      value0: 3536771806
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -758195490
     name: building
     layerFlags: 3
@@ -307,8 +324,15 @@ ScriptedImporter:
         height: 716
       spriteId: cec39df8a16434c359349b02d2cf7f13
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 2
+    uuid:
+      value0: 2336681182
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -1958286114
     name: sidewalk straight
     layerFlags: 3
@@ -325,8 +349,15 @@ ScriptedImporter:
         height: 54
       spriteId: bde8a59224ee94256a85cbc5bc693b00
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 3
+    uuid:
+      value0: 4073929216
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -221038080
     name: Slant Right
     layerFlags: 1
@@ -343,8 +374,15 @@ ScriptedImporter:
         height: 393
       spriteId: 931c22f7b0be049c9a1932473f5dbc86
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 4
+    uuid:
+      value0: 668936530
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 668936530
     name: T junction
     layerFlags: 3
@@ -361,8 +399,15 @@ ScriptedImporter:
         height: 267
       spriteId: 1ea12c72e6b594300b8e7327c50caf09
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 5
+    uuid:
+      value0: 578134966
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 578134966
     name: road straight
     layerFlags: 3
@@ -379,8 +424,15 @@ ScriptedImporter:
         height: 265
       spriteId: 020b29a42d18842198a2e23eccd9739d
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 6
+    uuid:
+      value0: 1659195214
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 1659195214
     name: s bend
     layerFlags: 3
@@ -397,8 +449,15 @@ ScriptedImporter:
         height: 658
       spriteId: ade1b36cbf0dc4ed5b5e36f17d83a166
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 7
+    uuid:
+      value0: 4287466680
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -7500616
     name: Layer 1
     layerFlags: 3
@@ -406,7 +465,10 @@ ScriptedImporter:
     blendMode: 0
     cells: []
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
+  tileSets: []
   platformSettings:
   - name: Default
     overridden: 0

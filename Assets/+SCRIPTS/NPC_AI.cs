@@ -1,62 +1,78 @@
 using System;
 using __SCRIPTS;
 using __SCRIPTS._ENEMYAI;
+using GangstaBean.Core;
 using UnityEngine;
 
-public class NPC_AI : MonoBehaviour, ICanMoveThings
+public class NPC_AI : MonoBehaviour, ICanMoveThings, ICanAttack, INeedPlayer
 {
-	private enum state
+	enum state
 	{
 		cowering,
 		avoiding,
 		fleeing
 	}
 
+	public Player player => _player;
+	public LayerMask EnemyLayer => Services.assetManager.LevelAssets.EnemyLayer;
+	public IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
+	IHaveAttackStats _stats;
+	public bool IsEnemyOf(IGetAttacked targetLife) => life.IsEnemyOf(this);
+
+	public event Action<IGetAttacked> OnAttack;
+	public event Action OnAttackStop;
+	public event Action OnAttackStart;
+
+	public void SetPlayer(Player newPlayer)
+	{
+		_player = newPlayer;
+	}
+
 	public event Action<Vector2> OnMoveInDirection;
 	public event Action OnStopMoving;
 	public Vector2 GetMoveAimDir() => moveDir;
-	private Vector2 moveDir;
+	Vector2 moveDir;
 	public bool IsMoving() => isMoving;
-	private bool isMoving;
+	bool isMoving;
 
-	private IGetAttacked _life;
-	private IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
+	IGetAttacked _life;
+	IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
 
-	private IGetAttacked cowerTarget;
-	private IGetAttacked avoidTarget;
-	private Targetter targetter => _targetter ??= GetComponent<Targetter>();
-	private Targetter _targetter;
+	IGetAttacked cowerTarget;
+	IGetAttacked avoidTarget;
+	Targetter targetter => _targetter ??= GetComponent<Targetter>();
+	Targetter _targetter;
 
-	private float distanceToAvoidEnemy = 5;
-	private float distanceToCowerFromEnemy = 5;
-	private state currentState;
+	float distanceToAvoidEnemy = 5;
+	float distanceToCowerFromEnemy = 5;
+	state currentState;
 
-	private Body body => _body ??= GetComponent<Body>();
-	private Body _body;
+	Body body => _body ??= GetComponent<Body>();
+	Body _body;
 
-	private UnitAnimations _anim;
-	private UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
+	UnitAnimations _anim;
+	UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
 
 	public AnimationClip CoweringAnimationClip;
 	public AnimationClip RunningAnimationClip;
 	public AnimationClip StandingAnimationClip;
 	public float speed = 20;
+	Player _player;
+	LayerMask enemyLayer;
 
-	private void Start()
+	void Start()
 	{
 		SetState(state.cowering);
 		life.OnDead += LifeOnDead;
-
-
 	}
 
-	private void LifeOnDead(Attack obj)
+	void LifeOnDead(Attack obj)
 	{
 		OnStopMoving?.Invoke();
-		this.enabled = false;
+		enabled = false;
 	}
 
-	private void SetState(state newState)
+	void SetState(state newState)
 	{
 		currentState = newState;
 
@@ -74,7 +90,7 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings
 		}
 	}
 
-	private void Update()
+	void Update()
 	{
 		switch (currentState)
 		{
@@ -90,7 +106,7 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings
 		}
 	}
 
-	private void StartFleeing()
+	void StartFleeing()
 	{
 		if (ShouldCower())
 		{
@@ -103,12 +119,13 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings
 			SetState(state.avoiding);
 			return;
 		}
+
 		moveDir = Vector2.left * speed;
 		anim.Play(RunningAnimationClip.name, 0, 0);
 		OnMoveInDirection?.Invoke(moveDir);
 	}
 
-	private void UpdateFleeing()
+	void UpdateFleeing()
 	{
 		if (ShouldCower())
 		{
@@ -126,19 +143,19 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings
 		OnMoveInDirection?.Invoke(moveDir);
 	}
 
-	private bool ShouldAvoid()
+	bool ShouldAvoid()
 	{
 		avoidTarget = _targetter.GetClosestEnemyInRange(distanceToAvoidEnemy);
 		return avoidTarget != null;
 	}
 
-	private bool ShouldCower()
+	bool ShouldCower()
 	{
 		cowerTarget = targetter.GetClosestEnemyInRange(distanceToCowerFromEnemy);
 		return cowerTarget != null;
 	}
 
-	private void StartCowering()
+	void StartCowering()
 	{
 		if (!ShouldCower())
 		{
@@ -157,23 +174,21 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings
 		OnStopMoving?.Invoke();
 	}
 
-	private void UpdateCowering()
+	void UpdateCowering()
 	{
-		if (!ShouldCower())
-		{
-			SetState(ShouldAvoid() ? state.avoiding : state.fleeing);
-		}
+		if (!ShouldCower()) SetState(ShouldAvoid() ? state.avoiding : state.fleeing);
 	}
 
-	private void StartAvoiding()
+	void StartAvoiding()
 	{
-		if(!ShouldAvoid())
+		if (!ShouldAvoid())
 		{
 			if (ShouldCower())
 			{
 				SetState(state.cowering);
 				return;
 			}
+
 			SetState(state.fleeing);
 			return;
 		}
@@ -183,7 +198,7 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings
 		OnMoveInDirection?.Invoke(moveDir);
 	}
 
-	private void UpdateAvoiding()
+	void UpdateAvoiding()
 	{
 		if (!ShouldAvoid())
 		{

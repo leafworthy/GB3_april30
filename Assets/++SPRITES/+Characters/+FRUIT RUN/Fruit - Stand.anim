@@ -82,7 +82,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Main/ArmBack/ArmBackGraphic
+    path: Main/ArmRight/ArmBackGraphic
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -116,7 +116,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Main/ArmFront/ArmFrontGraphic
+    path: Main/ArmLeft/ArmFrontGraphic
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves:
@@ -134,22 +134,22 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 9366fa9b69d864ce0aff0b4f86ff6ce3, type: 3}
+      value: {fileID: 21300000, guid: a5ae728b9d80542f5ac757f990c2a6dd, type: 3}
     - time: 0.76666665
-      value: {fileID: 21300000, guid: 9366fa9b69d864ce0aff0b4f86ff6ce3, type: 3}
+      value: {fileID: 21300000, guid: a5ae728b9d80542f5ac757f990c2a6dd, type: 3}
     attribute: m_Sprite
-    path: Main/ArmFront/ArmFrontGraphic
+    path: Main/ArmRight/ArmBackGraphic
     classID: 212
     script: {fileID: 0}
     flags: 2
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: a5ae728b9d80542f5ac757f990c2a6dd, type: 3}
+      value: {fileID: 21300000, guid: 9366fa9b69d864ce0aff0b4f86ff6ce3, type: 3}
     - time: 0.76666665
-      value: {fileID: 21300000, guid: a5ae728b9d80542f5ac757f990c2a6dd, type: 3}
+      value: {fileID: 21300000, guid: 9366fa9b69d864ce0aff0b4f86ff6ce3, type: 3}
     attribute: m_Sprite
-    path: Main/ArmBack/ArmBackGraphic
+    path: Main/ArmLeft/ArmFrontGraphic
     classID: 212
     script: {fileID: 0}
     flags: 2
@@ -170,7 +170,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 1971934174
+      path: 2278239838
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -179,7 +179,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 628833901
+      path: 2180838896
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -197,7 +197,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 628833901
+      path: 2278239838
       attribute: 0
       script: {fileID: 0}
       typeID: 212
@@ -206,7 +206,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 1971934174
+      path: 2180838896
       attribute: 0
       script: {fileID: 0}
       typeID: 212
@@ -217,10 +217,10 @@ AnimationClip:
     pptrCurveMapping:
     - {fileID: 21300000, guid: ff488d8aaed814268a445499d6f58e1a, type: 3}
     - {fileID: 21300000, guid: ff488d8aaed814268a445499d6f58e1a, type: 3}
-    - {fileID: 21300000, guid: 9366fa9b69d864ce0aff0b4f86ff6ce3, type: 3}
-    - {fileID: 21300000, guid: 9366fa9b69d864ce0aff0b4f86ff6ce3, type: 3}
     - {fileID: 21300000, guid: a5ae728b9d80542f5ac757f990c2a6dd, type: 3}
     - {fileID: 21300000, guid: a5ae728b9d80542f5ac757f990c2a6dd, type: 3}
+    - {fileID: 21300000, guid: 9366fa9b69d864ce0aff0b4f86ff6ce3, type: 3}
+    - {fileID: 21300000, guid: 9366fa9b69d864ce0aff0b4f86ff6ce3, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -394,7 +394,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: Main/ArmBack/ArmBackGraphic
+    path: Main/ArmRight/ArmBackGraphic
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -433,7 +433,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: Main/ArmBack/ArmBackGraphic
+    path: Main/ArmRight/ArmBackGraphic
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -472,7 +472,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: Main/ArmBack/ArmBackGraphic
+    path: Main/ArmRight/ArmBackGraphic
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -511,7 +511,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: Main/ArmFront/ArmFrontGraphic
+    path: Main/ArmLeft/ArmFrontGraphic
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -550,7 +550,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: Main/ArmFront/ArmFrontGraphic
+    path: Main/ArmLeft/ArmFrontGraphic
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -589,7 +589,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: Main/ArmFront/ArmFrontGraphic
+    path: Main/ArmLeft/ArmFrontGraphic
     classID: 4
     script: {fileID: 0}
     flags: 0

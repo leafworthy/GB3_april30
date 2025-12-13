@@ -2,18 +2,17 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-
 namespace __SCRIPTS
 {
 	[ExecuteInEditMode]
 	public class HideRevealObjects : MonoBehaviour
 	{
 		[SerializeField] public List<GameObject> objectsToReveal = new();
-		[Range(0, 20), SerializeField] private int revealedObjectIndex;
+		[Range(0, 20), SerializeField] int revealedObjectIndex;
 		public bool isAdditive;
-		private Color playerColor;
+		Color playerColor;
 
-		private void Awake()
+		void Awake()
 		{
 			Set(revealedObjectIndex);
 		}
@@ -42,7 +41,6 @@ namespace __SCRIPTS
 			Set(revealedObjectIndex); // Ensure the correct object is set after getting children
 		}
 
-
 		public void Set(int objectIndex)
 		{
 			if (objectsToReveal.Count <= 0) return;
@@ -55,8 +53,10 @@ namespace __SCRIPTS
 			}
 
 			if (isAdditive)
+			{
 				for (var i = 0; i <= objectIndex; i++)
 					objectsToReveal[i].SetActive(true);
+			}
 			else
 				objectsToReveal[revealedObjectIndex].SetActive(true);
 		}
@@ -72,5 +72,7 @@ namespace __SCRIPTS
 				sprite.color = c1;
 			}
 		}
+
+		public int GetCurrentIndex() => revealedObjectIndex;
 	}
 }

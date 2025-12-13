@@ -106,11 +106,20 @@ namespace __SCRIPTS
 		private void OnAttackHit(int attackType)
 		{
 			if (Services.pauseManager.IsPaused) return;
-			if (currentTargetLife == null) return;
+			if (currentTargetLife == null)
+			{
+				Debug.Log("current life null");
+				return;
+			}
 
 			if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= ai.stats.PrimaryAttackRange*1.25f)
 			{
 				AttackUtilities.HitTarget(ai, currentTargetLife, ai.stats.PrimaryAttackDamageWithExtra);
+				Debug.Log("hit target   " + currentTargetLife.transform.gameObject.name);
+			}
+			else
+			{
+				Debug.Log("too far");
 			}
 
 

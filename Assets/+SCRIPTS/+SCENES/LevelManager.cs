@@ -42,16 +42,14 @@ namespace __SCRIPTS
 			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
 			currentLevel = newLevel;
 			currentLevel.OnGameOver += newLevel_GameOver;
-			SpawnPlayersIntoLevel(currentLevel.DefaultPlayerSpawnPoint);
+			SpawnPlayersIntoLevel();
 			OnStartLevel?.Invoke(currentLevel);
 
 			gameStartTime = Time.time;
 		}
 
-		void SpawnPlayersIntoLevel(PlayerSpawnPoint playerSpawnPoint)
+		void SpawnPlayersIntoLevel()
 		{
-			if (playerSpawnPoint == null) return;
-
 			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
 				SpawnPlayerFromLevel(player);
@@ -61,14 +59,16 @@ namespace __SCRIPTS
 		public void SpawnPlayerFromLevel(Player player)
 		{
 			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
-			player.Spawn(CursorManager.GetCamera().transform.position);
+			var playerSpawnPoint = currentLevel.DefaultPlayerSpawnPoint;
+			Debug.Log("player spawn point is " + playerSpawnPoint, playerSpawnPoint);
+			player.Spawn(playerSpawnPoint.transform.position);
 			OnLevelSpawnedPlayerFromLevel?.Invoke(player);
 		}
 
 		public void SpawnPlayerFromPlayerSetupMenu(Player player)
 		{
 			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
-			player.Spawn(CursorManager.GetCamera().transform.position);
+			player.Spawn(currentLevel.DefaultPlayerSpawnPoint.transform.position);
 			OnLevelSpawnedPlayerFromPlayerSetupMenu?.Invoke(player);
 		}
 

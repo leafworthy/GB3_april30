@@ -1,12 +1,14 @@
 ﻿using System;
 using GangstaBean.Core;
 using UnityEngine;
+using UnityUtils;
 
 namespace __SCRIPTS
 {
 	[ExecuteAlways]
 	public class Life : MonoBehaviour, IGetAttacked, IHaveAttackStats
 	{
+		public string OverrideName;
 		public Player player => _player;
 		[SerializeField] private Player _player;
 		[SerializeField] private UnitStats unitStats;
@@ -53,9 +55,6 @@ namespace __SCRIPTS
 
 		#endregion
 
-		public IHaveAttackStats Stats => stats ??= GetComponent<IHaveAttackStats>();
-		private IHaveAttackStats stats;
-
 		public bool CanTakeDamage() => !unitHealth.IsDead && !unitHealth.IsTemporarilyInvincible && !unitStats.Data.isInvincible;
 		public bool IsEnemyOf(IGetAttacked other) => player.IsHuman() != other.player.IsHuman();
 
@@ -76,9 +75,10 @@ namespace __SCRIPTS
 		}
 
 		[Sirenix.OdinInspector.Button]
-		public void GetStats()
+		public UnitStats GetStats()
 		{
-			unitStats = new UnitStats(gameObject.name);
+			unitStats = new UnitStats(OverrideName.IsBlank()? gameObject.name: OverrideName);
+			return unitStats;
 		}
 
 		private void Awake()
@@ -90,7 +90,7 @@ namespace __SCRIPTS
 		{
 			if (hasInitialized) return;
 			hasInitialized = true;
-			unitStats = new UnitStats(gameObject.name);
+			unitStats = GetStats();
 			unitHealth = new UnitHealth(unitStats);
 			unitHealth.OnDead += Health_OnDead;
 			FillHealth();

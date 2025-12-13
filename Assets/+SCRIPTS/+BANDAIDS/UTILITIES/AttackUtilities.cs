@@ -86,7 +86,11 @@ public static class AttackUtilities
 	public static bool HitTarget(ICanAttack originLife, IGetAttacked targetLife, float attackDamage, float extraPush = .1f, bool causesFlying = false)
 	{
 		if (targetLife == null) return false;
-		if (!IsValidTarget(originLife, targetLife)) return false;
+		if (!IsValidTarget(originLife, targetLife))
+		{
+			Debug.Log("invalid target" + targetLife, originLife.transform);
+			return false;
+		}
 
 
 		var attack = Attack.Create(originLife, targetLife).WithDamage(attackDamage).WithExtraPush(extraPush).WithFlying(causesFlying);

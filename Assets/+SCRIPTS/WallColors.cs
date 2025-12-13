@@ -7,9 +7,9 @@ public class WallColors : MonoBehaviour
 	public Color wallColor = Color.white;
 	public Color trimColor = Color.white;
 	public Color glassColor = Color.white;
-	public TintSprites WallColorTintSprite;
-	public TintSprites TrimColorTintSprite;
-	public TintSprites GlassColorTintSprite;
+	public GenericCharacterBuilder wallColorGenericCharacterBuilder;
+	public GenericCharacterBuilder trimColorGenericCharacterBuilder;
+	public GenericCharacterBuilder glassColorGenericCharacterBuilder;
 
 	void OnEnable()
 	{
@@ -23,10 +23,10 @@ public class WallColors : MonoBehaviour
 
 	void Refresh()
 	{
-		if (WallColorTintSprite != null) WallColorTintSprite.Tint = wallColor;
+		if (wallColorGenericCharacterBuilder != null) wallColorGenericCharacterBuilder.Tint = wallColor;
 
-		if (TrimColorTintSprite != null) TrimColorTintSprite.Tint = trimColor;
+		if (trimColorGenericCharacterBuilder != null) trimColorGenericCharacterBuilder.Tint = trimColor;
 
-		if (GlassColorTintSprite != null) GlassColorTintSprite.Tint = glassColor;
+		if (glassColorGenericCharacterBuilder != null) glassColorGenericCharacterBuilder.Tint = glassColor;
 	}
 }
