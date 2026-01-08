@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Utilities;
 
 namespace __SCRIPTS
 {
@@ -57,7 +58,7 @@ namespace __SCRIPTS
 
 		void FixedUpdate()
 		{
-			AttackUtilities.FadeOutTintAlpha(ref materialTintColor, renderersToTint);
+			MyAttackUtilities.FadeOutTintAlpha(ref materialTintColor, renderersToTint);
 		}
 
 		public void DieNow()
@@ -99,7 +100,7 @@ namespace __SCRIPTS
 			if (isShielding)
 			{
 				OnShielded?.Invoke(attack);
-				AttackUtilities.StartTint(Color.yellow, renderersToTint);
+				MyAttackUtilities.StartTint(Color.yellow, renderersToTint);
 				attack.DamageAmount *= 0.1f;
 			}
 
@@ -110,7 +111,7 @@ namespace __SCRIPTS
 			if (CurrentHealth <= 0 && !Data.Data.isInvincible) StartDeath(attack);
 
 			OnAttackHit?.Invoke(attack);
-			AttackUtilities.AttackHitFX(attack, renderersToTint, Data.Data.debrisType, DebreeTint);
+			MyAttackUtilities.AttackHitFX(attack, renderersToTint, Data.Data.debrisType, DebreeTint);
 			if (!attack.CausesFlying) return;
 			OnFlying?.Invoke(attack);
 		}

@@ -51,6 +51,7 @@ namespace __SCRIPTS
 		public bool IsPlayerAttackable => unitStats.IsPlayerAttackable;
 		public DebrisType debrisType => unitStats.DebrisType;
 		public bool showLifeBar => unitStats.Data.showLifeBar;
+		public float ExperienceGained => unitStats.ExperienceGained;
 		public float MaxHealth => unitHealth.MaxHealth + unitStats.GetExtraHealth();
 
 		#endregion

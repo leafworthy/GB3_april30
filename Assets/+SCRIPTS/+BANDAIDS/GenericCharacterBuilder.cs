@@ -4,7 +4,7 @@ using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
-
+#if UNITY_EDITOR
 namespace __SCRIPTS
 {
 	[ExecuteAlways]
@@ -120,7 +120,7 @@ namespace __SCRIPTS
 		[Button]
 		public void CreateCharacterData()
 		{
-			EnsureFolderExists(DefaultFolder);
+			MyEditorUtilities.EnsureFolderExists(DefaultFolder);
 
 			GenericCharacter asset = ScriptableObject.CreateInstance<GenericCharacter>();
 
@@ -146,22 +146,7 @@ namespace __SCRIPTS
 			currentCharacter = asset;
 		}
 
-		private static void EnsureFolderExists(string path)
-		{
-			if (AssetDatabase.IsValidFolder(path))
-				return;
 
-			string parent = "Assets";
-			string[] parts = path.Replace("Assets/", "").Split('/');
-
-			foreach (string part in parts)
-			{
-				string current = Path.Combine(parent, part);
-				if (!AssetDatabase.IsValidFolder(current))
-					AssetDatabase.CreateFolder(parent, part);
-
-				parent = current;
-			}
-		}
 	}
 }
+#endif

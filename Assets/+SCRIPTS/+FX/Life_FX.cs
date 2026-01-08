@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace __SCRIPTS
 {
-	[ExecuteAlways]
+
 	public class Life_FX : MonoBehaviour, IPoolable, INeedPlayer
 	{
 		public Color DebreeTint = Color.red;

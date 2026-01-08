@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utilities;
 
 namespace __SCRIPTS.Projectiles
 {
@@ -31,7 +32,7 @@ namespace __SCRIPTS.Projectiles
 			Move();
 			timeLeft -= Time.fixedDeltaTime;
 			if (!(timeLeft <= 0)) return;
-			AttackUtilities.Explode(transform.position, owner.stats.SecondaryAttackRange, owner.stats.SecondaryAttackDamageWithExtra,owner);
+			MyAttackUtilities.Explode(transform.position, owner.stats.SecondaryAttackRange, owner.stats.SecondaryAttackDamageWithExtra,owner);
 			Services.objectMaker.Unmake(transform.gameObject);
 		}
 

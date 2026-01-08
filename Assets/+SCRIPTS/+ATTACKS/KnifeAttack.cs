@@ -1,6 +1,7 @@
 using System;
 using __SCRIPTS;
 using UnityEngine;
+using Utilities;
 
 [Serializable]
 public class DamageOverTimeData
@@ -119,7 +120,7 @@ public class KnifeAttack : Ability
 
 	private void Anim_AttackHit()
 	{
-		var targetHit = AttackUtilities.FindClosestHit(offence, attackPoint.transform.position, offence.stats.TertiaryAttackRange, offence.EnemyLayer);
+		var targetHit = MyAttackUtilities.FindClosestHit(offence, attackPoint.transform.position, offence.stats.TertiaryAttackRange, offence.EnemyLayer);
 		if (targetHit == null)
 		{
 			OnMiss?.Invoke();
@@ -131,7 +132,7 @@ public class KnifeAttack : Ability
 		var KnifeFireEffect = targetLife.gameObject.AddComponent<DamageOverTimeEffect>();
 		KnifeFireEffect.StartEffect(offence, targetLife, damageOverTimeData.fireDuration, damageOverTimeData.fireDamageRate, damageOverTimeData.fireDamageAmount,
 			damageOverTimeData.fireColor);
-		AttackUtilities.HitTarget(offence, targetLife, 0);//stats.TertiaryAttackDamageWithExtra
+		MyAttackUtilities.HitTarget(offence, targetLife, 0);//stats.TertiaryAttackDamageWithExtra
 		OnHit?.Invoke(targetHit.transform.position);
 	}
 }

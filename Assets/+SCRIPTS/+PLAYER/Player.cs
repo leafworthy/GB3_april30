@@ -43,6 +43,7 @@ namespace __SCRIPTS
 		public bool hasKey;
 
 		public event Action<Player,bool> OnPlayerDies;
+		public event Action OnPlayerSpawned;
 		public event Action<Player> OnPlayerLeavesUpgradeSetupMenu;
 
 		private PlayerUpgrades playerUpgrades;
@@ -61,6 +62,7 @@ namespace __SCRIPTS
 		{
 			playerUpgrades = GetComponent<PlayerUpgrades>();
 			gameObject.transform.SetParent(GameManager.I.gameObject.transform);
+
 		}
 
 		public void OnPlayerDied(Player player, bool isRespawning)
@@ -81,7 +83,7 @@ namespace __SCRIPTS
 
 			var animations = spawnedPlayerGO.GetComponentInChildren<UnitAnimations>();
 			if (animations != null) animations.SetBool(UnitAnimations.IsFallingFromSky, true);
-
+			OnPlayerSpawned?.Invoke();
 			if (playerUpgrades != null) playerUpgrades.ApplyUpgrades(this);
 			return spawnedPlayerGO;
 		}

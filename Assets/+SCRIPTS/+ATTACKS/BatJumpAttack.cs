@@ -128,11 +128,11 @@ namespace __SCRIPTS
 
 		private void RegularAttackHit()
 		{
-			var hits = AttackUtilities.CircleCastForXClosestTargets(offence, offence.stats.TertiaryAttackRange);
+			var hits = MyAttackUtilities.CircleCastForXClosestTargets(offence, offence.stats.TertiaryAttackRange);
 			if (hits == null) return;
 			foreach (var hit in hits)
 			{
-				AttackUtilities.HitTarget(offence, hit, GetAttackDamage());
+				MyAttackUtilities.HitTarget(offence, hit, GetAttackDamage());
 				OnHitTarget?.Invoke(hit.transform.position);
 			}
 		}

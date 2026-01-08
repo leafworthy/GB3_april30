@@ -43,7 +43,7 @@ namespace __SCRIPTS
 			if (life.IsDead()) return;
 			if (currentTargetLife == null) return;
 
-			AttackUtilities.Explode(transform.position, explosionRadius, _attacker.stats.PrimaryAttackDamageWithExtra, _attacker);
+			MyAttackUtilities.Explode(transform.position, explosionRadius, _attacker.stats.PrimaryAttackDamageWithExtra, _attacker);
 			life.DieNow();
 		}
 
@@ -66,7 +66,7 @@ namespace __SCRIPTS
 			if (Services.pauseManager.IsPaused) return;
 			if (life.IsDead()) return;
 
-			var hitObject = AttackUtilities.RaycastToObject(currentTargetLife, attacker.player.IsHuman() ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer);
+			var hitObject = MyAttackUtilities.RaycastToObject(currentTargetLife, attacker.player.IsHuman() ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer);
 			if (hitObject.collider == null) return;
 
 			currentTargetLife = hitObject.collider.gameObject.GetComponent<Life>();

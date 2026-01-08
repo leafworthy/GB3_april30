@@ -70,11 +70,11 @@ namespace __SCRIPTS
 
 		void RegularAttackHit(int attackType)
 		{
-			var hits = AttackUtilities.CircleCastForXClosestTargets(offence, offence.stats.PrimaryAttackRange);
+			var hits = MyAttackUtilities.CircleCastForXClosestTargets(offence, offence.stats.PrimaryAttackRange);
 			if (hits == null) return;
 			foreach (var hit in hits)
 			{
-				AttackUtilities.HitTarget(offence, hit, GetAttackDamage(attackType), extraPush);
+				MyAttackUtilities.HitTarget(offence, hit, GetAttackDamage(attackType), extraPush);
 				OnHitTarget?.Invoke(hit.transform.position);
 			}
 		}

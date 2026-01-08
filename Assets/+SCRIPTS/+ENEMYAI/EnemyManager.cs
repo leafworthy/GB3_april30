@@ -6,17 +6,17 @@ namespace __SCRIPTS
 {
 	public class EnemyManager : MonoBehaviour, IService
 	{
-		private List<Life> _allEnemies = new();
-		public event Action<Player, IGetAttacked> OnPlayerKillsEnemy;
+		List<Life> _allEnemies = new();
+		public event Action<Player, float,IGetAttacked> OnPlayerKillsEnemy;
 		public event Action<IGetAttacked> OnEnemyDying;
-		private LevelManager _levelManager;
-		private LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
-		private Players _players;
-		private Players players => _players ?? ServiceLocator.Get<Players>();
+		LevelManager _levelManager;
+		LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
+		Players _players;
+		Players players => _players ?? ServiceLocator.Get<Players>();
 
-		private ObjectMaker objectMaker => _objectMaker ??= ServiceLocator.Get<ObjectMaker>();
+		ObjectMaker objectMaker => _objectMaker ??= ServiceLocator.Get<ObjectMaker>();
 
-		private ObjectMaker _objectMaker;
+		ObjectMaker _objectMaker;
 
 		public void StartService()
 		{
@@ -26,7 +26,7 @@ namespace __SCRIPTS
 		public GameObject SpawnNewEnemy(GameObject enemyPrefab, EnemySpawner.EnemyType enemyType, Vector3 position, int enemyTier)
 		{
 			var newEnemy = objectMaker.Make(enemyPrefab, position);
-			ConfigureNewEnemy(newEnemy, enemyType,enemyTier);
+			ConfigureNewEnemy(newEnemy, enemyType, enemyTier);
 			return newEnemy;
 		}
 
@@ -36,7 +36,7 @@ namespace __SCRIPTS
 			ConfigureNewNPC(newNPC);
 		}
 
-		private void CollectEnemy(GameObject enemy)
+		void CollectEnemy(GameObject enemy)
 		{
 			var enemyDefence = enemy.gameObject.GetComponent<Life>();
 
@@ -47,14 +47,14 @@ namespace __SCRIPTS
 			_allEnemies.Add(enemyDefence);
 		}
 
-		private void EnemyDead(Attack attack)
+		void EnemyDead(Attack attack)
 		{
 			var loot = ServiceLocator.Get<LootTable>();
 			loot.DropLoot(attack.DestinationLife.transform.position);
 			OnEnemyDying?.Invoke(attack.DestinationLife);
 		}
 
-		private void ClearEnemies(GameLevel gameLevel)
+		void ClearEnemies(GameLevel gameLevel)
 		{
 			foreach (var enemy in _allEnemies)
 			{
@@ -65,9 +65,17 @@ namespace __SCRIPTS
 			_allEnemies.Clear();
 		}
 
-		private void EnemyKilled(Player killer, IGetAttacked life)
+		void EnemyKilled(Player killer, IGetAttacked life)
 		{
-			OnPlayerKillsEnemy?.Invoke(killer, life);
+			var experienceGained = DetermineExperienceGained(life);
+			OnPlayerKillsEnemy?.Invoke(killer, experienceGained, life);
+		}
+
+		float DetermineExperienceGained(IGetAttacked life)
+		{
+			var enemyStats = life.transform.GetComponent<UnitStats>();
+			if (enemyStats == null) return 0;
+			return enemyStats.Data.experienceGiven;
 		}
 
 		public void ConfigureNewEnemy(GameObject enemy, EnemySpawner.EnemyType enemyType, int enemyTier = 0)
@@ -77,8 +85,7 @@ namespace __SCRIPTS
 			if (life != null)
 			{
 				life.SetPlayer(players.enemyPlayer);
-				life.SetEnemyTypeAndTier(enemyType,enemyTier);
-
+				life.SetEnemyTypeAndTier(enemyType, enemyTier);
 			}
 
 			CollectEnemy(enemy);
@@ -87,10 +94,7 @@ namespace __SCRIPTS
 		public void ConfigureNewNPC(GameObject npc)
 		{
 			var life = npc.GetComponent<Life>();
-			if (life != null)
-			{
-				life.SetPlayer(players.NPCPlayer);
-			}
+			if (life != null) life.SetPlayer(players.NPCPlayer);
 
 			CollectEnemy(npc);
 		}

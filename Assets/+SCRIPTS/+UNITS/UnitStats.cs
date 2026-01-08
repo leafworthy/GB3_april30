@@ -6,10 +6,10 @@ namespace __SCRIPTS
 	[Serializable]
 	public class UnitStats
 	{
-		[SerializeField] private UnitStatsData _unitData;
+		[SerializeField] UnitStatsData _unitData;
 
 		public UnitStatsData Data => GetData();
-		private string unitName;
+		string unitName;
 
 		public UnitStats(string _name)
 		{
@@ -17,17 +17,15 @@ namespace __SCRIPTS
 			_unitData = UnitStatsManager.GetUnitStats(unitName);
 		}
 
-		private UnitStatsData GetData() => _unitData ??= UnitStatsManager.GetUnitStats(unitName);
+		UnitStatsData GetData() => _unitData ??= UnitStatsManager.GetUnitStats(unitName);
 
 		public float ExtraHealthFactor;
 		public float ExtraDamageFactor;
 		public float ExtraSpeedFactor;
 
-		private int extraMaxDamageFactor;
-		[SerializeField] private int EnemyTier;
+		[SerializeField] int EnemyTier;
 
 		public float GetExtraHealth() => ExtraHealthFactor * Data.healthMax + Data.healthMax * EnemyTier;
-
 		public float MoveSpeed => Data.moveSpeed + ExtraSpeedFactor * Data.moveSpeed + Data.moveSpeed * (EnemyTier * 0.3f);
 		public float DashSpeed => Data.dashSpeed + ExtraSpeedFactor * Data.dashSpeed;
 		public float JumpSpeed => Data.jumpSpeed;
@@ -36,6 +34,8 @@ namespace __SCRIPTS
 		public bool IsObstacle => Data.category == UnitCategory.Obstacle;
 		public bool IsPlayerAttackable => Data.isPlayerSwingHittable;
 		public DebrisType DebrisType => Data.debrisType;
+
+		public float ExperienceGained => Data.experienceGiven;
 
 		public float GetAttackDamage(int attackIndex) => attackIndex switch
 		                                                 {

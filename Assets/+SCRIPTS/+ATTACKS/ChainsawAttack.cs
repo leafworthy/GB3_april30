@@ -114,7 +114,7 @@ namespace __SCRIPTS
 			cooldownCounter += Time.fixedDeltaTime;
 			if (!(cooldownCounter >= offence.stats.TertiaryAttackRate)) return;
 			cooldownCounter = 0;
-			AttackUtilities.HitTargetsWithinRange(offence, body.AttackStartPoint.transform.position, offence.stats.TertiaryAttackRange,
+			MyAttackUtilities.HitTargetsWithinRange(offence, body.AttackStartPoint.transform.position, offence.stats.TertiaryAttackRange,
 				offence.stats.TertiaryAttackDamageWithExtra);
 		}
 

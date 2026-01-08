@@ -141,9 +141,9 @@ namespace __SCRIPTS
 
 		private void UpdateGraph()
 		{
-			var guo = new GraphUpdateObject(bounds);
-			guo.updatePhysics = true;
-			AstarPath.active.UpdateGraphs(guo);
+			//var guo = new GraphUpdateObject(bounds);
+			//guo.updatePhysics = true;
+			//AstarPath.active.UpdateGraphs(guo);
 		}
 
 		public void Repair(Player player)

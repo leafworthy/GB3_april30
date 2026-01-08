@@ -23,7 +23,9 @@ namespace __SCRIPTS
 			None,
 			DaysSurvived,
 			UpgradesPurchased,
-			TimeSurvived
+			TimeSurvived,
+			Experience,
+			Level
 		}
 
 		public  StatType type;

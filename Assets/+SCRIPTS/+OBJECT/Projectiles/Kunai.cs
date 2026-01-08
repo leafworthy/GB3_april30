@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utilities;
 
 namespace __SCRIPTS.Projectiles
 {
@@ -33,7 +34,7 @@ namespace __SCRIPTS.Projectiles
 			if (!isFlying) return;
 			var nextPos = direction.normalized * speed * Time.fixedDeltaTime + (Vector2) transform.position;
 
-			var colliderLife = AttackUtilities.CheckForCollisions(nextPos, gameObject, owner.EnemyLayer);
+			var colliderLife = MyAttackUtilities.CheckForCollisions(nextPos, gameObject, owner.EnemyLayer);
 			if (colliderLife != null)
 				HandleHit(colliderLife);
 			else

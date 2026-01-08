@@ -114,7 +114,7 @@ namespace __SCRIPTS
 
 			if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= ai.stats.PrimaryAttackRange*1.25f)
 			{
-				AttackUtilities.HitTarget(ai, currentTargetLife, ai.stats.PrimaryAttackDamageWithExtra);
+				MyAttackUtilities.HitTarget(ai, currentTargetLife, ai.stats.PrimaryAttackDamageWithExtra);
 				Debug.Log("hit target   " + currentTargetLife.transform.gameObject.name);
 			}
 			else

@@ -1,6 +1,7 @@
 using System;
 using __SCRIPTS;
 using UnityEngine;
+using Utilities;
 
 public class Mine : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class Mine : MonoBehaviour
 
 	private void Explode()
 	{
-		AttackUtilities.Explode(transform.position, life.stats.SecondaryAttackRange,
+		MyAttackUtilities.Explode(transform.position, life.stats.SecondaryAttackRange,
 			life.stats.SecondaryAttackDamageWithExtra, life);
 		Services.objectMaker.Unmake(gameObject);
 

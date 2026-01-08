@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using __SCRIPTS;
 using UnityEngine;
+using Utilities;
 using Random = UnityEngine.Random;
 
 
@@ -26,8 +27,8 @@ public class ExplodeOnDeath : MonoBehaviour
 	private void LifeOnDead(Attack obj)
 	{
 		 life.OnDead -= LifeOnDead;
-		 AttackUtilities.ExplodeDebreeEverywhere(explosionSize  , transformToDestroy.transform.position  , life.debrisType, life.debrisColor);
-		 AttackUtilities.ExplosionFX(transformToDestroy.transform.position, explosionSize/5);
+		 MyAttackUtilities.ExplodeDebreeEverywhere(explosionSize  , transformToDestroy.transform.position  , life.debrisType, life.debrisColor);
+		 MyAttackUtilities.ExplosionFX(transformToDestroy.transform.position, explosionSize/5);
 		 Services.objectMaker.Unmake(transformToDestroy);
 	}
 
