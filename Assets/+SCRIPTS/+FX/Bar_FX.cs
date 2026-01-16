@@ -53,8 +53,17 @@ namespace __SCRIPTS
 		{
 
 
-			if (slowBarImage != null) slowBarImage.fillAmount = Mathf.Lerp(slowBarImage.fillAmount, targetFill, smoothingFactor);
-			if (fastBarImage != null) fastBarImage.fillAmount = targetFill;
+
+			if( (slowBarImage != null) && targetFill < slowBarImage.fillAmount)
+			{
+				if (slowBarImage != null) slowBarImage.fillAmount = Mathf.Lerp(slowBarImage.fillAmount, targetFill, smoothingFactor);
+				if (fastBarImage != null) fastBarImage.fillAmount = targetFill;
+			}
+			else
+			{
+				if (slowBarImage != null) fastBarImage.fillAmount = Mathf.Lerp(slowBarImage.fillAmount, targetFill, smoothingFactor);
+				if (fastBarImage != null) slowBarImage.fillAmount = targetFill;
+			}
 
 		}
 
