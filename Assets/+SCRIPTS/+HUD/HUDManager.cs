@@ -18,7 +18,7 @@ namespace __SCRIPTS
 		private Players playerManager => _playerManager ?? ServiceLocator.Get<Players>();
 		private bool isInGame;
 
-		public HealthBar bossHealthbar;
+		public LineBar bossHealthbar;
 		public GameObject bossHealthbarGameObject;
 
 		public void StartService()
@@ -125,7 +125,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		public HealthBar GetBossLifeHealthbar() => bossHealthbar;
+		public LineBar GetBossLifeHealthbar() => bossHealthbar;
 
 		public void SetBossLifeHealthbarVisible(bool value)
 		{

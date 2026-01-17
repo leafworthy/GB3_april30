@@ -56,7 +56,7 @@ public class TeleportAbility : Ability
 			if (teleportDirection.magnitude < 0.1f) teleportDirection = body.BottomIsFacingRight ? Vector2.right : Vector2.left;
 		}
 
-		var teleportDistance = offence.stats.DashSpeed;
+		var teleportDistance = offence.stats.Stats.DashSpeed;
 		var teleportOffset = teleportDirection.normalized * teleportDistance;
 		var newPoint = (Vector2) transform.position + teleportOffset;
 

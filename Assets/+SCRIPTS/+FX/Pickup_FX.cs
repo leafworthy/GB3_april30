@@ -4,34 +4,34 @@ namespace __SCRIPTS
 {
 	public class Pickup_FX : MonoBehaviour
 	{
-		[SerializeField] private CameraShaker.ShakeIntensityType shakeIntensity;
-		[SerializeField] private CameraStunner_FX.StunLength stunLength;
-		private Pickup pickup;
-		private Life_FX lifeFX;
-		private PickupItem pickupItem;
+		[SerializeField] CameraShaker.ShakeIntensityType shakeIntensity;
+		[SerializeField] CameraStunner_FX.StunLength stunLength;
+		Pickup pickup;
+		Tinter tinter;
+		PickupItem pickupItem;
 
-		private void Start()
+		void Start()
 		{
 			pickupItem = GetComponent<PickupItem>();
-			lifeFX = GetComponentInChildren<Life_FX>();
+			tinter = GetComponentInChildren<Tinter>();
 			pickup = GetComponent<Pickup>();
 			if (pickup == null) return;
 			pickup.OnPickup += StartPickup;
 		}
 
-		private void StartPickup(Collider2D col, Color pickupTintColor)
+		void StartPickup(Collider2D col, Color pickupTintColor)
 		{
-			lifeFX.StartTint(pickupTintColor);
-			var otherTintHandler = col.gameObject.GetComponentInChildren<Life_FX>(true);
+			tinter.StartTint(pickupTintColor);
+			var otherTintHandler = col.gameObject.GetComponentInChildren<Tinter>(true);
 			otherTintHandler.StartTint(pickupTintColor);
 			var position = transform.position;
 			Services.objectMaker.Make(Services.assetManager.FX.pickupEffectPrefab, position);
-			CameraShaker.ShakeCamera(position,shakeIntensity);
+			CameraShaker.ShakeCamera(position, shakeIntensity);
 			CameraStunner_FX.StartStun(stunLength);
-			if(pickupItem.itemType == PickupItem.ItemType.cash)
+			if (pickupItem.itemType == PickupItem.ItemType.cash)
 				Services.risingText.CreateRisingText("+$" + pickupItem.itemAmount, position, Color.white);
 			else
-				Services.risingText.CreateRisingText("+" + pickupItem.itemAmount + " " +pickupItem.itemName, position, Color.white);
+				Services.risingText.CreateRisingText("+" + pickupItem.itemAmount + " " + pickupItem.itemName, position, Color.white);
 		}
 	}
 }

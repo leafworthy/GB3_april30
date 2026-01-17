@@ -5,7 +5,7 @@ namespace __SCRIPTS
 {
 	public abstract class Gun : MonoBehaviour
 	{
-		private static readonly string[] PrimaryAnimationClips =
+		static readonly string[] PrimaryAnimationClips =
 		{
 			"E",
 			"EES",
@@ -34,16 +34,16 @@ namespace __SCRIPTS
 
 		public AnimationClip pullOutAnimationClip;
 		protected AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
-		private AmmoInventory _ammoInventory;
-		private IAimAbility gunAimAbility => _gunAimAbility ??= GetComponent<IAimAbility>();
-		private IAimAbility _gunAimAbility;
+		AmmoInventory _ammoInventory;
+		IAimAbility gunAimAbility => _gunAimAbility ??= GetComponent<IAimAbility>();
+		IAimAbility _gunAimAbility;
 
-		private Body body => _body ??= GetComponent<Body>();
-		private Body _body;
+		Body body => _body ??= GetComponent<Body>();
+		Body _body;
 		protected ICanAttack attacker => _attacker ??= GetComponent<ICanAttack>();
-		private ICanAttack _attacker;
-		private bool isCoolingDown;
-		private float currentCooldownTime;
+		ICanAttack _attacker;
+		bool isCoolingDown;
+		float currentCooldownTime;
 		public string AnimationClipSuffix => this is PrimaryGun ? "" : "_Glock";
 		public virtual float reloadTime => .5f;
 		public abstract float AttackRate { get; }
@@ -54,12 +54,12 @@ namespace __SCRIPTS
 		protected abstract float Spread { get; }
 		protected abstract int numberOfBulletsPerShot { get; }
 		public virtual bool simpleShoot => false;
-		private bool IsCoolingDown => Time.time <= currentCooldownTime;
+		bool IsCoolingDown => Time.time <= currentCooldownTime;
 		public bool CanReload() => Ammo.CanReload();
 		public bool MustReload() => !Ammo.hasAmmoInClip();
 		public void Reload() => Ammo.Reload();
 
-		private void Awake()
+		void Awake()
 		{
 			currentCooldownTime = Time.time;
 		}
@@ -75,6 +75,7 @@ namespace __SCRIPTS
 					OnEmpty?.Invoke();
 					OnNeedsReload?.Invoke();
 				}
+
 				return;
 			}
 
@@ -89,7 +90,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private float GetDegreesFromAimDir()
+		float GetDegreesFromAimDir()
 		{
 			var radians = Mathf.Atan2(-gunAimAbility.AimDir.y, gunAimAbility.AimDir.x); // NEGATE y-axis
 			var degrees = radians * Mathf.Rad2Deg;
@@ -106,7 +107,7 @@ namespace __SCRIPTS
 			return PrimaryAnimationClips[whichPortion] + AnimationClipSuffix;
 		}
 
-		private static int GetDirectionPortion(float degrees)
+		static int GetDirectionPortion(float degrees)
 		{
 			var normalizedDegrees = degrees % 360;
 			if (normalizedDegrees < 0) normalizedDegrees += 360;
@@ -117,7 +118,7 @@ namespace __SCRIPTS
 			return portionNumber;
 		}
 
-		private void ShootBullet(Vector3 shootDirection)
+		void ShootBullet(Vector3 shootDirection)
 		{
 			var hitObject = Physics2D.LinecastAll(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange,
 				attacker.EnemyLayer);
@@ -139,7 +140,7 @@ namespace __SCRIPTS
 			ShotMissed();
 		}
 
-		private void ShotMissed()
+		void ShotMissed()
 		{
 			var missPosition = (Vector2) body.FootPoint.transform.position + gunAimAbility.AimDir.normalized * AttackRange;
 			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, gunAimAbility.AimDir.normalized, AttackRange, attacker.player.BuildingLayer);
@@ -151,10 +152,10 @@ namespace __SCRIPTS
 			OnShotMissed?.Invoke(newAttack);
 		}
 
-		private void ShotHitTarget(IGetAttacked targetLife, Vector2 hitObjectPoint)
+		void ShotHitTarget(IGetAttacked targetLife, Vector2 hitObjectPoint)
 		{
 			var newAttack = Attack.Create(attacker, targetLife).WithOriginPoint(body.AttackStartPoint.transform.position).WithDestinationPoint(hitObjectPoint)
-			                      .WithDamage(Damage).WithFlying(); //DELETE WITHFLYING LATER
+			                      .WithDamage(Damage);
 			OnShotHitTarget?.Invoke(newAttack);
 
 			targetLife.TakeDamage(newAttack);
@@ -163,11 +164,11 @@ namespace __SCRIPTS
 
 	public class PrimaryGun : Gun
 	{
-		private bool isShooting;
-		public override float AttackRate => attacker.stats.PrimaryAttackRate;
-		protected override float Damage => attacker.stats.PrimaryAttackDamageWithExtra;
+		bool isShooting;
+		public override float AttackRate => attacker.stats.Stats.Rate(1);
+		protected override float Damage => attacker.stats.Stats.Damage(1);
 		protected override Ammo Ammo => ammoInventory.primaryAmmo;
-		protected override float AttackRange => attacker.stats.PrimaryAttackRange;
+		protected override float AttackRange => attacker.stats.Stats.Range(1);
 		protected override float Spread => 0;
 
 		protected override int numberOfBulletsPerShot => 1;
@@ -177,14 +178,11 @@ namespace __SCRIPTS
 	{
 		public override float AttackRate => GetAttackRate();
 
-		private float GetAttackRate()
-		{
-			return attacker.stats.UnlimitedAttackRate;
-		}
+		float GetAttackRate() => attacker.stats.Stats.Rate(4);
 
-		protected override float Damage => attacker.stats.UnlimitedAttackDamageWithExtra;
+		protected override float Damage => attacker.stats.Stats.Damage(4);
 		protected override Ammo Ammo => ammoInventory.unlimitedAmmo;
-		protected override float AttackRange => attacker.stats.UnlimitedAttackRange;
+		protected override float AttackRange => attacker.stats.Stats.Range(4);
 		protected override float Spread => 0;
 		protected override int numberOfBulletsPerShot => 1;
 	}

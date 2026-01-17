@@ -32,12 +32,12 @@ namespace __SCRIPTS._ENEMYAI
 		private Targetter targetter =>  _targetter ??= GetComponent<Targetter>();
 		private Targetter _targetter;
 
-		public IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
-		private IHaveAttackStats _stats;
+		public IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
+		private IHaveUnitStats _stats;
 
 		private void FixedUpdate()
 		{
-			_target = targetter.GetClosestPlayerWithinRange(stats.AggroRange);
+			_target = targetter.GetClosestPlayerWithinRange(stats.Stats.AggroRange);
 			if (_target == null) return;
 			if (CloseEnoughToPlayer())
 				AttackPlayer();
@@ -58,7 +58,7 @@ namespace __SCRIPTS._ENEMYAI
 		{
 			if(!isMoving) OnAttackStop?.Invoke();
 			isMoving = true;
-			moveDir = (_target.transform.position - transform.position).normalized * stats.MoveSpeed;
+			moveDir = (_target.transform.position - transform.position).normalized * stats.Stats.MoveSpeed;
 			OnMoveInDirection?.Invoke(moveDir);
 		}
 
@@ -67,7 +67,7 @@ namespace __SCRIPTS._ENEMYAI
 		private bool CloseEnoughToPlayer()
 		{
 			var distanceToPlayer = Vector2.Distance(transform.position, _target.transform.position);
-			return distanceToPlayer <= stats.PrimaryAttackRange;
+			return distanceToPlayer <= stats.Stats.Range(2);
 		}
 
 		public void SetPlayer(Player newPlayer)

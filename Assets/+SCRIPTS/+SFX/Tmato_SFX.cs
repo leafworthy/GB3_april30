@@ -106,7 +106,7 @@ namespace __SCRIPTS
 
 		private void ShotgunAttackOnOnShotHitTarget(Attack attack)
 		{
-			Services.sfx.sounds.GetBulletHitSounds(attack.DestinationLife.debrisType).PlayRandomAt(attack.DestinationFloorPoint);
+			Services.sfx.sounds.GetBulletHitSounds(attack.DestinationLife.DebrisType).PlayRandomAt(attack.DestinationFloorPoint);
 			Services.sfx.sounds.tmato_shoot_hit_sounds.PlayRandomAt(attack.OriginFloorPoint);
 		}
 

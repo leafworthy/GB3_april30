@@ -1,60 +1,53 @@
 using System;
-using GangstaBean.Core;
-using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
-
 
 namespace __SCRIPTS
 {
 	[ExecuteAlways]
-	public class JumpAndRotateAbility : HeightAbility, IRotate
+	public class JumpAndRotateAbility : HeightAbility
 	{
 		public bool isResting;
-		private float verticalVelocity;
-		private float currentRotationRate;
-		private float maxRotationRate = 360;
-		[SerializeField]private bool freezeRotation;
+		float verticalVelocity;
+		float currentRotationRate;
+		float maxRotationRate = 360;
+		[SerializeField] bool freezeRotation;
 
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnResting;
 		public event Action<Vector2> OnJump;
 
-		private bool isOverLandable;
+		bool isOverLandable;
 		public bool IsJumping;
-		private Vector2 DistanceToGround;
-		private Body body => _body ??= GetComponent<Body>();
-		private Body _body;
-		private float currentLandableHeight;
-		private float minBounceVelocity = 1000;
-		private float bounceVelocityDragFactor = .2f;
-		private float landTimer;
-		private float maxFlyTime = 2.5f;
+		Vector2 DistanceToGround;
+		Body body => _body ??= GetComponent<Body>();
+		Body _body;
+		float currentLandableHeight;
+		float minBounceVelocity = 1000;
+		float bounceVelocityDragFactor = .2f;
+		float landTimer;
+		float maxFlyTime = 2.5f;
 
-		public IRotate RotateToDirection(Vector2 direction, GameObject rotationObject)
+		public void RotateToDirection(Vector2 direction, GameObject rotationObject)
 		{
 			var rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-			if (rotationObject == null) return this;
+			if (rotationObject == null) return;
 			rotationObject.transform.eulerAngles = new Vector3(0, 0, rotation);
-			return this;
 		}
 
-		public IRotate SetRotationRate(float newRate)
+		public void SetRotationRate(float newRate)
 		{
 			maxRotationRate = newRate;
-			return this;
 		}
 
-		public IRotate SetFreezeRotation(bool freeze = true)
+		public void SetFreezeRotation(bool freeze)
 		{
 			freezeRotation = freeze;
 			maxRotationRate = 0;
-			return this;
 		}
 
-		private void Rotate(float rotationSpeed)
+		void Rotate(float rotationSpeed)
 		{
 			if (freezeRotation) return;
 			HeightObject.transform.Rotate(new Vector3(0, 0, rotationSpeed * Time.fixedDeltaTime * 10));
@@ -65,6 +58,7 @@ namespace __SCRIPTS
 			freezeRotation = true;
 			HeightObject.transform.rotation = Quaternion.identity;
 		}
+
 		public void Jump(float startingHeight = 0, float verticalSpeed = 2, float minBounce = 1)
 		{
 			currentRotationRate = Random.Range(0, maxRotationRate);
@@ -72,7 +66,7 @@ namespace __SCRIPTS
 			minBounceVelocity = minBounce;
 			IsJumping = true;
 			StopResting();
-			OnJump?.Invoke(transform.position+ new Vector3(0,startingHeight,0));
+			OnJump?.Invoke(transform.position + new Vector3(0, startingHeight, 0));
 
 			verticalVelocity = verticalSpeed;
 
@@ -82,41 +76,31 @@ namespace __SCRIPTS
 			body?.ChangeLayer(Body.BodyLayer.jumping);
 		}
 
-
-
-
 		protected void FixedUpdate()
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (isResting) return;
 			if (!IsJumping) return;
-			 Rotate(currentRotationRate);
+			Rotate(currentRotationRate);
 			Fly();
-
 		}
 
-
-
-		private void Fly()
+		void Fly()
 		{
 			landTimer += Time.fixedDeltaTime;
-			if(landTimer> maxFlyTime)
+			if (landTimer > maxFlyTime)
 			{
 				Land();
 				return;
 			}
-			currentLandableHeight = 0;
-			verticalVelocity -= (Services.assetManager.Vars.Gravity.y) * Time.fixedDeltaTime;
-			if ((GetHeight() + verticalVelocity <= currentLandableHeight) && (verticalVelocity < 0))
-			{
-				Land();
-			}
-			else
-			{
-				SetHeight(GetHeight() + verticalVelocity);
-			}
-		}
 
+			currentLandableHeight = 0;
+			verticalVelocity -= Services.assetManager.Vars.Gravity.y * Time.fixedDeltaTime;
+			if (GetHeight() + verticalVelocity <= currentLandableHeight && verticalVelocity < 0)
+				Land();
+			else
+				SetHeight(GetHeight() + verticalVelocity);
+		}
 
 		protected virtual void Land()
 		{
@@ -130,12 +114,12 @@ namespace __SCRIPTS
 			OnLand?.Invoke(transform.position);
 			SetHeight(currentLandableHeight);
 
-			if (body != null) body.ChangeLayer( Body.BodyLayer.grounded);
+			if (body != null) body.ChangeLayer(Body.BodyLayer.grounded);
 			StartResting();
 			verticalVelocity = 0;
 		}
 
-		private void Bounce()
+		void Bounce()
 		{
 			verticalVelocity *= -1;
 			var velocity = bounceVelocityDragFactor;
@@ -149,7 +133,7 @@ namespace __SCRIPTS
 			if (freezeRotation) transform.rotation = Quaternion.identity;
 		}
 
-		private void StopResting()
+		void StopResting()
 		{
 			isResting = false;
 		}

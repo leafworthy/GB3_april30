@@ -97,7 +97,7 @@ namespace __SCRIPTS
 		private void GunAttackAkGlockOnOnShotHitTarget(Attack attack)
 		{
 			if(attack.DestinationLife == null)Services.sfx.sounds.GetBulletHitSounds(DebrisType.none).PlayRandomAt(attack.DestinationFloorPoint);
-			else Services.sfx.sounds.GetBulletHitSounds(attack.DestinationLife.debrisType).PlayRandomAt(attack.DestinationFloorPoint);
+			else Services.sfx.sounds.GetBulletHitSounds(attack.DestinationLife.DebrisType).PlayRandomAt(attack.DestinationFloorPoint);
 			Services.sfx.sounds.ak47_shoot_sounds.PlayRandomAt(attack.OriginFloorPoint);
 		}
 

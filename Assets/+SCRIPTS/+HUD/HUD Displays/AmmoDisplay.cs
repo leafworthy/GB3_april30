@@ -6,7 +6,7 @@ namespace __SCRIPTS.HUD_Displays
 {
 	public class AmmoDisplay : MonoBehaviour, INeedPlayer
 	{
-		private Bar_FX barFX;
+		public LineBar barFX;
 		public TMP_Text ammoText;
 		public TMP_Text totalText;
 		private Ammo ammoToDisplay;
@@ -17,7 +17,7 @@ namespace __SCRIPTS.HUD_Displays
 		public bool greys;
 		private bool init;
 
-		protected virtual void UpdateDisplay(bool shake = false)
+		void UpdateDisplay(bool shake = false)
 		{
 			if (ammoText != null) ammoText.text = ammoToDisplay.reloads ? ammoToDisplay.AmmoInClip.ToString() : ammoToDisplay.reserveAmmo.ToString();
 
@@ -35,7 +35,7 @@ namespace __SCRIPTS.HUD_Displays
 				Ungrey();
 
 			if (barFX == null) return;
-			barFX.UpdateBar(ammoToDisplay.reserveAmmo, ammoToDisplay.maxReserveAmmo);
+			barFX.UpdateBar(ammoToDisplay.reserveAmmo/ammoToDisplay.maxReserveAmmo);
 		}
 
 		private void GreyOut()
@@ -90,8 +90,8 @@ namespace __SCRIPTS.HUD_Displays
 		public void SetPlayer(Player newPlayer)
 		{
 			Services.levelManager.OnStopLevel += CleanUp;
-			barFX = GetComponentInChildren<Bar_FX>();
-			if (barFX.fastBarImage != null) barFX.fastBarImage.color = newPlayer.playerColor;
+			barFX = GetComponentInChildren<LineBar>();
+			if (barFX.FastBar != null) barFX.FastBar.color = newPlayer.playerColor;
 		}
 	}
 }

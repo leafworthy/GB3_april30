@@ -78,7 +78,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1832
+  m_SortingOrder: 2307
   m_Sprite: {fileID: 21300000, guid: 6a0436daa4dee47719ad500c4dd7c695, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -168,7 +168,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1833
+  m_SortingOrder: 2308
   m_Sprite: {fileID: 21300000, guid: 3be98defb7b904b71bc568f9a7b55524, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -379,6 +379,10 @@ PrefabInstance:
       propertyPath: 'renderersToSort.Array.data[1]'
       value: 
       objectReference: {fileID: 6303611988309919911}
+    - target: {fileID: 5866296047356630518, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 5866296047356630518, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
     - target: {fileID: 6725335236378426671, guid: a89f687a7c5a848fbbfe188f93314c88, type: 3}
       propertyPath: m_Layer
       value: 21

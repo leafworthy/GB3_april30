@@ -21,8 +21,8 @@ namespace __SCRIPTS
 		ISetBool _anim;
 		ICanMoveThings mover => _mover ??= GetComponent<ICanMoveThings>();
 		ICanMoveThings _mover;
-		IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
-		IHaveAttackStats _stats;
+		IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
+		IHaveUnitStats _stats;
 		IGetAttacked health => _health ??= GetComponent<IGetAttacked>();
 		IGetAttacked _health;
 
@@ -63,7 +63,7 @@ namespace __SCRIPTS
 				StopMoving();
 			else
 			{
-				if (isTryingToMove) MoveInDirection(GetMoveAimDir(), stats.MoveSpeed);
+				if (isTryingToMove) MoveInDirection(GetMoveAimDir(), stats.Stats.MoveSpeed);
 			}
 		}
 
@@ -107,7 +107,7 @@ namespace __SCRIPTS
 		{
 			if (Services.pauseManager.IsPaused) return;
 
-			if (isTryingToMove) MoveInDirection(GetMoveAimDir(), stats.MoveSpeed);
+			if (isTryingToMove) MoveInDirection(GetMoveAimDir(), stats.Stats.MoveSpeed);
 
 			if (isMoving && IsActive) AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
 
@@ -221,7 +221,7 @@ namespace __SCRIPTS
 
 		void StartMoving(Vector2 direction)
 		{
-			MoveInDirection(direction, stats.MoveSpeed);
+			MoveInDirection(direction, stats.Stats.MoveSpeed);
 		}
 
 		public void StopMoving()

@@ -1,28 +1,23 @@
 ﻿using System;
-using __SCRIPTS;
 using __SCRIPTS._ENEMYAI;
 using GangstaBean.Core;
 using UnityEngine;
-
-
-
-
 
 namespace __SCRIPTS
 {
 	[Serializable]
 	public class ClawAttack : MonoBehaviour, INeedPlayer
 	{
-		private float currentCooldownTime;
-		private IGetAttacked currentTargetLife;
+		float currentCooldownTime;
+		IGetAttacked currentTargetLife;
 
-		private IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
-		private IGetAttacked _life;
+		IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
+		IGetAttacked _life;
 
-		private ICanAttack ai;
-		private UnitAnimations anim;
-		private Body body;
-		private Targetter targetter;
+		ICanAttack ai;
+		UnitAnimations anim;
+		Body body;
+		Targetter targetter;
 		public AnimationClip clawAttackAnimationClip;
 
 		public void SetPlayer(Player newPlayer)
@@ -33,24 +28,20 @@ namespace __SCRIPTS
 			targetter = GetComponent<Targetter>();
 			ai = GetComponent<ICanAttack>();
 
-			if(ai == null) Debug.LogWarning( "ClawAttack: ICanAttack component not found on " + gameObject.name);
+			if (ai == null) Debug.LogWarning("ClawAttack: ICanAttack component not found on " + gameObject.name);
 			ai.OnAttack += AI_Attack;
 			anim.animEvents.OnAttackHit += OnAttackHit;
-
 		}
 
-
-
-		private void OnDisable()
+		void OnDisable()
 		{
 			if (ai == null) return;
 			ai.OnAttack -= AI_Attack;
 			if (anim == null) return;
 			anim.animEvents.OnAttackHit -= OnAttackHit;
-
 		}
 
-		private void AI_Attack(IGetAttacked newTarget)
+		void AI_Attack(IGetAttacked newTarget)
 		{
 			Debug.Log("ai on offence");
 			if (Services.pauseManager.IsPaused) return;
@@ -65,13 +56,13 @@ namespace __SCRIPTS
 			StartAttack();
 		}
 
-		private bool TargetIsInvalid(IGetAttacked newTarget)
+		bool TargetIsInvalid(IGetAttacked newTarget)
 		{
-			if (life == null ||life.IsDead() || newTarget.IsDead() ) return true;
+			if (life == null || life.IsDead() || newTarget.IsDead()) return true;
 			return !targetter.HasLineOfSightWith(newTarget.transform.position);
 		}
 
-		private void StartAttack()
+		void StartAttack()
 		{
 			if (!(Time.time >= currentCooldownTime))
 			{
@@ -79,7 +70,7 @@ namespace __SCRIPTS
 				return;
 			}
 
-			currentCooldownTime = Time.time + ai.stats.PrimaryAttackRate;
+			currentCooldownTime = Time.time + ai.stats.Stats.Rate(1);
 
 			// Face the target only when starting a new offence
 			FaceTarget();
@@ -88,7 +79,7 @@ namespace __SCRIPTS
 			anim.SetTrigger(UnitAnimations.Attack1Trigger);
 		}
 
-		private void FaceTarget()
+		void FaceTarget()
 		{
 			if (currentTargetLife == null) return;
 
@@ -98,31 +89,18 @@ namespace __SCRIPTS
 			// Only update facing if the distance is significant to avoid flipping
 			if (Mathf.Abs(directionToTarget.x) > 0.5f)
 			{
-				bool shouldFaceRight = directionToTarget.x > 0;
+				var shouldFaceRight = directionToTarget.x > 0;
 				body.BottomFaceDirection(shouldFaceRight);
 			}
 		}
 
-		private void OnAttackHit(int attackType)
+		void OnAttackHit(int attackType)
 		{
 			if (Services.pauseManager.IsPaused) return;
-			if (currentTargetLife == null)
-			{
-				Debug.Log("current life null");
-				return;
-			}
+			if (currentTargetLife == null) return;
 
-			if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= ai.stats.PrimaryAttackRange*1.25f)
-			{
-				MyAttackUtilities.HitTarget(ai, currentTargetLife, ai.stats.PrimaryAttackDamageWithExtra);
-				Debug.Log("hit target   " + currentTargetLife.transform.gameObject.name);
-			}
-			else
-			{
-				Debug.Log("too far");
-			}
-
-
+			if (Vector2.Distance(transform.position, currentTargetLife.transform.position) <= ai.stats.Stats.Range(1))
+				MyAttackUtilities.HitTarget(ai, currentTargetLife, ai.stats.Stats.Damage(1));
 		}
 	}
 }

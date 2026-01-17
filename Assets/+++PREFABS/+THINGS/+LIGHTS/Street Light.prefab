@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7727795828427747401}
   - component: {fileID: 6934507688657832408}
   m_Layer: 0
-  m_Name: Point Light 2D (1)
+  m_Name: Floor Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,10 +103,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2928959059287046559}
   - component: {fileID: 827350551121471613}
-  - component: {fileID: 2016935784085512690}
-  - component: {fileID: 5019062100462354449}
   m_Layer: 0
-  m_Name: STREET LIGHT /
+  m_Name: Graphic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,8 +122,7 @@ Transform:
   m_LocalPosition: {x: 0.1, y: 15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7954354790006712549}
+  m_Children: []
   m_Father: {fileID: 9048459617251402012}
   m_LocalEulerAnglesHint: {x: -0.35, y: 0, z: 0}
 --- !u!212 &827350551121471613
@@ -174,7 +171,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 891
+  m_SortingOrder: 1363
   m_Sprite: {fileID: 21300000, guid: 24972f257ba89470ba05ec27589ec02c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -186,90 +183,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2016935784085512690
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2413286178243640050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 0
-  renderBelowAll: 0
-  sortingBounds: {fileID: 0}
-  renderBelowSortingOrder: 0
-  sortType: 0
-  SorterPositionOffset: {x: -0.315979, y: -16.112991, z: 0.000004530092}
-  SorterPositionOffset2: {x: 9.042946, y: -31.237207, z: 0}
-  renderersToSort:
-  - {fileID: 827350551121471613}
-  renderAboveAll: 0
-  hasRenderers: 0
---- !u!60 &5019062100462354449
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2413286178243640050}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: 8c34822b7022040fdb2f7864b7bc46f4, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4.4, y: 34.4}
-    newSize: {x: 0.15, y: 0.4}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.32781214, y: -1.4000955}
-      - {x: -0.36370543, y: -1.434711}
-      - {x: -0.32268038, y: -1.4663649}
-      - {x: -0.25958747, y: -1.4352374}
-  m_UseDelaunayMesh: 0
 --- !u!1 &3567513775970766394
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,7 +194,7 @@ GameObject:
   - component: {fileID: 2134620791104318195}
   - component: {fileID: 2425570373714790816}
   m_Layer: 0
-  m_Name: Point Light 2D
+  m_Name: Top Spotlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -378,15 +291,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4659566741774294294}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.0030542875, y: -0, z: -0, w: 0.99999535}
+  m_LocalPosition: {x: 0.099975586, y: 15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2134620791104318195}
   - {fileID: 7727795828427747401}
   - {fileID: 5301175819122452343}
-  m_Father: {fileID: 2928959059287046559}
+  m_Father: {fileID: 9048459617251402012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5688367487303880923
 GameObject:
@@ -399,7 +312,7 @@ GameObject:
   - component: {fileID: 5301175819122452343}
   - component: {fileID: 5888852516052835597}
   m_Layer: 0
-  m_Name: Point Light 2D.001
+  m_Name: Main Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -484,9 +397,8 @@ GameObject:
   - component: {fileID: 4342301813088269497}
   - component: {fileID: 2736803200754490181}
   - component: {fileID: 1945555214387713723}
-  - component: {fileID: 5310077868107663261}
-  - component: {fileID: 7128871126931242848}
-  m_Layer: 21
+  - component: {fileID: 7408338669762668250}
+  m_Layer: 9
   m_Name: Life
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -596,7 +508,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1.57
---- !u!114 &5310077868107663261
+--- !u!114 &7408338669762668250
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -605,55 +517,141 @@ MonoBehaviour:
   m_GameObject: {fileID: 5967172343948227318}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0455abdae7264a0ca7c757667fc20f6c, type: 3}
+  m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  MaxHealth: 100
-  CurrentHealth: 100
-  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
---- !u!114 &7128871126931242848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5967172343948227318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bb12a2bc475449c8e4cebd98de14a42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UnitName: Street Light
-  _data:
-    unitName: DefaultThing
-    category: 3
-    debrisType: 4
-    isPlayerSwingHittable: 0
-    showLifeBar: 0
-    isInvincible: 1
-    healthMax: 100
-    moveSpeed: 35
-    dashSpeed: 0
-    jumpSpeed: 0
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 0
-    hasData: 1
-    isDefault: 0
-  ExtraHealthFactor: 0
-  ExtraDamageFactor: 0
-  ExtraSpeedFactor: 0
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Life
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Stats
+      Entry: 7
+      Data: 0|__SCRIPTS.UnitStats, Assembly-CSharp
+    - Name: EnemyTier
+      Entry: 3
+      Data: 0
+    - Name: _unitData
+      Entry: 7
+      Data: 1|__SCRIPTS.UnitStatsData, Assembly-CSharp
+    - Name: unitName
+      Entry: 1
+      Data: Lamp
+    - Name: category
+      Entry: 3
+      Data: 3
+    - Name: debrisType
+      Entry: 3
+      Data: 4
+    - Name: debrisTint
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: isPlayerSwingHittable
+      Entry: 5
+      Data: false
+    - Name: showLifeBar
+      Entry: 5
+      Data: false
+    - Name: isInvincible
+      Entry: 5
+      Data: true
+    - Name: healthMax
+      Entry: 4
+      Data: 0
+    - Name: moveSpeed
+      Entry: 4
+      Data: 0
+    - Name: dashSpeed
+      Entry: 4
+      Data: 0
+    - Name: jumpSpeed
+      Entry: 4
+      Data: 1
+    - Name: aggroRange
+      Entry: 4
+      Data: 0
+    - Name: attack1Damage
+      Entry: 4
+      Data: 0
+    - Name: attack1Rate
+      Entry: 4
+      Data: 0
+    - Name: attack1Range
+      Entry: 4
+      Data: 0
+    - Name: attack2Damage
+      Entry: 4
+      Data: 0
+    - Name: attack2Rate
+      Entry: 4
+      Data: 0
+    - Name: attack2Range
+      Entry: 4
+      Data: 0
+    - Name: attack3Damage
+      Entry: 4
+      Data: 0
+    - Name: attack3Rate
+      Entry: 4
+      Data: 0
+    - Name: attack3Range
+      Entry: 4
+      Data: 0
+    - Name: attack4Damage
+      Entry: 4
+      Data: 0
+    - Name: attack4Rate
+      Entry: 4
+      Data: 0
+    - Name: attack4Range
+      Entry: 4
+      Data: 0
+    - Name: experienceGiven
+      Entry: 4
+      Data: 100
+    - Name: hasData
+      Entry: 5
+      Data: true
+    - Name: isDefault
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ExtraHealthFactor
+      Entry: 4
+      Data: 0
+    - Name: ExtraDamageFactor
+      Entry: 4
+      Data: 0
+    - Name: ExtraSpeedFactor
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+  OverrideName: Lamp
+  IsShielded: 0
+  IsInvincible: 0
 --- !u!1 &5994490605341882432
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,10 +661,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9048459617251402012}
+  - component: {fileID: 3580530593520855385}
   m_Layer: 0
   m_Name: Street Light
   m_TagString: Untagged
-  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -683,10 +682,23 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7954354790006712549}
   - {fileID: 2928959059287046559}
   - {fileID: 5225984393265348810}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &3580530593520855385
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5994490605341882432}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1001 &3265162751857694059
 PrefabInstance:
   m_ObjectHideFlags: 0

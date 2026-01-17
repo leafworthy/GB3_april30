@@ -46,7 +46,7 @@ namespace __SCRIPTS
 		{
 			if (!(Time.time >= currentCooldownTime)) return;
 			currentTarget = targetLife;
-			currentCooldownTime = Time.time + attacker.stats.PrimaryAttackRate;
+			currentCooldownTime = Time.time + attacker.stats.Stats.Rate(1);
 
 			// Face the target only when starting a new offence
 			FaceTarget();
@@ -73,14 +73,14 @@ namespace __SCRIPTS
 		{
 			if (currentTarget == null) return;
 
-			var newAttack = Attack.Create(attacker,currentTarget).WithDamage(attacker.stats.PrimaryAttackDamageWithExtra);
+			var newAttack = Attack.Create(attacker,currentTarget).WithDamage(attacker.stats.Stats.Damage(1));
 
-			if ((Vector2.Distance(transform.position, currentTarget.transform.position) <= attacker.stats.PrimaryAttackRange))
+			if ((Vector2.Distance(transform.position, currentTarget.transform.position) <= attacker.stats.Stats.Range(1)))
 			{
 				currentTarget.TakeDamage(newAttack);
 			}
 
-			var targetPos = (currentTarget.transform.position -transform.position).normalized * attacker.stats.PrimaryAttackRange + transform.position;
+			var targetPos = (currentTarget.transform.position -transform.position).normalized * attacker.stats.Stats.Range(1) + transform.position;
 			CreateSlimePrefab(targetPos);
 		}
 

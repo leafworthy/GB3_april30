@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 namespace __SCRIPTS
 {
+	//OBSOLETE
 	[ExecuteAlways]
 	public class Bar_FX : MonoBehaviour
 	{

@@ -120,7 +120,7 @@ public class KnifeAttack : Ability
 
 	private void Anim_AttackHit()
 	{
-		var targetHit = MyAttackUtilities.FindClosestHit(offence, attackPoint.transform.position, offence.stats.TertiaryAttackRange, offence.EnemyLayer);
+		var targetHit = MyAttackUtilities.FindClosestHit(offence, attackPoint.transform.position, offence.stats.Stats.Range(3), offence.EnemyLayer);
 		if (targetHit == null)
 		{
 			OnMiss?.Invoke();

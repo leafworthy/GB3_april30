@@ -2,39 +2,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Utilities;
 
 namespace __SCRIPTS
 {
-	[ExecuteAlways, RequireComponent(typeof(BasicStats))]
+	[ExecuteAlways]
 	public class BasicHealth : MonoBehaviour, IGetAttacked
 	{
 		//Takes damage, manages healthbar, fires events on death/hit
-		[SerializeField] float MaxHealth;
-		[SerializeField] float CurrentHealth;
+		public float MaxHealth { get; private set; }
+		public float CurrentHealth { get; private set; }
 		public bool IsDead() => CurrentHealth <= 0;
-
 		public float GetFraction() => CurrentFraction;
-
-		public bool CanTakeDamage() => !IsDead() && !IsTemporarilyInvincible && !Data.Data.isInvincible;
-		bool IsTemporarilyInvincible;
+		public bool CanTakeDamage() => Stats.CanTakeDamage();
 		float CurrentFraction => MaxHealth != 0 ? CurrentHealth / MaxHealth : 0;
 		float targetFraction;
-		HealthBar HealthBar => _healthbar ??= GetComponentInChildren<HealthBar>(true);
-		HealthBar _healthbar;
-		IHaveData Data => data ??= GetComponent<IHaveData>();
-		IHaveData data;
+		LineBar LineBar => _healthbar ??= GetComponentInChildren<LineBar>(true);
+		LineBar _healthbar;
+		public UnitStats Stats => _stats ??= GetComponent<UnitStats>();
+		UnitStats _stats;
 		List<SpriteRenderer> renderersToTint => _renderersToTint ??= GetComponentsInChildren<SpriteRenderer>(true).ToList();
 		List<SpriteRenderer> _renderersToTint;
 
-		public Player player => _player;
-		Player _player;
-		public DebrisType debrisType => Data.Data.debrisType;
-		public Color debrisColor => DebreeTint;
-		public Color DebreeTint = Color.red;
+		public Player player { get; private set; }
 		Color materialTintColor;
 		bool isShielding;
-		public UnitCategory category => Data.Data.category;
+		UnitStats stats;
+		DebrisType debrisType;
+		public DebrisType DebrisType => Stats.DebrisType;
+		public UnitCategory category => Stats.Category;
 
 		public event Action<Attack> OnDead;
 		public event Action<Attack> OnAttackHit;
@@ -44,7 +39,6 @@ namespace __SCRIPTS
 
 		public void SetTemporarilyInvincible(bool i)
 		{
-			IsTemporarilyInvincible = i;
 		}
 
 		public void SetShielding(bool isOn)
@@ -70,22 +64,22 @@ namespace __SCRIPTS
 
 		void CompleteDeath(bool isRespawning)
 		{
-			OnDeathComplete?.Invoke(_player, isRespawning);
+			OnDeathComplete?.Invoke(player, isRespawning);
 			Services.objectMaker.Unmake(gameObject);
 		}
 
 		[Sirenix.OdinInspector.Button]
 		public void SetStats()
 		{
-			MaxHealth = Data.Data.healthMax;
-			_healthbar = GetComponentInChildren<HealthBar>(true);
-			_healthbar?.UpdateHealthBar(CurrentFraction);
+			MaxHealth = Stats.RealMaxHealth;
+			_healthbar = GetComponentInChildren<LineBar>(true);
+			_healthbar?.UpdateBar(CurrentFraction);
 		}
 
 		void Update()
 		{
 			if (CurrentFraction == targetFraction) return;
-			HealthBar?.UpdateHealthBar(CurrentFraction);
+			LineBar?.UpdateBar(CurrentFraction);
 			targetFraction = CurrentFraction;
 		}
 
@@ -107,11 +101,11 @@ namespace __SCRIPTS
 			if (!CanTakeDamage()) return;
 
 			CurrentHealth = Mathf.Max(0, CurrentHealth - attack.DamageAmount);
-			OnFractionChanged ?.Invoke(CurrentFraction);
-			if (CurrentHealth <= 0 && !Data.Data.isInvincible) StartDeath(attack);
+			OnFractionChanged?.Invoke(CurrentFraction);
+			if (CurrentHealth <= 0 && !Stats.IsInvincible) StartDeath(attack);
 
 			OnAttackHit?.Invoke(attack);
-			MyAttackUtilities.AttackHitFX(attack, renderersToTint, Data.Data.debrisType, DebreeTint);
+			MyAttackUtilities.AttackHitFX(attack, renderersToTint, Stats.DebrisType, Stats.DebrisTint);
 			if (!attack.CausesFlying) return;
 			OnFlying?.Invoke(attack);
 		}
@@ -136,7 +130,8 @@ namespace __SCRIPTS
 
 		public void SetPlayer(Player newPlayer)
 		{
-			_player = newPlayer;
+			player = newPlayer;
 		}
+
 	}
 }

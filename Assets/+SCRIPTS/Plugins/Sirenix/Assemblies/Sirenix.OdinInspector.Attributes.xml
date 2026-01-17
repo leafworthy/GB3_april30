@@ -3554,7 +3554,7 @@
             
             		// Health bar.
             		[ProgressBar(0, 100, ColorMember = "GetHealthBarColor")]
-            		public float HealthBar = 50;
+            		public float LineBar = 50;
             
             		private Color GetHealthBarColor(float value)
             		{
@@ -4125,7 +4125,7 @@
              <code>
              public class Health : MonoBehaviour
              {
-            		public int MaxHealth;
+            		public int RealMaxHealth;
             
             		[ReadOnly]
             		public int CurrentHealth;
@@ -4137,7 +4137,7 @@
              <code>
              public class Health : MonoBehaviour
              {
-            		public int MaxHealth;
+            		public int RealMaxHealth;
             
             		[ShowInInspector, ReadOnly]
             		private int currentHealth;

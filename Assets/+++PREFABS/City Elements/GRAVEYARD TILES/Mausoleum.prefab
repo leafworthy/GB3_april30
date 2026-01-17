@@ -114,7 +114,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -8412
+  m_SortingOrder: -10000
   m_Sprite: {fileID: -112567766, guid: dc8b56793a8164b83b31f2f8d4c38bc4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -205,44 +205,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Stats
+      Entry: 6
+      Data: 
   OverrideName: 
-  _player: {fileID: 0}
-  unitStats:
-    _unitData:
-      unitName: 
-      category: 0
-      debrisType: 0
-      isPlayerSwingHittable: 0
-      showLifeBar: 0
-      isInvincible: 0
-      healthMax: 0
-      moveSpeed: 0
-      dashSpeed: 0
-      jumpSpeed: 0
-      aggroRange: 0
-      attack1Damage: 0
-      attack1Rate: 0
-      attack1Range: 0
-      attack2Damage: 0
-      attack2Rate: 0
-      attack2Range: 0
-      attack3Damage: 0
-      attack3Rate: 0
-      attack3Range: 0
-      attack4Damage: 0
-      attack4Rate: 0
-      attack4Range: 0
-      experienceGiven: 0
-      hasData: 0
-      isDefault: 0
-    ExtraHealthFactor: 0
-    ExtraDamageFactor: 0
-    ExtraSpeedFactor: 0
-    EnemyTier: 0
-  unitHealth:
-    IsTemporarilyInvincible: 0
-    currentHealth: 0
-    IsShielded: 0
+  IsShielded: 0
+  IsInvincible: 0
 --- !u!60 &6402759223213668013
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -654,7 +631,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -6856
+  m_SortingOrder: -9632
   m_Sprite: {fileID: -112567766, guid: dc8b56793a8164b83b31f2f8d4c38bc4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1155,44 +1132,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Stats
+      Entry: 6
+      Data: 
   OverrideName: 
-  _player: {fileID: 0}
-  unitStats:
-    _unitData:
-      unitName: 
-      category: 0
-      debrisType: 0
-      isPlayerSwingHittable: 0
-      showLifeBar: 0
-      isInvincible: 0
-      healthMax: 0
-      moveSpeed: 0
-      dashSpeed: 0
-      jumpSpeed: 0
-      aggroRange: 0
-      attack1Damage: 0
-      attack1Rate: 0
-      attack1Range: 0
-      attack2Damage: 0
-      attack2Rate: 0
-      attack2Range: 0
-      attack3Damage: 0
-      attack3Rate: 0
-      attack3Range: 0
-      attack4Damage: 0
-      attack4Rate: 0
-      attack4Range: 0
-      experienceGiven: 0
-      hasData: 0
-      isDefault: 0
-    ExtraHealthFactor: 0
-    ExtraDamageFactor: 0
-    ExtraSpeedFactor: 0
-    EnemyTier: 0
-  unitHealth:
-    IsTemporarilyInvincible: 0
-    currentHealth: 0
-    IsShielded: 0
+  IsShielded: 0
+  IsInvincible: 0
 --- !u!60 &6402759224048572066
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1434,6 +1388,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 2450089296644301639, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
+    - target: {fileID: 3387445148543480192, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 3387445148543480192, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
     - target: {fileID: 4107011661439997770, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -1484,7 +1442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5749635723044350571, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
       propertyPath: m_SortingOrder
-      value: -7631
+      value: -9733
       objectReference: {fileID: 0}
     - target: {fileID: 5893884410372198538, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
       propertyPath: serializationData.Prefab
@@ -1492,7 +1450,7 @@ PrefabInstance:
       objectReference: {fileID: 5893884410372198538, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
     - target: {fileID: 6210979069130973091, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
       propertyPath: m_SortingOrder
-      value: -7632
+      value: -9734
       objectReference: {fileID: 0}
     - target: {fileID: 7495126173670603414, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
       propertyPath: m_Name
@@ -1500,7 +1458,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8552952992812699392, guid: 28db20f1b01dd4d55ac803d7aa9419fe, type: 3}
       propertyPath: m_SortingOrder
-      value: -7630
+      value: -9732
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1576,6 +1534,10 @@ PrefabInstance:
       propertyPath: dropPosition.y
       value: -3.6120682
       objectReference: {fileID: 0}
+    - target: {fileID: 4533253826794425852, guid: 147dec640d5ad4ef2b33dd54d4b68349, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 4533253826794425852, guid: 147dec640d5ad4ef2b33dd54d4b68349, type: 3}
     - target: {fileID: 5065878348327103945, guid: 147dec640d5ad4ef2b33dd54d4b68349, type: 3}
       propertyPath: m_SortingOrder
       value: 10040

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [ExecuteInEditMode]
-public class HeightAbility : MonoBehaviour, IHaveHeight
+public class HeightAbility : MonoBehaviour
 {
 
 	private Vector2 Height;
@@ -16,11 +16,10 @@ public class HeightAbility : MonoBehaviour, IHaveHeight
 		if (HeightObject == null) HeightObject = transform.Find("Height Object")?.gameObject;
 	}
 
-	public IHaveHeight SetHeight(float height)
+	public void SetHeight(float height)
 	{
 		Height.y = height;
 		HeightObject.transform.localPosition = Height;
-		return this;
 	}
 
 	public float GetHeight() => Height.y;

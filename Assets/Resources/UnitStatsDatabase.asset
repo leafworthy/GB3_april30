@@ -21,6 +21,7 @@ MonoBehaviour:
   - unitName: BrockLee
     category: 0
     debrisType: 0
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 1
     isInvincible: 0
@@ -47,6 +48,7 @@ MonoBehaviour:
   - unitName: GangstaBean
     category: 0
     debrisType: 0
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 1
     isInvincible: 0
@@ -73,6 +75,7 @@ MonoBehaviour:
   - unitName: Tmato
     category: 0
     debrisType: 0
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 1
     isInvincible: 0
@@ -99,6 +102,7 @@ MonoBehaviour:
   - unitName: Cone
     category: 1
     debrisType: 0
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -125,6 +129,7 @@ MonoBehaviour:
   - unitName: Corn
     category: 1
     debrisType: 0
+    debrisTint: {r: 0.16862746, g: 1, b: 0.10980392, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -151,6 +156,7 @@ MonoBehaviour:
   - unitName: Donut
     category: 1
     debrisType: 0
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -177,6 +183,7 @@ MonoBehaviour:
   - unitName: Toast
     category: 1
     debrisType: 0
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -203,6 +210,7 @@ MonoBehaviour:
   - unitName: Door_Metal
     category: 2
     debrisType: 1
+    debrisTint: {r: 0.32156864, g: 0.32156864, b: 0.32156864, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -229,6 +237,7 @@ MonoBehaviour:
   - unitName: Door_Wood
     category: 2
     debrisType: 2
+    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -255,6 +264,7 @@ MonoBehaviour:
   - unitName: Gate_Metal
     category: 2
     debrisType: 1
+    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -281,6 +291,7 @@ MonoBehaviour:
   - unitName: Gate_Wood
     category: 2
     debrisType: 2
+    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -307,6 +318,7 @@ MonoBehaviour:
   - unitName: DefaultThing
     category: 3
     debrisType: 7
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -333,6 +345,7 @@ MonoBehaviour:
   - unitName: Life
     category: 3
     debrisType: 7
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -359,6 +372,7 @@ MonoBehaviour:
   - unitName: Bed
     category: 3
     debrisType: 3
+    debrisTint: {r: 1, g: 1, b: 1, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -385,6 +399,7 @@ MonoBehaviour:
   - unitName: Can
     category: 3
     debrisType: 1
+    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 0
     isInvincible: 1
@@ -411,6 +426,7 @@ MonoBehaviour:
   - unitName: Car
     category: 3
     debrisType: 1
+    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -434,9 +450,37 @@ MonoBehaviour:
     experienceGiven: 100
     hasData: 1
     isDefault: 0
+  - unitName: Truck
+    category: 3
+    debrisType: 1
+    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
+    isPlayerSwingHittable: 1
+    showLifeBar: 1
+    isInvincible: 0
+    healthMax: 1200
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
   - unitName: Couch
     category: 3
     debrisType: 3
+    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 0
     isInvincible: 1
@@ -463,6 +507,7 @@ MonoBehaviour:
   - unitName: Dresser
     category: 3
     debrisType: 2
+    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -489,6 +534,7 @@ MonoBehaviour:
   - unitName: Fridge
     category: 3
     debrisType: 1
+    debrisTint: {r: 1, g: 1, b: 1, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -515,6 +561,7 @@ MonoBehaviour:
   - unitName: Lamp
     category: 3
     debrisType: 4
+    debrisTint: {r: 1, g: 1, b: 1, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -541,6 +588,7 @@ MonoBehaviour:
   - unitName: Stone
     category: 3
     debrisType: 5
+    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -567,6 +615,7 @@ MonoBehaviour:
   - unitName: Table
     category: 3
     debrisType: 2
+    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -593,6 +642,7 @@ MonoBehaviour:
   - unitName: Tree
     category: 3
     debrisType: 2
+    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -619,6 +669,7 @@ MonoBehaviour:
   - unitName: TV
     category: 3
     debrisType: 4
+    debrisTint: {r: 1, g: 1, b: 1, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 0
     isInvincible: 1
@@ -645,6 +696,7 @@ MonoBehaviour:
   - unitName: Wall_Wood
     category: 3
     debrisType: 2
+    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -671,6 +723,7 @@ MonoBehaviour:
   - unitName: Wall_Metal
     category: 3
     debrisType: 1
+    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -697,6 +750,7 @@ MonoBehaviour:
   - unitName: Window
     category: 3
     debrisType: 4
+    debrisTint: {r: 1, g: 1, b: 1, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -723,6 +777,7 @@ MonoBehaviour:
   - unitName: BackyardTrash
     category: 3
     debrisType: 1
+    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -749,6 +804,7 @@ MonoBehaviour:
   - unitName: TrashSmall
     category: 3
     debrisType: 1
+    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
     isPlayerSwingHittable: 0
     showLifeBar: 0
     isInvincible: 1
@@ -775,6 +831,7 @@ MonoBehaviour:
   - unitName: CrimsonBuck
     category: 1
     debrisType: 0
+    debrisTint: {r: 0.16862746, g: 1, b: 0.10980392, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -801,6 +858,7 @@ MonoBehaviour:
   - unitName: Barricade
     category: 3
     debrisType: 1
+    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -827,6 +885,7 @@ MonoBehaviour:
   - unitName: Military Truck
     category: 3
     debrisType: 1
+    debrisTint: {r: 1, g: 1, b: 1, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -853,6 +912,7 @@ MonoBehaviour:
   - unitName: Dumpster
     category: 3
     debrisType: 1
+    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -879,6 +939,7 @@ MonoBehaviour:
   - unitName: Fruit
     category: 4
     debrisType: 0
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -905,6 +966,7 @@ MonoBehaviour:
   - unitName: Test
     category: 1
     debrisType: 0
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
     isPlayerSwingHittable: 1
     showLifeBar: 1
     isInvincible: 0
@@ -929,5 +991,5 @@ MonoBehaviour:
     hasData: 1
     isDefault: 0
   isLoading: 0
-  lastLoadTime: 2026-01-07 21:21:46
+  lastLoadTime: 2026-01-16 18:39:50
   lastError: 

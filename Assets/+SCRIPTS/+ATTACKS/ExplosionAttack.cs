@@ -43,7 +43,7 @@ namespace __SCRIPTS
 			if (life.IsDead()) return;
 			if (currentTargetLife == null) return;
 
-			MyAttackUtilities.Explode(transform.position, explosionRadius, _attacker.stats.PrimaryAttackDamageWithExtra, _attacker);
+			MyAttackUtilities.Explode(transform.position, explosionRadius, _attacker.stats.Stats.Damage(1), _attacker);
 			life.DieNow();
 		}
 

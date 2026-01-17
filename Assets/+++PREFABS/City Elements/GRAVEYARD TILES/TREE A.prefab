@@ -46,44 +46,138 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Stats
+      Entry: 7
+      Data: 0|__SCRIPTS.UnitStats, Assembly-CSharp
+    - Name: EnemyTier
+      Entry: 3
+      Data: 0
+    - Name: _unitData
+      Entry: 7
+      Data: 1|__SCRIPTS.UnitStatsData, Assembly-CSharp
+    - Name: unitName
+      Entry: 1
+      Data: 
+    - Name: category
+      Entry: 3
+      Data: 0
+    - Name: debrisType
+      Entry: 3
+      Data: 0
+    - Name: debrisTint
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: isPlayerSwingHittable
+      Entry: 5
+      Data: false
+    - Name: showLifeBar
+      Entry: 5
+      Data: false
+    - Name: isInvincible
+      Entry: 5
+      Data: false
+    - Name: healthMax
+      Entry: 4
+      Data: 0
+    - Name: moveSpeed
+      Entry: 4
+      Data: 0
+    - Name: dashSpeed
+      Entry: 4
+      Data: 0
+    - Name: jumpSpeed
+      Entry: 4
+      Data: 0
+    - Name: aggroRange
+      Entry: 4
+      Data: 0
+    - Name: attack1Damage
+      Entry: 4
+      Data: 0
+    - Name: attack1Rate
+      Entry: 4
+      Data: 0
+    - Name: attack1Range
+      Entry: 4
+      Data: 0
+    - Name: attack2Damage
+      Entry: 4
+      Data: 0
+    - Name: attack2Rate
+      Entry: 4
+      Data: 0
+    - Name: attack2Range
+      Entry: 4
+      Data: 0
+    - Name: attack3Damage
+      Entry: 4
+      Data: 0
+    - Name: attack3Rate
+      Entry: 4
+      Data: 0
+    - Name: attack3Range
+      Entry: 4
+      Data: 0
+    - Name: attack4Damage
+      Entry: 4
+      Data: 0
+    - Name: attack4Rate
+      Entry: 4
+      Data: 0
+    - Name: attack4Range
+      Entry: 4
+      Data: 0
+    - Name: experienceGiven
+      Entry: 4
+      Data: 0
+    - Name: hasData
+      Entry: 5
+      Data: false
+    - Name: isDefault
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ExtraHealthFactor
+      Entry: 4
+      Data: 0
+    - Name: ExtraDamageFactor
+      Entry: 4
+      Data: 0
+    - Name: ExtraSpeedFactor
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
   OverrideName: 
-  _player: {fileID: 0}
-  unitStats:
-    _unitData:
-      unitName: 
-      category: 0
-      debrisType: 0
-      isPlayerSwingHittable: 0
-      showLifeBar: 0
-      isInvincible: 0
-      healthMax: 0
-      moveSpeed: 0
-      dashSpeed: 0
-      jumpSpeed: 0
-      aggroRange: 0
-      attack1Damage: 0
-      attack1Rate: 0
-      attack1Range: 0
-      attack2Damage: 0
-      attack2Rate: 0
-      attack2Range: 0
-      attack3Damage: 0
-      attack3Rate: 0
-      attack3Range: 0
-      attack4Damage: 0
-      attack4Rate: 0
-      attack4Range: 0
-      experienceGiven: 0
-      hasData: 0
-      isDefault: 0
-    ExtraHealthFactor: 0
-    ExtraDamageFactor: 0
-    ExtraSpeedFactor: 0
-    EnemyTier: 0
-  unitHealth:
-    IsTemporarilyInvincible: 0
-    currentHealth: 0
-    IsShielded: 0
+  IsShielded: 0
+  IsInvincible: 0
 --- !u!114 &6090140584266906357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,7 +329,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2105
+  m_SortingOrder: 1183
   m_Sprite: {fileID: 21300000, guid: 86d6fcc201a934936bcd19478c09087f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

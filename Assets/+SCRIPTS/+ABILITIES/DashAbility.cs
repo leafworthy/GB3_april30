@@ -87,7 +87,7 @@ namespace __SCRIPTS
 			if (dashAnimationClip_Top != null) PlayAnimationClip(dashAnimationClip_Top, 1);
 			defence.SetTemporarilyInvincible(true);
 
-			moveAbility.Push(moveAbility.GetMoveDir(), offence.stats.DashSpeed);
+			moveAbility.Push(moveAbility.GetMoveDir(), offence.stats.Stats.DashSpeed);
 		}
 	}
 }

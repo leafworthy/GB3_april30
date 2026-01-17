@@ -37,8 +37,8 @@ public class Mine : MonoBehaviour
 
 	private void Explode()
 	{
-		MyAttackUtilities.Explode(transform.position, life.stats.SecondaryAttackRange,
-			life.stats.SecondaryAttackDamageWithExtra, life);
+		MyAttackUtilities.Explode(transform.position, life.stats.Stats.Range(2),
+			life.stats.Stats.Damage(2), life);
 		Services.objectMaker.Unmake(gameObject);
 
 	}

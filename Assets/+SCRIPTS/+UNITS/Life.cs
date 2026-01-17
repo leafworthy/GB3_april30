@@ -1,62 +1,28 @@
 ﻿using System;
 using GangstaBean.Core;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEngine;
 using UnityUtils;
 
 namespace __SCRIPTS
 {
 	[ExecuteAlways]
-	public class Life : MonoBehaviour, IGetAttacked, IHaveAttackStats
+	public class Life : SerializedMonoBehaviour, IGetAttacked
 	{
 		public string OverrideName;
-		public Player player => _player;
-		[SerializeField] private Player _player;
-		[SerializeField] private UnitStats unitStats;
-		[SerializeField] private UnitHealth unitHealth;
-
-
-		private UnitAnimations animations => _animations ??= GetComponent<UnitAnimations>();
-		private UnitAnimations _animations;
-		public bool IsDead() => unitHealth.IsDead;
-		public bool IsShielded => false; //changed this
-		public float CurrentHealth => unitHealth.CurrentHealth;
-
-		#region UnitStats Wrappers
-
-		public Color debrisColor => GetComponent<Life_FX>().DebreeTint;
-		public UnitCategory category => unitStats.Data.category;
-		public float PrimaryAttackDamageWithExtra => unitStats.GetAttackDamage(1);
-		public float PrimaryAttackRange => unitStats.GetAttackRange(1);
-		public float PrimaryAttackRate => unitStats.GetAttackRate(1);
-		public float SecondaryAttackDamageWithExtra => unitStats.GetAttackDamage(2);
-		public float SecondaryAttackRange => unitStats.GetAttackRange(2);
-		public float SecondaryAttackRate => unitStats.GetAttackRate(2);
-		public float TertiaryAttackDamageWithExtra => unitStats.GetAttackDamage(3);
-		public float TertiaryAttackRange => unitStats.GetAttackRange(3);
-		public float TertiaryAttackRate => unitStats.GetAttackRate(3);
-		public float UnlimitedAttackDamageWithExtra => unitStats.GetAttackDamage(4);
-		public float UnlimitedAttackRange => unitStats.GetAttackRange(4);
-		public float UnlimitedAttackRate => unitStats.GetAttackRate(4);
-		public float ExtraDamageFactor
-		{
-			get => unitStats.ExtraDamageFactor;
-			set => unitStats.ExtraDamageFactor = value;
-		}
-		public float MoveSpeed => unitStats.MoveSpeed;
-		public float DashSpeed => unitStats.DashSpeed;
-		public float JumpSpeed => unitStats.JumpSpeed;
-		public float AggroRange => unitStats.AggroRange;
-		public float AttackHeight => unitStats.AttackHeight;
-		public bool IsObstacle => unitStats.IsObstacle;
-		public bool IsPlayerAttackable => unitStats.IsPlayerAttackable;
-		public DebrisType debrisType => unitStats.DebrisType;
-		public bool showLifeBar => unitStats.Data.showLifeBar;
-		public float ExperienceGained => unitStats.ExperienceGained;
-		public float MaxHealth => unitHealth.MaxHealth + unitStats.GetExtraHealth();
-
-		#endregion
-
-		public bool CanTakeDamage() => !unitHealth.IsDead && !unitHealth.IsTemporarilyInvincible && !unitStats.Data.isInvincible;
+		public Player player { get; private set; }
+		[OdinSerialize]public UnitStats Stats { get; private set; }
+		UnitAnimations animations => _animations ??= GetComponent<UnitAnimations>();
+		UnitAnimations _animations;
+		public bool IsDead() => Stats.IsDead;
+		public bool IsShielded;
+		public bool IsInvincible;
+		public float CurrentHealth => Stats.CurrentHealth;
+		public UnitCategory category => Stats.Data.category;
+		public DebrisType DebrisType => Stats.DebrisType;
+		public float MaxHealth => Stats.RealMaxHealth + Stats.GetExtraHealth();
+		public bool CanTakeDamage() => Stats.CanTakeDamage();
 		public bool IsEnemyOf(IGetAttacked other) => player.IsHuman() != other.player.IsHuman();
 
 		public event Action<Attack> OnAttackHit;
@@ -66,102 +32,85 @@ namespace __SCRIPTS
 		public event Action<Player, bool> OnDeathComplete;
 		public event Action<Attack> OnShielded;
 		public event Action<Attack> OnFlying;
-		private Collider2D[] colliders;
-		private bool hasInitialized;
+		Collider2D[] colliders;
+		bool hasInitialized;
+		float deathTime;
 
 		[Sirenix.OdinInspector.Button]
 		public void ClearStats()
 		{
-			unitStats = null;
+			Stats = null;
 		}
 
 		[Sirenix.OdinInspector.Button]
 		public UnitStats GetStats()
 		{
-			unitStats = new UnitStats(OverrideName.IsBlank()? gameObject.name: OverrideName);
-			return unitStats;
+			Stats = new UnitStats(OverrideName.IsBlank() ? gameObject.name : OverrideName);
+			return Stats;
 		}
 
-		private void Awake()
+		void Awake()
 		{
 			Init();
 		}
 
-		private void Init()
+		void Init()
 		{
 			if (hasInitialized) return;
 			hasInitialized = true;
-			unitStats = GetStats();
-			unitHealth = new UnitHealth(unitStats);
-			unitHealth.OnDead += Health_OnDead;
-			FillHealth();
-			if (unitStats.Data.category == UnitCategory.Enemy) SetPlayer(Services.playerManager.enemyPlayer);
-			else if (unitStats.Data.category == UnitCategory.NPC) SetPlayer(Services.playerManager.NPCPlayer);
+			Stats = GetStats();
+			Stats.OnDead += Health_OnDead;
+			Stats.FillHealth();
+			if (Stats.Data.category == UnitCategory.Enemy) SetPlayer(Services.playerManager.enemyPlayer);
+			if (Stats.Data.category == UnitCategory.NPC) SetPlayer(Services.playerManager.NPCPlayer);
 		}
 
-
-		private void FillHealth()
-		{
-			unitHealth.FillHealth();
-		}
-
-		private void SetupAnimationEvents()
+		void SetupAnimationEvents()
 		{
 			if (animations == null) return;
 			if (animations.animEvents == null) return;
-			animations.animEvents.OnDieStop -= CompleteDeath;
-			animations.animEvents.OnDieStop += CompleteDeath;
 			animations.animEvents.OnInvincible += SetInvincible;
-		}
-
-		private void OnDisable()
-		{
-			if (unitHealth == null) return;
-			unitHealth.OnDead -= Health_OnDead;
 		}
 
 		public void SetPlayer(Player newPlayer)
 		{
-			_player = newPlayer;
+			player = newPlayer;
 			Init();
 
 			SetupAnimationEvents();
 			foreach (var component in GetComponentsInChildren<INeedPlayer>())
 			{
 				if (!ReferenceEquals(component, this)) // was !=
-					component.SetPlayer(_player);
+					component.SetPlayer(player);
 			}
 		}
 
-		private void SetInvincible(bool inOn)
+		void SetInvincible(bool inOn)
 		{
-			unitHealth.SetTemporaryInvincible(inOn);
+			Stats.IsTemporarilyInvincible = inOn;
 		}
 
-		private void CompleteDeath(bool isRespawning)
+		void CompleteDeath(bool isRespawning)
 		{
-			OnDeathComplete?.Invoke(_player, isRespawning);
+			OnDeathComplete?.Invoke(player, isRespawning);
 			Services.objectMaker.Unmake(gameObject);
 		}
 
-
-
-
-
-		private void Health_OnDead(Attack attack)
+		void Health_OnDead(Attack attack)
 		{
 			EnableColliders(false);
 			OnDead?.Invoke(attack);
 			if (attack.OriginLife.player != null) OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
 			gameObject.layer = LayerMask.NameToLayer("Dead");
+			Invoke(nameof(CompleteDeath), deathTime);
 
 			animations?.SetTrigger(UnitAnimations.DeathTrigger);
 			animations?.SetBool(UnitAnimations.IsDead, true);
 		}
 
-		private void EnableColliders(bool enable)
+		void EnableColliders(bool enable)
 		{
-			if (!unitStats.Data.isInvincible && !enable) return;
+			if (!Stats.Data.isInvincible && !enable) return;
 			colliders = gameObject.GetComponentsInChildren<Collider2D>(true);
 
 			foreach (var col in colliders)
@@ -169,7 +118,6 @@ namespace __SCRIPTS
 				col.enabled = enable;
 			}
 		}
-
 
 		public void TakeDamage(Attack attack)
 		{
@@ -179,17 +127,13 @@ namespace __SCRIPTS
 				return;
 			}
 
+			if (IsInvincible) return;
 
-
-
-
-			unitHealth?.TakeDamage(attack);
+			Stats?.TakeDamage(attack);
 			OnAttackHit?.Invoke(attack);
 			OnFractionChanged?.Invoke(GetFraction());
 			if (!attack.CausesFlying)
-			{
 				animations?.SetTrigger(UnitAnimations.HitTrigger);
-			}
 			else
 			{
 				OnFlying?.Invoke(attack);
@@ -199,42 +143,40 @@ namespace __SCRIPTS
 
 		public void AddHealth(float amount)
 		{
-			unitHealth.AddHealth(amount);
+			Stats.AddHealth(amount);
 			OnFractionChanged?.Invoke(GetFraction());
 		}
 
 		public void DieNow()
 		{
 			var killingBlow = Attack.Create(null, this).WithDamage(9999);
-			unitHealth.TakeDamage(killingBlow);
+			Stats.TakeDamage(killingBlow);
 			OnAttackHit?.Invoke(killingBlow);
 			CompleteDeath(true);
 		}
 
-		public float GetFraction() => unitHealth.GetFraction();
+		public float GetFraction() => Stats.FractionWithExtraHealth;
 
 		public void SetShielding(bool isOn)
 		{
-			if (unitHealth != null) unitHealth.IsShielded = isOn;
+			if (Stats != null) Stats.IsShielded = isOn;
 		}
 
-		public bool IsEnemyOf(ICanAttack life) =>   player.IsHuman() != life.player.IsHuman();
-
-
+		public bool IsEnemyOf(ICanAttack life) => player.IsHuman() != life.player.IsHuman();
 
 		[Sirenix.OdinInspector.Button]
-		public void SetEnemyTypeAndTier(EnemySpawner.EnemyType enemyType,int tier)
+		public void SetEnemyTypeAndTier(EnemySpawner.EnemyType enemyType, int tier)
 		{
-			unitStats.SetEnemyTier(tier);
-			unitHealth.FillHealth();
+			Stats.EnemyTier = tier;
+			Stats.FillHealth();
 			OnFractionChanged?.Invoke(GetFraction());
 			var paletteSwapper = GetComponent<PalletteSwapper>();
-			paletteSwapper?.SetPallette(enemyType,tier);
+			paletteSwapper?.SetPallette(enemyType, tier);
 		}
 
 		public void SetTemporarilyInvincible(bool i)
 		{
-			if (unitHealth != null) unitHealth.IsTemporarilyInvincible = i;
+			if (Stats != null) Stats.IsTemporarilyInvincible = i;
 		}
 	}
 }

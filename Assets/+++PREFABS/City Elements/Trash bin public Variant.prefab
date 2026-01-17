@@ -286,6 +286,10 @@ PrefabInstance:
       propertyPath: interactionPoint.z
       value: 0.0017337799
       objectReference: {fileID: 0}
+    - target: {fileID: 5081205755827461348, guid: 868dfbf63919c42aab4744259b11dbcd, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 5081205755827461348, guid: 868dfbf63919c42aab4744259b11dbcd, type: 3}
     - target: {fileID: 5619222997289121875, guid: 868dfbf63919c42aab4744259b11dbcd, type: 3}
       propertyPath: m_LocalPosition.y
       value: -1.49
@@ -506,10 +510,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be430b345dfe2431eaa880655ed6670d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NPCName: 
   Tint: {r: 0.51998043, g: 0.6330678, b: 0.8962264, a: 1}
   toTint:
   - {fileID: 825734172497171711}
   - {fileID: 6835322896854703110}
+  currentCharacter: {fileID: 0}
+  autoRefresh: 1
+  sr: {fileID: 0}
+  leftArm: {fileID: 0}
+  rightArm: {fileID: 0}
+  leftLeg: {fileID: 0}
+  rightLeg: {fileID: 0}
+  face: {fileID: 0}
+  hideRevealObjects: {fileID: 0}
 --- !u!212 &825734172497171711 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 682604173969040475, guid: 868dfbf63919c42aab4744259b11dbcd, type: 3}

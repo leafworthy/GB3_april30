@@ -4,8 +4,7 @@ using UnityEngine;
 public class PlayerRPG : MonoBehaviour
 {
 	public int Level = 1;
-	GameObject _spawnedPlayerGO;
-	UnitStats _player_UnitStats;
+	Life _player_life;
 	float extraHealthFactorPerLevel = 1;
 	float extraDamageFactorPerLevel = 1;
 	float extraSpeedFactorPerLevel = 1;
@@ -23,8 +22,7 @@ public class PlayerRPG : MonoBehaviour
 
 	void Player_OnPlayerSpawned()
 	{
-		_spawnedPlayerGO = _player.SpawnedPlayerGO;
-		_player_UnitStats = _spawnedPlayerGO.GetComponent<UnitStats>();
+		_player_life = _player.SpawnedPlayerGO.GetComponent<Life>();
 		ResetLevel();
 	}
 
@@ -67,9 +65,9 @@ public class PlayerRPG : MonoBehaviour
 
 	void SetUnitStatsForLevel()
 	{
-		if (_player_UnitStats == null) return;
-		_player_UnitStats.ExtraHealthFactor = (Level - 1) * extraHealthFactorPerLevel;
-		_player_UnitStats.ExtraDamageFactor = (Level - 1) * extraDamageFactorPerLevel;
-		_player_UnitStats.ExtraSpeedFactor = (Level - 1) * extraSpeedFactorPerLevel;
+		if (_player_life == null) return;
+		_player_life.Stats.ExtraHealthFactor = (Level - 1) * extraHealthFactorPerLevel;
+		_player_life.Stats.ExtraDamageFactor = (Level - 1) * extraDamageFactorPerLevel;
+		_player_life.Stats.ExtraSpeedFactor = (Level - 1) * extraSpeedFactorPerLevel;
 	}
 }

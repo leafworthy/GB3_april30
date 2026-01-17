@@ -30,7 +30,7 @@ namespace __SCRIPTS
 		private AimAbility aimAbility => _aimAbility ??= GetComponent<AimAbility>();
 		private AimAbility _aimAbility;
 
-		private float GetAttackDamage() => player.spawnedPlayerStats.PrimaryAttackDamageWithExtra;
+		private float GetAttackDamage() => player.spawnedPlayerStats.Stats.Damage(1);
 		public override string AbilityName => "Bat-Air-Attack";
 
 		protected override bool requiresArms() => true;
@@ -128,7 +128,7 @@ namespace __SCRIPTS
 
 		private void RegularAttackHit()
 		{
-			var hits = MyAttackUtilities.CircleCastForXClosestTargets(offence, offence.stats.TertiaryAttackRange);
+			var hits = MyAttackUtilities.CircleCastForXClosestTargets(offence, offence.stats.Stats.Range(1));
 			if (hits == null) return;
 			foreach (var hit in hits)
 			{

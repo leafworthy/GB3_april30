@@ -10,8 +10,8 @@ namespace __SCRIPTS
 		public Player player => _player;
 		Player _player;
 		public LayerMask EnemyLayer => player.GetEnemyLayer();
-		public IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
-		IHaveAttackStats _stats;
+		public IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
+		IHaveUnitStats _stats;
 
 		public bool IsEnemyOf(IGetAttacked targetLife) => player?.IsHuman() != targetLife.player?.IsHuman();
 		public event Action<IGetAttacked> OnAttack;

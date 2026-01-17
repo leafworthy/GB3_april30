@@ -16,25 +16,9 @@ namespace __SCRIPTS
 	}
 
 
-	public interface IHaveAttackStats
+	public interface IHaveUnitStats
 	{
-		float PrimaryAttackRate { get; }
-		float PrimaryAttackDamageWithExtra { get; }
-		float PrimaryAttackRange { get; }
-		float SecondaryAttackRate { get; }
-		float SecondaryAttackDamageWithExtra { get; }
-		float SecondaryAttackRange { get; }
-		float TertiaryAttackRate { get; }
-		float TertiaryAttackDamageWithExtra { get; }
-		float TertiaryAttackRange { get; }
-		float UnlimitedAttackRate { get; }
-		float UnlimitedAttackDamageWithExtra { get; }
-		float UnlimitedAttackRange { get; }
-		float ExtraDamageFactor { get; }
-		float AggroRange { get; }
-		float MoveSpeed { get; }
-		float DashSpeed { get; }
-		float JumpSpeed { get; }
+		UnitStats Stats { get; }
 	}
 
 
@@ -43,7 +27,7 @@ namespace __SCRIPTS
 		Transform transform { get; }
 		Player player { get; }
 		LayerMask EnemyLayer { get; }
-		IHaveAttackStats stats { get; }
+		IHaveUnitStats stats { get; }
 
 		bool IsEnemyOf(IGetAttacked targetLife);
 		event Action<IGetAttacked> OnAttack;
@@ -51,18 +35,16 @@ namespace __SCRIPTS
 		event Action OnAttackStart;
 	}
 
-public interface IHaveData
-	{
-		UnitStatsData Data { get; }
-	}
 
-	public interface IGetAttacked : INeedPlayer
+
+	public interface IGetAttacked : INeedPlayer, IHaveUnitStats
 	{
 		public Player player { get; }
 		Transform transform { get; }
-		DebrisType debrisType { get; }
-		Color debrisColor { get; }
+		DebrisType DebrisType { get; }
 		UnitCategory category { get; }
+		float CurrentHealth { get;  }
+		float MaxHealth { get;  }
 		public void TakeDamage(Attack attack);
 		bool CanTakeDamage();
 		bool IsDead();

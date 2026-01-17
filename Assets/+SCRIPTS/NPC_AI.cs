@@ -15,8 +15,8 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, ICanAttack, INeedPlayer
 
 	public Player player => _player;
 	public LayerMask EnemyLayer => Services.assetManager.LevelAssets.EnemyLayer;
-	public IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
-	IHaveAttackStats _stats;
+	public IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
+	IHaveUnitStats _stats;
 	public bool IsEnemyOf(IGetAttacked targetLife) => life.IsEnemyOf(this);
 
 	public event Action<IGetAttacked> OnAttack;

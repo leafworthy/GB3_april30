@@ -82,10 +82,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 178.95343, y: 32.91616}
+    - - {x: 54.133118, y: 35.702328}
       - {x: -72.51661, y: 37.933548}
       - {x: 2.6321578, y: -0.25147223}
-      - {x: 111.31513, y: -0.92190176}
+      - {x: 115.77302, y: 0.7498016}
   m_UseDelaunayMesh: 0
 --- !u!114 &3135870284253098992
 MonoBehaviour:
@@ -124,6 +124,7 @@ MonoBehaviour:
     attack4Damage: 0
     attack4Rate: 0
     attack4Range: 0
+    experienceGiven: 0
     hasData: 1
     isDefault: 0
   ExtraHealthFactor: 0
@@ -240,7 +241,7 @@ GameObject:
   - component: {fileID: 5668718921990379518}
   - component: {fileID: 5064147217263477042}
   m_Layer: 0
-  m_Name: Graphic
+  m_Name: Graphic2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -281,6 +282,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -302,9 +305,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -19944
+  m_SortingOrder: 446
   m_Sprite: {fileID: -4786775213151806676, guid: 34fde6552be0049669cedf9b995a12a5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

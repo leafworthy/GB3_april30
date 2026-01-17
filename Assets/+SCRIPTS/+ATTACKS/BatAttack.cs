@@ -70,7 +70,7 @@ namespace __SCRIPTS
 
 		void RegularAttackHit(int attackType)
 		{
-			var hits = MyAttackUtilities.CircleCastForXClosestTargets(offence, offence.stats.PrimaryAttackRange);
+			var hits = MyAttackUtilities.CircleCastForXClosestTargets(offence, offence.stats.Stats.Range(1));
 			if (hits == null) return;
 			foreach (var hit in hits)
 			{
@@ -81,7 +81,7 @@ namespace __SCRIPTS
 
 		float GetAttackDamage(int attackType)
 		{
-			var extraDamageFactor = player.spawnedPlayerStats.ExtraDamageFactor;
+			var extraDamageFactor = player.spawnedPlayerStats.Stats.ExtraDamageFactor;
 			return attackType switch
 			       {
 				       1 => Attack1Damage + Attack1Damage * extraDamageFactor,

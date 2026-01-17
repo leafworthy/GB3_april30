@@ -277,7 +277,7 @@ namespace __SCRIPTS
 			foreach (var raycastHit2D in raycastHits)
 			{
 				var otherLife = raycastHit2D.collider.GetComponent<Life>();
-				MyAttackUtilities.HitTarget(offence, otherLife, offence.stats.SecondaryAttackDamageWithExtra);
+				MyAttackUtilities.HitTarget(offence, otherLife, offence.stats.Stats.Damage(2));
 			}
 
 			var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position + moveAbility.GetMoveAimDir() * SpecialAttackDistance, GetHitRange(),
@@ -287,7 +287,7 @@ namespace __SCRIPTS
 			{
 				var otherLife = hit2D.gameObject.GetComponent<Life>();
 				if(otherLife == null) continue;
-				MyAttackUtilities.HitTarget(offence, otherLife, otherLife.SecondaryAttackDamageWithExtra, SpecialAttackExtraPush, true);
+				MyAttackUtilities.HitTarget(offence, otherLife, otherLife.Stats.Damage(2), SpecialAttackExtraPush, true);
 
 				connect = true;
 				Services.objectMaker.Make(Services.assetManager.FX.hits.GetRandom(), hit2D.transform.position);
@@ -300,6 +300,6 @@ namespace __SCRIPTS
 		private Vector2 GetBestTargetPoint(Vector3 attackPosition) =>
 			moveAbility.IsIdle() ? aimAbility.GetAimPoint() : (Vector2) attackPosition + moveAbility.GetLastMoveAimDirOffset();
 
-		private float GetHitRange() => offence.stats.PrimaryAttackRange;
+		private float GetHitRange() => offence.stats.Stats.Range(1);
 	}
 }

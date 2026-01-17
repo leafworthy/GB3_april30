@@ -11,6 +11,7 @@ namespace __SCRIPTS
 		public string unitName;
 		public UnitCategory category;
 		public DebrisType debrisType;
+		public Color debrisTint;
 
 		[Header("Combat Properties")]
 		public bool isPlayerSwingHittable = true;
@@ -44,6 +45,7 @@ namespace __SCRIPTS
 		public float attack4Rate;
 		public float attack4Range;
 
+
 		[Header("Rewards")]
 		public float experienceGiven;
 
@@ -63,6 +65,9 @@ namespace __SCRIPTS
 
 			if (Enum.TryParse(Get(csvRow, "DebrisType"), out DebrisType debris))
 				debrisType = debris;
+
+			TryColor(csvRow, "DebrisTint", out Color tint);
+			debrisTint = tint;
 
 			// Booleans
 			isPlayerSwingHittable = IsYes(csvRow, "IsPlayerSwingHittable");
@@ -112,6 +117,14 @@ namespace __SCRIPTS
 				float.TryParse(value, out result);
 		}
 
+		private static void TryColor(Dictionary<string, string> row, string key, out Color result)
+		{
+			result = Color.white;
+			if (row.TryGetValue(key, out var value) && !string.IsNullOrWhiteSpace(value))
+			{
+				ColorUtility.TryParseHtmlString(value.StartsWith("#") ? value : "#" + value, out result);
+			}
+		}
 		#endregion
 	}
 

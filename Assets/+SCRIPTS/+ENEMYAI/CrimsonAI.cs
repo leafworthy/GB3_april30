@@ -29,9 +29,9 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings
 	public Vector2 GetMoveAimDir() => currentDirection;
 	public bool IsMoving() => false;
 
-	private IHaveAttackStats stats => _stats ??= GetComponent<IHaveAttackStats>();
-	private IHaveAttackStats _stats;
-	public float MoveSpeed => stats.MoveSpeed;
+	private IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
+	private IHaveUnitStats _stats;
+	public float MoveSpeed => stats.Stats.MoveSpeed;
 
 	protected void Start()
 	{

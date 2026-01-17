@@ -92,7 +92,7 @@ namespace __SCRIPTS
 			airTimer = 0;
 			defence.SetTemporarilyInvincible(true);
 			OnJump?.Invoke(transform.position);
-			verticalVelocity = offence.stats.JumpSpeed;
+			verticalVelocity = offence.stats.Stats.JumpSpeed;
 			body.SetHeight(0);
 			body.ChangeLayer(Body.BodyLayer.jumping);
 		}

@@ -79,7 +79,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1088
+  m_SortingOrder: 1383
   m_Sprite: {fileID: -564358340089471014, guid: fe05a4e8e28c14a4180b7c6746c146de, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1081,7 +1081,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1089
+  m_SortingOrder: 1384
   m_Sprite: {fileID: 7039712764132991997, guid: 1985a0f46e9f147078d6b30a7422c80c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1171,7 +1171,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1087
+  m_SortingOrder: 1382
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.85882354}
   m_FlipX: 0
@@ -1249,6 +1249,7 @@ GameObject:
   - component: {fileID: 5847639457248376755}
   - component: {fileID: 5087080187751462355}
   - component: {fileID: 6674677307639212881}
+  - component: {fileID: 7478576396166123407}
   m_Layer: 6
   m_Name: BrockLee
   m_TagString: Player
@@ -1399,43 +1400,138 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Stats
+      Entry: 7
+      Data: 0|__SCRIPTS.UnitStats, Assembly-CSharp
+    - Name: EnemyTier
+      Entry: 3
+      Data: 0
+    - Name: _unitData
+      Entry: 7
+      Data: 1|__SCRIPTS.UnitStatsData, Assembly-CSharp
+    - Name: unitName
+      Entry: 1
+      Data: 
+    - Name: category
+      Entry: 3
+      Data: 0
+    - Name: debrisType
+      Entry: 3
+      Data: 0
+    - Name: debrisTint
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: isPlayerSwingHittable
+      Entry: 5
+      Data: false
+    - Name: showLifeBar
+      Entry: 5
+      Data: false
+    - Name: isInvincible
+      Entry: 5
+      Data: false
+    - Name: healthMax
+      Entry: 4
+      Data: 0
+    - Name: moveSpeed
+      Entry: 4
+      Data: 0
+    - Name: dashSpeed
+      Entry: 4
+      Data: 0
+    - Name: jumpSpeed
+      Entry: 4
+      Data: 0
+    - Name: aggroRange
+      Entry: 4
+      Data: 0
+    - Name: attack1Damage
+      Entry: 4
+      Data: 0
+    - Name: attack1Rate
+      Entry: 4
+      Data: 0
+    - Name: attack1Range
+      Entry: 4
+      Data: 0
+    - Name: attack2Damage
+      Entry: 4
+      Data: 0
+    - Name: attack2Rate
+      Entry: 4
+      Data: 0
+    - Name: attack2Range
+      Entry: 4
+      Data: 0
+    - Name: attack3Damage
+      Entry: 4
+      Data: 0
+    - Name: attack3Rate
+      Entry: 4
+      Data: 0
+    - Name: attack3Range
+      Entry: 4
+      Data: 0
+    - Name: attack4Damage
+      Entry: 4
+      Data: 0
+    - Name: attack4Rate
+      Entry: 4
+      Data: 0
+    - Name: attack4Range
+      Entry: 4
+      Data: 0
+    - Name: experienceGiven
+      Entry: 4
+      Data: 0
+    - Name: hasData
+      Entry: 5
+      Data: false
+    - Name: isDefault
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ExtraHealthFactor
+      Entry: 4
+      Data: 0
+    - Name: ExtraDamageFactor
+      Entry: 4
+      Data: 0
+    - Name: ExtraSpeedFactor
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
   OverrideName: 
-  _player: {fileID: 0}
-  unitStats:
-    _unitData:
-      unitName: BrockLee
-      category: 0
-      debrisType: 0
-      isPlayerSwingHittable: 0
-      showLifeBar: 1
-      isInvincible: 0
-      healthMax: 400
-      moveSpeed: 60
-      dashSpeed: 30
-      jumpSpeed: 2
-      aggroRange: 0
-      attack1Damage: 100
-      attack1Rate: 1
-      attack1Range: 100
-      attack2Damage: 450
-      attack2Rate: 0
-      attack2Range: 3
-      attack3Damage: 25
-      attack3Rate: 1
-      attack3Range: 40
-      attack4Damage: 0
-      attack4Rate: 0
-      attack4Range: 0
-      hasData: 1
-      isDefault: 0
-    ExtraHealthFactor: 0
-    ExtraDamageFactor: 0
-    ExtraSpeedFactor: 0
-    EnemyTier: 0
-  unitHealth:
-    IsTemporarilyInvincible: 0
-    currentHealth: 0
-    IsShielded: 0
+  IsShielded: 0
+  IsInvincible: 0
 --- !u!114 &6089603519093197841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1448,42 +1544,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
-  colorMode: 0
-  slowBarColor: {r: 1, g: 1, b: 1, a: 1}
-  barGradient:
-    serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  _healthBar: {fileID: 0}
-  BlockTint: 0
-  isBoss: 0
 --- !u!114 &3133539343243147869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1868,6 +1928,18 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   teleportAnimationClip: {fileID: 7400000, guid: a759834f2a11d4819a458490bd905561, type: 2}
+--- !u!114 &7478576396166123407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3924160363998699687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bd1c8b63d64415bfe85d1bf6312b65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Tinter
 --- !u!1 &4583028489892907819
 GameObject:
   m_ObjectHideFlags: 0
@@ -1988,7 +2060,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1090
+  m_SortingOrder: 1385
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

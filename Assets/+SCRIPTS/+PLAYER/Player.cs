@@ -24,7 +24,7 @@ namespace __SCRIPTS
 		public GameObject SpawnedPlayerGO;
 		public ICanAttack spawnedPlayerAttacker;
 		public IGetAttacked spawnedPlayerDefence;
-		public IHaveAttackStats spawnedPlayerStats;
+		public IHaveUnitStats spawnedPlayerStats;
 
 		public PlayerController Controller;
 		public PlayerInput input;
@@ -98,7 +98,7 @@ namespace __SCRIPTS
 			}
 			SpawnedPlayerGO = newGO;
 			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<IGetAttacked>();
-			spawnedPlayerStats = SpawnedPlayerGO.GetComponent<IHaveAttackStats>();
+			spawnedPlayerStats = SpawnedPlayerGO.GetComponent<IHaveUnitStats>();
 			if (spawnedPlayerDefence == null) return;
 
 

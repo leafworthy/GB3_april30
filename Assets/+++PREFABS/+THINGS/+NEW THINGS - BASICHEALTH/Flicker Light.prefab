@@ -339,7 +339,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 453
+  m_SortingOrder: 696
   m_Sprite: {fileID: 21300000, guid: 40e708ec47bbf4241bed6a7181dc87a1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -445,10 +445,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5303331356205491445}
   - component: {fileID: 4244434419180651711}
-  - component: {fileID: 4833316861661976200}
   - component: {fileID: 7113387196467896994}
-  - component: {fileID: 6605721985212878862}
-  - component: {fileID: 4750805169497765964}
+  - component: {fileID: 6788847335241965199}
   m_Layer: 21
   m_Name: Life
   m_TagString: Untagged
@@ -509,20 +507,6 @@ MonoBehaviour:
     maskType: 0
     maskPivot: 0
     transform: {fileID: 5303331356205491445}
---- !u!114 &4833316861661976200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6663439799001809877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f232de765df140ef854da5f5124a1bfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lootTypes: 070000000100000002000000020000000300000004000000
-  amountOfLootDropped: 5
 --- !u!58 &7113387196467896994
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -559,7 +543,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1.57
---- !u!114 &6605721985212878862
+--- !u!114 &6788847335241965199
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -568,55 +552,141 @@ MonoBehaviour:
   m_GameObject: {fileID: 6663439799001809877}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0455abdae7264a0ca7c757667fc20f6c, type: 3}
+  m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  MaxHealth: 100
-  CurrentHealth: 100
-  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
---- !u!114 &4750805169497765964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6663439799001809877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bb12a2bc475449c8e4cebd98de14a42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UnitName: Street Light
-  _data:
-    unitName: DefaultThing
-    category: 3
-    debrisType: 4
-    isPlayerSwingHittable: 0
-    showLifeBar: 0
-    isInvincible: 1
-    healthMax: 100
-    moveSpeed: 35
-    dashSpeed: 0
-    jumpSpeed: 0
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 0
-    hasData: 1
-    isDefault: 0
-  ExtraHealthFactor: 0
-  ExtraDamageFactor: 0
-  ExtraSpeedFactor: 0
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Life
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Stats
+      Entry: 7
+      Data: 0|__SCRIPTS.UnitStats, Assembly-CSharp
+    - Name: EnemyTier
+      Entry: 3
+      Data: 0
+    - Name: _unitData
+      Entry: 7
+      Data: 1|__SCRIPTS.UnitStatsData, Assembly-CSharp
+    - Name: unitName
+      Entry: 1
+      Data: Lamp
+    - Name: category
+      Entry: 3
+      Data: 3
+    - Name: debrisType
+      Entry: 3
+      Data: 4
+    - Name: debrisTint
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: isPlayerSwingHittable
+      Entry: 5
+      Data: false
+    - Name: showLifeBar
+      Entry: 5
+      Data: false
+    - Name: isInvincible
+      Entry: 5
+      Data: true
+    - Name: healthMax
+      Entry: 4
+      Data: 0
+    - Name: moveSpeed
+      Entry: 4
+      Data: 0
+    - Name: dashSpeed
+      Entry: 4
+      Data: 0
+    - Name: jumpSpeed
+      Entry: 4
+      Data: 1
+    - Name: aggroRange
+      Entry: 4
+      Data: 0
+    - Name: attack1Damage
+      Entry: 4
+      Data: 0
+    - Name: attack1Rate
+      Entry: 4
+      Data: 0
+    - Name: attack1Range
+      Entry: 4
+      Data: 0
+    - Name: attack2Damage
+      Entry: 4
+      Data: 0
+    - Name: attack2Rate
+      Entry: 4
+      Data: 0
+    - Name: attack2Range
+      Entry: 4
+      Data: 0
+    - Name: attack3Damage
+      Entry: 4
+      Data: 0
+    - Name: attack3Rate
+      Entry: 4
+      Data: 0
+    - Name: attack3Range
+      Entry: 4
+      Data: 0
+    - Name: attack4Damage
+      Entry: 4
+      Data: 0
+    - Name: attack4Rate
+      Entry: 4
+      Data: 0
+    - Name: attack4Range
+      Entry: 4
+      Data: 0
+    - Name: experienceGiven
+      Entry: 4
+      Data: 100
+    - Name: hasData
+      Entry: 5
+      Data: true
+    - Name: isDefault
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ExtraHealthFactor
+      Entry: 4
+      Data: 0
+    - Name: ExtraDamageFactor
+      Entry: 4
+      Data: 0
+    - Name: ExtraSpeedFactor
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+  OverrideName: Lamp
+  IsShielded: 0
+  IsInvincible: 1
 --- !u!1 &6817900835997524049
 GameObject:
   m_ObjectHideFlags: 0
