@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using __SCRIPTS.Projectiles;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS

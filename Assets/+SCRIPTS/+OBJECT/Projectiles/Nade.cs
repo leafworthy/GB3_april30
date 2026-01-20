@@ -1,3 +1,4 @@
+using GangstaBean.Core;
 using UnityEngine;
 using Utilities;
 

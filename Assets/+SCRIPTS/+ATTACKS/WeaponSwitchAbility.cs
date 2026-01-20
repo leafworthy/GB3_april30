@@ -19,6 +19,7 @@ namespace __SCRIPTS
 		protected override void DoAbility()
 		{
 			SwitchGuns();
+			Debug.Log("Switched Guns",this);
 			PlayAnimationClip(gunAttack.CurrentGun.pullOutAnimationClip, 1);
 		}
 

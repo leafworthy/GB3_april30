@@ -7,12 +7,12 @@ using UnityUtils;
 
 namespace __SCRIPTS
 {
-	[ExecuteAlways]
+	[ExecuteAlways, RequireComponent(typeof(Life_FX))]
 	public class Life : SerializedMonoBehaviour, IGetAttacked
 	{
 		public string OverrideName;
 		public Player player { get; private set; }
-		[OdinSerialize]public UnitStats Stats { get; private set; }
+		[OdinSerialize] public UnitStats Stats { get; private set; }
 		UnitAnimations animations => _animations ??= GetComponent<UnitAnimations>();
 		UnitAnimations _animations;
 		public bool IsDead() => Stats.IsDead;
@@ -34,15 +34,15 @@ namespace __SCRIPTS
 		public event Action<Attack> OnFlying;
 		Collider2D[] colliders;
 		bool hasInitialized;
-		float deathTime;
+		float deathTime = 3;
 
-		[Sirenix.OdinInspector.Button]
+		[Button]
 		public void ClearStats()
 		{
 			Stats = null;
 		}
 
-		[Sirenix.OdinInspector.Button]
+		[Button]
 		public UnitStats GetStats()
 		{
 			Stats = new UnitStats(OverrideName.IsBlank() ? gameObject.name : OverrideName);
@@ -92,6 +92,7 @@ namespace __SCRIPTS
 
 		void CompleteDeath(bool isRespawning)
 		{
+			Debug.Log("death complete", this);
 			OnDeathComplete?.Invoke(player, isRespawning);
 			Services.objectMaker.Unmake(gameObject);
 		}
@@ -164,7 +165,7 @@ namespace __SCRIPTS
 
 		public bool IsEnemyOf(ICanAttack life) => player.IsHuman() != life.player.IsHuman();
 
-		[Sirenix.OdinInspector.Button]
+		[Button]
 		public void SetEnemyTypeAndTier(EnemySpawner.EnemyType enemyType, int tier)
 		{
 			Stats.EnemyTier = tier;

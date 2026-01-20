@@ -49,6 +49,7 @@ MonoBehaviour:
     - id: 0
       lightmaps:
       - rendering: 0
+        sceneView: 0
         overlay: 0
         overlayLayerType: 0
         overlayMaterial: 0
@@ -59,6 +60,7 @@ MonoBehaviour:
           Order: 0
         customMaterial: {fileID: 0}
         customMaterialInstance: {fileID: 0}
+        materialsType: 0
         materials:
           materials:
           - {fileID: 0}
@@ -71,6 +73,7 @@ MonoBehaviour:
     - id: 1
       lightmaps:
       - rendering: 0
+        sceneView: 0
         overlay: 0
         overlayLayerType: 0
         overlayMaterial: 0
@@ -81,6 +84,7 @@ MonoBehaviour:
           Order: 0
         customMaterial: {fileID: 0}
         customMaterialInstance: {fileID: 0}
+        materialsType: 0
         materials:
           materials:
           - {fileID: 0}
@@ -90,8 +94,8 @@ MonoBehaviour:
         customPosition: 0
       cameraType: 2
       customCamera: {fileID: 0}
-  version: 20211104
-  version_string: 2021.11.4
+  version: 20221100
+  version_string: 2022.11.0
   setProfile: {fileID: 11400000, guid: 0361182b675df4ddf884c66e01835a74, type: 2}
   profile: {fileID: 11400000, guid: 0361182b675df4ddf884c66e01835a74, type: 2}
   foldout_cameras: 01010000000000000000

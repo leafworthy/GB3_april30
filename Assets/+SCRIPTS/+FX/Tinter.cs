@@ -7,7 +7,7 @@ namespace __SCRIPTS
 {
 	public class Tinter : MonoBehaviour, INeedPlayer
 	{
-		List<Renderer> renderersToTint = new();
+		public List<Renderer> renderersToTint = new();
 		Color materialTintColor;
 		const float tintFadeSpeed = 6f;
 		IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
@@ -20,7 +20,7 @@ namespace __SCRIPTS
 		public void StartTint(Color tintColor)
 		{
 			materialTintColor = tintColor;
-			renderersToTint = GetComponentsInChildren<Renderer>().ToList();
+			if (renderersToTint.Count == 0) renderersToTint = GetComponentsInChildren<Renderer>().ToList();
 			if (renderersToTint == null) return;
 			foreach (var r in renderersToTint)
 			{

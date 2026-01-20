@@ -11,12 +11,12 @@ namespace __SCRIPTS
 		IGetAttacked _life;
 		Tinter tint => _tint ??= GetComponent<Tinter>();
 		Tinter _tint;
-		LineBar healthBar => _healthBar ??= GetComponentInChildren<LineBar>();
+		LineBar healthBar => _healthBar ??= GetComponentInChildren<LineBar>(true);
 		LineBar _healthBar;
 
 		void Life_Shielded(Attack obj)
 		{
-			tint.StartTint(Color.yellow);
+			tint?.StartTint(Color.yellow);
 		}
 
 		public void SetPlayer(Player newPlayer)
@@ -26,11 +26,14 @@ namespace __SCRIPTS
 			life.OnAttackHit += Life_AttackHit;
 			life.OnShielded += Life_Shielded;
 			life.OnFractionChanged += Life_FractionChanged;
+			if (healthBar == null) return;
+			healthBar.useGradientColor = true;
+			healthBar.HideWhenBelowFraction = true;
 		}
 
 		void Life_FractionChanged(float newFraction)
 		{
-			healthBar.UpdateBar(newFraction);
+			healthBar?.UpdateBar(newFraction);
 		}
 
 		public void OnDisable()
@@ -43,7 +46,7 @@ namespace __SCRIPTS
 
 		void Life_AttackHit(Attack attack)
 		{
-			_tint.StartTint(attack.TintColor);
+			_tint?.StartTint(attack.TintColor);
 			CreateDamageRisingText(attack);
 			SprayDebree(attack);
 			MakeHitMark(attack);
@@ -104,7 +107,7 @@ namespace __SCRIPTS
 		{
 			var forwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), transform.position);
 			forwardDebree.GetComponent<MoveJumpAndRotateAbility>().Fire(angle, height, verticalSpeed);
-			_tint.TintDebree(forwardDebree);
+			_tint?.TintDebree(forwardDebree);
 
 			Services.objectMaker.Unmake(forwardDebree, 3);
 		}

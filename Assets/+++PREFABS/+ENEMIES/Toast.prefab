@@ -483,7 +483,6 @@ GameObject:
   - component: {fileID: 2451757643079752978}
   - component: {fileID: -8070408823439803412}
   - component: {fileID: 7431454428826219941}
-  - component: {fileID: 536371090444542826}
   - component: {fileID: 8057387513146874984}
   - component: {fileID: -3154748818461734685}
   - component: {fileID: 6165112647390964232}
@@ -496,7 +495,6 @@ GameObject:
   - component: {fileID: 5002742459162527955}
   - component: {fileID: 7813430567055621993}
   - component: {fileID: 827414940448333298}
-  - component: {fileID: 3274164172194915261}
   m_Layer: 7
   m_Name: Toast
   m_TagString: Untagged
@@ -601,10 +599,10 @@ MonoBehaviour:
       Data: 1|__SCRIPTS.UnitStatsData, Assembly-CSharp
     - Name: unitName
       Entry: 1
-      Data: 
+      Data: Toast
     - Name: category
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: debrisType
       Entry: 3
       Data: 0
@@ -613,52 +611,52 @@ MonoBehaviour:
       Data: UnityEngine.Color, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: 
       Entry: 4
       Data: 0
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 0.13333334
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
     - Name: isPlayerSwingHittable
       Entry: 5
-      Data: false
+      Data: true
     - Name: showLifeBar
       Entry: 5
-      Data: false
+      Data: true
     - Name: isInvincible
       Entry: 5
       Data: false
     - Name: healthMax
       Entry: 4
-      Data: 0
+      Data: 40
     - Name: moveSpeed
       Entry: 4
-      Data: 0
+      Data: 22
     - Name: dashSpeed
       Entry: 4
       Data: 0
     - Name: jumpSpeed
       Entry: 4
-      Data: 0
+      Data: 3
     - Name: aggroRange
       Entry: 4
-      Data: 0
+      Data: 400
     - Name: attack1Damage
       Entry: 4
-      Data: 0
+      Data: 8
     - Name: attack1Rate
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: attack1Range
       Entry: 4
-      Data: 0
+      Data: 12
     - Name: attack2Damage
       Entry: 4
       Data: 0
@@ -688,10 +686,10 @@ MonoBehaviour:
       Data: 0
     - Name: experienceGiven
       Entry: 4
-      Data: 0
+      Data: 25
     - Name: hasData
       Entry: 5
-      Data: false
+      Data: true
     - Name: isDefault
       Entry: 5
       Data: false
@@ -738,40 +736,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clawAttackAnimationClip: {fileID: 7400000, guid: b7d518e233f904e1c9e0de5668beb764, type: 2}
---- !u!114 &536371090444542826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7431454428826219940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 1
-  renderBelowAll: 0
-  sortingBounds: {fileID: 2783720333978919190}
-  renderBelowSortingOrder: 0
-  sortType: 0
-  SorterPositionOffset: {x: 0.8588562, y: 0.22251129, z: 0}
-  SorterPositionOffset2: {x: 1.615097, y: -0.29125977, z: 0}
-  renderersToSort:
-  - {fileID: 7431454427251243554}
-  - {fileID: 4330567752162112095}
-  renderAboveAll: 0
-  hasRenderers: 0
 --- !u!114 &8057387513146874984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -973,18 +937,6 @@ MonoBehaviour:
   onGroundAnimationClip: {fileID: 7400000, guid: d01dfcf32736940ca9085d6e684cdd32, type: 2}
   getUpAnimationClip: {fileID: 7400000, guid: b1acc2d7b216b4571ae895941e54a228, type: 2}
   standingAnimationClip: {fileID: 7400000, guid: 8091b8897a42f48cbb2b482201baa3fc, type: 2}
---- !u!114 &3274164172194915261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7431454428826219940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aca3aeb21c8e24e93a712941174bc6c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8681001409653053418
 GameObject:
   m_ObjectHideFlags: 0

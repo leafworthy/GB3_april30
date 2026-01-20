@@ -14,18 +14,18 @@ namespace __SCRIPTS
 	[DisallowMultipleComponent]
 	public class AimAbility : MonoBehaviour, IAimAbility, INeedPlayer
 	{
-		private Life life  => _life ??= GetComponent<Life>();
-		private Life _life;
+		Life life => _life ??= GetComponent<Life>();
+		Life _life;
 		public Vector2 AimDir { get; private set; }
-		private const float aimSmoothSpeed = 10;
-		private const float maxAimDistance = 30;
+		const float aimSmoothSpeed = 10;
+		const float maxAimDistance = 30;
 		public bool hasEnoughMagnitude() => player.Controller.AimAxis.isActive;
-		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
-		private MoveAbility _moveAbility;
+		MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
+		MoveAbility _moveAbility;
 
-		private Player player;
-		private Body body => _body ??= GetComponent<Body>();
-		private Body _body;
+		Player player;
+		Body body => _body ??= GetComponent<Body>();
+		Body _body;
 
 		public void SetPlayer(Player newPlayer)
 		{
@@ -33,29 +33,27 @@ namespace __SCRIPTS
 			AimDir = Vector2.right;
 		}
 
-
-		private void Update()
+		void Update()
 		{
 			if (Services.pauseManager.IsPaused) return;
-			if(life.IsDead()) return;
+			if (life.IsDead()) return;
 			Aim();
 		}
 
-
-		private void Aim()
+		void Aim()
 		{
 			if (hasEnoughMagnitude()) AimDir = Vector2.Lerp(AimDir, GetRealAimDir().normalized, aimSmoothSpeed * Time.deltaTime);
 			RotateAimObjects(AimDir);
 			BottomFaceAimDir();
 		}
 
-		private void BottomFaceAimDir()
+		void BottomFaceAimDir()
 		{
 			if (moveAbility.IsMoving()) return;
 			body.BottomFaceDirection(AimDir.x >= 0);
 		}
 
-		private void RotateAimObjects(Vector2 direction)
+		void RotateAimObjects(Vector2 direction)
 		{
 			var rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 			foreach (var obj in body.RotateWithAim)
@@ -73,7 +71,7 @@ namespace __SCRIPTS
 			return body.AimCenter.transform.position + (CursorManager.GetMousePosition() - body.AimCenter.transform.position).normalized * maxAimDistance;
 		}
 
-		private Vector3 GetRealAimDir()
+		Vector3 GetRealAimDir()
 		{
 			if (player.isUsingMouse) return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
 			return player.Controller.AimAxis.GetCurrentAngle();

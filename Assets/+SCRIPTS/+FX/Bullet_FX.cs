@@ -1,54 +1,41 @@
-﻿using __SCRIPTS.Plugins._ISOSORT;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace __SCRIPTS
 {
 	public class Bullet_FX : MonoBehaviour
 	{
-		private int shotTime = 1;
-		private int shotCounter;
-		private bool isOn = true;
-		private bool isGlock;
-		private SpriteRenderer sprite;
-		private Vector3 centerPos;
-		private float originalSize;
-		private float bulletWidth;
-		private IsoSpriteSorting sorting;
-		private bool hasFired;
-
+		int shotTime = 1;
+		int shotCounter;
+		bool isOn = true;
+		bool isGlock;
+		SpriteRenderer sprite;
+		Vector3 centerPos;
+		float originalSize;
+		float bulletWidth;
+		bool hasFired;
 
 		public void Fire(Attack attack)
 		{
 			sprite = GetComponent<SpriteRenderer>();
-			if(!hasFired)
+			if (!hasFired)
 			{
 				hasFired = true;
 				originalSize = sprite.bounds.size.x;
-
 			}
-			sorting = GetComponent<IsoSpriteSorting>();
 
 			float width = 10;
 			bulletWidth = width;
 			shotCounter = shotTime;
 			isOn = true;
 			line(attack.OriginWithHeight, attack.DestinationWithHeight);
-
-			sorting.SorterPositionOffset = attack.OriginFloorPoint -(Vector2)transform.position;
-			sorting.SorterPositionOffset2 = attack.DestinationFloorPoint - (Vector2)transform.position;
-			sorting.Setup();
-			IsoSpriteSortingManager.UpdateSorting();
 		}
 
-		private void FixedUpdate()
+		void FixedUpdate()
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (!isOn) return;
 			if (shotCounter > 0)
-			{
-
 				shotCounter--;
-			}
 			else
 			{
 				Services.objectMaker.Unmake(gameObject);
@@ -56,7 +43,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void line(Vector2 start, Vector2 end)
+		void line(Vector2 start, Vector2 end)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (start == end) return;
@@ -67,27 +54,23 @@ namespace __SCRIPTS
 			RotateSprite(end);
 		}
 
-		private void RotateSprite(Vector2 end)
+		void RotateSprite(Vector2 end)
 		{
-			Vector3 angleVector =
-				new Vector2(end.x - centerPos.x, end.y - centerPos.y);
+			Vector3 angleVector = new Vector2(end.x - centerPos.x, end.y - centerPos.y);
 			var angle = Mathf.Atan2(angleVector.y, angleVector.x) * Mathf.Rad2Deg;
 			sprite.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 		}
 
-		private void PositionSprite(Vector2 start, Vector2 end)
+		void PositionSprite(Vector2 start, Vector2 end)
 		{
-			centerPos = new Vector3(start.x + end.x,
-				start.y + end.y) / 2;
+			centerPos = new Vector3(start.x + end.x, start.y + end.y) / 2;
 
 			sprite.transform.position = centerPos;
 		}
 
-		private void ScaleSprite(Vector2 start, Vector2 end)
+		void ScaleSprite(Vector2 start, Vector2 end)
 		{
-			sprite.transform.localScale = new Vector3(
-				Vector2.Distance(end, start) / originalSize, bulletWidth, 1);
+			sprite.transform.localScale = new Vector3(Vector2.Distance(end, start) / originalSize, bulletWidth, 1);
 		}
-
 	}
 }

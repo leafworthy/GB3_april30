@@ -135,6 +135,10 @@ GameObject:
   - component: {fileID: 4216303568872327855}
   - component: {fileID: 9135723903843080668}
   - component: {fileID: 5658020046661915048}
+  - component: {fileID: 4194764304785661172}
+  - component: {fileID: 7409170806195121523}
+  - component: {fileID: 7861656355868996773}
+  - component: {fileID: 8835643162101837134}
   m_Layer: 21
   m_Name: Life
   m_TagString: Untagged
@@ -390,6 +394,60 @@ MonoBehaviour:
   OverrideName: Barricade
   IsShielded: 0
   IsInvincible: 0
+--- !u!114 &4194764304785661172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2839749138683596248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Life_FX
+--- !u!114 &7409170806195121523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2839749138683596248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4705f2b9e1d224827a49ab46e49680df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ExplodeOnDeath
+  explosionSize: 5
+  transformToDestroy: {fileID: 4463280722000133139}
+--- !u!114 &7861656355868996773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2839749138683596248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f232de765df140ef854da5f5124a1bfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.ProduceLootOnDead
+  lootTypes: 0100000002000000
+  amountOfLootDropped: 3
+--- !u!114 &8835643162101837134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2839749138683596248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bd1c8b63d64415bfe85d1bf6312b65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Tinter
+  renderersToTint:
+  - {fileID: 7895570266123210095}
 --- !u!1 &4463280722000133139
 GameObject:
   m_ObjectHideFlags: 0

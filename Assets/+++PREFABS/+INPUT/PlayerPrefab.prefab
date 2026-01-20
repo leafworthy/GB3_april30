@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 382554149637454532}
   - component: {fileID: 4735646346067322319}
   - component: {fileID: 7825840780220022476}
-  - component: {fileID: 3729500841088171059}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Untagged
@@ -180,17 +179,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStats: []
---- !u!114 &3729500841088171059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3698094019892413943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 564324586bb1b404dac6526830dde343, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerRPG
-  Level: 1
-  LevelTresholds: 00000000640000002c01000058020000e8030000dc05000034080000f00a0000100e000094110000

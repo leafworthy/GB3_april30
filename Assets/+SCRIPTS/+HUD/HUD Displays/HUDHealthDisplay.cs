@@ -8,7 +8,7 @@ namespace __SCRIPTS.HUD_Displays
 	{
 		public LineBar barFX;
 		public TMP_Text healthText;
-		//public TMP_Text MaxHealthText;
+		public TMP_Text MaxHealthText;
 		IGetAttacked playerDefence;
 		Player player;
 
@@ -16,22 +16,22 @@ namespace __SCRIPTS.HUD_Displays
 		{
 			player = newPlayer;
 			barFX = GetComponentInChildren<LineBar>();
+			if (barFX != null) barFX.FastBar.color = newPlayer.playerColor;
 			playerDefence = player.SpawnedPlayerGO.GetComponentInChildren<IGetAttacked>();
 			if (playerDefence == null) return;
 			playerDefence.OnFractionChanged -= UpdateDisplay;
-
-			barFX.slowBarColor = newPlayer.playerColor;
-
 			playerDefence.OnFractionChanged += UpdateDisplay;
-
 			UpdateDisplay(playerDefence.GetFraction());
+			if (barFX == null) return;
+			barFX.useGradientColor = false;
+			barFX.HideWhenBelowFraction = false;
 		}
 
 		void UpdateDisplay(float fraction)
 		{
-			healthText.text = Mathf.Ceil(playerDefence.CurrentHealth).ToString();
-			//MaxHealthText.text = "/" + Mathf.Ceil(playerDefence.MaxHealth);
-			barFX.UpdateBar(fraction);
+			if (healthText != null) healthText.text = Mathf.Ceil(playerDefence.CurrentHealth).ToString();
+			if (MaxHealthText != null) MaxHealthText.text = "/" + Mathf.Ceil(playerDefence.MaxHealth);
+			if (barFX != null) barFX.UpdateBar(fraction);
 		}
 	}
 }

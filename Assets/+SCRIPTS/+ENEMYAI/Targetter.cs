@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS._ENEMYAI

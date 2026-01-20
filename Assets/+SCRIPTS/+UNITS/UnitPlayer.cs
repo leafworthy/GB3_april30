@@ -1,4 +1,0 @@
-namespace __SCRIPTS
-{
-
-}

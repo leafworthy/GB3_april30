@@ -14,6 +14,8 @@ public class PlayerHitboxFader : MonoBehaviour
 		if (spriteRenderer != null) originalColor = spriteRenderer.color;
 	}
 
+
+
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		Debug.Log("trigger enter");

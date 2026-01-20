@@ -18,6 +18,10 @@ namespace __SCRIPTS
 
 		public event Action<Character> OnCharacterChosen;
 
+		void Start()
+		{
+			Visible.SetActive(false);
+		}
 
 		public void StartSetupMenu(Player player)
 		{

@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class WeaponButton : MonoBehaviour
 {
-	private HideRevealObjects buttonObjects => _buttonObjects ??= GetComponentInChildren<HideRevealObjects>();
-	private HideRevealObjects _buttonObjects;
+	HideRevealObjects buttonObjects => _buttonObjects ??= GetComponentInChildren<HideRevealObjects>();
+	HideRevealObjects _buttonObjects;
 
 	public enum buttons
 	{
@@ -20,7 +20,7 @@ public class WeaponButton : MonoBehaviour
 		switch (index)
 		{
 			case buttons.R1:
-				buttonObjects.Set((int)buttons.R1);
+				buttonObjects.Set((int) buttons.R1);
 				break;
 			case buttons.R2:
 				buttonObjects.Set((int) buttons.R2);
@@ -36,6 +36,4 @@ public class WeaponButton : MonoBehaviour
 				break;
 		}
 	}
-
-
 }

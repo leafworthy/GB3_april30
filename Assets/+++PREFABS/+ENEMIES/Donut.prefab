@@ -359,7 +359,6 @@ GameObject:
   - component: {fileID: 8277624868828922794}
   - component: {fileID: 8468380082729349932}
   - component: {fileID: 2505822213530538088}
-  - component: {fileID: 2540430931499043486}
   - component: {fileID: 7433541532888936559}
   - component: {fileID: 5969726905539470274}
   - component: {fileID: 3108235968467764054}
@@ -473,10 +472,10 @@ MonoBehaviour:
       Data: 1|__SCRIPTS.UnitStatsData, Assembly-CSharp
     - Name: unitName
       Entry: 1
-      Data: 
+      Data: Donut
     - Name: category
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: debrisType
       Entry: 3
       Data: 0
@@ -485,52 +484,52 @@ MonoBehaviour:
       Data: UnityEngine.Color, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: 
       Entry: 4
       Data: 0
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 0.13333334
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
     - Name: isPlayerSwingHittable
       Entry: 5
-      Data: false
+      Data: true
     - Name: showLifeBar
       Entry: 5
-      Data: false
+      Data: true
     - Name: isInvincible
       Entry: 5
       Data: false
     - Name: healthMax
       Entry: 4
-      Data: 0
+      Data: 35
     - Name: moveSpeed
       Entry: 4
-      Data: 0
+      Data: 45
     - Name: dashSpeed
       Entry: 4
       Data: 0
     - Name: jumpSpeed
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: aggroRange
       Entry: 4
-      Data: 0
+      Data: 100
     - Name: attack1Damage
       Entry: 4
-      Data: 0
+      Data: 10
     - Name: attack1Rate
       Entry: 4
       Data: 0
     - Name: attack1Range
       Entry: 4
-      Data: 0
+      Data: 5
     - Name: attack2Damage
       Entry: 4
       Data: 0
@@ -560,10 +559,10 @@ MonoBehaviour:
       Data: 0
     - Name: experienceGiven
       Entry: 4
-      Data: 0
+      Data: 100
     - Name: hasData
       Entry: 5
-      Data: false
+      Data: true
     - Name: isDefault
       Entry: 5
       Data: false
@@ -612,40 +611,6 @@ MonoBehaviour:
   hasBounceBack: 1
   causesFlying: 0
   pushBackAmount: 100
---- !u!114 &2540430931499043486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4019382462400588572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 1
-  renderBelowAll: 0
-  sortingBounds: {fileID: 0}
-  renderBelowSortingOrder: 0
-  sortType: 1
-  SorterPositionOffset: {x: 0, y: 0, z: 0}
-  SorterPositionOffset2: {x: 0, y: 0, z: 0}
-  renderersToSort:
-  - {fileID: 5753234950461873550}
-  - {fileID: 4019382461760971930}
-  renderAboveAll: 0
-  hasRenderers: 0
 --- !u!114 &7433541532888936559
 MonoBehaviour:
   m_ObjectHideFlags: 0

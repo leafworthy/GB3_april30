@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -73,9 +74,9 @@ namespace __SCRIPTS
 
 		float DetermineExperienceGained(IGetAttacked life)
 		{
-			var enemyStats = life.transform.GetComponent<UnitStats>();
+			var enemyStats = life.transform.GetComponent<Life>();
 			if (enemyStats == null) return 0;
-			return enemyStats.Data.experienceGiven;
+			return enemyStats.Stats.Data.experienceGiven;
 		}
 
 		public void ConfigureNewEnemy(GameObject enemy, EnemySpawner.EnemyType enemyType, int enemyTier = 0)

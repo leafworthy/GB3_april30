@@ -33,7 +33,11 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
-			if(currentState != weaponState.resuming)PullOut();
+			if(currentState != weaponState.resuming && currentState != weaponState.pullOut)
+			{
+				Debug.Log("doing pull out");
+				PullOut();
+			}
 			else
 			{
 				StartIdle();

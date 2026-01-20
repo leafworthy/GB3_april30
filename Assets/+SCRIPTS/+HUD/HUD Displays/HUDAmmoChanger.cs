@@ -1,5 +1,4 @@
 ﻿using GangstaBean.Core;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,45 +9,28 @@ namespace __SCRIPTS.HUD_Displays
 		public AmmoDisplay ammoDisplay;
 		public Image AKIcon;
 		public Image PistolIcon;
-		private Player player;
-		private GunAttack gunAttackAkGlock;
-		private bool isGlocking;
+		Player player;
+		GunAttack gunAttackAkGlock;
+		bool isGlocking;
 
 		public void SetPlayer(Player newPlayer)
 		{
 			player = newPlayer;
 			if (player.CurrentCharacter != Character.Bean) return;
-
-			// Cache the component reference once during setup
-			if (newPlayer.SpawnedPlayerGO != null)
-			{
-				gunAttackAkGlock = newPlayer.SpawnedPlayerGO.GetComponent<GunAttack>();
-
-			}
+			if (newPlayer.SpawnedPlayerGO == null) return;
+			gunAttackAkGlock = newPlayer.SpawnedPlayerGO.GetComponent<GunAttack>();
+			gunAttackAkGlock.OnSwitchGun += ChangeAmmo;
 		}
 
-		private void Update()
-		{
-			if(player == null) return;
-			if (player.CurrentCharacter != Character.Bean) return;
-			if(player.SpawnedPlayerGO == null) return;
 
-			// Use cached reference instead of GetComponent every frame
-			if (gunAttackAkGlock == null) return;
-
-			if(isGlocking == gunAttackAkGlock.IsUsingPrimaryGun) return;
-			isGlocking = gunAttackAkGlock.IsUsingPrimaryGun;
-			ChangeAmmo(isGlocking);
-		}
-
-		private void ChangeAmmo(bool isGlock)
+		void ChangeAmmo(bool isPrimary)
 		{
 			if (player.CurrentCharacter != Character.Bean) return;
-			if (!isGlock)
+			if (!gunAttackAkGlock.IsUsingPrimaryGun)
 			{
 				AKIcon.gameObject.SetActive(false);
 				PistolIcon.gameObject.SetActive(true);
-				ammoDisplay.SetAmmo( player.SpawnedPlayerGO.GetComponent<AmmoInventory>().unlimitedAmmo);
+				ammoDisplay.SetAmmo(player.SpawnedPlayerGO.GetComponent<AmmoInventory>().unlimitedAmmo);
 			}
 			else
 			{

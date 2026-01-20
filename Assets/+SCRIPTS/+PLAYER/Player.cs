@@ -19,7 +19,7 @@ namespace __SCRIPTS
 		}
 
 		public State state;
-		private PlayerData data;
+		PlayerData data;
 
 		public GameObject SpawnedPlayerGO;
 		public ICanAttack spawnedPlayerAttacker;
@@ -37,32 +37,32 @@ namespace __SCRIPTS
 		public Character CurrentCharacter;
 		public Color playerColor;
 
-		private PlayerSayer sayer;
+		PlayerSayer sayer;
 
 		public int playerIndex;
 		public bool hasKey;
 
-		public event Action<Player,bool> OnPlayerDies;
+		public event Action<Player, bool> OnPlayerDies;
 		public event Action OnPlayerSpawned;
 		public event Action<Player> OnPlayerLeavesUpgradeSetupMenu;
 
-		private PlayerUpgrades playerUpgrades;
-		private int buildingLayer;
-		private bool isMainPlayer;
+		PlayerUpgrades playerUpgrades;
+		int buildingLayer;
+		bool isMainPlayer;
 
 		public void SetIsMainPlayer(bool value)
 		{
 			isMainPlayer = value;
 		}
+
 		public int BuildingLayer => Services.assetManager.LevelAssets.BuildingLayer;
 
 		public bool IsHuman() => data != null && data.isPlayer;
 
-		private void Start()
+		void Start()
 		{
 			playerUpgrades = GetComponent<PlayerUpgrades>();
 			gameObject.transform.SetParent(GameManager.I.gameObject.transform);
-
 		}
 
 		public void OnPlayerDied(Player player, bool isRespawning)
@@ -88,25 +88,21 @@ namespace __SCRIPTS
 			return spawnedPlayerGO;
 		}
 
-		private void SetSpawnedPlayerGO(GameObject newGO)
+		void SetSpawnedPlayerGO(GameObject newGO)
 		{
 			if (newGO == null) return;
 
-			if (spawnedPlayerDefence != null)
-			{
-				spawnedPlayerDefence.OnDeathComplete -= OnPlayerDied;
-			}
+			if (spawnedPlayerDefence != null) spawnedPlayerDefence.OnDeathComplete -= OnPlayerDied;
 			SpawnedPlayerGO = newGO;
 			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<IGetAttacked>();
 			spawnedPlayerStats = SpawnedPlayerGO.GetComponent<IHaveUnitStats>();
 			if (spawnedPlayerDefence == null) return;
 
-
 			spawnedPlayerDefence.OnDeathComplete += OnPlayerDied;
 			spawnedPlayerDefence.SetPlayer(this);
 		}
 
-		private GameObject GetPrefabFromCharacter(Player player)
+		GameObject GetPrefabFromCharacter(Player player)
 		{
 			switch (player.CurrentCharacter)
 			{
@@ -208,17 +204,12 @@ namespace __SCRIPTS
 
 		public bool IsMainPlayer() => isMainPlayer;
 
-		public LayerMask GetEnemyLayer() => IsHuman()?  Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
+		public LayerMask GetEnemyLayer() => IsHuman() ? Services.assetManager.LevelAssets.EnemyLayer : Services.assetManager.LevelAssets.PlayerLayer;
 
 		public void Unalive()
 		{
-			if (spawnedPlayerDefence == null)
-			{
-
-				return;
-			}
+			if (spawnedPlayerDefence == null) return;
 			spawnedPlayerDefence.DieNow();
-
 		}
 	}
 }

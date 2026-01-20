@@ -1,4 +1,5 @@
 using System;
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -59,24 +60,24 @@ namespace __SCRIPTS
 		public bool MustReload() => !Ammo.hasAmmoInClip();
 		public void Reload() => Ammo.Reload();
 
-		void Awake()
+		void Start()
 		{
 			currentCooldownTime = Time.time;
 		}
 
-		public bool CanShoot() => Ammo.hasAmmoInClip();
 
-		public void Shoot(Vector2 shootDirection)
+		public bool Shoot(Vector2 shootDirection)
 		{
-			if (!CanShoot())
+			if (!Ammo.hasAmmoInClip())
 			{
-				if (!Ammo.hasAmmoInClip())
+				if(Ammo.CanReload())OnNeedsReload?.Invoke();
+				else
 				{
 					OnEmpty?.Invoke();
-					OnNeedsReload?.Invoke();
+					Debug.Log("onempty");
 				}
 
-				return;
+				return false;
 			}
 
 			currentCooldownTime = Time.time + AttackRate;
@@ -88,6 +89,8 @@ namespace __SCRIPTS
 				var randomSpread = new Vector2(UnityEngine.Random.Range(-Spread, Spread), UnityEngine.Random.Range(-Spread, Spread));
 				ShootBullet(shootDirection + randomSpread);
 			}
+
+			return true;
 		}
 
 		float GetDegreesFromAimDir()
@@ -159,6 +162,11 @@ namespace __SCRIPTS
 			OnShotHitTarget?.Invoke(newAttack);
 
 			targetLife.TakeDamage(newAttack);
+		}
+
+		public bool HasAmmoInClip()
+		{
+			return Ammo.hasAmmoInClip();
 		}
 	}
 

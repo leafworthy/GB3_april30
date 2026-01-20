@@ -11,6 +11,8 @@ namespace __SCRIPTS
 		public AnimationClip simpleShootAnimationClip;
 		private Gun currentGun;
 		private float currentCooldownTime;
+		private AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
+		private AmmoInventory _ammoInventory;
 
 		public Gun primaryGun => _primaryGun ??= GetComponent<PrimaryGun>();
 		private Gun _primaryGun;
@@ -27,6 +29,7 @@ namespace __SCRIPTS
 		private bool isPressingShoot;
 		private JumpAbility jumpAbility  => _jumpAbility ??= GetComponent<JumpAbility>();
 		private JumpAbility _jumpAbility;
+		public event Action<bool> OnSwitchGun;
 
 		public event Action OnNeedsReload;
 
@@ -63,8 +66,9 @@ namespace __SCRIPTS
 		private void StartAttacking()
 		{
 			if (!isActive || currentState != weaponState.idle || !jumpAbility.IsResting) return;
+
+			if (!CurrentGun.Shoot(AimDir)) return;
 			SetState(weaponState.attacking);
-			CurrentGun.Shoot(AimDir);
 			PlayShootAnimation();
 
 		}
@@ -87,9 +91,11 @@ namespace __SCRIPTS
 		protected override void StartIdle()
 		{
 			base.StartIdle();
-			if (!currentGun.MustReload()) return;
 			Stop();
-			OnNeedsReload?.Invoke();
+			if (currentGun is not PrimaryGun) return;
+			if (!currentGun.MustReload()) return;
+			if(currentGun.CanReload()) OnNeedsReload?.Invoke();
+			else  SwitchGuns(false);
 		}
 
 		protected override void DoAbility()
@@ -116,9 +122,25 @@ namespace __SCRIPTS
 			base.SetPlayer(newPlayer);
 			currentGun = primaryGun;
 
+
+
+
 			StopListeningToEvents();
 			ListenToEvents();
 			Try();
+		}
+
+		void SwitchToPrimaryGunIfUnlimited(Ammo obj)
+		{
+			if (currentGun is PrimaryGun) return;
+			SwitchGuns(true);
+		}
+
+		void SwitchToUnlimitedGun()
+		{
+			Debug.Log("try to switch to unlimited gun", this);
+			if (currentGun is not PrimaryGun) return;
+			SwitchGuns(false);
 		}
 
 		private void Gun_OnNeedsReload()
@@ -127,10 +149,11 @@ namespace __SCRIPTS
 			OnNeedsReload?.Invoke();
 		}
 
-		public override bool canDo() => base.canDo() && CurrentGun.CanShoot();
 
 		private void ListenToEvents()
 		{
+			if (currentGun != null) currentGun.OnEmpty += SwitchToUnlimitedGun;
+			if (ammoInventory != null) ammoInventory.OnPrimaryAmmoAdded += SwitchToPrimaryGunIfUnlimited;
 			if (primaryGun != null) primaryGun.OnNeedsReload += Gun_OnNeedsReload;
 			if (unlimitedGun != null) unlimitedGun.OnNeedsReload += Gun_OnNeedsReload;
 
@@ -153,6 +176,9 @@ namespace __SCRIPTS
 		{
 			if (primaryGun != null) primaryGun.OnNeedsReload -= Gun_OnNeedsReload;
 			if (unlimitedGun != null) unlimitedGun.OnNeedsReload -= Gun_OnNeedsReload;
+			if (currentGun != null) currentGun.OnEmpty -= SwitchToUnlimitedGun;
+			if (ammoInventory != null) ammoInventory.OnPrimaryAmmoAdded -= SwitchToPrimaryGunIfUnlimited;
+
 
 			if (player == null) return;
 			if (player.Controller == null) return;
@@ -189,7 +215,10 @@ namespace __SCRIPTS
 
 		private void SwitchGuns(bool toPrimary)
 		{
+			//if (toPrimary && primaryGun.MustReload() && currentGun is not PrimaryGun) return;
+			Debug.Log("switch guns to primary: " + toPrimary, this);
 			currentGun = toPrimary ? primaryGun : unlimitedGun;
+			OnSwitchGun?.Invoke(toPrimary);
 			Stop();
 			Try();
 		}

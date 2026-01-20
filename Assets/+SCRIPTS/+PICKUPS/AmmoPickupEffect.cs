@@ -1,3 +1,5 @@
+using GangstaBean.Core;
+
 namespace __SCRIPTS
 {
 	public class AmmoPickupEffect : PickupEffect

@@ -1,36 +1,36 @@
 using System;
-using __SCRIPTS;
 using __SCRIPTS._ENEMYAI;
+using GangstaBean.Core;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class CrimsonAI : MonoBehaviour, ICanMoveThings
 {
-	private static readonly int IsRunning = Animator.StringToHash("IsRunning");
+	static readonly int IsRunning = Animator.StringToHash("IsRunning");
 
 	public GameObject target;
 
 	public float closeEnoughDistance = 5;
 	public Vector2 currentDirection;
-	private Targetter targets => _targets ??= GetComponent<Targetter>();
-	private Targetter _targets;
-	private Animator animator => _animator ??= GetComponentInChildren<Animator>();
-	private Animator _animator;
+	Targetter targets => _targets ??= GetComponent<Targetter>();
+	Targetter _targets;
+	Animator animator => _animator ??= GetComponentInChildren<Animator>();
+	Animator _animator;
 
-	private IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
-	private IGetAttacked _life;
+	IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
+	IGetAttacked _life;
 
-	private bool isIdle;
-	private float idleTimer;
-	private Vector2 currentTargetPosition;
+	bool isIdle;
+	float idleTimer;
+	Vector2 currentTargetPosition;
 
 	public event Action<Vector2> OnMoveInDirection;
 	public event Action OnStopMoving;
 	public Vector2 GetMoveAimDir() => currentDirection;
 	public bool IsMoving() => false;
 
-	private IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
-	private IHaveUnitStats _stats;
+	IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
+	IHaveUnitStats _stats;
 	public float MoveSpeed => stats.Stats.MoveSpeed;
 
 	protected void Start()
@@ -39,8 +39,7 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings
 		StartIdle();
 	}
 
-
-	private void Update()
+	void Update()
 	{
 		if (life.IsDead()) return;
 		if (isIdle)
@@ -49,7 +48,7 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings
 			RunToPointUpdate();
 	}
 
-	private void StartIdle()
+	void StartIdle()
 	{
 		animator.SetBool(IsRunning, false);
 		OnStopMoving?.Invoke();
@@ -57,14 +56,14 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings
 		isIdle = true;
 	}
 
-	private void IdleUpdate()
+	void IdleUpdate()
 	{
 		if (target == null) target = PickARandomTarget();
 		idleTimer -= Time.deltaTime;
 		if (idleTimer <= 0) StartRunToPoint();
 	}
 
-	private void StartRunToPoint()
+	void StartRunToPoint()
 	{
 		target = PickARandomTarget();
 		animator.SetBool(IsRunning, true);
@@ -72,7 +71,7 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings
 		isIdle = false;
 	}
 
-	private void RunToPointUpdate()
+	void RunToPointUpdate()
 	{
 		if (Services.pauseManager.IsPaused) return;
 
@@ -88,7 +87,7 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings
 		}
 	}
 
-	private GameObject PickARandomTarget()
+	GameObject PickARandomTarget()
 	{
 		var targett = targets.GetClosestPlayer();
 		return targett != null ? targets.GetClosestPlayer().transform.gameObject : null;

@@ -6,61 +6,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public interface ICanMoveThings
-	{
-		event Action<Vector2> OnMoveInDirection;
-		event Action OnStopMoving;
-		Vector2 GetMoveAimDir();
-		bool IsMoving();
 
-	}
-
-
-	public interface IHaveUnitStats
-	{
-		UnitStats Stats { get; }
-	}
-
-
-	public interface ICanAttack
-	{
-		Transform transform { get; }
-		Player player { get; }
-		LayerMask EnemyLayer { get; }
-		IHaveUnitStats stats { get; }
-
-		bool IsEnemyOf(IGetAttacked targetLife);
-		event Action<IGetAttacked> OnAttack;
-		event Action OnAttackStop;
-		event Action OnAttackStart;
-	}
-
-
-
-	public interface IGetAttacked : INeedPlayer, IHaveUnitStats
-	{
-		public Player player { get; }
-		Transform transform { get; }
-		DebrisType DebrisType { get; }
-		UnitCategory category { get; }
-		float CurrentHealth { get;  }
-		float MaxHealth { get;  }
-		public void TakeDamage(Attack attack);
-		bool CanTakeDamage();
-		bool IsDead();
-		void DieNow();
-		float GetFraction();
-		void AddHealth(float amount);
-		public event Action<Attack> OnDead;
-		event Action<Player, bool> OnDeathComplete;
-		event Action<Attack> OnAttackHit;
-		event Action<Attack> OnShielded;
-		event Action<float> OnFractionChanged;
-		event Action<Attack> OnFlying;
-		void SetTemporarilyInvincible(bool i);
-		void SetShielding(bool isOn);
-		bool IsEnemyOf(ICanAttack life);
-	}
 
 	[Serializable]
 	public class Attack

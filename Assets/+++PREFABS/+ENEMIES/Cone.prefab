@@ -339,7 +339,6 @@ GameObject:
   - component: {fileID: 4317599530125453782}
   - component: {fileID: 2194203459170913656}
   - component: {fileID: 668381582522397677}
-  - component: {fileID: 7659033533810467042}
   - component: {fileID: 3696825763128644555}
   - component: {fileID: -7230598630640583144}
   - component: {fileID: 1106388949235883707}
@@ -455,10 +454,10 @@ MonoBehaviour:
       Data: 1|__SCRIPTS.UnitStatsData, Assembly-CSharp
     - Name: unitName
       Entry: 1
-      Data: 
+      Data: Cone
     - Name: category
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: debrisType
       Entry: 3
       Data: 0
@@ -467,52 +466,52 @@ MonoBehaviour:
       Data: UnityEngine.Color, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: 
       Entry: 4
       Data: 0
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 0.13333334
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
     - Name: isPlayerSwingHittable
       Entry: 5
-      Data: false
+      Data: true
     - Name: showLifeBar
       Entry: 5
-      Data: false
+      Data: true
     - Name: isInvincible
       Entry: 5
       Data: false
     - Name: healthMax
       Entry: 4
-      Data: 0
+      Data: 60
     - Name: moveSpeed
       Entry: 4
-      Data: 0
+      Data: 20
     - Name: dashSpeed
       Entry: 4
       Data: 0
     - Name: jumpSpeed
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: aggroRange
       Entry: 4
-      Data: 0
+      Data: 100
     - Name: attack1Damage
       Entry: 4
-      Data: 0
+      Data: 30
     - Name: attack1Rate
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: attack1Range
       Entry: 4
-      Data: 0
+      Data: 8
     - Name: attack2Damage
       Entry: 4
       Data: 0
@@ -542,10 +541,10 @@ MonoBehaviour:
       Data: 0
     - Name: experienceGiven
       Entry: 4
-      Data: 0
+      Data: 300
     - Name: hasData
       Entry: 5
-      Data: false
+      Data: true
     - Name: isDefault
       Entry: 5
       Data: false
@@ -592,40 +591,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectilePrefab: {fileID: 6022891414153280112, guid: 2e22e496612c04b2cb095bb36f48fd8c, type: 3}
---- !u!114 &7659033533810467042
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9136819711188386144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 1
-  renderBelowAll: 0
-  sortingBounds: {fileID: 0}
-  renderBelowSortingOrder: 0
-  sortType: 0
-  SorterPositionOffset: {x: 0, y: 0, z: 0}
-  SorterPositionOffset2: {x: 0, y: 0, z: 0}
-  renderersToSort:
-  - {fileID: 494462091829049330}
-  - {fileID: 9136819710552903398}
-  renderAboveAll: 0
-  hasRenderers: 0
 --- !u!114 &3696825763128644555
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using __SCRIPTS;
-using __SCRIPTS.Plugins._ISOSORT;
+using GangstaBean.Core;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -271,16 +271,5 @@ using UnityEditor;
 			}
 		}
 
-		public static Bounds2D GetCombinedSpriteBounds(Transform t)
-		{
-			var spriteRenderers = t.GetComponentsInChildren<SpriteRenderer>();
-			var bounds = new Bounds(t.position, Vector3.zero);
 
-			if (spriteRenderers.Length == 0) return new Bounds2D(bounds);
-
-			var combinedBounds = spriteRenderers[0].bounds;
-			for (var i = 1; i < spriteRenderers.Length; i++) combinedBounds.Encapsulate(spriteRenderers[i].bounds);
-
-			return new Bounds2D(bounds);
-		}
 	}

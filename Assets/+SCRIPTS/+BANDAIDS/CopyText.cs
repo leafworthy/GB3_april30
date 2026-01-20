@@ -8,13 +8,11 @@ namespace __SCRIPTS
     {
         public TextMeshProUGUI TextToCopy;
         TextMeshProUGUI _text;
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             _text = GetComponent<TextMeshProUGUI>();
         }
 
-        // Update is called once per frame
         void Update()
         {
             if(_text != null && TextToCopy != null)
