@@ -7,42 +7,26 @@ namespace __SCRIPTS
 	[Serializable]
 	public class DoableBodyPart
 	{
-		public bool IsActive => CurrentAbility != null;
-		public IDoableAbility CurrentAbility => _currentAbility;
-		private IDoableAbility _currentAbility;
-		private IDoableAbility _bufferedAbility;
-
+		public IDoableAbility CurrentAbility { get; private set; }
 		public void Stop(IDoableAbility abilityToStop)
 		{
 			if (CurrentAbility == null) return;
 			if (CurrentAbility != abilityToStop) return;
-			_currentAbility = null;
+			CurrentAbility = null;
 		}
 
-		public void DoActivity(IDoableAbility newAbility)
+		public void DoAbility(IDoableAbility newAbility)
 		{
-			ActuallyDo(newAbility);
-		}
+			if (CurrentAbility != null && CurrentAbility.canStop(newAbility)) CurrentAbility.StopAbility();
 
-		private void ActuallyDo(IDoableAbility newAbility)
-		{
-			if (_currentAbility != null && _currentAbility.canStop(newAbility)) _currentAbility.Stop();
-
-			_currentAbility = newAbility;
+			CurrentAbility = newAbility;
 			Debug.Log("current ability is now: " + CurrentAbility.AbilityName);
-			CurrentAbility.Try();
+			CurrentAbility.TryToActivate();
 		}
 
-		private void BufferAbility(IDoableAbility newAbility)
-		{
-			if (ActivitiesAreTheSame(newAbility, CurrentAbility)) return;
 
-			if (ActivitiesAreTheSame(newAbility, _bufferedAbility)) return;
 
-			_bufferedAbility = newAbility;
-		}
-
-		private bool ActivitiesAreTheSame(IDoableAbility activity1, IDoableAbility activity2) =>
+		bool ActivitiesAreTheSame(IDoableAbility activity1, IDoableAbility activity2) =>
 			activity1?.AbilityName == activity2?.AbilityName;
 
 		public bool CanDoActivity(IDoableAbility newAbility, bool forceIt = false)
@@ -59,12 +43,13 @@ namespace __SCRIPTS
 				return false;
 			}
 
-			if (!IsActive) return true;
+			if (CurrentAbility != null) return true;
 			if (forceIt)
 			{
 				Debug.Log("forced it in body part");
 				return true;
 			}
+
 			Debug.Log("Can Stop: " + CurrentAbility.AbilityName + " " + CurrentAbility.canStop(newAbility));
 			return CurrentAbility.canStop(newAbility);
 		}

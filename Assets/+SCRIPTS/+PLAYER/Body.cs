@@ -28,6 +28,9 @@ namespace __SCRIPTS
 		[HideInInspector] public bool TopIsFacingRight = true;
 		public DoableArms doableArms = new();
 		public DoableLegs doableLegs = new();
+		public bool isGrounded  { get; private set; }
+
+		#region LayerChanging
 
 		public void ChangeLayer(BodyLayer bodyLayer)
 		{
@@ -50,7 +53,12 @@ namespace __SCRIPTS
 
 			FootPoint.layer = (int) Mathf.Log(layerValue, 2);
 		}
-
+		public void SetGrounded()
+		{
+			isGrounded = true;
+			SetHeight(0);
+			ChangeLayer(BodyLayer.grounded);
+		}
 		public enum BodyLayer
 		{
 			jumping,
@@ -58,6 +66,10 @@ namespace __SCRIPTS
 			grounded,
 			enemy
 		}
+
+		#endregion
+
+		#region FaceDirection
 
 		public void BottomFaceDirection(bool faceRight)
 		{
@@ -96,10 +108,8 @@ namespace __SCRIPTS
 			TopScaleObject.transform.localScale = localScale;
 		}
 
-		public void SetGrounded()
-		{
-			SetHeight(0);
-			ChangeLayer(Body.BodyLayer.grounded);
-		}
+		#endregion
+
+
 	}
 }

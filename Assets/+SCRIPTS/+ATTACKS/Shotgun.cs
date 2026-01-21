@@ -6,6 +6,6 @@ namespace __SCRIPTS
 		protected override int numberOfBulletsPerShot => 4;
 		public override float reloadTime => 1;
 
-		public override bool simpleShoot => true;
+		protected override bool simpleShoot => true;
 	}
 }

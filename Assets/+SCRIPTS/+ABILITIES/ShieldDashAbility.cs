@@ -23,7 +23,7 @@ public class ShieldDashAbility : DashAbility
 		ShieldDash();
 	}
 
-	public override void Stop()
+	public override void StopAbility()
 	{
 		StopDashing();
 
@@ -38,7 +38,7 @@ public class ShieldDashAbility : DashAbility
 		{
 			shieldAbility.SetShielding(false);
 			StopBody();
-			lastArmAbility?.Try();
+			lastArmAbility?.TryToActivate();
 		}
 	}
 
@@ -81,6 +81,6 @@ public class ShieldDashAbility : DashAbility
 
 	void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 	{
-		Try();
+		TryToActivate();
 	}
 }

@@ -20,8 +20,8 @@ namespace GangstaBean.Core
 		string AbilityName { get; }
 		bool canDo();
 		bool canStop(IDoableAbility abilityToStopFor);
-		void Try();
-		void Stop();
+		void TryToActivate();
+		void StopAbility();
 		void Resume();
 	}
 

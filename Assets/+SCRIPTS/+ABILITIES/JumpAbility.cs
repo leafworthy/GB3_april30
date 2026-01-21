@@ -67,13 +67,13 @@ namespace __SCRIPTS
 			Jump();
 		}
 
-		public override void Stop()
+		public override void StopAbility()
 		{
 			verticalVelocity = 0;
 			SetState(state.resting);
 			moveAbility.SetCanMove(true);
 			body.SetHeight(0);
-			base.Stop();
+			base.StopAbility();
 		}
 
 		void Jump()
@@ -115,7 +115,7 @@ namespace __SCRIPTS
 
 		void Controller_Jump(NewControlButton newControlButton)
 		{
-			Try();
+			TryToActivate();
 		}
 
 		void DefenceOnDead(Attack attack)
@@ -126,7 +126,7 @@ namespace __SCRIPTS
 		void StartFlying()
 		{
 			SetState(state.flying);
-			Try();
+			TryToActivate();
 		}
 
 		void OnDisable()
@@ -143,7 +143,7 @@ namespace __SCRIPTS
 		{
 			SetState(state.falling);
 			body.SetHeight(fallHeight);
-			PlayAnimationClip(fallingAnimationClip.name, 0, 0);
+			PlayAnimationClip(fallingAnimationClip,  0);
 			airTimer = 0;
 		}
 
@@ -191,7 +191,7 @@ namespace __SCRIPTS
 				case state.falling:
 					break;
 				case state.landing:
-					Stop();
+					StopAbility();
 					break;
 				case state.flying:
 					break;
@@ -200,7 +200,7 @@ namespace __SCRIPTS
 					break;
 				case state.gettingUp:
 					anim.Play(standingAnimationClip.name, 0, 0);
-					Stop();
+					StopAbility();
 					break;
 				case state.dead:
 					break;

@@ -6,7 +6,7 @@ namespace __SCRIPTS
 {
 	public abstract class WeaponAbility : Ability
 	{
-		public enum weaponState
+		protected enum weaponState
 		{
 			not,
 			pullOut,
@@ -14,19 +14,18 @@ namespace __SCRIPTS
 			attacking,
 			resuming
 		}
-
-
 		protected void SetState(weaponState state)
 		{
 			currentState = state;
 		}
-		protected bool  isActive = true;
-		public weaponState currentState {get; private set;}
-		public AnimationClip pullOutAnimationClip;
+		protected bool isActive => currentState is weaponState.idle or weaponState.attacking;
+		protected bool isIdle => currentState is weaponState.idle;
+
+		protected weaponState currentState {get; private set;}
+		[SerializeField]public Weapon weapon;
 		public override string AbilityName => "Weapon-Ability";
 
 		protected override bool requiresArms() => true;
-
 		protected override bool requiresLegs() => false;
 
 		public override bool canStop(IDoableAbility abilityToStopFor) => currentState == weaponState.idle;
@@ -36,7 +35,7 @@ namespace __SCRIPTS
 			if(currentState != weaponState.resuming && currentState != weaponState.pullOut)
 			{
 				Debug.Log("doing pull out");
-				PullOut();
+				PullOutWeapon();
 			}
 			else
 			{
@@ -44,17 +43,21 @@ namespace __SCRIPTS
 			}
 		}
 
-		protected virtual void PullOut()
+		protected virtual void PullOutWeapon()
 		{
 			SetState(weaponState.pullOut);
-			PlayAnimationClip(pullOutAnimationClip, 1);
+			PlayAnimationClip(weapon.pullOutAnimationClip, 1);
 
 		}
 
+		protected virtual void StartIdle()
+		{
+			SetState(weaponState.idle);
+		}
 		public override void Resume()
 		{
 			SetState(weaponState.resuming);
-			Try();
+			TryToActivate();
 		}
 
 		protected override void AnimationComplete()
@@ -62,17 +65,12 @@ namespace __SCRIPTS
 			StartIdle();
 		}
 
-		public override void Stop()
+		public override void StopAbility()
 		{
 			currentState = weaponState.not;
-			isActive = false;
-			base.Stop();
+			base.StopAbility();
 		}
 
-		protected virtual void StartIdle()
-		{
-			SetState(weaponState.idle);
-			isActive = true;
-		}
+
 	}
 }

@@ -1,32 +1,23 @@
 using System;
 using __SCRIPTS;
 using UnityEngine;
-using Utilities;
 
-[Serializable]
-public class DamageOverTimeData
-{
-	public float fireDuration;
-	public float fireDamageRate;
-	public float fireDamageAmount;
-	public Color fireColor;
-}
 public class KnifeAttack : Ability
 {
 	public override string AbilityName => "KnifeAttack";
 
-	private bool isAttacking;
-	private bool isPressing;
+	bool isAttacking;
+	bool isPressing;
 	public GameObject attackPoint;
 
 	public event Action OnMiss;
 	public event Action<Vector2> OnHit;
-	private JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
-	private JumpAbility _jumpAbility;
+	JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
+	JumpAbility _jumpAbility;
 
-	[SerializeField] private AnimationClip animationClip;
-	private GunAttack gunAttack  => _gunAttack ??= GetComponent<GunAttack>();
-	private GunAttack _gunAttack;
+	[SerializeField] AnimationClip animationClip;
+	GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
+	GunAttack _gunAttack;
 
 	public DamageOverTimeData damageOverTimeData;
 
@@ -48,21 +39,21 @@ public class KnifeAttack : Ability
 		ListenToPlayer();
 	}
 
-	private void ListenToPlayer()
+	void ListenToPlayer()
 	{
 		player.Controller.Attack3Circle.OnPress += PlayerKnifePress;
 		player.Controller.Attack3Circle.OnRelease += PlayerKnifeRelease;
 	}
 
-	private void StopListeningToPlayer()
+	void StopListeningToPlayer()
 	{
-		if(player.Controller == null) return;
+		if (player.Controller == null) return;
 		if (player.Controller.Attack3Circle == null) return;
 		player.Controller.Attack3Circle.OnPress -= PlayerKnifePress;
 		player.Controller.Attack3Circle.OnRelease -= PlayerKnifeRelease;
 	}
 
-	private void OnDisable()
+	void OnDisable()
 	{
 		if (player == null) return;
 		if (anim == null) return;
@@ -79,38 +70,35 @@ public class KnifeAttack : Ability
 		PlayerKnifePress(null);
 	}
 
-	private void PlayerKnifeRelease(NewControlButton newControlButton)
+	void PlayerKnifeRelease(NewControlButton newControlButton)
 	{
 		isPressing = false;
 	}
 
-	private void PlayerKnifePress(NewControlButton newControlButton)
+	void PlayerKnifePress(NewControlButton newControlButton)
 	{
 		isPressing = true;
-		Try();
+		TryToActivate();
 	}
 
-	public override void Stop()
+	public override void StopAbility()
 	{
 		isAttacking = false;
 
 		if (lastArmAbility != null)
 		{
-			if (lastArmAbility is GunAttack)
-			{
-				lastArmAbility.Resume();
-			}
-			base.Stop();
-			lastArmAbility.Try();
+			if (lastArmAbility is GunAttack) lastArmAbility?.Resume();
+			base.StopAbility();
+			lastArmAbility?.TryToActivate();
 		}
 		else
 		{
-			base.Stop();
-			gunAttack.Try();
+			base.StopAbility();
+			gunAttack.TryToActivate(); // WEIRD
 		}
 	}
 
-	private void StartAttack()
+	void StartAttack()
 	{
 		if (isAttacking) return;
 		isAttacking = true;
@@ -118,7 +106,7 @@ public class KnifeAttack : Ability
 		Invoke(nameof(Anim_AttackHit), .1f);
 	}
 
-	private void Anim_AttackHit()
+	void Anim_AttackHit()
 	{
 		var targetHit = MyAttackUtilities.FindClosestHit(offence, attackPoint.transform.position, offence.stats.Stats.Range(3), offence.EnemyLayer);
 		if (targetHit == null)
@@ -130,9 +118,9 @@ public class KnifeAttack : Ability
 		var targetLife = targetHit.transform.gameObject.GetComponentInParent<Life>();
 		if (targetLife == null) return;
 		var KnifeFireEffect = targetLife.gameObject.AddComponent<DamageOverTimeEffect>();
-		KnifeFireEffect.StartEffect(offence, targetLife, damageOverTimeData.fireDuration, damageOverTimeData.fireDamageRate, damageOverTimeData.fireDamageAmount,
-			damageOverTimeData.fireColor);
-		MyAttackUtilities.HitTarget(offence, targetLife, 0);//stats.TertiaryAttackDamageWithExtra
+		KnifeFireEffect.StartEffect(offence, targetLife, damageOverTimeData.fireDuration, damageOverTimeData.fireDamageRate,
+			damageOverTimeData.fireDamageAmount, damageOverTimeData.fireColor);
+		MyAttackUtilities.HitTarget(offence, targetLife, 0); //stats.TertiaryAttackDamageWithExtra
 		OnHit?.Invoke(targetHit.transform.position);
 	}
 }

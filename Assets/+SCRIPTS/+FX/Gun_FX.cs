@@ -6,13 +6,13 @@ namespace __SCRIPTS
 {
 	public class Gun_FX : MonoBehaviour
 	{
-		private List<Gun> guns => _guns ??= GetComponents<Gun>().ToList();
-		private List<Gun> _guns;
-		private GameObject bulletPrefab => Services.assetManager.FX.BulletPrefab;
-		private float effectTime = 5f;
-		private Vector2 heightCorrectionForDepthInFrontOfWall = new(0, -1.25f);
+		List<Gun> guns => _guns ??= GetComponents<Gun>().ToList();
+		List<Gun> _guns;
+		GameObject bulletPrefab => Services.assetManager.FX.BulletPrefab;
+		float effectTime = 5f;
+		Vector2 heightCorrectionForDepthInFrontOfWall = new(0, -1.25f);
 
-		private void Start()
+		void Start()
 		{
 			foreach (var gun in guns)
 			{
@@ -21,7 +21,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void OnDestroy()
+		void OnDestroy()
 		{
 			foreach (var gun in guns)
 			{
@@ -30,7 +30,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void Gun_OnShoot(Attack attack)
+		void Gun_OnShoot(Attack attack)
 		{
 			CreateBullet(attack);
 			CreateBulletHitAnimation(attack);
@@ -38,23 +38,24 @@ namespace __SCRIPTS
 			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Short);
 		}
 
-		private void CreateBullet(Attack attack)
+		void CreateBullet(Attack attack)
 		{
 			var newBullet = Services.objectMaker.Make(bulletPrefab, attack.OriginWithHeight);
 			newBullet.GetComponent<Bullet_FX>().Fire(attack);
 			CameraShaker.ShakeCamera(attack.OriginFloorPoint, CameraShaker.ShakeIntensityType.normal);
 		}
 
-		private void MakeBulletShell(Attack attack)
+		void MakeBulletShell(Attack attack)
 		{
 			var newBulletShell = Services.objectMaker.Make(Services.assetManager.FX.bulletShellPrefab, attack.OriginFloorPoint);
 			newBulletShell.GetComponent<MoveJumpAndRotateAbility>().Fire(attack.FlippedDirection, attack.OriginHeight);
 			Services.objectMaker.Unmake(newBulletShell, effectTime);
 		}
 
-		private void CreateBulletHitAnimation(Attack attack)
+		void CreateBulletHitAnimation(Attack attack)
 		{
-			var newBulletHitAnimation = Services.objectMaker.Make(Services.assetManager.FX.bulletHitAnimPrefab, attack.DestinationFloorPoint + heightCorrectionForDepthInFrontOfWall);
+			var newBulletHitAnimation = Services.objectMaker.Make(Services.assetManager.FX.bulletHitAnimPrefab,
+				attack.DestinationFloorPoint + heightCorrectionForDepthInFrontOfWall);
 			var bulletHitHeight = newBulletHitAnimation.GetComponent<HeightAbility>();
 			bulletHitHeight.SetHeight(attack.DestinationHeight - heightCorrectionForDepthInFrontOfWall.y);
 			Services.objectMaker.Unmake(newBulletHitAnimation, effectTime);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public abstract class Gun : MonoBehaviour
+	public abstract class Gun : Weapon
 	{
 		static readonly string[] PrimaryAnimationClips =
 		{
@@ -33,7 +33,7 @@ namespace __SCRIPTS
 		public event Action OnEmpty;
 		public event Action<Vector2> OnShoot;
 
-		public AnimationClip pullOutAnimationClip;
+		public AnimationClip simpleShootAnimationClip;
 		protected AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
 		AmmoInventory _ammoInventory;
 		IAimAbility gunAimAbility => _gunAimAbility ??= GetComponent<IAimAbility>();
@@ -43,9 +43,10 @@ namespace __SCRIPTS
 		Body _body;
 		protected ICanAttack attacker => _attacker ??= GetComponent<ICanAttack>();
 		ICanAttack _attacker;
-		bool isCoolingDown;
+
 		float currentCooldownTime;
-		public string AnimationClipSuffix => this is PrimaryGun ? "" : "_Glock";
+		Vector2 aimDir;
+		string AnimationClipSuffix => this is PrimaryGun ? "" : "_Glock";
 		public virtual float reloadTime => .5f;
 		public abstract float AttackRate { get; }
 		protected abstract float Damage { get; }
@@ -54,8 +55,9 @@ namespace __SCRIPTS
 		protected abstract float AttackRange { get; }
 		protected abstract float Spread { get; }
 		protected abstract int numberOfBulletsPerShot { get; }
-		public virtual bool simpleShoot => false;
+		protected virtual bool simpleShoot => false;
 		bool IsCoolingDown => Time.time <= currentCooldownTime;
+		public Vector2 AimDir => gunAimAbility.AimDir;
 		public bool CanReload() => Ammo.CanReload();
 		public bool MustReload() => !Ammo.hasAmmoInClip();
 		public void Reload() => Ammo.Reload();
@@ -65,12 +67,11 @@ namespace __SCRIPTS
 			currentCooldownTime = Time.time;
 		}
 
-
-		public bool Shoot(Vector2 shootDirection)
+		public bool Shoot()
 		{
 			if (!Ammo.hasAmmoInClip())
 			{
-				if(Ammo.CanReload())OnNeedsReload?.Invoke();
+				if (Ammo.CanReload()) OnNeedsReload?.Invoke();
 				else
 				{
 					OnEmpty?.Invoke();
@@ -80,14 +81,15 @@ namespace __SCRIPTS
 				return false;
 			}
 
+			if (IsCoolingDown) return false;
 			currentCooldownTime = Time.time + AttackRate;
-			OnShoot?.Invoke(shootDirection);
+			OnShoot?.Invoke(gunAimAbility.AimDir);
 			Ammo.UseAmmo(1);
 
 			for (var i = 0; i < numberOfBulletsPerShot; i++)
 			{
 				var randomSpread = new Vector2(UnityEngine.Random.Range(-Spread, Spread), UnityEngine.Random.Range(-Spread, Spread));
-				ShootBullet(shootDirection + randomSpread);
+				ShootBullet(gunAimAbility.AimDir + randomSpread);
 			}
 
 			return true;
@@ -164,16 +166,19 @@ namespace __SCRIPTS
 			targetLife.TakeDamage(newAttack);
 		}
 
-		public bool HasAmmoInClip()
+		public string GetShootClipName()
 		{
-			return Ammo.hasAmmoInClip();
+			if (simpleShoot) return simpleShootAnimationClip.name;
+			return GetClipNameFromDegrees();
 		}
+
+		public bool CanUse() => !IsCoolingDown && Ammo.hasAmmoInReserveOrClip();
 	}
 
 	public class PrimaryGun : Gun
 	{
 		bool isShooting;
-		public override float AttackRate => attacker.stats.Stats.Rate(1);
+		public override float AttackRate => simpleShoot ? simpleShootAnimationClip.length : attacker.stats.Stats.Rate(1);
 		protected override float Damage => attacker.stats.Stats.Damage(1);
 		protected override Ammo Ammo => ammoInventory.primaryAmmo;
 		protected override float AttackRange => attacker.stats.Stats.Range(1);

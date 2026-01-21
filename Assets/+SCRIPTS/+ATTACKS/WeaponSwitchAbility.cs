@@ -45,7 +45,7 @@ namespace __SCRIPTS
 
 		private void Player_SwapWeapon(NewControlButton obj)
 		{
-			Try();
+			TryToActivate();
 		}
 	}
 }

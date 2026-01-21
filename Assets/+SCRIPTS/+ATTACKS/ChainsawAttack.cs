@@ -17,7 +17,7 @@ namespace __SCRIPTS
 		public event Action<Vector2> OnStopAttacking;
 		public event Action<Vector2> OnStopChainsawing;
 		float cooldownCounter;
-		public override bool canStop(IDoableAbility abilityToStopFor) => currentState == weaponState.idle || currentState == weaponState.not;
+		public override bool canStop(IDoableAbility abilityToStopFor) => currentState is weaponState.idle or weaponState.not;
 		protected override bool requiresArms() => true;
 		protected override bool requiresLegs() => false;
 
@@ -32,13 +32,12 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
-			if (currentState != weaponState.resuming) PullOut();
+			if (currentState != weaponState.resuming) PullOutWeapon();
 		}
 
-		protected override void PullOut()
+		protected override void PullOutWeapon()
 		{
-			base.PullOut();
-			isActive = true;
+			base.PullOutWeapon();
 			anim.SetBool(UnitAnimations.IsChainsawing, true);
 			OnStartChainsawing?.Invoke(transform.position);
 		}
@@ -118,12 +117,12 @@ namespace __SCRIPTS
 				offence.stats.Stats.Damage(3));
 		}
 
-		public override void Stop()
+		public override void StopAbility()
 		{
 			anim.SetBool(UnitAnimations.IsChainsawing, false);
 			OnStopChainsawing?.Invoke(transform.position);
 			SetState(weaponState.not);
-			base.Stop();
+			base.StopAbility();
 		}
 	}
 }

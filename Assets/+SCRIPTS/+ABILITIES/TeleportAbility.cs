@@ -37,7 +37,7 @@ public class TeleportAbility : Ability
 
 	void Controller_DashPress(NewControlButton obj)
 	{
-		Try();
+		TryToActivate();
 	}
 
 	void OnDestroy()
@@ -63,10 +63,10 @@ public class TeleportAbility : Ability
 		transform.position = newPoint;
 	}
 
-	public override void Stop()
+	public override void StopAbility()
 	{
 		defence.SetTemporarilyInvincible(false);
-		base.Stop();
-		lastLegAbility?.Try();
+		base.StopAbility();
+		lastLegAbility?.TryToActivate();
 	}
 }

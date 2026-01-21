@@ -47,9 +47,9 @@ namespace __SCRIPTS
 			OnShowAiming?.Invoke();
 		}
 
-		public override void Stop()
+		public override void StopAbility()
 		{
-			base.Stop();
+			base.StopAbility();
 			HideAiming();
 			lastArmAbility.Resume();
 		}
@@ -106,7 +106,7 @@ namespace __SCRIPTS
 
 		void Player_NadeRelease(NewControlButton newControlButton)
 		{
-			Try();
+			TryToActivate();
 		}
 
 		void ThrowGrenade()

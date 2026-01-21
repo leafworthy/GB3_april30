@@ -22,7 +22,7 @@ namespace __SCRIPTS
 
 		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is JumpAbility;
 
-		public override void Stop()
+		public override void StopAbility()
 		{
 			StopBody();
 			StopDashing();
@@ -35,7 +35,7 @@ namespace __SCRIPTS
 			else
 			{
 				StopBody();
-				lastArmAbility?.Try();
+				lastArmAbility?.TryToActivate();
 			}
 		}
 
@@ -76,7 +76,7 @@ namespace __SCRIPTS
 
 		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 		{
-			Try();
+			TryToActivate();
 		}
 
 

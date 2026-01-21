@@ -7,40 +7,36 @@ namespace __SCRIPTS
 	[Serializable]
 	public class GunAttack : WeaponAbility
 	{
-		public Gun CurrentGun => currentGun;
-		public AnimationClip simpleShootAnimationClip;
-		private Gun currentGun;
-		private float currentCooldownTime;
-		private AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
-		private AmmoInventory _ammoInventory;
-
+		public Gun CurrentGun { get; private set; }
+		AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
+		AmmoInventory _ammoInventory;
 		public Gun primaryGun => _primaryGun ??= GetComponent<PrimaryGun>();
-		private Gun _primaryGun;
+		Gun _primaryGun;
 		public Gun unlimitedGun => _unlimitedGun ??= GetComponent<UnlimitedGun>();
-		private Gun _unlimitedGun;
-		private IAimAbility aimAbility => _aimAbility ??= GetComponent<IAimAbility>();
-		private IAimAbility _aimAbility;
+		Gun _unlimitedGun;
+		IAimAbility aimAbility => _aimAbility ??= GetComponent<IAimAbility>();
+		IAimAbility _aimAbility;
 		public Vector2 AimDir => aimAbility.AimDir;
-		public override string AbilityName => "Gun Attack " + currentState.ToString();
+		public override string AbilityName => "Gun Attack " + currentState;
 		protected override bool requiresArms() => true;
 		protected override bool requiresLegs() => false;
 		public override bool canStop(IDoableAbility abilityToStopFor) => currentState == weaponState.idle || currentState == weaponState.resuming;
-		public bool IsUsingPrimaryGun => currentGun is PrimaryGun;
-		private bool isPressingShoot;
-		private JumpAbility jumpAbility  => _jumpAbility ??= GetComponent<JumpAbility>();
-		private JumpAbility _jumpAbility;
-		public event Action<bool> OnSwitchGun;
+		public bool IsUsingPrimaryGun => CurrentGun is PrimaryGun;
+		bool isPressingShoot;
+		JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
+		JumpAbility _jumpAbility;
 
+		public event Action<bool> OnSwitchGun;
 		public event Action OnNeedsReload;
 
-		public override void Stop()
+		public override void StopAbility()
 		{
 			anim.SetFloat(UnitAnimations.ShootSpeed, 0);
-			base.Stop();
+			base.StopAbility();
 		}
 
 #pragma warning disable UDR0001
-		private static string[] PrimaryAnimationClips =
+		static string[] PrimaryAnimationClips =
 		{
 			"E",
 			"EES",
@@ -63,27 +59,23 @@ namespace __SCRIPTS
 		};
 #pragma warning restore UDR0001
 
-		private void StartAttacking()
+		void StartAttacking()
 		{
-			if (!isActive || currentState != weaponState.idle || !jumpAbility.IsResting) return;
+			if (isIdle || !jumpAbility.IsResting) return;
 
-			if (!CurrentGun.Shoot(AimDir)) return;
+			if (!CurrentGun.Shoot()) return;
 			SetState(weaponState.attacking);
 			PlayShootAnimation();
-
 		}
 
-		private void PlayShootAnimation()
+		void PlayShootAnimation()
 		{
 			TopFaceCorrectDirection();
 			anim.SetFloat(UnitAnimations.ShootSpeed, 1);
-			if (currentGun.simpleShoot)
-
-				PlayAnimationClip(simpleShootAnimationClip.name, CurrentGun.AttackRate, 1);
-			else
-				PlayAnimationClip(CurrentGun.GetClipNameFromDegrees(), CurrentGun.AttackRate, .25f,1);
+			PlayAnimationClip(CurrentGun.GetShootClipName(), CurrentGun.AttackRate, 1);
 		}
-		private void TopFaceCorrectDirection()
+
+		void TopFaceCorrectDirection()
 		{
 			body.TopFaceDirection(AimDir.x >= 0);
 		}
@@ -91,11 +83,11 @@ namespace __SCRIPTS
 		protected override void StartIdle()
 		{
 			base.StartIdle();
-			Stop();
-			if (currentGun is not PrimaryGun) return;
-			if (!currentGun.MustReload()) return;
-			if(currentGun.CanReload()) OnNeedsReload?.Invoke();
-			else  SwitchGuns(false);
+			StopAbility();
+			if (CurrentGun is not PrimaryGun) return;
+			if (!CurrentGun.MustReload()) return;
+			if (CurrentGun.CanReload()) OnNeedsReload?.Invoke();
+			else SwitchGuns(false);
 		}
 
 		protected override void DoAbility()
@@ -106,53 +98,49 @@ namespace __SCRIPTS
 					StartIdle();
 					return;
 				default:
-					PullOut();
+					PullOutWeapon();
 					break;
 			}
 		}
 
-		protected override void PullOut()
+		protected override void PullOutWeapon()
 		{
 			SetState(weaponState.pullOut);
-			PlayAnimationClip(currentGun.pullOutAnimationClip, 1);
+			PlayAnimationClip(CurrentGun.pullOutAnimationClip, 1);
 		}
 
 		public override void SetPlayer(Player newPlayer)
 		{
 			base.SetPlayer(newPlayer);
-			currentGun = primaryGun;
-
-
-
+			CurrentGun = primaryGun;
 
 			StopListeningToEvents();
 			ListenToEvents();
-			Try();
+			TryToActivate();
 		}
 
 		void SwitchToPrimaryGunIfUnlimited(Ammo obj)
 		{
-			if (currentGun is PrimaryGun) return;
+			if (CurrentGun is PrimaryGun) return;
 			SwitchGuns(true);
 		}
 
 		void SwitchToUnlimitedGun()
 		{
 			Debug.Log("try to switch to unlimited gun", this);
-			if (currentGun is not PrimaryGun) return;
+			if (CurrentGun is not PrimaryGun) return;
 			SwitchGuns(false);
 		}
 
-		private void Gun_OnNeedsReload()
+		void Gun_OnNeedsReload()
 		{
-			Stop();
+			StopAbility();
 			OnNeedsReload?.Invoke();
 		}
 
-
-		private void ListenToEvents()
+		void ListenToEvents()
 		{
-			if (currentGun != null) currentGun.OnEmpty += SwitchToUnlimitedGun;
+			if (CurrentGun != null) CurrentGun.OnEmpty += SwitchToUnlimitedGun;
 			if (ammoInventory != null) ammoInventory.OnPrimaryAmmoAdded += SwitchToPrimaryGunIfUnlimited;
 			if (primaryGun != null) primaryGun.OnNeedsReload += Gun_OnNeedsReload;
 			if (unlimitedGun != null) unlimitedGun.OnNeedsReload += Gun_OnNeedsReload;
@@ -162,23 +150,22 @@ namespace __SCRIPTS
 			player.Controller.Attack1RightTrigger.OnRelease += PlayerControllerShootRelease;
 		}
 
-		private void OnDestroy()
+		void OnDestroy()
 		{
 			StopListeningToEvents();
 		}
 
-		private void OnDisable()
+		void OnDisable()
 		{
 			StopListeningToEvents();
 		}
 
-		private void StopListeningToEvents()
+		void StopListeningToEvents()
 		{
 			if (primaryGun != null) primaryGun.OnNeedsReload -= Gun_OnNeedsReload;
 			if (unlimitedGun != null) unlimitedGun.OnNeedsReload -= Gun_OnNeedsReload;
-			if (currentGun != null) currentGun.OnEmpty -= SwitchToUnlimitedGun;
+			if (CurrentGun != null) CurrentGun.OnEmpty -= SwitchToUnlimitedGun;
 			if (ammoInventory != null) ammoInventory.OnPrimaryAmmoAdded -= SwitchToPrimaryGunIfUnlimited;
-
 
 			if (player == null) return;
 			if (player.Controller == null) return;
@@ -187,45 +174,44 @@ namespace __SCRIPTS
 			player.Controller.Attack1RightTrigger.OnRelease -= PlayerControllerShootRelease;
 		}
 
-		private void FixedUpdate()
+		void FixedUpdate()
 		{
 			if (!isActive) return;
 			if (isPressingShoot && currentState != weaponState.attacking) StartAttacking();
 			else if (currentState == weaponState.idle) Aim();
 		}
 
-		private void Aim()
+		void Aim()
 		{
 			TopFaceCorrectDirection();
 			anim.SetFloat(UnitAnimations.ShootSpeed, 0);
-			PlayAnimationClip(currentGun.GetClipNameFromDegrees(), 0, 1);
+			PlayAnimationClipWithoutEvent(CurrentGun.GetClipNameFromDegrees(), 1);
 		}
 
-		private void PlayerControllerShootPress(NewControlButton newControlButton)
+		void PlayerControllerShootPress(NewControlButton newControlButton)
 		{
 			isPressingShoot = true;
 			StartAttacking();
 		}
 
-		private void PlayerControllerShootRelease(NewControlButton newControlButton)
+		void PlayerControllerShootRelease(NewControlButton newControlButton)
 		{
 			isPressingShoot = false;
 		}
 
-
-		private void SwitchGuns(bool toPrimary)
+		void SwitchGuns(bool toPrimary)
 		{
-			//if (toPrimary && primaryGun.MustReload() && currentGun is not PrimaryGun) return;
+			//if (toPrimary && primaryGun.MustReload() && _currentGun is not PrimaryGun) return;
 			Debug.Log("switch guns to primary: " + toPrimary, this);
-			currentGun = toPrimary ? primaryGun : unlimitedGun;
+			CurrentGun = toPrimary ? primaryGun : unlimitedGun;
 			OnSwitchGun?.Invoke(toPrimary);
-			Stop();
-			Try();
+			StopAbility();
+			TryToActivate();
 		}
 
 		public void SwapGuns()
 		{
-			SwitchGuns(!(currentGun is PrimaryGun));
+			SwitchGuns(!(CurrentGun is PrimaryGun));
 		}
 	}
 }

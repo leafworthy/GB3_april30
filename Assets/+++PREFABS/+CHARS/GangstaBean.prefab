@@ -575,8 +575,8 @@ GameObject:
   - component: {fileID: 166854034480967044}
   - component: {fileID: 2099686618678397150}
   - component: {fileID: 318323335208742521}
-  - component: {fileID: 7823857085892653993}
   - component: {fileID: -913970288058068304}
+  - component: {fileID: 4515025812150020269}
   m_Layer: 6
   m_Name: GangstaBean
   m_TagString: Player
@@ -1182,8 +1182,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  pullOutAnimationClip: {fileID: 0}
-  simpleShootAnimationClip: {fileID: 0}
+  weapon: {fileID: 0}
 --- !u!114 &4284111403091859338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1209,6 +1208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pullOutAnimationClip: {fileID: 7400000, guid: 90ed46566c3f447b596ecd73ef391a3e, type: 2}
+  simpleShootAnimationClip: {fileID: 0}
 --- !u!114 &166854034480967044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1222,6 +1222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pullOutAnimationClip: {fileID: 7400000, guid: 091793968778c4383adcbff6589d5876, type: 2}
+  simpleShootAnimationClip: {fileID: 0}
 --- !u!114 &2099686618678397150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1246,27 +1247,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6d0909886a40dcac3a5c82f6b2f5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7823857085892653993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3833892833884059285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2643f5b1c9af4aac99e16c365de6d2bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!114 &-913970288058068304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1282,6 +1262,22 @@ MonoBehaviour:
   renderersToTint:
   - {fileID: 6613743014821493785}
   - {fileID: 3833892834760878399}
+--- !u!114 &4515025812150020269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ddb173490854cd88f934deee4248b64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.ThreeWeaponSwitchAbility
+  Primary_Weapon: {fileID: 0}
+  Secondary_Weapon: {fileID: 0}
+  Tertiary_Weapon: {fileID: 0}
+  currentWeapon: {fileID: 0}
 --- !u!1 &3833892834760878394
 GameObject:
   m_ObjectHideFlags: 0
@@ -2149,7 +2145,7 @@ Transform:
   m_GameObject: {fileID: 8971666602374333099}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.586, y: 0.618, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

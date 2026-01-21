@@ -80,7 +80,7 @@ namespace __SCRIPTS
 		{
 			if (currentState == state.landingAttack)
 			{
-				Stop();
+				StopAbility();
 			}
 		}
 
@@ -99,15 +99,15 @@ namespace __SCRIPTS
 		private void Player_AttackPress(NewControlButton obj)
 		{
 			if (currentState != state.not) return;
-			Try();
+			TryToActivate();
 		}
 
-		public override void Stop()
+		public override void StopAbility()
 		{
 			SetState(state.not);
 			jumps.OnLand -= LandWithAttack;
 			jumps.OnFalling -= FallWithAttack;
-			base.Stop();
+			base.StopAbility();
 		}
 
 		private void FallWithAttack()

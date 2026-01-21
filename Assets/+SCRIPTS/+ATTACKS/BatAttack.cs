@@ -55,7 +55,7 @@ namespace __SCRIPTS
 		void Player_AttackPress(NewControlButton newControlButton)
 		{
 			isPressingAttack = true;
-			Try();
+			TryToActivate();
 		}
 
 		protected override void DoAbility()
@@ -107,15 +107,15 @@ namespace __SCRIPTS
 			Invoke(nameof(CurrentAttackHit), attackAnimation.length / 4);
 		}
 
-		public override void Stop()
+		public override void StopAbility()
 		{
 			moveAbility.SetCanMove(true);
-			base.Stop();
+			base.StopAbility();
 		}
 
 		protected override void AnimationComplete()
 		{
-			Stop();
+			StopAbility();
 			if (isPressingAttack) Player_AttackPress(null);
 		}
 

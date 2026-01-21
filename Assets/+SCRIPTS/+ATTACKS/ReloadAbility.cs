@@ -37,9 +37,9 @@ namespace __SCRIPTS
 				PlayAnimationClip(ReloadPrimaryGunAnimationClip, 1);
 		}
 
-		public override void Stop()
+		public override void StopAbility()
 		{
-			base.Stop();
+			base.StopAbility();
 			gunAttack.Resume();
 		}
 
@@ -55,7 +55,7 @@ namespace __SCRIPTS
 			if (player.Controller == null) return;
 			if (player.Controller.ReloadTriangle == null) return;
 			player.Controller.ReloadTriangle.OnPress -= Player_Reload;
-			base.Stop();
+			base.StopAbility();
 		}
 
 		public override void SetPlayer(Player newPlayer)
@@ -69,12 +69,12 @@ namespace __SCRIPTS
 
 		void Gun_OnNeedsReload()
 		{
-			Try();
+			TryToActivate();
 		}
 
 		void Player_Reload(NewControlButton btn)
 		{
-			Try();
+			TryToActivate();
 		}
 	}
 }

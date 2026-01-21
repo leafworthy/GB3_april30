@@ -168,7 +168,7 @@ namespace __SCRIPTS
 
 		private void Player_ChargePress(NewControlButton newControlButton)
 		{
-			Try();
+			TryToActivate();
 		}
 
 		private void Player_ChargeRelease(NewControlButton newControlButton)
@@ -187,7 +187,7 @@ namespace __SCRIPTS
 		private void DoWeakAttack()
 		{
 			StopCharging();
-			batAttack.Try();
+			batAttack.TryToActivate();
 		}
 
 		private void StopCharging()
@@ -196,7 +196,7 @@ namespace __SCRIPTS
 			isFullyCharged = false;
 			UseAllAmmo();
 			OnChargeStop?.Invoke();
-			Stop();
+			StopAbility();
 		}
 
 		private void StartSpecialAttack()
@@ -232,18 +232,18 @@ namespace __SCRIPTS
 				case state.charged:
 					break;
 				case state.attacking:
-					Stop();
+					StopAbility();
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
 		}
 
-		public override void Stop()
+		public override void StopAbility()
 		{
 			moveAbility.SetCanMove(true);
 			SetState(state.not);
-			base.Stop();
+			base.StopAbility();
 		}
 
 		private void StartActualCharging()
