@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -54,13 +53,12 @@ namespace __SCRIPTS
 
 			FootPoint.layer = (int) Mathf.Log(layerValue, 2);
 		}
-		public void SetGrounded(bool grounded)
+		public void SetGrounded()
 		{
-			isGrounded = grounded;
+			isGrounded = true;
 			SetHeight(0);
-			ChangeLayer(grounded ? BodyLayer.grounded : Body.BodyLayer.jumping);
+			ChangeLayer(BodyLayer.grounded);
 		}
-
 		public enum BodyLayer
 		{
 			jumping,
@@ -112,17 +110,6 @@ namespace __SCRIPTS
 
 		#endregion
 
-		public bool CanDoAbility(Ability abilityToDo)
-		{
-			if (abilityToDo.requiresArms() && !doableArms.CanDoActivity(abilityToDo)) return false;
-			if (abilityToDo.requiresLegs() && !doableLegs.CanDoActivity(abilityToDo)) return false;
-			return true;
-		}
 
-		public void DoAbility(Ability ability)
-		{
-			if (ability.requiresArms()) doableArms.DoAbility(ability);
-			if (ability.requiresLegs()) doableLegs.DoAbility(ability);
-		}
 	}
 }

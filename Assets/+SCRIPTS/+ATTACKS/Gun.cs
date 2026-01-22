@@ -1,11 +1,10 @@
 using System;
 using GangstaBean.Core;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public abstract class Gun : SerializedMonoBehaviour
+	public abstract class Gun : Weapon
 	{
 		static readonly string[] PrimaryAnimationClips =
 		{
@@ -30,11 +29,11 @@ namespace __SCRIPTS
 		};
 		public event Action<Attack> OnShotHitTarget;
 		public event Action<Attack> OnShotMissed;
+		public event Action OnNeedsReload;
+		public event Action OnEmpty;
 		public event Action<Vector2> OnShoot;
 
 		public AnimationClip simpleShootAnimationClip;
-		public AnimationClip ReloadAnimationClip;
-		public AnimationClip PullOutAnimationClip;
 		protected AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
 		AmmoInventory _ammoInventory;
 		IAimAbility gunAimAbility => _gunAimAbility ??= GetComponent<IAimAbility>();
@@ -68,28 +67,37 @@ namespace __SCRIPTS
 			currentCooldownTime = Time.time;
 		}
 
-		public bool CanShoot()
+		public bool Shoot()
 		{
-			if (IsCoolingDown || !Ammo.hasAmmoInClip()) return false;
-			return true;
-		}
+			if (!Ammo.hasAmmoInClip())
+			{
+				if (Ammo.CanReload()) OnNeedsReload?.Invoke();
+				else
+				{
+					OnEmpty?.Invoke();
+					Debug.Log("onempty");
+				}
 
-		public void Shoot()
-		{
+				return false;
+			}
+
+			if (IsCoolingDown) return false;
 			currentCooldownTime = Time.time + AttackRate;
-			OnShoot?.Invoke(AimDir);
+			OnShoot?.Invoke(gunAimAbility.AimDir);
 			Ammo.UseAmmo(1);
 
 			for (var i = 0; i < numberOfBulletsPerShot; i++)
 			{
 				var randomSpread = new Vector2(UnityEngine.Random.Range(-Spread, Spread), UnityEngine.Random.Range(-Spread, Spread));
-				ShootBullet(AimDir + randomSpread);
+				ShootBullet(gunAimAbility.AimDir + randomSpread);
 			}
+
+			return true;
 		}
 
 		float GetDegreesFromAimDir()
 		{
-			var radians = Mathf.Atan2(-AimDir.y, AimDir.x); // NEGATE y-axis
+			var radians = Mathf.Atan2(-gunAimAbility.AimDir.y, gunAimAbility.AimDir.x); // NEGATE y-axis
 			var degrees = radians * Mathf.Rad2Deg;
 			if (degrees < 0)
 				degrees += 360f;
@@ -125,8 +133,8 @@ namespace __SCRIPTS
 			{
 				foreach (var hit in hitObject)
 				{
-					var target = hit.collider.gameObject.GetComponentInParent<Life>();
-					if (target == null) target = hit.collider.gameObject.GetComponentInChildren<Life>();
+					var target = hit.collider.gameObject.GetComponentInParent<IGetAttacked>();
+					if (target == null) target = hit.collider.gameObject.GetComponentInChildren<IGetAttacked>();
 					if (target == null) continue;
 					if (!target.CanTakeDamage()) continue;
 					ShotHitTarget(target, hit.point);
@@ -149,7 +157,7 @@ namespace __SCRIPTS
 			OnShotMissed?.Invoke(newAttack);
 		}
 
-		void ShotHitTarget(Life targetLife, Vector2 hitObjectPoint)
+		void ShotHitTarget(IGetAttacked targetLife, Vector2 hitObjectPoint)
 		{
 			var newAttack = Attack.Create(attacker, targetLife).WithOriginPoint(body.AttackStartPoint.transform.position).WithDestinationPoint(hitObjectPoint)
 			                      .WithDamage(Damage);
@@ -165,7 +173,6 @@ namespace __SCRIPTS
 		}
 
 		public bool CanUse() => !IsCoolingDown && Ammo.hasAmmoInReserveOrClip();
-
 	}
 
 	public class PrimaryGun : Gun

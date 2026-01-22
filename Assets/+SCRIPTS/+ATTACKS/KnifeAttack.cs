@@ -16,11 +16,13 @@ public class KnifeAttack : Ability
 	JumpAbility _jumpAbility;
 
 	[SerializeField] AnimationClip animationClip;
+	GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
+	GunAttack _gunAttack;
 
 	public DamageOverTimeData damageOverTimeData;
 
-	public override bool requiresArms() => true;
-	public override bool requiresLegs() => false;
+	protected override bool requiresArms() => true;
+	protected override bool requiresLegs() => false;
 
 	public override bool canDo() => jumpAbility.IsResting && base.canDo();
 
@@ -76,21 +78,24 @@ public class KnifeAttack : Ability
 	void PlayerKnifePress(NewControlButton newControlButton)
 	{
 		isPressing = true;
-		TryToDoAbility();
+		TryToActivate();
 	}
 
-	public override void StopAbilityBody()
+	public override void StopAbility()
 	{
 		isAttacking = false;
 
 		if (lastArmAbility != null)
 		{
-			base.StopAbilityBody();
-			lastArmAbility?.Resume();
-			lastArmAbility?.TryToDoAbility();
+			if (lastArmAbility is GunAttack) lastArmAbility?.Resume();
+			base.StopAbility();
+			lastArmAbility?.TryToActivate();
 		}
 		else
-			base.StopAbilityBody();
+		{
+			base.StopAbility();
+			gunAttack.TryToActivate(); // WEIRD
+		}
 	}
 
 	void StartAttack()
@@ -103,7 +108,7 @@ public class KnifeAttack : Ability
 
 	void Anim_AttackHit()
 	{
-		var targetHit = MyAttackUtilities.FindClosestHit(attacker, attackPoint.transform.position, attacker.stats.Stats.Range(3), attacker.EnemyLayer);
+		var targetHit = MyAttackUtilities.FindClosestHit(offence, attackPoint.transform.position, offence.stats.Stats.Range(3), offence.EnemyLayer);
 		if (targetHit == null)
 		{
 			OnMiss?.Invoke();
@@ -113,9 +118,9 @@ public class KnifeAttack : Ability
 		var targetLife = targetHit.transform.gameObject.GetComponentInParent<Life>();
 		if (targetLife == null) return;
 		var KnifeFireEffect = targetLife.gameObject.AddComponent<DamageOverTimeEffect>();
-		KnifeFireEffect.StartEffect(attacker, targetLife, damageOverTimeData.fireDuration, damageOverTimeData.fireDamageRate,
+		KnifeFireEffect.StartEffect(offence, targetLife, damageOverTimeData.fireDuration, damageOverTimeData.fireDamageRate,
 			damageOverTimeData.fireDamageAmount, damageOverTimeData.fireColor);
-		MyAttackUtilities.HitTarget(attacker, targetLife, 0); //stats.TertiaryAttackDamageWithExtra
+		MyAttackUtilities.HitTarget(offence, targetLife, 0); //stats.TertiaryAttackDamageWithExtra
 		OnHit?.Invoke(targetHit.transform.position);
 	}
 }

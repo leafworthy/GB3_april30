@@ -28,11 +28,11 @@ namespace __SCRIPTS
 		float currentCooldownTime;
 		[SerializeField] AnimationClip animationClip;
 
-		public override bool requiresArms() => true;
+		protected override bool requiresArms() => true;
 
-		public override bool requiresLegs() => false;
+		protected override bool requiresLegs() => false;
 
-		public override bool canStop(Ability abilityToStopFor) => IsAiming;
+		public override bool canStop(IDoableAbility abilityToStopFor) => IsAiming;
 		public override bool canDo() => ammo.secondaryAmmo.hasReserveAmmo() && !jump.IsInAir && base.canDo();
 
 		protected override void DoAbility()
@@ -47,9 +47,9 @@ namespace __SCRIPTS
 			OnShowAiming?.Invoke();
 		}
 
-		public override void StopAbilityBody()
+		public override void StopAbility()
 		{
-			base.StopAbilityBody();
+			base.StopAbility();
 			HideAiming();
 			lastArmAbility.Resume();
 		}
@@ -106,7 +106,7 @@ namespace __SCRIPTS
 
 		void Player_NadeRelease(NewControlButton newControlButton)
 		{
-			TryToDoAbility();
+			TryToActivate();
 		}
 
 		void ThrowGrenade()
@@ -115,7 +115,7 @@ namespace __SCRIPTS
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = body.AimCenter.transform.position;
 			var velocity = new Vector3((endPoint.x - startPoint.x) / throwTime, (endPoint.y - startPoint.y) / throwTime);
-			OnThrow?.Invoke(startPoint, velocity, throwTime, attacker);
+			OnThrow?.Invoke(startPoint, velocity, throwTime, offence);
 			HideAiming();
 		}
 
@@ -128,7 +128,7 @@ namespace __SCRIPTS
 
 		void Player_OnAim(IControlAxis controlAxis, Vector2 aimDir)
 		{
-			if (life.IsDead()) return;
+			if (defence.IsDead()) return;
 			if (Services.pauseManager.IsPaused) return;
 			if (!IsAiming) return;
 			Aim();

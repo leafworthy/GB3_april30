@@ -8,8 +8,8 @@ namespace __SCRIPTS
 	public class EnemyManager : MonoBehaviour, IService
 	{
 		List<Life> _allEnemies = new();
-		public event Action<Player, float,Life> OnPlayerKillsEnemy;
-		public event Action<Life> OnEnemyDying;
+		public event Action<Player, float,IGetAttacked> OnPlayerKillsEnemy;
+		public event Action<IGetAttacked> OnEnemyDying;
 		LevelManager _levelManager;
 		LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
 		Players _players;
@@ -66,13 +66,13 @@ namespace __SCRIPTS
 			_allEnemies.Clear();
 		}
 
-		void EnemyKilled(Player killer, Life life)
+		void EnemyKilled(Player killer, IGetAttacked life)
 		{
 			var experienceGained = DetermineExperienceGained(life);
 			OnPlayerKillsEnemy?.Invoke(killer, experienceGained, life);
 		}
 
-		float DetermineExperienceGained(Life life)
+		float DetermineExperienceGained(IGetAttacked life)
 		{
 			var enemyStats = life.transform.GetComponent<Life>();
 			if (enemyStats == null) return 0;

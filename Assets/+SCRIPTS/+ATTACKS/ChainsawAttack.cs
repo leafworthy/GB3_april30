@@ -17,9 +17,9 @@ namespace __SCRIPTS
 		public event Action<Vector2> OnStopAttacking;
 		public event Action<Vector2> OnStopChainsawing;
 		float cooldownCounter;
-		public override bool canStop(Ability abilityToStopFor) => currentState is weaponState.idle or weaponState.not;
-		public override bool requiresArms() => true;
-		public override bool requiresLegs() => false;
+		public override bool canStop(IDoableAbility abilityToStopFor) => currentState is weaponState.idle or weaponState.not;
+		protected override bool requiresArms() => true;
+		protected override bool requiresLegs() => false;
 
 		public override void SetPlayer(Player newPlayer)
 		{
@@ -111,18 +111,18 @@ namespace __SCRIPTS
 		{
 
 			cooldownCounter += Time.fixedDeltaTime;
-			if (!(cooldownCounter >= attacker.stats.Stats.Rate(3))) return;
+			if (!(cooldownCounter >= offence.stats.Stats.Rate(3))) return;
 			cooldownCounter = 0;
-			MyAttackUtilities.HitTargetsWithinRange(attacker, body.AttackStartPoint.transform.position, attacker.stats.Stats.Range(3),
-				attacker.stats.Stats.Damage(3));
+			MyAttackUtilities.HitTargetsWithinRange(offence, body.AttackStartPoint.transform.position, offence.stats.Stats.Range(3),
+				offence.stats.Stats.Damage(3));
 		}
 
-		public override void StopAbilityBody()
+		public override void StopAbility()
 		{
 			anim.SetBool(UnitAnimations.IsChainsawing, false);
 			OnStopChainsawing?.Invoke(transform.position);
 			SetState(weaponState.not);
-			base.StopAbilityBody();
+			base.StopAbility();
 		}
 	}
 }

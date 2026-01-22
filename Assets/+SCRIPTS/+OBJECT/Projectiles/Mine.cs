@@ -22,7 +22,7 @@ public class Mine : MonoBehaviour
 	{
 		if (!hasLaunched || !isProximityMine) return;
 		if (other.transform == transform) return;
-		var otherLife = other.GetComponent<Life>();
+		var otherLife = other.GetComponent<IGetAttacked>();
 		if (otherLife == null)
 		{
 			otherLife = other.GetComponentInParent<Life>();

@@ -68,7 +68,7 @@ namespace __SCRIPTS.Projectiles
 			Services.objectMaker.Unmake(gameObject, 3);
 		}
 
-		private void HandleHit(Life hitLife)
+		private void HandleHit(IGetAttacked hitLife)
 		{
 			isFlying = false;
 			if (hitLife == null) return;

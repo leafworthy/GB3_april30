@@ -52,28 +52,28 @@ namespace __SCRIPTS
 		public bool IsResting => currentState == state.resting;
 		public bool IsInAir => currentState is state.jumpingUp or state.falling or state.flying;
 
-		public override bool requiresArms() => false;
+		protected override bool requiresArms() => false;
 
-		public override bool requiresLegs() => true;
+		protected override bool requiresLegs() => true;
 
 		public override string AbilityName => "Jump";
 
 		public override bool canDo() => base.canDo() && (IsResting || IsFlying);
 
-		public override bool canStop(Ability abilityToStopFor) => false;
+		public override bool canStop(IDoableAbility abilityToStopFor) => false;
 
 		protected override void DoAbility()
 		{
 			Jump();
 		}
 
-		public override void StopAbilityBody()
+		public override void StopAbility()
 		{
 			verticalVelocity = 0;
 			SetState(state.resting);
 			moveAbility.SetCanMove(true);
 			body.SetHeight(0);
-			base.StopAbilityBody();
+			base.StopAbility();
 		}
 
 		void Jump()
@@ -90,24 +90,24 @@ namespace __SCRIPTS
 			}
 
 			airTimer = 0;
-			life.SetTemporarilyInvincible(true);
+			defence.SetTemporarilyInvincible(true);
 			OnJump?.Invoke(transform.position);
-			verticalVelocity = attacker.stats.Stats.JumpSpeed;
-			body.SetGrounded(false);
-
+			verticalVelocity = offence.stats.Stats.JumpSpeed;
+			body.SetHeight(0);
+			body.ChangeLayer(Body.BodyLayer.jumping);
 		}
 
 		public override void SetPlayer(Player newPlayer)
 		{
 			base.SetPlayer(newPlayer);
-			life.OnDead += LifeOnDead;
-			life.OnFlying += LifeOnFlying;
+			defence.OnDead += DefenceOnDead;
+			defence.OnFlying += DefenceOnFlying;
 			if (newPlayer.Controller != null) newPlayer.Controller.Jump.OnPress += Controller_Jump;
 			SetState(state.resting);
-			if (life.category == UnitCategory.Character) FallFromHeight(FallInDistance);
+			if (defence.category == UnitCategory.Character) FallFromHeight(FallInDistance);
 		}
 
-		void LifeOnFlying(Attack obj)
+		void DefenceOnFlying(Attack obj)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			StartFlying();
@@ -115,10 +115,10 @@ namespace __SCRIPTS
 
 		void Controller_Jump(NewControlButton newControlButton)
 		{
-			TryToDoAbility();
+			TryToActivate();
 		}
 
-		void LifeOnDead(Attack attack)
+		void DefenceOnDead(Attack attack)
 		{
 			StartFlying();
 		}
@@ -126,17 +126,17 @@ namespace __SCRIPTS
 		void StartFlying()
 		{
 			SetState(state.flying);
-			TryToDoAbility();
+			TryToActivate();
 		}
 
 		void OnDisable()
 		{
-			if (life == null) return;
-			life.OnDead -= LifeOnDead;
-			if (life.player == null) return;
-			if (life.player.Controller == null) return;
-			if (life.player.Controller.Jump == null) return;
-			life.player.Controller.Jump.OnPress -= Controller_Jump;
+			if (defence == null) return;
+			defence.OnDead -= DefenceOnDead;
+			if (defence.player == null) return;
+			if (defence.player.Controller == null) return;
+			if (defence.player.Controller.Jump == null) return;
+			defence.player.Controller.Jump.OnPress -= Controller_Jump;
 		}
 
 		void FallFromHeight(float fallHeight)
@@ -191,7 +191,7 @@ namespace __SCRIPTS
 				case state.falling:
 					break;
 				case state.landing:
-					StopAbilityBody();
+					StopAbility();
 					break;
 				case state.flying:
 					break;
@@ -200,7 +200,7 @@ namespace __SCRIPTS
 					break;
 				case state.gettingUp:
 					anim.Play(standingAnimationClip.name, 0, 0);
-					StopAbilityBody();
+					StopAbility();
 					break;
 				case state.dead:
 					break;
@@ -223,7 +223,7 @@ namespace __SCRIPTS
 
 		void HitGround()
 		{
-			if (life.IsDead())
+			if (defence.IsDead())
 			{
 				PlayAnimationClip(deathAnimationClip);
 				SetState(state.dead);
@@ -244,9 +244,9 @@ namespace __SCRIPTS
 
 		void Land()
 		{
-			life.SetTemporarilyInvincible(false);
+			defence.SetTemporarilyInvincible(false);
 			moveAbility.SetCanMove(false);
-			body.SetGrounded(true);
+			body.SetGrounded();
 			verticalVelocity = 0;
 			OnLand?.Invoke(transform.position);
 		}

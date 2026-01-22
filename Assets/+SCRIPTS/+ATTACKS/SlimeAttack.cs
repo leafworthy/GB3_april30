@@ -10,12 +10,12 @@ namespace __SCRIPTS
 		[SerializeField] private GameObject ProjectilePrefab;
 		private float currentCooldownTime;
 
-		private Life life => _life ??= GetComponent<Life>();
-		private Life _life;
+		private IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
+		private IGetAttacked _life;
 		private Body body;
 		private UnitAnimations anim;
 		private ICanAttack attacker;
-		private Life currentTarget;
+		private IGetAttacked currentTarget;
 
 		private void Start()
 		{
@@ -35,14 +35,14 @@ namespace __SCRIPTS
 		}
 
 
-		private void AttackerAttack(Life target)
+		private void AttackerAttack(IGetAttacked target)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (life.IsDead()) return;
 			AttackTarget(target);
 		}
 
-		private void AttackTarget(Life targetLife)
+		private void AttackTarget(IGetAttacked targetLife)
 		{
 			if (!(Time.time >= currentCooldownTime)) return;
 			currentTarget = targetLife;

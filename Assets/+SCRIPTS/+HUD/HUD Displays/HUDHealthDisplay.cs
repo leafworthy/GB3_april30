@@ -9,7 +9,7 @@ namespace __SCRIPTS.HUD_Displays
 		public LineBar barFX;
 		public TMP_Text healthText;
 		public TMP_Text MaxHealthText;
-		Life playerDefence;
+		IGetAttacked playerDefence;
 		Player player;
 
 		public void SetPlayer(Player newPlayer)
@@ -17,7 +17,7 @@ namespace __SCRIPTS.HUD_Displays
 			player = newPlayer;
 			barFX = GetComponentInChildren<LineBar>();
 			if (barFX != null) barFX.FastBar.color = newPlayer.playerColor;
-			playerDefence = player.SpawnedPlayerGO.GetComponentInChildren<Life>();
+			playerDefence = player.SpawnedPlayerGO.GetComponentInChildren<IGetAttacked>();
 			if (playerDefence == null) return;
 			playerDefence.OnFractionChanged -= UpdateDisplay;
 			playerDefence.OnFractionChanged += UpdateDisplay;

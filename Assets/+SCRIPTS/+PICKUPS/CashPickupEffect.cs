@@ -7,7 +7,7 @@ namespace __SCRIPTS
 	{
 		private int amount;
 
-		public override void StartEffect(Life life)
+		public override void StartEffect(IGetAttacked life)
 		{
 			effectDuration = 0;
 			var stats = ServiceLocator.Get<PlayerStatsManager>();

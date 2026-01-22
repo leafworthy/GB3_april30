@@ -6,7 +6,7 @@ namespace __SCRIPTS
 	{
 		private int amount;
 
-		public override void StartEffect(Life life)
+		public override void StartEffect(IGetAttacked life)
 		{
 			effectDuration = 0;
 			life.AddHealth(amount);

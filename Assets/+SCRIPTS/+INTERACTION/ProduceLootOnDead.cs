@@ -6,8 +6,8 @@ namespace __SCRIPTS
 {
 	public class ProduceLootOnDead : MonoBehaviour
 	{
-		Life life => _life ??= GetComponent<Life>();
-		Life _life;
+		IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
+		IGetAttacked _life;
 		LootTable lootTable => _lootTable ?? ServiceLocator.Get<LootTable>();
 		LootTable _lootTable;
 

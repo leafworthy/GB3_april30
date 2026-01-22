@@ -19,9 +19,9 @@ namespace __SCRIPTS
 		bool isPressingDetonate;
 
 		bool isThrowing;
-		public override bool requiresArms() => true;
+		protected override bool requiresArms() => true;
 
-		public override bool requiresLegs() => false;
+		protected override bool requiresLegs() => false;
 
 		public override bool canDo() => base.canDo() && ammo.secondaryAmmo.hasReserveAmmo();
 
@@ -29,12 +29,12 @@ namespace __SCRIPTS
 		{
 			ammo.secondaryAmmo.UseAmmo(1);
 			startPoint = transform.position;
-			OnThrow?.Invoke(startPoint, life.player);
+			OnThrow?.Invoke(startPoint, defence.player);
 			isThrowing = true;
 
 			var newProjectile = Services.objectMaker.Make(Services.assetManager.FX.minePrefab, startPoint);
 			var newMine = newProjectile.GetComponent<Mine>();
-			newMine.Launch(startPoint, attacker);
+			newMine.Launch(startPoint, offence);
 			newMine.OnSelfDetonate += RemoveMine;
 			ActiveMines.Add(newMine);
 		}
@@ -93,7 +93,7 @@ namespace __SCRIPTS
 			}
 
 			base.AnimationComplete();
-			lastArmAbility?.TryToDoAbility();
+			lastArmAbility?.TryToActivate();
 		}
 
 		void Player_ThrowPress(NewControlButton newControlButton)
@@ -107,7 +107,7 @@ namespace __SCRIPTS
 
 			if (isThrowing) return;
 			if (body.doableArms.CurrentAbility is not ThrowMineAttack) lastArmAbility = body.doableArms.CurrentAbility;
-			TryToDoAbility();
+			TryToActivate();
 		}
 
 		void Player_ThrowRelease(NewControlButton obj)

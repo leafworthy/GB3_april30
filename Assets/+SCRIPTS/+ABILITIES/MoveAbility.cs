@@ -23,8 +23,8 @@ namespace __SCRIPTS
 		ICanMoveThings _mover;
 		IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
 		IHaveUnitStats _stats;
-		Life health => _health ??= GetComponent<Life>();
-		Life _health;
+		IGetAttacked health => _health ??= GetComponent<IGetAttacked>();
+		IGetAttacked _health;
 
 		Vector2 moveVelocity;
 		Vector2 pushVelocity;

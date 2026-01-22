@@ -33,9 +33,9 @@ namespace __SCRIPTS
 		private float GetAttackDamage() => player.spawnedPlayerStats.Stats.Damage(1);
 		public override string AbilityName => "Bat-Air-Attack";
 
-		public override bool requiresArms() => true;
+		protected override bool requiresArms() => true;
 
-		public override bool requiresLegs() => false;
+		protected override bool requiresLegs() => false;
 
 		public override bool canDo() => base.canDo() && jumps.IsInAir;
 
@@ -80,7 +80,7 @@ namespace __SCRIPTS
 		{
 			if (currentState == state.landingAttack)
 			{
-				StopBody();
+				StopAbility();
 			}
 		}
 
@@ -99,15 +99,15 @@ namespace __SCRIPTS
 		private void Player_AttackPress(NewControlButton obj)
 		{
 			if (currentState != state.not) return;
-			TryToDoAbility();
+			TryToActivate();
 		}
 
-		public override void StopAbilityBody()
+		public override void StopAbility()
 		{
 			SetState(state.not);
 			jumps.OnLand -= LandWithAttack;
 			jumps.OnFalling -= FallWithAttack;
-			base.StopAbilityBody();
+			base.StopAbility();
 		}
 
 		private void FallWithAttack()
@@ -128,11 +128,11 @@ namespace __SCRIPTS
 
 		private void RegularAttackHit()
 		{
-			var hits = MyAttackUtilities.CircleCastForXClosestTargets(attacker, attacker.stats.Stats.Range(1));
+			var hits = MyAttackUtilities.CircleCastForXClosestTargets(offence, offence.stats.Stats.Range(1));
 			if (hits == null) return;
 			foreach (var hit in hits)
 			{
-				MyAttackUtilities.HitTarget(attacker, hit, GetAttackDamage());
+				MyAttackUtilities.HitTarget(offence, hit, GetAttackDamage());
 				OnHitTarget?.Invoke(hit.transform.position);
 			}
 		}

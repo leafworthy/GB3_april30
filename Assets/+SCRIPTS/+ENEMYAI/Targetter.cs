@@ -11,14 +11,14 @@ namespace __SCRIPTS._ENEMYAI
 
 		#region private functions
 
-		public Life GetClosestEnemyInRange(float range)
+		public IGetAttacked GetClosestEnemyInRange(float range)
 		{
 			var playersInRange = GetActualEnemyTargetsInRange(targetterLife.EnemyLayer, range);
 			var closest = GetClosest(playersInRange);
 			return closest;
 		}
 
-		private List<Life> GetActualEnemyTargetsInRange(LayerMask levelAssetsEnemyLayer, float range)
+		private List<IGetAttacked> GetActualEnemyTargetsInRange(LayerMask levelAssetsEnemyLayer, float range)
 		{
 			var enemiesInRange = GetValidTargetsInRange(levelAssetsEnemyLayer, range);
 			var actualEnemiesInRange = enemiesInRange
@@ -27,9 +27,9 @@ namespace __SCRIPTS._ENEMYAI
 			return actualEnemiesInRange;
 		}
 
-		private Life GetClosest(List<Life> targets)
+		private IGetAttacked GetClosest(List<IGetAttacked> targets)
 		{
-			Life closest = null;
+			IGetAttacked closest = null;
 			var minDistance = float.MaxValue;
 
 			foreach (var target in targets)
@@ -43,10 +43,10 @@ namespace __SCRIPTS._ENEMYAI
 			return closest;
 		}
 
-		public Life GetClosestPlayerWithinRange(float range) => GetClosest(GetTargetsInRange(Services.assetManager.LevelAssets.PlayerLayer, range));
-		public Life GetClosestPlayer() => GetClosest(GetPlayers());
+		public IGetAttacked GetClosestPlayerWithinRange(float range) => GetClosest(GetTargetsInRange(Services.assetManager.LevelAssets.PlayerLayer, range));
+		public IGetAttacked GetClosestPlayer() => GetClosest(GetPlayers());
 
-		private List<Life> GetPlayers()
+		private List<IGetAttacked> GetPlayers()
 		{
 			var playersWithGOs = Services.playerManager.AllJoinedPlayers.Where(x => x.spawnedPlayerDefence != null).ToList();
 			var playerLives = playersWithGOs.Select(x => x.spawnedPlayerDefence).Where(x => !x.IsDead()).ToList();
@@ -54,11 +54,11 @@ namespace __SCRIPTS._ENEMYAI
 			return playerLives;
 		}
 
-		private List<Life> GetValidTargetsInRange(LayerMask layer, float range) =>
-			Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
+		private List<IGetAttacked> GetValidTargetsInRange(LayerMask layer, float range) =>
+			Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<IGetAttacked>())
 			         .Where(life => life != null && TargetIsNotNullOrDead(life)).ToList();
 
-		private List<Life> GetTargetsInRange(LayerMask layer, float range) => GetValidTargetsInRange(layer, range);
+		private List<IGetAttacked> GetTargetsInRange(LayerMask layer, float range) => GetValidTargetsInRange(layer, range);
 
 		private bool buildingIsInTheWay(Vector2 position)
 		{
@@ -83,6 +83,6 @@ namespace __SCRIPTS._ENEMYAI
 
 		public bool HasLineOfSightWith(Vector3 transformPosition) => !buildingIsInTheWay(transformPosition);
 
-		private bool TargetIsNotNullOrDead(Life target) => target != null && !target.IsDead();
+		private bool TargetIsNotNullOrDead(IGetAttacked target) => target != null && !target.IsDead();
 	}
 }

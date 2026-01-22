@@ -23,7 +23,7 @@ namespace __SCRIPTS
 
 		public GameObject SpawnedPlayerGO;
 		public ICanAttack spawnedPlayerAttacker;
-		public Life spawnedPlayerDefence;
+		public IGetAttacked spawnedPlayerDefence;
 		public IHaveUnitStats spawnedPlayerStats;
 
 		public PlayerController Controller;
@@ -94,7 +94,7 @@ namespace __SCRIPTS
 
 			if (spawnedPlayerDefence != null) spawnedPlayerDefence.OnDeathComplete -= OnPlayerDied;
 			SpawnedPlayerGO = newGO;
-			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
+			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<IGetAttacked>();
 			spawnedPlayerStats = SpawnedPlayerGO.GetComponent<IHaveUnitStats>();
 			if (spawnedPlayerDefence == null) return;
 

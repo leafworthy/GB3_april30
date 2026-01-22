@@ -61,7 +61,7 @@ namespace __SCRIPTS
 			OnStatsReset?.Invoke();
 		}
 
-		void EnemiesOnPlayerKillsEnemy(Player player, float experienceGained, Life life)
+		void EnemiesOnPlayerKillsEnemy(Player player, float experienceGained, IGetAttacked life)
 		{
 			if (player != owner) return;
 

@@ -4,13 +4,26 @@ using UnityEngine;
 
 namespace GangstaBean.Core
 {
-
+	/// <summary>
+	/// Interface for components that need a player reference
+	/// </summary>
 	public interface INeedPlayer
 	{
 		void SetPlayer(Player newPlayer);
 	}
 
-
+	/// <summary>
+	/// Interface for components that can be activities
+	/// </summary>
+	public interface IDoableAbility
+	{
+		string AbilityName { get; }
+		bool canDo();
+		bool canStop(IDoableAbility abilityToStopFor);
+		void TryToActivate();
+		void StopAbility();
+		void Resume();
+	}
 
 	public interface IPoolable
 	{
@@ -48,11 +61,34 @@ namespace GangstaBean.Core
 		LayerMask EnemyLayer { get; }
 		IHaveUnitStats stats { get; }
 
-		bool IsEnemyOf(Life targetLife);
-		event Action<Life> OnAttack;
+		bool IsEnemyOf(IGetAttacked targetLife);
+		event Action<IGetAttacked> OnAttack;
 		event Action OnAttackStop;
 		event Action OnAttackStart;
 	}
 
-
+	public interface IGetAttacked : INeedPlayer, IHaveUnitStats
+	{
+		public Player player { get; }
+		Transform transform { get; }
+		DebrisType DebrisType { get; }
+		UnitCategory category { get; }
+		float CurrentHealth { get; }
+		float MaxHealth { get; }
+		public void TakeDamage(Attack attack);
+		bool CanTakeDamage();
+		bool IsDead();
+		void DieNow();
+		float GetFraction();
+		void AddHealth(float amount);
+		public event Action<Attack> OnDead;
+		event Action<Player, bool> OnDeathComplete;
+		event Action<Attack> OnAttackHit;
+		event Action<Attack> OnShielded;
+		event Action<float> OnFractionChanged;
+		event Action<Attack> OnFlying;
+		void SetTemporarilyInvincible(bool i);
+		void SetShielding(bool isOn);
+		bool IsEnemyOf(ICanAttack life);
+	}
 }

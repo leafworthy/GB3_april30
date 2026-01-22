@@ -3,40 +3,42 @@ using GangstaBean.Core;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public abstract class Ability : SerializedMonoBehaviour, INeedPlayer
+public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPlayer
 {
 	protected Player player;
 	protected UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
 	UnitAnimations _anim;
 	protected Body body => _body ??= GetComponent<Body>();
 	Body _body;
-	protected Life life => _life ??= GetComponent<Life>();
-	Life _life;
-	protected ICanAttack attacker => _attacker ??= GetComponent<ICanAttack>();
-	ICanAttack _attacker;
+	protected IGetAttacked defence => _defence ??= GetComponent<IGetAttacked>();
+	IGetAttacked _defence;
+	protected ICanAttack offence => _attack ??= GetComponent<ICanAttack>();
+	ICanAttack _attack;
 
-	protected Ability lastLegAbility;
-	protected Ability lastArmAbility;
+	protected IDoableAbility lastLegAbility;
+	protected IDoableAbility lastArmAbility;
 	public abstract string AbilityName { get; }
 
-	public abstract bool requiresArms();
-	public abstract bool requiresLegs();
+	protected abstract bool requiresArms();
+	protected abstract bool requiresLegs();
 
 	public virtual bool canDo() => BodyCanDo(this);
-	public virtual bool canStop(Ability abilityToStopFor) => false;
+	public virtual bool canStop(IDoableAbility abilityToStopFor) => false;
 
-	public void TryToDoAbility()
+	public void TryToActivate()
 	{
 		if (!canDo()) return;
 		lastLegAbility = body.doableLegs.CurrentAbility;
 		lastArmAbility = body.doableArms.CurrentAbility;
-		body.DoAbility(this);
+		if (requiresArms()) body.doableArms.DoAbility(this);
+		if (requiresLegs()) body.doableLegs.DoAbility(this);
+
 		DoAbility();
 	}
 
 	protected abstract void DoAbility();
 
-	public virtual void StopAbilityBody()
+	public virtual void StopAbility()
 	{
 		StopBody();
 	}
@@ -46,27 +48,28 @@ public abstract class Ability : SerializedMonoBehaviour, INeedPlayer
 		if (requiresArms()) body.doableArms.Stop(this);
 		if (requiresLegs()) body.doableLegs.Stop(this);
 
-
 		CancelInvoke();
 	}
 
 	public virtual void Resume()
 	{
-		TryToDoAbility();
+		TryToActivate();
 	}
 
-	bool BodyCanDo(Ability abilityToDo)
+	bool BodyCanDo(IDoableAbility abilityToDo)
 	{
 		if (Services.pauseManager.IsPaused) return false;
-		if (life.IsDead()) return false;
-		if (body.CanDoAbility(abilityToDo)) return false;
+		if (defence.IsDead()) return false;
+
+		if (requiresArms() && !body.doableArms.CanDoActivity(abilityToDo)) return false;
+		if (requiresLegs() && !body.doableLegs.CanDoActivity(abilityToDo)) return false;
 
 		return true;
 	}
 
 	protected virtual void AnimationComplete()
 	{
-		StopAbilityBody();
+		StopAbility();
 	}
 
 	protected void PlayAnimationClip(string clipName, float length, int layer = 0)

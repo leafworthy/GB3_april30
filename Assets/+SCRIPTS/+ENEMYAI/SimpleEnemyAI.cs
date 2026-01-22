@@ -9,7 +9,7 @@ namespace __SCRIPTS._ENEMYAI
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;
 		public event Action OnAttackStart;
-		public event Action<Life> OnAttack;
+		public event Action<IGetAttacked> OnAttack;
 		public event Action OnAttackStop;
 		public Vector2 GetMoveAimDir() => moveDir;
 		private Vector2 moveDir;
@@ -20,7 +20,7 @@ namespace __SCRIPTS._ENEMYAI
 		private Player _player;
 		public LayerMask EnemyLayer => Services.assetManager.LevelAssets.EnemyLayer;
 
-		public bool IsEnemyOf(Life targetLife)
+		public bool IsEnemyOf(IGetAttacked targetLife)
 		{
 			if (targetLife == null) return false;
 			if (targetLife.player == null) return true;
@@ -28,7 +28,7 @@ namespace __SCRIPTS._ENEMYAI
 		}
 
 
-		private Life _target;
+		private IGetAttacked _target;
 		private Targetter targetter =>  _targetter ??= GetComponent<Targetter>();
 		private Targetter _targetter;
 

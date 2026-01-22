@@ -29,8 +29,8 @@ namespace __SCRIPTS
 		const float Attack2Damage = 60;
 		const float Attack3Damage = 100;
 		const float Attack4Damage = 200;
-		public override bool requiresArms() => true;
-		public override bool requiresLegs() => false;
+		protected override bool requiresArms() => true;
+		protected override bool requiresLegs() => false;
 
 		public override bool canDo() => base.canDo() && !jumps.IsInAir;
 
@@ -55,7 +55,7 @@ namespace __SCRIPTS
 		void Player_AttackPress(NewControlButton newControlButton)
 		{
 			isPressingAttack = true;
-			TryToDoAbility();
+			TryToActivate();
 		}
 
 		protected override void DoAbility()
@@ -70,11 +70,11 @@ namespace __SCRIPTS
 
 		void RegularAttackHit(int attackType)
 		{
-			var hits = MyAttackUtilities.CircleCastForXClosestTargets(attacker, attacker.stats.Stats.Range(1));
+			var hits = MyAttackUtilities.CircleCastForXClosestTargets(offence, offence.stats.Stats.Range(1));
 			if (hits == null) return;
 			foreach (var hit in hits)
 			{
-				MyAttackUtilities.HitTarget(attacker, hit, GetAttackDamage(attackType), extraPush);
+				MyAttackUtilities.HitTarget(offence, hit, GetAttackDamage(attackType), extraPush);
 				OnHitTarget?.Invoke(hit.transform.position);
 			}
 		}
@@ -107,15 +107,15 @@ namespace __SCRIPTS
 			Invoke(nameof(CurrentAttackHit), attackAnimation.length / 4);
 		}
 
-		public override void StopAbilityBody()
+		public override void StopAbility()
 		{
 			moveAbility.SetCanMove(true);
-			base.StopAbilityBody();
+			base.StopAbility();
 		}
 
 		protected override void AnimationComplete()
 		{
-			StopAbilityBody();
+			StopAbility();
 			if (isPressingAttack) Player_AttackPress(null);
 		}
 

@@ -7,7 +7,7 @@ namespace __SCRIPTS
 		private int amount = 1;
 		private AmmoInventory.AmmoType ammoType;
 
-		public override void StartEffect(Life life)
+		public override void StartEffect(IGetAttacked life)
 		{
 			effectDuration = 0;
 			life.player.GainKey();

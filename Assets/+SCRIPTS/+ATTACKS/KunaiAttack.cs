@@ -17,9 +17,9 @@ namespace __SCRIPTS
 		private AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
 		private AmmoInventory _ammoInventory;
 
-		public override bool requiresArms() => true;
+		protected override bool requiresArms() => true;
 
-		public override bool requiresLegs() => false;
+		protected override bool requiresLegs() => false;
 
 		protected override void DoAbility()
 		{
@@ -119,7 +119,7 @@ namespace __SCRIPTS
 			if (isPressingAttack) return;
 			isPressingAttack = true;
 			Debug.Log("start press kunai");
-			TryToDoAbility();
+			TryToActivate();
 		}
 	}
 }

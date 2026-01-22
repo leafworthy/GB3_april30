@@ -13,7 +13,7 @@ public class ShieldDashAbility : DashAbility
 
 	protected override void AnimationComplete()
 	{
-		life.SetTemporarilyInvincible(false);
+		defence.SetTemporarilyInvincible(false);
 		base.AnimationComplete();
 	}
 
@@ -23,11 +23,11 @@ public class ShieldDashAbility : DashAbility
 		ShieldDash();
 	}
 
-	public override void StopAbilityBody()
+	public override void StopAbility()
 	{
 		StopDashing();
 
-		if (lastArmAbility is ShieldAbility or GunAttackSingle)
+		if (lastArmAbility is ShieldAbility or GunAttack)
 		{
 			shieldAbility.SetShielding(lastArmAbility is ShieldAbility);
 
@@ -38,24 +38,24 @@ public class ShieldDashAbility : DashAbility
 		{
 			shieldAbility.SetShielding(false);
 			StopBody();
-			lastArmAbility?.TryToDoAbility();
+			lastArmAbility?.TryToActivate();
 		}
 	}
 
 	void ShieldDash()
 	{
-		var hits = Physics2D.OverlapCircleAll(transform.position, 30, attacker.EnemyLayer);
+		var hits = Physics2D.OverlapCircleAll(transform.position, 30, offence.EnemyLayer);
 		shieldAbility.SetShielding(true);
 		foreach (var hit in hits)
 		{
 			var _life = hit.GetComponentInParent<Life>();
-			if (_life == null || !_life.IsEnemyOf(life)) continue;
+			if (_life == null || !_life.IsEnemyOf(defence)) continue;
 			var movement = _life.GetComponent<MoveAbility>();
 			if (movement == null) continue;
 
 			OnShieldDash?.Invoke();
-			life.SetTemporarilyInvincible(true);
-			movement.Push((hit.transform.position - transform.position).normalized, attacker.stats.Stats.DashSpeed * extraDashPushFactor);
+			defence.SetTemporarilyInvincible(true);
+			movement.Push((hit.transform.position - transform.position).normalized, offence.stats.Stats.DashSpeed * extraDashPushFactor);
 		}
 	}
 
@@ -81,6 +81,6 @@ public class ShieldDashAbility : DashAbility
 
 	void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 	{
-		TryToDoAbility();
+		TryToActivate();
 	}
 }

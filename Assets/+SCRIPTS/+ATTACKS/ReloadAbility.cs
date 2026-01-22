@@ -9,17 +9,17 @@ namespace __SCRIPTS
 		public event Action OnReload;
 		public AnimationClip ReloadPrimaryGunAnimationClip;
 		public AnimationClip ReloadUnlimitedGunAnimationClip;
-		GunAttackSingle gunAttack => _gunAttack ??= GetComponent<GunAttackSingle>();
-		GunAttackSingle _gunAttack;
+		GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
+		GunAttack _gunAttack;
 
 		public override string AbilityName => "Reloading";
-		public override bool requiresArms() => true;
+		protected override bool requiresArms() => true;
 
-		public override bool requiresLegs() => false;
+		protected override bool requiresLegs() => false;
 
 		public override bool canDo() => base.canDo() && gunAttack.CurrentGun.CanReload();
 
-		public override bool canStop(Ability abilityToStopFor) => abilityToStopFor is DashAbility or JumpAbility;
+		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is DashAbility or JumpAbility;
 
 		protected override void DoAbility()
 		{
@@ -31,13 +31,15 @@ namespace __SCRIPTS
 			Invoke(nameof(Reload), gunAttack.CurrentGun.reloadTime);
 			anim.SetBool(UnitAnimations.IsBobbing, false);
 
-			if (gunAttack.CurrentGun.CanReload())
-				PlayAnimationClip(gunAttack.CurrentGun.ReloadAnimationClip);
+			if (!gunAttack.IsUsingPrimaryGun)
+				PlayAnimationClip(ReloadUnlimitedGunAnimationClip, 1);
+			else
+				PlayAnimationClip(ReloadPrimaryGunAnimationClip, 1);
 		}
 
-		public override void StopAbilityBody()
+		public override void StopAbility()
 		{
-			base.StopAbilityBody();
+			base.StopAbility();
 			gunAttack.Resume();
 		}
 
@@ -53,7 +55,7 @@ namespace __SCRIPTS
 			if (player.Controller == null) return;
 			if (player.Controller.ReloadTriangle == null) return;
 			player.Controller.ReloadTriangle.OnPress -= Player_Reload;
-			base.StopAbilityBody();
+			base.StopAbility();
 		}
 
 		public override void SetPlayer(Player newPlayer)
@@ -67,12 +69,12 @@ namespace __SCRIPTS
 
 		void Gun_OnNeedsReload()
 		{
-			TryToDoAbility();
+			TryToActivate();
 		}
 
 		void Player_Reload(NewControlButton btn)
 		{
-			TryToDoAbility();
+			TryToActivate();
 		}
 	}
 }
