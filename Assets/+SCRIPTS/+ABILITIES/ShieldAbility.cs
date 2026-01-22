@@ -1,6 +1,5 @@
 using System;
 using __SCRIPTS;
-using GangstaBean.Core;
 using UnityEngine;
 
 public class ShieldAbility : WeaponAbility
@@ -10,15 +9,14 @@ public class ShieldAbility : WeaponAbility
 	AimAbility aimAbility => _aimAbility ??= GetComponent<AimAbility>();
 	AimAbility _aimAbility;
 
-	protected override bool requiresArms() => true;
-	protected override bool requiresLegs() => false;
+	public override bool requiresArms() => true;
+	public override bool requiresLegs() => false;
 
-	public override bool canStop(IDoableAbility abilityToStopFor) => currentState == weaponState.idle || abilityToStopFor is ShieldDashAbility;
+	public override bool canStop(Ability abilityToStopFor) => currentState == weaponState.idle || abilityToStopFor is ShieldDashAbility;
 
 	protected override void PullOutWeapon()
 	{
 		base.PullOutWeapon();
-
 	}
 
 	protected override void AnimationComplete()
@@ -50,13 +48,13 @@ public class ShieldAbility : WeaponAbility
 	{
 		shieldObject.SetActive(isOn);
 		anim.SetBool(UnitAnimations.IsShielding, isOn);
-		defence.SetShielding(isOn);
+		life.SetShielding(isOn);
 		SetState(weaponState.idle);
 	}
 
-	public override void StopAbility()
+	public override void StopAbilityBody()
 	{
 		SetShielding(false);
-		base.StopAbility();
+		StopBody();
 	}
 }

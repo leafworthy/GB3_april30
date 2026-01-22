@@ -22,19 +22,19 @@ namespace __SCRIPTS
 		protected bool isIdle => currentState is weaponState.idle;
 
 		protected weaponState currentState {get; private set;}
-		[SerializeField]public Weapon weapon;
+
+		public AnimationClip pullOutAnimationClip;
 		public override string AbilityName => "Weapon-Ability";
 
-		protected override bool requiresArms() => true;
-		protected override bool requiresLegs() => false;
+		public override bool requiresArms() => true;
+		public override bool requiresLegs() => false;
 
-		public override bool canStop(IDoableAbility abilityToStopFor) => currentState == weaponState.idle;
+		public override bool canStop(Ability abilityToStopFor) => isIdle;
 
 		protected override void DoAbility()
 		{
 			if(currentState != weaponState.resuming && currentState != weaponState.pullOut)
 			{
-				Debug.Log("doing pull out");
 				PullOutWeapon();
 			}
 			else
@@ -46,7 +46,7 @@ namespace __SCRIPTS
 		protected virtual void PullOutWeapon()
 		{
 			SetState(weaponState.pullOut);
-			PlayAnimationClip(weapon.pullOutAnimationClip, 1);
+			PlayAnimationClip(pullOutAnimationClip, 1);
 
 		}
 
@@ -57,7 +57,7 @@ namespace __SCRIPTS
 		public override void Resume()
 		{
 			SetState(weaponState.resuming);
-			TryToActivate();
+			TryToDoAbility();
 		}
 
 		protected override void AnimationComplete()
@@ -65,10 +65,10 @@ namespace __SCRIPTS
 			StartIdle();
 		}
 
-		public override void StopAbility()
+		public override void StopAbilityBody()
 		{
-			currentState = weaponState.not;
-			base.StopAbility();
+			SetState(weaponState.not);
+			base.StopAbilityBody();
 		}
 
 

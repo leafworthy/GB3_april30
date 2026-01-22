@@ -8,7 +8,7 @@ using UnityUtils;
 namespace __SCRIPTS
 {
 	[ExecuteAlways, RequireComponent(typeof(Life_FX))]
-	public class Life : SerializedMonoBehaviour, IGetAttacked
+	public class Life : SerializedMonoBehaviour
 	{
 		public string OverrideName;
 		public Player player { get; private set; }
@@ -23,12 +23,12 @@ namespace __SCRIPTS
 		public DebrisType DebrisType => Stats.DebrisType;
 		public float MaxHealth => Stats.RealMaxHealth + Stats.GetExtraHealth();
 		public bool CanTakeDamage() => Stats.CanTakeDamage();
-		public bool IsEnemyOf(IGetAttacked other) => player.IsHuman() != other.player.IsHuman();
+		public bool IsEnemyOf(Life other) => player.IsHuman() != other.player.IsHuman();
 
 		public event Action<Attack> OnAttackHit;
 		public event Action<float> OnFractionChanged;
 		public event Action<Attack> OnDead;
-		public event Action<Player, IGetAttacked> OnKilled;
+		public event Action<Player, Life> OnKilled;
 		public event Action<Player, bool> OnDeathComplete;
 		public event Action<Attack> OnShielded;
 		public event Action<Attack> OnFlying;

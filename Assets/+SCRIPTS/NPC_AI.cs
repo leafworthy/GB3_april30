@@ -3,6 +3,7 @@ using __SCRIPTS;
 using __SCRIPTS._ENEMYAI;
 using GangstaBean.Core;
 using UnityEngine;
+using Life = __SCRIPTS.Life;
 
 public class NPC_AI : MonoBehaviour, ICanMoveThings, ICanAttack, INeedPlayer
 {
@@ -17,9 +18,9 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, ICanAttack, INeedPlayer
 	public LayerMask EnemyLayer => Services.assetManager.LevelAssets.EnemyLayer;
 	public IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
 	IHaveUnitStats _stats;
-	public bool IsEnemyOf(IGetAttacked targetLife) => life.IsEnemyOf(this);
+	public bool IsEnemyOf(Life targetLife) => life.IsEnemyOf(this);
 
-	public event Action<IGetAttacked> OnAttack;
+	public event Action<Life> OnAttack;
 	public event Action OnAttackStop;
 	public event Action OnAttackStart;
 
@@ -35,11 +36,11 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, ICanAttack, INeedPlayer
 	public bool IsMoving() => isMoving;
 	bool isMoving;
 
-	IGetAttacked _life;
-	IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
+	Life _life;
+	Life life => _life ??= GetComponent<Life>();
 
-	IGetAttacked cowerTarget;
-	IGetAttacked avoidTarget;
+	Life cowerTarget;
+	Life avoidTarget;
 	Targetter targetter => _targetter ??= GetComponent<Targetter>();
 	Targetter _targetter;
 

@@ -1,4 +1,5 @@
 using System;
+using __SCRIPTS;
 using __SCRIPTS._ENEMYAI;
 using GangstaBean.Core;
 using UnityEngine;
@@ -17,8 +18,8 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings
 	Animator animator => _animator ??= GetComponentInChildren<Animator>();
 	Animator _animator;
 
-	IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
-	IGetAttacked _life;
+	Life life => _life ??= GetComponent<Life>();
+	Life _life;
 
 	bool isIdle;
 	float idleTimer;

@@ -1,4 +1,3 @@
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -7,36 +6,25 @@ namespace __SCRIPTS
 	{
 		public AnimationClip dashAnimationClip_Bottom;
 		public AnimationClip dashAnimationClip_Top;
-		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
-		private MoveAbility _moveAbility;
-
-		private JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
-		private JumpAbility _jumps;
+		MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
+		MoveAbility _moveAbility;
 
 		public override string AbilityName => "Dash";
-		protected override bool requiresArms() => true;
+		public override bool requiresArms() => true;
 
-		protected override bool requiresLegs() => true;
+		public override bool requiresLegs() => true;
 
-		public override bool canDo() => base.canDo() && jumps.IsResting;
+		public override bool canDo() => base.canDo() && body.isGrounded;
 
-		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is JumpAbility;
+		public override bool canStop(Ability abilityToStopFor) => abilityToStopFor is JumpAbility;
 
-		public override void StopAbility()
+		public override void StopAbilityBody()
 		{
 			StopBody();
 			StopDashing();
-			defence.SetTemporarilyInvincible(false);
-			if (lastArmAbility is GunAttack)
-			{
-				StopBody();
-				lastArmAbility?.Resume();
-			}
-			else
-			{
-				StopBody();
-				lastArmAbility?.TryToActivate();
-			}
+			life.SetTemporarilyInvincible(false);
+			StopBody();
+			lastArmAbility?.TryToDoAbility();
 		}
 
 		protected void StopDashing()
@@ -51,7 +39,7 @@ namespace __SCRIPTS
 			Dash();
 		}
 
-		private void UnsubscribeFromEvents()
+		void UnsubscribeFromEvents()
 		{
 			if (player?.Controller != null)
 				player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
@@ -66,7 +54,7 @@ namespace __SCRIPTS
 			player.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
 		}
 
-		private void OnDestroy()
+		void OnDestroy()
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;
@@ -74,20 +62,18 @@ namespace __SCRIPTS
 			player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 		}
 
-		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
+		void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 		{
-			TryToActivate();
+			TryToDoAbility();
 		}
-
-
 
 		protected void Dash()
 		{
 			if (dashAnimationClip_Bottom != null) PlayAnimationClip(dashAnimationClip_Bottom);
 			if (dashAnimationClip_Top != null) PlayAnimationClip(dashAnimationClip_Top, 1);
-			defence.SetTemporarilyInvincible(true);
+			life.SetTemporarilyInvincible(true);
 
-			moveAbility.Push(moveAbility.GetMoveDir(), offence.stats.Stats.DashSpeed);
+			moveAbility.Push(moveAbility.GetMoveDir(), attacker.stats.Stats.DashSpeed);
 		}
 	}
 }

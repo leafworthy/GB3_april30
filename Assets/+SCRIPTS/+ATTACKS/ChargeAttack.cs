@@ -58,9 +58,9 @@ namespace __SCRIPTS
 
 		public override bool canDo() => base.canDo() && currentState == state.not && jumpAbility.IsResting;
 
-		protected override bool requiresArms() => true;
+		public override bool requiresArms() => true;
 
-		protected override bool requiresLegs() => true;
+		public override bool requiresLegs() => true;
 
 		protected override void DoAbility()
 		{
@@ -82,7 +82,7 @@ namespace __SCRIPTS
 			if (newPlayer == null) return;
 			base.SetPlayer(newPlayer);
 
-			if (defence != null)
+			if (life != null)
 			{
 				player.Controller.InteractRightShoulder.OnPress -= Player_ChargePress;
 				player.Controller.InteractRightShoulder.OnRelease -= Player_ChargeRelease;
@@ -99,7 +99,7 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			if (defence != null) return;
+			if (life != null) return;
 			player.Controller.InteractRightShoulder.OnPress -= Player_ChargePress;
 			player.Controller.InteractRightShoulder.OnRelease -= Player_ChargeRelease;
 		}
@@ -168,7 +168,7 @@ namespace __SCRIPTS
 
 		private void Player_ChargePress(NewControlButton newControlButton)
 		{
-			TryToActivate();
+			TryToDoAbility();
 		}
 
 		private void Player_ChargeRelease(NewControlButton newControlButton)
@@ -176,7 +176,7 @@ namespace __SCRIPTS
 			if (Services.pauseManager.IsPaused) return;
 			if (currentState == state.not) return;
 			if (!jumpAbility.IsResting) return;
-			if (defence.IsDead()) return;
+			if (life.IsDead()) return;
 			SetState(state.attacking);
 			if (isFullyCharged)
 				StartSpecialAttack();
@@ -187,7 +187,7 @@ namespace __SCRIPTS
 		private void DoWeakAttack()
 		{
 			StopCharging();
-			batAttack.TryToActivate();
+			batAttack.TryToDoAbility();
 		}
 
 		private void StopCharging()
@@ -196,7 +196,7 @@ namespace __SCRIPTS
 			isFullyCharged = false;
 			UseAllAmmo();
 			OnChargeStop?.Invoke();
-			StopAbility();
+			StopAbilityBody();
 		}
 
 		private void StartSpecialAttack()
@@ -232,18 +232,18 @@ namespace __SCRIPTS
 				case state.charged:
 					break;
 				case state.attacking:
-					StopAbility();
+					StopAbilityBody();
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
 		}
 
-		public override void StopAbility()
+		public override void StopAbilityBody()
 		{
 			moveAbility.SetCanMove(true);
 			SetState(state.not);
-			base.StopAbility();
+			base.StopAbilityBody();
 		}
 
 		private void StartActualCharging()
@@ -271,23 +271,23 @@ namespace __SCRIPTS
 
 			SpecialAttackDistance = Vector2.Distance(attackPosition, bestTargetPoint);
 
-			var raycastHits = Physics2D.CircleCastAll(attackPosition, SpecialAttackWidth, moveAbility.GetMoveAimDir(), SpecialAttackDistance, offence.EnemyLayer);
+			var raycastHits = Physics2D.CircleCastAll(attackPosition, SpecialAttackWidth, moveAbility.GetMoveAimDir(), SpecialAttackDistance, attacker.EnemyLayer);
 			OnSpecialAttackHit?.Invoke();
 
 			foreach (var raycastHit2D in raycastHits)
 			{
 				var otherLife = raycastHit2D.collider.GetComponent<Life>();
-				MyAttackUtilities.HitTarget(offence, otherLife, offence.stats.Stats.Damage(2));
+				MyAttackUtilities.HitTarget(attacker, otherLife, attacker.stats.Stats.Damage(2));
 			}
 
 			var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position + moveAbility.GetMoveAimDir() * SpecialAttackDistance, GetHitRange(),
-				offence.EnemyLayer);
+				attacker.EnemyLayer);
 
 			foreach (var hit2D in circleCast)
 			{
 				var otherLife = hit2D.gameObject.GetComponent<Life>();
 				if(otherLife == null) continue;
-				MyAttackUtilities.HitTarget(offence, otherLife, otherLife.Stats.Damage(2), SpecialAttackExtraPush, true);
+				MyAttackUtilities.HitTarget(attacker, otherLife, otherLife.Stats.Damage(2), SpecialAttackExtraPush, true);
 
 				connect = true;
 				Services.objectMaker.Make(Services.assetManager.FX.hits.GetRandom(), hit2D.transform.position);
@@ -300,6 +300,6 @@ namespace __SCRIPTS
 		private Vector2 GetBestTargetPoint(Vector3 attackPosition) =>
 			moveAbility.IsIdle() ? aimAbility.GetAimPoint() : (Vector2) attackPosition + moveAbility.GetLastMoveAimDirOffset();
 
-		private float GetHitRange() => offence.stats.Stats.Range(1);
+		private float GetHitRange() => attacker.stats.Stats.Range(1);
 	}
 }

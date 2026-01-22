@@ -18,7 +18,7 @@ namespace __SCRIPTS
 			TintColor = Color.red;
 		}
 
-		public static Attack Create(ICanAttack originLife, IGetAttacked destinationLife)
+		public static Attack Create(ICanAttack originLife, Life destinationLife)
 		{
 			var attack = new Attack();
 			attack.OriginLife = originLife;
@@ -52,7 +52,7 @@ namespace __SCRIPTS
 			return this;
 		}
 
-		public void WithDestinationLife(IGetAttacked target)
+		public void WithDestinationLife(Life target)
 		{
 			DestinationLife = target;
 			if (target != null)
@@ -92,7 +92,7 @@ namespace __SCRIPTS
 
 		// Properties
 		public ICanAttack OriginLife;
-		public IGetAttacked DestinationLife;
+		public Life DestinationLife;
 		public float OriginHeight;
 		public float DestinationHeight;
 		public float DamageAmount;

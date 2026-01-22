@@ -7,29 +7,29 @@ namespace __SCRIPTS
 	[Serializable]
 	public class DoableBodyPart
 	{
-		public IDoableAbility CurrentAbility { get; private set; }
-		public void Stop(IDoableAbility abilityToStop)
+		public Ability CurrentAbility { get; private set; }
+		public void Stop(Ability abilityToStop)
 		{
 			if (CurrentAbility == null) return;
 			if (CurrentAbility != abilityToStop) return;
 			CurrentAbility = null;
 		}
 
-		public void DoAbility(IDoableAbility newAbility)
+		public void DoAbility(Ability newAbility)
 		{
-			if (CurrentAbility != null && CurrentAbility.canStop(newAbility)) CurrentAbility.StopAbility();
+			if (CurrentAbility != null && CurrentAbility.canStop(newAbility)) CurrentAbility.StopAbilityBody();
 
 			CurrentAbility = newAbility;
 			Debug.Log("current ability is now: " + CurrentAbility.AbilityName);
-			CurrentAbility.TryToActivate();
+			CurrentAbility.TryToDoAbility();
 		}
 
 
 
-		bool ActivitiesAreTheSame(IDoableAbility activity1, IDoableAbility activity2) =>
+		bool ActivitiesAreTheSame(Ability activity1, Ability activity2) =>
 			activity1?.AbilityName == activity2?.AbilityName;
 
-		public bool CanDoActivity(IDoableAbility newAbility, bool forceIt = false)
+		public bool CanDoActivity(Ability newAbility, bool forceIt = false)
 		{
 			if (newAbility == null)
 			{

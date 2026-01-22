@@ -1,37 +1,29 @@
 using System;
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class SingleGunAttack : WeaponAbility
+	[Serializable]
+	public class GunAttackSingle : WeaponAbility
 	{
-		[SerializeField] Gun currentGun;
-
-		JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
-		JumpAbility _jumpAbility;
-		public override string AbilityName => "Gun Attack " + currentState;
-		protected override bool requiresArms() => true;
-		protected override bool requiresLegs() => false;
-		public override bool canStop(IDoableAbility abilityToStopFor) => currentState is weaponState.idle or weaponState.resuming;
+		public Gun CurrentGun;
+		IAimAbility aimAbility => _aimAbility ??= GetComponent<IAimAbility>();
+		IAimAbility _aimAbility;
+		public Vector2 AimDir => aimAbility.AimDir;
+		public override string AbilityName => "Gun Attack " +CurrentGun.name + " " +currentState;
+		public override bool requiresArms() => true;
+		public override bool requiresLegs() => false;
+		public override bool canStop(Ability abilityToStopFor) => currentState is weaponState.idle or weaponState.resuming;
 
 		bool isPressingShoot;
-
-		public event Action OnNeedsReload;
 		public event Action OnEmpty;
+		public event Action OnNeedsReload;
 
-		public void EquipGun(Gun newGun)
+		public override void StopAbilityBody()
 		{
-			if(newGun == null)
-			{
-				Debug.LogError("Trying to equip null gun");
-				return;
-			}
-			if (newGun == currentGun) return;
-			currentGun = newGun;
-			PullOutGun();
+			anim.SetFloat(UnitAnimations.ShootSpeed, 0);
+			base.StopAbilityBody();
 		}
-
 
 #pragma warning disable UDR0001
 		static string[] PrimaryAnimationClips =
@@ -59,33 +51,40 @@ namespace __SCRIPTS
 
 		void StartAttacking()
 		{
-			if (!isIdle || !jumpAbility.IsResting) return;
+			if (!isIdle || !body.isGrounded) return;
 
-			if (!currentGun.Shoot())
+			if (!CurrentGun.CanShoot())
 			{
-				Debug.Log("can't shoot");
+
+				if (CurrentGun.CanReload()) Gun_OnNeedsReload();
+				else OnEmpty?.Invoke();
+
+
 				return;
 			}
+
 			SetState(weaponState.attacking);
 			PlayShootAnimation();
 		}
 
 		void PlayShootAnimation()
 		{
-			TopFaceCorrectDirection();
 			anim.SetFloat(UnitAnimations.ShootSpeed, 1);
-			PlayAnimationClip(currentGun.GetShootClipName(), currentGun.AttackRate, 1);
+			PlayAnimationClip(CurrentGun.GetShootClipName(), CurrentGun.AttackRate, 1);
 		}
-
 		void TopFaceCorrectDirection()
 		{
-			body.TopFaceDirection(currentGun.AimDir.x >= 0);
+			body.TopFaceDirection(AimDir.x >= 0);
 		}
 
 		protected override void StartIdle()
 		{
 			base.StartIdle();
-			anim.SetFloat(UnitAnimations.ShootSpeed, 0);
+			StopAbilityBody();
+			if (CurrentGun is not PrimaryGun) return;
+			if (!CurrentGun.MustReload()) return;
+			if (CurrentGun.CanReload()) OnNeedsReload?.Invoke();
+			else OnEmpty?.Invoke();
 		}
 
 		protected override void DoAbility()
@@ -104,28 +103,50 @@ namespace __SCRIPTS
 		protected override void PullOutWeapon()
 		{
 			SetState(weaponState.pullOut);
-			PlayAnimationClip(currentGun.pullOutAnimationClip, 1);
+			PlayAnimationClip(CurrentGun.PullOutAnimationClip, 1);
 		}
 
 		public override void SetPlayer(Player newPlayer)
 		{
 			base.SetPlayer(newPlayer);
+
 			StopListeningToEvents();
 			ListenToEvents();
-			PullOutGun();
+			TryToDoAbility();
 		}
 
-		void PullOutGun()
+
+
+
+
+		void Gun_OnNeedsReload()
 		{
-			TryToActivate();
+			StopAbilityBody();
+			OnNeedsReload?.Invoke();
+			StartReloading();
 		}
 
+		void StartReloading()
+		{
+		}
 
 		void ListenToEvents()
 		{
+			if (CurrentGun != null) CurrentGun.OnEmpty += Gun_OnEmpty;
 			if (player == null) return;
 			player.Controller.Attack1RightTrigger.OnPress += PlayerControllerShootPress;
 			player.Controller.Attack1RightTrigger.OnRelease += PlayerControllerShootRelease;
+		}
+
+		void Gun_OnEmpty()
+		{
+			StopAbilityBody();
+			OnEmpty?.Invoke();
+		}
+
+		void OnDestroy()
+		{
+			StopListeningToEvents();
 		}
 
 		void OnDisable()
@@ -135,6 +156,8 @@ namespace __SCRIPTS
 
 		void StopListeningToEvents()
 		{
+
+			if (CurrentGun != null) CurrentGun.OnEmpty -= Gun_OnEmpty;
 			if (player == null) return;
 			player.Controller.Attack1RightTrigger.OnPress -= PlayerControllerShootPress;
 			player.Controller.Attack1RightTrigger.OnRelease -= PlayerControllerShootRelease;
@@ -142,16 +165,16 @@ namespace __SCRIPTS
 
 		void FixedUpdate()
 		{
-			if (currentState != weaponState.idle) return;
+			if (!isActive) return;
 			if (isPressingShoot) StartAttacking();
-			else Aim();
+			else if (currentState == weaponState.idle) Aim();
 		}
 
 		void Aim()
 		{
 			TopFaceCorrectDirection();
 			anim.SetFloat(UnitAnimations.ShootSpeed, 0);
-			PlayAnimationClipWithoutEvent(currentGun.GetClipNameFromDegrees(), 1);
+			PlayAnimationClipWithoutEvent(CurrentGun.GetClipNameFromDegrees(), 1);
 		}
 
 		void PlayerControllerShootPress(NewControlButton newControlButton)
@@ -164,7 +187,6 @@ namespace __SCRIPTS
 		{
 			isPressingShoot = false;
 		}
-
 
 
 	}

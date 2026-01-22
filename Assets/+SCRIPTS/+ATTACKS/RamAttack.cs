@@ -10,8 +10,8 @@ namespace __SCRIPTS
 	{
 		private ICanAttack attacker => _attacker ??= GetComponent<ICanAttack>(); //wtf
 		private ICanAttack _attacker;
-		private IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
-		private IGetAttacked _life;
+		private Life life => _life ??= GetComponent<Life>();
+		private Life _life;
 		public bool hasBounceBack = true;
 		public bool causesFlying;
 		private float currentCooldown;
@@ -80,7 +80,7 @@ namespace __SCRIPTS
 			AttackHit(otherDefence);
 		}
 
-		private void AttackHit(IGetAttacked other)
+		private void AttackHit(Life other)
 		{
 			currentCooldown = coolDown;
 			var otherAttack = Attack.Create(attacker, other).WithDamage(attacker.stats.Stats.Damage(1)).WithFlying(causesFlying);

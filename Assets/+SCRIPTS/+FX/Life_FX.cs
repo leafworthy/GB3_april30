@@ -7,8 +7,8 @@ namespace __SCRIPTS
 {
 	public class Life_FX : MonoBehaviour, INeedPlayer
 	{
-		IGetAttacked life => _life ??= GetComponentInParent<IGetAttacked>();
-		IGetAttacked _life;
+		Life life => _life ??= GetComponentInParent<Life>();
+		Life _life;
 		Tinter tint => _tint ??= GetComponent<Tinter>();
 		Tinter _tint;
 		LineBar healthBar => _healthBar ??= GetComponentInChildren<LineBar>(true);

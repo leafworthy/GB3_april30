@@ -1,62 +1,58 @@
+using System;
 using GangstaBean.Core;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class ThreeWeaponSwitchAbility : MonoBehaviour, INeedPlayer
+	public class ThreeWeaponSwitchAbility : SerializedMonoBehaviour, INeedPlayer
 	{
+		public event Action<WeaponAbility> OnSwitchWeapon;
 		public WeaponAbility Primary_Weapon;
 		public WeaponAbility Secondary_Weapon;
 		public WeaponAbility Tertiary_Weapon;
-		public WeaponAbility currentWeapon;
-
+		WeaponAbility currentWeapon;
 		WeaponAbility weaponToSwitchTo;
 		Player player;
 
-		bool hasInitialized;
-
 		public void SetPlayer(Player newPlayer)
 		{
-			player = newPlayer;
-			if (hasInitialized)
-			{
-				Debug.LogWarning(" [SWITCHER] already initialized, skipping");
-				return;
-			}
+			ListenToPlayer();
+			StartSwitchingWeapons(Primary_Weapon);
+		}
 
-			hasInitialized = true;
-
+		void ListenToPlayer()
+		{
 			player.Controller.InteractRightShoulder.OnPress += Player_SwapTertiary;
-
 			player.Controller.Attack2LeftTrigger.OnPress += Player_SwapSecondary;
-
 			player.Controller.Attack1RightTrigger.OnPress += Player_SwapPrimary;
-			StartSwitchingWeapons(Primary_Weapon);
 		}
 
-		void Player_SwapPrimary(NewControlButton obj)
+		void StopListeningToPlayer()
 		{
-			StartSwitchingWeapons(Primary_Weapon);
-		}
-
-		void Player_SwapSecondary(NewControlButton obj)
-		{
-			StartSwitchingWeapons(Secondary_Weapon);
-		}
-
-		void Player_SwapTertiary(NewControlButton obj)
-		{
-			StartSwitchingWeapons(Tertiary_Weapon);
+			if (player == null) return;
+			player.Controller.InteractRightShoulder.OnPress -= Player_SwapTertiary;
+			player.Controller.Attack2LeftTrigger.OnPress -= Player_SwapSecondary;
+			player.Controller.Attack1RightTrigger.OnPress -= Player_SwapPrimary;
 		}
 
 		void OnDestroy()
 		{
-			if (player == null) return;
-			player.Controller.InteractRightShoulder.OnPress -= Player_SwapTertiary;
+			StopListeningToPlayer();
+		}
+		void Player_SwapPrimary(NewControlButton _)
+		{
+			StartSwitchingWeapons(Primary_Weapon);
+		}
 
-			player.Controller.Attack2LeftTrigger.OnPress -= Player_SwapSecondary;
+		void Player_SwapSecondary(NewControlButton _)
+		{
+			StartSwitchingWeapons(Secondary_Weapon);
+		}
 
-			player.Controller.Attack1RightTrigger.OnPress -= Player_SwapPrimary;
+		void Player_SwapTertiary(NewControlButton _)
+		{
+			StartSwitchingWeapons(Tertiary_Weapon);
 		}
 
 		void StartSwitchingWeapons(WeaponAbility _weaponToSwitchTo)
@@ -68,8 +64,13 @@ namespace __SCRIPTS
 				return;
 			}
 
-			if (_weaponToSwitchTo == currentWeapon) return;
-			if (!currentWeapon.canStop(null))
+			if (_weaponToSwitchTo == currentWeapon)
+			{
+				Debug.Log("[SWITCHER] already using weapon: " + _weaponToSwitchTo.AbilityName);
+				return;
+			}
+
+			if (!currentWeapon.canStop(currentWeapon))
 			{
 				Debug.Log("[SWITCHER] can't switch weapons right now, busy with: " + currentWeapon.AbilityName);
 				return;
@@ -105,7 +106,8 @@ namespace __SCRIPTS
 			}
 
 			Debug.Log("[SWITCHER] doing weapon: " + currentWeapon.AbilityName);
-			currentWeapon.TryToActivate();
+			currentWeapon.TryToDoAbility();
 		}
+
 	}
 }

@@ -8,15 +8,15 @@ namespace __SCRIPTS
 	[Serializable]
 	public class ExplosionAttack : MonoBehaviour, INeedPlayer
 	{
-		private IGetAttacked currentTargetLife;
+		private Life currentTargetLife;
 		private ICanAttack _attacker;
 		private ICanAttack attacker => _attacker ??= GetComponent<ICanAttack>();
 		private UnitAnimations anim;
 		private float explosionRadius = 5;
 		public AnimationClip attackAnimation;
 		private bool isAttacking;
-		protected IGetAttacked life => _life ?? GetComponent<IGetAttacked>();
-		private IGetAttacked _life;
+		protected Life life => _life ?? GetComponent<Life>();
+		private Life _life;
 
 		public void SetPlayer(Player newPlayer)
 		{
@@ -47,7 +47,7 @@ namespace __SCRIPTS
 			life.DieNow();
 		}
 
-		private void AttackerAttack(IGetAttacked newTarget)
+		private void AttackerAttack(Life newTarget)
 		{
 			if (newTarget == null) return;
 			if (Services.pauseManager.IsPaused) return;

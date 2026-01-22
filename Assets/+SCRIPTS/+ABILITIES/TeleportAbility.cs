@@ -12,9 +12,9 @@ public class TeleportAbility : Ability
 	JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
 	JumpAbility _jumps;
 	const float teleportTime = .1f;
-	protected override bool requiresArms() => true;
+	public override bool requiresArms() => true;
 
-	protected override bool requiresLegs() => true;
+	public override bool requiresLegs() => true;
 	public override bool canDo() => base.canDo() && jumps.IsResting;
 
 	protected override void DoAbility()
@@ -25,7 +25,7 @@ public class TeleportAbility : Ability
 	void Teleport()
 	{
 		if (teleportAnimationClip != null) PlayAnimationClip(teleportAnimationClip);
-		defence.SetTemporarilyInvincible(true);
+		life.SetTemporarilyInvincible(true);
 		Invoke(nameof(Anim_Teleport), teleportTime);
 	}
 
@@ -37,7 +37,7 @@ public class TeleportAbility : Ability
 
 	void Controller_DashPress(NewControlButton obj)
 	{
-		TryToActivate();
+		TryToDoAbility();
 	}
 
 	void OnDestroy()
@@ -56,17 +56,17 @@ public class TeleportAbility : Ability
 			if (teleportDirection.magnitude < 0.1f) teleportDirection = body.BottomIsFacingRight ? Vector2.right : Vector2.left;
 		}
 
-		var teleportDistance = offence.stats.Stats.DashSpeed;
+		var teleportDistance = attacker.stats.Stats.DashSpeed;
 		var teleportOffset = teleportDirection.normalized * teleportDistance;
 		var newPoint = (Vector2) transform.position + teleportOffset;
 
 		transform.position = newPoint;
 	}
 
-	public override void StopAbility()
+	public override void StopAbilityBody()
 	{
-		defence.SetTemporarilyInvincible(false);
-		base.StopAbility();
-		lastLegAbility?.TryToActivate();
+		life.SetTemporarilyInvincible(false);
+		base.StopAbilityBody();
+		lastLegAbility?.TryToDoAbility();
 	}
 }
