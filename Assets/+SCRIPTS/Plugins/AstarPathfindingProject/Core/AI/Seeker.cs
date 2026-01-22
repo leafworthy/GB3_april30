@@ -6,7 +6,8 @@ using __SCRIPTS.Plugins.AstarPathfindingProject.Pathfinders;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
+namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI
+{
 	/// <summary>
 	/// Handles path calls for a single unit.
 	/// \ingroup relevant
@@ -18,9 +19,9 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 	/// See: calling-pathfinding (view in online documentation for working links)
 	/// See: modifiers (view in online documentation for working links)
 	/// </summary>
-	[AddComponentMenu("Pathfinding/Seeker")]
-	[HelpURL("http://arongranberg.com/astar/docs/class_pathfinding_1_1_seeker.php")]
-	public class Seeker : VersionedMonoBehaviour {
+	[AddComponentMenu("Pathfinding/Seeker"), HelpURL("http://arongranberg.com/astar/docs/class_pathfinding_1_1_seeker.php")]
+	public class Seeker : VersionedMonoBehaviour
+	{
 		/// <summary>
 		/// Enables drawing of the last calculated path using Gizmos.
 		/// The path will show up in green.
@@ -43,8 +44,7 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		public bool detailedGizmos;
 
 		/// <summary>Path modifier which tweaks the start and end points of a path</summary>
-		[HideInInspector]
-		public StartEndModifier startEndModifier = new StartEndModifier();
+		[HideInInspector] public StartEndModifier startEndModifier = new();
 
 		/// <summary>
 		/// The tags which the Seeker can traverse.
@@ -52,8 +52,7 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		/// Note: This field is a bitmask.
 		/// See: bitmasks (view in online documentation for working links)
 		/// </summary>
-		[HideInInspector]
-		public int traversableTags = -1;
+		[HideInInspector] public int traversableTags = -1;
 
 		/// <summary>
 		/// Penalties for each tag.
@@ -64,8 +63,7 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		///
 		/// See: Pathfinding.Path.tagPenalties
 		/// </summary>
-		[HideInInspector]
-		public int[] tagPenalties = new int[32];
+		[HideInInspector] public int[] tagPenalties = new int[32];
 
 		/// <summary>
 		/// Graphs that this Seeker can use.
@@ -100,11 +98,9 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		///
 		/// See: multiple-agent-types (view in online documentation for working links)
 		/// </summary>
-		[HideInInspector]
-		public GraphMask graphMask = GraphMask.everything;
+		[HideInInspector] public GraphMask graphMask = GraphMask.everything;
 
 		/// <summary>Used for serialization backwards compatibility</summary>
-		[UnityEngine.Serialization.FormerlySerializedAs("graphMask")]
 		int graphMaskCompatibility = -1;
 
 		/// <summary>
@@ -121,45 +117,41 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		public OnPathDelegate postProcessPath;
 
 		/// <summary>Used for drawing gizmos</summary>
-		[System.NonSerialized]
-		List<Vector3> lastCompletedVectorPath;
+		[System.NonSerialized] List<Vector3> lastCompletedVectorPath;
 
 		/// <summary>Used for drawing gizmos</summary>
-		[System.NonSerialized]
-		List<GraphNode> lastCompletedNodePath;
+		[System.NonSerialized] List<GraphNode> lastCompletedNodePath;
 
 		/// <summary>The current path</summary>
-		[System.NonSerialized]
-		protected Path path;
+		[System.NonSerialized] protected Path path;
 
 		/// <summary>Previous path. Used to draw gizmos</summary>
-		[System.NonSerialized]
-		private Path prevPath;
+		[System.NonSerialized] Path prevPath;
 
 		/// <summary>Cached delegate to avoid allocating one every time a path is started</summary>
-		private readonly OnPathDelegate onPathDelegate;
+		readonly OnPathDelegate onPathDelegate;
 
 		/// <summary>Temporary callback only called for the current path. This value is set by the StartPath functions</summary>
-		private OnPathDelegate tmpPathCallback;
+		OnPathDelegate tmpPathCallback;
 
 		/// <summary>The path ID of the last path queried</summary>
 		protected uint lastPathID;
 
 		/// <summary>Internal list of all modifiers</summary>
-		readonly List<IPathModifier> modifiers = new List<IPathModifier>();
+		readonly List<IPathModifier> modifiers = new();
 
-		public enum ModifierPass {
+		public enum ModifierPass
+		{
 			PreProcess,
 			// An obsolete item occupied index 1 previously
-			PostProcess = 2,
+			PostProcess = 2
 		}
 
-		public Seeker () {
-			onPathDelegate = OnPathComplete;
-		}
+		public Seeker() => onPathDelegate = OnPathComplete;
 
 		/// <summary>Initializes a few variables</summary>
-		protected override void Awake () {
+		protected override void Awake()
+		{
 			base.Awake();
 			startEndModifier.Awake(this);
 		}
@@ -170,9 +162,7 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		///
 		/// See: pathCallback
 		/// </summary>
-		public Path GetCurrentPath () {
-			return path;
-		}
+		public Path GetCurrentPath() => path;
 
 		/// <summary>
 		/// Stop calculating the current path request.
@@ -184,10 +174,13 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		/// the path calculation.
 		/// </summary>
 		/// <param name="pool">If true then the path will be pooled when the pathfinding system is done with it.</param>
-		public void CancelCurrentPathRequest (bool pool = true) {
-			if (!IsDone()) {
+		public void CancelCurrentPathRequest(bool pool = true)
+		{
+			if (!IsDone())
+			{
 				path.FailWithError("Canceled by script (Seeker.CancelCurrentPathRequest)");
-				if (pool) {
+				if (pool)
+				{
 					// Make sure the path has had its reference count incremented and decremented once.
 					// If this is not done the system will think no pooling is used at all and will not pool the path.
 					// The particular object that is used as the parameter (in this case 'path') doesn't matter at all
@@ -206,7 +199,8 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		/// See: <see cref="ReleaseClaimedPath"/>
 		/// See: <see cref="startEndModifier"/>
 		/// </summary>
-		public void OnDestroy () {
+		public void OnDestroy()
+		{
 			if (!Application.isPlaying) return;
 			ReleaseClaimedPath();
 			startEndModifier.OnDestroy(this);
@@ -222,15 +216,18 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		///
 		/// See: pooling (view in online documentation for working links)
 		/// </summary>
-		void ReleaseClaimedPath () {
-			if (prevPath != null) {
+		void ReleaseClaimedPath()
+		{
+			if (prevPath != null)
+			{
 				prevPath.Release(this, true);
 				prevPath = null;
 			}
 		}
 
 		/// <summary>Called by modifiers to register themselves</summary>
-		public void RegisterModifier (IPathModifier modifier) {
+		public void RegisterModifier(IPathModifier modifier)
+		{
 			modifiers.Add(modifier);
 
 			// Sort the modifiers based on their specified order
@@ -238,7 +235,8 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		}
 
 		/// <summary>Called by modifiers when they are disabled or destroyed</summary>
-		public void DeregisterModifier (IPathModifier modifier) {
+		public void DeregisterModifier(IPathModifier modifier)
+		{
 			modifiers.Remove(modifier);
 		}
 
@@ -249,23 +247,28 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		/// See: RunModifiers
 		/// \since Added in 3.2
 		/// </summary>
-		public void PostProcess (Path path) {
+		public void PostProcess(Path path)
+		{
 			RunModifiers(ModifierPass.PostProcess, path);
 		}
 
 		/// <summary>Runs modifiers on a path</summary>
-		public void RunModifiers (ModifierPass pass, Path path) {
-			if (pass == ModifierPass.PreProcess) {
+		public void RunModifiers(ModifierPass pass, Path path)
+		{
+			if (pass == ModifierPass.PreProcess)
+			{
 				if (preProcessPath != null) preProcessPath(path);
 
-				for (int i = 0; i < modifiers.Count; i++) modifiers[i].PreProcess(path);
-			} else if (pass == ModifierPass.PostProcess) {
+				for (var i = 0; i < modifiers.Count; i++) modifiers[i].PreProcess(path);
+			}
+			else if (pass == ModifierPass.PostProcess)
+			{
 				Profiler.BeginSample("Running Path Modifiers");
 				// Call delegates if they exist
 				if (postProcessPath != null) postProcessPath(path);
 
 				// Loop through all modifiers and apply post processing
-				for (int i = 0; i < modifiers.Count; i++) modifiers[i].Apply(path);
+				for (var i = 0; i < modifiers.Count; i++) modifiers[i].Apply(path);
 				Profiler.EndSample();
 			}
 		}
@@ -280,16 +283,15 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		/// \since Added in 3.0.8
 		/// Version: Behaviour changed in 3.2
 		/// </summary>
-		public bool IsDone () {
-			return path == null || path.PipelineState >= PathState.Returned;
-		}
+		public bool IsDone() => path == null || path.PipelineState >= PathState.Returned;
 
 		/// <summary>
 		/// Called when a path has completed.
 		/// This should have been implemented as optional parameter values, but that didn't seem to work very well with delegates (the values weren't the default ones)
 		/// See: OnPathComplete(Path,bool,bool)
 		/// </summary>
-		void OnPathComplete (Path path) {
+		void OnPathComplete(Path path)
+		{
 			OnPathComplete(path, true, true);
 		}
 
@@ -297,34 +299,31 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		/// Called when a path has completed.
 		/// Will post process it and return it by calling <see cref="tmpPathCallback"/> and <see cref="pathCallback"/>
 		/// </summary>
-		void OnPathComplete (Path p, bool runModifiers, bool sendCallbacks) {
-			if (p != null && p != path && sendCallbacks) {
-				return;
-			}
+		void OnPathComplete(Path p, bool runModifiers, bool sendCallbacks)
+		{
+			if (p != null && p != path && sendCallbacks) return;
 
 			if (this == null || p == null || p != path)
 				return;
 
-			if (!path.error && runModifiers) {
+			if (!path.error && runModifiers)
+			{
 				// This will send the path for post processing to modifiers attached to this Seeker
 				RunModifiers(ModifierPass.PostProcess, path);
 			}
 
-			if (sendCallbacks) {
+			if (sendCallbacks)
+			{
 				p.Claim(this);
 
 				lastCompletedNodePath = p.path;
 				lastCompletedVectorPath = p.vectorPath;
 
 				// This will send the path to the callback (if any) specified when calling StartPath
-				if (tmpPathCallback != null) {
-					tmpPathCallback(p);
-				}
+				if (tmpPathCallback != null) tmpPathCallback(p);
 
 				// This will send the path to any script which has registered to the callback
-				if (pathCallback != null) {
-					pathCallback(p);
-				}
+				if (pathCallback != null) pathCallback(p);
 
 				// Note: it is important that #prevPath is kept alive (i.e. not pooled)
 				// if we are drawing gizmos.
@@ -334,14 +333,11 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 				// is kept alive until it is replaced.
 
 				// Recycle the previous path to reduce the load on the GC
-				if (prevPath != null) {
-					prevPath.Release(this, true);
-				}
+				if (prevPath != null) prevPath.Release(this, true);
 
 				prevPath = p;
 			}
 		}
-
 
 		/// <summary>
 		/// Returns a new path instance.
@@ -357,10 +353,9 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		/// Deprecated: Use ABPath.Construct(start, end, null) instead.
 		/// </summary>
 		[System.Obsolete("Use ABPath.Construct(start, end, null) instead")]
-		public ABPath GetNewPath (Vector3 start, Vector3 end) {
+		public ABPath GetNewPath(Vector3 start, Vector3 end) =>
 			// Construct a path with start and end points
-			return ABPath.Construct(start, end, null);
-		}
+			ABPath.Construct(start, end);
 
 		/// <summary>
 		/// Call this function to start calculating a path.
@@ -368,9 +363,7 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		/// </summary>
 		/// <param name="start">The start point of the path</param>
 		/// <param name="end">The end point of the path</param>
-		public Path StartPath (Vector3 start, Vector3 end) {
-			return StartPath(start, end, null);
-		}
+		public Path StartPath(Vector3 start, Vector3 end) => StartPath(start, end, null);
 
 		/// <summary>
 		/// Call this function to start calculating a path.
@@ -381,9 +374,7 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		/// <param name="start">The start point of the path</param>
 		/// <param name="end">The end point of the path</param>
 		/// <param name="callback">The function to call when the path has been calculated</param>
-		public Path StartPath (Vector3 start, Vector3 end, OnPathDelegate callback) {
-			return StartPath(ABPath.Construct(start, end, null), callback);
-		}
+		public Path StartPath(Vector3 start, Vector3 end, OnPathDelegate callback) => StartPath(ABPath.Construct(start, end), callback);
 
 		/// <summary>
 		/// Call this function to start calculating a path.
@@ -395,9 +386,8 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		/// <param name="end">The end point of the path</param>
 		/// <param name="callback">The function to call when the path has been calculated</param>
 		/// <param name="graphMask">Mask used to specify which graphs should be searched for close nodes. See #Pathfinding.NNConstraint.graphMask. This will override #graphMask for this path request.</param>
-		public Path StartPath (Vector3 start, Vector3 end, OnPathDelegate callback, GraphMask graphMask) {
-			return StartPath(ABPath.Construct(start, end, null), callback, graphMask);
-		}
+		public Path StartPath(Vector3 start, Vector3 end, OnPathDelegate callback, GraphMask graphMask) =>
+			StartPath(ABPath.Construct(start, end), callback, graphMask);
 
 		/// <summary>
 		/// Call this function to start calculating a path.
@@ -412,7 +402,8 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		/// </summary>
 		/// <param name="p">The path to start calculating</param>
 		/// <param name="callback">The function to call when the path has been calculated</param>
-		public Path StartPath (Path p, OnPathDelegate callback = null) {
+		public Path StartPath(Path p, OnPathDelegate callback = null)
+		{
 			// Set the graph mask only if the user has not changed it from the default value.
 			// This is not perfect as the user may have wanted it to be precisely -1
 			// however it is the best detection that I can do.
@@ -435,26 +426,29 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 		/// <param name="p">The path to start calculating</param>
 		/// <param name="callback">The function to call when the path has been calculated</param>
 		/// <param name="graphMask">Mask used to specify which graphs should be searched for close nodes. See #Pathfinding.GraphMask. This will override #graphMask for this path request.</param>
-		public Path StartPath (Path p, OnPathDelegate callback, GraphMask graphMask) {
+		public Path StartPath(Path p, OnPathDelegate callback, GraphMask graphMask)
+		{
 			p.nnConstraint.graphMask = graphMask;
 			StartPathInternal(p, callback);
 			return p;
 		}
 
 		/// <summary>Internal method to start a path and mark it as the currently active path</summary>
-		void StartPathInternal (Path p, OnPathDelegate callback) {
+		void StartPathInternal(Path p, OnPathDelegate callback)
+		{
 			p.callback += onPathDelegate;
 
 			p.enabledTags = traversableTags;
 			p.tagPenalties = tagPenalties;
 
 			// Cancel a previously requested path is it has not been processed yet and also make sure that it has not been recycled and used somewhere else
-			if (path != null && path.PipelineState <= PathState.Processing && path.CompleteState != PathCompleteState.Error && lastPathID == path.pathID) {
-				path.FailWithError("Canceled path because a new one was requested.\n"+
-					"This happens when a new path is requested from the seeker when one was already being calculated.\n" +
-					"For example if a unit got a new order, you might request a new path directly instead of waiting for the now" +
-					" invalid path to be calculated. Which is probably what you want.\n" +
-					"If you are getting this a lot, you might want to consider how you are scheduling path requests.");
+			if (path != null && path.PipelineState <= PathState.Processing && path.CompleteState != PathCompleteState.Error && lastPathID == path.pathID)
+			{
+				path.FailWithError("Canceled path because a new one was requested.\n" +
+				                   "This happens when a new path is requested from the seeker when one was already being calculated.\n" +
+				                   "For example if a unit got a new order, you might request a new path directly instead of waiting for the now" +
+				                   " invalid path to be calculated. Which is probably what you want.\n" +
+				                   "If you are getting this a lot, you might want to consider how you are scheduling path requests.");
 				// No callback will be sent for the canceled path
 			}
 
@@ -472,38 +466,36 @@ namespace __SCRIPTS.Plugins.AstarPathfindingProject.Core.AI {
 			AstarPath.StartPath(path);
 		}
 
-
 		/// <summary>Draws gizmos for the Seeker</summary>
-		public void OnDrawGizmos () {
-			if (lastCompletedNodePath == null || !drawGizmos) {
-				return;
-			}
+		public void OnDrawGizmos()
+		{
+			if (lastCompletedNodePath == null || !drawGizmos) return;
 
-			if (detailedGizmos) {
+			if (detailedGizmos)
+			{
 				Gizmos.color = new Color(0.7F, 0.5F, 0.1F, 0.5F);
 
-				if (lastCompletedNodePath != null) {
-					for (int i = 0; i < lastCompletedNodePath.Count-1; i++) {
-						Gizmos.DrawLine((Vector3)lastCompletedNodePath[i].position, (Vector3)lastCompletedNodePath[i+1].position);
-					}
-				}
+				if (lastCompletedNodePath != null)
+					for (var i = 0; i < lastCompletedNodePath.Count - 1; i++)
+						Gizmos.DrawLine((Vector3) lastCompletedNodePath[i].position, (Vector3) lastCompletedNodePath[i + 1].position);
 			}
 
 			Gizmos.color = new Color(0, 1F, 0, 1F);
 
-			if (lastCompletedVectorPath != null) {
-				for (int i = 0; i < lastCompletedVectorPath.Count-1; i++) {
-					Gizmos.DrawLine(lastCompletedVectorPath[i], lastCompletedVectorPath[i+1]);
-				}
-			}
+			if (lastCompletedVectorPath != null)
+				for (var i = 0; i < lastCompletedVectorPath.Count - 1; i++)
+					Gizmos.DrawLine(lastCompletedVectorPath[i], lastCompletedVectorPath[i + 1]);
 		}
 
-		protected override int OnUpgradeSerializedData (int version, bool unityThread) {
-			if (graphMaskCompatibility != -1) {
+		protected override int OnUpgradeSerializedData(int version, bool unityThread)
+		{
+			if (graphMaskCompatibility != -1)
+			{
 				Debug.Log("Loaded " + graphMaskCompatibility + " " + graphMask.value);
 				graphMask = graphMaskCompatibility;
 				graphMaskCompatibility = -1;
 			}
+
 			return base.OnUpgradeSerializedData(version, unityThread);
 		}
 	}

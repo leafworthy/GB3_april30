@@ -5,6 +5,7 @@ namespace __SCRIPTS
 	public class DestroyMeEvent : MonoBehaviour
 	{
 		public GameObject transformToDestroy;
+
 		public void DestroyMe()
 		{
 			var objectMaker = ServiceLocator.Get<ObjectMaker>();

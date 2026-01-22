@@ -2,26 +2,24 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-    public class PointerHandler : MonoBehaviour
-    {
-	    Window_QuestPointer questPointer;
-        public GameObject target;
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-            questPointer = GetComponentInChildren<Window_QuestPointer>(true);
-        }
+	public class PointerHandler : MonoBehaviour
+	{
+		Window_QuestPointer questPointer;
+		public GameObject target;
 
-        // Update is called once per frame
-        void Update()
-        {
-            if (Vector3.Distance(questPointer.transform.position, target.transform.position) <= 1)
-            {
-                questPointer.Hide();
-            }else
-            {
-                questPointer.Show(new Vector3(target.transform.position.x, target.transform.position.y, target.transform.position.z));
-            }
-        }
-    }
+		// Start is called once before the first execution of Update after the MonoBehaviour is created
+		void Start()
+		{
+			questPointer = GetComponentInChildren<Window_QuestPointer>(true);
+		}
+
+		// Update is called once per frame
+		void Update()
+		{
+			if (Vector3.Distance(questPointer.transform.position, target.transform.position) <= 1)
+				questPointer.Hide();
+			else
+				questPointer.Show(new Vector3(target.transform.position.x, target.transform.position.y, target.transform.position.z));
+		}
+	}
 }

@@ -1,263 +1,273 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using FunkyCode.Utilities;
+using UnityEngine;
 
 namespace FunkyCode.Rendering.Light.Shadow
 {
-    public static class PerpendicularIntersection
-    {
-        public static Pair2 pair = Pair2.Zero();
+	public static class PerpendicularIntersection
+	{
+		public static Pair2 pair = Pair2.Zero();
 
-        public static void Draw(List<Polygon2> polygons, float shadowDistance) {
-            if (polygons == null) {
-                return;
-            }
+		public static void Draw(List<Polygon2> polygons, float shadowDistance)
+		{
+			if (polygons == null) return;
 
-            UVRect fill = new UVRect(0, 0, 1, 1);
+			var fill = new UVRect(0, 0, 1, 1);
 
-            Light2D light = ShadowEngine.light;
-            Vector2 offset = ShadowEngine.lightOffset + ShadowEngine.objectOffset;
-            float lightSizeSquared = ShadowEngine.lightSize * 2;
+			var light = ShadowEngine.light;
+			var offset = ShadowEngine.lightOffset + ShadowEngine.objectOffset;
+			var lightSizeSquared = ShadowEngine.lightSize * 2;
 
-            if (shadowDistance == 0) {
-                shadowDistance = lightSizeSquared;
-            }
+			if (shadowDistance == 0) shadowDistance = lightSizeSquared;
 
-            float outerAngle = light.outerAngle;
+			var outerAngle = light.outerAngle;
 
-            Vector2 vA, pA, vB, pB, vC, vD;
-            float angleA, angleB, rotA, rotB;
+			Vector2 vA, pA, vB, pB, vC, vD;
+			float angleA, angleB, rotA, rotB;
 
-            int PolygonCount = polygons.Count;
+			var PolygonCount = polygons.Count;
 
-            Vector2? intersectionLeft;
-            Vector2? intersectionRight;
+			Vector2? intersectionLeft;
+			Vector2? intersectionRight;
 
-            Vector2 intersectionLeftOffset = Vector2.zero;
-            Vector2 intersectionRightOffset = Vector2.zero;
+			var intersectionLeftOffset = Vector2.zero;
+			var intersectionRightOffset = Vector2.zero;
 
-            GL.Color(Color.black);
+			GL.Color(Color.black);
 
-            for(int i = 0; i < PolygonCount; i++) {
+			for (var i = 0; i < PolygonCount; i++)
+			{
+				var pointsList = polygons[i].points;
+				var pointsCount = pointsList.Length;
 
-                Vector2[] pointsList = polygons[i].points;
-                int pointsCount = pointsList.Length;
-            
-                for(int x = 0; x < pointsCount; x++) {
-                    int next = (x + 1) % pointsCount;
-                    
-                    pair.A = pointsList[x];
-                    pair.B = pointsList[next];
+				for (var x = 0; x < pointsCount; x++)
+				{
+					var next = (x + 1) % pointsCount;
 
-                    float edgeALocalX = (float)pair.A.x;
-                    float edgeALocalY = (float)pair.A.y;
+					pair.A = pointsList[x];
+					pair.B = pointsList[next];
 
-                    float edgeBLocalX = (float)pair.B.x;
-                    float edgeBLocalY = (float)pair.B.y;
+					var edgeALocalX = pair.A.x;
+					var edgeALocalY = pair.A.y;
 
-                    float edgeAWorldX = edgeALocalX + offset.x;
-                    float edgeAWorldY = edgeALocalY + offset.y;
+					var edgeBLocalX = pair.B.x;
+					var edgeBLocalY = pair.B.y;
 
-                    float edgeBWorldX = edgeBLocalX + offset.x;
-                    float edgeBWorldY = edgeBLocalY + offset.y;
+					var edgeAWorldX = edgeALocalX + offset.x;
+					var edgeAWorldY = edgeALocalY + offset.y;
 
-                    float lightDirection = Mathf.Atan2((edgeAWorldY + edgeBWorldY) / 2 , (edgeAWorldX + edgeBWorldX) / 2 ) * Mathf.Rad2Deg;
-                    float EdgeDirection = (Mathf.Atan2(edgeALocalY - edgeBLocalY, edgeALocalX - edgeBLocalX) * Mathf.Rad2Deg - 180 + 720) % 360;
+					var edgeBWorldX = edgeBLocalX + offset.x;
+					var edgeBWorldY = edgeBLocalY + offset.y;
 
-                    lightDirection -= EdgeDirection;
-    
-                    lightDirection = (lightDirection + 720) % 360;
+					var lightDirection = Mathf.Atan2((edgeAWorldY + edgeBWorldY) / 2, (edgeAWorldX + edgeBWorldX) / 2) * Mathf.Rad2Deg;
+					var EdgeDirection = (Mathf.Atan2(edgeALocalY - edgeBLocalY, edgeALocalX - edgeBLocalX) * Mathf.Rad2Deg - 180 + 720) % 360;
 
-                    angleA = (float)System.Math.Atan2 (edgeAWorldY, edgeAWorldX);
-                    angleB = (float)System.Math.Atan2 (edgeBWorldY, edgeBWorldX);
+					lightDirection -= EdgeDirection;
 
-                    rotA = angleA - Mathf.Deg2Rad * light.outerAngle;
-                    rotB = angleB + Mathf.Deg2Rad * light.outerAngle;
-                                        
-                    // Right Collision
-                    vC.x = edgeAWorldX;
-                    vC.y = edgeAWorldY;
+					lightDirection = (lightDirection + 720) % 360;
 
-                    // Left Collision
-                    vD.x = edgeBWorldX;
-                    vD.y = edgeBWorldY;
+					angleA = (float) System.Math.Atan2(edgeAWorldY, edgeAWorldX);
+					angleB = (float) System.Math.Atan2(edgeBWorldY, edgeBWorldX);
 
-                    // Right Inner
-                    vA.x = edgeAWorldX;
-                    vA.y = edgeAWorldY;
-                    vA.x += Mathf.Cos(angleA) * lightSizeSquared;
-                    vA.y += Mathf.Sin(angleA) * lightSizeSquared;
+					rotA = angleA - Mathf.Deg2Rad * light.outerAngle;
+					rotB = angleB + Mathf.Deg2Rad * light.outerAngle;
 
-                    // Left Inner
-                    vB.x = edgeBWorldX;
-                    vB.y = edgeBWorldY;
-                    vB.x += Mathf.Cos(angleB) * lightSizeSquared;
-                    vB.y += Mathf.Sin(angleB) * lightSizeSquared;
+					// Right Collision
+					vC.x = edgeAWorldX;
+					vC.y = edgeAWorldY;
 
-                    // Outer Right
-                    pA.x = edgeAWorldX;
-                    pA.y = edgeAWorldY;
-                    pA.x += Mathf.Cos(rotA) * lightSizeSquared;
-                    pA.y += Mathf.Sin(rotA) * lightSizeSquared;
+					// Left Collision
+					vD.x = edgeBWorldX;
+					vD.y = edgeBWorldY;
 
-                    // Outer Left
-                    pB.x = edgeBWorldX;
-                    pB.y = edgeBWorldY;
-                    pB.x += Mathf.Cos(rotB) * lightSizeSquared;
-                    pB.y += Mathf.Sin(rotB) * lightSizeSquared;
+					// Right Inner
+					vA.x = edgeAWorldX;
+					vA.y = edgeAWorldY;
+					vA.x += Mathf.Cos(angleA) * lightSizeSquared;
+					vA.y += Mathf.Sin(angleA) * lightSizeSquared;
 
-                    // Right Intersection
-                    intersectionRight = LineIntersectPolygons(vC - offset, vA - offset,  polygons);
-                  
-                    if (intersectionRight != null) {
-                        if (intersectionRight.Value.y < 0) {
-                            intersectionRight = null;
-                        } else {
-                            intersectionRight = intersectionRight + offset;
+					// Left Inner
+					vB.x = edgeBWorldX;
+					vB.y = edgeBWorldY;
+					vB.x += Mathf.Cos(angleB) * lightSizeSquared;
+					vB.y += Mathf.Sin(angleB) * lightSizeSquared;
 
-                            vA.x = (float)intersectionRight.Value.x;
-                            vA.y = (float)intersectionRight.Value.y;
+					// Outer Right
+					pA.x = edgeAWorldX;
+					pA.y = edgeAWorldY;
+					pA.x += Mathf.Cos(rotA) * lightSizeSquared;
+					pA.y += Mathf.Sin(rotA) * lightSizeSquared;
 
-                            intersectionRightOffset = intersectionRight.Value;
-                            intersectionRightOffset.y += shadowDistance;
-                        }
-                    }
+					// Outer Left
+					pB.x = edgeBWorldX;
+					pB.y = edgeBWorldY;
+					pB.x += Mathf.Cos(rotB) * lightSizeSquared;
+					pB.y += Mathf.Sin(rotB) * lightSizeSquared;
 
-                    // Left Intersection
-                    intersectionLeft = LineIntersectPolygons(vD - offset, vB - offset, polygons);
-               
-                    if (intersectionLeft != null) {
-                        if (intersectionLeft.Value.y < 0) {
-                            intersectionLeft = null;
-                        } else {
-                            intersectionLeft = intersectionLeft + offset;
+					// Right Intersection
+					intersectionRight = LineIntersectPolygons(vC - offset, vA - offset, polygons);
 
-                            vB.x = (float)intersectionLeft.Value.x;
-                            vB.y = (float)intersectionLeft.Value.y;
+					if (intersectionRight != null)
+					{
+						if (intersectionRight.Value.y < 0)
+							intersectionRight = null;
+						else
+						{
+							intersectionRight = intersectionRight + offset;
 
-                            intersectionLeftOffset = intersectionLeft.Value;
-                            intersectionLeftOffset.y += shadowDistance;
-                        }     
-                    }
+							vA.x = intersectionRight.Value.x;
+							vA.y = intersectionRight.Value.y;
 
-                    GL.TexCoord3(fill.x0, fill.y0, 0);
+							intersectionRightOffset = intersectionRight.Value;
+							intersectionRightOffset.y += shadowDistance;
+						}
+					}
 
-                    if (intersectionLeft != null && intersectionRight != null) {
-                        // Right
-                        GL.Vertex3(vA.x, vA.y, 0);
-                        GL.Vertex3(intersectionLeftOffset.x, intersectionLeftOffset.y, 0);
-                        GL.Vertex3(intersectionRightOffset.x, intersectionRightOffset.y, 0);
+					// Left Intersection
+					intersectionLeft = LineIntersectPolygons(vD - offset, vB - offset, polygons);
 
-                        //Left
-                        GL.Vertex3(vB.x, vB.y, 0);
-                        GL.Vertex3(vA.x, vA.y, 0);
-                        GL.Vertex3(intersectionLeftOffset.x, intersectionLeftOffset.y, 0);
+					if (intersectionLeft != null)
+					{
+						if (intersectionLeft.Value.y < 0)
+							intersectionLeft = null;
+						else
+						{
+							intersectionLeft = intersectionLeft + offset;
 
-                    } else {
+							vB.x = intersectionLeft.Value.x;
+							vB.y = intersectionLeft.Value.y;
 
-                        if (intersectionRight != null) {
-                            GL.Vertex3(vA.x, vA.y, 0);
-                            GL.Vertex3(vB.x, vB.y, 0);
-                            GL.Vertex3(intersectionRightOffset.x, intersectionRightOffset.y, 0);
-                        }
+							intersectionLeftOffset = intersectionLeft.Value;
+							intersectionLeftOffset.y += shadowDistance;
+						}
+					}
 
-                        if (intersectionLeft != null) {
-                            GL.Vertex3(vB.x, vB.y, 0);
-                            GL.Vertex3(vA.x, vA.y, 0);
-                            GL.Vertex3(intersectionLeftOffset.x, intersectionLeftOffset.y, 0);
-                        }
-                    }
+					GL.TexCoord3(fill.x0, fill.y0, 0);
 
-                    // Right Fin
-                    GL.Vertex3(vA.x, vA.y, 0);
-                    GL.Vertex3(vB.x, vB.y, 0);
-                    GL.Vertex3(vC.x, vC.y, 0);
+					if (intersectionLeft != null && intersectionRight != null)
+					{
+						// Right
+						GL.Vertex3(vA.x, vA.y, 0);
+						GL.Vertex3(intersectionLeftOffset.x, intersectionLeftOffset.y, 0);
+						GL.Vertex3(intersectionRightOffset.x, intersectionRightOffset.y, 0);
 
+						//Left
+						GL.Vertex3(vB.x, vB.y, 0);
+						GL.Vertex3(vA.x, vA.y, 0);
+						GL.Vertex3(intersectionLeftOffset.x, intersectionLeftOffset.y, 0);
+					}
+					else
+					{
+						if (intersectionRight != null)
+						{
+							GL.Vertex3(vA.x, vA.y, 0);
+							GL.Vertex3(vB.x, vB.y, 0);
+							GL.Vertex3(intersectionRightOffset.x, intersectionRightOffset.y, 0);
+						}
 
-                    // Left Fin
-                    GL.Vertex3(vB.x, vB.y, 0);
-                    GL.Vertex3(vD.x, vD.y, 0);
-                    GL.Vertex3(vC.x, vC.y, 0);
+						if (intersectionLeft != null)
+						{
+							GL.Vertex3(vB.x, vB.y, 0);
+							GL.Vertex3(vA.x, vA.y, 0);
+							GL.Vertex3(intersectionLeftOffset.x, intersectionLeftOffset.y, 0);
+						}
+					}
 
-                }
-            }
-        }
+					// Right Fin
+					GL.Vertex3(vA.x, vA.y, 0);
+					GL.Vertex3(vB.x, vB.y, 0);
+					GL.Vertex3(vC.x, vC.y, 0);
 
-        static Pair2D pairA = new Pair2D(Vector2D.Zero(), Vector2D.Zero());
-        static Pair2D pairB = new Pair2D(Vector2D.Zero(), Vector2D.Zero());
+					// Left Fin
+					GL.Vertex3(vB.x, vB.y, 0);
+					GL.Vertex3(vD.x, vD.y, 0);
+					GL.Vertex3(vC.x, vC.y, 0);
+				}
+			}
+		}
 
-        static Vector2? PolygonClosestIntersection(Polygon2 poly, Vector2 startPoint, Vector2 endPoint) {
-            float distance = 1000000000;
-            Vector2? result = null;
+		static Pair2D pairA = new(Vector2D.Zero(), Vector2D.Zero());
+		static Pair2D pairB = new(Vector2D.Zero(), Vector2D.Zero());
 
-            for(int i = 0; i < poly.points.Length; i++) {
-                Vector2 pa = poly.points[i];
-                Vector2 pb = poly.points[(i + 1) % poly.points.Length];
+		static Vector2? PolygonClosestIntersection(Polygon2 poly, Vector2 startPoint, Vector2 endPoint)
+		{
+			float distance = 1000000000;
+			Vector2? result = null;
 
-                pairA.A.x = startPoint.x;
-                pairA.A.y = startPoint.y;
-                pairA.B.x = endPoint.x;
-                pairA.B.y = endPoint.y;
+			for (var i = 0; i < poly.points.Length; i++)
+			{
+				var pa = poly.points[i];
+				var pb = poly.points[(i + 1) % poly.points.Length];
 
-                pairB.A.x = pa.x;
-                pairB.A.y = pa.y;
-                pairB.B.x = pb.x;
-                pairB.B.y = pb.y;
+				pairA.A.x = startPoint.x;
+				pairA.A.y = startPoint.y;
+				pairA.B.x = endPoint.x;
+				pairA.B.y = endPoint.y;
 
-                Vector2? intersection = Math2D.GetPointLineIntersectLine2(pairA, pairB);
+				pairB.A.x = pa.x;
+				pairB.A.y = pa.y;
+				pairB.B.x = pb.x;
+				pairB.B.y = pb.y;
 
-                if (intersection != null) {
-                    float d = Vector2.Distance(intersection.Value, startPoint);
+				var intersection = Math2D.GetPointLineIntersectLine2(pairA, pairB);
 
-                    if (result != null) {
+				if (intersection != null)
+				{
+					var d = Vector2.Distance(intersection.Value, startPoint);
 
-                        if (d < distance) {
-                            result = intersection.Value;
-                            d = distance;
-                        }
-                    } else {
-                        result = intersection.Value;
-                        distance = d;
-                    }
-                    
-                }
-            }
+					if (result != null)
+					{
+						if (d < distance)
+						{
+							result = intersection.Value;
+							d = distance;
+						}
+					}
+					else
+					{
+						result = intersection.Value;
+						distance = d;
+					}
+				}
+			}
 
-            return(result);
-        }
+			return result;
+		}
 
+		public static Vector2? LineIntersectPolygons(Vector2 startPoint, Vector2 endPoint, List<Polygon2> originlPoly)
+		{
+			Vector2? result = null;
+			float distance = 1000000000;
 
-        static public Vector2? LineIntersectPolygons(Vector2 startPoint, Vector2 endPoint, List<Polygon2> originlPoly) {
-            Vector2? result = null;
-            float distance = 1000000000;
+			foreach (var polygons in ShadowEngine.effectPolygons)
+			{
+				if (originlPoly == polygons) continue;
 
-            foreach(List<Polygon2> polygons in ShadowEngine.effectPolygons) {
-                if (originlPoly == polygons) {
-                    continue;
-                }
+				foreach (var polygon in polygons)
+				{
+					var intersection = PolygonClosestIntersection(polygon, startPoint, endPoint);
 
-                foreach(Polygon2 polygon in polygons) {
-                    Vector2? intersection = PolygonClosestIntersection(polygon, startPoint, endPoint);
+					if (intersection != null)
+					{
+						var d = Vector2.Distance(intersection.Value, startPoint);
+						if (result != null)
+						{
+							if (d < distance)
+							{
+								result = intersection.Value;
+								d = distance;
+							}
+						}
+						else
+						{
+							result = intersection.Value;
+							distance = d;
+						}
+					}
+				}
+			}
 
-                    if (intersection != null) {
-                        float d = Vector2.Distance(intersection.Value, startPoint);
-                        if (result != null) {
-                            if (d < distance) {
-                                result = intersection.Value;
-                                d = distance;
-                            }
-                        } else {
-                            result = intersection.Value;
-                            distance = d;
-                        }
-                    }
-                }
-                
-            }
-            
-            return(result);
-        }
-
-    }
+			return result;
+		}
+	}
 }

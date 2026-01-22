@@ -1,19 +1,23 @@
 # Activity Completion Interface Specification
 
 ## Overview
-This specification defines how to extend the existing IActivity system with completion capability for animation interruption. The design prioritizes simplicity, backward compatibility, and optional implementation.
+
+This specification defines how to extend the existing IActivity system with completion capability for animation interruption. The design prioritizes simplicity,
+backward compatibility, and optional implementation.
 
 ## Current System Analysis
 
 ### Existing Components
+
 - **IActivity Interface**: Located in `/Assets/++SCRIPTS/+CORE/Interfaces.cs`
-  - Single property: `string VerbName { get; }`
+    - Single property: `string VerbName { get; }`
 - **ActivityHandler Class**: Located in `/Assets/++SCRIPTS/+ABILITIES/ActivityHandler.cs`
-  - Manages `Arms` and `Legs` activity handlers
-  - Methods: `Do()`, `StopSafely()`, `StopCurrentActivity()`
+    - Manages `Arms` and `Legs` activity handlers
+    - Methods: `Do()`, `StopSafely()`, `StopCurrentActivity()`
 - **Body Class**: Contains `arms` and `legs` ActivityHandler instances
 
 ### Current Activity Patterns
+
 1. Activities implement `IActivity` with `VerbName` property
 2. Activities call `body.arms.Do(this)` or `body.legs.Do(this)` to start
 3. Activities call `body.arms.StopSafely(this)` or `body.legs.StopSafely(this)` to stop
@@ -22,6 +26,7 @@ This specification defines how to extend the existing IActivity system with comp
 ## Interface Design
 
 ### Option 1: Extend IActivity Interface (Recommended)
+
 ```csharp
 namespace GangstaBean.Core
 {
@@ -62,6 +67,7 @@ namespace GangstaBean.Core
 ```
 
 ### Option 2: Separate Interface (Alternative)
+
 ```csharp
 namespace GangstaBean.Core
 {
@@ -84,25 +90,30 @@ namespace GangstaBean.Core
 ## Method Signature Specification
 
 ### CompleteActivity Method
+
 ```csharp
 public virtual bool CompleteActivity(CompletionReason reason, IActivity newActivity = null)
 ```
 
 **Parameters:**
+
 - `reason`: Enum indicating why completion is triggered
 - `newActivity`: Optional reference to the activity that will replace this one
 
 **Return Value:**
+
 - `true`: Activity handled completion and is ready to be stopped
 - `false`: Activity doesn't support completion, use normal stop behavior
 
 **Default Implementation:**
+
 - Returns `false` by default (no completion logic)
 - Existing activities continue working unchanged
 
 ## Integration Points
 
 ### 1. ActivityHandler Enhancement
+
 ```csharp
 public class ActivityHandler
 {
@@ -157,6 +168,7 @@ public class ActivityHandler
 ```
 
 ### 2. Body Class Integration Points
+
 ```csharp
 public class Body : ThingWithHeight
 {
@@ -178,6 +190,7 @@ public class Body : ThingWithHeight
 ```
 
 ### 3. Activity Implementation Integration
+
 Activities can optionally override the completion method:
 
 ```csharp
@@ -215,12 +228,14 @@ public class DashAbility : MonoBehaviour, IActivity
 ## Implementation Guidelines
 
 ### For Activity Developers
+
 1. **Optional Implementation**: Only implement `CompleteActivity()` if your activity needs special completion logic
 2. **Quick Completion**: Keep completion logic fast and simple
 3. **State Cleanup**: Use completion to clean up state that normal stopping might miss
 4. **Return Appropriately**: Return `true` only if completion was actually handled
 
 ### Common Completion Patterns
+
 ```csharp
 public override bool CompleteActivity(CompletionReason reason, IActivity newActivity = null)
 {
@@ -250,12 +265,14 @@ public override bool CompleteActivity(CompletionReason reason, IActivity newActi
 ## Backward Compatibility
 
 ### Guaranteed Compatibility
+
 1. **Existing IActivity implementations**: Continue working unchanged
 2. **Existing ActivityHandler usage**: All current methods remain functional
 3. **Default behavior**: Activities without completion logic behave exactly as before
 4. **No breaking changes**: No existing method signatures modified
 
 ### Migration Path
+
 1. **Phase 1**: Add interface with default implementation
 2. **Phase 2**: Update ActivityHandler with completion methods
 3. **Phase 3**: Activities can optionally implement completion
@@ -264,6 +281,7 @@ public override bool CompleteActivity(CompletionReason reason, IActivity newActi
 ## Usage Examples
 
 ### Basic Animation Interruption
+
 ```csharp
 // In animation system
 if (body.arms.isActive)
@@ -274,6 +292,7 @@ if (body.arms.isActive)
 ```
 
 ### Smart Activity Starting
+
 ```csharp
 // In attack system - try completing current activity before starting
 if (!body.arms.DoWithCompletion(shootingActivity, CompletionReason.NewActivity))
@@ -284,6 +303,7 @@ if (!body.arms.DoWithCompletion(shootingActivity, CompletionReason.NewActivity))
 ```
 
 ### Activity-Specific Completion
+
 ```csharp
 public class ReloadActivity : IActivity
 {
@@ -312,15 +332,18 @@ public class ReloadActivity : IActivity
 ## File Locations
 
 ### Files to Create/Modify
+
 1. **Interfaces.cs**: Add `CompletionReason` enum and extend `IActivity`
 2. **ActivityHandler.cs**: Add completion methods
 3. **Body.cs**: Add optional convenience methods
 
 ### Implementation Order
+
 1. Modify `Interfaces.cs` with completion interface
 2. Update `ActivityHandler.cs` with completion logic
 3. Test with existing activities (should work unchanged)
 4. Activities can gradually implement completion as needed
 5. Animation system can start using completion for interruption
 
-This specification ensures the completion system integrates seamlessly with the existing activity pattern while providing the flexibility needed for animation interruption without breaking any existing functionality.
+This specification ensures the completion system integrates seamlessly with the existing activity pattern while providing the flexibility needed for animation
+interruption without breaking any existing functionality.

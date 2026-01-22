@@ -1,82 +1,81 @@
 ﻿Shader "Light2D/Internal/Shadow/SoftDistance"
 {
-	Properties
-	{
-		_MainTex ("Penumbra", 2D) = "white" {}
-	}
+    Properties
+    {
+        _MainTex ("Penumbra", 2D) = "white" {}
+    }
 
-	SubShader
-	{
-		Tags
-		{ 
-			"Queue" = "Transparent" 
-			"IgnoreProjector" = "True" 
-			"RenderType" = "Transparent" 
-			"PreviewType" = "Plane"
-			"CanUseSpriteAtlas" = "True"
-		}
+    SubShader
+    {
+        Tags
+        {
+            "Queue" = "Transparent"
+            "IgnoreProjector" = "True"
+            "RenderType" = "Transparent"
+            "PreviewType" = "Plane"
+            "CanUseSpriteAtlas" = "True"
+        }
 
-		Cull Off
-		Lighting Off
-		ZWrite Off
+        Cull Off
+        Lighting Off
+        ZWrite Off
 
-		BlendOp Max
+        BlendOp Max
 
-		// Blend SrcAlpha OneMinusSrcAlpha
-		// Blend One OneMinusSrcAlpha, One One // multiply
-		// Blend One // additive
-		// Blend Zero SrcColor
+        // Blend SrcAlpha OneMinusSrcAlpha
+        // Blend One OneMinusSrcAlpha, One One // multiply
+        // Blend One // additive
+        // Blend Zero SrcColor
 
-		Pass
-		{
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
-	
-			#include "UnityCG.cginc"
-		
-			sampler2D _MainTex;
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
 
-			struct vertice
-			{
-				float4 vertex   : POSITION;
-				float4 color    : COLOR;
-				float3 texcoord : TEXCOORD0;
-			};
+            #include "UnityCG.cginc"
 
-			struct pixel
-			{
-				float4 vertex   : SV_POSITION;
-				fixed4 color    : COLOR;
-				float3 texcoord  : TEXCOORD0;
-			};
+            sampler2D _MainTex;
 
-			pixel vert(vertice v)
-			{
-				pixel p;
+            struct vertice
+            {
+                float4 vertex : POSITION;
+                float4 color : COLOR;
+                float3 texcoord : TEXCOORD0;
+            };
 
-				p.vertex = UnityObjectToClipPos(v.vertex);
-				p.texcoord = v.texcoord;
-				p.color = v.color;
-		
-				return p;
-			}
+            struct pixel
+            {
+                float4 vertex : SV_POSITION;
+                fixed4 color : COLOR;
+                float3 texcoord : TEXCOORD0;
+            };
 
-			fixed4 frag(pixel p) : SV_Target
-			{
-				float x = p.texcoord.x - 0.5;
-				float y = p.texcoord.y - 0.5;
+            pixel vert(vertice v)
+            {
+                pixel p;
 
-				fixed color = tex2D(_MainTex, p.texcoord).r * step(0.1, p.texcoord.z);
-				color += step(0.1, p.color.a) * (1 - p.texcoord.x);
-				color += step(0.1, p.color.g) * max(0, (1 - sqrt(x * x + y * y) * 2));
-				color += step(0.1, p.color.r);
-				color *= (1 - p.color.b);
-				
-				return color;
-			}
+                p.vertex = UnityObjectToClipPos(v.vertex);
+                p.texcoord = v.texcoord;
+                p.color = v.color;
 
-			ENDCG
-		}
-	}
+                return p;
+            }
+
+            fixed4 frag(pixel p) : SV_Target
+            {
+                float x = p.texcoord.x - 0.5;
+                float y = p.texcoord.y - 0.5;
+
+                fixed color = tex2D(_MainTex, p.texcoord).r * step(0.1, p.texcoord.z);
+                color += step(0.1, p.color.a) * (1 - p.texcoord.x);
+                color += step(0.1, p.color.g) * max(0, (1 - sqrt(x * x + y * y) * 2));
+                color += step(0.1, p.color.r);
+                color *= (1 - p.color.b);
+
+                return color;
+            }
+            ENDCG
+        }
+    }
 }

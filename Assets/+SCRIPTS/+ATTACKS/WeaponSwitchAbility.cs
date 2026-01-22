@@ -11,6 +11,8 @@ namespace __SCRIPTS
 
 		protected override bool requiresLegs() => false;
 
+		public override bool canDo() => base.canDo() && gunAttack.CanSwitchGuns();
+
 		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is GunAttack;
 
 		private GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
@@ -18,9 +20,7 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
-			SwitchGuns();
-			Debug.Log("Switched Guns",this);
-			PlayAnimationClip(gunAttack.CurrentGun.pullOutAnimationClip, 1);
+			if(SwitchGuns()) PlayAnimationClip(gunAttack.CurrentGun.pullOutAnimationClip, 1);
 		}
 
 		public override void SetPlayer(Player newPlayer)
@@ -30,9 +30,9 @@ namespace __SCRIPTS
 			player.Controller.SwapWeaponSquare.OnPress += Player_SwapWeapon;
 		}
 
-		private void SwitchGuns()
+		private bool SwitchGuns()
 		{
-			gunAttack.SwapGuns();
+			return gunAttack.SwapGuns();
 		}
 
 		private void OnDestroy()
@@ -45,6 +45,7 @@ namespace __SCRIPTS
 
 		private void Player_SwapWeapon(NewControlButton obj)
 		{
+
 			TryToActivate();
 		}
 	}

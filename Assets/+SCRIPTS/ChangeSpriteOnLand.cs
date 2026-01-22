@@ -5,19 +5,19 @@ using UnityEngine;
 public class ChangeSpriteOnLand : MonoBehaviour
 {
 	public SpriteRenderer spriteRenderer => _spriteRenderer ??= GetComponentInChildren<SpriteRenderer>();
-	private SpriteRenderer _spriteRenderer;
-	private JumpAndRotateAbility JumpAndRotateAbility  => jumpAndRotateAbility ??= GetComponent<JumpAndRotateAbility>();
-	private JumpAndRotateAbility jumpAndRotateAbility;
-	private HideRevealObjects hideRevealObjects  => _hideRevealObjects ??= GetComponentInChildren<HideRevealObjects>();
-	private HideRevealObjects _hideRevealObjects;
+	SpriteRenderer _spriteRenderer;
+	JumpAndRotateAbility JumpAndRotateAbility => jumpAndRotateAbility ??= GetComponent<JumpAndRotateAbility>();
+	JumpAndRotateAbility jumpAndRotateAbility;
+	HideRevealObjects hideRevealObjects => _hideRevealObjects ??= GetComponentInChildren<HideRevealObjects>();
+	HideRevealObjects _hideRevealObjects;
 
-	private void Start()
+	void Start()
 	{
 		JumpAndRotateAbility.OnResting += JumpAndRotateAbilityOnResting;
 	}
 
 	[Button]
-	private void JumpAndRotateAbilityOnResting(Vector2 obj)
+	void JumpAndRotateAbilityOnResting(Vector2 obj)
 	{
 		hideRevealObjects.SetRandom();
 	}

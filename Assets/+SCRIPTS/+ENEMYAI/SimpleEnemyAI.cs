@@ -50,6 +50,7 @@ namespace __SCRIPTS._ENEMYAI
 		{
 			isMoving = false;
 			OnStopMoving?.Invoke();
+			Debug.Log("attack player");
 			OnAttack?.Invoke(_target);
 			OnAttackStart?.Invoke();
 		}
@@ -67,7 +68,7 @@ namespace __SCRIPTS._ENEMYAI
 		private bool CloseEnoughToPlayer()
 		{
 			var distanceToPlayer = Vector2.Distance(transform.position, _target.transform.position);
-			return distanceToPlayer <= stats.Stats.Range(2);
+			return distanceToPlayer <= stats.Stats.Range(1);
 		}
 
 		public void SetPlayer(Player newPlayer)

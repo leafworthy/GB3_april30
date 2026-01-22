@@ -876,7 +876,6 @@ GameObject:
   - component: {fileID: 3666243998089219834}
   - component: {fileID: 8630776527806178940}
   - component: {fileID: 8116349238465861370}
-  - component: {fileID: 2767398237491703624}
   - component: {fileID: 6340523526567740948}
   - component: {fileID: 3315782188788311680}
   - component: {fileID: 6798889705341101559}
@@ -887,6 +886,7 @@ GameObject:
   - component: {fileID: 7713579280018354600}
   - component: {fileID: 1948083798379097666}
   - component: {fileID: 498629106784339091}
+  - component: {fileID: 5427083539370948596}
   m_Layer: 6
   m_Name: Avocado Variant
   m_TagString: Untagged
@@ -990,10 +990,10 @@ MonoBehaviour:
       Data: 1|__SCRIPTS.UnitStatsData, Assembly-CSharp
     - Name: unitName
       Entry: 1
-      Data: 
+      Data: Fruit
     - Name: category
       Entry: 3
-      Data: 0
+      Data: 4
     - Name: debrisType
       Entry: 3
       Data: 0
@@ -1002,40 +1002,40 @@ MonoBehaviour:
       Data: UnityEngine.Color, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: 
       Entry: 4
       Data: 0
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 0.13333334
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
     - Name: isPlayerSwingHittable
       Entry: 5
-      Data: false
+      Data: true
     - Name: showLifeBar
       Entry: 5
-      Data: false
+      Data: true
     - Name: isInvincible
       Entry: 5
       Data: false
     - Name: healthMax
       Entry: 4
-      Data: 0
+      Data: 100
     - Name: moveSpeed
       Entry: 4
-      Data: 0
+      Data: 30
     - Name: dashSpeed
       Entry: 4
       Data: 0
     - Name: jumpSpeed
       Entry: 4
-      Data: 0
+      Data: 2
     - Name: aggroRange
       Entry: 4
       Data: 0
@@ -1077,10 +1077,10 @@ MonoBehaviour:
       Data: 0
     - Name: experienceGiven
       Entry: 4
-      Data: 0
+      Data: 100
     - Name: hasData
       Entry: 5
-      Data: false
+      Data: true
     - Name: isDefault
       Entry: 5
       Data: false
@@ -1114,47 +1114,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2767398237491703624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3666243998089219786}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 1
-  renderBelowAll: 0
-  sortingBounds: {fileID: 3666243998089219834}
-  renderBelowSortingOrder: 0
-  sortType: 1
-  SorterPositionOffset: {x: 0, y: 0, z: 0}
-  SorterPositionOffset2: {x: 0, y: 0, z: 0}
-  renderersToSort:
-  - {fileID: 3666243997458022732}
-  - {fileID: 4791766749372096186}
-  - {fileID: 4156141535512406564}
-  - {fileID: 2318148345603741051}
-  - {fileID: 8511483409117234204}
-  - {fileID: 2408031678357701338}
-  - {fileID: 5230929688699468099}
-  - {fileID: 8267960217184818861}
-  - {fileID: 5945795757645475319}
-  renderAboveAll: 0
-  hasRenderers: 0
 --- !u!50 &6340523526567740948
 Rigidbody2D:
   serializedVersion: 5
@@ -1342,6 +1301,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a3858f7e7b44d4b8bf87aa6d65919f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!210 &5427083539370948596
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3666243998089219786}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &3693033960598427261
 GameObject:
   m_ObjectHideFlags: 0
@@ -2127,6 +2098,9 @@ MonoBehaviour:
   slowBarColor: {r: 1, g: 1, b: 1, a: 1}
   FastBar: {fileID: 6688173948994707323}
   SlowBar: {fileID: 6688173948939314178}
+  targetFill: 0
+  HideWhenAboveFraction: 1
+  useGradientColor: 1
 --- !u!1 &6688173948464491829
 GameObject:
   m_ObjectHideFlags: 0

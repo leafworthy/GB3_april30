@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8228578637855830027}
   - component: {fileID: 3498797062798924321}
+  - component: {fileID: 5183136394159832033}
   m_Layer: 0
   m_Name: Flicker Light
   m_TagString: Untagged
@@ -56,6 +57,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!210 &5183136394159832033
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199605803841984997}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &1260784743074833318
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,7 +281,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2199557389517568617}
   - component: {fileID: 2625901152099601916}
-  - component: {fileID: 5127943313193853752}
   - component: {fileID: 1695296382867392629}
   m_Layer: 0
   m_Name: STREET LIGHT
@@ -351,39 +363,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5127943313193853752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6433254134278922823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 0
-  renderBelowAll: 0
-  sortingBounds: {fileID: 0}
-  renderBelowSortingOrder: 0
-  sortType: 0
-  SorterPositionOffset: {x: -9.893707, y: -16.50437, z: -0.003165422}
-  SorterPositionOffset2: {x: 9.042946, y: -31.237207, z: 0}
-  renderersToSort:
-  - {fileID: 2625901152099601916}
-  renderAboveAll: 0
-  hasRenderers: 0
 --- !u!60 &1695296382867392629
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -447,6 +426,7 @@ GameObject:
   - component: {fileID: 4244434419180651711}
   - component: {fileID: 7113387196467896994}
   - component: {fileID: 6788847335241965199}
+  - component: {fileID: 7065454133731433709}
   m_Layer: 21
   m_Name: Life
   m_TagString: Untagged
@@ -687,6 +667,18 @@ MonoBehaviour:
   OverrideName: Lamp
   IsShielded: 0
   IsInvincible: 1
+--- !u!114 &7065454133731433709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6663439799001809877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Life_FX
 --- !u!1 &6817900835997524049
 GameObject:
   m_ObjectHideFlags: 0

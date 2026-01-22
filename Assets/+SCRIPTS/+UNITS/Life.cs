@@ -49,7 +49,7 @@ namespace __SCRIPTS
 			return Stats;
 		}
 
-		void Awake()
+		void Start()
 		{
 			Init();
 		}
@@ -97,13 +97,19 @@ namespace __SCRIPTS
 			Services.objectMaker.Unmake(gameObject);
 		}
 
+		void CompleteDeathDelayed()
+		{
+			CompleteDeath(false); // or just CompleteDeath() since false is default
+		}
+
 		void Health_OnDead(Attack attack)
 		{
+			Debug.Log("health on dead");
 			EnableColliders(false);
 			OnDead?.Invoke(attack);
 			if (attack.OriginLife.player != null) OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
 			gameObject.layer = LayerMask.NameToLayer("Dead");
-			Invoke(nameof(CompleteDeath), deathTime);
+			Invoke(nameof(CompleteDeathDelayed), deathTime);
 
 			animations?.SetTrigger(UnitAnimations.DeathTrigger);
 			animations?.SetBool(UnitAnimations.IsDead, true);
@@ -111,7 +117,7 @@ namespace __SCRIPTS
 
 		void EnableColliders(bool enable)
 		{
-			if (!Stats.Data.isInvincible && !enable) return;
+			if (Stats.Data.isInvincible && !enable) return;
 			colliders = gameObject.GetComponentsInChildren<Collider2D>(true);
 
 			foreach (var col in colliders)

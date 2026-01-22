@@ -5,23 +5,23 @@ using UnityEditor;
 
 namespace Sisus.ComponentNames.Editor
 {
-    internal static class ObjectNamesUtility
-    {
-        private static Dictionary<Type, string> internalInspectorTitlesCache = null;
+	internal static class ObjectNamesUtility
+	{
+		static Dictionary<Type, string> internalInspectorTitlesCache;
 
-        public static Dictionary<Type, string> InternalInspectorTitlesCache
-        {
-            get
-            {
-                if(internalInspectorTitlesCache == null)
-                {
-                    Type inspectorTitlesType = typeof(ObjectNames).GetNestedType("InspectorTitles", BindingFlags.Static | BindingFlags.NonPublic);
-                    var inspectorTitlesField = inspectorTitlesType.GetField("s_InspectorTitles", BindingFlags.Static | BindingFlags.NonPublic);
-                    internalInspectorTitlesCache = (Dictionary<Type, string>)inspectorTitlesField.GetValue(null);
-                }
+		public static Dictionary<Type, string> InternalInspectorTitlesCache
+		{
+			get
+			{
+				if (internalInspectorTitlesCache == null)
+				{
+					var inspectorTitlesType = typeof(ObjectNames).GetNestedType("InspectorTitles", BindingFlags.Static | BindingFlags.NonPublic);
+					var inspectorTitlesField = inspectorTitlesType.GetField("s_InspectorTitles", BindingFlags.Static | BindingFlags.NonPublic);
+					internalInspectorTitlesCache = (Dictionary<Type, string>) inspectorTitlesField.GetValue(null);
+				}
 
-                return internalInspectorTitlesCache;
-            }
-        }
-    }
+				return internalInspectorTitlesCache;
+			}
+		}
+	}
 }

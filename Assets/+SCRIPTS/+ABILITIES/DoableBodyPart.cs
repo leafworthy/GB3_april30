@@ -8,6 +8,7 @@ namespace __SCRIPTS
 	public class DoableBodyPart
 	{
 		public IDoableAbility CurrentAbility { get; private set; }
+
 		public void Stop(IDoableAbility abilityToStop)
 		{
 			if (CurrentAbility == null) return;
@@ -24,12 +25,10 @@ namespace __SCRIPTS
 			CurrentAbility.TryToActivate();
 		}
 
-
-
 		bool ActivitiesAreTheSame(IDoableAbility activity1, IDoableAbility activity2) =>
 			activity1?.AbilityName == activity2?.AbilityName;
 
-		public bool CanDoActivity(IDoableAbility newAbility, bool forceIt = false)
+		public bool CanDoActivity(IDoableAbility newAbility)
 		{
 			if (newAbility == null)
 			{
@@ -37,20 +36,10 @@ namespace __SCRIPTS
 				return false;
 			}
 
-			if (ActivitiesAreTheSame(newAbility, CurrentAbility))
-			{
-				Debug.Log("New Ability: " + newAbility.AbilityName + " is the same as current ability: " + CurrentAbility.AbilityName);
-				return false;
-			}
+			if (ActivitiesAreTheSame(newAbility, CurrentAbility)) return false;
 
-			if (CurrentAbility != null) return true;
-			if (forceIt)
-			{
-				Debug.Log("forced it in body part");
-				return true;
-			}
+			if (CurrentAbility == null) return true;
 
-			Debug.Log("Can Stop: " + CurrentAbility.AbilityName + " " + CurrentAbility.canStop(newAbility));
 			return CurrentAbility.canStop(newAbility);
 		}
 	}

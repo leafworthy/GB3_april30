@@ -576,7 +576,8 @@ GameObject:
   - component: {fileID: 2099686618678397150}
   - component: {fileID: 318323335208742521}
   - component: {fileID: -913970288058068304}
-  - component: {fileID: 4515025812150020269}
+  - component: {fileID: 6895411205454311457}
+  - component: {fileID: 6867742904556909726}
   m_Layer: 6
   m_Name: GangstaBean
   m_TagString: Player
@@ -1262,7 +1263,7 @@ MonoBehaviour:
   renderersToTint:
   - {fileID: 6613743014821493785}
   - {fileID: 3833892834760878399}
---- !u!114 &4515025812150020269
+--- !u!114 &6895411205454311457
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1271,13 +1272,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 3833892833884059285}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ddb173490854cd88f934deee4248b64, type: 3}
+  m_Script: {fileID: 11500000, guid: 2643f5b1c9af4aac99e16c365de6d2bf, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.ThreeWeaponSwitchAbility
-  Primary_Weapon: {fileID: 0}
-  Secondary_Weapon: {fileID: 0}
-  Tertiary_Weapon: {fileID: 0}
-  currentWeapon: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.WeaponSwitchAbility
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+--- !u!210 &6867742904556909726
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3833892833884059285}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &3833892834760878394
 GameObject:
   m_ObjectHideFlags: 0

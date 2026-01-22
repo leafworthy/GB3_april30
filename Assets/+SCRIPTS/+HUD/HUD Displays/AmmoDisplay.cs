@@ -95,7 +95,7 @@ namespace __SCRIPTS.HUD_Displays
 			if (barFX == null) barFX = GetComponentInChildren<LineBar>();
 			if (barFX.FastBar != null) barFX.FastBar.color = newPlayer.playerColor;
 			barFX.useGradientColor = false;
-			barFX.HideWhenBelowFraction = false;
+			barFX.HideWhenAboveFraction = false;
 		}
 	}
 }

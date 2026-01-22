@@ -51,7 +51,7 @@ namespace __SCRIPTS
 		{
 			base.StopAbility();
 			HideAiming();
-			lastArmAbility.Resume();
+			lastArmAbility?.Resume();
 		}
 
 		public override void SetPlayer(Player newPlayer)

@@ -25,15 +25,10 @@ namespace __SCRIPTS
 		bool isPressingShoot;
 		JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
 		JumpAbility _jumpAbility;
+		public event Action OnEmpty;
 
 		public event Action<bool> OnSwitchGun;
 		public event Action OnNeedsReload;
-
-		public override void StopAbility()
-		{
-			anim.SetFloat(UnitAnimations.ShootSpeed, 0);
-			base.StopAbility();
-		}
 
 #pragma warning disable UDR0001
 		static string[] PrimaryAnimationClips =
@@ -61,7 +56,7 @@ namespace __SCRIPTS
 
 		void StartAttacking()
 		{
-			if (isIdle || !jumpAbility.IsResting) return;
+			if (!isIdle || !jumpAbility.IsResting) return;
 
 			if (!CurrentGun.Shoot()) return;
 			SetState(weaponState.attacking);
@@ -83,11 +78,17 @@ namespace __SCRIPTS
 		protected override void StartIdle()
 		{
 			base.StartIdle();
+			return;
 			StopAbility();
+
 			if (CurrentGun is not PrimaryGun) return;
 			if (!CurrentGun.MustReload()) return;
 			if (CurrentGun.CanReload()) OnNeedsReload?.Invoke();
-			else SwitchGuns(false);
+			else
+			{
+				OnEmpty?.Invoke();
+				Debug.Log("should switch guns?");
+			}
 		}
 
 		protected override void DoAbility()
@@ -95,16 +96,25 @@ namespace __SCRIPTS
 			switch (currentState)
 			{
 				case weaponState.resuming:
+				case weaponState.pullOut:
 					StartIdle();
-					return;
-				default:
+					break;
+				case weaponState.not:
 					PullOutWeapon();
 					break;
+				case weaponState.idle:
+					StartIdle();
+					break;
+				case weaponState.attacking:
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
 			}
 		}
 
 		protected override void PullOutWeapon()
 		{
+			Debug.Log("pull out here, state: " + currentState, this);
 			SetState(weaponState.pullOut);
 			PlayAnimationClip(CurrentGun.pullOutAnimationClip, 1);
 		}
@@ -134,7 +144,7 @@ namespace __SCRIPTS
 
 		void Gun_OnNeedsReload()
 		{
-			StopAbility();
+			//StopAbility();
 			OnNeedsReload?.Invoke();
 		}
 
@@ -199,19 +209,24 @@ namespace __SCRIPTS
 			isPressingShoot = false;
 		}
 
-		void SwitchGuns(bool toPrimary)
+		bool SwitchGuns(bool toPrimary)
 		{
-			//if (toPrimary && primaryGun.MustReload() && _currentGun is not PrimaryGun) return;
+			Debug.Log("try to switch guns: " + toPrimary + " must reload " + primaryGun.MustReload(), this);
+			if (!CanSwitchGuns()) return false;
 			Debug.Log("switch guns to primary: " + toPrimary, this);
 			CurrentGun = toPrimary ? primaryGun : unlimitedGun;
 			OnSwitchGun?.Invoke(toPrimary);
 			StopAbility();
 			TryToActivate();
+			return true;
 		}
 
-		public void SwapGuns()
+		public bool CanSwitchGuns()
 		{
-			SwitchGuns(!(CurrentGun is PrimaryGun));
+			if (CurrentGun is not PrimaryGun && !primaryGun.CanReload()) return false;
+			return true;
 		}
+
+		public bool SwapGuns() => SwitchGuns(!(CurrentGun is PrimaryGun));
 	}
 }

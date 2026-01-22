@@ -495,6 +495,7 @@ GameObject:
   - component: {fileID: 5002742459162527955}
   - component: {fileID: 7813430567055621993}
   - component: {fileID: 827414940448333298}
+  - component: {fileID: 6636564609530733924}
   m_Layer: 7
   m_Name: Toast
   m_TagString: Untagged
@@ -937,6 +938,19 @@ MonoBehaviour:
   onGroundAnimationClip: {fileID: 7400000, guid: d01dfcf32736940ca9085d6e684cdd32, type: 2}
   getUpAnimationClip: {fileID: 7400000, guid: b1acc2d7b216b4571ae895941e54a228, type: 2}
   standingAnimationClip: {fileID: 7400000, guid: 8091b8897a42f48cbb2b482201baa3fc, type: 2}
+--- !u!114 &6636564609530733924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7431454428826219940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bd1c8b63d64415bfe85d1bf6312b65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Tinter
+  renderersToTint: []
 --- !u!1 &8681001409653053418
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,6 +1068,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7431454428826219932}
     m_Modifications:
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: useGradientColor
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242737, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Name
       value: HealthBar

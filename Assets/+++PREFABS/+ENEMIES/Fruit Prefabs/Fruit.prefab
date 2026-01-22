@@ -1113,6 +1113,7 @@ GameObject:
   - component: {fileID: 7938307980873225342}
   - component: {fileID: 2174765369296817044}
   - component: {fileID: 274111512734032197}
+  - component: {fileID: 4842247720465123309}
   m_Layer: 6
   m_Name: Fruit
   m_TagString: Untagged
@@ -1527,6 +1528,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a3858f7e7b44d4b8bf87aa6d65919f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!210 &4842247720465123309
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019382462400588572}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &4019382462604234510
 GameObject:
   m_ObjectHideFlags: 0
@@ -2283,6 +2296,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4019382462400588580}
     m_Modifications:
+    - target: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: useGradientColor
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242737, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_Name
       value: HealthBar

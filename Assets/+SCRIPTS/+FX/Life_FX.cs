@@ -1,6 +1,7 @@
 using GangstaBean.Core;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityUtils;
 using Random = UnityEngine.Random;
 
 namespace __SCRIPTS
@@ -28,7 +29,7 @@ namespace __SCRIPTS
 			life.OnFractionChanged += Life_FractionChanged;
 			if (healthBar == null) return;
 			healthBar.useGradientColor = true;
-			healthBar.HideWhenBelowFraction = true;
+			healthBar.HideWhenAboveFraction = true;
 		}
 
 		void Life_FractionChanged(float newFraction)
@@ -46,7 +47,8 @@ namespace __SCRIPTS
 
 		void Life_AttackHit(Attack attack)
 		{
-			_tint?.StartTint(attack.TintColor);
+			Debug.Log("life attack hit");
+			tint?.StartTint(attack.TintColor);
 			CreateDamageRisingText(attack);
 			SprayDebree(attack);
 			MakeHitMark(attack);
@@ -122,6 +124,7 @@ namespace __SCRIPTS
 
 		void Defence_Dead(Attack __attack)
 		{
+			healthBar.gameObject.SetActive(false);
 			_life.OnDead -= Defence_Dead;
 			_life.OnAttackHit -= Life_AttackHit;
 			_life.OnShielded -= Life_Shielded;

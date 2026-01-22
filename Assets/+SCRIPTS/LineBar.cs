@@ -12,7 +12,7 @@ public class LineBar : MonoBehaviour
 	public float targetFill;
 	const float smoothingFactor = .25f;
 	const float showBarFraction = .9f;
-	public bool HideWhenBelowFraction;
+	public bool HideWhenAboveFraction = true;
 	public bool useGradientColor;
 
 	void Start()
@@ -24,7 +24,7 @@ public class LineBar : MonoBehaviour
 	{
 		Debug.Log("Updating LineBar to fraction: " + fraction, this);
 		targetFill = fraction;
-		if (HideWhenBelowFraction && fraction > showBarFraction) gameObject.SetActive(false);
+		if (HideWhenAboveFraction && fraction > showBarFraction) gameObject.SetActive(false);
 
 			gameObject.SetActive(true);
 			SlowBar.color = slowBarColor;

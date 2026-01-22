@@ -20,7 +20,7 @@ namespace Sisus.ComponentNames
 		/// component class and attemps to assign other values for the property are ignored.
 		/// </para>
 		/// </summary>
-		public virtual new string name
+		public new virtual string name
 		{
 			get => this.GetName();
 			set => this.SetName(value);
@@ -31,5 +31,5 @@ namespace Sisus.ComponentNames
 		/// </summary>
 		/// <returns> The <see cref="name"/> of this component. </returns>
 		public override string ToString() => this.GetName();
-    }
+	}
 }
