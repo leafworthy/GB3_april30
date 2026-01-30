@@ -6,18 +6,19 @@ namespace __SCRIPTS.HUD_Displays
 {
 	public class AmmoDisplay : MonoBehaviour, INeedPlayer
 	{
-		public LineBar barFX;
+		LineBar barFX => _barFX ??= GetComponentInChildren<LineBar>();
+		LineBar _barFX;
 		public TMP_Text ammoText;
 		public TMP_Text totalText;
 		Ammo ammoToDisplay;
 		public CanvasGroup ammoDisplayCanvas;
-		public WeaponButton weaponButton => _weaponButton ??= GetComponentInChildren<WeaponButton>();
+		WeaponButton weaponButton => _weaponButton ??= GetComponentInChildren<WeaponButton>();
 		WeaponButton _weaponButton;
 
 		public bool greys;
 		bool init;
 
-		void UpdateDisplay(bool shake = false)
+		void UpdateDisplay()
 		{
 			if (ammoText != null) ammoText.text = ammoToDisplay.reloads ? ammoToDisplay.AmmoInClip.ToString() : ammoToDisplay.reserveAmmo.ToString();
 
@@ -27,16 +28,13 @@ namespace __SCRIPTS.HUD_Displays
 				else totalText.text = "/" + ammoToDisplay.maxReserveAmmo;
 			}
 
-			if (!ammoToDisplay.hasAmmoInClip() && ammoToDisplay.reloads)
-				GreyOut();
-			else if (!ammoToDisplay.hasReserveAmmo() && !ammoToDisplay.reloads)
+			if (!ammoToDisplay.hasAmmoInClip() && ammoToDisplay.reloads || !ammoToDisplay.hasReserveAmmo() && !ammoToDisplay.reloads)
 				GreyOut();
 			else
 				Ungrey();
 
-			if (barFX == null) barFX = GetComponentInChildren<LineBar>();
-			float fraction = (float) ammoToDisplay.totalAmmo() / (float)ammoToDisplay.maxReserveAmmo;
-			Debug.Log("Updating ammo bar: " + (ammoToDisplay.totalAmmo() )+ " "+( ammoToDisplay.maxReserveAmmo) + "fraction: " + fraction, this);
+			var fraction = ammoToDisplay.totalAmmo() / ammoToDisplay.maxReserveAmmo;
+			barFX.gameObject.SetActive(true);
 			barFX.UpdateBar(fraction);
 		}
 
@@ -81,7 +79,7 @@ namespace __SCRIPTS.HUD_Displays
 
 		void AmmoUsedUpdateDisplay()
 		{
-			UpdateDisplay(true);
+			UpdateDisplay();
 		}
 
 		void AmmoGainedUpdateDisplay()
@@ -92,10 +90,8 @@ namespace __SCRIPTS.HUD_Displays
 		public void SetPlayer(Player newPlayer)
 		{
 			Services.levelManager.OnStopLevel += CleanUp;
-			if (barFX == null) barFX = GetComponentInChildren<LineBar>();
 			if (barFX.FastBar != null) barFX.FastBar.color = newPlayer.playerColor;
 			barFX.useGradientColor = false;
-			barFX.HideWhenAboveFraction = false;
 		}
 	}
 }

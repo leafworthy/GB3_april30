@@ -24,7 +24,6 @@ namespace __SCRIPTS.HUD_Displays
 			UpdateDisplay(playerDefence.GetFraction());
 			if (barFX == null) return;
 			barFX.useGradientColor = false;
-			barFX.HideWhenAboveFraction = false;
 		}
 
 		void UpdateDisplay(float fraction)

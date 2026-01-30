@@ -15,6 +15,8 @@ namespace __SCRIPTS
 		LineBar healthBar => _healthBar ??= GetComponentInChildren<LineBar>(true);
 		LineBar _healthBar;
 
+		const float showBarFraction = .9f;
+
 		void Life_Shielded(Attack obj)
 		{
 			tint?.StartTint(Color.yellow);
@@ -29,11 +31,17 @@ namespace __SCRIPTS
 			life.OnFractionChanged += Life_FractionChanged;
 			if (healthBar == null) return;
 			healthBar.useGradientColor = true;
-			healthBar.HideWhenAboveFraction = true;
 		}
 
 		void Life_FractionChanged(float newFraction)
 		{
+			if (newFraction is > showBarFraction or 0)
+			{
+				healthBar.gameObject.SetActive(false);
+				return;
+			}
+
+			healthBar.gameObject.SetActive(true);
 			healthBar?.UpdateBar(newFraction);
 		}
 

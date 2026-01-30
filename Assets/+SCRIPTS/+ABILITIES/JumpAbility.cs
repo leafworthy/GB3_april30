@@ -120,7 +120,7 @@ namespace __SCRIPTS
 
 		void DefenceOnDead(Attack attack)
 		{
-			StartFlying();
+			if(attack.DestinationLife.player.IsHuman()) StartFlying();
 		}
 
 		void StartFlying()

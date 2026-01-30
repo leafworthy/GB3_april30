@@ -102,7 +102,6 @@ GameObject:
   - component: {fileID: 3798967501869008275}
   - component: {fileID: 7368836059527370570}
   - component: {fileID: 953491491219963416}
-  - component: {fileID: 872615921902758005}
   - component: {fileID: 7879925689689283461}
   - component: {fileID: 6022699182117295036}
   m_Layer: 7
@@ -306,7 +305,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.9690137, y: -9.108752}
+  m_Offset: {x: 0.9690137, y: -11.790487}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -316,7 +315,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 8.829654, y: 7.7443547}
+  m_Size: {x: 8.829654, y: 2.380887}
   m_EdgeRadius: 0
 --- !u!114 &953491491219963416
 MonoBehaviour:
@@ -330,20 +329,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &872615921902758005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4072610035323071818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f232de765df140ef854da5f5124a1bfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lootTypes: 07000000010000000200000003000000
-  amountOfLootDropped: 5
 --- !u!114 &7879925689689283461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,7 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4705f2b9e1d224827a49ab46e49680df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExplodeOnDeath
-  explosionSize: 6
+  explosionSize: 4
   transformToDestroy: {fileID: 8340158748680277637}
 --- !u!114 &6022699182117295036
 MonoBehaviour:
@@ -503,6 +488,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2541493512200692569}
   - component: {fileID: 8000400784646021890}
+  - component: {fileID: 6793265640965821957}
   m_Layer: 0
   m_Name: Dumpster - Green
   m_TagString: Untagged
@@ -540,6 +526,21 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+--- !u!114 &6793265640965821957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8340158748680277637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f232de765df140ef854da5f5124a1bfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customDropPoint: {fileID: 0}
+  lootTypes: 07000000010000000200000003000000
+  amountOfLootDropped: 5
 --- !u!1001 &7201263692320624950
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -614,11 +615,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 6.14
+      value: 5.67
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -9.06
+      value: -8.94
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -631,6 +632,22 @@ PrefabInstance:
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: m_Color.g
+      value: 0.989751
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: m_Color.r
+      value: 0.37530947
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159643717623899168, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159643717769961305, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.83
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

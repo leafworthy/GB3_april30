@@ -75,10 +75,9 @@ public class EnemySpawner : SerializedMonoBehaviour
 	float spawnMargin = -2f;
 	[SerializeField] float spawnDuration = 30f; // 0 for infinite
 
-	[Header("Spawn Sides"), SerializeField]
 	bool spawnLeft = true;
-	[SerializeField] bool spawnRight = true;
-	[SerializeField] bool spawnBottom = true;
+	bool spawnRight = true;
+	bool spawnBottom = true;
 
 	Camera mainCamera => _mainCamera ??= CursorManager.GetCamera();
 	Camera _mainCamera;
@@ -87,12 +86,16 @@ public class EnemySpawner : SerializedMonoBehaviour
 	bool isSpawning;
 	bool isFinishedSpawning;
 	bool isComplete;
-	public bool IsFinishedSpawning => isFinishedSpawning;
 	SpawnableArea currentSpawnArea;
-	List<GameObject> spawnedEnemies  = new();
-	public int minimumLeftAliveToStillFinish = 2;
+	List<GameObject> spawnedEnemies = new();
+	int minimumLeftAliveToStillFinish = 1;
 	public GameObject GoIndicator => _goIndicator ??= FindFirstObjectByType<GoIndicator>(FindObjectsInactive.Include).gameObject;
 	GameObject _goIndicator;
+
+	public event Action OnSpawningStart;
+	public event Action OnSpawningStop;
+	public event Action OnSpawningComplete;
+	public event Action OnSpawnedEnemyDead;
 
 	protected void OnTriggerEnter2D(Collider2D other)
 	{
@@ -114,17 +117,14 @@ public class EnemySpawner : SerializedMonoBehaviour
 	{
 		currentSpawnArea = FindFirstObjectByType<SpawnableArea>();
 	}
-[Button]
+
+	[Button]
 	public void TestSpawnArea()
 	{
 		currentSpawnArea = FindFirstObjectByType<SpawnableArea>();
 		Debug.Log(currentSpawnArea.AreaCollider);
 		var spawnPos = FindRandomSpawnPosition();
-		if (spawnPos == default)
-		{
-			Debug.LogWarning("Failed to find valid spawn position!");
-			return;
-		}
+		if (spawnPos == default) Debug.LogWarning("Failed to find valid spawn position!");
 	}
 
 	void Update()
@@ -153,6 +153,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 		durationTimer = 0f;
 		Debug.Log("Enemy spawning started");
 		SpawnAtRandomEdge();
+		OnSpawningStart?.Invoke();
 	}
 
 	void StopSpawning()
@@ -160,6 +161,8 @@ public class EnemySpawner : SerializedMonoBehaviour
 		isSpawning = false;
 		isFinishedSpawning = true;
 		Debug.Log("Enemy spawning stopped");
+		OnSpawningStop?.Invoke();
+		if (spawnedEnemies.Count + enemyPrefabsDictionary.Count > minimumLeftAliveToStillFinish) CompleteArena();
 	}
 
 	void CompleteArena()
@@ -168,6 +171,8 @@ public class EnemySpawner : SerializedMonoBehaviour
 		isComplete = true;
 		CameraSwitcher.I.UnSoloCamera();
 		ShowGo();
+		OnSpawningComplete?.Invoke();
+		Debug.Log("Enemy spawning complete");
 	}
 
 	void ShowGo()
@@ -189,26 +194,28 @@ public class EnemySpawner : SerializedMonoBehaviour
 			Debug.Log("No enemy prefabs to spawn!");
 			return;
 		}
+
 		var spawnPos = FindRandomSpawnPosition();
 		if (spawnPos == default)
 		{
 			Debug.LogWarning("Failed to find valid spawn position!");
 			return;
 		}
+
 		var enemyPrefab = GetEnemyPrefab();
 
-		if(enemyPrefab == null)
+		if (enemyPrefab == null)
 		{
 			Debug.Log("No valid enemy prefab to spawn!");
 			StopSpawning();
 			return;
 		}
+
 		SpawnEnemy(enemyPrefab, spawnPos);
 	}
 
 	Vector3 FindRandomSpawnPosition()
 	{
-
 		var maxTries = 5;
 		for (var i = 0; i < maxTries; i++)
 		{
@@ -219,13 +226,10 @@ public class EnemySpawner : SerializedMonoBehaviour
 				Debug.Log("Found spawn position at " + randomPosition);
 				return randomPosition;
 			}
-			else
-			{
-				MyDebugUtilities.DrawX(randomPosition, 12, Color.red, 2);
-				Debug.Log("yo!");
-			}
-		}
 
+			MyDebugUtilities.DrawX(randomPosition, 12, Color.red, 2);
+			Debug.Log("yo!");
+		}
 
 		return default;
 	}
@@ -242,10 +246,8 @@ public class EnemySpawner : SerializedMonoBehaviour
 				StopSpawning();
 				return null;
 			}
-			else
-			{
-				data.Amount--;
-			}
+
+			data.Amount--;
 			return enemyPrefabsDictionary[Random.Range(0, enemyPrefabsDictionary.Count)];
 		}
 
@@ -260,16 +262,12 @@ public class EnemySpawner : SerializedMonoBehaviour
 		var camWidth = camHeight * mainCamera.aspect;
 		var camPos = mainCamera.transform.position;
 
-		var possibleSides = new List<int>();
-		if (spawnLeft) possibleSides.Add(0);
-		if (spawnRight) possibleSides.Add(1);
-		if (spawnBottom) possibleSides.Add(2);
-
-		if (possibleSides.Count == 0)
+		var possibleSides = new List<int>
 		{
-			Debug.LogWarning("No spawn sides enabled!");
-			return camPos;
-		}
+			0,
+			1,
+			2
+		};
 
 		// Pick a random side
 		var side = possibleSides[Random.Range(0, possibleSides.Count)];
@@ -280,7 +278,6 @@ public class EnemySpawner : SerializedMonoBehaviour
 		{
 			case 0: // Left
 				spawnPosition.x = camPos.x - camWidth / 2f - spawnMargin;
-				//spawnPosition.y = Random.Range(camPos.y - camHeight / 2f, camPos.y + camHeight / 2f);
 				spawnPosition.y = Random.Range(camPos.y - camHeight / 2f, camPos.y);
 				break;
 
@@ -296,7 +293,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 		}
 
 		spawnPosition.z = 0f; // Assuming 2D or sprites
-		Debug.Log( "Calculated spawn position at " + spawnPosition);
+		Debug.Log("Calculated spawn position at " + spawnPosition);
 
 		return spawnPosition;
 	}
@@ -312,6 +309,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 			Debug.LogWarning("Spawned enemy has no Life component!");
 			return;
 		}
+
 		newEnemyLife.OnDead += SpawnedEnemy_OnDead;
 
 		Debug.Log($"Spawned enemy of type {spawnData.EnemyType} and tier {spawnData.EnemyTier} at {position}");
@@ -323,11 +321,12 @@ public class EnemySpawner : SerializedMonoBehaviour
 		if (!spawnedEnemies.Contains(attack.DestinationLife.transform.gameObject)) return;
 		attack.DestinationLife.OnDead -= SpawnedEnemy_OnDead;
 		spawnedEnemies.Remove(attack.DestinationLife.transform.gameObject);
-		Debug.Log("An enemy has been killed. Remaining: " + spawnedEnemies.Count + "is finished spawning: " + isFinishedSpawning + " min left: " + minimumLeftAliveToStillFinish);
-		if (spawnedEnemies.Count <= minimumLeftAliveToStillFinish && isFinishedSpawning)
-		{
-			Debug.Log( "All enemies defeated. Arena complete!");
-			CompleteArena();
-		}
+		OnSpawnedEnemyDead?.Invoke();
+		Debug.Log("An enemy has been killed. Remaining: " + spawnedEnemies.Count + "is finished spawning: " + isFinishedSpawning + " min left: " +
+		          minimumLeftAliveToStillFinish);
+		if (spawnedEnemies.Count + enemyPrefabsDictionary.Count > minimumLeftAliveToStillFinish) return;
+		if (!isFinishedSpawning) return;
+		Debug.Log("All enemies defeated. Arena complete!");
+		CompleteArena();
 	}
 }

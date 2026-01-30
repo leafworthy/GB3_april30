@@ -13,7 +13,7 @@ using UnityEditor;
 	public static class MyAttackUtilities
 	{
 		static readonly int Tint = Shader.PropertyToID("_Tint");
-		const float PushFactor = 2;
+		const float PushFactor = .1f;
 		const float TintFadeSpeed = 6;
 #if UNITY_EDITOR
 		[MenuItem("Tools/Select player Unit Animator")]

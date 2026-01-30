@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -8,7 +7,6 @@ namespace __SCRIPTS
 {
 	public static class MyExtensions
 	{
-
 		public static List<GameObject> FindEnemyPlacersWithinCollider(Collider2D collider, List<PrefabPlacer> candidates = null)
 		{
 			var results = new List<GameObject>();
@@ -16,17 +14,13 @@ namespace __SCRIPTS
 			if (collider == null)
 				return results;
 
-
 			foreach (var go in candidates)
 			{
 				if (!go.gameObject.activeInHierarchy)
 					continue;
 
 				Vector2 pos = go.transform.position;
-				if (collider.OverlapPoint(pos))
-				{
-					results.Add(go.gameObject);
-				}
+				if (collider.OverlapPoint(pos)) results.Add(go.gameObject);
 			}
 
 			return results;
@@ -37,15 +31,13 @@ namespace __SCRIPTS
 			Vector2 pos = ObjectToFind.transform.position;
 			return collider.OverlapPoint(pos);
 		}
+
 		public static void RemoveChildren(this Transform transform)
 		{
-			for (int i = transform.childCount - 1; i >= 0; i--)
+			for (var i = transform.childCount - 1; i >= 0; i--)
 			{
-				#if UNITY_EDITOR
-				Object.DestroyImmediate(transform.GetChild(i).gameObject);
-				#else
-				Object.Destroy(transform.GetChild(i).gameObject);
-				#endif
+				if (!Application.isPlaying) Object.DestroyImmediate(transform.GetChild(i).gameObject);
+				else Object.Destroy(transform.GetChild(i).gameObject);
 			}
 		}
 
@@ -66,19 +58,15 @@ namespace __SCRIPTS
 			Services.sfx.PlayRandom(list.GetRandom());
 		}
 
-
 		public static Vector2 GetRandomPointInside(this Collider2D col, int maxAttempts = 100)
 		{
-			if (col == null)
-			{
-				return Vector2.zero;
-			}
+			if (col == null) return Vector2.zero;
 
-			Bounds bounds = col.bounds;
+			var bounds = col.bounds;
 
-			for (int i = 0; i < maxAttempts; i++)
+			for (var i = 0; i < maxAttempts; i++)
 			{
-				Vector2 randomPoint = new Vector2(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y));
+				var randomPoint = new Vector2(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y));
 
 				if (col.OverlapPoint(randomPoint))
 					return randomPoint;
@@ -86,7 +74,5 @@ namespace __SCRIPTS
 
 			return Vector2.zero;
 		}
-
-
 	}
 }
