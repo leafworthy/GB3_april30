@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3078182492140518297}
-  - component: {fileID: 3078182492140518300}
   - component: {fileID: 6569350876974382177}
   - component: {fileID: 7486689071115476701}
+  - component: {fileID: 4466437252685941396}
   m_Layer: 0
   m_Name: BULLETHIT.000
   m_TagString: Untagged
@@ -36,39 +36,6 @@ Transform:
   - {fileID: 1814901783970535650}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3078182492140518300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3078182492140518301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 1
-  renderBelowAll: 0
-  sortingBounds: {fileID: 3417345086474082047}
-  renderBelowSortingOrder: 0
-  sortType: 0
-  SorterPositionOffset: {x: 0, y: 0, z: 0}
-  SorterPositionOffset2: {x: 0, y: 0, z: 0}
-  renderersToSort:
-  - {fileID: 3771352450258512271}
-  renderAboveAll: 0
-  hasRenderers: 0
 --- !u!114 &6569350876974382177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,6 +61,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!210 &4466437252685941396
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3078182492140518301}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &4083456689875707176
 GameObject:
   m_ObjectHideFlags: 0

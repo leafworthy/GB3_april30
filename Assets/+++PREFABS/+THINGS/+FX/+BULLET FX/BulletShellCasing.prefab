@@ -41,11 +41,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5837244398962055177}
-  - component: {fileID: 2103119385715250231}
   - component: {fileID: 353183104628318499}
   - component: {fileID: 7958320092317868226}
   - component: {fileID: -7652709974649102739}
   - component: {fileID: 5719818678008939292}
+  - component: {fileID: 7143920922050835325}
   m_Layer: 0
   m_Name: BulletShellCasing
   m_TagString: Untagged
@@ -70,40 +70,6 @@ Transform:
   - {fileID: 7593655598617308576}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2103119385715250231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3905781446934895332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 1
-  renderBelowAll: 0
-  sortingBounds: {fileID: 0}
-  renderBelowSortingOrder: 0
-  sortType: 0
-  SorterPositionOffset: {x: 0, y: 0, z: 0}
-  SorterPositionOffset2: {x: 0, y: 0, z: 0}
-  renderersToSort:
-  - {fileID: 4416515532679332238}
-  - {fileID: 8967157702298549553}
-  renderAboveAll: 0
-  hasRenderers: 0
 --- !u!114 &353183104628318499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,6 +131,18 @@ MonoBehaviour:
   isResting: 0
   freezeRotation: 0
   IsJumping: 0
+--- !u!210 &7143920922050835325
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3905781446934895332}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &6453900561546185262
 GameObject:
   m_ObjectHideFlags: 0

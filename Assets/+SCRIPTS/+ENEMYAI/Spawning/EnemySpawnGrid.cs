@@ -16,7 +16,8 @@ public class EnemySpawnGrid : MonoBehaviour
 
 		foreach (EnemySpawner.SpawnData spawnData in Spawner.enemyPrefabsDictionary)
 		{
-			var gridCell = Services.objectMaker.Make(Services.assetManager.UI.SpawnCellPrefab);
+			var objectMaker = ServiceLocator.Get<ObjectMaker>();
+			var gridCell = objectMaker.Make(Services.assetManager.UI.SpawnCellPrefab);
 			gridCell.transform.SetParent(gridLayoutGroup.transform, false);
 			var spawnCellScript = gridCell.GetComponent<SpawnGridCell>();
 			var sprite = EnemySpawner.GetAvatarFromType(spawnData.EnemyType);

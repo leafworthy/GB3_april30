@@ -286,8 +286,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2974191435372230884}
-  - component: {fileID: 3750312196540721137}
   - component: {fileID: -494843434496705267}
+  - component: {fileID: 4407951001577056138}
   m_Layer: 0
   m_Name: +Explosion3 - huge popper
   m_TagString: Untagged
@@ -311,39 +311,6 @@ Transform:
   - {fileID: 6032772804858005796}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3750312196540721137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5296165292360782326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 1
-  renderBelowAll: 0
-  sortingBounds: {fileID: 0}
-  renderBelowSortingOrder: 0
-  sortType: 0
-  SorterPositionOffset: {x: 0, y: 0, z: 0}
-  SorterPositionOffset2: {x: 0, y: 0, z: 0}
-  renderersToSort:
-  - {fileID: 3883639131198702722}
-  renderAboveAll: 0
-  hasRenderers: 0
 --- !u!114 &-494843434496705267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,6 +323,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!210 &4407951001577056138
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5296165292360782326}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &8509691991150135127
 GameObject:
   m_ObjectHideFlags: 0

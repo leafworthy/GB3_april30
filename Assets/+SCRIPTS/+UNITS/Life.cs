@@ -143,6 +143,7 @@ namespace __SCRIPTS
 				animations?.SetTrigger(UnitAnimations.HitTrigger);
 			else
 			{
+				Debug.Log("On flying");
 				OnFlying?.Invoke(attack);
 				animations?.SetTrigger(UnitAnimations.FlyingTrigger);
 			}

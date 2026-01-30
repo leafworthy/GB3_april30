@@ -140,6 +140,16 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, ICanAttack, INeedPlayer
 		}
 
 		moveDir = Vector2.left * speed;
+		var hitsAhead = Physics2D.RaycastAll(transform.position, Vector2.left, 1, Services.assetManager.LevelAssets.BuildingLayer);
+		for  (int i = 0; i < hitsAhead.Length; i++)
+		{
+			if (hitsAhead[i].collider != null)
+			{
+				moveDir = Vector2.left * speed + Vector2.up * speed/2;
+				return;
+			}
+		}
+
 		OnMoveInDirection?.Invoke(moveDir);
 	}
 

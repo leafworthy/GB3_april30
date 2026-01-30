@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 97243714374872189}
-  - component: {fileID: 6252824684496673169}
   - component: {fileID: 972924970309542864}
   - component: {fileID: 3952245511725959318}
   - component: {fileID: 9156004215329860467}
   - component: {fileID: 3663677898631224624}
+  - component: {fileID: 2923703089227288327}
   m_Layer: 10
   m_Name: DEBREE METAL.000
   m_TagString: Untagged
@@ -38,40 +38,6 @@ Transform:
   - {fileID: 8047778834297349049}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6252824684496673169
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 97243714374872191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 1
-  renderBelowAll: 0
-  sortingBounds: {fileID: 0}
-  renderBelowSortingOrder: 0
-  sortType: 0
-  SorterPositionOffset: {x: 0, y: 0, z: 0}
-  SorterPositionOffset2: {x: 0, y: 0, z: 0}
-  renderersToSort:
-  - {fileID: 8047778834297349048}
-  - {fileID: 6151863644800132824}
-  renderAboveAll: 0
-  hasRenderers: 0
 --- !u!114 &972924970309542864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +99,18 @@ MonoBehaviour:
   isResting: 0
   freezeRotation: 0
   IsJumping: 0
+--- !u!210 &2923703089227288327
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97243714374872191}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &7000019270999446092
 GameObject:
   m_ObjectHideFlags: 0

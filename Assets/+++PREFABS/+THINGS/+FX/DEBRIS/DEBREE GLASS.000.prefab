@@ -221,11 +221,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3220609882814957806}
-  - component: {fileID: 4136816526512557628}
   - component: {fileID: 273611875262614050}
   - component: {fileID: 7043583298678588477}
   - component: {fileID: 9169468654530792059}
   - component: {fileID: -2098394973869471518}
+  - component: {fileID: 3574738158432954310}
   m_Layer: 10
   m_Name: DEBREE GLASS.000
   m_TagString: Untagged
@@ -250,40 +250,6 @@ Transform:
   - {fileID: 1043981308350632529}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4136816526512557628
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3220609882814957800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 1
-  renderBelowAll: 0
-  sortingBounds: {fileID: 0}
-  renderBelowSortingOrder: 0
-  sortType: 0
-  SorterPositionOffset: {x: 0, y: 0, z: 0}
-  SorterPositionOffset2: {x: 0, y: 0, z: 0}
-  renderersToSort:
-  - {fileID: 1043981308350632558}
-  - {fileID: 8167307246579830483}
-  renderAboveAll: 0
-  hasRenderers: 0
 --- !u!114 &273611875262614050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,3 +311,15 @@ MonoBehaviour:
   isResting: 0
   freezeRotation: 0
   IsJumping: 0
+--- !u!210 &3574738158432954310
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3220609882814957800}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0

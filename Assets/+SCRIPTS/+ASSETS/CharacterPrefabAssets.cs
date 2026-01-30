@@ -19,7 +19,7 @@ namespace __SCRIPTS
 		public List<Material> DonutEnemyMaterials = new List<Material>();
 		public GameObject CornEnemyPrefab;
 		public List<Material> CornEnemyMaterials = new List<Material>();
-		public GameObject FruitEnemyPrefab;
+		public List<GameObject> FruitEnemyPrefabs;
 		public List<Material> FruitEnemyMaterials = new List<Material>();
 
 		public List<Material> GetCharacterPalettes(EnemySpawner.EnemyType type)

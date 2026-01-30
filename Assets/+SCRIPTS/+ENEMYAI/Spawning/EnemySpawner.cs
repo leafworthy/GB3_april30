@@ -60,7 +60,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 			case EnemyType.Corn:
 				return Services.assetManager.Players.CornEnemyPrefab;
 			case EnemyType.Fruit:
-				return Services.assetManager.Players.FruitEnemyPrefab;
+				return Services.assetManager.Players.FruitEnemyPrefabs.GetRandom();
 		}
 
 		return null;
@@ -68,7 +68,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 
 	public CinemachineCamera arenaCamera;
 	[SerializeField] public List<SpawnData> enemyPrefabsDictionary = new();
-	[SerializeField] bool randomizeEnemy = true;
+	[SerializeField] bool randomizeOrder = true;
 
 	[Header("Spawn Settings"), SerializeField]
 	float spawnInterval = 2f;
@@ -99,7 +99,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 		var otherLife = other.GetComponent<Life>();
 		if (otherLife == null) return;
 		if (otherLife.IsDead()) return;
-		if (!otherLife.player.IsHuman()) return;
+		if (!otherLife.player.IsMainPlayer()) return;
 		if (isFinishedSpawning || isSpawning) return;
 		StartSpawning();
 		SoloCamera();
@@ -135,6 +135,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 
 		if (spawnDuration > 0 && durationTimer >= spawnDuration)
 		{
+			Debug.Log("Spawn duration ended");
 			StopSpawning();
 			return;
 		}
@@ -199,6 +200,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 		if(enemyPrefab == null)
 		{
 			Debug.Log("No valid enemy prefab to spawn!");
+			StopSpawning();
 			return;
 		}
 		SpawnEnemy(enemyPrefab, spawnPos);
@@ -230,7 +232,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 
 	SpawnData GetEnemyPrefab()
 	{
-		if (randomizeEnemy)
+		if (randomizeOrder)
 		{
 			var data = enemyPrefabsDictionary[Random.Range(0, enemyPrefabsDictionary.Count)];
 			if (data.Amount <= 0)
@@ -321,7 +323,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 		if (!spawnedEnemies.Contains(attack.DestinationLife.transform.gameObject)) return;
 		attack.DestinationLife.OnDead -= SpawnedEnemy_OnDead;
 		spawnedEnemies.Remove(attack.DestinationLife.transform.gameObject);
-		Debug.Log("An enemy has been killed. Remaining: " + spawnedEnemies.Count);
+		Debug.Log("An enemy has been killed. Remaining: " + spawnedEnemies.Count + "is finished spawning: " + isFinishedSpawning + " min left: " + minimumLeftAliveToStillFinish);
 		if (spawnedEnemies.Count <= minimumLeftAliveToStillFinish && isFinishedSpawning)
 		{
 			Debug.Log( "All enemies defeated. Arena complete!");

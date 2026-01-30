@@ -126,7 +126,8 @@ namespace __SCRIPTS
 		void StartFlying()
 		{
 			SetState(state.flying);
-			TryToActivate();
+			//TryToActivate();
+			DoAbility();
 		}
 
 		void OnDisable()

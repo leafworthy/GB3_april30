@@ -122,7 +122,7 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player newPlayer)
 		{
 			base.SetPlayer(newPlayer);
-			CurrentGun = primaryGun;
+			CurrentGun = primaryGun.HasAnyAmmo() ? primaryGun : unlimitedGun;
 
 			StopListeningToEvents();
 			ListenToEvents();

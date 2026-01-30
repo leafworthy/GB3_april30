@@ -62,6 +62,9 @@ namespace __SCRIPTS
 		public bool MustReload() => !Ammo.hasAmmoInClip();
 		public void Reload() => Ammo.Reload();
 
+
+		public bool HasAnyAmmo() => Ammo.hasAmmoInReserveOrClip();
+
 		void Start()
 		{
 			currentCooldownTime = Time.time;
