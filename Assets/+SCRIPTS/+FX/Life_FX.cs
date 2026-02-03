@@ -35,13 +35,14 @@ namespace __SCRIPTS
 
 		void Life_FractionChanged(float newFraction)
 		{
+			if (healthBar == null) return;
 			if (newFraction is > showBarFraction or 0)
 			{
-				healthBar.gameObject.SetActive(false);
+				healthBar?.gameObject.SetActive(false);
 				return;
 			}
 
-			healthBar.gameObject.SetActive(true);
+			healthBar?.gameObject.SetActive(true);
 			healthBar?.UpdateBar(newFraction);
 		}
 
@@ -92,6 +93,7 @@ namespace __SCRIPTS
 
 		void CreateBloodSpray(Attack attack)
 		{
+			Debug.Log("bloodspray created");
 			var blood = Services.objectMaker.Make(Services.assetManager.FX.bloodspray.GetRandom(), attack.DestinationFloorPoint);
 			var bloodHeightScript = blood.GetComponent<HeightAbility>();
 			bloodHeightScript.SetHeight(attack.DestinationHeight);
@@ -132,7 +134,7 @@ namespace __SCRIPTS
 
 		void Defence_Dead(Attack __attack)
 		{
-			healthBar.gameObject.SetActive(false);
+			if(healthBar != null)healthBar.gameObject.SetActive(false);
 			_life.OnDead -= Defence_Dead;
 			_life.OnAttackHit -= Life_AttackHit;
 			_life.OnShielded -= Life_Shielded;

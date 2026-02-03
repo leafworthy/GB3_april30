@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transformToDestroy: {fileID: 9150764088192828192}
+  disableDestroy: 0
 --- !u!1 &9090035510816153379
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,9 +201,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8197371447177805791}
-  - component: {fileID: 4075062315540942812}
   - component: {fileID: 7445606607196555531}
   - component: {fileID: 3802629248175275467}
+  - component: {fileID: 8739329395775595540}
   m_Layer: 0
   m_Name: +BloodSpray1 - HeadShot
   m_TagString: Untagged
@@ -226,39 +227,6 @@ Transform:
   - {fileID: 891994515665242143}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4075062315540942812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9150764088192828192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 1
-  renderBelowAll: 0
-  sortingBounds: {fileID: 0}
-  renderBelowSortingOrder: 0
-  sortType: 0
-  SorterPositionOffset: {x: 0, y: 0, z: 0}
-  SorterPositionOffset2: {x: 0, y: 0, z: 0}
-  renderersToSort:
-  - {fileID: 4036839823684646730}
-  renderAboveAll: 0
-  hasRenderers: 1
 --- !u!114 &7445606607196555531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,3 +252,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HeightObject: {fileID: 2286351965710227701}
+--- !u!210 &8739329395775595540
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9150764088192828192}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0

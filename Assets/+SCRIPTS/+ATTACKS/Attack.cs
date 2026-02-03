@@ -16,6 +16,7 @@ namespace __SCRIPTS
 			OriginHeight = 5;
 			DestinationHeight = 5;
 			TintColor = Color.red;
+			MakesDebree = true;
 		}
 
 		public static Attack Create(ICanAttack originLife, IGetAttacked destinationLife)

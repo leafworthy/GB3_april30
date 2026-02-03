@@ -43,7 +43,7 @@ namespace __SCRIPTS
 		{
 			var transformPosition = Target.transform.position;
 			var origin = Random.Range(0, 2) == 1 ? transformPosition + new Vector3(-1, -1) : transformPosition + new Vector3(1, -1);
-			var poisonAttack = Attack.Create(Owner, Target).WithOriginPoint(origin).WithDamage(PoisonDamage).WithDebree().WithTint(Color.green);
+			var poisonAttack = Attack.Create(Owner, Target).WithOriginPoint(origin).WithDamage(PoisonDamage).WithDebree(false).WithTint(Color.green);
 			Target.TakeDamage(poisonAttack);
 		}
 	}
