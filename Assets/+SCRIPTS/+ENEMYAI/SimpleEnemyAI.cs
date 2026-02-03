@@ -4,20 +4,18 @@ using UnityEngine;
 
 namespace __SCRIPTS._ENEMYAI
 {
-	public class SimpleEnemyAI : MonoBehaviour, ICanMoveThings, ICanAttack,INeedPlayer
+	public class SimpleEnemyAI : MonoBehaviour, ICanMoveThings, ICanAttack, INeedPlayer
 	{
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;
-		public event Action OnAttackStart;
 		public event Action<IGetAttacked> OnAttack;
-		public event Action OnAttackStop;
 		public Vector2 GetMoveAimDir() => moveDir;
-		private Vector2 moveDir;
+		Vector2 moveDir;
 
 		public bool IsMoving() => isMoving;
-		private bool isMoving;
+		bool isMoving;
 		public Player player => _player;
-		private Player _player;
+		Player _player;
 		public LayerMask EnemyLayer => Services.assetManager.LevelAssets.EnemyLayer;
 
 		public bool IsEnemyOf(IGetAttacked targetLife)
@@ -27,15 +25,14 @@ namespace __SCRIPTS._ENEMYAI
 			return player?.IsHuman() != targetLife.player?.IsHuman();
 		}
 
-
-		private IGetAttacked _target;
-		private Targetter targetter =>  _targetter ??= GetComponent<Targetter>();
-		private Targetter _targetter;
+		IGetAttacked _target;
+		Targetter targetter => _targetter ??= GetComponent<Targetter>();
+		Targetter _targetter;
 
 		public IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
-		private IHaveUnitStats _stats;
+		IHaveUnitStats _stats;
 
-		private void FixedUpdate()
+		void FixedUpdate()
 		{
 			_target = targetter.GetClosestPlayerWithinRange(stats.Stats.AggroRange);
 			if (_target == null) return;
@@ -45,27 +42,22 @@ namespace __SCRIPTS._ENEMYAI
 				WalkToPlayer();
 		}
 
-
-		private void AttackPlayer()
+		void AttackPlayer()
 		{
 			isMoving = false;
 			OnStopMoving?.Invoke();
 			Debug.Log("attack player");
 			OnAttack?.Invoke(_target);
-			OnAttackStart?.Invoke();
 		}
 
-		private void WalkToPlayer()
+		void WalkToPlayer()
 		{
-			if(!isMoving) OnAttackStop?.Invoke();
 			isMoving = true;
 			moveDir = (_target.transform.position - transform.position).normalized * stats.Stats.MoveSpeed;
 			OnMoveInDirection?.Invoke(moveDir);
 		}
 
-
-
-		private bool CloseEnoughToPlayer()
+		bool CloseEnoughToPlayer()
 		{
 			var distanceToPlayer = Vector2.Distance(transform.position, _target.transform.position);
 			return distanceToPlayer <= stats.Stats.Range(1);
@@ -73,8 +65,7 @@ namespace __SCRIPTS._ENEMYAI
 
 		public void SetPlayer(Player newPlayer)
 		{
-			_player	= newPlayer;
+			_player = newPlayer;
 		}
-
 	}
 }

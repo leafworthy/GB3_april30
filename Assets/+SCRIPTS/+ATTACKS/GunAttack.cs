@@ -75,22 +75,6 @@ namespace __SCRIPTS
 			body.TopFaceDirection(AimDir.x >= 0);
 		}
 
-		protected override void StartIdle()
-		{
-			base.StartIdle();
-			return;
-			StopAbility();
-
-			if (CurrentGun is not PrimaryGun) return;
-			if (!CurrentGun.MustReload()) return;
-			if (CurrentGun.CanReload()) OnNeedsReload?.Invoke();
-			else
-			{
-				OnEmpty?.Invoke();
-				Debug.Log("should switch guns?");
-			}
-		}
-
 		protected override void DoAbility()
 		{
 			switch (currentState)

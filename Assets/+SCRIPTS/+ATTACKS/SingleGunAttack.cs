@@ -17,8 +17,6 @@ namespace __SCRIPTS
 
 		bool isPressingShoot;
 
-		public event Action OnNeedsReload;
-		public event Action OnEmpty;
 
 		public void EquipGun(Gun newGun)
 		{

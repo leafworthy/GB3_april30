@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 953491491219963416}
   - component: {fileID: 7879925689689283461}
   - component: {fileID: 6022699182117295036}
+  - component: {fileID: 2596986239140854542}
   m_Layer: 7
   m_Name: Dumpster
   m_TagString: Untagged
@@ -120,7 +121,7 @@ Transform:
   m_GameObject: {fileID: 4072610035323071818}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.4, y: 24.3, z: -4.1015654}
+  m_LocalPosition: {x: -0.3, y: 1, z: -4.1015654}
   m_LocalScale: {x: 1.9, y: 1.9, z: 1.9}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -305,7 +306,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.9690137, y: -11.790487}
+  m_Offset: {x: 0.2, y: 0.44}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -357,6 +358,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Tinter
   renderersToTint:
   - {fileID: 8882696636119940396}
+--- !u!114 &2596986239140854542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4072610035323071818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5781eb60dc63d4cc3be42545c5fcf7f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChildWorldPositionLocker
+  lockChildren: 1
 --- !u!1 &6876654616573118013
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,7 +609,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.7974944
+      value: 0.7974943
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -615,11 +629,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 5.67
+      value: 4.564697
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -8.94
+      value: 3.3231583
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

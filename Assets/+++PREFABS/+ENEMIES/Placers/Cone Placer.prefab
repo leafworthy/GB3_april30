@@ -52,6 +52,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -73,6 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 40
@@ -134,7 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnsNPCs: 0
-  Prefab: {fileID: 9136819711188386144, guid: f6af586f359ab4790b5c693ec2970f09, type: 3}
+  EnemyType: 1
   isBehindSpawner: 0
   margin: -0.2
   EnemyTier: 0
@@ -156,3 +159,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 468e6b834c0844f9fa022630f15d8ca9, type: 2}
   - {fileID: 2100000, guid: d2c375b89dcba41c482f28a14d78122d, type: 2}
   spriteRenderer: {fileID: 7403494078755657922}
+  characterPallettes:
+  - {fileID: 2100000, guid: 62f29fea3d4ce470a9f936935d28ed71, type: 2}
+  - {fileID: 2100000, guid: f2225536de5a54f678b090880b106dad, type: 2}
+  - {fileID: 2100000, guid: 468e6b834c0844f9fa022630f15d8ca9, type: 2}
+  - {fileID: 2100000, guid: d2c375b89dcba41c482f28a14d78122d, type: 2}

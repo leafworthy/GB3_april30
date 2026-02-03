@@ -13,7 +13,7 @@ namespace __SCRIPTS
 		public Color debrisTint;
 
 		[Header("Combat Properties")] public bool isPlayerSwingHittable = true;
-		public bool showLifeBar;
+
 		public bool isInvincible;
 
 		[Header("Core Stats")] public float healthMax;
@@ -62,7 +62,7 @@ namespace __SCRIPTS
 
 			// Booleans
 			isPlayerSwingHittable = IsYes(csvRow, "IsPlayerSwingHittable");
-			showLifeBar = IsYes(csvRow, "ShowLifeBar");
+
 			isInvincible = IsYes(csvRow, "IsInvincible");
 
 			// Core stats

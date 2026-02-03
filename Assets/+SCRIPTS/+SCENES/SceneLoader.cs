@@ -15,12 +15,9 @@ namespace __SCRIPTS
 		[Header("UI References"), SerializeField]
 		Animator faderAnimator;
 		[SerializeField] GameObject loadingScreen;
-		[SerializeField] GameObject levelTransitionScreen;
 		[SerializeField] Image progressBarImage;
 		[SerializeField] TextMeshProUGUI percentLoadedText;
 		[SerializeField] TextMeshProUGUI locationTitleText;
-		//[SerializeField] private Image locationImage;
-		[SerializeField] GameObject pressAnyButtonText;
 
 		// State tracking
 		AsyncOperation loadingOperation;
@@ -38,7 +35,6 @@ namespace __SCRIPTS
 		public void StartService()
 		{
 			SceneManager.sceneLoaded += SceneManager_OnSceneLoaded;
-			pressAnyButtonText.gameObject.SetActive(false);
 			StartFadingIn();
 		}
 
@@ -88,8 +84,6 @@ namespace __SCRIPTS
 		public void FadeOutComplete()
 		{
 			loadingScreen.SetActive(false);
-			if (levelTransitionScreen != null)
-				levelTransitionScreen.SetActive(false);
 		}
 
 		#region Private Methods
@@ -146,8 +140,6 @@ namespace __SCRIPTS
 		{
 			faderAnimator.SetBool(IsFadedIn, false);
 
-			if (pressAnyButtonText != null)
-				pressAnyButtonText.gameObject.SetActive(false);
 		}
 
 		#endregion

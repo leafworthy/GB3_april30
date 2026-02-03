@@ -63,8 +63,6 @@ namespace GangstaBean.Core
 
 		bool IsEnemyOf(IGetAttacked targetLife);
 		event Action<IGetAttacked> OnAttack;
-		event Action OnAttackStop;
-		event Action OnAttackStart;
 	}
 
 	public interface IGetAttacked : INeedPlayer, IHaveUnitStats

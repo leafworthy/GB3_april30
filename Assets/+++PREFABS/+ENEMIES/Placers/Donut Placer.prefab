@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnsNPCs: 0
-  Prefab: {fileID: 4019382462400588572, guid: fc554a50617d541a6993aa31d6e2d64e, type: 3}
+  EnemyType: 2
   isBehindSpawner: 0
   margin: -0.2
   EnemyTier: 0
@@ -69,6 +69,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 73ba2b8856dc74af8a713b378c5ced67, type: 2}
   - {fileID: 2100000, guid: 178b9b6d55da942fda1bb43ddd7d91fc, type: 2}
   spriteRenderer: {fileID: 1525667420248535554}
+  characterPallettes: []
 --- !u!1 &8532168223994901226
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,6 +123,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -143,6 +146,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10

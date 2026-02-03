@@ -75,9 +75,6 @@ public class EnemySpawner : SerializedMonoBehaviour
 	float spawnMargin = -2f;
 	[SerializeField] float spawnDuration = 30f; // 0 for infinite
 
-	bool spawnLeft = true;
-	bool spawnRight = true;
-	bool spawnBottom = true;
 
 	Camera mainCamera => _mainCamera ??= CursorManager.GetCamera();
 	Camera _mainCamera;
@@ -162,7 +159,11 @@ public class EnemySpawner : SerializedMonoBehaviour
 		isFinishedSpawning = true;
 		Debug.Log("Enemy spawning stopped");
 		OnSpawningStop?.Invoke();
-		if (spawnedEnemies.Count + enemyPrefabsDictionary.Count > minimumLeftAliveToStillFinish) CompleteArena();
+		if (spawnedEnemies.Count + enemyPrefabsDictionary.Count <= minimumLeftAliveToStillFinish) CompleteArena();
+		else
+		{
+			Debug.Log("stopped spawning but enemies still remain: " + spawnedEnemies.Count + enemyPrefabsDictionary.Count);
+		}
 	}
 
 	void CompleteArena()
@@ -192,6 +193,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 		if (enemyPrefabsDictionary.Count == 0)
 		{
 			Debug.Log("No enemy prefabs to spawn!");
+			StopSpawning();
 			return;
 		}
 
@@ -216,7 +218,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 
 	Vector3 FindRandomSpawnPosition()
 	{
-		var maxTries = 5;
+		var maxTries = 8;
 		for (var i = 0; i < maxTries; i++)
 		{
 			var randomPosition = GetRandomSpawnPosition();
@@ -322,10 +324,19 @@ public class EnemySpawner : SerializedMonoBehaviour
 		attack.DestinationLife.OnDead -= SpawnedEnemy_OnDead;
 		spawnedEnemies.Remove(attack.DestinationLife.transform.gameObject);
 		OnSpawnedEnemyDead?.Invoke();
-		Debug.Log("An enemy has been killed. Remaining: " + spawnedEnemies.Count + "is finished spawning: " + isFinishedSpawning + " min left: " +
-		          minimumLeftAliveToStillFinish);
-		if (spawnedEnemies.Count + enemyPrefabsDictionary.Count > minimumLeftAliveToStillFinish) return;
-		if (!isFinishedSpawning) return;
+		Debug.Log("An enemy has been killed. Remaining: " + spawnedEnemies.Count
+		                                                  + "is finished spawning: " + isFinishedSpawning
+		                                                  + " min left: " + minimumLeftAliveToStillFinish);
+		if (spawnedEnemies.Count + enemyPrefabsDictionary.Count > minimumLeftAliveToStillFinish)
+		{
+			Debug.Log(spawnedEnemies.Count + enemyPrefabsDictionary.Count + " Enemies still remain. Arena not complete yet.");
+			return;
+		}
+		if (!isFinishedSpawning)
+		{
+			Debug.Log(" Spawning not finished yet. Arena not complete yet.");
+			return;
+		}
 		Debug.Log("All enemies defeated. Arena complete!");
 		CompleteArena();
 	}

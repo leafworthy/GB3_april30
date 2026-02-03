@@ -17,7 +17,6 @@ namespace __SCRIPTS
 		UnitAnimations _animations;
 		public bool IsDead() => Stats.IsDead;
 		public bool IsShielded;
-		public bool IsInvincible;
 		public float CurrentHealth => Stats.CurrentHealth;
 		public UnitCategory category => Stats.Data.category;
 		public DebrisType DebrisType => Stats.DebrisType;
@@ -69,7 +68,7 @@ namespace __SCRIPTS
 		{
 			if (animations == null) return;
 			if (animations.animEvents == null) return;
-			animations.animEvents.OnInvincible += SetInvincible;
+			animations.animEvents.OnInvincible += SetTemporarilyInvincible;
 		}
 
 		public void SetPlayer(Player newPlayer)
@@ -85,16 +84,22 @@ namespace __SCRIPTS
 			}
 		}
 
-		void SetInvincible(bool inOn)
-		{
-			Stats.IsTemporarilyInvincible = inOn;
-		}
-
 		void CompleteDeath(bool isRespawning)
 		{
 			Debug.Log("death complete", this);
 			OnDeathComplete?.Invoke(player, isRespawning);
+
+			if (!Stats.ShouldDestroyOnDeath()) return;
 			Services.objectMaker.Unmake(gameObject);
+			DisableAllColliders();
+		}
+
+		void DisableAllColliders()
+		{
+            foreach (var col in colliders)
+            {
+                col.enabled = false;
+            }
 		}
 
 		void CompleteDeathDelayed()
@@ -117,7 +122,6 @@ namespace __SCRIPTS
 
 		void EnableColliders(bool enable)
 		{
-			if (Stats.Data.isInvincible && !enable) return;
 			colliders = gameObject.GetComponentsInChildren<Collider2D>(true);
 
 			foreach (var col in colliders)
@@ -134,9 +138,13 @@ namespace __SCRIPTS
 				return;
 			}
 
-			if (IsInvincible) return;
+			if (!CanTakeDamage())
+			{
+				Debug.Log("cannot take damage right now");
+				return;
+			}
 
-			Stats?.TakeDamage(attack);
+
 			OnAttackHit?.Invoke(attack);
 			OnFractionChanged?.Invoke(GetFraction());
 			if (!attack.CausesFlying)
@@ -147,6 +155,8 @@ namespace __SCRIPTS
 				OnFlying?.Invoke(attack);
 				animations?.SetTrigger(UnitAnimations.FlyingTrigger);
 			}
+
+			Stats?.TakeDamage(attack);
 		}
 
 		public void AddHealth(float amount)

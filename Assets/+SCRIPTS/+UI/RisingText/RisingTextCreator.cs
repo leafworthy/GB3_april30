@@ -6,6 +6,7 @@ namespace __SCRIPTS.RisingText
 	{
 		public  void CreateRisingText(string textToRise, Vector2 position, Color textColor)
 		{
+			Debug.Log("Rising text: " + textToRise);
 			var risingTextGameObject = Services.objectMaker.Make(Services.assetManager.FX.risingTextPrefab, position);
 			var risingTextScript = risingTextGameObject.GetComponent<RisingText>();
 			risingTextScript.RiseWithText(textToRise, textColor);
@@ -14,6 +15,7 @@ namespace __SCRIPTS.RisingText
 		//REQUIRES ObjectMaker
 		public void StartService()
 		{
+			Debug.Log( "RisingTextCreator Service Started", this);
 		}
 	}
 }

@@ -56,7 +56,8 @@ namespace __SCRIPTS
 			CurrentHealth = Mathf.Min(RealMaxHealth + GetExtraHealth(), CurrentHealth + amount);
 		}
 
-		public bool CanTakeDamage() => !IsDead && !IsTemporarilyInvincible && !Data.isInvincible;
+		public bool CanTakeDamage() => !IsDead && !IsTemporarilyInvincible;
+		public bool ShouldDestroyOnDeath() => !Data.isInvincible;
 		public void FillHealth()
 		{
 			CurrentHealth = RealMaxHealth + GetExtraHealth();
@@ -82,7 +83,6 @@ namespace __SCRIPTS
 		public DebrisType DebrisType => Data.debrisType;
 
 		public float ExperienceGiven => Data.experienceGiven;
-		public bool IsInvincible => Data.isInvincible;
 
 		public float Damage(int attackIndex) => attackIndex switch
 		                                        {

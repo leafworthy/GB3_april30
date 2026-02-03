@@ -22,7 +22,6 @@ namespace __SCRIPTS
 
 		public void SetPlayer(Player newPlayer)
 		{
-			Debug.Log("claw offence set player");
 			body = GetComponent<Body>();
 			anim = GetComponent<UnitAnimations>();
 			targetter = GetComponent<Targetter>();
@@ -43,15 +42,12 @@ namespace __SCRIPTS
 
 		void AI_Attack(IGetAttacked newTarget)
 		{
-			Debug.Log("ai on offence");
 			if (Services.pauseManager.IsPaused) return;
 			if (TargetIsInvalid(newTarget))
 			{
 				Debug.Log("ClawAttack: Target is invalid, cannot offence.");
 				return;
 			}
-
-			Debug.Log("target valid, starting offence");
 			currentTargetLife = newTarget;
 			StartAttack();
 		}

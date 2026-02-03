@@ -4,7 +4,7 @@ using __SCRIPTS._ENEMYAI;
 using GangstaBean.Core;
 using UnityEngine;
 
-public class NPC_AI : MonoBehaviour, ICanMoveThings, ICanAttack, INeedPlayer
+public class NPC_AI : MonoBehaviour, ICanMoveThings,  INeedPlayer, ICanAttack
 {
 	enum state
 	{
@@ -16,12 +16,11 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, ICanAttack, INeedPlayer
 	public Player player => _player;
 	public LayerMask EnemyLayer => Services.assetManager.LevelAssets.EnemyLayer;
 	public IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
-	IHaveUnitStats _stats;
-	public bool IsEnemyOf(IGetAttacked targetLife) => life.IsEnemyOf(this);
+	public bool IsEnemyOf(IGetAttacked targetLife) =>   player.IsHuman() != targetLife.player.IsHuman();
 
 	public event Action<IGetAttacked> OnAttack;
-	public event Action OnAttackStop;
-	public event Action OnAttackStart;
+	IHaveUnitStats _stats;
+
 
 	public void SetPlayer(Player newPlayer)
 	{

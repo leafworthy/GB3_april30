@@ -6,10 +6,10 @@ using Random = UnityEngine.Random;
 
 namespace __SCRIPTS
 {
-	public class Life_FX : MonoBehaviour, INeedPlayer
+	public class Life_FX : MonoBehaviour
 	{
-		IGetAttacked life => _life ??= GetComponentInParent<IGetAttacked>();
-		IGetAttacked _life;
+		Life life => _life ??= GetComponentInParent<Life>();
+		Life _life;
 		Tinter tint => _tint ??= GetComponent<Tinter>();
 		Tinter _tint;
 		LineBar healthBar => _healthBar ??= GetComponentInChildren<LineBar>(true);
@@ -22,7 +22,7 @@ namespace __SCRIPTS
 			tint?.StartTint(Color.yellow);
 		}
 
-		public void SetPlayer(Player newPlayer)
+		public void Start( )
 		{
 			if (life == null) return;
 			life.OnDead += Defence_Dead;
@@ -38,12 +38,13 @@ namespace __SCRIPTS
 			if (healthBar == null) return;
 			if (newFraction is > showBarFraction or 0)
 			{
-				healthBar?.gameObject.SetActive(false);
+				healthBar.gameObject.SetActive(false);
 				return;
 			}
 
-			healthBar?.gameObject.SetActive(true);
-			healthBar?.UpdateBar(newFraction);
+			healthBar.gameObject.SetActive(true);
+			Debug.Log("updating health bar to " + newFraction,this);
+			healthBar.UpdateBar(newFraction);
 		}
 
 		public void OnDisable()
@@ -127,7 +128,11 @@ namespace __SCRIPTS
 		void CreateDamageRisingText(Attack attack)
 		{
 			if (attack.DamageAmount <= 0) return;
-			if (!life.CanTakeDamage()) return;
+			if (!life.CanTakeDamage())
+			{
+				Debug.Log("cant take damage cuz here");
+				return;
+			}
 			var roundedDamage = Mathf.Round(attack.DamageAmount);
 			Services.risingText.CreateRisingText("-" + roundedDamage, attack.DestinationWithHeight, Color.red);
 		}
