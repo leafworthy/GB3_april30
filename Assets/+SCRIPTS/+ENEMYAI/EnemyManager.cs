@@ -96,8 +96,16 @@ namespace __SCRIPTS
 		{
 			var life = npc.GetComponent<Life>();
 			if (life != null) life.SetPlayer(players.NPCPlayer);
+			var npcScript = npc.GetComponent<NPC_AI>();
+			npcScript.OnRescued += NPC_OnRescued;
 
 			CollectEnemy(npc);
+		}
+
+		void NPC_OnRescued(NPC_AI npc)
+		{
+			var tinter = npc.gameObject.GetComponent<Tinter>();
+			tinter?.StartFadeOut();
 		}
 	}
 }

@@ -9,13 +9,22 @@ namespace __SCRIPTS
 	{
 		public List<Renderer> renderersToTint = new();
 		Color materialTintColor;
+		Color materialColor;
 		const float tintFadeSpeed = 6f;
 		IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
 		IHaveUnitStats _stats;
+		bool IsFadingOutColor;
 
 		static readonly int ColorReplaceColorA = Shader.PropertyToID("_NewColorA");
 		static readonly int ColorReplaceColorB = Shader.PropertyToID("_NewColorB");
 		static readonly int Tint = Shader.PropertyToID("_Tint");
+		static readonly int Color = Shader.PropertyToID("_Color");
+
+		void Update()
+		{
+			FadeOutTintAlpha();
+			if (IsFadingOutColor) FadeOutColorAlpha();
+		}
 
 		public void StartTint(Color tintColor)
 		{
@@ -28,11 +37,6 @@ namespace __SCRIPTS
 			}
 		}
 
-		void Update()
-		{
-			FadeOutTintAlpha();
-		}
-
 		void FadeOutTintAlpha()
 		{
 			if (!(materialTintColor.a > 0)) return;
@@ -40,6 +44,26 @@ namespace __SCRIPTS
 			foreach (var r in renderersToTint)
 			{
 				r.material.SetColor(Tint, materialTintColor);
+			}
+		}
+
+		public void StartFadeOut()
+		{
+			IsFadingOutColor = true;
+			materialColor = new Color(1, 1, 1, 1);
+		}
+
+		void FadeOutColorAlpha()
+		{
+			if ((materialColor.a <= 0))
+			{
+				Services.objectMaker.Unmake(gameObject);
+				return;
+			}
+			materialColor.a = Mathf.Clamp01(materialColor.a - tintFadeSpeed/4 * Time.deltaTime);
+			foreach (var r in renderersToTint)
+			{
+				r.material.SetColor(Color, materialColor);
 			}
 		}
 

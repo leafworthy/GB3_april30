@@ -4,12 +4,12 @@ namespace __SCRIPTS.RisingText
 {
 	public class RisingTextCreator : MonoBehaviour, IService
 	{
-		public  void CreateRisingText(string textToRise, Vector2 position, Color textColor)
+		public  void CreateRisingText(string textToRise, Vector2 position, Color textColor, float fontSize = 3)
 		{
 			Debug.Log("Rising text: " + textToRise);
 			var risingTextGameObject = Services.objectMaker.Make(Services.assetManager.FX.risingTextPrefab, position);
 			var risingTextScript = risingTextGameObject.GetComponent<RisingText>();
-			risingTextScript.RiseWithText(textToRise, textColor);
+			risingTextScript.RiseWithText(textToRise, textColor, fontSize);
 		}
 
 		//REQUIRES ObjectMaker

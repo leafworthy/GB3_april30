@@ -68,12 +68,12 @@ namespace __SCRIPTS
 			if (player == null || body == null || body.AimCenter == null) return Vector2.zero;
 			if (!player.isUsingMouse)
 				return (Vector2) body.AimCenter.transform.position + (Vector2) GetRealAimDir() * maxAimDistance;
-			return body.AimCenter.transform.position + (CursorManager.GetMousePosition() - body.AimCenter.transform.position).normalized * maxAimDistance;
+			return body.AimCenter.transform.position + (CursorManager.GetMouseWorldPosition() - body.AimCenter.transform.position).normalized * maxAimDistance;
 		}
 
 		Vector3 GetRealAimDir()
 		{
-			if (player.isUsingMouse) return CursorManager.GetMousePosition() - body.AimCenter.transform.position;
+			if (player.isUsingMouse) return CursorManager.GetMouseWorldPosition() - body.AimCenter.transform.position;
 			return player.Controller.AimAxis.GetCurrentAngle();
 		}
 	}

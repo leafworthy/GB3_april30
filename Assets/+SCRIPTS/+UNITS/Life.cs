@@ -7,7 +7,7 @@ using UnityUtils;
 
 namespace __SCRIPTS
 {
-	[ExecuteAlways, RequireComponent(typeof(Life_FX))]
+	[ RequireComponent(typeof(Life_FX))]
 	public class Life : SerializedMonoBehaviour, IGetAttacked
 	{
 		public string OverrideName;

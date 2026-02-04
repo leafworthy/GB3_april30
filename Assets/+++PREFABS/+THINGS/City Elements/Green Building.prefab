@@ -42,7 +42,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4529237989363990621}
   - component: {fileID: 3761911187249126173}
-  - component: {fileID: 9124179929742082795}
   m_Layer: 0
   m_Name: Green Building
   m_TagString: Untagged
@@ -86,6 +85,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -107,6 +108,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1000
@@ -121,19 +123,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9124179929742082795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5162278733480068838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34ec0dd55342476182347e7d8733d99d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sorterPosition: 0
 --- !u!1 &5211783411260462786
 GameObject:
   m_ObjectHideFlags: 0

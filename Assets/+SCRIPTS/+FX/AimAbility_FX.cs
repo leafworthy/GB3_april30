@@ -42,7 +42,7 @@ namespace __SCRIPTS
 			}
 			else
 			{
-				Debug.DrawLine(body.FootPoint.transform.position, CursorManager.GetMousePosition(), Color.green);
+				Debug.DrawLine(body.FootPoint.transform.position, CursorManager.GetMouseWorldPosition(), Color.green);
 				flashlightLight.pointLightOuterRadius = 60;
 			}
 		}

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6210731267127591703}
   - component: {fileID: 4438874437202054702}
-  - component: {fileID: 3777727294394073324}
   - component: {fileID: 5721641129443355922}
   m_Layer: 0
   m_Name: nadeTarget
@@ -28,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 4854975885357852757}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5638341, y: -0, z: -0, w: 0.8258881}
-  m_LocalPosition: {x: -136.6, y: -38.34, z: 0.99}
+  m_LocalPosition: {x: -136.6, y: -38.34, z: 0}
   m_LocalScale: {x: 4.57716, y: 4.5771604, z: 4.5771604}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -92,39 +91,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3777727294394073324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4854975885357852757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 0
-  renderBelowAll: 0
-  sortingBounds: {fileID: 0}
-  renderBelowSortingOrder: 0
-  sortType: 1
-  SorterPositionOffset: {x: 7.8124695, y: 2.6041565, z: 0.0021874905}
-  SorterPositionOffset2: {x: -8.246429, y: 2.485794, z: 0.0021874905}
-  renderersToSort:
-  - {fileID: 4438874437202054702}
-  renderAboveAll: 0
-  hasRenderers: 0
 --- !u!114 &5721641129443355922
 MonoBehaviour:
   m_ObjectHideFlags: 0

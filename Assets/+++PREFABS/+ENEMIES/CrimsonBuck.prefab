@@ -127,7 +127,6 @@ GameObject:
   - component: {fileID: 8439529202025194955}
   - component: {fileID: 7182468830948332517}
   - component: {fileID: 7077040510206116457}
-  - component: {fileID: 3336217672993766619}
   - component: {fileID: 224072405077294774}
   - component: {fileID: 7709028499278789206}
   - component: {fileID: 983243113739754923}
@@ -135,8 +134,7 @@ GameObject:
   - component: {fileID: 7985030507518122798}
   - component: {fileID: 7993900838109217435}
   - component: {fileID: 645081512479370059}
-  - component: {fileID: 6842088613844878970}
-  - component: {fileID: 2718724599664279209}
+  - component: {fileID: 6563947314639009344}
   m_Layer: 7
   m_Name: CrimsonBuck
   m_TagString: Untagged
@@ -190,41 +188,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a3858f7e7b44d4b8bf87aa6d65919f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3336217672993766619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 912591045815131083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 1
-  renderBelowAll: 0
-  sortingBounds: {fileID: 5292037992982486049}
-  renderBelowSortingOrder: 0
-  sortType: 0
-  SorterPositionOffset: {x: 0.28979492, y: -3.107544, z: 0}
-  SorterPositionOffset2: {x: 0, y: 0, z: 0}
-  renderersToSort:
-  - {fileID: 5843643971457289528}
-  - {fileID: 2832064834699186295}
-  - {fileID: 6864343639827393813}
-  renderAboveAll: 0
-  hasRenderers: 0
 --- !u!50 &224072405077294774
 Rigidbody2D:
   serializedVersion: 5
@@ -310,42 +273,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebreeTint: {r: 1, g: 0, b: 0, a: 1}
-  colorMode: 1
-  slowBarColor: {r: 1, g: 1, b: 1, a: 1}
-  barGradient:
-    serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 1}
-    key1: {r: 1, g: 0.95496154, b: 0, a: 1}
-    key2: {r: 0.19127488, g: 1, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 16577
-    ctime2: 65535
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 3
-    m_NumAlphaKeys: 2
-  _healthBar: {fileID: 0}
-  BlockTint: 0
-  isBoss: 1
 --- !u!114 &3105616716522324279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,7 +341,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 6908380930154305988}
   DefaultBottomAnimation: {fileID: 0}
---- !u!114 &6842088613844878970
+--- !u!114 &6563947314639009344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -423,54 +350,137 @@ MonoBehaviour:
   m_GameObject: {fileID: 912591045815131083}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bb12a2bc475449c8e4cebd98de14a42, type: 3}
+  m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  UnitName: CrimsonBuck
-  _data:
-    unitName: CrimsonBuck
-    category: 1
-    debrisType: 0
-    isPlayerSwingHittable: 1
-    showLifeBar: 1
-    isInvincible: 0
-    healthMax: 2000
-    moveSpeed: 50
-    dashSpeed: 0
-    jumpSpeed: 0
-    aggroRange: 100
-    attack1Damage: 50
-    attack1Rate: 1
-    attack1Range: 10
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    hasData: 1
-    isDefault: 0
-  ExtraHealthFactor: 0
-  ExtraDamageFactor: 0
-  ExtraSpeedFactor: 0
---- !u!114 &2718724599664279209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 912591045815131083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0455abdae7264a0ca7c757667fc20f6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxHealth: 2000
-  CurrentHealth: 2000
-  _healthbar: {fileID: 4963353712395978367}
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Life
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Stats
+      Entry: 7
+      Data: 0|__SCRIPTS.UnitStats, Assembly-CSharp
+    - Name: EnemyTier
+      Entry: 3
+      Data: 0
+    - Name: _unitData
+      Entry: 7
+      Data: 1|__SCRIPTS.UnitStatsData, Assembly-CSharp
+    - Name: unitName
+      Entry: 1
+      Data: CrimsonBuck
+    - Name: category
+      Entry: 3
+      Data: 1
+    - Name: debrisType
+      Entry: 3
+      Data: 0
+    - Name: debrisTint
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.168627456
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 4
+      Data: 0.109803922
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: isPlayerSwingHittable
+      Entry: 5
+      Data: true
+    - Name: isInvincible
+      Entry: 5
+      Data: true
+    - Name: healthMax
+      Entry: 4
+      Data: 2000
+    - Name: moveSpeed
+      Entry: 4
+      Data: 50
+    - Name: dashSpeed
+      Entry: 4
+      Data: 0
+    - Name: jumpSpeed
+      Entry: 4
+      Data: 1
+    - Name: aggroRange
+      Entry: 4
+      Data: 100
+    - Name: attack1Damage
+      Entry: 4
+      Data: 50
+    - Name: attack1Rate
+      Entry: 4
+      Data: 1
+    - Name: attack1Range
+      Entry: 4
+      Data: 10
+    - Name: attack2Damage
+      Entry: 4
+      Data: 0
+    - Name: attack2Rate
+      Entry: 4
+      Data: 0
+    - Name: attack2Range
+      Entry: 4
+      Data: 0
+    - Name: attack3Damage
+      Entry: 4
+      Data: 0
+    - Name: attack3Rate
+      Entry: 4
+      Data: 0
+    - Name: attack3Range
+      Entry: 4
+      Data: 0
+    - Name: attack4Damage
+      Entry: 4
+      Data: 0
+    - Name: attack4Rate
+      Entry: 4
+      Data: 0
+    - Name: attack4Range
+      Entry: 4
+      Data: 0
+    - Name: experienceGiven
+      Entry: 4
+      Data: 100
+    - Name: hasData
+      Entry: 5
+      Data: true
+    - Name: isDefault
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ExtraHealthFactor
+      Entry: 4
+      Data: 0
+    - Name: ExtraDamageFactor
+      Entry: 4
+      Data: 0
+    - Name: ExtraSpeedFactor
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+  OverrideName: 
+  IsShielded: 0
 --- !u!1 &1830154128020281589
 GameObject:
   m_ObjectHideFlags: 0
@@ -977,6 +987,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -998,6 +1010,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 420
@@ -1256,6 +1269,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1277,6 +1292,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 421
@@ -1600,17 +1616,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
   m_PrefabInstance: {fileID: 8109369215432821323}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4963353712395978367 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3777143161779260468, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
-  m_PrefabInstance: {fileID: 8109369215432821323}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c81ed4c3ba97643c4a1f86d373c41ee5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8651314957163672416
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1684,11 +1689,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
---- !u!212 &6864343639827393813 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 2831824315133730421, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}
-  m_PrefabInstance: {fileID: 8651314957163672416}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6864343639827393814 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2831824315133730422, guid: ecd75e326a13a4bbea2f2312c1776f50, type: 3}

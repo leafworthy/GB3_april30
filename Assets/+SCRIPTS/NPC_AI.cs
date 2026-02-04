@@ -1,6 +1,7 @@
 using System;
 using __SCRIPTS;
 using __SCRIPTS._ENEMYAI;
+using __SCRIPTS.Cursor;
 using GangstaBean.Core;
 using UnityEngine;
 
@@ -10,7 +11,8 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings,  INeedPlayer, ICanAttack
 	{
 		cowering,
 		avoiding,
-		fleeing
+		fleeing,
+		rescued
 	}
 
 	public Player player => _player;
@@ -58,6 +60,7 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings,  INeedPlayer, ICanAttack
 	public float speed = 20;
 	Player _player;
 	LayerMask enemyLayer;
+	public event Action<NPC_AI> OnRescued;
 
 	void Start()
 	{
@@ -86,7 +89,29 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings,  INeedPlayer, ICanAttack
 			case state.fleeing:
 				StartFleeing();
 				break;
+			case state.rescued:
+				StartRescued();
+				break;
 		}
+	}
+
+	void StartRescued()
+	{
+		var pos = transform.position;
+		var correctedPosition = FindPositionAtEdgeOfScreen(pos);
+
+		Services.risingText.CreateRisingText("Rescued!", correctedPosition, Color.green, 10);
+		OnRescued?.Invoke(this);
+	}
+
+	Vector2 FindPositionAtEdgeOfScreen(Vector3 pos)
+	{
+		var screenPoint = CursorManager.GetCamera().WorldToViewportPoint(pos);
+		screenPoint.x = .05f;
+		screenPoint.y += .05f;
+
+		var worldPoint = CursorManager.GetCamera().ViewportToWorldPoint(screenPoint);
+		return new Vector2(worldPoint.x, pos.y);
 	}
 
 	void Update()
@@ -102,7 +127,15 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings,  INeedPlayer, ICanAttack
 			case state.fleeing:
 				UpdateFleeing();
 				break;
+			case state.rescued:
+				UpdateRescued();
+				break;
 		}
+	}
+
+	void UpdateRescued()
+	{
+
 	}
 
 	void StartFleeing()
@@ -138,6 +171,13 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings,  INeedPlayer, ICanAttack
 			return;
 		}
 
+		if (HasRunOffScreen())
+		{
+			Debug.Log("run off screen");
+			SetState(state.rescued);
+			return;
+		}
+
 		moveDir = Vector2.left * speed;
 		var hitsAhead = Physics2D.RaycastAll(transform.position, Vector2.left, 1, Services.assetManager.LevelAssets.BuildingLayer);
 		for  (int i = 0; i < hitsAhead.Length; i++)
@@ -150,6 +190,12 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings,  INeedPlayer, ICanAttack
 		}
 
 		OnMoveInDirection?.Invoke(moveDir);
+	}
+
+	bool HasRunOffScreen()
+	{
+		var screenPoint = CursorManager.GetCamera().WorldToViewportPoint(transform.position);
+		return screenPoint.x < 0;
 	}
 
 	bool ShouldAvoid()

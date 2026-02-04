@@ -164,12 +164,20 @@ namespace __SCRIPTS.Cursor
 				cursor.gameObject.SetActive(false);
 		}
 
-		public static Vector3 GetMousePosition()
+		public static Vector3 GetMouseWorldPosition()
 		{
 			cam = GetCamera();
 			if (cam == null) return Vector3.zero;
 			var vec = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 			vec.z = 0;
+			return vec;
+		}
+
+		public static Vector3 GetMouseScreenPosition()
+		{
+			cam = GetCamera();
+			if (cam == null) return Vector3.zero;
+			var vec = Mouse.current.position.ReadValue();
 			return vec;
 		}
 
