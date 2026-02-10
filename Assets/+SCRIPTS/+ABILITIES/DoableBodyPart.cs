@@ -36,7 +36,11 @@ namespace __SCRIPTS
 				return false;
 			}
 
-			if (ActivitiesAreTheSame(newAbility, CurrentAbility)) return false;
+			if (ActivitiesAreTheSame(newAbility, CurrentAbility))
+			{
+				Debug.Log("Activities are the same" + newAbility.AbilityName + " and " + CurrentAbility.AbilityName);
+				return false;
+			}
 
 			if (CurrentAbility == null) return true;
 

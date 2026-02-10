@@ -59,6 +59,7 @@ namespace __SCRIPTS
 		bool IsCoolingDown => Time.time <= currentCooldownTime;
 		public Vector2 AimDir => gunAimAbility.AimDir;
 		public bool CanReload() => Ammo.CanReload();
+		public bool CanSwap() => Ammo.hasAmmoInReserveOrClip();
 		public bool MustReload() => !Ammo.hasAmmoInClip();
 		public void Reload() => Ammo.Reload();
 

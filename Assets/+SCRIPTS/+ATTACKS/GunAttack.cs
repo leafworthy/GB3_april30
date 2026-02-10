@@ -196,7 +196,7 @@ namespace __SCRIPTS
 		bool SwitchGuns(bool toPrimary)
 		{
 			Debug.Log("try to switch guns: " + toPrimary + " must reload " + primaryGun.MustReload(), this);
-			if (!CanSwitchGuns()) return false;
+			if (!CanSwapGuns()) return false;
 			Debug.Log("switch guns to primary: " + toPrimary, this);
 			CurrentGun = toPrimary ? primaryGun : unlimitedGun;
 			OnSwitchGun?.Invoke(toPrimary);
@@ -205,12 +205,13 @@ namespace __SCRIPTS
 			return true;
 		}
 
-		public bool CanSwitchGuns()
+		public bool CanSwapGuns()
 		{
-			if (CurrentGun is not PrimaryGun && !primaryGun.CanReload()) return false;
-			return true;
+			if (CurrentGun is PrimaryGun || primaryGun.CanSwap()) return true;
+			Debug.Log( "cannot switch to primary gun because it cannot reload", this);
+			return false;
 		}
 
-		public bool SwapGuns() => SwitchGuns(!(CurrentGun is PrimaryGun));
+		public bool SwapGuns() => SwitchGuns(CurrentGun is not PrimaryGun);
 	}
 }

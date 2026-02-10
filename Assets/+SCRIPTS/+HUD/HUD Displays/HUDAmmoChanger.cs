@@ -20,6 +20,7 @@ namespace __SCRIPTS.HUD_Displays
 			if (newPlayer.SpawnedPlayerGO == null) return;
 			gunAttackAkGlock = newPlayer.SpawnedPlayerGO.GetComponent<GunAttack>();
 			gunAttackAkGlock.OnSwitchGun += ChangeAmmo;
+			ChangeAmmo(false);
 		}
 
 

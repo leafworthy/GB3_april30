@@ -104,7 +104,6 @@ GameObject:
   - component: {fileID: 953491491219963416}
   - component: {fileID: 7879925689689283461}
   - component: {fileID: 6022699182117295036}
-  - component: {fileID: 2596986239140854542}
   m_Layer: 7
   m_Name: Dumpster
   m_TagString: Untagged
@@ -188,9 +187,6 @@ MonoBehaviour:
     - Name: isPlayerSwingHittable
       Entry: 5
       Data: true
-    - Name: showLifeBar
-      Entry: 5
-      Data: true
     - Name: isInvincible
       Entry: 5
       Data: false
@@ -271,7 +267,6 @@ MonoBehaviour:
       Data: 
   OverrideName: Dumpster
   IsShielded: 0
-  IsInvincible: 0
 --- !u!61 &7368836059527370570
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -358,19 +353,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Tinter
   renderersToTint:
   - {fileID: 8882696636119940396}
---- !u!114 &2596986239140854542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4072610035323071818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5781eb60dc63d4cc3be42545c5fcf7f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ChildWorldPositionLocker
-  lockChildren: 1
 --- !u!1 &6876654616573118013
 GameObject:
   m_ObjectHideFlags: 0

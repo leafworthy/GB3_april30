@@ -36,10 +36,61 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 2596986239140854542, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: lockChildren
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3798967501869008275, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: OverrideName
+      value: TrashSmall
+      objectReference: {fileID: 0}
     - target: {fileID: 3798967501869008275, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 3798967501869008275, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+    - target: {fileID: 3798967501869008275, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: serializationData.PrefabModifications.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3798967501869008275, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[0]'
+      value: '"path":"Stats._unitData.debrisTint","value":{"$id":0,"$type":"UnityEngine.Color,
+        UnityEngine.CoreModule",0.360784322,0.243137255,0.152941182,1}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3798967501869008275, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[1]'
+      value: '"path":"Stats._unitData.debrisType","value":{"$id":0,"$type":"__SCRIPTS.DebrisType,
+        Assembly-CSharp",1}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3798967501869008275, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[2]'
+      value: '"path":"Stats._unitData.healthMax","value":{"$id":0,"$type":"System.Single,
+        mscorlib",60}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3798967501869008275, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[3]'
+      value: '"path":"Stats._unitData.isInvincible","value":{"$id":0,"$type":"System.Boolean,
+        mscorlib",false}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3798967501869008275, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[4]'
+      value: '"path":"Stats._unitData.isPlayerSwingHittable","value":{"$id":0,"$type":"System.Boolean,
+        mscorlib",false}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3798967501869008275, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[5]'
+      value: '"path":"Stats._unitData.moveSpeed","value":{"$id":0,"$type":"System.Single,
+        mscorlib",0}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3798967501869008275, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[6]'
+      value: '"path":"Stats._unitData.unitName","value":{"$id":0,"$type":"System.String,
+        mscorlib","TrashSmall"}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3798967501869008275, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3930363191740164740, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
       propertyPath: m_SizeDelta.x
       value: 7.64
@@ -50,11 +101,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3930363191740164740, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1.01
+      value: 2.55
       objectReference: {fileID: 0}
     - target: {fileID: 3930363191740164740, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -9.62
+      value: 2.19
       objectReference: {fileID: 0}
     - target: {fileID: 3930363192480714351, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
       propertyPath: m_FillAmount
@@ -124,6 +175,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 5607084619608687944, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5607084619608687944, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7368836059527370570, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
       propertyPath: m_Size.x
       value: 3.7580833
@@ -152,7 +211,8 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: a936f09c0fd7247ed887395c8dc1b263, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2596986239140854542, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

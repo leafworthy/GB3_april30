@@ -55,7 +55,6 @@ namespace __SCRIPTS
 		public bool IsIdle() => mover.IsMoving();
 
 		public event Action<RaycastHit2D, EffectSurface.SurfaceAngle> OnHitWall;
-
 		public void SetCanMove(bool _canMove)
 		{
 			canMove = _canMove;
@@ -273,5 +272,6 @@ namespace __SCRIPTS
 		}
 
 		public Vector2 GetTotalVelocity() => moveVelocity + pushVelocity;
+
 	}
 }

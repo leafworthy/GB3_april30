@@ -20,7 +20,7 @@ public class LineBar : MonoBehaviour
 
 	public void UpdateBar(float fraction)
 	{
-		Debug.Log("Updating LineBar to fraction: " + fraction, this);
+
 		targetFill = fraction;
 
 			SlowBar.color = slowBarColor;

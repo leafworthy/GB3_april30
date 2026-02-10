@@ -31,6 +31,7 @@ namespace __SCRIPTS
 			life.OnFractionChanged += Life_FractionChanged;
 			if (healthBar == null) return;
 			healthBar.useGradientColor = true;
+			healthBar.gameObject.SetActive(false);
 		}
 
 		void Life_FractionChanged(float newFraction)
@@ -60,7 +61,7 @@ namespace __SCRIPTS
 			Debug.Log("life attack hit");
 			tint?.StartTint(attack.TintColor);
 			CreateDamageRisingText(attack);
-			SprayDebree(attack);
+			SprayDebris(attack);
 			MakeHitMark(attack);
 		}
 		void MakeHitMark(Attack attack)
@@ -84,10 +85,10 @@ namespace __SCRIPTS
 			Services.objectMaker.Unmake(hitMarkObject, 5);
 		}
 
-		void SprayDebree(Attack attack)
+		void SprayDebris(Attack attack)
 		{
 			if (!attack.MakesDebree) return;
-			MakeDebree(attack);
+			MakeDebris(attack);
 			if (life.DebrisType != DebrisType.blood) return;
 			CreateBloodSpray(attack);
 		}
@@ -101,7 +102,7 @@ namespace __SCRIPTS
 			if (attack.Direction.x < 0) blood.transform.localScale = new Vector3(-blood.transform.localScale.x, blood.transform.localScale.y, 0);
 		}
 
-		void MakeDebree(Attack attack)
+		void MakeDebris(Attack attack)
 		{
 			if (life.DebrisType == DebrisType.none) return;
 			var randAmount = Random.Range(2, 10);
@@ -109,16 +110,16 @@ namespace __SCRIPTS
 			{
 				var randomAngle = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)).normalized;
 				//----->
-				FireDebree(attack.Direction + randomAngle, attack.OriginHeight, 1);
+				FireDebree(attack.Direction + randomAngle, attack.OriginHeight, 1, attack.DestinationFloorPoint);
 
 				//<-----
-				FireDebree(attack.FlippedDirection + randomAngle, attack.OriginHeight, 1);
+				FireDebree(attack.FlippedDirection + randomAngle, attack.OriginHeight, 1,attack.DestinationFloorPoint);
 			}
 		}
 
-		void FireDebree(Vector2 angle, float height, float verticalSpeed)
+		void FireDebree(Vector2 angle, float height, float verticalSpeed, Vector2 destination)
 		{
-			var forwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), transform.position);
+			var forwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(life.DebrisType), destination);
 			forwardDebree.GetComponent<MoveJumpAndRotateAbility>().Fire(angle, height, verticalSpeed);
 			_tint?.TintDebree(forwardDebree);
 

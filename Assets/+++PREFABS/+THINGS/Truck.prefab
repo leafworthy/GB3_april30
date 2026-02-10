@@ -323,7 +323,7 @@ MonoBehaviour:
       Data: 1|__SCRIPTS.UnitStatsData, Assembly-CSharp
     - Name: unitName
       Entry: 1
-      Data: Truck
+      Data: Booti Truck
     - Name: category
       Entry: 3
       Data: 3
@@ -335,13 +335,13 @@ MonoBehaviour:
       Data: UnityEngine.Color, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 0.5411765
+      Data: 1
     - Name: 
       Entry: 4
-      Data: 0.5411765
+      Data: 1
     - Name: 
       Entry: 4
-      Data: 0.5411765
+      Data: 1
     - Name: 
       Entry: 4
       Data: 1
@@ -351,15 +351,12 @@ MonoBehaviour:
     - Name: isPlayerSwingHittable
       Entry: 5
       Data: true
-    - Name: showLifeBar
-      Entry: 5
-      Data: true
     - Name: isInvincible
       Entry: 5
-      Data: false
+      Data: true
     - Name: healthMax
       Entry: 4
-      Data: 1200
+      Data: 300
     - Name: moveSpeed
       Entry: 4
       Data: 0
@@ -432,9 +429,8 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  OverrideName: Truck
+  OverrideName: Booti Truck
   IsShielded: 0
-  IsInvincible: 0
 --- !u!114 &2182368679184283884
 MonoBehaviour:
   m_ObjectHideFlags: 0

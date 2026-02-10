@@ -5,24 +5,24 @@ using __SCRIPTS.Cursor;
 using GangstaBean.Core;
 using UnityEngine;
 
-public class NPC_AI : MonoBehaviour, ICanMoveThings,  INeedPlayer, ICanAttack
+public class NPC_AI : MonoBehaviour, ICanMoveThings, INeedPlayer, ICanAttack
 {
 	enum state
 	{
 		cowering,
 		avoiding,
 		fleeing,
-		rescued
+		rescued,
+		hiding
 	}
 
 	public Player player => _player;
 	public LayerMask EnemyLayer => Services.assetManager.LevelAssets.EnemyLayer;
 	public IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
-	public bool IsEnemyOf(IGetAttacked targetLife) =>   player.IsHuman() != targetLife.player.IsHuman();
+	public bool IsEnemyOf(IGetAttacked targetLife) => player.IsHuman() != targetLife.player.IsHuman();
 
 	public event Action<IGetAttacked> OnAttack;
 	IHaveUnitStats _stats;
-
 
 	public void SetPlayer(Player newPlayer)
 	{
@@ -57,6 +57,7 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings,  INeedPlayer, ICanAttack
 	public AnimationClip CoweringAnimationClip;
 	public AnimationClip RunningAnimationClip;
 	public AnimationClip StandingAnimationClip;
+	public AnimationClip HidingAnimationClip;
 	public float speed = 20;
 	Player _player;
 	LayerMask enemyLayer;
@@ -92,6 +93,9 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings,  INeedPlayer, ICanAttack
 			case state.rescued:
 				StartRescued();
 				break;
+			case state.hiding:
+				StartHiding();
+				break;
 		}
 	}
 
@@ -100,14 +104,14 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings,  INeedPlayer, ICanAttack
 		var pos = transform.position;
 		var correctedPosition = FindPositionAtEdgeOfScreen(pos);
 
-		Services.risingText.CreateRisingText("Rescued!", correctedPosition, Color.green, 10);
+		Services.risingText.CreateRisingText("Rescued!", correctedPosition, Color.green, 5);
 		OnRescued?.Invoke(this);
 	}
 
 	Vector2 FindPositionAtEdgeOfScreen(Vector3 pos)
 	{
 		var screenPoint = CursorManager.GetCamera().WorldToViewportPoint(pos);
-		screenPoint.x = .05f;
+		screenPoint.x = .2f;
 		screenPoint.y += .05f;
 
 		var worldPoint = CursorManager.GetCamera().ViewportToWorldPoint(screenPoint);
@@ -130,12 +134,14 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings,  INeedPlayer, ICanAttack
 			case state.rescued:
 				UpdateRescued();
 				break;
+			case state.hiding:
+				UpdateHiding();
+				break;
 		}
 	}
 
 	void UpdateRescued()
 	{
-
 	}
 
 	void StartFleeing()
@@ -180,16 +186,29 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings,  INeedPlayer, ICanAttack
 
 		moveDir = Vector2.left * speed;
 		var hitsAhead = Physics2D.RaycastAll(transform.position, Vector2.left, 1, Services.assetManager.LevelAssets.BuildingLayer);
-		for  (int i = 0; i < hitsAhead.Length; i++)
+		for (var i = 0; i < hitsAhead.Length; i++)
 		{
 			if (hitsAhead[i].collider != null)
 			{
-				moveDir = Vector2.left * speed + Vector2.up * speed/2;
+				SetState(state.hiding);
 				return;
 			}
 		}
 
 		OnMoveInDirection?.Invoke(moveDir);
+	}
+
+	void StartHiding()
+	{
+		anim.Play(HidingAnimationClip.name, 0, 0);
+		body.BottomFaceDirection(true);
+		OnStopMoving?.Invoke();
+	}
+
+	void UpdateHiding()
+	{
+		if (!HasRunOffScreen()) return;
+		SetState(state.rescued);
 	}
 
 	bool HasRunOffScreen()

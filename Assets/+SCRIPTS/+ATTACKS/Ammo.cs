@@ -34,10 +34,10 @@ namespace __SCRIPTS
 		}
 
 		public void SetAmmoReserve(int amount)
-        {
-            reserveAmmo = Mathf.Clamp(amount, 0, maxReserveAmmo);
-            OnAmmoGained?.Invoke();
-        }
+		{
+			reserveAmmo = Mathf.Clamp(amount, 0, maxReserveAmmo);
+			OnAmmoGained?.Invoke();
+		}
 
 		public void AddAmmoToReserve(int amount)
 		{
@@ -100,23 +100,15 @@ namespace __SCRIPTS
 			Use(amount);
 		}
 
+
+
 		public bool CanReload()
 		{
-			if (!reloads)
-			{
-				return false;
-			}
-			if (reserveAmmo <= 0)
-			{
-				return false;
-			}
-			if (AmmoInClip >= clipSize)
-			{
-				return false;
-			}
+			if (!reloads) return false;
+			if (reserveAmmo <= 0) return false;
+			if (AmmoInClip >= clipSize) return false;
 
 			return true;
-
 		}
 	}
 }

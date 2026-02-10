@@ -12,10 +12,17 @@ namespace __SCRIPTS
 		public List<GameObject> HitFloorAnimation = new();
 		public List<GameObject> HitFloorMovingAnimation = new();
 
-		private Vector2 heightCorrectionForDepthInFrontOfWall = new(0, -1.5f);
-		private float fastEnoughSpeed = 25;
+		Vector2 heightCorrectionForDepthInFrontOfWall = new(0, -1.5f);
+		float fastEnoughSpeed = 25;
 
-		private void HideAllAnimations()
+		void Start()
+		{
+			moveAbility.OnHitWall += SplatOnHitWall;
+		}
+
+
+
+		void HideAllAnimations()
 		{
 			foreach (var go in BloodFlying)
 			{
@@ -45,28 +52,27 @@ namespace __SCRIPTS
 
 		public override void Fire(Vector2 shootAngle, float height, float verticalSpeed = 0, float pushSpeed = 120)
 		{
-			base.Fire(shootAngle, height, verticalSpeed, pushSpeed*2);
+			base.Fire(shootAngle, height, verticalSpeed, pushSpeed * 2);
 
 			HideAllAnimations();
 			BloodFlying.GetRandom().SetActive(true);
-
-			moveAbility.OnHitWall += SplatOnHitWall;
 		}
 
-		private void SplatOnHitWall(RaycastHit2D obj, EffectSurface.SurfaceAngle surfaceAngle)
+		void SplatOnHitWall(RaycastHit2D raycastHit2D, EffectSurface.SurfaceAngle surfaceAngle)
 		{
 			Debug.Log("trying to splat on wall");
 			HideAllAnimations();
 			if (surfaceAngle == EffectSurface.SurfaceAngle.Horizontal)
 			{
-				var  anim = HitWallFlatAnimation.GetRandom();
+				var anim = HitWallFlatAnimation.GetRandom();
 				anim.SetActive(true);
 			}
 			else if (surfaceAngle == EffectSurface.SurfaceAngle.DiagonalFacingRight)
 			{
 				var anim = HitWallAngledAnimation.GetRandom();
 				anim.SetActive(true);
-			} else if (surfaceAngle == EffectSurface.SurfaceAngle.DiagonalFacingLeft)
+			}
+			else if (surfaceAngle == EffectSurface.SurfaceAngle.DiagonalFacingLeft)
 			{
 				var anim = HitWallAngledAnimation.GetRandom();
 				HeightObject.transform.localScale = new Vector3(-1, 1, 1);
@@ -77,7 +83,6 @@ namespace __SCRIPTS
 			SetHeight(GetHeight() - heightCorrectionForDepthInFrontOfWall.y);
 			FreezeHeight();
 			StopMoving();
-
 		}
 
 		protected override void Land()
@@ -90,7 +95,7 @@ namespace __SCRIPTS
 			if (moveAbility.IsMovingQuickly(fastEnoughSpeed))
 			{
 				var anim = HitFloorMovingAnimation.GetRandom();
-				Rotate2DUtility.RotateTowardDirection2D(HeightObject.transform, moveAbility.GetTotalVelocity(), 0,-35);
+				Rotate2DUtility.RotateTowardDirection2D(HeightObject.transform, moveAbility.GetTotalVelocity(), 0, -35);
 				anim.SetActive(true);
 			}
 			else
@@ -102,13 +107,15 @@ namespace __SCRIPTS
 			StopMoving();
 		}
 
+		bool IsMovingQuickly(float fastEnoughSpeed) => moveAbility.GetTotalVelocity().magnitude > fastEnoughSpeed;
+
 		protected override void StartResting()
 		{
 			base.StartResting();
 			StopMoving();
 		}
 
-		private void StopMoving()
+		void StopMoving()
 		{
 			moveAbility.OnHitWall -= SplatOnHitWall;
 			moveAbility.StopMoving();

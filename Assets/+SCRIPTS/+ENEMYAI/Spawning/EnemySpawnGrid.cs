@@ -27,11 +27,6 @@ public class EnemySpawnGrid : MonoBehaviour
 		spawner.OnSpawningComplete -= SpawnerSpawningComplete;
 	}
 
-	void FixedUpdate()
-	{
-		GenerateGrid();
-	}
-
 	[Button]
 	public void GenerateGrid()
 	{

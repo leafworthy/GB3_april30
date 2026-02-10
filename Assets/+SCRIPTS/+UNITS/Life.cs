@@ -109,9 +109,14 @@ namespace __SCRIPTS
 
 		void Health_OnDead(Attack attack)
 		{
+
+
+
 			Debug.Log("health on dead");
-			EnableColliders(false);
 			OnDead?.Invoke(attack);
+			if (!Stats.ShouldDestroyOnDeath()) return;
+
+			EnableColliders(false);
 			if (attack.OriginLife.player != null) OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
 			gameObject.layer = LayerMask.NameToLayer("Dead");
 			Invoke(nameof(CompleteDeathDelayed), deathTime);
