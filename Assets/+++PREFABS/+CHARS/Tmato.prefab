@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 8733494531752375043}
   - component: {fileID: -412274678507543112}
   - component: {fileID: 604019886126809547}
+  - component: {fileID: -6951585885733710162}
   m_Layer: 6
   m_Name: Tmato
   m_TagString: Player
@@ -271,9 +272,6 @@ MonoBehaviour:
     - Name: isPlayerSwingHittable
       Entry: 5
       Data: false
-    - Name: showLifeBar
-      Entry: 5
-      Data: true
     - Name: isInvincible
       Entry: 5
       Data: false
@@ -354,7 +352,6 @@ MonoBehaviour:
       Data: 
   OverrideName: 
   IsShielded: 0
-  IsInvincible: 0
 --- !u!114 &8674550254211582662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -835,8 +832,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  pullOutAnimationClip: {fileID: 7400000, guid: 9c6b72059cf87434cbd154f8687d24f6, type: 2}
-  simpleShootAnimationClip: {fileID: 7400000, guid: 4218fc9303352468bac9c1ad25b38e0e, type: 2}
+  pullOutAnimationClip: {fileID: 0}
 --- !u!114 &4717463248885601469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -850,6 +846,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pullOutAnimationClip: {fileID: 7400000, guid: 9c6b72059cf87434cbd154f8687d24f6, type: 2}
+  simpleShootAnimationClip: {fileID: 7400000, guid: 4218fc9303352468bac9c1ad25b38e0e, type: 2}
 --- !u!114 &4373474583085920758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -997,6 +994,18 @@ MonoBehaviour:
   renderersToTint:
   - {fileID: 5461360705421643343}
   - {fileID: 4562298305781168460}
+--- !u!210 &-6951585885733710162
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081200535837487843}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &1090588778770103321
 GameObject:
   m_ObjectHideFlags: 0

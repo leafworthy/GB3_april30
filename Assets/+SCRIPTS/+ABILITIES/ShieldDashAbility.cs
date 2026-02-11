@@ -49,7 +49,8 @@ public class ShieldDashAbility : DashAbility
 		foreach (var hit in hits)
 		{
 			var _life = hit.GetComponentInParent<Life>();
-			if (_life == null || !_life.IsEnemyOf(defence)) continue;
+			if (_life == null) continue;
+			if (_life.IsEnemyOf(defence)) continue;
 			var movement = _life.GetComponent<MoveAbility>();
 			if (movement == null) continue;
 

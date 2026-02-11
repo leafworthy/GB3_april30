@@ -22,7 +22,14 @@ namespace __SCRIPTS
 		public DebrisType DebrisType => Stats.DebrisType;
 		public float MaxHealth => Stats.RealMaxHealth + Stats.GetExtraHealth();
 		public bool CanTakeDamage() => Stats.CanTakeDamage();
-		public bool IsEnemyOf(IGetAttacked other) => player.IsHuman() != other.player.IsHuman();
+
+		public bool IsEnemyOf(IGetAttacked other)
+		{
+			if(other.player == null) return false;
+			if(player == null)return false;
+
+			return player.IsHuman() != other.player.IsHuman();
+		}
 
 		public event Action<Attack> OnAttackHit;
 		public event Action<float> OnFractionChanged;

@@ -6,6 +6,8 @@ namespace __SCRIPTS
 {
 	public abstract class WeaponAbility : Ability
 	{
+		public AnimationClip pullOutAnimationClip;
+
 		protected enum weaponState
 		{
 			not,
@@ -22,7 +24,6 @@ namespace __SCRIPTS
 		protected bool isIdle => currentState is weaponState.idle;
 
 		protected weaponState currentState {get; private set;}
-		[SerializeField]public Weapon weapon;
 		public override string AbilityName => "Weapon-Ability";
 
 		protected override bool requiresArms() => true;
@@ -46,7 +47,7 @@ namespace __SCRIPTS
 		protected virtual void PullOutWeapon()
 		{
 			SetState(weaponState.pullOut);
-			PlayAnimationClip(weapon.pullOutAnimationClip, 1);
+			PlayAnimationClip(pullOutAnimationClip, 1);
 
 		}
 

@@ -57,8 +57,8 @@ namespace __SCRIPTS
 
 		public int BuildingLayer => Services.assetManager.LevelAssets.BuildingLayer;
 
-		public bool IsHuman() => data != null && data.isPlayer;
-		public bool IsNPC() => data != null && data.isPlayer;
+		public bool IsHuman() => isHuman;
+		bool isHuman => data != null && data.isPlayer;
 
 		void Start()
 		{

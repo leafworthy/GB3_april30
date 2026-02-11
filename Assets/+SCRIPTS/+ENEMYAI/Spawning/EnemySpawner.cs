@@ -129,14 +129,6 @@ public class EnemySpawner : SerializedMonoBehaviour
 		if (!isSpawning) return;
 		spawnTimer += Time.deltaTime;
 		durationTimer += Time.deltaTime;
-
-		if (spawnDuration > 0 && durationTimer >= spawnDuration)
-		{
-			Debug.Log("Spawn duration ended");
-			StopSpawning();
-			return;
-		}
-
 		if (!(spawnTimer >= spawnInterval)) return;
 		SpawnAtRandomEdge();
 		spawnTimer = 0f;
@@ -178,13 +170,14 @@ public class EnemySpawner : SerializedMonoBehaviour
 
 	void ShowGo()
 	{
+		Debug.Log("show go");
 		GoIndicator.gameObject.SetActive(true);
-		StartCoroutine(nameof(HideGo));
+		Invoke(nameof(HideGo), 2);
 	}
 
-	public IEnumerable HideGo()
+	public void HideGo()
 	{
-		yield return new WaitForSeconds(2);
+		Debug.Log("hide gogogo");
 		GoIndicator.gameObject.SetActive(false);
 	}
 

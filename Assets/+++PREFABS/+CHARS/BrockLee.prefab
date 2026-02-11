@@ -1247,6 +1247,7 @@ GameObject:
   - component: {fileID: 5087080187751462355}
   - component: {fileID: 6674677307639212881}
   - component: {fileID: 7478576396166123407}
+  - component: {fileID: -358413947687341869}
   m_Layer: 6
   m_Name: BrockLee
   m_TagString: Player
@@ -1409,9 +1410,6 @@ MonoBehaviour:
     - Name: isPlayerSwingHittable
       Entry: 5
       Data: false
-    - Name: showLifeBar
-      Entry: 5
-      Data: true
     - Name: isInvincible
       Entry: 5
       Data: false
@@ -1492,7 +1490,6 @@ MonoBehaviour:
       Data: 
   OverrideName: 
   IsShielded: 0
-  IsInvincible: 0
 --- !u!114 &6089603519093197841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1878,6 +1875,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Tinter
   renderersToTint:
   - {fileID: 1185514299834675743}
+--- !u!210 &-358413947687341869
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3924160363998699687}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &4583028489892907819
 GameObject:
   m_ObjectHideFlags: 0

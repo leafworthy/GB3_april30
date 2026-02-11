@@ -22,7 +22,7 @@ namespace __SCRIPTS
 
 		void Shotgun_OnShoot(Vector2 direction)
 		{
-			var shotgunBlast = Services.objectMaker.Make(Services.assetManager.FX.shotgunBlastPrefab, body.AttackStartPoint.transform.position);
+			var shotgunBlast = Services.objectMaker.Make(Services.assetManager.FX.shotgunBlastPrefab, (Vector2)body.AttackStartPoint.transform.position + new Vector2(0,5));
 
 			var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 			shotgunBlast.transform.rotation = Quaternion.Euler(0f, 0f, angle);
