@@ -1,4 +1,5 @@
 using System;
+using __SCRIPTS;
 using __SCRIPTS.UpgradeS;
 using GangstaBean.Core;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace __SCRIPTS
 
 		public State state;
 		PlayerData data;
+		PlayerStatsSavedBetweenScenes statsBetweenScenes;
 
 		public GameObject SpawnedPlayerGO;
 		public ICanAttack spawnedPlayerAttacker;
@@ -76,6 +78,7 @@ namespace __SCRIPTS
 
 		public GameObject Spawn(Vector2 position)
 		{
+			Services.sceneLoader.OnSceneAboutToChange += SceneLoader_OnSceneAboutToChange;
 			SetState(State.Alive);
 
 			var spawnedPlayerGO = Instantiate(GetPrefabFromCharacter(this));
@@ -85,8 +88,16 @@ namespace __SCRIPTS
 			var animations = spawnedPlayerGO.GetComponentInChildren<UnitAnimations>();
 			if (animations != null) animations.SetBool(UnitAnimations.IsFallingFromSky, true);
 			OnPlayerSpawned?.Invoke();
+			if (statsBetweenScenes != null) statsBetweenScenes.ApplyToPlayer(spawnedPlayerGO);
 			if (playerUpgrades != null) playerUpgrades.ApplyUpgrades(this);
 			return spawnedPlayerGO;
+		}
+
+		void SceneLoader_OnSceneAboutToChange()
+		{
+			Services.sceneLoader.OnSceneAboutToChange -= SceneLoader_OnSceneAboutToChange;
+			if (SpawnedPlayerGO == null) return;
+			statsBetweenScenes = new PlayerStatsSavedBetweenScenes(SpawnedPlayerGO);
 		}
 
 		void SetSpawnedPlayerGO(GameObject newGO)
@@ -213,5 +224,46 @@ namespace __SCRIPTS
 			if (spawnedPlayerDefence == null) return;
 			spawnedPlayerDefence.DieNow();
 		}
+	}
+}
+
+public class PlayerStatsSavedBetweenScenes
+{
+	float CurrentHealth;
+	int ammo1reserve;
+	int ammo1clip;
+	int ammo2reserve;
+	int ammo2clip;
+	int ammo3reserve;
+	int ammo3clip;
+
+
+	public PlayerStatsSavedBetweenScenes(GameObject spawnedPlayerGO)
+	{
+		var life = spawnedPlayerGO.GetComponent<Life>();
+		if (life == null) return;
+		CurrentHealth = life.CurrentHealth;
+		var ammo = life.GetComponent<AmmoInventory>();
+		ammo1reserve = ammo.primaryAmmo.reserveAmmo;
+		ammo1clip = ammo.primaryAmmo.AmmoInClip;
+		ammo2reserve = ammo.secondaryAmmo.reserveAmmo;
+		ammo2clip = ammo.secondaryAmmo.AmmoInClip;
+		ammo3reserve = ammo.tertiaryAmmo.reserveAmmo;
+		ammo3clip = ammo.tertiaryAmmo.AmmoInClip;
+
+	}
+
+	public void ApplyToPlayer(GameObject spawnedPlayerGO)
+	{
+		var life = spawnedPlayerGO.GetComponent<Life>();
+		if (life != null) life.Stats.CurrentHealth = CurrentHealth;
+		var ammoInventory = spawnedPlayerGO.GetComponent<AmmoInventory>();
+		 ammoInventory.primaryAmmo.AmmoInClip = ammo1clip;
+		 ammoInventory.primaryAmmo.reserveAmmo = ammo1reserve;
+		 ammoInventory.secondaryAmmo.AmmoInClip = ammo2clip;
+		 ammoInventory.secondaryAmmo.reserveAmmo = ammo2reserve;
+		 ammoInventory.tertiaryAmmo.AmmoInClip = ammo3clip;
+		 ammoInventory.tertiaryAmmo.reserveAmmo = ammo3reserve;
+
 	}
 }

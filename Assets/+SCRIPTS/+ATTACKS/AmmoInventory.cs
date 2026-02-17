@@ -42,5 +42,13 @@ namespace __SCRIPTS
 					break;
 			}
 		}
+
+		public void SetAmmo(AmmoInventory ammoInventory)
+		{
+			primaryAmmo.SetAmmo(ammoInventory.primaryAmmo);
+			secondaryAmmo.SetAmmo(ammoInventory.secondaryAmmo);
+			tertiaryAmmo.SetAmmo(ammoInventory.tertiaryAmmo);
+			unlimitedAmmo.SetAmmo(ammoInventory.unlimitedAmmo);
+		}
 	}
 }

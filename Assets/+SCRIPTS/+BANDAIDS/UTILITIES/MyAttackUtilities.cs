@@ -129,7 +129,7 @@ using UnityEditor;
 			return Physics2D.Raycast(position, direction, distance, layerMask);
 		}
 
-		public static void Explode(Vector3 explosionPosition, float explosionRadius, float explosionDamage, ICanAttack _owner)
+		public static void Explode(Vector2 explosionPosition, float explosionRadius, float explosionDamage, ICanAttack _owner)
 		{
 			ExplosionFX(explosionPosition);
 
@@ -141,9 +141,12 @@ using UnityEditor;
 			{
 				var defence = hit.GetComponent<IGetAttacked>();
 				if (defence is null) continue;
-				var ratio = explosionRadius / Vector3.Distance(hit.transform.position, explosionPosition);
+				var distance = Vector2.Distance(hit.transform.position, explosionPosition);
+				Debug.Log("distance: " + distance);
+				var ratio = explosionRadius / distance;
+				Debug.Log("ratio: " + ratio);
 
-				var attack = Attack.Create(_owner, defence).WithDamage(explosionDamage * ratio).WithOriginPoint(explosionPosition).WithFlying();
+				var attack = Attack.Create(_owner, defence).WithDamage(explosionDamage * ratio).WithOriginPoint(explosionPosition).WithFlying(true,ratio);
 				defence.TakeDamage(attack);
 			}
 		}

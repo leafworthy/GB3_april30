@@ -82,9 +82,10 @@ namespace __SCRIPTS
 			return this;
 		}
 
-		public Attack WithFlying(bool causesFlying = true)
+		public Attack WithFlying(bool causesFlying = true, float flyingHeight = 1)
 		{
 			CausesFlying = causesFlying;
+			FlyingHeight = flyingHeight;
 			return this;
 		}
 
@@ -107,6 +108,7 @@ namespace __SCRIPTS
 		public float ExtraPush;
 		public Color TintColor;
 		public bool CausesFlying;
+		public float FlyingHeight;
 		public Vector2 Direction => DestinationFloorPoint - OriginFloorPoint;
 		public Vector2 FlippedDirection => OriginFloorPoint - DestinationFloorPoint;
 		public Vector2 DestinationWithHeight => DestinationFloorPoint + new Vector2(0, DestinationHeight);

@@ -111,5 +111,12 @@ namespace __SCRIPTS
 
 			return true;
 		}
+
+		public void SetAmmo(Ammo ammoToSet)
+		{
+			reserveAmmo = ammoToSet.reserveAmmo;
+			AmmoInClip = ammoToSet.AmmoInClip;
+			OnAmmoGained?.Invoke();
+		}
 	}
 }

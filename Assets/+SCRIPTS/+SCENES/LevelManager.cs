@@ -44,6 +44,7 @@ namespace __SCRIPTS
 			currentLevel.OnGameOver += newLevel_GameOver;
 			SpawnPlayersIntoLevel();
 			OnStartLevel?.Invoke(currentLevel);
+			Debug.Log("start level");
 
 			gameStartTime = Time.time;
 		}
@@ -53,6 +54,7 @@ namespace __SCRIPTS
 			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
 				SpawnPlayerFromLevel(player);
+				Debug.Log( "[LEVEL MANAGER]spawned player from level at start of level for player " + player.playerIndex);
 			}
 		}
 

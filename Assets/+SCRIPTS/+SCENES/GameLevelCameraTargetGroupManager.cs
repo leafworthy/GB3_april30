@@ -6,8 +6,7 @@ namespace __SCRIPTS
 {
 	public class GameLevelCameraTargetGroupManager : MonoBehaviour
 	{
-		private CinemachineTargetGroup cameraFollowTargetGroup => _cameraFollowTargetGroup ??= FindFirstObjectByType<CinemachineTargetGroup>();
-		private CinemachineTargetGroup _cameraFollowTargetGroup;
+		private CinemachineTargetGroup cameraFollowTargetGroup => FindFirstObjectByType<CinemachineTargetGroup>();
 
 
 		private void Start()
@@ -33,7 +32,6 @@ namespace __SCRIPTS
 				cameraFollowTargetGroup.RemoveMember(t.Object);
 			}
 
-			_cameraFollowTargetGroup = null;
 		}
 
 		private void AddPlayerFromLevelToCameraFollowTargetGroup(Player player)
@@ -47,6 +45,8 @@ namespace __SCRIPTS
 					cameraFollowTargetGroup.Targets.Clear();
 					cameraFollowTargetGroup.AddMember(player.SpawnedPlayerGO.transform, 1, 0);
 				}
+
+				Debug.Log("NOT main player, not adding to camera follow target group: " + player.name);
 
 				var stickTarget = Services.objectMaker.Make(Services.assetManager.Players.followStickPrefab).GetComponent<FollowCursor>();
 				stickTarget.Init(player);

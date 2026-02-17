@@ -28,6 +28,7 @@ namespace __SCRIPTS
 			hasDoneTransition = true;
 			Debug.Log("triggered");
 			Services.sceneLoader.GoToScene(crimsonCinematicScene);
+			Services.hudManager.HideHUD();
 		}
 
 

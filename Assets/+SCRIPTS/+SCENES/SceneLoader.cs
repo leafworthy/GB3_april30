@@ -38,6 +38,8 @@ public class SceneLoader : MonoBehaviour, IService
 	public event Action OnFadeInComplete;
 
 	Action ActionOnFadeInComplete;
+	public event Action OnSceneAboutToChange;
+
 	#region Lifecycle Methods
 
 	public void StartFadeInAndPlayVideo()
@@ -61,6 +63,7 @@ public class SceneLoader : MonoBehaviour, IService
 		OnVideoComplete?.Invoke();
 		faderAnimator.SetBool(IsFadedIn, true);
 	}
+
 	public void StartService()
 	{
 		SceneManager.sceneLoaded += SceneManager_OnSceneLoaded;
@@ -102,10 +105,12 @@ public class SceneLoader : MonoBehaviour, IService
 		StartLoadingSceneAsync();
 		ResetProgressIndicators();
 	}
+
 	public void GoToScene(SceneDefinition newScene)
 	{
 		loadingScene = newScene;
 		StartFadingIn(StartLoading);
+		OnSceneAboutToChange?.Invoke();
 	}
 
 	#endregion
@@ -184,6 +189,5 @@ public class SceneLoader : MonoBehaviour, IService
 	{
 		faderAnimator.SetBool(IsFadedIn, false);
 	}
-
-	#endregion
 }
+#endregion

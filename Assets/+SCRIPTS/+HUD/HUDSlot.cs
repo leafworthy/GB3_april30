@@ -14,7 +14,7 @@ namespace __SCRIPTS
 
 		public void SetPlayer(Player player)
 		{
-
+			Debug.Log("[HUD SLOT] set player called");
 			if (IsActive && !IsInMenu)
 			{
 				return;

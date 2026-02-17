@@ -64,7 +64,7 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
-			Jump();
+			Jump(offence.stats.Stats.JumpSpeed);
 		}
 
 		public override void StopAbility()
@@ -76,7 +76,7 @@ namespace __SCRIPTS
 			base.StopAbility();
 		}
 
-		void Jump()
+		void Jump(float jumpSpeed)
 		{
 			if (currentState is state.flying)
 			{
@@ -92,7 +92,7 @@ namespace __SCRIPTS
 			airTimer = 0;
 			defence.SetTemporarilyInvincible(true);
 			OnJump?.Invoke(transform.position);
-			verticalVelocity = offence.stats.Stats.JumpSpeed;
+			verticalVelocity = jumpSpeed;
 			body.SetHeight(0);
 			body.ChangeLayer(Body.BodyLayer.jumping);
 		}
@@ -107,10 +107,10 @@ namespace __SCRIPTS
 			if (defence.category == UnitCategory.Character) FallFromHeight(FallInDistance);
 		}
 
-		void DefenceOnFlying(Attack obj)
+		void DefenceOnFlying(Attack attack)
 		{
 			if (Services.pauseManager.IsPaused) return;
-			StartFlying();
+			StartFlying(attack.FlyingHeight);
 		}
 
 		void Controller_Jump(NewControlButton newControlButton)
@@ -120,7 +120,7 @@ namespace __SCRIPTS
 
 		void DefenceOnDead(Attack attack)
 		{
-			if (attack.DestinationLife.player.IsHuman() || attack.CausesFlying) StartFlying();
+			if (attack.DestinationLife.player.IsHuman() || attack.CausesFlying) StartFlying(defence.Stats.JumpSpeed);
 			else
 			{
 				StartDying();
@@ -135,12 +135,12 @@ namespace __SCRIPTS
 			body.SetHeight(0);
 		}
 
-		void StartFlying()
+		void StartFlying(float flyingHeight)
 		{
 			if (defence.IsFullyDead) return;
 			if(currentState == state.flying) return;
 			SetState(state.flying);
-			DoAbility();
+			Jump(flyingHeight);
 		}
 
 		void OnDisable()

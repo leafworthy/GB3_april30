@@ -83,7 +83,7 @@ namespace __SCRIPTS
 		private void AttackHit(IGetAttacked other)
 		{
 			currentCooldown = coolDown;
-			var otherAttack = Attack.Create(attacker, other).WithDamage(attacker.stats.Stats.Damage(1)).WithFlying(causesFlying);
+			var otherAttack = Attack.Create(attacker, other).WithDamage(attacker.stats.Stats.Damage(1)).WithFlying();
 			other.TakeDamage(otherAttack);
 
 			//WEIRD

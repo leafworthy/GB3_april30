@@ -21,6 +21,17 @@ namespace __SCRIPTS
 		public LineBar bossHealthbar;
 		public GameObject bossHealthbarGameObject;
 
+		public void HideHUD()
+		{
+			isOn = false;
+			DisableAllHUDSlots();
+		}
+
+		public void ShowHUD()
+		{
+			isOn = true;
+			gameObject.SetActive(true);
+		}
 		public void StartService()
 		{
 			Vignette.SetActive(false);
@@ -37,14 +48,17 @@ namespace __SCRIPTS
 
 		private void LevelSceneOnLevelSpawnedPlayerFromPlayerSetupMenu(Player player)
 		{
+			ShowHUD();
 			var playerStats = player.GetComponent<PlayerStats>();
 			if (playerStats != null) playerStats.ResetStats();
 		}
 
 		private void LevelSceneOnLevelSpawnedPlayerFromLevel(Player player)
 		{
-			var playerStats = player.GetComponent<PlayerStats>();
-			if (playerStats != null) playerStats.ResetStats();
+			Debug.Log("[HUD MANAGER] spawned player from level for player " + player.playerIndex);
+			//ShowHUD();
+			//var playerStats = player.GetComponent<PlayerStats>();
+			//if (playerStats != null) playerStats.ResetStats();
 			SetHUDSlotPlayer(player);
 		}
 		private void Level_OnGameOver()
@@ -57,11 +71,8 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
-			levelManager.OnStartLevel -= LevelSceneOnStartLevel;
-			levelManager.OnLevelSpawnedPlayerFromLevel -= LevelSceneOnLevelSpawnedPlayerFromLevel;
-			playerManager.OnPlayerJoins -= PlayerOnPlayerJoins;
-			levelManager.OnGameOver -= Level_OnGameOver;
-			levelManager.OnWinGame -= Level_OnGameOver;
+			Debug.LogWarning("HUD DISABLED");
+
 
 			Vignette.SetActive(false);
 		}
@@ -71,6 +82,7 @@ namespace __SCRIPTS
 			if (!isInGame) return;
 			var playerStats = player.GetComponent<PlayerStats>();
 			if (playerStats != null) playerStats.ResetStats();
+			Debug.Log("[HUD MANAGER] player joined while in game, set hud slot player for " + player.name);
 			SetHUDSlotPlayer(player, true);
 
 		}
@@ -79,17 +91,19 @@ namespace __SCRIPTS
 
 		private void LevelSceneOnStartLevel(GameLevel gameLevel)
 		{
+			Debug.Log("hud on join level");
 			isInGame = true;
 			Vignette.SetActive(true);
 		}
 
 		private void SetHUDSlotPlayer(Player player, bool withMenu = false)
 		{
-
+			Debug.Log( "set hud slot player " + player.name);
 			if (player == null) return;
 			var slot = GetFirstOpenSlot();
 			if(slot == null)
 			{
+				Debug.Log("slot null");
 				return;
 			}
 			slot.gameObject.SetActive(true);
@@ -111,6 +125,8 @@ namespace __SCRIPTS
 			{
 				return hudSlot;
 			}
+
+			Debug.Log("no open hud slot");
 
 
 			return null;

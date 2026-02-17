@@ -15,6 +15,7 @@ public class GameSceneCrimsonCinematic : GameScene
 
 	void VideoPlayer_loopPointReached(VideoPlayer source)
 	{
+		Services.hudManager.ShowHUD();
 		Services.sceneLoader.GoToScene(crimsonScene);
 	}
 

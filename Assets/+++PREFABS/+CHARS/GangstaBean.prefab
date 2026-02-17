@@ -739,9 +739,6 @@ MonoBehaviour:
     - Name: isPlayerSwingHittable
       Entry: 5
       Data: false
-    - Name: showLifeBar
-      Entry: 5
-      Data: true
     - Name: isInvincible
       Entry: 5
       Data: false
@@ -822,7 +819,6 @@ MonoBehaviour:
       Data: 
   OverrideName: 
   IsShielded: 0
-  IsInvincible: 0
 --- !u!114 &2381929228146834292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,6 +888,7 @@ MonoBehaviour:
     reloads: 1
     unlimited: 0
     hasSlash: 1
+    whiteWhenFull: 0
   secondaryAmmo:
     weaponType: 1
     reserveAmmo: 3
@@ -900,7 +897,8 @@ MonoBehaviour:
     maxReserveAmmo: 3
     reloads: 0
     unlimited: 0
-    hasSlash: 1
+    hasSlash: 0
+    whiteWhenFull: 0
   tertiaryAmmo:
     weaponType: 6
     reserveAmmo: 999
@@ -910,6 +908,7 @@ MonoBehaviour:
     reloads: 0
     unlimited: 1
     hasSlash: 1
+    whiteWhenFull: 0
   unlimitedAmmo:
     weaponType: 2
     reserveAmmo: 999
@@ -919,6 +918,7 @@ MonoBehaviour:
     reloads: 1
     unlimited: 1
     hasSlash: 0
+    whiteWhenFull: 0
 --- !u!114 &1611911406270945328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1183,7 +1183,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  weapon: {fileID: 0}
+  pullOutAnimationClip: {fileID: 0}
 --- !u!114 &4284111403091859338
 MonoBehaviour:
   m_ObjectHideFlags: 0
