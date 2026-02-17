@@ -16,6 +16,8 @@ namespace __SCRIPTS
 		UnitAnimations animations => _animations ??= GetComponent<UnitAnimations>();
 		UnitAnimations _animations;
 		public bool IsDead() => Stats.IsDead;
+		public bool IsFullyDead { get; set; }
+
 		public bool IsShielded;
 		public float CurrentHealth => Stats.CurrentHealth;
 		public UnitCategory category => Stats.Data.category;
@@ -41,6 +43,7 @@ namespace __SCRIPTS
 		Collider2D[] colliders;
 		bool hasInitialized;
 		float deathTime = 3;
+		bool deathComplete;
 
 		[Button]
 		public void ClearStats()
@@ -95,6 +98,7 @@ namespace __SCRIPTS
 		{
 			Debug.Log("death complete", this);
 			OnDeathComplete?.Invoke(player, isRespawning);
+			deathComplete = true;
 
 			if (!Stats.ShouldDestroyOnDeath()) return;
 			Services.objectMaker.Unmake(gameObject);
@@ -124,7 +128,7 @@ namespace __SCRIPTS
 			if (!Stats.ShouldDestroyOnDeath()) return;
 
 			EnableColliders(false);
-			if (attack.OriginLife.player != null) OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
+			if (attack.OriginLife.player != null && attack.DestinationLife != null) OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
 			gameObject.layer = LayerMask.NameToLayer("Dead");
 			Invoke(nameof(CompleteDeathDelayed), deathTime);
 
@@ -156,8 +160,8 @@ namespace __SCRIPTS
 				return;
 			}
 
-
 			OnAttackHit?.Invoke(attack);
+			Stats?.TakeDamage(attack);
 			OnFractionChanged?.Invoke(GetFraction());
 			if (!attack.CausesFlying)
 				animations?.SetTrigger(UnitAnimations.HitTrigger);
@@ -168,7 +172,7 @@ namespace __SCRIPTS
 				animations?.SetTrigger(UnitAnimations.FlyingTrigger);
 			}
 
-			Stats?.TakeDamage(attack);
+
 		}
 
 		public void AddHealth(float amount)

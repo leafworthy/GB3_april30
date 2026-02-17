@@ -13,7 +13,7 @@ using UnityEditor;
 	public static class MyAttackUtilities
 	{
 		static readonly int Tint = Shader.PropertyToID("_Tint");
-		const float PushFactor = .1f;
+		const float PushFactor = .00000005f;
 		const float TintFadeSpeed = 6;
 #if UNITY_EDITOR
 		[MenuItem("Tools/Select player Unit Animator")]
@@ -63,7 +63,21 @@ using UnityEditor;
 
 		public static bool IsValidTarget(ICanAttack originLife, IGetAttacked targetLife)
 		{
-			if (targetLife == null) return false;
+			if (targetLife == null)
+			{
+				Debug.LogWarning("target life is null");
+				return false;
+			}
+
+			if (!targetLife.CanTakeDamage())
+			{
+				Debug.LogWarning("target cant take damage");
+			}
+
+			if (!originLife.IsEnemyOf(targetLife))
+			{
+				Debug.LogWarning("target is not enemy");
+			}
 			return originLife.IsEnemyOf(targetLife) && targetLife.CanTakeDamage();
 		}
 
@@ -75,7 +89,11 @@ using UnityEditor;
 			var closest = closestHits[0];
 			foreach (var col in closestHits)
 			{
-				if (!col.CanTakeDamage()) continue;
+				if (!col.CanTakeDamage())
+				{
+					Debug.Log("can't take damage here");
+					continue;
+				}
 
 				if (Vector2.Distance(col.transform.position, attackPosition) < Vector2.Distance(closest.transform.position, attackPosition))
 					closest = col;
@@ -84,19 +102,23 @@ using UnityEditor;
 			return closest.transform.gameObject;
 		}
 
-		public static bool HitTarget(ICanAttack originLife, IGetAttacked targetLife, float attackDamage, float extraPush = .1f, bool causesFlying = false)
+		public static Attack HitTarget(ICanAttack originLife, IGetAttacked targetLife, float attackDamage, float extraPush = .1f, bool causesFlying = false)
 		{
-			if (targetLife == null) return false;
+			if (targetLife == null)
+			{
+				Debug.Log("null here");
+				return null;
+			}
 			if (!IsValidTarget(originLife, targetLife))
 			{
 				Debug.Log("invalid target" + targetLife, originLife.transform);
-				return false;
+				return null;
 			}
 
 			var attack = Attack.Create(originLife, targetLife).WithDamage(attackDamage).WithExtraPush(extraPush).WithFlying(causesFlying);
 			targetLife.TakeDamage(attack);
 			CameraShaker.ShakeCamera(targetLife.transform.position, CameraShaker.ShakeIntensityType.normal);
-			return true;
+			return attack;
 		}
 
 		public static RaycastHit2D RaycastToObject(IGetAttacked currentTargetLife, LayerMask layerMask)
@@ -121,11 +143,7 @@ using UnityEditor;
 				if (defence is null) continue;
 				var ratio = explosionRadius / Vector3.Distance(hit.transform.position, explosionPosition);
 
-				var otherMove = defence.transform.GetComponent<MoveAbility>();
-				if (otherMove != null)
-					otherMove.Push(explosionPosition - defence.transform.position, PushFactor * ratio);
-
-				var attack = Attack.Create(_owner, defence).WithDamage(explosionDamage * ratio).WithFlying();
+				var attack = Attack.Create(_owner, defence).WithDamage(explosionDamage * ratio).WithOriginPoint(explosionPosition).WithFlying();
 				defence.TakeDamage(attack);
 			}
 		}

@@ -69,6 +69,7 @@ namespace __SCRIPTS
 		public float ExtraDamageFactor;
 		public float ExtraSpeedFactor;
 
+
 		public Color DebrisTint => Data.debrisTint;
 
 		public float GetExtraHealth() => ExtraHealthFactor * Data.healthMax + Data.healthMax * EnemyTier;

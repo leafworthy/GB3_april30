@@ -85,7 +85,6 @@ public class GameLauncher : MonoBehaviour
 
 
 
-
 	}
 
 	public static class LoadGameManager

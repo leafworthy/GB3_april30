@@ -43,6 +43,7 @@ public static class Services
 	static SceneLoader _sceneLoader;
 	public static SceneLoader sceneLoader => _sceneLoader ?? ServiceLocator.Get<SceneLoader>();
 
+
 	static AssetManager _assetManager;
 	public static AssetManager assetManager => _assetManager ?? ServiceLocator.Get<AssetManager>();
 	static RisingTextCreator _risingText;

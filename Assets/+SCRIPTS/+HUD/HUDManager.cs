@@ -125,7 +125,6 @@ namespace __SCRIPTS
 			}
 		}
 
-		public LineBar GetBossLifeHealthbar() => bossHealthbar;
 
 		public void SetBossLifeHealthbarVisible(bool value)
 		{

@@ -120,13 +120,26 @@ namespace __SCRIPTS
 
 		void DefenceOnDead(Attack attack)
 		{
-			if(attack.DestinationLife.player.IsHuman()) StartFlying();
+			if (attack.DestinationLife.player.IsHuman() || attack.CausesFlying) StartFlying();
+			else
+			{
+				StartDying();
+			}
+		}
+
+		void StartDying()
+		{
+			SetState(state.dead);
+			PlayAnimationClip(deathAnimationClip);
+			moveAbility.SetCanMove(false);
+			body.SetHeight(0);
 		}
 
 		void StartFlying()
 		{
+			if (defence.IsFullyDead) return;
+			if(currentState == state.flying) return;
 			SetState(state.flying);
-			//TryToActivate();
 			DoAbility();
 		}
 
@@ -144,7 +157,7 @@ namespace __SCRIPTS
 		{
 			SetState(state.falling);
 			body.SetHeight(fallHeight);
-			PlayAnimationClip(fallingAnimationClip,  0);
+			PlayAnimationClip(fallingAnimationClip);
 			airTimer = 0;
 		}
 
@@ -226,7 +239,8 @@ namespace __SCRIPTS
 		{
 			if (defence.IsDead())
 			{
-				PlayAnimationClip(deathAnimationClip);
+				defence.IsFullyDead = true;
+				PlayAnimationClip(onGroundAnimationClip);
 				SetState(state.dead);
 			}
 			else if (currentState == state.flying)

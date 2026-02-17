@@ -4,21 +4,16 @@ namespace __SCRIPTS
 {
 	public static class Rotate2DUtility
 	{
-		public static void RotateTowardDirection2D(Transform transform, Vector2 direction, float rotationSpeed = 0f, float angleOffset = 0f)
+		public static void RotateTowardDirection2D(Transform transform, Vector2 direction, float angleOffset = 0f)
 		{
-			if (direction == Vector2.zero)
+			if (direction.sqrMagnitude < 0.001f)
 				return;
 
-			var targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + angleOffset;
-			var currentAngle = transform.eulerAngles.z;
+			direction.Normalize();
 
-			if (rotationSpeed > 0f)
-			{
-				var newAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, rotationSpeed * Time.deltaTime);
-				transform.rotation = Quaternion.Euler(0f, 0f, newAngle);
-			}
-			else
-				transform.rotation = Quaternion.Euler(0f, 0f, targetAngle);
+			float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + angleOffset;
+			Debug.Log(Quaternion.Euler(0f, 0f, targetAngle) + " is the target rotation for direction " + direction, transform);
+			transform.rotation = Quaternion.Euler(0f, 0f, targetAngle);
 		}
 	}
 }

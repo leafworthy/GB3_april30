@@ -5,7 +5,7 @@ namespace __SCRIPTS
 {
 	public class BatJumpAttack : Ability
 	{
-		private enum state
+		enum state
 		{
 			not,
 			jumpUpAttack,
@@ -13,24 +13,25 @@ namespace __SCRIPTS
 			landingAttack
 		}
 
-		private state currentState;
+		state currentState;
 
-		private void SetState(state newState)
+		void SetState(state newState)
 		{
 			currentState = newState;
 		}
+
 		public event Action OnSwing;
-		public event Action<Vector2> OnHitTarget;
+		public event Action<Attack> OnHitTarget;
 		public AnimationClip JumpAttackUpAnimationClip;
 		public AnimationClip JumpAttackFallingAnimationClip;
 		public AnimationClip LandAttackAnimationClip;
 
-		private JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
-		private JumpAbility _jumps;
-		private AimAbility aimAbility => _aimAbility ??= GetComponent<AimAbility>();
-		private AimAbility _aimAbility;
+		JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
+		JumpAbility _jumps;
+		AimAbility aimAbility => _aimAbility ??= GetComponent<AimAbility>();
+		AimAbility _aimAbility;
 
-		private float GetAttackDamage() => player.spawnedPlayerStats.Stats.Damage(1);
+		float GetAttackDamage() => player.spawnedPlayerStats.Stats.Damage(1);
 		public override string AbilityName => "Bat-Air-Attack";
 
 		protected override bool requiresArms() => true;
@@ -44,15 +45,12 @@ namespace __SCRIPTS
 			StartJumpAttack();
 		}
 
-		private void Update()
+		void Update()
 		{
-			if (currentState == state.jumpDownAttack)
-			{
-				body.BottomFaceDirection(aimAbility.AimDir.x >= 0);
-			}
+			if (currentState == state.jumpDownAttack) body.BottomFaceDirection(aimAbility.AimDir.x >= 0);
 		}
 
-		private void StartJumpAttack()
+		void StartJumpAttack()
 		{
 			OnSwing?.Invoke();
 
@@ -62,7 +60,6 @@ namespace __SCRIPTS
 			body.BottomFaceDirection(aimAbility.AimDir.x >= 0);
 
 			jumps.DoubleJump(jumps.IsFalling ? 1 : .5f);
-
 
 			jumps.OnLand += LandWithAttack;
 			jumps.OnFalling += FallWithAttack;
@@ -78,10 +75,7 @@ namespace __SCRIPTS
 
 		protected override void AnimationComplete()
 		{
-			if (currentState == state.landingAttack)
-			{
-				StopAbility();
-			}
+			if (currentState == state.landingAttack) StopAbility();
 		}
 
 		public override void SetPlayer(Player newPlayer)
@@ -91,12 +85,12 @@ namespace __SCRIPTS
 			SetState(state.not);
 		}
 
-		private void LandAttackHit()
+		void LandAttackHit()
 		{
 			RegularAttackHit();
 		}
 
-		private void Player_AttackPress(NewControlButton obj)
+		void Player_AttackPress(NewControlButton obj)
 		{
 			if (currentState != state.not) return;
 			TryToActivate();
@@ -110,14 +104,14 @@ namespace __SCRIPTS
 			base.StopAbility();
 		}
 
-		private void FallWithAttack()
+		void FallWithAttack()
 		{
 			SetState(state.jumpDownAttack);
 			PlayAnimationClip(JumpAttackFallingAnimationClip);
 			jumps.OnFalling -= FallWithAttack;
 		}
 
-		private void LandWithAttack(Vector2 obj)
+		void LandWithAttack(Vector2 obj)
 		{
 			SetState(state.landingAttack);
 			RegularAttackHit();
@@ -126,14 +120,14 @@ namespace __SCRIPTS
 			jumps.OnLand -= LandWithAttack;
 		}
 
-		private void RegularAttackHit()
+		void RegularAttackHit()
 		{
 			var hits = MyAttackUtilities.CircleCastForXClosestTargets(offence, offence.stats.Stats.Range(1));
 			if (hits == null) return;
 			foreach (var hit in hits)
 			{
-				MyAttackUtilities.HitTarget(offence, hit, GetAttackDamage());
-				OnHitTarget?.Invoke(hit.transform.position);
+				var attack = MyAttackUtilities.HitTarget(offence, hit, GetAttackDamage());
+				OnHitTarget?.Invoke(attack);
 			}
 		}
 	}

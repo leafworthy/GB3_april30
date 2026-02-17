@@ -11,9 +11,12 @@ namespace __SCRIPTS
 		public List<GameObject> HitWallAngledAnimation = new();
 		public List<GameObject> HitFloorAnimation = new();
 		public List<GameObject> HitFloorMovingAnimation = new();
+		public GameObject rotationObject;
 
 		Vector2 heightCorrectionForDepthInFrontOfWall = new(0, -1.5f);
-		float fastEnoughSpeed = 25;
+		float fastEnoughSpeed = 5;
+		bool isMovingQuickly;
+		Vector2 moveDir;
 
 		void Start()
 		{
@@ -52,8 +55,11 @@ namespace __SCRIPTS
 
 		public override void Fire(Vector2 shootAngle, float height, float verticalSpeed = 0, float pushSpeed = 120)
 		{
-			base.Fire(shootAngle, height, verticalSpeed, pushSpeed * 2);
-
+			var randScale = Random.Range(.6f, 1.5f);
+			transform.localScale = new Vector3(randScale, randScale, randScale);
+			base.Fire(shootAngle, height, verticalSpeed, pushSpeed );
+			moveDir = shootAngle.normalized;
+			isMovingQuickly = moveAbility.GetTotalVelocity().magnitude > fastEnoughSpeed;
 			HideAllAnimations();
 			BloodFlying.GetRandom().SetActive(true);
 		}
@@ -92,10 +98,11 @@ namespace __SCRIPTS
 			HideAllAnimations();
 			FreezeRotationAtIdentity();
 
-			if (moveAbility.IsMovingQuickly(fastEnoughSpeed))
+			if (isMovingQuickly)
 			{
 				var anim = HitFloorMovingAnimation.GetRandom();
-				Rotate2DUtility.RotateTowardDirection2D(HeightObject.transform, moveAbility.GetTotalVelocity(), 0, -35);
+				RotateToDirection(moveDir, rotationObject);
+				//Rotate2DUtility.RotateTowardDirection2D(HeightObject.transform, moveAbility.GetTotalVelocity(), -35);
 				anim.SetActive(true);
 			}
 			else
@@ -107,7 +114,6 @@ namespace __SCRIPTS
 			StopMoving();
 		}
 
-		bool IsMovingQuickly(float fastEnoughSpeed) => moveAbility.GetTotalVelocity().magnitude > fastEnoughSpeed;
 
 		protected override void StartResting()
 		{

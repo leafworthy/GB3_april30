@@ -16,6 +16,7 @@ namespace __SCRIPTS
 		public bool reloads = true;
 		public bool unlimited;
 		public bool hasSlash = true;
+		public bool whiteWhenFull = false;
 
 		public float totalAmmo() => unlimited ? int.MaxValue : reserveAmmo + AmmoInClip;
 

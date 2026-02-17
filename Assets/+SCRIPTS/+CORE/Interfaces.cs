@@ -76,6 +76,7 @@ namespace GangstaBean.Core
 		public void TakeDamage(Attack attack);
 		bool CanTakeDamage();
 		bool IsDead();
+		bool IsFullyDead { get; set; }
 		void DieNow();
 		float GetFraction();
 		void AddHealth(float amount);

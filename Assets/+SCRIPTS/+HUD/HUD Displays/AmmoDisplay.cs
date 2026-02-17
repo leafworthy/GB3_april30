@@ -17,6 +17,7 @@ namespace __SCRIPTS.HUD_Displays
 
 		public bool greys;
 		bool init;
+		Player player;
 
 		void UpdateDisplay()
 		{
@@ -34,6 +35,10 @@ namespace __SCRIPTS.HUD_Displays
 				Ungrey();
 
 			var fraction = ammoToDisplay.totalAmmo() / ammoToDisplay.maxReserveAmmo;
+			if(player != null)
+			{
+				if(ammoToDisplay.whiteWhenFull) barFX.FastBar.color = fraction == 1 ? Color.white : player.playerColor;
+			}
 			barFX.gameObject.SetActive(true);
 			barFX.UpdateBar(fraction);
 		}
@@ -89,6 +94,7 @@ namespace __SCRIPTS.HUD_Displays
 
 		public void SetPlayer(Player newPlayer)
 		{
+			player = newPlayer;
 			Services.levelManager.OnStopLevel += CleanUp;
 			if (barFX.FastBar != null) barFX.FastBar.color = newPlayer.playerColor;
 			barFX.useGradientColor = false;

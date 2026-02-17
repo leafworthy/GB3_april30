@@ -71,6 +71,7 @@ namespace __SCRIPTS
 			currentCooldownTime = Time.time;
 		}
 
+
 		public bool Shoot()
 		{
 			if (!Ammo.hasAmmoInClip())
@@ -95,6 +96,7 @@ namespace __SCRIPTS
 				var randomSpread = new Vector2(UnityEngine.Random.Range(-Spread, Spread), UnityEngine.Random.Range(-Spread, Spread));
 				ShootBullet(gunAimAbility.AimDir + randomSpread);
 			}
+
 
 			return true;
 		}
@@ -177,6 +179,8 @@ namespace __SCRIPTS
 		}
 
 		public bool CanUse() => !IsCoolingDown && Ammo.hasAmmoInReserveOrClip();
+
+
 	}
 
 	public class PrimaryGun : Gun

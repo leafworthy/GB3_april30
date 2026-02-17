@@ -96,6 +96,7 @@ namespace __SCRIPTS
 			if (spawnedPlayerDefence != null) spawnedPlayerDefence.OnDeathComplete -= OnPlayerDied;
 			SpawnedPlayerGO = newGO;
 			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<IGetAttacked>();
+			spawnedPlayerAttacker = SpawnedPlayerGO.GetComponent<ICanAttack>();
 			spawnedPlayerStats = SpawnedPlayerGO.GetComponent<IHaveUnitStats>();
 			if (spawnedPlayerDefence == null) return;
 

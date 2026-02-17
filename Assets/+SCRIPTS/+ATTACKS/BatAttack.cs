@@ -8,7 +8,7 @@ namespace __SCRIPTS
 	{
 		public override string AbilityName => "Bat-Attack";
 		public event Action OnSwing;
-		public event Action<Vector2> OnHitTarget;
+		public event Action<Attack> OnHitTarget;
 
 		public AnimationClip Attack1AnimationClip;
 		public AnimationClip Attack2AnimationClip;
@@ -74,8 +74,8 @@ namespace __SCRIPTS
 			if (hits == null) return;
 			foreach (var hit in hits)
 			{
-				MyAttackUtilities.HitTarget(offence, hit, GetAttackDamage(attackType), extraPush);
-				OnHitTarget?.Invoke(hit.transform.position);
+				var attack = MyAttackUtilities.HitTarget(offence, hit, GetAttackDamage(attackType), extraPush);
+				OnHitTarget?.Invoke(attack);
 			}
 		}
 

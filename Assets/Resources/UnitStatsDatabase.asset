@@ -31,8 +31,8 @@ MonoBehaviour:
     aggroRange: 0
     attack1Damage: 100
     attack1Rate: 1
-    attack1Range: 100
-    attack2Damage: 450
+    attack1Range: 18
+    attack2Damage: 100
     attack2Rate: 0
     attack2Range: 3
     attack3Damage: 25
@@ -58,9 +58,9 @@ MonoBehaviour:
     attack1Damage: 40
     attack1Rate: 0.15
     attack1Range: 100
-    attack2Damage: 300
+    attack2Damage: 100
     attack2Rate: 1
-    attack2Range: 50
+    attack2Range: 30
     attack3Damage: 75
     attack3Rate: 1
     attack3Range: 20
@@ -84,9 +84,9 @@ MonoBehaviour:
     attack1Damage: 40
     attack1Rate: 0.5
     attack1Range: 100
-    attack2Damage: 150
+    attack2Damage: 100
     attack2Rate: 1
-    attack2Range: 70
+    attack2Range: 30
     attack3Damage: 15
     attack3Rate: 0.1
     attack3Range: 20
@@ -183,7 +183,7 @@ MonoBehaviour:
     healthMax: 40
     moveSpeed: 22
     dashSpeed: 0
-    jumpSpeed: 3
+    jumpSpeed: 0.5
     aggroRange: 400
     attack1Damage: 8
     attack1Rate: 1
@@ -746,6 +746,32 @@ MonoBehaviour:
     experienceGiven: 100
     hasData: 1
     isDefault: 0
+  - unitName: CrimsonPillar
+    category: 3
+    debrisType: 6
+    debrisTint: {r: 0.70980394, g: 0.13725491, b: 0.23529412, a: 1}
+    isPlayerSwingHittable: 0
+    isInvincible: 0
+    healthMax: 0
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 0
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 0
+    hasData: 1
+    isDefault: 0
   - unitName: BackyardTrash
     category: 3
     debrisType: 1
@@ -981,5 +1007,5 @@ MonoBehaviour:
     hasData: 1
     isDefault: 0
   isLoading: 0
-  lastLoadTime: 2026-02-09 21:13:23
+  lastLoadTime: 2026-02-16 15:26:24
   lastError: 

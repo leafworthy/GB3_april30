@@ -12,6 +12,7 @@ public class EnemySpawnGrid : MonoBehaviour
 
 	void Start()
 	{
+		gridLayoutGroup.gameObject.SetActive(false);
 		gridLayoutGroup.transform.RemoveChildren();
 		spawner.OnSpawningStart += GenerateGrid;
 		spawner.OnSpawnedEnemyDead += GenerateGrid;

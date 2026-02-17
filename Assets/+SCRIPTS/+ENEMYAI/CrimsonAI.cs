@@ -1,10 +1,11 @@
 using System;
+using __SCRIPTS;
 using __SCRIPTS._ENEMYAI;
 using GangstaBean.Core;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CrimsonAI : MonoBehaviour, ICanMoveThings
+public class CrimsonAI : MonoBehaviour, ICanMoveThings,ICanAttack
 {
 	static readonly int IsRunning = Animator.StringToHash("IsRunning");
 
@@ -29,8 +30,15 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings
 	public Vector2 GetMoveAimDir() => currentDirection;
 	public bool IsMoving() => false;
 
-	IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
+	public Player player => player1;
+	public LayerMask EnemyLayer => enemyLayer;
+	public IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
+	public bool IsEnemyOf(IGetAttacked targetLife) => false;
+
+	public event Action<IGetAttacked> OnAttack;
 	IHaveUnitStats _stats;
+	Player player1;
+	LayerMask enemyLayer;
 	public float MoveSpeed => stats.Stats.MoveSpeed;
 
 	protected void Start()

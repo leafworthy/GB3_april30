@@ -5,19 +5,19 @@ namespace __SCRIPTS
 {
 	public class Bean_SFX : MonoBehaviour
 	{
-		private UnitAnimations anim;
-		private AnimationEvents animEvents;
-		private Life life;
-		private JumpAbility jumpAbility;
-		private Glock glock => _glock ??= GetComponent<Glock>();
-		private Glock _glock;
-		private AK47 ak47 => _ak47 ??= GetComponent<AK47>();
-		private AK47 _ak47;
-		private ReloadAbility reloadAbility;
-		private KnifeAttack knifeAttack;
-		private NadeAttack nadeAttack;
+		UnitAnimations anim;
+		AnimationEvents animEvents;
+		Life life;
+		JumpAbility jumpAbility;
+		Glock glock => _glock ??= GetComponent<Glock>();
+		Glock _glock;
+		AK47 ak47 => _ak47 ??= GetComponent<AK47>();
+		AK47 _ak47;
+		ReloadAbility reloadAbility;
+		KnifeAttack knifeAttack;
+		NadeAttack nadeAttack;
 
-		private void OnEnable()
+		void OnEnable()
 		{
 			anim = GetComponent<UnitAnimations>();
 			life = GetComponent<Life>();
@@ -57,8 +57,7 @@ namespace __SCRIPTS
 			nadeAttack.OnThrow += NadeAttackOnThrow;
 		}
 
-
-		private void OnDisable()
+		void OnDisable()
 		{
 			animEvents.OnStep -= Anim_OnStep;
 			animEvents.OnHitStart -= Anim_OnHit;
@@ -71,7 +70,6 @@ namespace __SCRIPTS
 				jumpAbility.OnJump -= JumpAbilityOnJumpAbility;
 				jumpAbility.OnLand -= JumpAbilityOnLand;
 			}
-
 
 			life.OnDead -= LifeOnDead;
 
@@ -89,42 +87,42 @@ namespace __SCRIPTS
 			nadeAttack.OnThrow -= NadeAttackOnThrow;
 		}
 
-		private void GunAttackAkGlockOnShotMissed(Attack attack)
+		void GunAttackAkGlockOnShotMissed(Attack attack)
 		{
 			Services.sfx.sounds.bean_gun_miss_sounds.PlayRandomAt(attack.DestinationFloorPoint);
 			Services.sfx.sounds.ak47_shoot_sounds.PlayRandomAt(transform.position);
 		}
 
-		private void GunAttackAkGlockOnOnShotHitTarget(Attack attack)
+		void GunAttackAkGlockOnOnShotHitTarget(Attack attack)
 		{
-			if(attack.DestinationLife == null)Services.sfx.sounds.GetBulletHitSounds(DebrisType.none).PlayRandomAt(attack.DestinationFloorPoint);
+			if (attack.DestinationLife == null) Services.sfx.sounds.GetBulletHitSounds(DebrisType.none).PlayRandomAt(attack.DestinationFloorPoint);
 			else Services.sfx.sounds.GetBulletHitSounds(attack.DestinationLife.DebrisType).PlayRandomAt(attack.DestinationFloorPoint);
 			Services.sfx.sounds.ak47_shoot_sounds.PlayRandomAt(attack.OriginFloorPoint);
 		}
 
-		private void LifeOnDead(Attack attack) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
+		void LifeOnDead(Attack attack) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
 
-		private void Life_AttackHit(Attack attack) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+		void Life_AttackHit(Attack attack) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
 
-		private void Life_OnWounded(Attack obj)
+		void Life_OnWounded(Attack obj)
 		{
 			Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
 			Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 		}
 
-		private void NadeAttackOnThrow(Vector2 v, Vector2 v2, float f, ICanAttack p) => Services.sfx.sounds.bean_nade_throw_sounds.PlayRandomAt(transform.position);
+		void NadeAttackOnThrow(Vector2 v, Vector2 v2, float f, ICanAttack p) => Services.sfx.sounds.bean_nade_throw_sounds.PlayRandomAt(transform.position);
 
-		private void GunAttackAkGlockOnEmpty() => Services.sfx.sounds.ak47_empty_shoot_sounds.PlayRandomAt(transform.position);
-		private void KnifeAttackOnMiss() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
-		private void GunAttackAkGlockOnReload() => Services.sfx.sounds.bean_reload_sounds.PlayRandomAt(transform.position);
-		private void JumpAbilityOnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
-		private void KnifeAttackOnHit(Vector2 vector2) => Services.sfx.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
+		void GunAttackAkGlockOnEmpty() => Services.sfx.sounds.ak47_empty_shoot_sounds.PlayRandomAt(transform.position);
+		void KnifeAttackOnMiss() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
+		void GunAttackAkGlockOnReload() => Services.sfx.sounds.bean_reload_sounds.PlayRandomAt(transform.position);
+		void JumpAbilityOnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
+		void KnifeAttackOnHit(Vector2 vector2) => Services.sfx.sounds.bean_knifehit_sounds.PlayRandomAt(transform.position);
 
-		private void JumpAbilityOnJumpAbility(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
+		void JumpAbilityOnJumpAbility(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);
 
-		private void Anim_Dash() => Services.sfx.sounds.bean_roll_sounds.PlayRandomAt(transform.position);
-		private void Anim_Teleport() => Services.sfx.sounds.brock_teleport_sounds.PlayRandomAt(transform.position);
-		private void Anim_OnHit() => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
-		private void Anim_OnStep() => Services.sfx.sounds.player_walk_sounds_concrete.PlayRandomAt(transform.position);
+		void Anim_Dash() => Services.sfx.sounds.bean_roll_sounds.PlayRandomAt(transform.position);
+		void Anim_Teleport() => Services.sfx.sounds.brock_teleport_sounds.PlayRandomAt(transform.position);
+		void Anim_OnHit() => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+		void Anim_OnStep() => Services.sfx.sounds.player_walk_sounds_concrete.PlayRandomAt(transform.position);
 	}
 }

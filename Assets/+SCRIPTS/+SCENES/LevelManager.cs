@@ -131,6 +131,8 @@ namespace __SCRIPTS
 			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.mainMenu);
 		}
 
+
+
 		public void GoBackFromRestart()
 		{
 			LoadLevel(restartedLevelScene);

@@ -1552,22 +1552,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   primaryAmmo:
     weaponType: 3
-    reserveAmmo: 25
-    clipSize: 50
-    AmmoInClip: 50
+    reserveAmmo: 0
+    clipSize: 1
+    AmmoInClip: 0
     maxReserveAmmo: 50
     reloads: 0
     unlimited: 0
-    hasSlash: 1
+    hasSlash: 0
+    whiteWhenFull: 1
   secondaryAmmo:
     weaponType: 5
-    reserveAmmo: 100
+    reserveAmmo: 0
     clipSize: 100
-    AmmoInClip: 100
+    AmmoInClip: 0
     maxReserveAmmo: 100
     reloads: 0
     unlimited: 0
-    hasSlash: 1
+    hasSlash: 0
+    whiteWhenFull: 1
   tertiaryAmmo:
     weaponType: 4
     reserveAmmo: 100
@@ -1577,6 +1579,7 @@ MonoBehaviour:
     reloads: 0
     unlimited: 0
     hasSlash: 1
+    whiteWhenFull: 0
   unlimitedAmmo:
     weaponType: 0
     reserveAmmo: 0
@@ -1586,6 +1589,7 @@ MonoBehaviour:
     reloads: 1
     unlimited: 0
     hasSlash: 1
+    whiteWhenFull: 0
 --- !u!114 &5823719441899236335
 MonoBehaviour:
   m_ObjectHideFlags: 0

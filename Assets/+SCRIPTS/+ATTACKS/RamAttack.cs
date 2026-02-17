@@ -42,7 +42,7 @@ namespace __SCRIPTS
 		private void CheckForEnemiesInRange()
 		{
 			var enemies = Physics2D.OverlapCircleAll(transform.position, attacker.stats.Stats.Range(1), Services.assetManager.LevelAssets.PlayerLayer).ToList();
-			enemies.AddRange(Physics2D.OverlapCircleAll(transform.position, attacker.stats.Stats.Range(1), Services.assetManager.LevelAssets.DoorLayer).ToList());
+
 			if (enemies.Count <= 0) return;
 			foreach (var enemy in enemies)
 			{

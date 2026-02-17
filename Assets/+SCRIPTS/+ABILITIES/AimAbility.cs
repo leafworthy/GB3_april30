@@ -43,6 +43,7 @@ namespace __SCRIPTS
 		void Aim()
 		{
 			if (hasEnoughMagnitude()) AimDir = Vector2.Lerp(AimDir, GetRealAimDir().normalized, aimSmoothSpeed * Time.deltaTime);
+			else AimDir = moveAbility.GetMoveDir();
 			RotateAimObjects(AimDir);
 			BottomFaceAimDir();
 		}

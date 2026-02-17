@@ -5,7 +5,7 @@ namespace __SCRIPTS
 {
 	public class ChargeAttack : Ability
 	{
-		private enum state
+		enum state
 		{
 			not,
 			startingCharge,
@@ -13,9 +13,9 @@ namespace __SCRIPTS
 			attacking
 		}
 
-		private state currentState;
+		state currentState;
 
-		private void SetState(state state)
+		void SetState(state state)
 		{
 			currentState = state;
 		}
@@ -25,36 +25,36 @@ namespace __SCRIPTS
 		public AnimationClip chargeStartAnimationClip;
 		public AnimationClip chargeAttackAnimationClip;
 		public AnimationClip chargedAnimationClip;
-		public event Action OnAttackHit;
-		public event Action OnSpecialAttackHit;
+		public event Action<Attack> OnAttackHit;
+		public event Action<Attack> OnSpecialAttackHit;
 		public event Action OnChargePress;
 		public event Action OnChargeStop;
 
-		private Vector2 targetPosition;
+		Vector2 targetPosition;
 
-		private BatAttack batAttack => _batAttack ??= GetComponent<BatAttack>();
-		private BatAttack _batAttack;
+		BatAttack batAttack => _batAttack ??= GetComponent<BatAttack>();
+		BatAttack _batAttack;
 
-		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
-		private MoveAbility _moveAbility;
+		MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
+		MoveAbility _moveAbility;
 
-		private IAimAbility aimAbility => _aimAbility ??= GetComponent<IAimAbility>();
-		private IAimAbility _aimAbility;
+		IAimAbility aimAbility => _aimAbility ??= GetComponent<IAimAbility>();
+		IAimAbility _aimAbility;
 
-		private bool isFullyCharged;
+		bool isFullyCharged;
 
-		private AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
-		private AmmoInventory _ammoInventory;
+		AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
+		AmmoInventory _ammoInventory;
 
-		private float SpecialAttackDistance = 3;
-		private float SpecialAttackWidth = 3;
-		private float SpecialAttackExtraPush = 200;
-		private GameObject currentArrowHead;
+		float SpecialAttackDistance = 3;
+		float SpecialAttackWidth = 3;
+		float SpecialAttackExtraPush = 200;
+		GameObject currentArrowHead;
 
-		private JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
-		private JumpAbility _jumpAbility;
-		private int rate = 1;
-		private int counter;
+		JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
+		JumpAbility _jumpAbility;
+		int rate = 1;
+		int counter;
 
 		public override bool canDo() => base.canDo() && currentState == state.not && jumpAbility.IsResting;
 
@@ -67,7 +67,7 @@ namespace __SCRIPTS
 			StartCharging();
 		}
 
-		private void StartCharging()
+		void StartCharging()
 		{
 			SetState(state.startingCharge);
 			moveAbility.SetCanMove(false);
@@ -97,14 +97,14 @@ namespace __SCRIPTS
 			UseAllAmmo();
 		}
 
-		private void OnDisable()
+		void OnDisable()
 		{
-			if (defence != null) return;
+			if (player == null) return;
 			player.Controller.InteractRightShoulder.OnPress -= Player_ChargePress;
 			player.Controller.InteractRightShoulder.OnRelease -= Player_ChargeRelease;
 		}
 
-		private void FixedUpdate()
+		void FixedUpdate()
 		{
 			if (currentState is state.startingCharge or state.charged)
 			{
@@ -115,7 +115,7 @@ namespace __SCRIPTS
 				HideAiming();
 		}
 
-		private void AddCharge()
+		void AddCharge()
 		{
 			if (isFullyCharged) return;
 			counter++;
@@ -128,26 +128,24 @@ namespace __SCRIPTS
 				FullyCharged();
 		}
 
-		private void InstantiateArrowHead()
+		void InstantiateArrowHead()
 		{
 			currentArrowHead = Services.objectMaker.Make(Services.assetManager.FX.nadeTargetPrefab);
 			currentArrowHead.SetActive(false);
 		}
 
-		private void ShowAiming()
+		void ShowAiming()
 		{
 			currentArrowHead.SetActive(true);
 			if (!player.Controller.AimAxis.isActive && !player.Controller.MoveAxis.isActive)
 			{
 				if (targetPosition == Vector2.zero)
 				{
-					var _targetPosition = (Vector2)transform.position + (body.TopIsFacingRight ? Vector2.right * 30 : Vector2.left * 30);
+					var _targetPosition = (Vector2) transform.position + (body.TopIsFacingRight ? Vector2.right * 30 : Vector2.left * 30);
 					SetTargetPosition(_targetPosition);
 				}
 				else
-				{
 					SetTargetPosition(targetPosition);
-				}
 			}
 			else
 			{
@@ -156,22 +154,22 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void SetTargetPosition(Vector2 _targetPosition)
+		void SetTargetPosition(Vector2 _targetPosition)
 		{
 			targetPosition = _targetPosition;
-			currentArrowHead.transform.position = (Vector2) targetPosition;
+			currentArrowHead.transform.position = targetPosition;
 			body.BottomFaceDirection(targetPosition.x > 0);
 		}
 
-		private void HideAiming() => currentArrowHead.SetActive(false);
-		private void UseAllAmmo() => ammoInventory.secondaryAmmo.UseAmmo(1000);
+		void HideAiming() => currentArrowHead.SetActive(false);
+		void UseAllAmmo() => ammoInventory.secondaryAmmo.UseAmmo(1000);
 
-		private void Player_ChargePress(NewControlButton newControlButton)
+		void Player_ChargePress(NewControlButton newControlButton)
 		{
 			TryToActivate();
 		}
 
-		private void Player_ChargeRelease(NewControlButton newControlButton)
+		void Player_ChargeRelease(NewControlButton newControlButton)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (currentState == state.not) return;
@@ -184,13 +182,13 @@ namespace __SCRIPTS
 				DoWeakAttack();
 		}
 
-		private void DoWeakAttack()
+		void DoWeakAttack()
 		{
 			StopCharging();
 			batAttack.TryToActivate();
 		}
 
-		private void StopCharging()
+		void StopCharging()
 		{
 			anim.SetBool(UnitAnimations.IsCharging, false);
 			isFullyCharged = false;
@@ -199,12 +197,12 @@ namespace __SCRIPTS
 			StopAbility();
 		}
 
-		private void StartSpecialAttack()
+		void StartSpecialAttack()
 		{
 			UseAllAmmo();
 			OnChargeStop?.Invoke();
 			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Special);
-			TempCinemachine.CreateFollowCameraTemporary(transform, .75f, zoom: 35, orthographic: true);
+			TempCinemachine.CreateFollowCameraTemporary(transform, .75f, 35, true);
 			anim.SetTrigger(UnitAnimations.ChargeAttackTrigger);
 			anim.SetBool(UnitAnimations.IsCharging, false);
 			PlayAnimationClip(chargeAttackAnimationClip);
@@ -246,38 +244,47 @@ namespace __SCRIPTS
 			base.StopAbility();
 		}
 
-		private void StartActualCharging()
+		void StartActualCharging()
 		{
 			SetState(state.charged);
 			PlayAnimationClip(chargedAnimationClip);
 		}
 
-		private void Anim_AttackHit()
+		void Anim_AttackHit()
 		{
 			SpecialAttackHit();
 		}
 
-		private void FullyCharged()
+		void FullyCharged()
 		{
 			isFullyCharged = true;
 			ammoInventory.secondaryAmmo.SetAmmoReserve(100);
 		}
 
-		private void SpecialAttackHit()
+		void SpecialAttackHit()
 		{
 			var attackPosition = body.AimCenter.transform.position;
 			var bestTargetPoint = GetBestTargetPoint(attackPosition);
-			var connect = false;
+			var hasSpecialHit = false;
 
 			SpecialAttackDistance = Vector2.Distance(attackPosition, bestTargetPoint);
 
-			var raycastHits = Physics2D.CircleCastAll(attackPosition, SpecialAttackWidth, moveAbility.GetMoveAimDir(), SpecialAttackDistance, offence.EnemyLayer);
-			OnSpecialAttackHit?.Invoke();
+			var raycastHits = Physics2D.CircleCastAll(attackPosition, SpecialAttackWidth, moveAbility.GetMoveAimDir(), SpecialAttackDistance,
+				offence.EnemyLayer);
 
 			foreach (var raycastHit2D in raycastHits)
 			{
 				var otherLife = raycastHit2D.collider.GetComponent<Life>();
-				MyAttackUtilities.HitTarget(offence, otherLife, offence.stats.Stats.Damage(2));
+				if(otherLife == null) continue;
+				var attack = MyAttackUtilities.HitTarget(offence, otherLife, offence.stats.Stats.Damage(2), SpecialAttackExtraPush, true);
+
+				if (attack == null) continue;
+				if (!hasSpecialHit)
+				{
+					OnSpecialAttackHit?.Invoke(attack);
+					hasSpecialHit = true;
+				}
+				else OnAttackHit?.Invoke(attack);
 			}
 
 			var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position + moveAbility.GetMoveAimDir() * SpecialAttackDistance, GetHitRange(),
@@ -286,20 +293,21 @@ namespace __SCRIPTS
 			foreach (var hit2D in circleCast)
 			{
 				var otherLife = hit2D.gameObject.GetComponent<Life>();
-				if(otherLife == null) continue;
-				MyAttackUtilities.HitTarget(offence, otherLife, otherLife.Stats.Damage(2), SpecialAttackExtraPush, true);
-
-				connect = true;
-				Services.objectMaker.Make(Services.assetManager.FX.hits.GetRandom(), hit2D.transform.position);
+				if (otherLife == null) continue;
+				var attack = MyAttackUtilities.HitTarget(offence, otherLife, offence.stats.Stats.Damage(2), SpecialAttackExtraPush, true);
+				if (attack == null) continue;
+				if (!hasSpecialHit)
+				{
+					hasSpecialHit = true;
+					OnSpecialAttackHit?.Invoke(attack);
+				}
+				else OnAttackHit?.Invoke(attack);
 			}
-
-			if (!connect) return;
-			OnAttackHit?.Invoke();
 		}
 
-		private Vector2 GetBestTargetPoint(Vector3 attackPosition) =>
+		Vector2 GetBestTargetPoint(Vector3 attackPosition) =>
 			moveAbility.IsIdle() ? aimAbility.GetAimPoint() : (Vector2) attackPosition + moveAbility.GetLastMoveAimDirOffset();
 
-		private float GetHitRange() => offence.stats.Stats.Range(1);
+		float GetHitRange() => offence.stats.Stats.Range(1);
 	}
 }

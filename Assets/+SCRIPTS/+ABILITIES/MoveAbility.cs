@@ -10,7 +10,7 @@ namespace __SCRIPTS
 		const float velocityDecayFactor = .90f;
 		const float overallVelocityMultiplier = 2;
 		const float pushMultiplier = 1;
-		const float maxPushVelocity = 3000;
+		const float maxPushVelocity = 200;
 		const float maxAimDistance = 30;
 
 		Rigidbody2D rb => _rb ??= GetComponent<Rigidbody2D>();

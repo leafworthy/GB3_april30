@@ -18,7 +18,7 @@ namespace __SCRIPTS
         }
 
         private void Update() {
-            float borderSize = 100f;
+            float borderSize = -100f;
             Vector3 targetPositionScreenPoint = CursorManager.GetCamera().WorldToScreenPoint(targetPosition);
             bool isOffScreen = targetPositionScreenPoint.x <= borderSize || targetPositionScreenPoint.x >= Screen.width - borderSize || targetPositionScreenPoint.y <= borderSize || targetPositionScreenPoint.y >= Screen.height - borderSize;
 

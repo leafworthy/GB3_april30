@@ -26,6 +26,10 @@ namespace __SCRIPTS
 			if (originLife != null) attack.OriginFloorPoint = originLife.transform.position;
 			attack.DestinationLife = destinationLife;
 			if (destinationLife != null) attack.DestinationFloorPoint = destinationLife.transform.position;
+			else
+			{
+				attack.DestinationFloorPoint = attack.OriginFloorPoint;
+			}
 			return attack;
 		}
 

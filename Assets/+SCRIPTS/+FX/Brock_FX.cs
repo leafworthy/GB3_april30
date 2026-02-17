@@ -5,27 +5,37 @@ namespace GangstaBean.Audio
 {
 	public class Brock_FX : MonoBehaviour
 	{
-		private BatAttack meleeAttack;
-		private ChargeAttack chargeAttack;
+		BatAttack meleeAttack;
+		ChargeAttack chargeAttack;
 
-		private void OnEnable()
+		void OnEnable()
 		{
 			meleeAttack = GetComponent<BatAttack>();
 			meleeAttack.OnHitTarget += MeleeAttackOnHitTarget;
 			chargeAttack = GetComponent<ChargeAttack>();
 			chargeAttack.OnSpecialAttackHit += ChargeAttackOnSpecialAttackHit;
+			chargeAttack.OnAttackHit += ChargeAttackOnAttackHit;
 		}
 
-		private void MeleeAttackOnHitTarget(Vector2 vector2)
+		void ChargeAttackOnAttackHit(Attack attack)
 		{
-			Services.objectMaker.Make(Services.assetManager.FX.hits.GetRandom(), vector2);
+			var hit = Services.objectMaker.Make(Services.assetManager.FX.hits.GetRandom(), attack.DestinationFloorPoint);
+			hit.transform.localScale = new Vector3(hit.transform.localScale.x * Mathf.Sign(attack.Direction.x), hit.transform.localScale.y, 0);
+		}
+
+		void MeleeAttackOnHitTarget(Attack attack)
+		{
+			var hit = Services.objectMaker.Make(Services.assetManager.FX.hits.GetRandom(), attack.DestinationFloorPoint);
+			hit.transform.localScale = new Vector3(hit.transform.localScale.x * Mathf.Sign(attack.Direction.x), hit.transform.localScale.y, 0);
 			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Normal);
 		}
 
-		private void ChargeAttackOnSpecialAttackHit()
+		void ChargeAttackOnSpecialAttackHit(Attack attack)
 		{
-			Services.objectMaker.Make(Services.assetManager.FX.hit2_biglongflash, transform.position);
-			Services.objectMaker.Make(Services.assetManager.FX.hit5_line_burst, transform.position);
+			var hit = Services.objectMaker.Make(Services.assetManager.FX.hit2_biglongflash, attack.DestinationFloorPoint);
+			hit.transform.localScale = new Vector3(hit.transform.localScale.x * Mathf.Sign(attack.Direction.x), hit.transform.localScale.y, 0);
+			hit = Services.objectMaker.Make(Services.assetManager.FX.hit5_line_burst, attack.DestinationFloorPoint);
+			hit.transform.localScale = new Vector3(hit.transform.localScale.x * Mathf.Sign(attack.Direction.x), hit.transform.localScale.y, 0);
 			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Long);
 		}
 	}

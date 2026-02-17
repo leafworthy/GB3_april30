@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1364484410809830620}
-  - component: {fileID: 4174183058637403511}
   - component: {fileID: 587933076764190101}
   - component: {fileID: 3780351340129990144}
-  - component: {fileID: 8449509674850722507}
   - component: {fileID: 8984657941347445225}
   - component: {fileID: -8640461616177306052}
+  - component: {fileID: 8607793401395655778}
+  - component: {fileID: 1055744966681711371}
   m_Layer: 17
   m_Name: KunaiPrefab
   m_TagString: Untagged
@@ -39,40 +39,6 @@ Transform:
   - {fileID: 6793067061665149155}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4174183058637403511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1765510104084457758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646d68c34334abe44bb05cf2f10a53a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isBelowZeroSortingOrder: 0
-  isMovable: 1
-  renderBelowAll: 0
-  sortingBounds: {fileID: 8984657941347445225}
-  renderBelowSortingOrder: 0
-  sortType: 0
-  SorterPositionOffset: {x: 0, y: 0, z: 0}
-  SorterPositionOffset2: {x: 0, y: 0, z: 0}
-  renderersToSort:
-  - {fileID: 1117072631564886265}
-  - {fileID: 5961430706084748447}
-  renderAboveAll: 0
-  hasRenderers: 0
 --- !u!114 &587933076764190101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,22 +69,6 @@ MonoBehaviour:
   acceleratatonRate: 3
   acceleratatonMax: 20
   decelerationFactor: {x: 0.97, y: 0.97}
---- !u!114 &8449509674850722507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1765510104084457758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13a22135ef50477c89a5e717d44de835, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HeightObject: {fileID: 4283239871663422632}
-  isResting: 0
-  freezeRotation: 0
-  IsJumping: 0
 --- !u!61 &8984657941347445225
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -177,6 +127,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d58214805d4e4ca59726887ca71653a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8607793401395655778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765510104084457758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda5f38b4216f4ffa8b25cacc7aa0de0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.MoveJumpAndRotateAbility
+  HeightObject: {fileID: 4283239871663422632}
+  isResting: 0
+  freezeRotation: 0
+  IsJumping: 0
+--- !u!210 &1055744966681711371
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765510104084457758}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &4135437011287995118
 GameObject:
   m_ObjectHideFlags: 0
