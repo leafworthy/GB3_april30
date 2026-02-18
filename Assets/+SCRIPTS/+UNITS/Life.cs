@@ -16,6 +16,8 @@ namespace __SCRIPTS
 		UnitAnimations animations => _animations ??= GetComponent<UnitAnimations>();
 		UnitAnimations _animations;
 		public bool IsDead() => Stats.IsDead;
+
+		public bool DoesntDie;
 		public bool IsFullyDead { get; set; }
 
 		public bool IsShielded;

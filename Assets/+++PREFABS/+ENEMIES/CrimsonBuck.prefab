@@ -303,9 +303,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39526355201340f0ba8058dd3be60d57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasBounceBack: 0
   causesFlying: 1
-  pushBackAmount: 0
+  pushBackAmount: 40
+  extraPushAmount: 300
+  flyHeight: 2
 --- !u!114 &7993900838109217435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,7 +405,7 @@ MonoBehaviour:
       Data: true
     - Name: isInvincible
       Entry: 5
-      Data: true
+      Data: false
     - Name: healthMax
       Entry: 4
       Data: 2000
@@ -422,7 +423,7 @@ MonoBehaviour:
       Data: 100
     - Name: attack1Damage
       Entry: 4
-      Data: 50
+      Data: 100
     - Name: attack1Rate
       Entry: 4
       Data: 1

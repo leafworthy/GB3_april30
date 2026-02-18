@@ -58,11 +58,11 @@ namespace __SCRIPTS
 
 		void Life_AttackHit(Attack attack)
 		{
-			Debug.Log("life attack hit");
-			tint?.StartTint(attack.TintColor);
-			CreateDamageRisingText(attack);
+			Debug.Log("life attack hit", attack.DestinationLife.transform);
+			if(!life.DoesntDie)CreateDamageRisingText(attack);
 			SprayDebris(attack);
 			MakeHitMark(attack);
+			tint?.StartTint(attack.TintColor);
 		}
 		void MakeHitMark(Attack attack)
 		{
@@ -142,7 +142,7 @@ namespace __SCRIPTS
 		{
 			if(healthBar != null)healthBar.gameObject.SetActive(false);
 			_life.OnDead -= Defence_Dead;
-			_life.OnAttackHit -= Life_AttackHit;
+			//_life.OnAttackHit -= Life_AttackHit;
 			_life.OnShielded -= Life_Shielded;
 		}
 	}

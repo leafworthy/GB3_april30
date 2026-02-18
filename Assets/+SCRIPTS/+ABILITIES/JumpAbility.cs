@@ -45,7 +45,7 @@ namespace __SCRIPTS
 		const float FallInDistance = 80;
 		const float maxAirTime = 2.5f;
 		float airTimer;
-		float getUpTime = 2;
+		float getUpTime = 1;
 		bool IsFlying => currentState == state.flying;
 
 		public bool IsFalling => currentState == state.falling;

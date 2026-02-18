@@ -486,6 +486,32 @@ MonoBehaviour:
     experienceGiven: 100
     hasData: 1
     isDefault: 0
+  - unitName: Railing
+    category: 3
+    debrisType: 1
+    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
+    isPlayerSwingHittable: 1
+    isInvincible: 0
+    healthMax: 15
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
   - unitName: Dresser
     category: 3
     debrisType: 2
@@ -752,10 +778,10 @@ MonoBehaviour:
     debrisTint: {r: 0.70980394, g: 0.13725491, b: 0.23529412, a: 1}
     isPlayerSwingHittable: 0
     isInvincible: 0
-    healthMax: 0
+    healthMax: 60
     moveSpeed: 0
     dashSpeed: 0
-    jumpSpeed: 0
+    jumpSpeed: 1
     aggroRange: 0
     attack1Damage: 0
     attack1Rate: 0
@@ -769,7 +795,7 @@ MonoBehaviour:
     attack4Damage: 0
     attack4Rate: 0
     attack4Range: 0
-    experienceGiven: 0
+    experienceGiven: 100
     hasData: 1
     isDefault: 0
   - unitName: BackyardTrash
@@ -829,13 +855,13 @@ MonoBehaviour:
     debrisType: 0
     debrisTint: {r: 0.16862746, g: 1, b: 0.10980392, a: 1}
     isPlayerSwingHittable: 1
-    isInvincible: 1
+    isInvincible: 0
     healthMax: 2000
     moveSpeed: 50
     dashSpeed: 0
     jumpSpeed: 1
     aggroRange: 100
-    attack1Damage: 50
+    attack1Damage: 100
     attack1Rate: 1
     attack1Range: 10
     attack2Damage: 0
@@ -1007,5 +1033,5 @@ MonoBehaviour:
     hasData: 1
     isDefault: 0
   isLoading: 0
-  lastLoadTime: 2026-02-16 15:26:24
+  lastLoadTime: 2026-02-17 21:44:51
   lastError: 

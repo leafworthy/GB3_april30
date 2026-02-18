@@ -37,7 +37,7 @@ namespace __SCRIPTS
 
 		public void TakeDamage(Attack attack)
 		{
-			if (IsDead || IsTemporarilyInvincible) return;
+			if (IsTemporarilyInvincible) return;
 			if (IsShielded) attack.DamageAmount *= ShieldDamageFactor;
 			CurrentHealth = Mathf.Max(0, CurrentHealth - attack.DamageAmount);
 			if (CurrentHealth <= 0) StartDeath(attack);
@@ -45,6 +45,7 @@ namespace __SCRIPTS
 
 		void StartDeath(Attack killingAttack)
 		{
+			if (IsDead) return;
 			Debug.Log("death starts");
 			IsDead = true;
 			OnDead?.Invoke(killingAttack);
@@ -56,7 +57,7 @@ namespace __SCRIPTS
 			CurrentHealth = Mathf.Min(RealMaxHealth + GetExtraHealth(), CurrentHealth + amount);
 		}
 
-		public bool CanTakeDamage() => !IsDead && !IsTemporarilyInvincible;
+		public bool CanTakeDamage() => !IsTemporarilyInvincible;
 		public bool ShouldDestroyOnDeath() => !Data.isInvincible;
 		public void FillHealth()
 		{

@@ -15,7 +15,6 @@ namespace __SCRIPTS.RisingText
 		//REQUIRES ObjectMaker
 		public void StartService()
 		{
-			Debug.Log( "RisingTextCreator Service Started", this);
 		}
 	}
 }

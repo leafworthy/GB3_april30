@@ -43,6 +43,7 @@ namespace __SCRIPTS
 		public float acceleratatonRate = 3;
 		public float acceleratatonMax = 20;
 		public Vector2 decelerationFactor = new(.97f, .97f);
+		public bool splats;
 
 		public Vector2 GetLastMoveAimDirOffset() => lastMoveAimDirOffset;
 		public Vector2 GetMoveDir() => moveDir;
@@ -119,13 +120,16 @@ namespace __SCRIPTS
 			var totalVelocity = moveVelocity + pushVelocity;
 			//detect if hit a wall
 			var destination = (Vector2) transform.position + totalVelocity * Time.deltaTime;
-			var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.BuildingLayer);
-			if (hitWall)
+			if(splats)
 			{
-				var effectSurface = hitWall.collider.GetComponent<EffectSurface>();
-				if (effectSurface == null) return;
-				OnHitWall?.Invoke(hitWall, effectSurface.surfaceAngle);
-				return;
+				var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.BuildingLayer);
+				if (hitWall)
+				{
+					var effectSurface = hitWall.collider.GetComponent<EffectSurface>();
+					if (effectSurface == null) return;
+					OnHitWall?.Invoke(hitWall, effectSurface.surfaceAngle);
+					return;
+				}
 			}
 
 			MoveObjectTo((Vector2) transform.position + totalVelocity * Time.deltaTime);

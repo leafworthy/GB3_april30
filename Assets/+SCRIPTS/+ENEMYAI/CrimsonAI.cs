@@ -13,6 +13,9 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings,ICanAttack
 
 	public float closeEnoughDistance = 5;
 	public Vector2 currentDirection;
+
+	RamAttack ramAttack => _ramAttack ??= GetComponent<RamAttack>();
+	RamAttack _ramAttack;
 	Targetter targets => _targets ??= GetComponent<Targetter>();
 	Targetter _targets;
 	Animator animator => _animator ??= GetComponentInChildren<Animator>();
@@ -45,6 +48,12 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings,ICanAttack
 	{
 		Services.enemyManager.ConfigureNewEnemy(gameObject, EnemySpawner.EnemyType.Crimson);
 		StartIdle();
+		ramAttack.OnAttackHit += RamAttack_OnAttackHit;
+	}
+
+	void RamAttack_OnAttackHit()
+	{
+		StartIdle();
 	}
 
 	void Update()
@@ -60,7 +69,7 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings,ICanAttack
 	{
 		animator.SetBool(IsRunning, false);
 		OnStopMoving?.Invoke();
-		idleTimer = Random.Range(1f, 5f);
+		idleTimer = Random.Range(1f, 2f);
 		isIdle = true;
 	}
 
@@ -83,16 +92,9 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings,ICanAttack
 	{
 		if (Services.pauseManager.IsPaused) return;
 
-		if (Vector2.Distance(transform.position, currentTargetPosition) < closeEnoughDistance)
-		{
-			animator.SetBool(IsRunning, false);
-			StartIdle();
-		}
-		else
-		{
-			currentDirection = (currentTargetPosition - (Vector2) transform.position).normalized;
+			currentDirection = ((Vector2) target.transform.position - (Vector2) transform.position).normalized;
 			OnMoveInDirection?.Invoke(currentDirection);
-		}
+
 	}
 
 	GameObject PickARandomTarget()

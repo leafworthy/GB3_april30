@@ -99,10 +99,17 @@ namespace __SCRIPTS
 		protected override void StartIdle()
 		{
 			base.StartIdle();
-			if (!CurrentGun.CanReload()) return;
-			if (!CurrentGun.MustReload()) return;
-			Debug.Log("here");
-			OnNeedsReload?.Invoke();
+			if (!CurrentGun.CanReload() && CurrentGun.MustReload() && CurrentGun is PrimaryGun)
+			{
+				SwitchGuns(false);
+				return;
+			}
+
+			if(CurrentGun.CanReload() && CurrentGun.MustReload())
+			{
+				Debug.Log("here");
+				OnNeedsReload?.Invoke();
+			}
 		}
 
 		protected override void PullOutWeapon()

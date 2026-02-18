@@ -62,7 +62,6 @@ namespace __SCRIPTS
 		{
 			if (!(Time.time >= currentCooldownTime))
 			{
-				Debug.Log("cooling down, cannot offence yet");
 				return;
 			}
 
@@ -71,7 +70,6 @@ namespace __SCRIPTS
 			// Face the target only when starting a new offence
 			FaceTarget();
 
-			Debug.Log("triggering offence");
 			anim.SetTrigger(UnitAnimations.Attack1Trigger);
 		}
 

@@ -12,13 +12,15 @@ namespace __SCRIPTS
 		private ICanAttack _attacker;
 		private IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
 		private IGetAttacked _life;
-		public bool hasBounceBack = true;
 		public bool causesFlying;
 		private float currentCooldown;
 		private float coolDown = .5f;
 		private bool isCooledDown;
 		private MoveAbility mover;
 		[SerializeField] private float pushBackAmount = 3;
+		[SerializeField] private float extraPushAmount = 3;
+		public float flyHeight = 2;
+		public event Action OnAttackHit;
 
 		public void SetPlayer(Player newPlayer)
 		{
@@ -42,7 +44,7 @@ namespace __SCRIPTS
 		private void CheckForEnemiesInRange()
 		{
 			var enemies = Physics2D.OverlapCircleAll(transform.position, attacker.stats.Stats.Range(1), Services.assetManager.LevelAssets.PlayerLayer).ToList();
-
+			enemies.AddRange(Physics2D.OverlapCircleAll(transform.position, attacker.stats.Stats.Range(1), Services.assetManager.LevelAssets.BuildingLayer).ToList());
 			if (enemies.Count <= 0) return;
 			foreach (var enemy in enemies)
 			{
@@ -83,16 +85,14 @@ namespace __SCRIPTS
 		private void AttackHit(IGetAttacked other)
 		{
 			currentCooldown = coolDown;
-			var otherAttack = Attack.Create(attacker, other).WithDamage(attacker.stats.Stats.Damage(1)).WithFlying();
+			var otherAttack = Attack.Create(attacker, other).WithDamage(attacker.stats.Stats.Damage(1)).WithFlying(causesFlying, flyHeight).WithExtraPush(extraPushAmount);
 			other.TakeDamage(otherAttack);
 
-			//WEIRD
-			if (!hasBounceBack)
-			{
-				var bouncebackAttack = Attack.Create(attacker, life).WithDamage(attacker.stats.Stats.Damage(1));
+
+				var bouncebackAttack = Attack.Create(attacker, life).WithDamage(attacker.stats.Stats.Damage(1)).WithOriginPoint(other.transform.position).WithDestinationPoint(transform.position);
 				life.TakeDamage(bouncebackAttack);
 				mover.Push(bouncebackAttack.Direction, pushBackAmount);
-			}
+				OnAttackHit?.Invoke();
 		}
 	}
 }

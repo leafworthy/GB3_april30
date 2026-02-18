@@ -9,6 +9,8 @@ namespace __SCRIPTS
 
         private Vector3 targetPosition;
         private RectTransform pointerRectTransform;
+        private Camera cam => _cam ??= FindFirstObjectByType<Camera>();
+		private Camera _cam;
         public GameObject Pointer;
 
         private void Awake() {
@@ -19,7 +21,12 @@ namespace __SCRIPTS
 
         private void Update() {
             float borderSize = -100f;
-            Vector3 targetPositionScreenPoint = CursorManager.GetCamera().WorldToScreenPoint(targetPosition);
+            if(cam == null)
+            {
+	            Debug.Log("null cammy");
+	            return;
+            }
+            Vector3 targetPositionScreenPoint = cam.WorldToScreenPoint(targetPosition);
             bool isOffScreen = targetPositionScreenPoint.x <= borderSize || targetPositionScreenPoint.x >= Screen.width - borderSize || targetPositionScreenPoint.y <= borderSize || targetPositionScreenPoint.y >= Screen.height - borderSize;
 
             if (isOffScreen) {

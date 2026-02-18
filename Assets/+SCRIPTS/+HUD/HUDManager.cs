@@ -34,6 +34,7 @@ namespace __SCRIPTS
 		}
 		public void StartService()
 		{
+			Debug.Log("HUDmanager start service");
 			Vignette.SetActive(false);
 			levelManager.OnStartLevel += LevelSceneOnStartLevel;
 			levelManager.OnLevelSpawnedPlayerFromLevel += LevelSceneOnLevelSpawnedPlayerFromLevel;
@@ -74,7 +75,7 @@ namespace __SCRIPTS
 			Debug.LogWarning("HUD DISABLED");
 
 
-			Vignette.SetActive(false);
+			Vignette?.SetActive(false);
 		}
 
 		private void PlayerOnPlayerJoins(Player player)
@@ -92,6 +93,7 @@ namespace __SCRIPTS
 		private void LevelSceneOnStartLevel(GameLevel gameLevel)
 		{
 			Debug.Log("hud on join level");
+			ShowHUD();
 			isInGame = true;
 			Vignette.SetActive(true);
 		}
