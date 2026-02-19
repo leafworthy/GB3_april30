@@ -16,7 +16,7 @@ namespace __SCRIPTS
 		void OnDisable()
 		{
 			transform.localPosition = originalPosition;
-			
+
 		}
 
 		void OnEnable()
@@ -27,13 +27,13 @@ namespace __SCRIPTS
 		}
 
 		// Update is called once per frame
-		void FixedUpdate()
+		void Update()
 		{
 			// If shakeDuration is still running.
 			if (ShakeDuration > 0)
 			{
 				shakeFactorPosition = (Vector2)Random.insideUnitCircle * ShakeIntensity * ShakeDuration;
-				ShakeDuration -= ShakeDecaySpeed * Time.deltaTime;
+				ShakeDuration -= ShakeDecaySpeed * Time.unscaledDeltaTime;
 				transform.localPosition = originalPosition + shakeFactorPosition;
 			}
 			else
@@ -43,7 +43,7 @@ namespace __SCRIPTS
 
 		}
 
-	
+
 
 		public enum ShakeIntensityType
 		{
@@ -64,7 +64,7 @@ namespace __SCRIPTS
 					Shake(4f, .3f, .5f);
 					break;
 				case ShakeIntensityType.high:
-					Shake(5f, .4f, .5f);
+					Shake(5, .5f, .5f);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -74,9 +74,9 @@ namespace __SCRIPTS
 		void Shake(float intensity, float duration, float decay)
 		{
 
-		
+
 				transform.localPosition = originalPosition;
-			
+
 
 			ShakeIntensity = intensity;
 			ShakeDuration = duration;

@@ -44,8 +44,7 @@ namespace __SCRIPTS
 		public event Action<Attack> OnFlying;
 		Collider2D[] colliders;
 		bool hasInitialized;
-		float deathTime = 3;
-		bool deathComplete;
+		float deathTime = 10;
 
 		[Button]
 		public void ClearStats()
@@ -100,11 +99,10 @@ namespace __SCRIPTS
 		{
 			Debug.Log("death complete", this);
 			OnDeathComplete?.Invoke(player, isRespawning);
-			deathComplete = true;
 
 			if (!Stats.ShouldDestroyOnDeath()) return;
+
 			Services.objectMaker.Unmake(gameObject);
-			DisableAllColliders();
 		}
 
 		void DisableAllColliders()
@@ -133,9 +131,10 @@ namespace __SCRIPTS
 			if (attack.OriginLife.player != null && attack.DestinationLife != null) OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
 			gameObject.layer = LayerMask.NameToLayer("Dead");
 			Invoke(nameof(CompleteDeathDelayed), deathTime);
-
 			animations?.SetTrigger(UnitAnimations.DeathTrigger);
 			animations?.SetBool(UnitAnimations.IsDead, true);
+			if (!Stats.ShouldDestroyOnDeath()) return;
+			DisableAllColliders();
 		}
 
 		void EnableColliders(bool enable)

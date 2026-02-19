@@ -96,6 +96,58 @@ MonoBehaviour:
     experienceGiven: 100
     hasData: 1
     isDefault: 0
+  - unitName: Fruit
+    category: 4
+    debrisType: 0
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
+    isPlayerSwingHittable: 1
+    isInvincible: 0
+    healthMax: 150
+    moveSpeed: 30
+    dashSpeed: 0
+    jumpSpeed: 2
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
+  - unitName: CrimsonBuck
+    category: 1
+    debrisType: 0
+    debrisTint: {r: 0.16862746, g: 1, b: 0.10980392, a: 1}
+    isPlayerSwingHittable: 1
+    isInvincible: 0
+    healthMax: 2500
+    moveSpeed: 50
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 100
+    attack1Damage: 30
+    attack1Rate: 1
+    attack1Range: 10
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
   - unitName: Cone
     category: 1
     debrisType: 0
@@ -198,6 +250,214 @@ MonoBehaviour:
     attack4Rate: 0
     attack4Range: 0
     experienceGiven: 25
+    hasData: 1
+    isDefault: 0
+  - unitName: DefaultThing
+    category: 3
+    debrisType: 7
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
+    isPlayerSwingHittable: 0
+    isInvincible: 1
+    healthMax: 100
+    moveSpeed: 35
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
+  - unitName: Life
+    category: 3
+    debrisType: 7
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
+    isPlayerSwingHittable: 0
+    isInvincible: 1
+    healthMax: 100
+    moveSpeed: 35
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
+  - unitName: Railing
+    category: 3
+    debrisType: 1
+    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
+    isPlayerSwingHittable: 1
+    isInvincible: 0
+    healthMax: 15
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
+  - unitName: CrimsonPillar
+    category: 3
+    debrisType: 6
+    debrisTint: {r: 0.70980394, g: 0.13725491, b: 0.23529412, a: 1}
+    isPlayerSwingHittable: 0
+    isInvincible: 0
+    healthMax: 60
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
+  - unitName: Barricade
+    category: 3
+    debrisType: 1
+    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
+    isPlayerSwingHittable: 1
+    isInvincible: 0
+    healthMax: 300
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
+  - unitName: Lamp
+    category: 3
+    debrisType: 4
+    debrisTint: {r: 1, g: 1, b: 1, a: 1}
+    isPlayerSwingHittable: 0
+    isInvincible: 0
+    healthMax: 50
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
+  - unitName: Stone
+    category: 3
+    debrisType: 5
+    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
+    isPlayerSwingHittable: 0
+    isInvincible: 1
+    healthMax: 0
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
+  - unitName: Tree
+    category: 3
+    debrisType: 2
+    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
+    isPlayerSwingHittable: 0
+    isInvincible: 1
+    healthMax: 0
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
     hasData: 1
     isDefault: 0
   - unitName: Door_Metal
@@ -304,396 +564,6 @@ MonoBehaviour:
     experienceGiven: 100
     hasData: 1
     isDefault: 0
-  - unitName: DefaultThing
-    category: 3
-    debrisType: 7
-    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
-    isPlayerSwingHittable: 0
-    isInvincible: 1
-    healthMax: 100
-    moveSpeed: 35
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Life
-    category: 3
-    debrisType: 7
-    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
-    isPlayerSwingHittable: 0
-    isInvincible: 1
-    healthMax: 100
-    moveSpeed: 35
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Bed
-    category: 3
-    debrisType: 3
-    debrisTint: {r: 1, g: 1, b: 1, a: 1}
-    isPlayerSwingHittable: 0
-    isInvincible: 0
-    healthMax: 0
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Can
-    category: 3
-    debrisType: 1
-    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
-    isPlayerSwingHittable: 1
-    isInvincible: 1
-    healthMax: 0
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Car
-    category: 3
-    debrisType: 1
-    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
-    isPlayerSwingHittable: 1
-    isInvincible: 1
-    healthMax: 600
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Truck
-    category: 3
-    debrisType: 1
-    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
-    isPlayerSwingHittable: 1
-    isInvincible: 1
-    healthMax: 200
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Couch
-    category: 3
-    debrisType: 3
-    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
-    isPlayerSwingHittable: 1
-    isInvincible: 1
-    healthMax: 0
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Railing
-    category: 3
-    debrisType: 1
-    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
-    isPlayerSwingHittable: 1
-    isInvincible: 0
-    healthMax: 15
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Dresser
-    category: 3
-    debrisType: 2
-    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
-    isPlayerSwingHittable: 0
-    isInvincible: 1
-    healthMax: 0
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Fridge
-    category: 3
-    debrisType: 1
-    debrisTint: {r: 1, g: 1, b: 1, a: 1}
-    isPlayerSwingHittable: 0
-    isInvincible: 1
-    healthMax: 0
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Lamp
-    category: 3
-    debrisType: 4
-    debrisTint: {r: 1, g: 1, b: 1, a: 1}
-    isPlayerSwingHittable: 0
-    isInvincible: 0
-    healthMax: 50
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Stone
-    category: 3
-    debrisType: 5
-    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
-    isPlayerSwingHittable: 0
-    isInvincible: 1
-    healthMax: 0
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Table
-    category: 3
-    debrisType: 2
-    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
-    isPlayerSwingHittable: 0
-    isInvincible: 1
-    healthMax: 0
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Tree
-    category: 3
-    debrisType: 2
-    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
-    isPlayerSwingHittable: 0
-    isInvincible: 1
-    healthMax: 0
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: TV
-    category: 3
-    debrisType: 4
-    debrisTint: {r: 1, g: 1, b: 1, a: 1}
-    isPlayerSwingHittable: 1
-    isInvincible: 1
-    healthMax: 0
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
   - unitName: Wall_Wood
     category: 3
     debrisType: 2
@@ -772,117 +642,13 @@ MonoBehaviour:
     experienceGiven: 100
     hasData: 1
     isDefault: 0
-  - unitName: CrimsonPillar
-    category: 3
-    debrisType: 6
-    debrisTint: {r: 0.70980394, g: 0.13725491, b: 0.23529412, a: 1}
-    isPlayerSwingHittable: 0
-    isInvincible: 0
-    healthMax: 60
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: BackyardTrash
-    category: 3
-    debrisType: 1
-    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
-    isPlayerSwingHittable: 0
-    isInvincible: 0
-    healthMax: 0
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: TrashSmall
-    category: 3
-    debrisType: 1
-    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
-    isPlayerSwingHittable: 0
-    isInvincible: 0
-    healthMax: 60
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: CrimsonBuck
-    category: 1
-    debrisType: 0
-    debrisTint: {r: 0.16862746, g: 1, b: 0.10980392, a: 1}
-    isPlayerSwingHittable: 1
-    isInvincible: 0
-    healthMax: 2000
-    moveSpeed: 50
-    dashSpeed: 0
-    jumpSpeed: 1
-    aggroRange: 100
-    attack1Damage: 100
-    attack1Rate: 1
-    attack1Range: 10
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Barricade
+  - unitName: Car
     category: 3
     debrisType: 1
     debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
     isPlayerSwingHittable: 1
-    isInvincible: 0
-    healthMax: 300
+    isInvincible: 1
+    healthMax: 600
     moveSpeed: 0
     dashSpeed: 0
     jumpSpeed: 1
@@ -954,6 +720,84 @@ MonoBehaviour:
     experienceGiven: 100
     hasData: 1
     isDefault: 0
+  - unitName: Truck
+    category: 3
+    debrisType: 1
+    debrisTint: {r: 0.5411765, g: 0.5411765, b: 0.5411765, a: 1}
+    isPlayerSwingHittable: 1
+    isInvincible: 1
+    healthMax: 200
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
+  - unitName: BackyardTrash
+    category: 3
+    debrisType: 1
+    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
+    isPlayerSwingHittable: 0
+    isInvincible: 0
+    healthMax: 0
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
+  - unitName: TrashSmall
+    category: 3
+    debrisType: 1
+    debrisTint: {r: 0.36078432, g: 0.24313726, b: 0.15294118, a: 1}
+    isPlayerSwingHittable: 0
+    isInvincible: 0
+    healthMax: 60
+    moveSpeed: 0
+    dashSpeed: 0
+    jumpSpeed: 1
+    aggroRange: 0
+    attack1Damage: 0
+    attack1Rate: 0
+    attack1Range: 0
+    attack2Damage: 0
+    attack2Rate: 0
+    attack2Range: 0
+    attack3Damage: 0
+    attack3Rate: 0
+    attack3Range: 0
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
   - unitName: Dumpster
     category: 3
     debrisType: 1
@@ -980,58 +824,6 @@ MonoBehaviour:
     experienceGiven: 100
     hasData: 1
     isDefault: 0
-  - unitName: Fruit
-    category: 4
-    debrisType: 0
-    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
-    isPlayerSwingHittable: 1
-    isInvincible: 0
-    healthMax: 150
-    moveSpeed: 30
-    dashSpeed: 0
-    jumpSpeed: 2
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
-  - unitName: Test
-    category: 1
-    debrisType: 0
-    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
-    isPlayerSwingHittable: 1
-    isInvincible: 0
-    healthMax: 200
-    moveSpeed: 22
-    dashSpeed: 0
-    jumpSpeed: 3
-    aggroRange: 400
-    attack1Damage: 0
-    attack1Rate: 1
-    attack1Range: 12
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    experienceGiven: 100
-    hasData: 1
-    isDefault: 0
   isLoading: 0
-  lastLoadTime: 2026-02-17 21:44:51
+  lastLoadTime: 2026-02-18 20:29:02
   lastError: 

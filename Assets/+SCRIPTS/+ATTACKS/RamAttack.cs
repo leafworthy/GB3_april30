@@ -33,6 +33,11 @@ namespace __SCRIPTS
 			//MyDebugUtilities.DrawCircle(transform.position, attacker.stats.Stats.Range(1), Color.red);
 		}
 
+		void OnTriggerEnter2D(Collider2D other)
+		{
+
+		}
+
 		private void FixedUpdate()
 		{
 			if (Services.pauseManager.IsPaused) return;
@@ -65,7 +70,6 @@ namespace __SCRIPTS
 		private void CheckForHit(GameObject other)
 		{
 			if (life.IsDead()) return;
-			if (!isCooledDown) return;
 			if (other == null) return;
 			if (other.transform == transform) return;
 			var otherDefence = other.GetComponentInChildren<Life>();

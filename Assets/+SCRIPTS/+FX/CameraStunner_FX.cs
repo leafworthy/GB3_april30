@@ -50,7 +50,7 @@ namespace __SCRIPTS
 				       StunLength.Short => .01f*stunMultiplier,
 				       StunLength.Normal => .0175f * stunMultiplier,
 				       StunLength.Long => .025f * stunMultiplier,
-				       StunLength.Special => .2f * stunMultiplier,
+				       StunLength.Special => 1f * stunMultiplier,
 				       StunLength.None =>0 * stunMultiplier,
 				       _ => throw new ArgumentOutOfRangeException(nameof(length), length, null)
 			       };

@@ -46,8 +46,8 @@ namespace __SCRIPTS
 		AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
 		AmmoInventory _ammoInventory;
 
-		float SpecialAttackDistance = 3;
-		float SpecialAttackWidth = 3;
+		float SpecialAttackDistance = 4;
+		float SpecialAttackWidth = 4;
 		float SpecialAttackExtraPush = 200;
 		GameObject currentArrowHead;
 
@@ -201,8 +201,7 @@ namespace __SCRIPTS
 		{
 			UseAllAmmo();
 			OnChargeStop?.Invoke();
-			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Special);
-			TempCinemachine.CreateFollowCameraTemporary(transform, .75f, 35, true);
+
 			anim.SetTrigger(UnitAnimations.ChargeAttackTrigger);
 			anim.SetBool(UnitAnimations.IsCharging, false);
 			PlayAnimationClip(chargeAttackAnimationClip);
@@ -281,28 +280,19 @@ namespace __SCRIPTS
 				if (attack == null) continue;
 				if (!hasSpecialHit)
 				{
-					OnSpecialAttackHit?.Invoke(attack);
 					hasSpecialHit = true;
+					SpecialHit(attack);
 				}
 				else OnAttackHit?.Invoke(attack);
 			}
+		}
 
-			var circleCast = Physics2D.OverlapCircleAll((Vector2) transform.position + moveAbility.GetMoveAimDir() * SpecialAttackDistance, GetHitRange(),
-				offence.EnemyLayer);
+		void SpecialHit(Attack attack)
+		{
+			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Special);
+			TempCinemachine.CreateFollowCameraTemporary(transform, 1, 35, true);
+			OnSpecialAttackHit?.Invoke(attack);
 
-			foreach (var hit2D in circleCast)
-			{
-				var otherLife = hit2D.gameObject.GetComponent<Life>();
-				if (otherLife == null) continue;
-				var attack = MyAttackUtilities.HitTarget(offence, otherLife, offence.stats.Stats.Damage(2), SpecialAttackExtraPush, true);
-				if (attack == null) continue;
-				if (!hasSpecialHit)
-				{
-					hasSpecialHit = true;
-					OnSpecialAttackHit?.Invoke(attack);
-				}
-				else OnAttackHit?.Invoke(attack);
-			}
 		}
 
 		Vector2 GetBestTargetPoint(Vector3 attackPosition) =>

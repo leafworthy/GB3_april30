@@ -45,7 +45,7 @@ namespace __SCRIPTS
 		const float FallInDistance = 80;
 		const float maxAirTime = 2.5f;
 		float airTimer;
-		float getUpTime = 1;
+		float getUpTime = .25f;
 		bool IsFlying => currentState == state.flying;
 
 		public bool IsFalling => currentState == state.falling;
@@ -214,6 +214,7 @@ namespace __SCRIPTS
 					break;
 				case state.gettingUp:
 					anim.Play(standingAnimationClip.name, 0, 0);
+					defence.SetTemporarilyInvincible(false);
 					StopAbility();
 					break;
 				case state.dead:
@@ -250,6 +251,7 @@ namespace __SCRIPTS
 			}
 			else
 			{
+				defence.SetTemporarilyInvincible(false);
 				PlayAnimationClip(landingAnimationClip);
 				SetState(state.landing);
 			}
@@ -259,7 +261,7 @@ namespace __SCRIPTS
 
 		void Land()
 		{
-			defence.SetTemporarilyInvincible(false);
+
 			moveAbility.SetCanMove(false);
 			body.SetGrounded();
 			verticalVelocity = 0;

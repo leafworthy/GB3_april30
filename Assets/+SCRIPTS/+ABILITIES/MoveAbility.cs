@@ -56,6 +56,7 @@ namespace __SCRIPTS
 		public bool IsIdle() => mover.IsMoving();
 
 		public event Action<RaycastHit2D, EffectSurface.SurfaceAngle> OnHitWall;
+
 		public void SetCanMove(bool _canMove)
 		{
 			canMove = _canMove;
@@ -120,16 +121,16 @@ namespace __SCRIPTS
 			var totalVelocity = moveVelocity + pushVelocity;
 			//detect if hit a wall
 			var destination = (Vector2) transform.position + totalVelocity * Time.deltaTime;
-			if(splats)
+
+			var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.BuildingLayer);
+			if (hitWall)
 			{
-				var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.BuildingLayer);
-				if (hitWall)
-				{
-					var effectSurface = hitWall.collider.GetComponent<EffectSurface>();
-					if (effectSurface == null) return;
-					OnHitWall?.Invoke(hitWall, effectSurface.surfaceAngle);
-					return;
-				}
+				if (!splats) return;
+				var effectSurface = hitWall.collider.GetComponent<EffectSurface>();
+				if (effectSurface == null) return;
+				OnHitWall?.Invoke(hitWall, effectSurface.surfaceAngle);
+
+				return;
 			}
 
 			MoveObjectTo((Vector2) transform.position + totalVelocity * Time.deltaTime);
@@ -276,6 +277,5 @@ namespace __SCRIPTS
 		}
 
 		public Vector2 GetTotalVelocity() => moveVelocity + pushVelocity;
-
 	}
 }

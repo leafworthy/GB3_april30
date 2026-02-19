@@ -25,7 +25,8 @@ namespace __SCRIPTS
 			UpgradesPurchased,
 			TimeSurvived,
 			Experience,
-			Level
+			Level,
+			Rescues
 		}
 
 		public  StatType type;

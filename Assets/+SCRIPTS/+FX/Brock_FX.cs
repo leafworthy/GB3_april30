@@ -36,6 +36,8 @@ namespace GangstaBean.Audio
 			hit.transform.localScale = new Vector3(hit.transform.localScale.x * Mathf.Sign(attack.Direction.x), hit.transform.localScale.y, 0);
 			hit = Services.objectMaker.Make(Services.assetManager.FX.hit5_line_burst, attack.DestinationFloorPoint);
 			hit.transform.localScale = new Vector3(hit.transform.localScale.x * Mathf.Sign(attack.Direction.x), hit.transform.localScale.y, 0);
+			var shaker = attack.DestinationLife.transform.gameObject.AddComponent<ObjectShaker>();
+			shaker.Shake(ObjectShaker.ShakeIntensityType.high);
 			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Long);
 		}
 	}

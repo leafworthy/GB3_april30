@@ -104,8 +104,8 @@ public class TempCinemachine : Singleton<TempCinemachine>
         // Smooth out: lower priority, then destroy after blend time
         vcam.Priority = Mathf.Max(0, previousHighestPriority - 1);
 
-        var brain = Camera.main?.GetComponent<CinemachineBrain>();
-        float blendTime = brain != null ? brain.DefaultBlend.BlendTime : 0.5f;
+
+
         yield return new WaitForSecondsRealtime(5);
 
         if (destroyAfter && vcam != null)

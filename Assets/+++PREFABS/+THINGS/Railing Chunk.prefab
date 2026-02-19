@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 2616758105752113150}
   - component: {fileID: 7184480559008131889}
   - component: {fileID: 7053537271352236477}
+  - component: {fileID: 3432600846894012234}
   m_Layer: 21
   m_Name: Life
   m_TagString: Untagged
@@ -528,3 +529,40 @@ PolygonCollider2D:
       - {x: 22.439272, y: -11.540352}
       - {x: 22.335968, y: -8.944817}
   m_UseDelaunayMesh: 0
+--- !u!114 &3432600846894012234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7892054076141677378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5783dbbad6a59184fa58aa75d79bcc02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FunkyCode::FunkyCode.LightCollider2D
+  shadowType: 3
+  shadowLayer: 0
+  shadowDistance: 1
+  shadowDistanceMin: 0
+  shadowDistanceMax: 43.178215
+  shadowTranslucency: 0.301
+  maskType: 0
+  maskLit: 0
+  maskPivot: 0
+  maskLayer: 0
+  maskLitCustom: 1
+  bumpMapMode:
+    type: 0
+    textureType: 0
+    texture: {fileID: 0}
+    sprite: {fileID: 0}
+    invertX: 0
+    invertY: 0
+    depth: 1
+    spriteRenderer: {fileID: 0}
+  mainShape:
+    shadowType: 3
+    maskType: 0
+    maskPivot: 0
+    transform: {fileID: 6732495324578136109}
