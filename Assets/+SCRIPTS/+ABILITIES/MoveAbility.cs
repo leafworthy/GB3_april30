@@ -121,11 +121,12 @@ namespace __SCRIPTS
 			var totalVelocity = moveVelocity + pushVelocity;
 			//detect if hit a wall
 			var destination = (Vector2) transform.position + totalVelocity * Time.deltaTime;
-
 			var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.BuildingLayer);
-			if (hitWall)
+			if(health != null && health.IsDead() && hitWall) return;
+			if (health == null && hitWall) return;
+			if (splats && hitWall)
 			{
-				if (!splats) return;
+
 				var effectSurface = hitWall.collider.GetComponent<EffectSurface>();
 				if (effectSurface == null) return;
 				OnHitWall?.Invoke(hitWall, effectSurface.surfaceAngle);

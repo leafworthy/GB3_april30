@@ -155,9 +155,8 @@ namespace __SCRIPTS
 		{
 			var missPosition = (Vector2) body.FootPoint.transform.position + gunAimAbility.AimDir.normalized * AttackRange;
 			var raycastHit = Physics2D.Raycast(body.FootPoint.transform.position, gunAimAbility.AimDir.normalized, AttackRange, attacker.player.BuildingLayer);
-			if (raycastHit) missPosition = raycastHit.point;
-			var newAttack = Attack.Create(attacker, null).WithOriginPoint(body.AttackStartPoint.transform.position).WithDestinationPoint(missPosition)
-			                      .WithDamage(0);
+			if (raycastHit.collider != null) missPosition = raycastHit.point;
+			var newAttack = Attack.Create(attacker, missPosition).WithOriginPoint(body.AttackStartPoint.transform.position).WithDamage(0);
 
 			Debug.DrawLine(body.FootPoint.transform.position, missPosition, Color.red, 3);
 			OnShotMissed?.Invoke(newAttack);

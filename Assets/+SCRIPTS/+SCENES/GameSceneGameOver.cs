@@ -1,14 +1,28 @@
 using System.Collections.Generic;
 using __SCRIPTS;
+using TMPro;
+using UnityEngine;
 
 public class GameSceneGameOver : GameScene
 {
-	public SceneDefinition gameManagerScene;
 	public List<PlayerStatsDisplay> displays;
+
+	public GameObject starburst;
+	public HideRevealObjects text;
 
 	void Start()
 	{
 		Services.playerManager.SetActionMaps(Players.UIActionMap);
+		if (Services.levelManager.hasWon)
+		{
+			starburst.SetActive(true);
+			text.Set(0);
+		}
+		else
+		{
+			starburst.SetActive(false);
+			text.Set(1);
+		}
 		foreach (var display in displays)
 		{
 			display.gameObject.SetActive(false);

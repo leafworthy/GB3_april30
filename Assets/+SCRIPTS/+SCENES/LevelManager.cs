@@ -7,6 +7,7 @@ namespace __SCRIPTS
 	public class LevelManager : MonoBehaviour, IService
 	{
 		static SceneDefinition restartedLevelScene;
+		public bool hasWon;
 		public GameLevel currentLevel;
 
 		public event Action<GameLevel> OnStopLevel;
@@ -14,7 +15,6 @@ namespace __SCRIPTS
 		public event Action<Player> OnLevelSpawnedPlayerFromLevel;
 		public event Action<Player> OnLevelSpawnedPlayerFromPlayerSetupMenu;
 		public event Action OnGameOver;
-		public event Action OnWinGame;
 		float gameStartTime;
 		public bool loadInGame;
 
@@ -41,12 +41,19 @@ namespace __SCRIPTS
 		{
 			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
 			currentLevel = newLevel;
-			currentLevel.OnGameOver += newLevel_GameOver;
 			SpawnPlayersIntoLevel();
 			OnStartLevel?.Invoke(currentLevel);
 			Debug.Log("start level");
+			newLevel.OnGameOver += Level_OnGameOver;
 
 			gameStartTime = Time.time;
+		}
+
+		void Level_OnGameOver(bool _hasWon)
+		{
+			EndGame(_hasWon);
+			Debug.Log("game over");
+			currentLevel.OnGameOver -= Level_OnGameOver;
 		}
 
 		void SpawnPlayersIntoLevel()
@@ -74,17 +81,9 @@ namespace __SCRIPTS
 			OnLevelSpawnedPlayerFromPlayerSetupMenu?.Invoke(player);
 		}
 
-		void newLevel_GameOver()
-		{
-			OnGameOver?.Invoke();
-			GoToGameOverScreen();
-		}
 
-		void GoToGameOverScreen()
-		{
-			StopLevel();
-			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.GameOverScene);
-		}
+
+
 
 		void LoadLevel(SceneDefinition destinationScene)
 		{
@@ -104,7 +103,6 @@ namespace __SCRIPTS
 			if (currentLevel == null) return;
 			restartedLevelScene = currentLevel.scene;
 			currentLevel.StopLevel();
-			currentLevel.OnGameOver -= newLevel_GameOver;
 			currentLevel = null;
 			OnStopLevel?.Invoke(currentLevel);
 		}
@@ -149,9 +147,12 @@ namespace __SCRIPTS
 #endif
 		}
 
-		public void WinGame()
+		public void EndGame(bool _hasWon)
 		{
-			OnWinGame?.Invoke();
+			OnGameOver?.Invoke();
+			hasWon = _hasWon;
+			StopLevel();
+			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.GameOverScene);
 		}
 
 		public float GetCurrentLevelTimeElapsed() => GetTimeElapsed();
@@ -168,9 +169,7 @@ namespace __SCRIPTS
 			return Services.assetManager.Scenes.testScene;
 		}
 
-		public void StartWinningGame()
-		{
-		}
+
 
 		public void RespawnPlayer(Player pausingPlayer)
 		{
@@ -190,5 +189,7 @@ namespace __SCRIPTS
 			if (newScene == null) return;
 			LoadLevel(newScene);
 		}
+
+
 	}
 }

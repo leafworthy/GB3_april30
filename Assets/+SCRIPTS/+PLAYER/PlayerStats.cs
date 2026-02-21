@@ -57,6 +57,7 @@ namespace __SCRIPTS
 			AddStat(new PlayerStat(PlayerStat.StatType.Gas, 0));
 			AddStat(new PlayerStat(PlayerStat.StatType.Experience, 0));
 			AddStat(new PlayerStat(PlayerStat.StatType.Level, 0));
+			AddStat(new PlayerStat(PlayerStat.StatType.Rescues, 0));
 
 			OnStatsReset?.Invoke();
 		}

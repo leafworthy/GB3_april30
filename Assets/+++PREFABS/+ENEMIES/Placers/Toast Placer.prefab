@@ -52,6 +52,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -73,6 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 424
@@ -101,7 +104,7 @@ GameObject:
   m_Layer: 0
   m_Name: Toast Placer
   m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -134,7 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnsNPCs: 0
-  Prefab: {fileID: 7431454428826219940, guid: cb879157170f74c019dcfb56c1da9382, type: 3}
+  EnemyType: 0
   isBehindSpawner: 0
   margin: -0.2
   EnemyTier: 1
@@ -150,9 +153,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd748a8e8c6541bc8a0a93a01251830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pallettes:
+  spriteRenderer: {fileID: 8782589273106123198}
+  characterPallettes:
   - {fileID: 2100000, guid: a352cbfbf94364268af325aed32ab73f, type: 2}
-  - {fileID: 2100000, guid: 55d73fdec6a3c446c817ee2b4eb8e71d, type: 2}
   - {fileID: 2100000, guid: 9c22e92884a3e41b8ad8067c182c1188, type: 2}
   - {fileID: 2100000, guid: fdae30f0854b54b158616aa60955364b, type: 2}
-  spriteRenderer: {fileID: 8782589273106123198}
+  - {fileID: 2100000, guid: 55d73fdec6a3c446c817ee2b4eb8e71d, type: 2}
+  - {fileID: 2100000, guid: b051c08fce40d4730b81bfdb5a635e0d, type: 2}

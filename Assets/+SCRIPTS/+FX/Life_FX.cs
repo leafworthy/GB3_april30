@@ -59,7 +59,7 @@ namespace __SCRIPTS
 		void Life_AttackHit(Attack attack)
 		{
 			Debug.Log("life attack hit", attack.DestinationLife.transform);
-			if(!life.DoesntDie)CreateDamageRisingText(attack);
+			if(!life.DoesntShowDamageNumbers)CreateDamageRisingText(attack);
 			SprayDebris(attack);
 			MakeHitMark(attack);
 			tint?.StartTint(attack.TintColor);
@@ -70,11 +70,11 @@ namespace __SCRIPTS
 
 			if (hitList == null) return;
 
-			var heightCorrectionForDepth = new Vector2(0, -1f);
-			var hitMarkObject = Services.objectMaker.Make(hitList.GetRandom(), attack.DestinationFloorPoint + heightCorrectionForDepth);
+
+			var hitMarkObject = Services.objectMaker.Make(hitList.GetRandom(), attack.DestinationFloorPoint);
 
 			var hitHeightScript = hitMarkObject.GetComponent<HeightAbility>();
-			hitHeightScript.SetHeight(attack.DestinationHeight - heightCorrectionForDepth.y);
+			hitHeightScript.SetHeight(attack.DestinationHeight);
 
 			if (!(attack.Direction.x > 0))
 			{
@@ -108,7 +108,7 @@ namespace __SCRIPTS
 			var randAmount = Random.Range(2, 10);
 			for (var j = 0; j < randAmount; j++)
 			{
-				var randomAngle = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)).normalized;
+				var randomAngle = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
 				//----->
 				FireDebree(attack.Direction + randomAngle, attack.OriginHeight, 1, attack.DestinationFloorPoint);
 
@@ -123,7 +123,7 @@ namespace __SCRIPTS
 			forwardDebree.GetComponent<MoveJumpAndRotateAbility>().Fire(angle, height, verticalSpeed);
 			_tint?.TintDebree(forwardDebree);
 
-			Services.objectMaker.Unmake(forwardDebree, 3);
+			Services.objectMaker.Unmake(forwardDebree, 5);
 		}
 
 		void CreateDamageRisingText(Attack attack)

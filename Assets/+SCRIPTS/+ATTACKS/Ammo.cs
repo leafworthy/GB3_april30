@@ -118,5 +118,11 @@ namespace __SCRIPTS
 			AmmoInClip = ammoToSet.AmmoInClip;
 			OnAmmoGained?.Invoke();
 		}
+
+		public void SetAmmoInClip(int ammo1Clip)
+		{
+			AmmoInClip = Mathf.Clamp(ammo1Clip, 0, clipSize);
+			OnAmmoGained?.Invoke();
+		}
 	}
 }

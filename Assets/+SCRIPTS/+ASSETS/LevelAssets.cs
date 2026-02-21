@@ -16,5 +16,6 @@ namespace __SCRIPTS
 
 		public LayerMask EnemyUnwalkableLayers;
 		public UnitStatsDatabase StatsDatabase;
+		public LayerMask AllLivingBeingsLayer;
 	}
 }

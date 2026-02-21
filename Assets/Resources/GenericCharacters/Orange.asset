@@ -16,8 +16,12 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 2111f0f7b8cb04be18daeadac112a48c, type: 3}
   faceIndex: 4
   tintColor: {r: 0.99607843, g: 0.94509804, b: 0.2784314, a: 1}
+  bodyTintColor: {r: 1, g: 1, b: 1, a: 1}
   leftArmOffset: {x: -3.72, y: 3.9}
   rightArmOffset: {x: 2.73, y: 3.5}
   leftLegOffset: {x: -0.92, y: 0}
   rightLegOffset: {x: 0.66, y: 0}
   faceOffset: {x: 0.17, y: -0.99}
+  toTintRenderers:
+  - {fileID: 0}
+  - {fileID: 0}

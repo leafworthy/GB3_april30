@@ -35,8 +35,8 @@ namespace __SCRIPTS
 		public AnimationClip onGroundAnimationClip;
 		public AnimationClip getUpAnimationClip;
 		public AnimationClip standingAnimationClip;
-		ICanMove moveAbility => _moveAbility ??= GetComponent<ICanMove>();
-		ICanMove _moveAbility;
+		MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
+		MoveAbility _moveAbility;
 
 		public event Action<Vector2> OnLand;
 		public event Action<Vector2> OnJump;
@@ -46,6 +46,7 @@ namespace __SCRIPTS
 		const float maxAirTime = 2.5f;
 		float airTimer;
 		float getUpTime = .25f;
+		public event Action OnGotBackUp;
 		bool IsFlying => currentState == state.flying;
 
 		public bool IsFalling => currentState == state.falling;
@@ -80,6 +81,7 @@ namespace __SCRIPTS
 		{
 			if (currentState is state.flying)
 			{
+				moveAbility.SetDragging(false);
 				moveAbility.SetCanMove(false);
 				PlayAnimationClip(flyingAnimationClip);
 			}
@@ -214,7 +216,9 @@ namespace __SCRIPTS
 					break;
 				case state.gettingUp:
 					anim.Play(standingAnimationClip.name, 0, 0);
+					Debug.Log("GET UP");
 					defence.SetTemporarilyInvincible(false);
+					OnGotBackUp?.Invoke();
 					StopAbility();
 					break;
 				case state.dead:
@@ -263,6 +267,7 @@ namespace __SCRIPTS
 		{
 
 			moveAbility.SetCanMove(false);
+			moveAbility.SetDragging(true);
 			body.SetGrounded();
 			verticalVelocity = 0;
 			OnLand?.Invoke(transform.position);

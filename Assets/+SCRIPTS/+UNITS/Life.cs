@@ -17,7 +17,7 @@ namespace __SCRIPTS
 		UnitAnimations _animations;
 		public bool IsDead() => Stats.IsDead;
 
-		public bool DoesntDie;
+		public bool DoesntShowDamageNumbers;
 		public bool IsFullyDead { get; set; }
 
 		public bool IsShielded;

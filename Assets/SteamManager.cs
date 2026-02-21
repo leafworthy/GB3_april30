@@ -60,7 +60,9 @@ public class SteamManager : MonoBehaviour {
 	}
 #endif
 
-	protected virtual void Awake() {
+	protected virtual void Awake()
+	{
+		return; //THIS IS WHAT I ADDED TO PREVENT STEAMWORKS FROM INITIALIZING, REMOVE THIS LINE TO ENABLE STEAMWORKS
 		// Only one instance of SteamManager at a time!
 		if (s_instance != null) {
 			Destroy(gameObject);

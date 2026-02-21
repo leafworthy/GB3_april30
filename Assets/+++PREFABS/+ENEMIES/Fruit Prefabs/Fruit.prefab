@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4878069972725261251
 Transform:
   m_ObjectHideFlags: 0
@@ -106,7 +106,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3950106250486944141
 Transform:
   m_ObjectHideFlags: 0
@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 4362649678888620018}
   m_Layer: 0
   m_Name: BodyGraphic
-  m_TagString: Untagged
+  m_TagString: dontcolor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -259,7 +259,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 834
-  m_Sprite: {fileID: 21300000, guid: 8ae09069c972b4bd8903eadfa7425427, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b3c69e19eb5414b6fb66fe208e621b4e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -385,7 +385,7 @@ Transform:
   m_GameObject: {fileID: 853250221008520828}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.23, y: 3.6, z: 0}
+  m_LocalPosition: {x: -3.62, y: 3.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -553,7 +553,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 833
   m_Sprite: {fileID: 21300000, guid: a5ae728b9d80542f5ac757f990c2a6dd, type: 3}
-  m_Color: {r: 0.72156864, g: 0.68235296, b: 0.15686275, a: 1}
+  m_Color: {r: 0.9647059, g: 0.99607843, b: 0.7372549, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -733,7 +733,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 840
   m_Sprite: {fileID: 21300000, guid: 9366fa9b69d864ce0aff0b4f86ff6ce3, type: 3}
-  m_Color: {r: 0.72156864, g: 0.68235296, b: 0.15686275, a: 1}
+  m_Color: {r: 0.9647059, g: 0.99607843, b: 0.7372549, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1325,6 +1325,7 @@ MonoBehaviour:
       Entry: 8
       Data: 
   OverrideName: Fruit
+  DoesntShowDamageNumbers: 0
   IsShielded: 0
 --- !u!114 &8468380082729349932
 MonoBehaviour:
@@ -1418,6 +1419,7 @@ MonoBehaviour:
   acceleratatonRate: 3
   acceleratatonMax: 20
   decelerationFactor: {x: 0.97, y: 0.97}
+  splats: 0
 --- !u!114 &1905985762169080159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1442,18 +1444,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be430b345dfe2431eaa880655ed6670d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCName: Celery
-  Tint: {r: 0.72156864, g: 0.68235296, b: 0.15686275, a: 1}
+  NPCName: Onion
+  Tint: {r: 0.9647059, g: 0.99607843, b: 0.7372549, a: 1}
+  BodyTint: {r: 1, g: 1, b: 1, a: 1}
   toTint:
   - {fileID: 6315489019273529377}
   - {fileID: 5141259233098759020}
-  currentCharacter: {fileID: 11400000, guid: 7f9d97edc08384b4abdbfef45ed06555, type: 2}
-  autoRefresh: 0
+  - {fileID: 4362649678888620018}
+  currentCharacter: {fileID: 11400000, guid: 59f49786ee7e04b1f9de4237698c2858, type: 2}
+  autoRefresh: 1
   sr: {fileID: 4362649678888620018}
   leftArm: {fileID: 853250221008520828}
   rightArm: {fileID: 6404993582064815642}
   leftLeg: {fileID: 8757899676602064798}
   rightLeg: {fileID: 8531670392625841313}
+  body: {fileID: 0}
   face: {fileID: 7521240347522197101}
   hideRevealObjects: {fileID: 8821141000756961592}
 --- !u!114 &1324542549324315061
@@ -1496,11 +1501,11 @@ MonoBehaviour:
     SerializationNodes: []
   jumpingAnimationClip: {fileID: 7400000, guid: 909221cdb6818401f8a2290fb70ea3dc, type: 2}
   fallingAnimationClip: {fileID: 7400000, guid: 909221cdb6818401f8a2290fb70ea3dc, type: 2}
-  landingAnimationClip: {fileID: 7400000, guid: 883cf357cb1b347eca7168011efa82d6, type: 2}
+  landingAnimationClip: {fileID: 7400000, guid: e1db3698579ad4df8a052961404672e8, type: 2}
   flyingAnimationClip: {fileID: 7400000, guid: 909221cdb6818401f8a2290fb70ea3dc, type: 2}
   deathAnimationClip: {fileID: 7400000, guid: c9d6f97f74753433caa3a30a063a1959, type: 2}
-  onGroundAnimationClip: {fileID: 7400000, guid: 883cf357cb1b347eca7168011efa82d6, type: 2}
-  getUpAnimationClip: {fileID: 7400000, guid: aa6a16a6502bf4467a7c88945721004f, type: 2}
+  onGroundAnimationClip: {fileID: 7400000, guid: e1db3698579ad4df8a052961404672e8, type: 2}
+  getUpAnimationClip: {fileID: 7400000, guid: db029bd52b1084cb1ad80e7033e7aab1, type: 2}
   standingAnimationClip: {fileID: 7400000, guid: aa6a16a6502bf4467a7c88945721004f, type: 2}
 --- !u!114 &2174765369296817044
 MonoBehaviour:
@@ -1952,7 +1957,7 @@ Transform:
   m_GameObject: {fileID: 6404993582064815642}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.74, y: 3.2000008, z: 0}
+  m_LocalPosition: {x: 3.03, y: 3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2109,7 +2114,7 @@ Transform:
   m_GameObject: {fileID: 7521240347522197101}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.17, y: -0.99, z: 0}
+  m_LocalPosition: {x: 0.17, y: -1.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2140,7 +2145,7 @@ MonoBehaviour:
   - {fileID: 839403978882545877}
   - {fileID: 454080600298120523}
   - {fileID: 425075047776317077}
-  revealedObjectIndex: 5
+  revealedObjectIndex: 4
   isAdditive: 0
 --- !u!1 &7854039214064336566
 GameObject:
@@ -2199,7 +2204,7 @@ Transform:
   m_GameObject: {fileID: 8531670392625841313}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.04, y: 0, z: 0}
+  m_LocalPosition: {x: 0.66, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2231,7 +2236,7 @@ Transform:
   m_GameObject: {fileID: 8757899676602064798}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.32, y: 0, z: 0}
+  m_LocalPosition: {x: -0.92, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

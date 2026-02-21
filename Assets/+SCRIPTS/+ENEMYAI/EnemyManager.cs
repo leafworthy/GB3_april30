@@ -105,6 +105,10 @@ namespace __SCRIPTS
 		void NPC_OnRescued(NPC_AI npc)
 		{
 			var tinter = npc.gameObject.GetComponent<Tinter>();
+			foreach (var player in Services.playerManager.AllJoinedPlayers)
+			{
+				Services.playerStatsManager.ChangeStat(player, PlayerStat.StatType.Rescues, 1);
+			}
 			tinter?.StartFadeOut();
 		}
 	}

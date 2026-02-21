@@ -12,12 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea252f815ae45b798731ff51e20bb98, type: 3}
   m_Name: Avocado
   m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.GenericCharacter
-  displayName: Avocado
+  displayName: Avocado Scurred
   sprite: {fileID: 21300000, guid: 46828430ca1e945988173a1f59e252f9, type: 3}
-  faceIndex: 2
+  faceIndex: 0
   tintColor: {r: 0.15294118, g: 0.2784314, b: 0.12941177, a: 1}
+  bodyTintColor: {r: 0.8490566, g: 0.652546, b: 0.5566928, a: 1}
   leftArmOffset: {x: -3.33, y: 3.9}
   rightArmOffset: {x: 2.16, y: 3.5}
   leftLegOffset: {x: -0.68, y: 0}
   rightLegOffset: {x: 0.83, y: 0}
-  faceOffset: {x: 0, y: 0}
+  faceOffset: {x: -0.11, y: 0.44}
+  toTintRenderers:
+  - {fileID: 0}
+  - {fileID: 0}

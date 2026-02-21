@@ -102,7 +102,6 @@ GameObject:
   - component: {fileID: 3798967501869008275}
   - component: {fileID: 7368836059527370570}
   - component: {fileID: 953491491219963416}
-  - component: {fileID: 7879925689689283461}
   - component: {fileID: 6022699182117295036}
   m_Layer: 7
   m_Name: Dumpster
@@ -266,6 +265,7 @@ MonoBehaviour:
       Entry: 8
       Data: 
   OverrideName: Dumpster
+  DoesntShowDamageNumbers: 0
   IsShielded: 0
 --- !u!61 &7368836059527370570
 BoxCollider2D:
@@ -325,20 +325,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7879925689689283461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4072610035323071818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4705f2b9e1d224827a49ab46e49680df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ExplodeOnDeath
-  explosionSize: 4
-  transformToDestroy: {fileID: 8340158748680277637}
 --- !u!114 &6022699182117295036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,6 +339,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Tinter
   renderersToTint:
   - {fileID: 8882696636119940396}
+--- !u!1 &4306413589405314888
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2202003156562541126}
+  m_Layer: 0
+  m_Name: CustomDropPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2202003156562541126
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4306413589405314888}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.6, y: -2.6, z: 9.957034}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2541493512200692569}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6876654616573118013
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,6 +502,8 @@ GameObject:
   - component: {fileID: 2541493512200692569}
   - component: {fileID: 8000400784646021890}
   - component: {fileID: 6793265640965821957}
+  - component: {fileID: 2436065774298655184}
+  - component: {fileID: 5876960681695366641}
   m_Layer: 0
   m_Name: Dumpster - Green
   m_TagString: Untagged
@@ -508,6 +527,7 @@ Transform:
   - {fileID: 4595862866329624868}
   - {fileID: 9130329543782966354}
   - {fileID: 5607084619608687944}
+  - {fileID: 2202003156562541126}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &8000400784646021890
@@ -534,9 +554,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f232de765df140ef854da5f5124a1bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customDropPoint: {fileID: 0}
-  lootTypes: 07000000010000000200000003000000
+  customDropPoint: {fileID: 4306413589405314888}
+  lootTypes: 010000000200000003000000
   amountOfLootDropped: 5
+--- !u!114 &2436065774298655184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8340158748680277637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4705f2b9e1d224827a49ab46e49680df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ExplodeOnDeath
+  explosiveDamage: 5
+  explosionSize: 4
+  transformToDestroy: {fileID: 8340158748680277637}
+--- !u!114 &5876960681695366641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8340158748680277637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b04e8446f34936bf49a1ffa4eacbcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UniversalEnemyAttacker
 --- !u!1001 &7201263692320624950
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -611,11 +658,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 4.564697
+      value: 3.88
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3.3231583
+      value: 3.43
       objectReference: {fileID: 0}
     - target: {fileID: 6159643716270242738, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

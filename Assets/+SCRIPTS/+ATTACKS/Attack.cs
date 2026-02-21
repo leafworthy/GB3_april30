@@ -2,16 +2,12 @@ using System;
 using GangstaBean.Core;
 using UnityEngine;
 
-
-
 namespace __SCRIPTS
 {
-
-
 	[Serializable]
 	public class Attack
 	{
-		private Attack()
+		Attack()
 		{
 			OriginHeight = 5;
 			DestinationHeight = 5;
@@ -21,15 +17,31 @@ namespace __SCRIPTS
 
 		public static Attack Create(ICanAttack originLife, IGetAttacked destinationLife)
 		{
-			var attack = new Attack();
-			attack.OriginLife = originLife;
-			if (originLife != null) attack.OriginFloorPoint = originLife.transform.position;
-			attack.DestinationLife = destinationLife;
-			if (destinationLife != null) attack.DestinationFloorPoint = destinationLife.transform.position;
-			else
+			var attack = new Attack
 			{
-				attack.DestinationFloorPoint = attack.OriginFloorPoint;
+				OriginLife = originLife
+			};
+			if (originLife != null) attack.OriginFloorPoint = originLife.transform.position;
+
+			if (destinationLife != null)
+			{
+				attack.DestinationLife = destinationLife;
+				attack.DestinationFloorPoint = destinationLife.transform.position;
 			}
+			else
+				attack.DestinationFloorPoint = attack.OriginFloorPoint;
+
+			return attack;
+		}
+
+		public static Attack Create(ICanAttack originLife, Vector2 destinationPoint)
+		{
+			var attack = new Attack
+			{
+				OriginLife = originLife,
+				OriginFloorPoint = originLife.transform.position,
+				DestinationFloorPoint = destinationPoint
+			};
 			return attack;
 		}
 
@@ -45,11 +57,6 @@ namespace __SCRIPTS
 			return this;
 		}
 
-		public Attack WithOriginHeight(float height)
-		{
-			OriginHeight = height;
-			return this;
-		}
 
 		public Attack WithOriginPoint(Vector3 transformPosition)
 		{
@@ -57,22 +64,18 @@ namespace __SCRIPTS
 			return this;
 		}
 
-		public void WithDestinationLife(IGetAttacked target)
+		public Attack WithDestinationLife(IGetAttacked target)
 		{
 			DestinationLife = target;
 			if (target != null)
 				DestinationFloorPoint = target.transform.position;
+
+			return this;
 		}
 
 		public Attack WithDestinationPoint(Vector2 point)
 		{
 			DestinationFloorPoint = point;
-			return this;
-		}
-
-		public Attack WithDestinationHeight(float height)
-		{
-			DestinationHeight = height;
 			return this;
 		}
 
@@ -95,7 +98,6 @@ namespace __SCRIPTS
 			return this;
 		}
 
-
 		// Properties
 		public ICanAttack OriginLife;
 		public IGetAttacked DestinationLife;
@@ -112,7 +114,6 @@ namespace __SCRIPTS
 		public Vector2 Direction => DestinationFloorPoint - OriginFloorPoint;
 		public Vector2 FlippedDirection => OriginFloorPoint - DestinationFloorPoint;
 		public Vector2 DestinationWithHeight => DestinationFloorPoint + new Vector2(0, DestinationHeight);
-		public Vector2 OriginWithHeight => OriginFloorPoint + new Vector2(
-0, OriginHeight);
+		public Vector2 OriginWithHeight => OriginFloorPoint + new Vector2(0, OriginHeight);
 	}
 }

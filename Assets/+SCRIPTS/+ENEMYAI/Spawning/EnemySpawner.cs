@@ -72,8 +72,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 
 	[Header("Spawn Settings"), SerializeField]
 	float spawnInterval = 2f;
-	float spawnMargin = -2f;
-	[SerializeField] float spawnDuration = 30f; // 0 for infinite
+	float spawnMargin = -2f; // 0 for infinite
 
 
 	Camera mainCamera => _mainCamera ??= CursorManager.GetCamera();
@@ -257,37 +256,10 @@ public class EnemySpawner : SerializedMonoBehaviour
 		var camWidth = camHeight * mainCamera.aspect;
 		var camPos = mainCamera.transform.position;
 
-		var possibleSides = new List<int>
-		{
-			0,
-			1,
-			2
-		};
+		var spawnPosition = new Vector3(Random.Range(camPos.x - camWidth / 2f, camPos.x + camWidth / 2f),
+			Random.Range(camPos.y - camHeight / 2f, camPos.y + camHeight / 2f), 0f);
 
-		// Pick a random side
-		var side = possibleSides[Random.Range(0, possibleSides.Count)];
 
-		var spawnPosition = camPos;
-
-		switch (side)
-		{
-			case 0: // Left
-				spawnPosition.x = camPos.x - camWidth / 2f - spawnMargin;
-				spawnPosition.y = Random.Range(camPos.y - camHeight / 2f, camPos.y);
-				break;
-
-			case 1: // Right
-				spawnPosition.x = camPos.x + camWidth / 2f + spawnMargin;
-				spawnPosition.y = Random.Range(camPos.y - camHeight / 2f, camPos.y);
-				break;
-
-			case 2: // Bottom
-				spawnPosition.x = Random.Range(camPos.x - camWidth / 2f, camPos.x + camWidth / 2f);
-				spawnPosition.y = Random.Range(camPos.y - camHeight / 2f, camPos.y);
-				break;
-		}
-
-		spawnPosition.z = 0f; // Assuming 2D or sprites
 		Debug.Log("Calculated spawn position at " + spawnPosition);
 
 		return spawnPosition;

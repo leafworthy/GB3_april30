@@ -37,6 +37,7 @@ namespace __SCRIPTS
 				case EnemySpawner.EnemyType.Fruit:
 					return FruitEnemyMaterials;
 				default:
+					Debug.Log("WTF");
 					return null;
 			}
 		}

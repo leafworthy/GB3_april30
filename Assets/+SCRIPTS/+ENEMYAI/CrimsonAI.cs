@@ -42,13 +42,25 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings,ICanAttack
 	IHaveUnitStats _stats;
 	Player player1;
 	LayerMask enemyLayer;
-	public float MoveSpeed => stats.Stats.MoveSpeed;
+	public Transform zoomPoint;
 
 	protected void Start()
 	{
 		Services.enemyManager.ConfigureNewEnemy(gameObject, EnemySpawner.EnemyType.Crimson);
 		StartIdle();
 		ramAttack.OnAttackHit += RamAttack_OnAttackHit;
+		life.OnDead += Life_OnDead;
+	}
+
+	void Life_OnDead(Attack obj)
+	{
+		TempCinemachine.CreateFollowCameraTemporary(zoomPoint, 5, 40, true);
+		Invoke( nameof(WinGame), 5);
+	}
+
+	public void WinGame()
+	{
+		Services.levelManager.EndGame(true);
 	}
 
 	void RamAttack_OnAttackHit()

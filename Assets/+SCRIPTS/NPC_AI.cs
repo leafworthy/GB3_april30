@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using __SCRIPTS;
 using __SCRIPTS._ENEMYAI;
 using __SCRIPTS.Cursor;
@@ -63,10 +64,20 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, INeedPlayer, ICanAttack
 	LayerMask enemyLayer;
 	public event Action<NPC_AI> OnRescued;
 
+	JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
+	JumpAbility _jumpAbility;
+
 	void Start()
 	{
 		SetState(state.cowering);
 		life.OnDead += LifeOnDead;
+		jumpAbility.OnGotBackUp += JumpAbility_OnGotBackUp;
+	}
+
+	void JumpAbility_OnGotBackUp()
+	{
+		if (life.IsDead()) return;
+		SetState(state.cowering);
 	}
 
 	void LifeOnDead(Attack obj)
@@ -77,6 +88,7 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, INeedPlayer, ICanAttack
 
 	void SetState(state newState)
 	{
+		if (!enabled) return;
 		currentState = newState;
 
 		switch (newState)
@@ -120,6 +132,7 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, INeedPlayer, ICanAttack
 
 	void Update()
 	{
+		if (!enabled) return;
 		switch (currentState)
 		{
 			case state.cowering:
@@ -146,6 +159,7 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, INeedPlayer, ICanAttack
 
 	void StartFleeing()
 	{
+
 		if (ShouldCower())
 		{
 			SetState(state.cowering);
@@ -159,6 +173,7 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, INeedPlayer, ICanAttack
 		}
 
 		moveDir = Vector2.left * speed;
+		Debug.Log("play run");
 		anim.Play(RunningAnimationClip.name, 0, 0);
 		OnMoveInDirection?.Invoke(moveDir);
 	}
@@ -200,6 +215,7 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, INeedPlayer, ICanAttack
 
 	void StartHiding()
 	{
+		Debug.Log("start hiding");
 		anim.Play(HidingAnimationClip.name, 0, 0);
 		body.BottomFaceDirection(true);
 		OnStopMoving?.Invoke();
@@ -207,7 +223,16 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, INeedPlayer, ICanAttack
 
 	void UpdateHiding()
 	{
-		if (!HasRunOffScreen()) return;
+		if (!HasRunOffScreen())
+		{
+
+			var hitsAhead = Physics2D.RaycastAll(transform.position, Vector2.left, 1, Services.assetManager.LevelAssets.BuildingLayer);
+			if (hitsAhead.Any(t => t.collider != null)) return;
+			moveDir = Vector2.left * speed;
+			Debug.Log("start fleeing AGAIN");
+			SetState(state.fleeing);
+			return;
+		}
 		SetState(state.rescued);
 	}
 

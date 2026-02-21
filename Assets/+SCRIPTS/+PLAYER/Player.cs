@@ -88,7 +88,7 @@ namespace __SCRIPTS
 			var animations = spawnedPlayerGO.GetComponentInChildren<UnitAnimations>();
 			if (animations != null) animations.SetBool(UnitAnimations.IsFallingFromSky, true);
 			OnPlayerSpawned?.Invoke();
-			if (statsBetweenScenes != null) statsBetweenScenes.ApplyToPlayer(spawnedPlayerGO);
+			statsBetweenScenes?.ApplyToPlayer(spawnedPlayerGO);
 			if (playerUpgrades != null) playerUpgrades.ApplyUpgrades(this);
 			return spawnedPlayerGO;
 		}
@@ -97,6 +97,12 @@ namespace __SCRIPTS
 		{
 			Services.sceneLoader.OnSceneAboutToChange -= SceneLoader_OnSceneAboutToChange;
 			if (SpawnedPlayerGO == null) return;
+			if (spawnedPlayerDefence == null) return;
+			if (spawnedPlayerDefence.IsDead())
+			{
+				statsBetweenScenes = null;
+				return;
+			}
 			statsBetweenScenes = new PlayerStatsSavedBetweenScenes(SpawnedPlayerGO);
 		}
 
@@ -236,10 +242,11 @@ public class PlayerStatsSavedBetweenScenes
 	int ammo2clip;
 	int ammo3reserve;
 	int ammo3clip;
-
+	bool isPrimary;
 
 	public PlayerStatsSavedBetweenScenes(GameObject spawnedPlayerGO)
 	{
+		Debug.Log("player stats saved");
 		var life = spawnedPlayerGO.GetComponent<Life>();
 		if (life == null) return;
 		CurrentHealth = life.CurrentHealth;
@@ -250,20 +257,24 @@ public class PlayerStatsSavedBetweenScenes
 		ammo2clip = ammo.secondaryAmmo.AmmoInClip;
 		ammo3reserve = ammo.tertiaryAmmo.reserveAmmo;
 		ammo3clip = ammo.tertiaryAmmo.AmmoInClip;
-
+		var gunAttack = spawnedPlayerGO.GetComponentInChildren<GunAttack>();
+		if (gunAttack != null) isPrimary = gunAttack.IsUsingPrimaryGun;
 	}
 
 	public void ApplyToPlayer(GameObject spawnedPlayerGO)
 	{
+		Debug.Log("Applying saved stats to player" + "\nHealth: " + "\nAmmo1: " + ammo1clip + "/" + ammo1reserve + "\nAmmo2: " + ammo2clip + "/" +
+		          ammo2reserve + "\nAmmo3: " + ammo3clip + "/" + ammo3reserve);
 		var life = spawnedPlayerGO.GetComponent<Life>();
 		if (life != null) life.Stats.CurrentHealth = CurrentHealth;
 		var ammoInventory = spawnedPlayerGO.GetComponent<AmmoInventory>();
-		 ammoInventory.primaryAmmo.AmmoInClip = ammo1clip;
-		 ammoInventory.primaryAmmo.reserveAmmo = ammo1reserve;
-		 ammoInventory.secondaryAmmo.AmmoInClip = ammo2clip;
-		 ammoInventory.secondaryAmmo.reserveAmmo = ammo2reserve;
-		 ammoInventory.tertiaryAmmo.AmmoInClip = ammo3clip;
-		 ammoInventory.tertiaryAmmo.reserveAmmo = ammo3reserve;
-
+		ammoInventory.primaryAmmo.SetAmmoInClip(ammo1clip);
+		ammoInventory.primaryAmmo.SetAmmoReserve(ammo1reserve);
+		ammoInventory.secondaryAmmo.SetAmmoInClip(ammo2clip);
+		ammoInventory.secondaryAmmo.SetAmmoReserve(ammo2reserve);
+		ammoInventory.tertiaryAmmo.SetAmmoInClip(ammo3clip);
+		ammoInventory.tertiaryAmmo.SetAmmoReserve(ammo3reserve);
+		var gunAttack = spawnedPlayerGO.GetComponentInChildren<GunAttack>();
+		if (gunAttack != null) gunAttack.SwitchGuns(isPrimary);
 	}
 }

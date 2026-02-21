@@ -52,10 +52,12 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 09db2b44b1dea438d998b72fc2d0454a, type: 2}
+  - {fileID: 2100000, guid: 2ac3b84af52a94602a54bc139783a231, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -73,6 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -101,7 +104,7 @@ GameObject:
   m_Layer: 0
   m_Name: Corn Placer
   m_TagString: Untagged
-  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -134,10 +137,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnsNPCs: 0
-  Prefab: {fileID: 5317405891896899284, guid: 3488ee15b61ad4963b1b258f1b974183, type: 3}
+  EnemyType: 3
   isBehindSpawner: 0
   margin: -0.2
-  EnemyTier: 0
+  EnemyTier: 1
 --- !u!114 &9177939218784803857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,10 +153,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd748a8e8c6541bc8a0a93a01251830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pallettes:
+  spriteRenderer: {fileID: 7572914541687950194}
+  characterPallettes:
   - {fileID: 2100000, guid: c0053c1e0e5d44d058cabce14c61b358, type: 2}
   - {fileID: 2100000, guid: 2ac3b84af52a94602a54bc139783a231, type: 2}
   - {fileID: 2100000, guid: 2ded6403ebefe4f74acc5ea0694b7997, type: 2}
   - {fileID: 2100000, guid: 6ebdbafe16c224eed9ebe66b34737571, type: 2}
   - {fileID: 2100000, guid: 09db2b44b1dea438d998b72fc2d0454a, type: 2}
-  spriteRenderer: {fileID: 7572914541687950194}

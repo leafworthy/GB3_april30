@@ -71,24 +71,24 @@ namespace __SCRIPTS
 			_dropsToSpawn.Add(Services.assetManager.FX.ammoPickupPrefab);
 			_dropsToSpawn.Add(Services.assetManager.FX.ammoPickupPrefab);
 			_dropsToSpawn.Add(Services.assetManager.FX.ammoPickupPrefab);
+			_dropsToSpawn.Add(Services.assetManager.FX.ammoPickupPrefab);
 
 			_dropsToSpawn.Add(Services.assetManager.FX.cashPickupPrefab);
 			_dropsToSpawn.Add(Services.assetManager.FX.cashPickupPrefab);
-			_dropsToSpawn.Add(Services.assetManager.FX.cashPickupPrefab);
-			_dropsToSpawn.Add(Services.assetManager.FX.cashPickupPrefab);
-			_dropsToSpawn.Add(Services.assetManager.FX.cashPickupPrefab);
-			_dropsToSpawn.Add(Services.assetManager.FX.cashPickupPrefab);
-			_dropsToSpawn.Add(Services.assetManager.FX.cashPickupPrefab);
+
 			_dropsToSpawn.Add(Services.assetManager.FX.cashPickupPrefab);
 
+			_dropsToSpawn.Add(Services.assetManager.FX.healthPickupPrefab);
+			_dropsToSpawn.Add(Services.assetManager.FX.healthPickupPrefab);
+			_dropsToSpawn.Add(Services.assetManager.FX.healthPickupPrefab);
+			_dropsToSpawn.Add(Services.assetManager.FX.healthPickupPrefab);
 			_dropsToSpawn.Add(Services.assetManager.FX.healthPickupPrefab);
 			_dropsToSpawn.Add(Services.assetManager.FX.healthPickupPrefab);
 			_dropsToSpawn.Add(Services.assetManager.FX.healthPickupPrefab);
 			_dropsToSpawn.Add(Services.assetManager.FX.healthPickupPrefab);
 
 			_dropsToSpawn.Add(Services.assetManager.FX.nadesPickupPrefab);
-
-			_dropsToSpawn.Add(Services.assetManager.FX.gasPickupPrefab);
+			_dropsToSpawn.Add(Services.assetManager.FX.nadesPickupPrefab);
 		}
 	}
 }

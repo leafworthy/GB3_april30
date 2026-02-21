@@ -84,34 +84,5 @@ PrefabInstance:
     - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3220609882814957800, guid: 46104b86892924f13892b0a8d5cfdf46, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4242843804120660673}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46104b86892924f13892b0a8d5cfdf46, type: 3}
---- !u!1 &1298089720424904223 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3220609882814957800, guid: 46104b86892924f13892b0a8d5cfdf46, type: 3}
-  m_PrefabInstance: {fileID: 4517772499115540215}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4242843804120660673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1298089720424904223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fda5f38b4216f4ffa8b25cacc7aa0de0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HeightObject: {fileID: 3516938923084846192}
-  isResting: 0
-  freezeRotation: 0
-  IsJumping: 0
---- !u!1 &3516938923084846192 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1043981308394007175, guid: 46104b86892924f13892b0a8d5cfdf46, type: 3}
-  m_PrefabInstance: {fileID: 4517772499115540215}
-  m_PrefabAsset: {fileID: 0}

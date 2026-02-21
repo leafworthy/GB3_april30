@@ -209,7 +209,7 @@ namespace __SCRIPTS
 			isPressingShoot = false;
 		}
 
-		bool SwitchGuns(bool toPrimary)
+		public bool SwitchGuns(bool toPrimary)
 		{
 			Debug.Log("try to switch guns: " + toPrimary + " must reload " + primaryGun.MustReload(), this);
 			if (!CanSwapGuns()) return false;

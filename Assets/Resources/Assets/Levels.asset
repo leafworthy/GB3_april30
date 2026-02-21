@@ -12,16 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9a20f1912a546c888a283f6162ba7b, type: 3}
   m_Name: Levels
   m_EditorClassIdentifier: 
-  StartingLevelPrefab: {fileID: 5507100351343334437, guid: d2b779061d3324e46ab9257aeecccea9, type: 3}
   PlayerLayer:
     serializedVersion: 2
     m_Bits: 64
   EnemyLayer:
     serializedVersion: 2
     m_Bits: 3146368
-  LandableLayer:
-    serializedVersion: 2
-    m_Bits: 262144
   LandedLayer:
     serializedVersion: 2
     m_Bits: 524288
@@ -37,46 +33,13 @@ MonoBehaviour:
   DoorLayer:
     serializedVersion: 2
     m_Bits: 1048576
-  JumpableLayer:
-    serializedVersion: 2
-    m_Bits: 18874368
   ShootableNotWalkableLayer:
     serializedVersion: 2
     m_Bits: 4096
-  Scene_GameSystems: GameManager
   EnemyUnwalkableLayers:
     serializedVersion: 2
     m_Bits: 20189696
-  DefaultUnitData:
-    unitName: 
-    category: 0
-    debrisType: 0
-    isPlayerSwingHittable: 0
-    showLifeBar: 0
-    isInvincible: 0
-    healthMax: 0
-    moveSpeed: 0
-    dashSpeed: 0
-    jumpSpeed: 0
-    aggroRange: 0
-    attack1Damage: 0
-    attack1Rate: 0
-    attack1Range: 0
-    attack2Damage: 0
-    attack2Rate: 0
-    attack2Range: 0
-    attack3Damage: 0
-    attack3Rate: 0
-    attack3Range: 0
-    attack4Damage: 0
-    attack4Rate: 0
-    attack4Range: 0
-    hasData: 0
-    isDefault: 0
-  EnemyLayerOnLandable:
-    serializedVersion: 2
-    m_Bits: 1049216
-  EnemiesCanHitTheseLayers:
-    serializedVersion: 2
-    m_Bits: 34603072
   StatsDatabase: {fileID: 11400000, guid: bf6ea19043f4748d8b8005fa1f10255a, type: 2}
+  AllLivingBeingsLayer:
+    serializedVersion: 2
+    m_Bits: 704

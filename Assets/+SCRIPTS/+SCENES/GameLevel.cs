@@ -7,7 +7,7 @@ namespace __SCRIPTS
 	{
 		public PlayerSpawnPoint DefaultPlayerSpawnPoint => FindFirstObjectByType<PlayerSpawnPoint>();
 		public SceneDefinition scene;
-		public event Action OnGameOver;
+		public event Action<bool> OnGameOver;
 
 
 		private void Start()
@@ -25,7 +25,9 @@ namespace __SCRIPTS
 		private void LoseLevel()
 		{
 			Debug.Log("lose level");
-			OnGameOver?.Invoke();
+			OnGameOver?.Invoke(false);
 		}
+
+
 	}
 }

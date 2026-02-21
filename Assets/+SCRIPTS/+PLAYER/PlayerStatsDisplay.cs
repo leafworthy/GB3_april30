@@ -5,30 +5,27 @@ namespace __SCRIPTS
 {
 	public class PlayerStatsDisplay : MonoBehaviour
 	{
-		private Player owner;
+		Player owner;
 		public TextMeshProUGUI PlayerName;
 		public TextMeshProUGUI Stat_Kills;
-		public TextMeshProUGUI Stat_Time;
 		public TextMeshProUGUI Stat_CashGained;
-		public TextMeshProUGUI Stat_Gas;
-		public TextMeshProUGUI Stat_Upgrades;
+		public TextMeshProUGUI Stat_Rescues;
 
-		private HideRevealObjects hideRevealObjects;
+		HideRevealObjects hideRevealObjects;
 
-
-		private PlayerStats playerStats;
+		PlayerStats playerStats;
 
 		public void SetPlayer(Player player)
 		{
 			owner = player;
-			PlayerName.text = "player " + (owner.playerIndex +1);
+			PlayerName.text = "player " + (owner.playerIndex + 1);
 			playerStats = owner.GetComponent<PlayerStats>();
 			if (playerStats == null) return;
 			DisplayStats();
 			DisplayCharacter();
 		}
 
-		private void DisplayCharacter()
+		void DisplayCharacter()
 		{
 			hideRevealObjects = GetComponentInChildren<HideRevealObjects>();
 			switch (owner.CurrentCharacter)
@@ -50,15 +47,11 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void DisplayStats()
+		void DisplayStats()
 		{
 			Stat_Kills.text = Services.playerStatsManager.GetStatAmount(owner, PlayerStat.StatType.Kills).ToString();
-			Stat_Time.text = Services.playerStatsManager.GetStatAmount(owner, PlayerStat.StatType.TimeSurvived).ToString("F1");
 			Stat_CashGained.text = Services.playerStatsManager.GetStatAmount(owner, PlayerStat.StatType.TotalCash).ToString();
-			Stat_Gas.text = Services.playerStatsManager.GetStatAmount(owner, PlayerStat.StatType.Gas).ToString();
-			//Stat_Upgrades.text = owner.GetComponent<PlayerUpgrades>().GetTotalUpgradesPurchased().ToString();
+			Stat_Rescues.text = Services.playerStatsManager.GetStatAmount(owner, PlayerStat.StatType.Rescues).ToString();
 		}
-
-
 	}
 }

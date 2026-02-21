@@ -14,7 +14,7 @@ GameObject:
   m_Layer: 0
   m_Name: Light Lamp
   m_TagString: Untagged
-  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -890,9 +890,6 @@ MonoBehaviour:
     - Name: isPlayerSwingHittable
       Entry: 5
       Data: false
-    - Name: showLifeBar
-      Entry: 5
-      Data: false
     - Name: isInvincible
       Entry: 5
       Data: false
@@ -972,8 +969,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
   OverrideName: Lamp
+  DoesntDie: 0
   IsShielded: 0
-  IsInvincible: 1
 --- !u!114 &7065454133731433709
 MonoBehaviour:
   m_ObjectHideFlags: 0

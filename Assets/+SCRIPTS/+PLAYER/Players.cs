@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -47,6 +48,8 @@ namespace __SCRIPTS
 			CreateEnemyPlayer();
 			SetActionMaps(UIActionMap);
 		}
+
+
 
 		private Player CreateEnemyPlayer()
 		{
@@ -183,9 +186,6 @@ namespace __SCRIPTS
 
 			player.input.SwitchCurrentActionMap(actionMap);
 		}
-
-
-
 
 
 	}

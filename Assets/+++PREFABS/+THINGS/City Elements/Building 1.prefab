@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 8487757376446772957}
   - component: {fileID: 4195825277571910377}
   - component: {fileID: 6563144272240144188}
-  m_Layer: 0
+  - component: {fileID: 5028750294142687098}
+  m_Layer: 9
   m_Name: Wall_Wood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,10 +81,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 54.133118, y: 35.702328}
+    - - {x: 24.208496, y: 38.495296}
       - {x: -72.51661, y: 37.933548}
       - {x: 2.6321578, y: -0.25147223}
-      - {x: 115.77302, y: 0.7498016}
+      - {x: 98.61622, y: 0.3507995}
   m_UseDelaunayMesh: 0
 --- !u!114 &4195825277571910377
 MonoBehaviour:
@@ -134,6 +135,147 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54066a924725d4457a151dc57ca2b949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5028750294142687098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32989602810978513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45750d1b1dc3dc842a66056e03c045d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Life
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Stats
+      Entry: 7
+      Data: 0|__SCRIPTS.UnitStats, Assembly-CSharp
+    - Name: EnemyTier
+      Entry: 3
+      Data: 0
+    - Name: _unitData
+      Entry: 7
+      Data: 1|__SCRIPTS.UnitStatsData, Assembly-CSharp
+    - Name: unitName
+      Entry: 1
+      Data: Wall_Wood
+    - Name: category
+      Entry: 3
+      Data: 3
+    - Name: debrisType
+      Entry: 3
+      Data: 2
+    - Name: debrisTint
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.360784322
+    - Name: 
+      Entry: 4
+      Data: 0.243137255
+    - Name: 
+      Entry: 4
+      Data: 0.152941182
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: isPlayerSwingHittable
+      Entry: 5
+      Data: false
+    - Name: isInvincible
+      Entry: 5
+      Data: true
+    - Name: healthMax
+      Entry: 4
+      Data: 0
+    - Name: moveSpeed
+      Entry: 4
+      Data: 0
+    - Name: dashSpeed
+      Entry: 4
+      Data: 0
+    - Name: jumpSpeed
+      Entry: 4
+      Data: 1
+    - Name: aggroRange
+      Entry: 4
+      Data: 0
+    - Name: attack1Damage
+      Entry: 4
+      Data: 0
+    - Name: attack1Rate
+      Entry: 4
+      Data: 0
+    - Name: attack1Range
+      Entry: 4
+      Data: 0
+    - Name: attack2Damage
+      Entry: 4
+      Data: 0
+    - Name: attack2Rate
+      Entry: 4
+      Data: 0
+    - Name: attack2Range
+      Entry: 4
+      Data: 0
+    - Name: attack3Damage
+      Entry: 4
+      Data: 0
+    - Name: attack3Rate
+      Entry: 4
+      Data: 0
+    - Name: attack3Range
+      Entry: 4
+      Data: 0
+    - Name: attack4Damage
+      Entry: 4
+      Data: 0
+    - Name: attack4Rate
+      Entry: 4
+      Data: 0
+    - Name: attack4Range
+      Entry: 4
+      Data: 0
+    - Name: experienceGiven
+      Entry: 4
+      Data: 100
+    - Name: hasData
+      Entry: 5
+      Data: true
+    - Name: isDefault
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ExtraHealthFactor
+      Entry: 4
+      Data: 0
+    - Name: ExtraDamageFactor
+      Entry: 4
+      Data: 0
+    - Name: ExtraSpeedFactor
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+  OverrideName: 
+  DoesntDie: 0
+  IsShielded: 0
 --- !u!1 &882944220615828791
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,6 +378,7 @@ GameObject:
   - component: {fileID: 7446119189565122997}
   - component: {fileID: 7249499704136387363}
   - component: {fileID: 12118466517892639}
+  - component: {fileID: 939776704302928970}
   m_Layer: 6
   m_Name: Building 1
   m_TagString: Untagged
@@ -344,3 +487,16 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+--- !u!114 &939776704302928970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4997716320106147591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1b89e02b4ee469587b9874bf40d54bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.EffectSurface
+  surfaceAngle: 2
