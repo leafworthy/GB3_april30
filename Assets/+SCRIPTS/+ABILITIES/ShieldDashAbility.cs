@@ -1,5 +1,6 @@
 using System;
 using __SCRIPTS;
+using GangstaBean.Core;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -10,6 +11,12 @@ public class ShieldDashAbility : DashAbility
 	public override string AbilityName => "Shield-Dash";
 	ShieldAbility shieldAbility => _shieldAbility ??= GetComponent<ShieldAbility>();
 	ShieldAbility _shieldAbility;
+
+	ICanAttack attacker => _attacker ??= GetComponent<ICanAttack>();
+	ICanAttack _attacker;
+
+	ChainsawAttack chainsawAttack => _chainsawAttack ??= GetComponent<ChainsawAttack>();
+	ChainsawAttack _chainsawAttack;
 
 	protected override void AnimationComplete()
 	{
@@ -44,19 +51,28 @@ public class ShieldDashAbility : DashAbility
 
 	void ShieldDash()
 	{
-		var hits = Physics2D.OverlapCircleAll(transform.position, 30, offence.EnemyLayer);
+		var hits = Physics2D.OverlapCircleAll(chainsawAttack.ChainsawAttackStartPoint.transform.position, 30, offence.EnemyLayer);
 		shieldAbility.SetShielding(true);
+		OnShieldDash?.Invoke();
+		var connected = false;
 		foreach (var hit in hits)
 		{
 			var _life = hit.GetComponentInParent<Life>();
 			if (_life == null) continue;
-			if (_life.IsEnemyOf(defence)) continue;
-			var movement = _life.GetComponent<MoveAbility>();
-			if (movement == null) continue;
+			if (!_life.IsEnemyOf(defence)) continue;
+			var enemyMovement = _life.GetComponent<MoveAbility>();
+			if (enemyMovement == null) continue;
+			connected = true;
 
-			OnShieldDash?.Invoke();
+			var launchingAttack = Attack.Create(attacker, _life).WithDamage(1).WithFlying().WithExtraPush(50);
+			_life.TakeDamage(launchingAttack);
 			defence.SetTemporarilyInvincible(true);
-			movement.Push((hit.transform.position - transform.position).normalized, offence.stats.Stats.DashSpeed * extraDashPushFactor);
+		}
+
+		if (connected)
+		{
+			Services.sfx.sounds.tmato_shield_hit_sounds.PlayRandomAt(transform.position);
+			Services.sfx.sounds.tmato_shield_hit_sounds.PlayRandomAt(transform.position);
 		}
 	}
 

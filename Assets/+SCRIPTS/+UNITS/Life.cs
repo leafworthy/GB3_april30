@@ -1,4 +1,5 @@
 ﻿using System;
+using FunkyCode;
 using GangstaBean.Core;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
@@ -7,9 +8,11 @@ using UnityUtils;
 
 namespace __SCRIPTS
 {
-	[ RequireComponent(typeof(Life_FX))]
-	public class Life : SerializedMonoBehaviour, IGetAttacked
+	[RequireComponent(typeof(Life_FX))]
+	public class Life : SerializedMonoBehaviour, IHaveUnitStats
 	{
+		public bool cantFly;
+		const float ShieldDamageFactor = .1f;
 		public string OverrideName;
 		public Player player { get; private set; }
 		[OdinSerialize] public UnitStats Stats { get; private set; }
@@ -27,10 +30,10 @@ namespace __SCRIPTS
 		public float MaxHealth => Stats.RealMaxHealth + Stats.GetExtraHealth();
 		public bool CanTakeDamage() => Stats.CanTakeDamage();
 
-		public bool IsEnemyOf(IGetAttacked other)
+		public bool IsEnemyOf(Life other)
 		{
-			if(other.player == null) return false;
-			if(player == null)return false;
+			if (other.player == null) return false;
+			if (player == null) return false;
 
 			return player.IsHuman() != other.player.IsHuman();
 		}
@@ -38,13 +41,14 @@ namespace __SCRIPTS
 		public event Action<Attack> OnAttackHit;
 		public event Action<float> OnFractionChanged;
 		public event Action<Attack> OnDead;
-		public event Action<Player, IGetAttacked> OnKilled;
+		public event Action<Player, Life> OnKilled;
 		public event Action<Player, bool> OnDeathComplete;
 		public event Action<Attack> OnShielded;
 		public event Action<Attack> OnFlying;
 		Collider2D[] colliders;
 		bool hasInitialized;
-		float deathTime = 10;
+		public float deathTime = 5;
+		DamageOverTimeData damageOverTimeData;
 
 		[Button]
 		public void ClearStats()
@@ -73,6 +77,13 @@ namespace __SCRIPTS
 			Stats.FillHealth();
 			if (Stats.Data.category == UnitCategory.Enemy) SetPlayer(Services.playerManager.enemyPlayer);
 			if (Stats.Data.category == UnitCategory.NPC) SetPlayer(Services.playerManager.NPCPlayer);
+			damageOverTimeData = new DamageOverTimeData
+			{
+				fireColor = MyExtensions.HexToColor("FD8800"),
+				fireDuration = 4f,
+				fireDamageAmount = 6,
+				fireDamageRate = .5f
+			};
 		}
 
 		void SetupAnimationEvents()
@@ -105,14 +116,6 @@ namespace __SCRIPTS
 			Services.objectMaker.Unmake(gameObject);
 		}
 
-		void DisableAllColliders()
-		{
-            foreach (var col in colliders)
-            {
-                col.enabled = false;
-            }
-		}
-
 		void CompleteDeathDelayed()
 		{
 			CompleteDeath(false); // or just CompleteDeath() since false is default
@@ -120,30 +123,37 @@ namespace __SCRIPTS
 
 		void Health_OnDead(Attack attack)
 		{
-
-
-
 			Debug.Log("health on dead");
 			OnDead?.Invoke(attack);
+			DoesntShowDamageNumbers = true;
 			if (!Stats.ShouldDestroyOnDeath()) return;
 
-			EnableColliders(false);
-			if (attack.OriginLife.player != null && attack.DestinationLife != null) OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
+			DisableColliders();
+			DisableLightColliders();
+			if (attack.OriginLife == null || attack.DestinationLife == null) return;
+			if (attack.OriginLife.player != null) OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
 			gameObject.layer = LayerMask.NameToLayer("Dead");
 			Invoke(nameof(CompleteDeathDelayed), deathTime);
 			animations?.SetTrigger(UnitAnimations.DeathTrigger);
 			animations?.SetBool(UnitAnimations.IsDead, true);
-			if (!Stats.ShouldDestroyOnDeath()) return;
-			DisableAllColliders();
 		}
 
-		void EnableColliders(bool enable)
+		void DisableLightColliders()
+		{
+			var lightColliders = GetComponentsInChildren<LightCollider2D>(true);
+			foreach (var lightCollider in lightColliders)
+			{
+				if (lightCollider != null) lightCollider.enabled = false;
+			}
+		}
+
+		void DisableColliders()
 		{
 			colliders = gameObject.GetComponentsInChildren<Collider2D>(true);
 
 			foreach (var col in colliders)
 			{
-				col.enabled = enable;
+				col.enabled = false;
 			}
 		}
 
@@ -161,19 +171,26 @@ namespace __SCRIPTS
 				return;
 			}
 
+			if (attack.CausesFire)
+			{
+				var KnifeFireEffect = attack.DestinationLife.transform.gameObject.AddComponent<DamageOverTimeEffect>();
+				KnifeFireEffect.StartEffect(attack.OriginLife, attack.DestinationLife, damageOverTimeData.fireDuration, damageOverTimeData.fireDamageRate,
+					damageOverTimeData.fireDamageAmount, damageOverTimeData.fireColor);
+			}
+
 			OnAttackHit?.Invoke(attack);
+			if (IsShielded) attack.DamageAmount *= ShieldDamageFactor;
 			Stats?.TakeDamage(attack);
 			OnFractionChanged?.Invoke(GetFraction());
-			if (!attack.CausesFlying)
+			if (!attack.CausesFlying || cantFly)
 				animations?.SetTrigger(UnitAnimations.HitTrigger);
 			else
 			{
+				if (cantFly) return;
 				Debug.Log("On flying");
 				OnFlying?.Invoke(attack);
 				animations?.SetTrigger(UnitAnimations.FlyingTrigger);
 			}
-
-
 		}
 
 		public void AddHealth(float amount)

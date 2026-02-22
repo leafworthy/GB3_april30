@@ -301,13 +301,52 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5251737379864321163, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6424626497232554425}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7625471567611323579, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4440694521398544448}
+    - targetCorrespondingSourceObject: {fileID: 7625471567611323579, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6646762560038962745}
   m_SourcePrefab: {fileID: 100100000, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
 --- !u!4 &1256398363464503932 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5251737379864321163, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
   m_PrefabInstance: {fileID: 6453223915221880567}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3485057172193897036 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7625471567611323579, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
+  m_PrefabInstance: {fileID: 6453223915221880567}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4440694521398544448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3485057172193897036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b04e8446f34936bf49a1ffa4eacbcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UniversalEnemyAttacker
+--- !u!114 &6646762560038962745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3485057172193897036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4705f2b9e1d224827a49ab46e49680df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ExplodeOnDeath
+  dontDestroy: 1
+  explosiveDamage: 5
+  explosionSize: 3
+  transformToDestroy: {fileID: 3485057172193897036}
 --- !u!4 &4313308235854849623 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7085716962054908064, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}

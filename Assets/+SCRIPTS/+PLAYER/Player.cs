@@ -25,7 +25,7 @@ namespace __SCRIPTS
 
 		public GameObject SpawnedPlayerGO;
 		public ICanAttack spawnedPlayerAttacker;
-		public IGetAttacked spawnedPlayerDefence;
+		public Life spawnedPlayerDefence;
 		public IHaveUnitStats spawnedPlayerStats;
 
 		public PlayerController Controller;
@@ -78,7 +78,9 @@ namespace __SCRIPTS
 
 		public GameObject Spawn(Vector2 position)
 		{
+
 			Services.sceneLoader.OnSceneAboutToChange += SceneLoader_OnSceneAboutToChange;
+			Services.levelManager.OnRestartLevel += LevelManager_OnRestartLevel;
 			SetState(State.Alive);
 
 			var spawnedPlayerGO = Instantiate(GetPrefabFromCharacter(this));
@@ -93,9 +95,14 @@ namespace __SCRIPTS
 			return spawnedPlayerGO;
 		}
 
-		void SceneLoader_OnSceneAboutToChange()
+		void LevelManager_OnRestartLevel()
 		{
-			Services.sceneLoader.OnSceneAboutToChange -= SceneLoader_OnSceneAboutToChange;
+			Services.levelManager.OnRestartLevel -= LevelManager_OnRestartLevel;
+			SaveStatsBetweenScenes();
+		}
+
+		void SaveStatsBetweenScenes()
+		{
 			if (SpawnedPlayerGO == null) return;
 			if (spawnedPlayerDefence == null) return;
 			if (spawnedPlayerDefence.IsDead())
@@ -103,7 +110,14 @@ namespace __SCRIPTS
 				statsBetweenScenes = null;
 				return;
 			}
+
 			statsBetweenScenes = new PlayerStatsSavedBetweenScenes(SpawnedPlayerGO);
+		}
+
+		void SceneLoader_OnSceneAboutToChange()
+		{
+			Services.sceneLoader.OnSceneAboutToChange -= SceneLoader_OnSceneAboutToChange;
+			SaveStatsBetweenScenes();
 		}
 
 		void SetSpawnedPlayerGO(GameObject newGO)
@@ -112,7 +126,7 @@ namespace __SCRIPTS
 
 			if (spawnedPlayerDefence != null) spawnedPlayerDefence.OnDeathComplete -= OnPlayerDied;
 			SpawnedPlayerGO = newGO;
-			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<IGetAttacked>();
+			spawnedPlayerDefence = SpawnedPlayerGO.GetComponent<Life>();
 			spawnedPlayerAttacker = SpawnedPlayerGO.GetComponent<ICanAttack>();
 			spawnedPlayerStats = SpawnedPlayerGO.GetComponent<IHaveUnitStats>();
 			if (spawnedPlayerDefence == null) return;

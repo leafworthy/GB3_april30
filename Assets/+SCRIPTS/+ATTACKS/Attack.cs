@@ -15,7 +15,7 @@ namespace __SCRIPTS
 			MakesDebree = true;
 		}
 
-		public static Attack Create(ICanAttack originLife, IGetAttacked destinationLife)
+		public static Attack Create(ICanAttack originLife, Life destinationLife)
 		{
 			var attack = new Attack
 			{
@@ -64,7 +64,7 @@ namespace __SCRIPTS
 			return this;
 		}
 
-		public Attack WithDestinationLife(IGetAttacked target)
+		public Attack WithDestinationLife(Life target)
 		{
 			DestinationLife = target;
 			if (target != null)
@@ -85,7 +85,7 @@ namespace __SCRIPTS
 			return this;
 		}
 
-		public Attack WithFlying(bool causesFlying = true, float flyingHeight = 1)
+		public Attack WithFlying(bool causesFlying = true, float flyingHeight = 1.5f)
 		{
 			CausesFlying = causesFlying;
 			FlyingHeight = flyingHeight;
@@ -100,7 +100,7 @@ namespace __SCRIPTS
 
 		// Properties
 		public ICanAttack OriginLife;
-		public IGetAttacked DestinationLife;
+		public Life DestinationLife;
 		public float OriginHeight;
 		public float DestinationHeight;
 		public float DamageAmount;
@@ -111,9 +111,16 @@ namespace __SCRIPTS
 		public Color TintColor;
 		public bool CausesFlying;
 		public float FlyingHeight;
+		public bool CausesFire;
 		public Vector2 Direction => DestinationFloorPoint - OriginFloorPoint;
 		public Vector2 FlippedDirection => OriginFloorPoint - DestinationFloorPoint;
 		public Vector2 DestinationWithHeight => DestinationFloorPoint + new Vector2(0, DestinationHeight);
 		public Vector2 OriginWithHeight => OriginFloorPoint + new Vector2(0, OriginHeight);
+
+		public Attack WithFire(bool causesFire)
+		{
+			CausesFire = causesFire;
+			return this;
+		}
 	}
 }

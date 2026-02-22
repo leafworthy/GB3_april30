@@ -7,8 +7,8 @@ namespace __SCRIPTS
 {
 	public class ProduceLootOnDead : MonoBehaviour
 	{
-		IGetAttacked life => _life ??= GetComponentInChildren<IGetAttacked>();
-		IGetAttacked _life;
+		Life life => _life ??= GetComponentInChildren<Life>();
+		Life _life;
 		LootTable lootTable => _lootTable ?? ServiceLocator.Get<LootTable>();
 		LootTable _lootTable;
 		public GameObject customDropPoint;
@@ -23,7 +23,7 @@ namespace __SCRIPTS
 
 		void DebrisOnDeathOnDebris(Attack attack)
 		{
-			for (var i = 0; i < amountOfLootDropped; i++) lootTable.DropLoot(GetPosition(), GetLootType());
+			for (var i = 0; i < amountOfLootDropped; i++) lootTable.DropLoot(GetPosition(), GetLootType(), 0, 1.5f,60);
 		}
 
 		LootType GetLootType() => lootTypes.Count == 0 ? LootType.Random : lootTypes[Random.Range(0, lootTypes.Count)];

@@ -60,7 +60,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 			case EnemyType.Corn:
 				return Services.assetManager.Players.CornEnemyPrefab;
 			case EnemyType.Fruit:
-				return Services.assetManager.Players.FruitEnemyPrefabs.GetRandom();
+				return Services.assetManager.Players.FruitEnemyPrefab;
 		}
 
 		return null;
@@ -101,7 +101,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 		if (!otherLife.player.IsMainPlayer()) return;
 		if (isFinishedSpawning || isSpawning) return;
 		StartSpawning();
-		SoloCamera();
+
 	}
 
 	void SoloCamera()
@@ -133,7 +133,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 		spawnTimer = 0f;
 	}
 
-	void StartSpawning()
+	public void StartSpawning()
 	{
 		isSpawning = true;
 		isFinishedSpawning = false;
@@ -142,6 +142,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 		Debug.Log("Enemy spawning started");
 		SpawnAtRandomEdge();
 		OnSpawningStart?.Invoke();
+		SoloCamera();
 	}
 
 	void StopSpawning()

@@ -122,10 +122,9 @@ namespace __SCRIPTS
 			if (counter < rate) return;
 			counter = 0;
 			if (currentState != state.charged && currentState != state.startingCharge) return;
-			if (ammoInventory.secondaryAmmo.reserveAmmo < 100)
-				ammoInventory.secondaryAmmo.AddAmmoToReserve(5);
-			else if (!isFullyCharged)
-				FullyCharged();
+			ammoInventory.secondaryAmmo.AddAmmoToReserve(5);
+			if (ammoInventory.secondaryAmmo.reserveAmmo < 100) return;
+			if (!isFullyCharged) FullyCharged();
 		}
 
 		void InstantiateArrowHead()
@@ -201,7 +200,7 @@ namespace __SCRIPTS
 		{
 			UseAllAmmo();
 			OnChargeStop?.Invoke();
-
+			defence.SetTemporarilyInvincible(true);
 			anim.SetTrigger(UnitAnimations.ChargeAttackTrigger);
 			anim.SetBool(UnitAnimations.IsCharging, false);
 			PlayAnimationClip(chargeAttackAnimationClip);
@@ -211,11 +210,13 @@ namespace __SCRIPTS
 			else
 			{
 				var faceRight = body.TopIsFacingRight;
-				currentArrowHead.transform.position =
-					faceRight ? (Vector2) transform.position + Vector2.right * 30 : (Vector2) transform.position + Vector2.left * 30;
+				currentArrowHead.transform.position = GetBothAxesIdleBestTargetPoint(faceRight);
 				moveAbility.Push(faceRight ? Vector2.right : Vector2.left, SpecialAttackExtraPush);
 			}
 		}
+
+		Vector2 GetBothAxesIdleBestTargetPoint(bool faceRight) =>
+			faceRight ? (Vector2) transform.position + Vector2.right * 30 : (Vector2) transform.position + Vector2.left * 30;
 
 		protected override void AnimationComplete()
 		{
@@ -238,6 +239,7 @@ namespace __SCRIPTS
 
 		public override void StopAbility()
 		{
+			StopInvincible();
 			moveAbility.SetCanMove(true);
 			SetState(state.not);
 			base.StopAbility();
@@ -268,13 +270,14 @@ namespace __SCRIPTS
 
 			SpecialAttackDistance = Vector2.Distance(attackPosition, bestTargetPoint);
 
+
 			var raycastHits = Physics2D.CircleCastAll(attackPosition, SpecialAttackWidth, moveAbility.GetMoveAimDir(), SpecialAttackDistance,
 				offence.EnemyLayer);
 
 			foreach (var raycastHit2D in raycastHits)
 			{
 				var otherLife = raycastHit2D.collider.GetComponent<Life>();
-				if(otherLife == null) continue;
+				if (otherLife == null) continue;
 				var attack = MyAttackUtilities.HitTarget(offence, otherLife, offence.stats.Stats.Damage(2), SpecialAttackExtraPush, true);
 
 				if (attack == null) continue;
@@ -287,17 +290,25 @@ namespace __SCRIPTS
 			}
 		}
 
+		void StopInvincible()
+		{
+			defence.SetTemporarilyInvincible(false);
+		}
+
 		void SpecialHit(Attack attack)
 		{
 			CameraStunner_FX.StartStun(CameraStunner_FX.StunLength.Special);
 			TempCinemachine.CreateFollowCameraTemporary(transform, 1, 35, true);
 			OnSpecialAttackHit?.Invoke(attack);
+		}
+
+		Vector2 GetBestTargetPoint(Vector2 attackPosition)
+		{
+			if (player.Controller.AimAxis.isActive) return aimAbility.GetAimPoint();
+			if (!player.Controller.MoveAxis.isActive) return attackPosition + moveAbility.GetLastMoveAimDirOffset();
+			return moveAbility.GetMoveAimPoint();
 
 		}
 
-		Vector2 GetBestTargetPoint(Vector3 attackPosition) =>
-			moveAbility.IsIdle() ? aimAbility.GetAimPoint() : (Vector2) attackPosition + moveAbility.GetLastMoveAimDirOffset();
-
-		float GetHitRange() => offence.stats.Stats.Range(1);
 	}
 }

@@ -122,21 +122,24 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player newPlayer)
 		{
 			base.SetPlayer(newPlayer);
-			CurrentGun = primaryGun.HasAnyAmmo() ? primaryGun : unlimitedGun;
+			if(unlimitedGun == null) CurrentGun = primaryGun;
+			 else CurrentGun = primaryGun.HasAnyAmmo() ? primaryGun : unlimitedGun;
 
 			StopListeningToEvents();
 			ListenToEvents();
-			TryToActivate();
+			if(CurrentGun.HasAnyAmmo()) TryToActivate();
 		}
 
 		void SwitchToPrimaryGunIfUnlimited(Ammo obj)
 		{
+			if (unlimitedGun == null) return;
 			if (CurrentGun is PrimaryGun) return;
 			SwitchGuns(true);
 		}
 
 		void SwitchToUnlimitedGun()
 		{
+			if (unlimitedGun == null) return;
 			Debug.Log("try to switch to unlimited gun", this);
 			if (CurrentGun is not PrimaryGun) return;
 			SwitchGuns(false);
@@ -211,9 +214,11 @@ namespace __SCRIPTS
 
 		public bool SwitchGuns(bool toPrimary)
 		{
+
 			Debug.Log("try to switch guns: " + toPrimary + " must reload " + primaryGun.MustReload(), this);
 			if (!CanSwapGuns()) return false;
 			Debug.Log("switch guns to primary: " + toPrimary, this);
+			if (unlimitedGun == null) return false;
 			CurrentGun = toPrimary ? primaryGun : unlimitedGun;
 			OnSwitchGun?.Invoke(toPrimary);
 			StopAbility();

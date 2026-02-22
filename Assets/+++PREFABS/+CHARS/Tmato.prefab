@@ -301,13 +301,13 @@ MonoBehaviour:
       Data: 100
     - Name: attack2Damage
       Entry: 4
-      Data: 150
+      Data: 100
     - Name: attack2Rate
       Entry: 4
       Data: 1
     - Name: attack2Range
       Entry: 4
-      Data: 70
+      Data: 30
     - Name: attack3Damage
       Entry: 4
       Data: 15
@@ -316,7 +316,7 @@ MonoBehaviour:
       Data: 0.1
     - Name: attack3Range
       Entry: 4
-      Data: 20
+      Data: 15
     - Name: attack4Damage
       Entry: 4
       Data: 0
@@ -351,7 +351,9 @@ MonoBehaviour:
       Entry: 8
       Data: 
   OverrideName: 
+  DoesntShowDamageNumbers: 0
   IsShielded: 0
+  deathTime: 5
 --- !u!114 &8674550254211582662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,22 +416,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   primaryAmmo:
     weaponType: 7
-    reserveAmmo: 50
-    clipSize: 2
-    AmmoInClip: 2
+    reserveAmmo: 0
+    clipSize: 3
+    AmmoInClip: 0
     maxReserveAmmo: 50
     reloads: 1
     unlimited: 0
     hasSlash: 1
+    whiteWhenFull: 0
   secondaryAmmo:
     weaponType: 8
-    reserveAmmo: 9
-    clipSize: 9
-    AmmoInClip: 9
-    maxReserveAmmo: 9
+    reserveAmmo: 0
+    clipSize: 5
+    AmmoInClip: 0
+    maxReserveAmmo: 5
     reloads: 0
     unlimited: 0
     hasSlash: 0
+    whiteWhenFull: 1
   tertiaryAmmo:
     weaponType: 9
     reserveAmmo: 999
@@ -439,15 +443,17 @@ MonoBehaviour:
     reloads: 0
     unlimited: 1
     hasSlash: 0
+    whiteWhenFull: 0
   unlimitedAmmo:
-    weaponType: 2
+    weaponType: 9
     reserveAmmo: 999
     clipSize: 6
     AmmoInClip: 6
     maxReserveAmmo: 999
-    reloads: 1
+    reloads: 0
     unlimited: 1
-    hasSlash: 1
+    hasSlash: 0
+    whiteWhenFull: 0
 --- !u!114 &7180302646562525445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,6 +484,8 @@ MonoBehaviour:
   acceleratatonRate: 3
   acceleratatonMax: 20
   decelerationFactor: {x: 0.97, y: 0.97}
+  splats: 0
+  SturdyFactor: 1
 --- !u!114 &425890416975624573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -626,13 +634,13 @@ AudioSource:
   m_GameObject: {fileID: 1081200535837487843}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2268247906453871466, guid: 4d8c9fe72f34b40b2ae40f6c308f7363, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 1f2960209c6074f48b9f14ddb6998180, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -723,13 +731,13 @@ AudioSource:
   m_GameObject: {fileID: 1081200535837487843}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2268247906453871466, guid: 4d8c9fe72f34b40b2ae40f6c308f7363, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 7cd6326d5346f45d1a6ec5d69f660b36, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -963,6 +971,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   pullOutAnimationClip: {fileID: 7400000, guid: cad08c2ac4ae0488f812313ad1c6861c, type: 2}
+  ChainsawAttackStartPoint: {fileID: 4114560366310640261}
 --- !u!114 &-412274678507543112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2483,6 +2492,37 @@ MonoBehaviour:
     maskType: 0
     maskPivot: 0
     transform: {fileID: 4612445003134065520}
+--- !u!1 &6739651021704613638
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 916455441747496888}
+  m_Layer: 0
+  m_Name: ChainsawPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &916455441747496888
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6739651021704613638}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.489, y: 0.718, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4094536803631354712}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7268803704520335423
 GameObject:
   m_ObjectHideFlags: 0
@@ -2767,6 +2807,7 @@ Transform:
   - {fileID: 8039085559515525120}
   - {fileID: 1816718377197769243}
   - {fileID: 466642310629878671}
+  - {fileID: 916455441747496888}
   m_Father: {fileID: 7210129026506792973}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 24.01}
 --- !u!1 &9097708180762494135

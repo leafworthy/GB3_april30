@@ -42,6 +42,7 @@ namespace __SCRIPTS
 		public event Action<Vector2> OnJump;
 		public event Action OnFalling;
 
+
 		const float FallInDistance = 80;
 		const float maxAirTime = 2.5f;
 		float airTimer;
@@ -112,6 +113,7 @@ namespace __SCRIPTS
 		void DefenceOnFlying(Attack attack)
 		{
 			if (Services.pauseManager.IsPaused) return;
+
 			StartFlying(attack.FlyingHeight);
 		}
 
@@ -122,6 +124,7 @@ namespace __SCRIPTS
 
 		void DefenceOnDead(Attack attack)
 		{
+			if (defence.cantFly) return;
 			if (attack.DestinationLife.player.IsHuman() || attack.CausesFlying) StartFlying(defence.Stats.JumpSpeed);
 			else
 			{
@@ -139,6 +142,7 @@ namespace __SCRIPTS
 
 		void StartFlying(float flyingHeight)
 		{
+
 			if (defence.IsFullyDead) return;
 			if(currentState == state.flying) return;
 			SetState(state.flying);
@@ -157,6 +161,7 @@ namespace __SCRIPTS
 
 		void FallFromHeight(float fallHeight)
 		{
+
 			SetState(state.falling);
 			body.SetHeight(fallHeight);
 			PlayAnimationClip(fallingAnimationClip);
@@ -173,6 +178,7 @@ namespace __SCRIPTS
 
 		void Fly()
 		{
+
 			airTimer += Time.fixedDeltaTime;
 			if (airTimer > maxAirTime)
 			{
@@ -242,6 +248,7 @@ namespace __SCRIPTS
 
 		void HitGround()
 		{
+
 			if (defence.IsDead())
 			{
 				defence.IsFullyDead = true;

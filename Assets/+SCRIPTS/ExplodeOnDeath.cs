@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(UniversalEnemyAttacker))]
 public class ExplodeOnDeath : MonoBehaviour
 {
+	public bool dontDestroy;
     private Life life => _life ??= GetComponentInChildren<Life>();
 	private Life _life;
 	ICanAttack attack  => _attack ??= GetComponent<ICanAttack>();
@@ -32,7 +33,7 @@ public class ExplodeOnDeath : MonoBehaviour
 		 life.OnDead -= LifeOnDead;
 		 MyAttackUtilities.ExplodeDebreeEverywhere(explosionSize  , transformToDestroy.transform.position  , life.DebrisType, life.Stats.DebrisTint);
 		 MyAttackUtilities.Explode(transformToDestroy.transform.position, explosionSize, explosiveDamage, attack);
-		 MyAttackUtilities.ExplosionFX(transformToDestroy.transform.position, explosionSize/5);
+		 if (dontDestroy) return;
 		 Services.objectMaker.Unmake(transformToDestroy);
 	}
 

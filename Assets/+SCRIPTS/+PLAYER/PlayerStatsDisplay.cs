@@ -19,6 +19,7 @@ namespace __SCRIPTS
 		{
 			owner = player;
 			PlayerName.text = "player " + (owner.playerIndex + 1);
+			PlayerName.color = player.playerColor;
 			playerStats = owner.GetComponent<PlayerStats>();
 			if (playerStats == null) return;
 			DisplayStats();

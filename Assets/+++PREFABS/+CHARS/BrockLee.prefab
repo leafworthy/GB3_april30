@@ -1269,7 +1269,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3785429833458856547}
-  - {fileID: 4547142642788266440}
   - {fileID: 2009413894702441711}
   - {fileID: 3924160363560415010}
   - {fileID: 1185514299661017873}
@@ -1489,7 +1488,9 @@ MonoBehaviour:
       Entry: 8
       Data: 
   OverrideName: 
+  DoesntShowDamageNumbers: 0
   IsShielded: 0
+  deathTime: 5
 --- !u!114 &6089603519093197841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1559,7 +1560,7 @@ MonoBehaviour:
     reloads: 0
     unlimited: 0
     hasSlash: 0
-    whiteWhenFull: 1
+    whiteWhenFull: 0
   secondaryAmmo:
     weaponType: 5
     reserveAmmo: 0
@@ -1577,8 +1578,8 @@ MonoBehaviour:
     AmmoInClip: 100
     maxReserveAmmo: 100
     reloads: 0
-    unlimited: 0
-    hasSlash: 1
+    unlimited: 1
+    hasSlash: 0
     whiteWhenFull: 0
   unlimitedAmmo:
     weaponType: 0
@@ -1620,6 +1621,8 @@ MonoBehaviour:
   acceleratatonRate: 3
   acceleratatonMax: 20
   decelerationFactor: {x: 0.97, y: 0.97}
+  splats: 0
+  SturdyFactor: 1
 --- !u!114 &6329833482935886680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2211,37 +2214,6 @@ Transform:
   - {fileID: 4870803809673766678}
   m_Father: {fileID: 3924160363998699679}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8474026745856793675
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4547142642788266440}
-  m_Layer: 5
-  m_Name: Target
-  m_TagString: Untagged
-  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4547142642788266440
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8474026745856793675}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 59.5642, y: -4.6512375, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3924160363998699679}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1185514299551490068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2421,7 +2393,7 @@ PrefabInstance:
     - target: {fileID: 5265511615171825937, guid: 61f1b220e9c5447b19842dc44ca61cd6, type: 3}
       propertyPath: target
       value: 
-      objectReference: {fileID: 8474026745856793675}
+      objectReference: {fileID: 3924160363998699687}
     - target: {fileID: 9040168977532305384, guid: 61f1b220e9c5447b19842dc44ca61cd6, type: 3}
       propertyPath: m_Pivot.x
       value: 0

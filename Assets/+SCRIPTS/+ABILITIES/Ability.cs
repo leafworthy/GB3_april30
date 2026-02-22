@@ -10,8 +10,8 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 	UnitAnimations _anim;
 	protected Body body => _body ??= GetComponent<Body>();
 	Body _body;
-	protected IGetAttacked defence => _defence ??= GetComponent<IGetAttacked>();
-	IGetAttacked _defence;
+	protected Life defence => _defence ??= GetComponent<Life>();
+	Life _defence;
 	protected ICanAttack offence => _attack ??= GetComponent<ICanAttack>();
 	ICanAttack _attack;
 

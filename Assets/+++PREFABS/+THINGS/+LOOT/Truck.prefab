@@ -429,7 +429,7 @@ MonoBehaviour:
       Entry: 8
       Data: 
   OverrideName: Booti Truck
-  DoesntDie: 0
+  DoesntShowDamageNumbers: 0
   IsShielded: 0
 --- !u!114 &8622992223205304012
 MonoBehaviour:
@@ -545,6 +545,8 @@ GameObject:
   - component: {fileID: 6725636083372355910}
   - component: {fileID: 2090206964192007850}
   - component: {fileID: 6948863076907272792}
+  - component: {fileID: -2674572978325084398}
+  - component: {fileID: 6945004979829220387}
   m_Layer: 10
   m_Name: Truck
   m_TagString: Untagged
@@ -610,6 +612,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4324b4e031a11416599f4ee5f7c5176d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+--- !u!114 &-2674572978325084398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7625471567611323579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b04e8446f34936bf49a1ffa4eacbcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UniversalEnemyAttacker
+--- !u!114 &6945004979829220387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7625471567611323579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4705f2b9e1d224827a49ab46e49680df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ExplodeOnDeath
+  dontDestroy: 1
+  explosiveDamage: 5
+  explosionSize: 3
+  transformToDestroy: {fileID: 7625471567611323579}
 --- !u!1 &9027811059426852162
 GameObject:
   m_ObjectHideFlags: 0

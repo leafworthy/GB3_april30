@@ -61,33 +61,8 @@ namespace GangstaBean.Core
 		LayerMask EnemyLayer { get; }
 		IHaveUnitStats stats { get; }
 
-		bool IsEnemyOf(IGetAttacked targetLife);
-		event Action<IGetAttacked> OnAttack;
+		bool IsEnemyOf(Life targetLife);
+		event Action<Life> OnAttack;
 	}
 
-	public interface IGetAttacked : INeedPlayer, IHaveUnitStats
-	{
-		public Player player { get; }
-		Transform transform { get; }
-		DebrisType DebrisType { get; }
-		UnitCategory category { get; }
-		float CurrentHealth { get; }
-		float MaxHealth { get; }
-		public void TakeDamage(Attack attack);
-		bool CanTakeDamage();
-		bool IsDead();
-		bool IsFullyDead { get; set; }
-		void DieNow();
-		float GetFraction();
-		void AddHealth(float amount);
-		public event Action<Attack> OnDead;
-		event Action<Player, bool> OnDeathComplete;
-		event Action<Attack> OnAttackHit;
-		event Action<Attack> OnShielded;
-		event Action<float> OnFractionChanged;
-		event Action<Attack> OnFlying;
-		void SetTemporarilyInvincible(bool i);
-		void SetShielding(bool isOn);
-		bool IsEnemyOf(ICanAttack life);
-	}
 }

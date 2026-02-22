@@ -19,7 +19,6 @@ public class KnifeAttack : Ability
 	GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
 	GunAttack _gunAttack;
 
-	public DamageOverTimeData damageOverTimeData;
 
 	protected override bool requiresArms() => true;
 	protected override bool requiresLegs() => false;
@@ -117,10 +116,8 @@ public class KnifeAttack : Ability
 
 		var targetLife = targetHit.transform.gameObject.GetComponentInParent<Life>();
 		if (targetLife == null) return;
-		var KnifeFireEffect = targetLife.gameObject.AddComponent<DamageOverTimeEffect>();
-		KnifeFireEffect.StartEffect(offence, targetLife, damageOverTimeData.fireDuration, damageOverTimeData.fireDamageRate,
-			damageOverTimeData.fireDamageAmount, damageOverTimeData.fireColor);
-		MyAttackUtilities.HitTarget(offence, targetLife, 0); //stats.TertiaryAttackDamageWithExtra
+
+		MyAttackUtilities.HitTarget(offence, targetLife, defence.Stats.Damage(3), 1, true); //stats.TertiaryAttackDamageWithExtra
 		OnHit?.Invoke(targetHit.transform.position);
 	}
 }

@@ -9,10 +9,10 @@ namespace __SCRIPTS
 	public class ClawAttack : MonoBehaviour, INeedPlayer
 	{
 		float currentCooldownTime;
-		IGetAttacked currentTargetLife;
+		Life currentTargetLife;
 
-		IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
-		IGetAttacked _life;
+		Life life => _life ??= GetComponent<Life>();
+		Life _life;
 
 		ICanAttack ai;
 		UnitAnimations anim;
@@ -40,7 +40,7 @@ namespace __SCRIPTS
 			anim.animEvents.OnAttackHit -= OnAttackHit;
 		}
 
-		void AI_Attack(IGetAttacked newTarget)
+		void AI_Attack(Life newTarget)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (TargetIsInvalid(newTarget))
@@ -52,7 +52,7 @@ namespace __SCRIPTS
 			StartAttack();
 		}
 
-		bool TargetIsInvalid(IGetAttacked newTarget)
+		bool TargetIsInvalid(Life newTarget)
 		{
 			if (life == null || life.IsDead() || newTarget.IsDead()) return true;
 			return !targetter.HasLineOfSightWith(newTarget.transform.position);

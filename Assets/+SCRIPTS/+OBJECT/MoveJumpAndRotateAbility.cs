@@ -24,9 +24,9 @@ namespace __SCRIPTS
 			moveAbility.SetDragging(true);
 		}
 
-		public virtual void Fire(Vector2 shootAngle, float height, float verticalSpeed = 0, float pushSpeed = 40)
+		public virtual void Fire(Vector2 shootAngle, float startingHeight, float verticalSpeed = 0, float pushSpeed = 40)
 		{
-			Jump(height, verticalSpeed, bounceSpeed);
+			Jump(startingHeight, verticalSpeed, bounceSpeed);
 			moveAbility.SetDragging(false);
 			moveAbility.Push(shootAngle, Random.Range(0, pushSpeed));
 		}

@@ -10,7 +10,7 @@ namespace __SCRIPTS
 		const float velocityDecayFactor = .90f;
 		const float overallVelocityMultiplier = 2;
 		const float pushMultiplier = 1;
-		const float maxPushVelocity = 200;
+		const float maxPushVelocity = 10;
 		const float maxAimDistance = 30;
 
 		Rigidbody2D rb => _rb ??= GetComponent<Rigidbody2D>();
@@ -23,8 +23,8 @@ namespace __SCRIPTS
 		ICanMoveThings _mover;
 		IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
 		IHaveUnitStats _stats;
-		IGetAttacked health => _health ??= GetComponent<IGetAttacked>();
-		IGetAttacked _health;
+		Life health => _health ??= GetComponent<Life>();
+		Life _health;
 
 		Vector2 moveVelocity;
 		Vector2 pushVelocity;
@@ -44,6 +44,7 @@ namespace __SCRIPTS
 		public float acceleratatonMax = 20;
 		public Vector2 decelerationFactor = new(.97f, .97f);
 		public bool splats;
+		public float SturdyFactor = 1;
 
 		public Vector2 GetLastMoveAimDirOffset() => lastMoveAimDirOffset;
 		public Vector2 GetMoveDir() => moveDir;
@@ -51,7 +52,6 @@ namespace __SCRIPTS
 		public Vector2 GetMoveAimPoint() => (Vector2) body.AimCenter.transform.position + GetMoveAimDir().normalized * maxAimDistance;
 		public bool IsMoving() => isMoving;
 
-		public bool IsMovingQuickly(float amount) => GetTotalVelocity().magnitude > amount;
 
 		public bool IsIdle() => mover.IsMoving();
 
@@ -220,7 +220,7 @@ namespace __SCRIPTS
 		{
 			direction = direction.normalized * pushMultiplier;
 			var tempVel = new Vector2(direction.x * speed, direction.y * speed);
-			tempVel = Vector2.ClampMagnitude(tempVel, maxPushVelocity);
+			if(!isDragging) tempVel = Vector2.ClampMagnitude(tempVel, maxPushVelocity);
 			AddPushVelocity(tempVel);
 		}
 
@@ -234,6 +234,16 @@ namespace __SCRIPTS
 			acceleration = 0;
 			isMoving = false;
 			if (!accelerates) moveVelocity = Vector2.zero;
+			anim?.SetBool(UnitAnimations.IsMoving, false);
+		}
+
+		public void StopAllMovement()
+		{
+			StopMoving();
+			StopPush();
+			moveVelocity = Vector2.zero;
+			pushVelocity = Vector2.zero;
+			acceleration = 0;
 			anim?.SetBool(UnitAnimations.IsMoving, false);
 		}
 
@@ -269,12 +279,13 @@ namespace __SCRIPTS
 		void LifeOnFlying(Attack attack)
 		{
 			StopMoving();
+			SetDragging(false);
 			Push(attack.Direction, attack.DamageAmount + attack.ExtraPush);
 		}
 
 		void Life_AttackHit(Attack attack)
 		{
-			Push(attack.Direction, attack.DamageAmount + attack.ExtraPush);
+			Push(attack.Direction, (attack.DamageAmount + attack.ExtraPush)*SturdyFactor);
 		}
 
 		public Vector2 GetTotalVelocity() => moveVelocity + pushVelocity;

@@ -2267,6 +2267,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2919371400930822319, guid: b2daafe0539866e43a2c6d6e838df065, type: 3}
+      propertyPath: Stat_Rescues
+      value: 
+      objectReference: {fileID: 1144455132}
     - target: {fileID: 2949348956555234104, guid: b2daafe0539866e43a2c6d6e838df065, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -2382,6 +2386,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b3700e5d80e48b884328d474fa69652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1144455132 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3781455595217043119, guid: b2daafe0539866e43a2c6d6e838df065, type: 3}
+  m_PrefabInstance: {fileID: 1144455129}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1163707607
@@ -3778,7 +3793,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 8e7b454364604401d945b55193ec5663, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

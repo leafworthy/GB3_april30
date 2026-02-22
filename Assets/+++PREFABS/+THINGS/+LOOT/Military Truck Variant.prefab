@@ -283,8 +283,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2090206964192007850, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
+      propertyPath: amountOfLootDropped
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090206964192007850, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
       propertyPath: lootTypes.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2090206964192007850, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
       propertyPath: 'lootTypes.Array.data[0]'
@@ -293,6 +297,14 @@ PrefabInstance:
     - target: {fileID: 2090206964192007850, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
       propertyPath: 'lootTypes.Array.data[1]'
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090206964192007850, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
+      propertyPath: 'lootTypes.Array.data[2]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090206964192007850, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
+      propertyPath: 'lootTypes.Array.data[3]'
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2584093628152144546, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
       propertyPath: m_Sprite
@@ -325,6 +337,14 @@ PrefabInstance:
     - target: {fileID: 5816632020550658658, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
       value: 7.695524
+      objectReference: {fileID: 0}
+    - target: {fileID: 6945004979829220387, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
+      propertyPath: explosionSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6945004979829220387, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
+      propertyPath: explosiveDamage
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7625471567611323578, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
       propertyPath: m_LocalScale.x
@@ -409,12 +429,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2207949870182166278}
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7625471567611323579, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2630540908141736916}
-    - targetCorrespondingSourceObject: {fileID: 7625471567611323579, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2353214613541426063}
     - targetCorrespondingSourceObject: {fileID: 4338021659891226792, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3118400147801928433}
@@ -424,38 +438,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8580206753469411449, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
   m_PrefabInstance: {fileID: 6090585393052362600}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4419446134305571795 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7625471567611323579, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}
-  m_PrefabInstance: {fileID: 6090585393052362600}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2630540908141736916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4419446134305571795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4705f2b9e1d224827a49ab46e49680df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ExplodeOnDeath
-  explosiveDamage: 5
-  explosionSize: 8
-  transformToDestroy: {fileID: 4419446134305571795}
---- !u!114 &2353214613541426063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4419446134305571795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30b04e8446f34936bf49a1ffa4eacbcf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UniversalEnemyAttacker
 --- !u!212 &5835045813294111402 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 323173290524229058, guid: 1ca9ed184df6c422496ff2d508da7fab, type: 3}

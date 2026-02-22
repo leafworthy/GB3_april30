@@ -24,7 +24,7 @@ MonoBehaviour:
     debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
     isPlayerSwingHittable: 0
     isInvincible: 0
-    healthMax: 420
+    healthMax: 450
     moveSpeed: 60
     dashSpeed: 25
     jumpSpeed: 2
@@ -37,7 +37,7 @@ MonoBehaviour:
     attack2Range: 3
     attack3Damage: 25
     attack3Rate: 1
-    attack3Range: 20
+    attack3Range: 40
     attack4Damage: 0
     attack4Rate: 0
     attack4Range: 0
@@ -52,7 +52,7 @@ MonoBehaviour:
     isInvincible: 0
     healthMax: 350
     moveSpeed: 50
-    dashSpeed: 300
+    dashSpeed: 150
     jumpSpeed: 2
     aggroRange: 0
     attack1Damage: 40
@@ -63,7 +63,7 @@ MonoBehaviour:
     attack2Range: 30
     attack3Damage: 75
     attack3Rate: 1
-    attack3Range: 20
+    attack3Range: 16
     attack4Damage: 35
     attack4Rate: 0.35
     attack4Range: 100
@@ -76,10 +76,10 @@ MonoBehaviour:
     debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
     isPlayerSwingHittable: 0
     isInvincible: 0
-    healthMax: 450
+    healthMax: 500
     moveSpeed: 45
-    dashSpeed: 100
-    jumpSpeed: 1.5
+    dashSpeed: 80
+    jumpSpeed: 1.75
     aggroRange: 0
     attack1Damage: 40
     attack1Rate: 0.5
@@ -88,8 +88,8 @@ MonoBehaviour:
     attack2Rate: 1
     attack2Range: 30
     attack3Damage: 15
-    attack3Rate: 0.1
-    attack3Range: 20
+    attack3Rate: 0.15
+    attack3Range: 10
     attack4Damage: 0
     attack4Rate: 0
     attack4Range: 0
@@ -128,7 +128,7 @@ MonoBehaviour:
     debrisTint: {r: 0.16862746, g: 1, b: 0.10980392, a: 1}
     isPlayerSwingHittable: 1
     isInvincible: 0
-    healthMax: 2500
+    healthMax: 3000
     moveSpeed: 50
     dashSpeed: 0
     jumpSpeed: 1
@@ -187,7 +187,7 @@ MonoBehaviour:
     aggroRange: 100
     attack1Damage: 50
     attack1Rate: 0
-    attack1Range: 8
+    attack1Range: 18
     attack2Damage: 0
     attack2Rate: 0
     attack2Range: 0
@@ -825,5 +825,5 @@ MonoBehaviour:
     hasData: 1
     isDefault: 0
   isLoading: 0
-  lastLoadTime: 2026-02-18 20:29:02
+  lastLoadTime: 2026-02-22 03:50:59
   lastError: 

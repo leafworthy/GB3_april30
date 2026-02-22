@@ -22,7 +22,7 @@ public class Mine : MonoBehaviour
 	{
 		if (!hasLaunched || !isProximityMine) return;
 		if (other.transform == transform) return;
-		var otherLife = other.GetComponent<IGetAttacked>();
+		var otherLife = other.GetComponent<Life>();
 		if (otherLife == null)
 		{
 			otherLife = other.GetComponentInParent<Life>();
@@ -39,7 +39,7 @@ public class Mine : MonoBehaviour
 	private void Explode()
 	{
 		MyAttackUtilities.Explode(transform.position, life.stats.Stats.Range(2),
-			life.stats.Stats.Damage(2), life);
+			life.stats.Stats.Damage(2), life, true);
 		Services.objectMaker.Unmake(gameObject);
 
 	}

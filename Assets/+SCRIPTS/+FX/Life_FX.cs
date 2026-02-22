@@ -22,7 +22,7 @@ namespace __SCRIPTS
 			tint?.StartTint(Color.yellow);
 		}
 
-		public void Start( )
+		public void OnEnable( )
 		{
 			if (life == null) return;
 			life.OnDead += Defence_Dead;
@@ -54,6 +54,8 @@ namespace __SCRIPTS
 			life.OnDead -= Defence_Dead;
 			life.OnAttackHit -= Life_AttackHit;
 			life.OnShielded -= Life_Shielded;
+			 life.OnFractionChanged -= Life_FractionChanged;
+			 if (healthBar != null) healthBar.gameObject.SetActive(false);
 		}
 
 		void Life_AttackHit(Attack attack)

@@ -12,7 +12,8 @@ public class WeaponButton : MonoBehaviour
 		R2,
 		L1,
 		L2,
-		Circle
+		Circle,
+		Square
 	}
 
 	public void Set(buttons index)
@@ -33,6 +34,9 @@ public class WeaponButton : MonoBehaviour
 				break;
 			case buttons.Circle:
 				buttonObjects.Set((int) buttons.Circle);
+				break;
+			case buttons.Square:
+				buttonObjects.Set((int) buttons.Square);
 				break;
 		}
 	}

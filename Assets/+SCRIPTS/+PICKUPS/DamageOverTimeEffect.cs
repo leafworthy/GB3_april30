@@ -25,11 +25,18 @@ namespace __SCRIPTS
 			damage = _damage;
 			particles = Services.objectMaker.Make(Services.assetManager.FX.fireParticlesPrefab, transform.position);
 			particles.transform.SetParent(target.transform, true);
+			target.OnDead += Target_OnDead;
+		}
 
+		void Target_OnDead(Attack obj)
+		{
+			Destroy(particles);
+			Destroy(this);
 		}
 
 		public void FixedUpdate()
 		{
+			if (target.IsDead()) return;
 			if (duration > 0)
 			{
 				if (damageRateCounter <= 0)

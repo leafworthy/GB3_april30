@@ -7,6 +7,8 @@ using UnityEngine;
 
 	public static class MyEditorUtilities
 	{
+
+
 		public static void EnsureFolderExists(string path)
 		{
 			if (AssetDatabase.IsValidFolder(path))

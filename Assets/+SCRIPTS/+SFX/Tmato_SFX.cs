@@ -42,6 +42,7 @@ namespace __SCRIPTS
 			shotgunAttack.OnEmpty += ShotgunAttackOnEmpty;
 
 			chainsawAttack.OnStartChainsawing += ChainsawStart;
+			chainsawAttack.OnReload += ChainsawReload;
 			chainsawAttack.OnStopChainsawing += ChainsawStop;
 			chainsawAttack.OnStartAttacking += ChainsawAttackStart;
 			chainsawAttack.OnStopAttacking += ChainsawAttackStop;
@@ -57,6 +58,11 @@ namespace __SCRIPTS
 		private void ChainsawStart(Vector2 obj)
 		{
 			idleSound.Play();
+			Services.sfx.sounds.tmato_chainsaw_start_sounds.PlayRandomAt(transform.position);
+		}
+
+		private void ChainsawReload(Vector2 obj)
+		{
 			Services.sfx.sounds.tmato_chainsaw_start_sounds.PlayRandomAt(obj);
 		}
 
@@ -86,9 +92,10 @@ namespace __SCRIPTS
 
 		private void OnDisable()
 		{
+
 			animEvents.OnStep -= Anim_OnStep;
 			animEvents.OnHitStart -= Anim_OnHit;
-			animEvents.OnDash -= Anim_Dash;
+			shieldDash.OnShieldDash -= Anim_Dash;
 
 			life.OnAttackHit -= Life_AttackHit;
 			jump.OnJump -= JumpOnJump;

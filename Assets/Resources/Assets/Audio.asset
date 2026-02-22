@@ -12,6 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce30f498daf4848f59b8a0ccf1105de6, type: 3}
   m_Name: Audio
   m_EditorClassIdentifier: 
+  fruit_thank_you_sounds:
+  - {fileID: 8300000, guid: dfbeb276bfb76417b9a6e0793521b159, type: 3}
+  - {fileID: 8300000, guid: e8a6bbf7346ac41388be9687388c8387, type: 3}
+  fruit_death_sounds:
+  - {fileID: 8300000, guid: 7c3c7976dd722467483d1b265ea2b444, type: 3}
+  - {fileID: 8300000, guid: 377970d4cf23e4f2b8a5381cbecfb490, type: 3}
+  - {fileID: 8300000, guid: d1d4e57c10f80485db4e9e9613d9bcc0, type: 3}
+  - {fileID: 8300000, guid: ac8ea754f5a8e418e8611666d4f2fdd5, type: 3}
+  dig_sounds:
+  - {fileID: 8300000, guid: 69eb424a64fe14d2d8fa27410105eef1, type: 3}
   player_walk_sounds_concrete:
   - {fileID: 8300000, guid: 715bd4c2ec2df4bd4975a467002b3469, type: 3}
   - {fileID: 8300000, guid: 4d17ab89b6d8d46d4bb201f66eb0f8be, type: 3}
@@ -107,8 +117,9 @@ MonoBehaviour:
   tmato_mine_throw_sounds:
   - {fileID: 8300000, guid: a589d7eccf37849c398721fb19e843d2, type: 3}
   tmato_shield_dash_sounds:
-  - {fileID: 8300000, guid: c3bd6aa1994c74c1d90a02589046bf2a, type: 3}
-  tmato_shield_hit_sounds: []
+  - {fileID: 8300000, guid: bc97bff25f62c463e86f8cd3a778cb32, type: 3}
+  tmato_shield_hit_sounds:
+  - {fileID: 8300000, guid: c69eb944edc8f4cb487cc1506e8fd6a9, type: 3}
   tmato_chainsaw_start_sounds:
   - {fileID: 8300000, guid: 22b4b4264fb48461bafdf27ecb0474b9, type: 3}
   tmato_chainsaw_attack_start_sounds:

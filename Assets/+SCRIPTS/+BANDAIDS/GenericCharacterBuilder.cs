@@ -33,6 +33,11 @@ namespace __SCRIPTS
 			Refresh();
 		}
 
+		void Start()
+		{
+			ApplyRandomCharacter();
+		}
+
 		[Button]
 		public void SaveOverCurrentCharacter()
 		{

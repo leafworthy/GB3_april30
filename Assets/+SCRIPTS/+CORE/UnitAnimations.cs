@@ -21,6 +21,7 @@ namespace __SCRIPTS
 		public static readonly int HitTrigger = Animator.StringToHash("HitTrigger");
 		public static readonly int DeathTrigger = Animator.StringToHash("DeathTrigger");
 		public static readonly int Attack1Trigger = Animator.StringToHash("Attack1Trigger");
+		public static readonly int ReloadTrigger = Animator.StringToHash("ReloadTrigger");
 		public static readonly int Attack2Trigger = Animator.StringToHash("Attack2Trigger");
 		public static readonly int Attack3Trigger = Animator.StringToHash("Attack3Trigger");
 

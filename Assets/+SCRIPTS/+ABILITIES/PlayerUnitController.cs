@@ -13,8 +13,8 @@ namespace __SCRIPTS
 		public IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
 		IHaveUnitStats _stats;
 
-		public bool IsEnemyOf(IGetAttacked targetLife) => player?.IsHuman() != targetLife.player?.IsHuman();
-		public event Action<IGetAttacked> OnAttack;
+		public bool IsEnemyOf(Life targetLife) => player?.IsHuman() != targetLife.player?.IsHuman();
+		public event Action<Life> OnAttack;
 		public event Action OnAttackStart;
 		public event Action OnAttackStop;
 		public event Action<Vector2> OnMoveInDirection;

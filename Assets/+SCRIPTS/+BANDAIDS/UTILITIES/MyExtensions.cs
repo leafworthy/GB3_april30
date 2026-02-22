@@ -7,6 +7,16 @@ namespace __SCRIPTS
 {
 	public static class MyExtensions
 	{
+		public static Color HexToColor(string hex)
+		{
+			var hexCode = hex; // Hex string with optional alpha
+
+			// TryParseHtmlString returns true if successful, and sets the out parameter
+			if (ColorUtility.TryParseHtmlString(hexCode, out var newColor)) return newColor;
+
+			return Color.white;
+		}
+
 		public static List<GameObject> FindEnemyPlacersWithinCollider(Collider2D collider, List<PrefabPlacer> candidates = null)
 		{
 			var results = new List<GameObject>();

@@ -30,7 +30,7 @@ namespace __SCRIPTS
 
         private void Anim_OnDie() => Services.sfx.sounds.donut_die_sounds.PlayRandomAt(transform.position);
         private void Anim_OnHit() => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
-        private void Anim_OnRoar() => Services.sfx.sounds.donut_roar_sounds.PlayRandomAt(transform.position);
+        private void Anim_OnRoar() => Services.sfx.sounds.dig_sounds.PlayRandomAt(transform.position);
         private void Anim_OnAttackHit(int attackType) => Services.sfx.sounds.donut_hit_sounds.PlayRandomAt(transform.position);
         private void Anim_OnStep() => Services.sfx.sounds.donut_walk_sounds.PlayRandomAt(transform.position);
     }

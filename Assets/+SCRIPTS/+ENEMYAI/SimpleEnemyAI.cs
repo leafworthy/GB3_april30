@@ -8,7 +8,7 @@ namespace __SCRIPTS._ENEMYAI
 	{
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;
-		public event Action<IGetAttacked> OnAttack;
+		public event Action<Life> OnAttack;
 		public Vector2 GetMoveAimDir() => moveDir;
 		Vector2 moveDir;
 
@@ -16,16 +16,16 @@ namespace __SCRIPTS._ENEMYAI
 		bool isMoving;
 		public Player player => _player;
 		Player _player;
-		public LayerMask EnemyLayer => Services.assetManager.LevelAssets.EnemyLayer;
+		public LayerMask EnemyLayer => Services.assetManager.LevelAssets.AllLivingBeingsLayer;
 
-		public bool IsEnemyOf(IGetAttacked targetLife)
+		public bool IsEnemyOf(Life targetLife)
 		{
 			if (targetLife == null) return false;
 			if (targetLife.player == null) return true;
 			return player?.IsHuman() != targetLife.player?.IsHuman();
 		}
 
-		IGetAttacked _target;
+		Life _target;
 		Targetter targetter => _targetter ??= GetComponent<Targetter>();
 		Targetter _targetter;
 
@@ -46,7 +46,6 @@ namespace __SCRIPTS._ENEMYAI
 		{
 			isMoving = false;
 			OnStopMoving?.Invoke();
-			Debug.Log("attack player");
 			OnAttack?.Invoke(_target);
 		}
 

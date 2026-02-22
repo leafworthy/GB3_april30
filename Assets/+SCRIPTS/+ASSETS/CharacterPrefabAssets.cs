@@ -19,8 +19,7 @@ namespace __SCRIPTS
 		public List<Material> DonutEnemyMaterials = new List<Material>();
 		public GameObject CornEnemyPrefab;
 		public List<Material> CornEnemyMaterials = new List<Material>();
-		public List<GameObject> FruitEnemyPrefabs;
-		public List<Material> FruitEnemyMaterials = new List<Material>();
+		public GameObject FruitEnemyPrefab;
 
 		public List<Material> GetCharacterPalettes(EnemySpawner.EnemyType type)
 		{
@@ -34,8 +33,6 @@ namespace __SCRIPTS
 					return DonutEnemyMaterials;
 				case EnemySpawner.EnemyType.Corn:
 					return CornEnemyMaterials;
-				case EnemySpawner.EnemyType.Fruit:
-					return FruitEnemyMaterials;
 				default:
 					Debug.Log("WTF");
 					return null;

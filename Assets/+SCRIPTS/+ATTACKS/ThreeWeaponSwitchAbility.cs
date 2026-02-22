@@ -5,10 +5,12 @@ namespace __SCRIPTS
 {
 	public class ThreeWeaponSwitchAbility : MonoBehaviour, INeedPlayer
 	{
-		public WeaponAbility Primary_Weapon;
+		public GunAttack Primary_Weapon;
 		public WeaponAbility Secondary_Weapon;
 		public WeaponAbility Tertiary_Weapon;
 		public WeaponAbility currentWeapon;
+		AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
+		AmmoInventory _ammoInventory;
 
 		WeaponAbility weaponToSwitchTo;
 		Player player;
@@ -29,13 +31,22 @@ namespace __SCRIPTS
 			player.Controller.InteractRightShoulder.OnPress += Player_SwapTertiary;
 
 			player.Controller.Attack2LeftTrigger.OnPress += Player_SwapSecondary;
+			player.Controller.Attack3Circle.OnPress += Player_SwapSecondary;
 
 			player.Controller.Attack1RightTrigger.OnPress += Player_SwapPrimary;
+		ammoInventory.OnPrimaryAmmoAdded += AmmoInventory_OnPrimaryAmmoAdded;
+			StartSwitchingWeapons(Secondary_Weapon);
+		}
+
+		void AmmoInventory_OnPrimaryAmmoAdded(Ammo obj)
+		{
+			if (Primary_Weapon.CurrentGun.HasAmmoInClip()) return;
 			StartSwitchingWeapons(Primary_Weapon);
 		}
 
 		void Player_SwapPrimary(NewControlButton obj)
 		{
+			if (!Primary_Weapon.CurrentGun.HasAnyAmmo()) return;
 			StartSwitchingWeapons(Primary_Weapon);
 		}
 
@@ -55,6 +66,7 @@ namespace __SCRIPTS
 			player.Controller.InteractRightShoulder.OnPress -= Player_SwapTertiary;
 
 			player.Controller.Attack2LeftTrigger.OnPress -= Player_SwapSecondary;
+			player.Controller.Attack3Circle.OnPress -= Player_SwapSecondary;
 
 			player.Controller.Attack1RightTrigger.OnPress -= Player_SwapPrimary;
 		}
@@ -64,7 +76,7 @@ namespace __SCRIPTS
 			if (currentWeapon == null)
 			{
 				Debug.Log("[SWITCHER]initial weapon equip: " + _weaponToSwitchTo.AbilityName);
-				SwitchCurrentWeapon(Primary_Weapon);
+				SwitchCurrentWeapon(Secondary_Weapon);
 				return;
 			}
 

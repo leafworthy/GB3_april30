@@ -48,25 +48,32 @@ namespace __SCRIPTS
 			secondaryAmmoDisplay.SetButton(WeaponButton.buttons.L2);
 			tertiaryAmmoDisplay.SetButton(WeaponButton.buttons.Circle);
 		}
+
+		[Button]
+		public void SetButtonsTmato()
+		{
+			primaryAmmoDisplay.SetButton(WeaponButton.buttons.R2);
+			secondaryAmmoDisplay.SetButton(WeaponButton.buttons.Square);
+			tertiaryAmmoDisplay.SetButton(WeaponButton.buttons.L2);
+		}
 		public void SetPlayer(Player newPlayer)
 		{
 			gameObject.SetActive(true);
+			if(newPlayer.CurrentCharacter == Character.Tmato)SetButtonsTmato();
+			else SetButtons();
 
 			_currentAmmoInventory = newPlayer.SpawnedPlayerGO.GetComponent<AmmoInventory>();
 			if (primaryAmmoDisplay != null)
 			{
 				primaryAmmoDisplay.SetAmmo(_currentAmmoInventory.primaryAmmo);
-				primaryAmmoDisplay.SetButton(WeaponButton.buttons.R2);
 			}
 			if (secondaryAmmoDisplay != null)
 			{
 				secondaryAmmoDisplay.SetAmmo(_currentAmmoInventory.secondaryAmmo);
-				secondaryAmmoDisplay.SetButton(WeaponButton.buttons.L2);
 			}
 			if (tertiaryAmmoDisplay != null)
 			{
 				tertiaryAmmoDisplay.SetAmmo(_currentAmmoInventory.tertiaryAmmo);
-				tertiaryAmmoDisplay.SetButton(WeaponButton.buttons.Circle);
 			}
 
 			var playerAmmo = newPlayer.SpawnedPlayerGO.GetComponent<AmmoInventory>();

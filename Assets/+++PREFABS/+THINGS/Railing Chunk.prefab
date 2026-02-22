@@ -475,9 +475,11 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  cantFly: 0
   OverrideName: Railing
-  DoesntDie: 0
+  DoesntShowDamageNumbers: 0
   IsShielded: 0
+  deathTime: 5
 --- !u!60 &7053537271352236477
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -524,10 +526,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 13.37529, y: -4.443432}
-      - {x: 13.565135, y: -7.1078453}
-      - {x: 22.439272, y: -11.540352}
-      - {x: 22.335968, y: -8.944817}
+    - - {x: 14.176132, y: -2.8417625}
+      - {x: 5.396617, y: -6.3070183}
+      - {x: 18.91559, y: -12.821693}
+      - {x: 27.461395, y: -9.104988}
   m_UseDelaunayMesh: 0
 --- !u!114 &3432600846894012234
 MonoBehaviour:

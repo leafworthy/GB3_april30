@@ -44,12 +44,14 @@ namespace __SCRIPTS
 			player.Controller.Attack3Circle.OnRelease += Player_AttackRelease;
 		}
 
-		void OnDestroy()
+		void OnDisable()
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;
 			player.Controller.Attack1RightTrigger.OnPress -= Player_AttackPress;
 			player.Controller.Attack1RightTrigger.OnRelease -= Player_AttackRelease;
+			player.Controller.Attack3Circle.OnPress -= Player_AttackPress;
+			player.Controller.Attack3Circle.OnRelease -= Player_AttackRelease;
 		}
 
 		void Player_AttackPress(NewControlButton newControlButton)

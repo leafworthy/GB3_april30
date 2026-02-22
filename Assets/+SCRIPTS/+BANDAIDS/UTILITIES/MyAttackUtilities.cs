@@ -26,15 +26,15 @@ public static class MyAttackUtilities
 		EditorGUIUtility.PingObject(unitAnimations.animator.gameObject);
 	}
 #endif
-	public static List<IGetAttacked> CircleCastForXClosestTargets(ICanAttack originLife, float range, int howMany = 2)
+	public static List<Life> CircleCastForXClosestTargets(ICanAttack originLife, float range, int howMany = 2)
 	{
-		var result = new List<IGetAttacked>();
+		var result = new List<Life>();
 		var circleCast = Physics2D.OverlapCircleAll(originLife.transform.position, range, originLife.EnemyLayer);
 		var closest2 = circleCast.OrderBy(item => Vector2.Distance(item.gameObject.transform.position, originLife.transform.position)).Take(howMany);
 		foreach (var col in closest2)
 		{
 			if (col == null) continue;
-			var _life = col.gameObject.GetComponent<IGetAttacked>();
+			var _life = col.gameObject.GetComponent<Life>();
 			if (_life == null) continue;
 			if (!IsValidTarget(originLife, _life)) continue;
 			result.Add(_life);
@@ -54,13 +54,13 @@ public static class MyAttackUtilities
 		}
 	}
 
-	static List<IGetAttacked> FindClosestHits(ICanAttack originLife, Vector2 attackPosition, float attackRange, LayerMask layerMask)
+	static List<Life> FindClosestHits(ICanAttack originLife, Vector2 attackPosition, float attackRange, LayerMask layerMask)
 	{
 		return Physics2D.OverlapCircleAll(attackPosition, attackRange, layerMask).Where(c => c?.gameObject != null)
-		                .Select(c => c.gameObject.GetComponent<IGetAttacked>()).Where(life => IsValidTarget(originLife, life)).ToList();
+		                .Select(c => c.gameObject.GetComponent<Life>()).Where(life => IsValidTarget(originLife, life)).ToList();
 	}
 
-	public static bool IsValidTarget(ICanAttack originLife, IGetAttacked targetLife)
+	public static bool IsValidTarget(ICanAttack originLife, Life targetLife)
 	{
 		if (targetLife == null)
 		{
@@ -95,7 +95,7 @@ public static class MyAttackUtilities
 		return closest.transform.gameObject;
 	}
 
-	public static Attack HitTarget(ICanAttack originLife, IGetAttacked targetLife, float attackDamage, float extraPush = .1f, bool causesFlying = false)
+	public static Attack HitTarget(ICanAttack originLife, Life targetLife, float attackDamage, float extraPush = .1f, bool causesFlying = false)
 	{
 		if (targetLife == null)
 		{
@@ -115,7 +115,7 @@ public static class MyAttackUtilities
 		return attack;
 	}
 
-	public static RaycastHit2D RaycastToObject(IGetAttacked currentTargetLife, LayerMask layerMask)
+	public static RaycastHit2D RaycastToObject(Life currentTargetLife, LayerMask layerMask)
 	{
 		var position = currentTargetLife.transform.position;
 		var direction = (currentTargetLife.transform.position - position).normalized;
@@ -123,24 +123,35 @@ public static class MyAttackUtilities
 		return Physics2D.Raycast(position, direction, distance, layerMask);
 	}
 
-	public static void Explode(Vector2 explosionPosition, float explosionRadius, float explosionDamage, ICanAttack _owner)
+	public static void Explode(Vector2 explosionPosition, float explosionRadius, float explosionDamage, ICanAttack _owner, bool causesFire = false)
 	{
 		ExplosionFX(explosionPosition);
 
 		var layer = _owner.EnemyLayer;
+		Debug.Log((_owner.EnemyLayer == Services.assetManager.LevelAssets.PlayerLayer) + "enemy is player layer");
 		var hits = Physics2D.OverlapCircleAll(explosionPosition, explosionRadius, layer);
 
-		if (hits == null) return;
+		if (hits.Length == 0)
+		{
+			Debug.Log("no hits from explosion");
+			return;
+		}
+		else
+		{
+			Debug.Log("hits from explosion: " + hits.Length);
+		}
 		foreach (var hit in hits)
 		{
-			var defence = hit.GetComponent<IGetAttacked>();
+			if(hit.gameObject == _owner.transform.gameObject) continue;
+			var defence = hit.GetComponent<Life>();
 			if (defence is null) continue;
 			var distance = Vector2.Distance(hit.transform.position, explosionPosition);
-			Debug.Log("distance: " + distance);
-			var ratio = explosionRadius / distance;
-			Debug.Log("ratio: " + ratio);
 
-			var attack = Attack.Create(_owner, defence).WithDamage(explosionDamage * ratio).WithOriginPoint(explosionPosition).WithFlying(true, ratio);
+			Debug.Log("distance: " + distance, defence.transform);
+			var ratio = Mathf.Clamp01(1f - (distance / explosionRadius));
+			Debug.Log("ratio: " + ratio, defence.transform);
+
+			var attack = Attack.Create(_owner, defence).WithDamage(explosionDamage * ratio).WithOriginPoint(explosionPosition).WithFlying(true, ratio*2).WithFire(causesFire);
 			defence.TakeDamage(attack);
 		}
 	}
@@ -160,14 +171,14 @@ public static class MyAttackUtilities
 		sfx.sounds.bean_nade_explosion_sounds.PlayRandomAt(explosionPosition);
 	}
 
-	public static IGetAttacked CheckForCollisions(Vector2 target, GameObject gameObject, LayerMask layer)
+	public static Life CheckForCollisions(Vector2 target, GameObject gameObject, LayerMask layer)
 	{
 		var lineCast = Physics2D.LinecastAll(gameObject.transform.position, target, layer);
 		foreach (var hit2D in lineCast)
 		{
 			if (hit2D.collider == null) continue;
 			if (hit2D.collider.gameObject == gameObject) continue;
-			var lifeHit = hit2D.collider.GetComponent<IGetAttacked>();
+			var lifeHit = hit2D.collider.GetComponent<Life>();
 			if (lifeHit == null) continue;
 			return lifeHit;
 		}

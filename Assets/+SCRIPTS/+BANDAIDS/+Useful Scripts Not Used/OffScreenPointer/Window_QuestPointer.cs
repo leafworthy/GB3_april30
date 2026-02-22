@@ -20,7 +20,7 @@ namespace __SCRIPTS
         }
 
         private void Update() {
-            float borderSize = -100f;
+            float borderSize = 100f;
             if(cam == null)
             {
 	            Debug.Log("null cammy");

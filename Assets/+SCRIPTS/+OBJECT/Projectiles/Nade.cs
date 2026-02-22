@@ -32,7 +32,7 @@ namespace __SCRIPTS.Projectiles
 			Move();
 			timeLeft -= Time.fixedDeltaTime;
 			if (!(timeLeft <= 0)) return;
-			MyAttackUtilities.Explode(transform.position, owner.stats.Stats.Range(2), owner.stats.Stats.Damage(2), owner);
+			MyAttackUtilities.Explode(transform.position, owner.stats.Stats.Range(2), owner.stats.Stats.Damage(2), owner, true);
 			Services.objectMaker.Unmake(transform.gameObject);
 		}
 

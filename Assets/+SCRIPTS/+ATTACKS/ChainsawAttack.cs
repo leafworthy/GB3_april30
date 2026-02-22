@@ -9,6 +9,7 @@ namespace __SCRIPTS
 		public override string AbilityName => "Chainsaw-Attack";
 
 		bool isPressingChainsawButton;
+		bool isPressingChainsawReloadButton;
 		AimAbility aimAbility => _aimAbility ??= GetComponent<AimAbility>();
 		AimAbility _aimAbility;
 
@@ -16,7 +17,9 @@ namespace __SCRIPTS
 		public event Action<Vector2> OnStartAttacking;
 		public event Action<Vector2> OnStopAttacking;
 		public event Action<Vector2> OnStopChainsawing;
+		public event Action<Vector2> OnReload;
 		float cooldownCounter;
+		public GameObject ChainsawAttackStartPoint;
 		public override bool canStop(IDoableAbility abilityToStopFor) => currentState is weaponState.idle or weaponState.not;
 		protected override bool requiresArms() => true;
 		protected override bool requiresLegs() => false;
@@ -25,8 +28,8 @@ namespace __SCRIPTS
 		{
 			base.SetPlayer(newPlayer);
 			player.Controller.Attack2LeftTrigger.OnPress += PlayerChainsawPress;
-			player.Controller.Attack3Circle.OnPress += PlayerChainsawPress;
 			player.Controller.Attack2LeftTrigger.OnRelease += PlayerChainsawRelease;
+			player.Controller.Attack3Circle.OnPress += PlayerChainsawPress;
 			player.Controller.Attack3Circle.OnRelease += PlayerChainsawRelease;
 		}
 
@@ -63,6 +66,14 @@ namespace __SCRIPTS
 			OnStartAttacking?.Invoke(transform.position);
 		}
 
+		void StartReloading()
+		{
+			if (!isPressingChainsawReloadButton || currentState != weaponState.idle) return;
+			SetState(weaponState.reloading);
+			OnReload?.Invoke(transform.position);
+			anim.SetTrigger(UnitAnimations.ReloadTrigger);
+		}
+
 		void PlayerChainsawRelease(NewControlButton newControlButton)
 		{
 			isPressingChainsawButton = false;
@@ -77,11 +88,24 @@ namespace __SCRIPTS
 
 		void StopAttacking()
 		{
-			if (currentState != weaponState.attacking) return;
+			if (currentState != weaponState.attacking && currentState != weaponState.reloading) return;
 			anim.SetBool(UnitAnimations.IsAttacking, false);
 			OnStopAttacking(transform.position);
 			StartIdle();
 		}
+
+		void PlayerChainsawReloadRelease(NewControlButton obj)
+		{
+			isPressingChainsawReloadButton = false;
+			if (!isActive)
+			{
+				SetState(weaponState.not);
+				return;
+			}
+
+			StopAttacking();
+		}
+
 
 		void OnDestroy()
 		{
@@ -90,6 +114,17 @@ namespace __SCRIPTS
 			if (player == null) return;
 			player.Controller.Attack2LeftTrigger.OnPress -= PlayerChainsawPress;
 			player.Controller.Attack2LeftTrigger.OnRelease -= PlayerChainsawRelease;
+			player.Controller.Attack3Circle.OnPress -= PlayerChainsawReloadPress;
+			player.Controller.Attack3Circle.OnRelease -= PlayerChainsawReloadRelease;
+		}
+
+
+
+		void PlayerChainsawReloadPress(NewControlButton obj)
+		{
+			isPressingChainsawReloadButton = true;
+			if (!isActive) return;
+			StartReloading();
 		}
 
 		void FixedUpdate()
@@ -104,6 +139,8 @@ namespace __SCRIPTS
 				case weaponState.attacking:
 					AttackContinuously();
 					break;
+				case weaponState.reloading:
+					break;
 			}
 		}
 
@@ -113,7 +150,7 @@ namespace __SCRIPTS
 			cooldownCounter += Time.fixedDeltaTime;
 			if (!(cooldownCounter >= offence.stats.Stats.Rate(3))) return;
 			cooldownCounter = 0;
-			MyAttackUtilities.HitTargetsWithinRange(offence, body.AttackStartPoint.transform.position, offence.stats.Stats.Range(3),
+			MyAttackUtilities.HitTargetsWithinRange(offence, ChainsawAttackStartPoint.transform.position, offence.stats.Stats.Range(3),
 				offence.stats.Stats.Damage(3));
 		}
 
@@ -124,5 +161,6 @@ namespace __SCRIPTS
 			SetState(weaponState.not);
 			base.StopAbility();
 		}
+
 	}
 }

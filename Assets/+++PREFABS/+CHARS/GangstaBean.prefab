@@ -818,7 +818,9 @@ MonoBehaviour:
       Entry: 8
       Data: 
   OverrideName: 
+  DoesntShowDamageNumbers: 0
   IsShielded: 0
+  deathTime: 5
 --- !u!114 &2381929228146834292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -891,14 +893,14 @@ MonoBehaviour:
     whiteWhenFull: 0
   secondaryAmmo:
     weaponType: 1
-    reserveAmmo: 3
+    reserveAmmo: 0
     clipSize: 3
     AmmoInClip: 0
     maxReserveAmmo: 3
     reloads: 0
     unlimited: 0
     hasSlash: 0
-    whiteWhenFull: 0
+    whiteWhenFull: 1
   tertiaryAmmo:
     weaponType: 6
     reserveAmmo: 999
@@ -949,6 +951,8 @@ MonoBehaviour:
   acceleratatonRate: 3
   acceleratatonMax: 20
   decelerationFactor: {x: 0.97, y: 0.97}
+  splats: 0
+  SturdyFactor: 1
 --- !u!114 &2336976950886959425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1074,11 +1078,6 @@ MonoBehaviour:
     SerializationNodes: []
   attackPoint: {fileID: 8971666602374333099}
   animationClip: {fileID: 7400000, guid: aaf890dfb175341beab9a356227816a3, type: 2}
-  damageOverTimeData:
-    fireDuration: 5
-    fireDamageRate: 0.25
-    fireDamageAmount: 9
-    fireColor: {r: 0.990566, g: 0.5349807, b: 0, a: 1}
 --- !u!114 &4716467258387394285
 MonoBehaviour:
   m_ObjectHideFlags: 0

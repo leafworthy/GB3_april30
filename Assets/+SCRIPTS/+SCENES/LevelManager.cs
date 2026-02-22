@@ -12,6 +12,7 @@ namespace __SCRIPTS
 
 		public event Action<GameLevel> OnStopLevel;
 		public event Action<GameLevel> OnStartLevel;
+		public event Action OnRestartLevel;
 		public event Action<Player> OnLevelSpawnedPlayerFromLevel;
 		public event Action<Player> OnLevelSpawnedPlayerFromPlayerSetupMenu;
 		public event Action OnGameOver;
@@ -53,7 +54,7 @@ namespace __SCRIPTS
 		{
 			EndGame(_hasWon);
 			Debug.Log("game over");
-			currentLevel.OnGameOver -= Level_OnGameOver;
+
 		}
 
 		void SpawnPlayersIntoLevel()
@@ -114,6 +115,7 @@ namespace __SCRIPTS
 
 		public void RestartLevel()
 		{
+			OnRestartLevel?.Invoke();
 			StopLevel();
 			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.restartLevel);
 		}
@@ -151,6 +153,7 @@ namespace __SCRIPTS
 		{
 			OnGameOver?.Invoke();
 			hasWon = _hasWon;
+			if (currentLevel != null) currentLevel.OnGameOver -= Level_OnGameOver;
 			StopLevel();
 			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.GameOverScene);
 		}

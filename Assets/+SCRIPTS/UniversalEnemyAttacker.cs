@@ -12,7 +12,7 @@ public class UniversalEnemyAttacker : MonoBehaviour, ICanAttack
 	public IHaveUnitStats stats => _stats ??= GetComponentInChildren<IHaveUnitStats>();
 	IHaveUnitStats _stats;
 
-	public bool IsEnemyOf(IGetAttacked targetLife) => true;
+	public bool IsEnemyOf(Life targetLife) => true;
 
-	public event Action<IGetAttacked> OnAttack;
+	public event Action<Life> OnAttack;
 }

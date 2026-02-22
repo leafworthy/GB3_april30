@@ -14,7 +14,8 @@ namespace __SCRIPTS
 			pullOut,
 			idle,
 			attacking,
-			resuming
+			resuming,
+			reloading
 		}
 		protected void SetState(weaponState state)
 		{

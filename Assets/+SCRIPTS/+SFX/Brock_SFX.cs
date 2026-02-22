@@ -87,7 +87,7 @@ namespace __SCRIPTS
 
 		void MeleeSwingOnSwing() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 
-		void LifeOnDead(Attack attack) => Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
+		void LifeOnDead(Attack attack) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
 
 		void MeleeAttackOnHitTarget(Attack attack) => Services.sfx.sounds.brock_bathit_sounds.PlayRandomAt(attack.DestinationFloorPoint);
 
@@ -95,7 +95,7 @@ namespace __SCRIPTS
 		void KunaiAttackOnThrow() =>
 			Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 
-		void ChargeAttackOnSpecialAttackHit(Attack attack) => Services.sfx.sounds.brock_homerunhit_sounds.PlayRandomAt(attack.DestinationFloorPoint);
+		void ChargeAttackOnSpecialAttackHit(Attack attack) => Services.sfx.sounds.brock_homerunhit_sounds.PlayRandomAt(attack.OriginFloorPoint);
 		void ChargeAttackOnChargeAttackChargePress() => Services.sfx.StartOngoingSound();
 		void JumpsOnLand(Vector2 obj) => Services.sfx.sounds.land_sound.PlayRandomAt(transform.position);
 		void JumpsOnJumps(Vector2 obj) => Services.sfx.sounds.jump_sound.PlayRandomAt(transform.position);

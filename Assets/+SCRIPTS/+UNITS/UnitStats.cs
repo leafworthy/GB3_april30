@@ -19,7 +19,7 @@ namespace __SCRIPTS
 
 
 		[OdinSerialize]public int EnemyTier { get; set; }
-		const float ShieldDamageFactor = .1f;
+
 		public event Action<Attack> OnDead;
 
 
@@ -38,7 +38,7 @@ namespace __SCRIPTS
 		public void TakeDamage(Attack attack)
 		{
 			if (IsTemporarilyInvincible) return;
-			if (IsShielded) attack.DamageAmount *= ShieldDamageFactor;
+
 			CurrentHealth = Mathf.Max(0, CurrentHealth - attack.DamageAmount);
 			if (CurrentHealth <= 0) StartDeath(attack);
 		}

@@ -10,15 +10,15 @@ namespace __SCRIPTS
 	{
 		ICanAttack attacker => _attacker ??= GetComponent<ICanAttack>(); //wtf
 		ICanAttack _attacker;
-		IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
-		IGetAttacked _life;
+		Life life => _life ??= GetComponent<Life>();
+		Life _life;
 		public bool causesFlying;
 		float currentCooldown;
 		float coolDown = .5f;
 		MoveAbility mover;
 		[SerializeField] float pushBackAmount = 3;
 		[SerializeField] float extraPushAmount = 3;
-		public float flyHeight = 2;
+		public float flyHeight = 2.5f;
 		public event Action OnAttackHit;
 
 		public void SetPlayer(Player newPlayer)
@@ -82,7 +82,7 @@ namespace __SCRIPTS
 			AttackHit(otherDefence);
 		}
 
-		void AttackHit(IGetAttacked other)
+		void AttackHit(Life other)
 		{
 			currentCooldown = coolDown;
 			var otherAttack = Attack.Create(attacker, other).WithDamage(attacker.stats.Stats.Damage(1)).WithFlying(causesFlying, flyHeight)

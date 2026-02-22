@@ -79,6 +79,8 @@ namespace __SCRIPTS
 				if (Ammo.CanReload()) OnNeedsReload?.Invoke();
 				else
 				{
+					if (IsCoolingDown) return false;
+					currentCooldownTime = Time.time + AttackRate;
 					OnEmpty?.Invoke();
 					Debug.Log("onempty");
 				}
@@ -139,8 +141,8 @@ namespace __SCRIPTS
 			{
 				foreach (var hit in hitObject)
 				{
-					var target = hit.collider.gameObject.GetComponentInParent<IGetAttacked>();
-					if (target == null) target = hit.collider.gameObject.GetComponentInChildren<IGetAttacked>();
+					var target = hit.collider.gameObject.GetComponentInParent<Life>();
+					if (target == null) target = hit.collider.gameObject.GetComponentInChildren<Life>();
 					if (target == null) continue;
 					if (!target.CanTakeDamage()) continue;
 					ShotHitTarget(target, hit.point);
@@ -162,7 +164,7 @@ namespace __SCRIPTS
 			OnShotMissed?.Invoke(newAttack);
 		}
 
-		void ShotHitTarget(IGetAttacked targetLife, Vector2 hitObjectPoint)
+		void ShotHitTarget(Life targetLife, Vector2 hitObjectPoint)
 		{
 			var newAttack = Attack.Create(attacker, targetLife).WithOriginPoint(body.AttackStartPoint.transform.position).WithDestinationPoint(hitObjectPoint)
 			                      .WithDamage(Damage);
@@ -179,7 +181,7 @@ namespace __SCRIPTS
 
 		public bool CanUse() => !IsCoolingDown && Ammo.hasAmmoInReserveOrClip();
 
-
+		public bool HasAmmoInClip() => Ammo.hasAmmoInClip();
 	}
 
 	public class PrimaryGun : Gun

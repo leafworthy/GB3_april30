@@ -25,7 +25,7 @@ namespace __SCRIPTS
 			MakeDropList();
 		}
 
-		public void DropLoot(Vector2 position, LootType type = LootType.Random)
+		public void DropLoot(Vector2 position, LootType type = LootType.Random, float startingHeight = 0, float verticalSpeed = 2, float extraPush = 50)
 		{
 			if (_dropsToSpawn.Count == 0) MakeDropList();
 			GameObject lootPrefab = null;
@@ -59,8 +59,8 @@ namespace __SCRIPTS
 
 			var prefab = Services.objectMaker.Make(lootPrefab, position);
 			var debreeObject = prefab.GetComponent<MoveJumpAndRotateAbility>();
-			var angle = new Vector3(Random.Range(-1, 1), -1);
-			debreeObject.Fire(angle, 5);
+			var angle = new Vector3(Random.Range(-1, 1), Random.Range(-1, 1));
+			debreeObject.Fire(angle, startingHeight, verticalSpeed,extraPush);
 		}
 
 		private void MakeDropList()

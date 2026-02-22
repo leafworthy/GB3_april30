@@ -8,6 +8,9 @@ namespace __SCRIPTS
 	public class AudioAssets : ScriptableObject
 	{
 
+		public List<AudioClip> fruit_thank_you_sounds = new();
+		public List<AudioClip> fruit_death_sounds = new();
+		public List<AudioClip> dig_sounds = new();
 		public List<AudioClip> player_walk_sounds_concrete = new();
 		public List<AudioClip> ak47_shoot_sounds = new();
 		public List<AudioClip> ak47_empty_shoot_sounds = new();

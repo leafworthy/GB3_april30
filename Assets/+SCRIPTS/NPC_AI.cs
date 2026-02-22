@@ -20,9 +20,9 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, INeedPlayer, ICanAttack
 	public Player player => _player;
 	public LayerMask EnemyLayer => Services.assetManager.LevelAssets.EnemyLayer;
 	public IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
-	public bool IsEnemyOf(IGetAttacked targetLife) => player.IsHuman() != targetLife.player.IsHuman();
+	public bool IsEnemyOf(Life targetLife) => player.IsHuman() != targetLife.player.IsHuman();
 
-	public event Action<IGetAttacked> OnAttack;
+	public event Action<Life> OnAttack;
 	IHaveUnitStats _stats;
 
 	public void SetPlayer(Player newPlayer)
@@ -37,11 +37,11 @@ public class NPC_AI : MonoBehaviour, ICanMoveThings, INeedPlayer, ICanAttack
 	public bool IsMoving() => isMoving;
 	bool isMoving;
 
-	IGetAttacked _life;
-	IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
+	Life _life;
+	Life life => _life ??= GetComponent<Life>();
 
-	IGetAttacked cowerTarget;
-	IGetAttacked avoidTarget;
+	Life cowerTarget;
+	Life avoidTarget;
 	Targetter targetter => _targetter ??= GetComponent<Targetter>();
 	Targetter _targetter;
 

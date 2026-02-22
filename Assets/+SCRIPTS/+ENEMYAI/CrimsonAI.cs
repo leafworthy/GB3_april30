@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 using __SCRIPTS;
 using __SCRIPTS._ENEMYAI;
 using GangstaBean.Core;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CrimsonAI : MonoBehaviour, ICanMoveThings,ICanAttack
+public class CrimsonAI : MonoBehaviour, ICanMoveThings, ICanAttack
 {
 	static readonly int IsRunning = Animator.StringToHash("IsRunning");
 
@@ -21,8 +22,8 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings,ICanAttack
 	Animator animator => _animator ??= GetComponentInChildren<Animator>();
 	Animator _animator;
 
-	IGetAttacked life => _life ??= GetComponent<IGetAttacked>();
-	IGetAttacked _life;
+	Life life => _life ??= GetComponent<Life>();
+	Life _life;
 
 	bool isIdle;
 	float idleTimer;
@@ -36,13 +37,17 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings,ICanAttack
 	public Player player => player1;
 	public LayerMask EnemyLayer => enemyLayer;
 	public IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
-	public bool IsEnemyOf(IGetAttacked targetLife) => false;
+	public bool IsEnemyOf(Life targetLife) => false;
 
-	public event Action<IGetAttacked> OnAttack;
+	MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
+	MoveAbility _moveAbility;
+	public event Action<Life> OnAttack;
 	IHaveUnitStats _stats;
 	Player player1;
 	LayerMask enemyLayer;
 	public Transform zoomPoint;
+	public EnemySpawner spawner;
+	public List<AudioClip> deathSound = new List<AudioClip>();
 
 	protected void Start()
 	{
@@ -54,8 +59,11 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings,ICanAttack
 
 	void Life_OnDead(Attack obj)
 	{
-		TempCinemachine.CreateFollowCameraTemporary(zoomPoint, 5, 40, true);
-		Invoke( nameof(WinGame), 5);
+		TempCinemachine.CreateFollowCameraTemporary(zoomPoint, 5, 45, true);
+		//Invoke( nameof(WinGame), 5);
+		deathSound.PlayRandomAt(transform.position);
+		moveAbility.StopAllMovement();
+		spawner.StartSpawning();
 	}
 
 	public void WinGame()
@@ -81,7 +89,7 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings,ICanAttack
 	{
 		animator.SetBool(IsRunning, false);
 		OnStopMoving?.Invoke();
-		idleTimer = Random.Range(1f, 2f);
+		idleTimer = Random.Range(1f, 3f);
 		isIdle = true;
 	}
 
@@ -104,9 +112,8 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings,ICanAttack
 	{
 		if (Services.pauseManager.IsPaused) return;
 
-			currentDirection = ((Vector2) target.transform.position - (Vector2) transform.position).normalized;
-			OnMoveInDirection?.Invoke(currentDirection);
-
+		currentDirection = ((Vector2) target.transform.position - (Vector2) transform.position).normalized;
+		OnMoveInDirection?.Invoke(currentDirection);
 	}
 
 	GameObject PickARandomTarget()
