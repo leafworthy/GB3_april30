@@ -46,13 +46,13 @@ namespace __SCRIPTS
 			OnStartLevel?.Invoke(currentLevel);
 			Debug.Log("start level");
 			newLevel.OnGameOver += Level_OnGameOver;
-
+			hasWon = false;
 			gameStartTime = Time.time;
 		}
 
 		void Level_OnGameOver(bool _hasWon)
 		{
-			EndGame(_hasWon);
+			EndGame(hasWon);
 			Debug.Log("game over");
 
 		}
@@ -103,6 +103,7 @@ namespace __SCRIPTS
 		{
 			if (currentLevel == null) return;
 			restartedLevelScene = currentLevel.scene;
+
 			currentLevel.StopLevel();
 			currentLevel = null;
 			OnStopLevel?.Invoke(currentLevel);
@@ -117,6 +118,7 @@ namespace __SCRIPTS
 		{
 			OnRestartLevel?.Invoke();
 			StopLevel();
+			hasWon = false;
 			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.restartLevel);
 		}
 
@@ -193,6 +195,10 @@ namespace __SCRIPTS
 			LoadLevel(newScene);
 		}
 
-
+		public void SetGameWon(bool b)
+		{
+			Debug.Log("game set to win");
+			hasWon = b;
+		}
 	}
 }

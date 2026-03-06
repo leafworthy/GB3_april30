@@ -259,8 +259,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 834
-  m_Sprite: {fileID: 21300000, guid: b3c69e19eb5414b6fb66fe208e621b4e, type: 3}
-  m_Color: {r: 0.7924528, g: 0.6018156, b: 0.66226155, a: 1}
+  m_Sprite: {fileID: 21300000, guid: a7f8db681e3494721a4d075731b133bb, type: 3}
+  m_Color: {r: 0.9433962, g: 0.6363475, b: 0.6363475, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -385,7 +385,7 @@ Transform:
   m_GameObject: {fileID: 853250221008520828}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.62, y: 3.9, z: 0}
+  m_LocalPosition: {x: -3.72, y: 3.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -553,7 +553,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 833
   m_Sprite: {fileID: 21300000, guid: a5ae728b9d80542f5ac757f990c2a6dd, type: 3}
-  m_Color: {r: 0.7921569, g: 0.6039216, b: 0.65882355, a: 1}
+  m_Color: {r: 0.9254902, g: 0.22352941, b: 0.7529412, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -733,7 +733,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 840
   m_Sprite: {fileID: 21300000, guid: 9366fa9b69d864ce0aff0b4f86ff6ce3, type: 3}
-  m_Color: {r: 0.7921569, g: 0.6039216, b: 0.65882355, a: 1}
+  m_Color: {r: 0.9254902, g: 0.22352941, b: 0.7529412, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1137,6 +1137,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  cantFly: 0
   OverrideName: Fruit
   DoesntShowDamageNumbers: 0
   IsShielded: 0
@@ -1259,14 +1260,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be430b345dfe2431eaa880655ed6670d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCName: Onion Dirty
-  Tint: {r: 0.7921569, g: 0.6039216, b: 0.65882355, a: 1}
-  BodyTint: {r: 0.7924528, g: 0.6018156, b: 0.66226155, a: 1}
+  NPCName: Plumb
+  Tint: {r: 0.9254902, g: 0.22352941, b: 0.7529412, a: 1}
+  BodyTint: {r: 0.9433962, g: 0.6363475, b: 0.6363475, a: 1}
   toTint:
   - {fileID: 6315489019273529377}
   - {fileID: 5141259233098759020}
   - {fileID: 4362649678888620018}
-  currentCharacter: {fileID: 11400000, guid: d04793ac9a1194f67ac11b9b64fc5e87, type: 2}
+  currentCharacter: {fileID: 11400000, guid: a93012bab4f6f4554a5cd5516901766a, type: 2}
   autoRefresh: 1
   sr: {fileID: 4362649678888620018}
   leftArm: {fileID: 853250221008520828}
@@ -1969,7 +1970,7 @@ Transform:
   m_GameObject: {fileID: 6404993582064815642}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.03, y: 3.5, z: 0}
+  m_LocalPosition: {x: 2.73, y: 3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2126,7 +2127,7 @@ Transform:
   m_GameObject: {fileID: 7521240347522197101}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.17, y: -1.04, z: 0}
+  m_LocalPosition: {x: 0.17, y: -0.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2442,7 +2443,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159643717769961305, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}
       propertyPath: m_FillAmount
-      value: 0.955625
+      value: 0.83000004
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6159643716270242739, guid: b676c417ff4a54dbfab991f912b8b35b, type: 3}

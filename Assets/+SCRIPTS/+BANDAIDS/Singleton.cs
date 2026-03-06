@@ -5,13 +5,9 @@ namespace __SCRIPTS
 {
 	public abstract class Singleton<T> : SerializedMonoBehaviour where T : Component
 	{
-		static T _instance;
+		public static T _instance;
 
-		[RuntimeInitializeOnLoadMethod]
-		static void ResetStatics()
-		{
-			_instance = null;
-		}
+
 
 		public static T I
 		{

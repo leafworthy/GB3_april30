@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 909039476665245119}
   - component: {fileID: 3137406427324820354}
   - component: {fileID: 3346981765212993854}
+  - component: {fileID: 5699439176554973667}
   m_Layer: 7
   m_Name: CrimsonBuck
   m_TagString: Untagged
@@ -336,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff264cf2d310481ea1df4e39814eef10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HeightObject: {fileID: 0}
+  HeightObject: {fileID: 212006170907970652}
   AttackStartPoint: {fileID: 0}
   FootPoint: {fileID: 7954856751282357660}
   RotateWithAim: []
@@ -425,7 +426,7 @@ MonoBehaviour:
       Data: false
     - Name: healthMax
       Entry: 4
-      Data: 2000
+      Data: 4000
     - Name: moveSpeed
       Entry: 4
       Data: 50
@@ -440,7 +441,7 @@ MonoBehaviour:
       Data: 100
     - Name: attack1Damage
       Entry: 4
-      Data: 100
+      Data: 150
     - Name: attack1Rate
       Entry: 4
       Data: 1
@@ -515,6 +516,7 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!114 &3137406427324820354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -548,14 +550,29 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  jumpingAnimationClip: {fileID: 0}
-  fallingAnimationClip: {fileID: 0}
-  landingAnimationClip: {fileID: 0}
-  flyingAnimationClip: {fileID: 0}
-  deathAnimationClip: {fileID: 0}
-  onGroundAnimationClip: {fileID: 0}
-  getUpAnimationClip: {fileID: 0}
-  standingAnimationClip: {fileID: 0}
+  jumpingAnimationClip: {fileID: 7400000, guid: a2de251b0283e4d019653b1313cdd0b5, type: 2}
+  fallingAnimationClip: {fileID: 7400000, guid: a2de251b0283e4d019653b1313cdd0b5, type: 2}
+  landingAnimationClip: {fileID: 7400000, guid: a2de251b0283e4d019653b1313cdd0b5, type: 2}
+  flyingAnimationClip: {fileID: 7400000, guid: a2de251b0283e4d019653b1313cdd0b5, type: 2}
+  deathAnimationClip: {fileID: 7400000, guid: 9055e26a750a042e8957b979b9461a4e, type: 2}
+  onGroundAnimationClip: {fileID: 7400000, guid: a2de251b0283e4d019653b1313cdd0b5, type: 2}
+  getUpAnimationClip: {fileID: 7400000, guid: a2de251b0283e4d019653b1313cdd0b5, type: 2}
+  standingAnimationClip: {fileID: 7400000, guid: a2de251b0283e4d019653b1313cdd0b5, type: 2}
+  isDisabled: 1
+--- !u!114 &5699439176554973667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912591045815131083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 369bcf3edebf4516b9448d533cba9e39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatBooster
+  healthBoostAmount: 2000
+  isBasedOnJoinedPlayers: 1
 --- !u!1 &1830154128020281589
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,7 +617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85a34663ca705a54eac3205e225a6d45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightType: 1
+  lightType: 0
   lightPresetId: 0
   eventPresetId: 0
   lightLayer: 0
@@ -1094,6 +1111,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5843643971457289528
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1139,6 +1157,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 420
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 3626660519965036632, guid: 7b2df064cde7e43d1bad962cb8dd4f69, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1148,7 +1167,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7216565306650562195
 GameObject:
@@ -1470,6 +1488,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2832064834699186295
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1515,6 +1534,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 421
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1524,7 +1544,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &8775283598853758929
 GameObject:

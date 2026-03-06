@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class TempCinemachine : Singleton<TempCinemachine>
 {
+	[RuntimeInitializeOnLoadMethod]
+	static void ResetStatics()
+	{
+		_instance = null;
+	}
     /// <summary>
     /// Creates a temporary Cinemachine camera that follows a target for a limited duration.
     /// It becomes the highest-priority camera, optionally sets zoom (FOV or OrthoSize),

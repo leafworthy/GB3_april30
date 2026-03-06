@@ -48,6 +48,8 @@ namespace __SCRIPTS
 		float airTimer;
 		float getUpTime = .25f;
 		public event Action OnGotBackUp;
+
+		public bool isDisabled;
 		bool IsFlying => currentState == state.flying;
 
 		public bool IsFalling => currentState == state.falling;
@@ -66,11 +68,13 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
+			if (isDisabled) return;
 			Jump(offence.stats.Stats.JumpSpeed);
 		}
 
 		public override void StopAbility()
 		{
+			if (isDisabled) return;
 			verticalVelocity = 0;
 			SetState(state.resting);
 			moveAbility.SetCanMove(true);
@@ -80,6 +84,7 @@ namespace __SCRIPTS
 
 		void Jump(float jumpSpeed)
 		{
+			if (isDisabled) return;
 			if (currentState is state.flying)
 			{
 				moveAbility.SetDragging(false);
@@ -112,6 +117,7 @@ namespace __SCRIPTS
 
 		void DefenceOnFlying(Attack attack)
 		{
+			if (isDisabled) return;
 			if (Services.pauseManager.IsPaused) return;
 
 			StartFlying(attack.FlyingHeight);
@@ -119,11 +125,13 @@ namespace __SCRIPTS
 
 		void Controller_Jump(NewControlButton newControlButton)
 		{
+			if (isDisabled) return;
 			TryToActivate();
 		}
 
 		void DefenceOnDead(Attack attack)
 		{
+			if (isDisabled) return;
 			if (defence.cantFly) return;
 			if (attack.DestinationLife.player.IsHuman() || attack.CausesFlying) StartFlying(defence.Stats.JumpSpeed);
 			else
@@ -134,6 +142,7 @@ namespace __SCRIPTS
 
 		void StartDying()
 		{
+			if (isDisabled) return;
 			SetState(state.dead);
 			PlayAnimationClip(deathAnimationClip);
 			moveAbility.SetCanMove(false);
@@ -142,7 +151,7 @@ namespace __SCRIPTS
 
 		void StartFlying(float flyingHeight)
 		{
-
+			if (isDisabled) return;
 			if (defence.IsFullyDead) return;
 			if(currentState == state.flying) return;
 			SetState(state.flying);
@@ -161,7 +170,7 @@ namespace __SCRIPTS
 
 		void FallFromHeight(float fallHeight)
 		{
-
+			if (isDisabled) return;
 			SetState(state.falling);
 			body.SetHeight(fallHeight);
 			PlayAnimationClip(fallingAnimationClip);
@@ -172,6 +181,7 @@ namespace __SCRIPTS
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (!IsInAir) return;
+			if (isDisabled) return;
 
 			Fly();
 		}
@@ -197,6 +207,7 @@ namespace __SCRIPTS
 
 		void StartFalling()
 		{
+			if (isDisabled) return;
 			if (!IsInAir) return;
 			if (currentState is not state.jumpingUp) return;
 			OnFalling?.Invoke();
@@ -206,6 +217,7 @@ namespace __SCRIPTS
 
 		protected override void AnimationComplete()
 		{
+			if (isDisabled) return;
 			switch (currentState)
 			{
 				case state.resting:
@@ -236,11 +248,13 @@ namespace __SCRIPTS
 
 		void StartGettingUp()
 		{
+			if (isDisabled) return;
 			StartCoroutine(GettingUpCoroutine());
 		}
 
 		IEnumerator GettingUpCoroutine()
 		{
+
 			yield return new WaitForSeconds(getUpTime);
 			PlayAnimationClip(getUpAnimationClip);
 			SetState(state.gettingUp);
@@ -248,7 +262,7 @@ namespace __SCRIPTS
 
 		void HitGround()
 		{
-
+			if (isDisabled) return;
 			if (defence.IsDead())
 			{
 				defence.IsFullyDead = true;
@@ -272,7 +286,7 @@ namespace __SCRIPTS
 
 		void Land()
 		{
-
+			if (isDisabled) return;
 			moveAbility.SetCanMove(false);
 			moveAbility.SetDragging(true);
 			body.SetGrounded();

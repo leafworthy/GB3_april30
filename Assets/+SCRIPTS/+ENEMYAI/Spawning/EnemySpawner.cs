@@ -106,6 +106,7 @@ public class EnemySpawner : SerializedMonoBehaviour
 
 	void SoloCamera()
 	{
+		if(arenaCamera == null) return;
 		CameraSwitcher.I.SoloCamera(arenaCamera);
 	}
 

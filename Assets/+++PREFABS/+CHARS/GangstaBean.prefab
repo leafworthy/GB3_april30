@@ -166,7 +166,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6542126727891517600
 Transform:
   m_ObjectHideFlags: 0
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85a34663ca705a54eac3205e225a6d45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightType: 1
+  lightType: 0
   lightPresetId: 0
   eventPresetId: 1
   lightLayer: 0
@@ -450,6 +450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!212 &3194819042820860482
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -495,6 +496,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 423
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -504,7 +506,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3833892833502990261
 GameObject:
@@ -817,6 +818,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  cantFly: 0
   OverrideName: 
   DoesntShowDamageNumbers: 0
   IsShielded: 0
@@ -1006,6 +1008,7 @@ MonoBehaviour:
   onGroundAnimationClip: {fileID: 7400000, guid: 7d10353e6724b48b3996a2f6239df3d9, type: 2}
   getUpAnimationClip: {fileID: 7400000, guid: db029bd52b1084cb1ad80e7033e7aab1, type: 2}
   standingAnimationClip: {fileID: 7400000, guid: 4f55359b4945d459997a2333342ddf7f, type: 2}
+  isDisabled: 0
 --- !u!114 &1547629825238236334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1295,6 +1298,7 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!1 &3833892834760878394
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,6 +1333,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3833892834760878399
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1374,6 +1379,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 422
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -2205152827247349269, guid: 3bc1e2c9ed3c74d0584fb619f2af827b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1383,7 +1389,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 1
 --- !u!1 &3948607575239414370
 GameObject:
@@ -1401,7 +1406,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2743111548325432599
 Transform:
   m_ObjectHideFlags: 0
@@ -1729,6 +1734,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6613743014821493785
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1774,6 +1780,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 421
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -3232186448459339446, guid: 3bc1e2c9ed3c74d0584fb619f2af827b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1783,7 +1790,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 1
 --- !u!1 &6464584115568360862
 GameObject:
@@ -1991,7 +1997,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8326176969410656236
 Transform:
   m_ObjectHideFlags: 0
@@ -2351,6 +2357,10 @@ PrefabInstance:
     - target: {fileID: 122836736145250604, guid: 33a7ad43aae8042028850bfeaebab8b3, type: 3}
       propertyPath: m_Name
       value: PlayerSayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 122836736145250604, guid: 33a7ad43aae8042028850bfeaebab8b3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4950293114644294523, guid: 33a7ad43aae8042028850bfeaebab8b3, type: 3}
       propertyPath: m_LocalPosition.x

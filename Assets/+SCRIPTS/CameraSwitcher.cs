@@ -1,19 +1,23 @@
 using __SCRIPTS;
 using Unity.Cinemachine;
+using UnityEngine;
 
 public class CameraSwitcher : Singleton<CameraSwitcher>
 {
 	public CinemachineCamera MainFollowCamera;
 	public CinemachineCamera currentArenaCamera;
-	bool isInArena;
 
 
-	public CinemachineCamera GetCurrentCamera() => isInArena? currentArenaCamera : MainFollowCamera;
+	[RuntimeInitializeOnLoadMethod]
+	static void ResetStatics()
+	{
+		_instance = null;
+	}
 
 	public void SoloCamera(CinemachineCamera _cam)
 	{
 		if (_cam == null) return;
-		isInArena = true;
+		Debug.Log("camera soloed: " + _cam.name);
 		MainFollowCamera.Priority = 0;
 		currentArenaCamera = _cam;
 		currentArenaCamera.Priority = 10;
@@ -22,7 +26,6 @@ public class CameraSwitcher : Singleton<CameraSwitcher>
 
 	public void UnSoloCamera()
 	{
-		isInArena = false;
 		MainFollowCamera.Priority = 10;
 		if (currentArenaCamera == null) return;
 		currentArenaCamera.Priority = 0;

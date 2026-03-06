@@ -23,6 +23,15 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.3
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -31,7 +40,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.33333334
+        time: 0.68333334
         value: 1
         inSlope: Infinity
         outSlope: Infinity
@@ -43,21 +52,17 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: Light Object/Point Light 2D.001
+    path: danger sign both_1
     classID: 1
     script: {fileID: 0}
     flags: 0
   m_PPtrCurves:
   - serializedVersion: 2
     curve:
-    - time: 0
-      value: {fileID: 21300000, guid: 79c9ee9da825f41e1b24011471f5c0a4, type: 3}
-    - time: 0.33333334
-      value: {fileID: 21300000, guid: 5f354bc75ecb4423782123d44b9a11ca, type: 3}
-    - time: 0.71666664
-      value: {fileID: 21300000, guid: 79c9ee9da825f41e1b24011471f5c0a4, type: 3}
-    attribute: m_Sprite
-    path: 
+    - time: 0.45
+      value: {fileID: 2100000, guid: a0bb8808ff7264a189db1254e5ae80d2, type: 2}
+    attribute: 'm_Materials.Array.data[0]'
+    path: danger sign both_1
     classID: 212
     script: {fileID: 0}
     flags: 2
@@ -69,7 +74,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 870029066
+      path: 2650165503
       attribute: 2086281974
       script: {fileID: 0}
       typeID: 1
@@ -78,24 +83,22 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 0
+      path: 2650165503
       attribute: 0
       script: {fileID: 0}
       typeID: 212
-      customType: 23
+      customType: 21
       isPPtrCurve: 1
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 79c9ee9da825f41e1b24011471f5c0a4, type: 3}
-    - {fileID: 21300000, guid: 5f354bc75ecb4423782123d44b9a11ca, type: 3}
-    - {fileID: 21300000, guid: 79c9ee9da825f41e1b24011471f5c0a4, type: 3}
+    - {fileID: 2100000, guid: a0bb8808ff7264a189db1254e5ae80d2, type: 2}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.7333333
+    m_StopTime: 0.68333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -117,6 +120,15 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.3
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -125,7 +137,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.33333334
+        time: 0.68333334
         value: 1
         inSlope: Infinity
         outSlope: Infinity
@@ -137,7 +149,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: Light Object/Point Light 2D.001
+    path: danger sign both_1
     classID: 1
     script: {fileID: 0}
     flags: 0

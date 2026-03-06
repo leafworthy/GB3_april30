@@ -22,9 +22,13 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings, ICanAttack
 	Animator animator => _animator ??= GetComponentInChildren<Animator>();
 	Animator _animator;
 
+	public AudioSource musicToStop;
+
 	Life life => _life ??= GetComponent<Life>();
 	Life _life;
 
+	UnitAnimations unitAnimations => _unitAnimations ??= GetComponent<UnitAnimations>();
+	UnitAnimations _unitAnimations;
 	bool isIdle;
 	float idleTimer;
 	Vector2 currentTargetPosition;
@@ -48,6 +52,7 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings, ICanAttack
 	public Transform zoomPoint;
 	public EnemySpawner spawner;
 	public List<AudioClip> deathSound = new List<AudioClip>();
+	public AnimationClip deathAnimation;
 
 	protected void Start()
 	{
@@ -59,16 +64,18 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings, ICanAttack
 
 	void Life_OnDead(Attack obj)
 	{
+		musicToStop?.Stop();
 		TempCinemachine.CreateFollowCameraTemporary(zoomPoint, 5, 45, true);
-		//Invoke( nameof(WinGame), 5);
+		WinGame();
+		unitAnimations.Play(deathAnimation.name,0,0);
 		deathSound.PlayRandomAt(transform.position);
 		moveAbility.StopAllMovement();
-		spawner.StartSpawning();
+		spawner?.StartSpawning();
 	}
 
 	public void WinGame()
 	{
-		Services.levelManager.EndGame(true);
+		Services.levelManager.SetGameWon(true);
 	}
 
 	void RamAttack_OnAttackHit()

@@ -35,6 +35,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &234699790523443938
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -80,6 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1383
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -564358340089471014, guid: fe05a4e8e28c14a4180b7c6746c146de, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -89,7 +91,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &234699790523443965
 Animator:
@@ -1037,6 +1038,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1185514299834675743
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1082,6 +1084,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1384
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 7039712764132991997, guid: 1985a0f46e9f147078d6b30a7422c80c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1091,7 +1094,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3924160363560415011
 GameObject:
@@ -1127,6 +1129,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3924160363560415009
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1172,6 +1175,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1382
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 341d71a5db96e48afa6b228dd2157d80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.85882354}
   m_FlipX: 0
@@ -1181,7 +1185,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3924160363799037109
 GameObject:
@@ -1487,6 +1490,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  cantFly: 0
   OverrideName: 
   DoesntShowDamageNumbers: 0
   IsShielded: 0
@@ -1688,6 +1692,7 @@ MonoBehaviour:
   onGroundAnimationClip: {fileID: 7400000, guid: 4e1500ff6cdb640358ae998e7e27c30b, type: 2}
   getUpAnimationClip: {fileID: 7400000, guid: 997138eaa2b604da584979b728b28354, type: 2}
   standingAnimationClip: {fileID: 7400000, guid: d05e8e5a3c07f4186844edb158733a2c, type: 2}
+  isDisabled: 0
 --- !u!114 &-5537217035217268067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1894,6 +1899,7 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!1 &4583028489892907819
 GameObject:
   m_ObjectHideFlags: 0
@@ -1970,6 +1976,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!212 &8649755567016641007
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2015,6 +2022,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1385
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2024,7 +2032,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &4908606974526057423
 GameObject:
@@ -2229,6 +2236,10 @@ PrefabInstance:
     - target: {fileID: 122836736145250604, guid: 33a7ad43aae8042028850bfeaebab8b3, type: 3}
       propertyPath: m_Name
       value: PlayerSayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 122836736145250604, guid: 33a7ad43aae8042028850bfeaebab8b3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3917116794222995331, guid: 33a7ad43aae8042028850bfeaebab8b3, type: 3}
       propertyPath: serializationData.Prefab

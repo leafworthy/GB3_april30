@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GangstaBean.Core;
 using Sirenix.OdinInspector;
-using UnityEditor;
 using UnityEngine;
 
-#if UNITY_EDITOR
+
+using UnityEditor;
 namespace __SCRIPTS
 {
 	[ExecuteAlways]
-	public class GenericCharacterBuilder : MonoBehaviour
+	public class GenericCharacterBuilder : MonoBehaviour, INeedPlayer
 	{
 		public string NPCName;
 		public Color Tint = Color.white;
@@ -35,9 +36,9 @@ namespace __SCRIPTS
 
 		void Start()
 		{
-			ApplyRandomCharacter();
-		}
 
+		}
+#if UNITY_EDITOR
 		[Button]
 		public void SaveOverCurrentCharacter()
 		{
@@ -69,6 +70,7 @@ namespace __SCRIPTS
 
 			Debug.Log($"Saved changes to {currentCharacter.name}");
 		}
+		#endif
 
 		[Button]
 		public void ApplyCharacter()
@@ -92,6 +94,7 @@ namespace __SCRIPTS
 		{
 			var fruitCharacters = Resources.LoadAll<GenericCharacter>("GenericCharacters").ToList();
 			currentCharacter = fruitCharacters.GetRandom();
+			Debug.Log("apply random character " + currentCharacter.name);
 			ApplyCharacter();
 			Refresh();
 		}
@@ -139,6 +142,7 @@ namespace __SCRIPTS
 
 		const string DefaultFolder = "Assets/Resources/GenericCharacters";
 
+		#if UNITY_EDITOR
 		[Button]
 		public void CreateCharacterData()
 		{
@@ -166,6 +170,11 @@ namespace __SCRIPTS
 			Selection.activeObject = asset;
 			currentCharacter = asset;
 		}
+#endif
+
+		public void SetPlayer(Player newPlayer)
+		{
+			ApplyRandomCharacter();
+		}
 	}
 }
-#endif

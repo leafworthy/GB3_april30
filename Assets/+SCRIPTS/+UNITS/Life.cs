@@ -49,6 +49,7 @@ namespace __SCRIPTS
 		bool hasInitialized;
 		public float deathTime = 5;
 		DamageOverTimeData damageOverTimeData;
+		public event Action OnInitialize;
 
 		[Button]
 		public void ClearStats()
@@ -72,6 +73,7 @@ namespace __SCRIPTS
 		{
 			if (hasInitialized) return;
 			hasInitialized = true;
+			OnInitialize?.Invoke();
 			Stats = GetStats();
 			Stats.OnDead += Health_OnDead;
 			Stats.FillHealth();
