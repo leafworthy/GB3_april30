@@ -16,7 +16,7 @@ namespace __SCRIPTS.UpgradeS
 			//Services.levelManager.OnStartLevel -= ResetUpgrades;
 		}
 
-		private void ResetUpgrades(GameLevel gameLevel)
+		private void ResetUpgrades()
 		{
 			foreach (var upgrade in upgrades)
 			{

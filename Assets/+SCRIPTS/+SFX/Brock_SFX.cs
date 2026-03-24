@@ -49,10 +49,38 @@ namespace __SCRIPTS
 			kunaiAttack.OnThrow += KunaiAttackOnThrow;
 		}
 
+		void OnDisable()
+		{
+			animEvents.OnStep -= Anim_OnStep;
+			animEvents.OnRoar -= Anim_OnRoar;
+			animEvents.OnHitStart -= Anim_OnHit;
+			animEvents.OnDieStart -= Anim_OnDie;
+			animEvents.OnDash -= Anim_Dash;
+			animEvents.OnTeleport -= Anim_Teleport;
+
+			life.OnDead -= LifeOnDead;
+
+			jumps.OnJump -= JumpsOnJumps;
+			jumps.OnLand -= JumpsOnLand;
+
+			meleeAttack.OnSwing -= MeleeSwingOnSwing;
+			meleeAttack.OnHitTarget -= MeleeAttackOnHitTarget;
+			meleeJumpAttack.OnSwing -= MeleeSwingOnSwing;
+			meleeJumpAttack.OnHitTarget -= MeleeAttackOnHitTarget;
+
+			chargeAttack.OnChargePress -= ChargeAttackOnChargeAttackChargePress;
+			chargeAttack.OnSpecialAttackHit -= ChargeAttackOnSpecialAttackHit;
+			chargeAttack.OnAttackHit -= ChargeAttackOnAttackHit;
+			chargeAttack.OnChargeStop -= ChargeAttackChargeStop;
+
+			kunaiAttack.OnThrow -= KunaiAttackOnThrow;
+
+		}
+
 		void ChargeAttackOnAttackHit(Attack attack)
 		{
-			if(attack == null)return;
-			if(Services.sfx.sounds.brock_bathit_sounds == null) Debug.Log("Attack destination floor point is null");
+			if (attack == null) return;
+			if (Services.sfx.sounds.brock_bathit_sounds == null) Debug.Log("Attack destination floor point is null");
 			Services.sfx.sounds.brock_bathit_sounds.PlayRandomAt(attack.DestinationFloorPoint);
 		}
 
@@ -63,34 +91,17 @@ namespace __SCRIPTS
 			Services.sfx.StopOngoingSound();
 		}
 
-		void OnDisable()
-		{
-			animEvents.OnStep -= Anim_OnStep;
-			animEvents.OnRoar -= Anim_OnRoar;
-			animEvents.OnHitStart -= Anim_OnHit;
-			animEvents.OnDieStart -= Anim_OnDie;
-			animEvents.OnDash -= Anim_Dash;
-			animEvents.OnTeleport -= Anim_Teleport;
-			jumps.OnJump -= JumpsOnJumps;
-			jumps.OnLand -= JumpsOnLand;
-			chargeAttack.OnChargePress -= ChargeAttackOnChargeAttackChargePress;
-			chargeAttack.OnSpecialAttackHit -= ChargeAttackOnSpecialAttackHit;
-			kunaiAttack.OnThrow -= KunaiAttackOnThrow;
-			life.OnDead -= LifeOnDead;
-			meleeAttack.OnSwing -= MeleeSwingOnSwing;
-			meleeAttack.OnHitTarget -= MeleeAttackOnHitTarget;
 
-			meleeJumpAttack.OnSwing -= MeleeSwingOnSwing;
-			meleeJumpAttack.OnHitTarget -= MeleeAttackOnHitTarget;
-			chargeAttack.OnChargeStop -= ChargeAttackChargeStop;
-		}
 
 		void MeleeSwingOnSwing() => Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);
 
-		void LifeOnDead(Attack attack) => Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+		void LifeOnDead(Attack attack)
+		{
+			Services.sfx.sounds.bloodSounds.PlayRandomAt(transform.position);
+			Services.sfx.StopOngoingSound();
+		}
 
 		void MeleeAttackOnHitTarget(Attack attack) => Services.sfx.sounds.brock_bathit_sounds.PlayRandomAt(attack.DestinationFloorPoint);
-
 
 		void KunaiAttackOnThrow() =>
 			Services.sfx.sounds.brock_bat_swing_sounds.PlayRandomAt(transform.position);

@@ -4,160 +4,116 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-    /// <summary>
-    /// ScriptableObject to define a scene with its metadata
-    /// and provide loading functionality
-    /// </summary>
-    [Serializable, CreateAssetMenu(fileName = "New Scene Definition", menuName = "Gangsta Bean/Scene Definition", order = 2)]
-    public class SceneDefinition : ScriptableObject
-    {
-        // In the Unity Editor, we reference the actual scene asset
-        [Header("Scene Reference"), Tooltip("The actual Unity scene asset")]
+	/// <summary>
+	/// ScriptableObject to define a scene with its metadata
+	/// and provide loading functionality
+	/// </summary>
+	[Serializable, CreateAssetMenu(fileName = "New Scene Definition", menuName = "Gangsta Bean/Scene Definition", order = 2)]
+	public class SceneDefinition : ScriptableObject
+	{
+		// In the Unity Editor, we reference the actual scene asset
+		[Header("Scene Reference"), Tooltip("The actual Unity scene asset")]
 #if UNITY_EDITOR
-        public UnityEditor.SceneAsset sceneAsset;
+		public UnityEditor.SceneAsset sceneAsset;
 #endif
 
-        [Header("Scene Info")]
-        public string sceneName;
+		[Header("Scene Info")] public string sceneName;
 
-        public string displayName;
+		public string displayName;
 
-        [Tooltip("Description of the scene"), TextArea(3, 5)]
-        public string description;
+		public string scenePath;
+		List<PlayerSpawnPoint> spawnPoints;
 
-        [Tooltip("Image shown during level transition")]
-        public Sprite sceneImage;
+		public string SceneName => sceneName;
 
-        [Header("Loading Screen")]
-        public bool requiresButtonPressToLoad = false;
-
-
-        [Header("Audio"), Tooltip("Music track to play in this scene")]
-        public AudioClip backgroundMusic;
-
-        // Scene path is derived from the asset (valid in editor only)
-        public string scenePath;
-        private List<PlayerSpawnPoint> spawnPoints;
-
-        /// <summary>
-        /// Get the scene name
-        /// </summary>
-        public string SceneName => sceneName;
-
-        /// <summary>
-        /// Gets the display name, or the scene name if no display name is set
-        /// </summary>
-        public string DisplayName => !string.IsNullOrEmpty(displayName) ? displayName : FormatForDisplay(name);
-
-        /// <summary>
-        /// The path to the scene asset
-        /// </summary>
-        public string ScenePath => scenePath;
-
-        /// <summary>
-        /// Checks if this scene definition is valid
-        /// </summary>
-        public bool IsValid() => !string.IsNullOrEmpty(sceneName);
-
-        private AssetManager assetManager;
-        private AssetManager AssetManager => assetManager ?? ServiceLocator.Get<AssetManager>();
+		public string DisplayName => !string.IsNullOrEmpty(displayName) ? displayName : FormatForDisplay(name);
+		public bool IsValid() => !string.IsNullOrEmpty(sceneName);
 
 
 
+		// Equality methods
+		public bool Equals(SceneDefinition other) =>
+			other != null && string.Equals(SceneName, other.SceneName, StringComparison.OrdinalIgnoreCase);
 
-        // Implicit conversion to string
-        public static implicit operator string(SceneDefinition definition) =>
-            definition?.SceneName ?? string.Empty;
+		public bool Equals(string _sceneName) =>
+			!string.IsNullOrEmpty(_sceneName) && string.Equals(SceneName, _sceneName, StringComparison.OrdinalIgnoreCase);
 
-        // Equality methods
-        public bool Equals(SceneDefinition other) =>
-            other != null && string.Equals(SceneName, other.SceneName, StringComparison.OrdinalIgnoreCase);
+		public override bool Equals(object obj)
+		{
+			if (obj is SceneDefinition other)
+				return Equals(other);
 
-        public bool Equals(string _sceneName) =>
-            !string.IsNullOrEmpty(_sceneName) && string.Equals(SceneName, _sceneName, StringComparison.OrdinalIgnoreCase);
+			if (obj is string _sceneName)
+				return Equals(_sceneName);
 
-        public override bool Equals(object obj)
-        {
-            if (obj is SceneDefinition other)
-                return Equals(other);
+			return false;
+		}
 
-            if (obj is string sceneName)
-                return Equals(sceneName);
+		public override int GetHashCode() => SceneName?.GetHashCode() ?? 0;
 
-            return false;
-        }
+		public override string ToString() => $"{DisplayName} ({SceneName})";
 
-        public override int GetHashCode() => SceneName?.GetHashCode() ?? 0;
+		/// <summary>
+		/// Create a default SceneDefinition from a scene name
+		/// </summary>
+		public static SceneDefinition CreateDefault(string sceneName)
+		{
+			var definition = CreateInstance<SceneDefinition>();
+			definition.sceneName = sceneName;
+			definition.displayName = FormatForDisplay(sceneName);
 
-        public override string ToString() => $"{DisplayName} ({SceneName})";
+			return definition;
+		}
 
-        /// <summary>
-        /// Create a default SceneDefinition from a scene name
-        /// </summary>
-        public static SceneDefinition CreateDefault(string sceneName)
-        {
-            var definition = CreateInstance<SceneDefinition>();
-            definition.sceneName = sceneName;
-            definition.displayName = FormatForDisplay(sceneName);
-            definition.description = $"Scene: {sceneName}";
+		// Format a string from camelCase to spaced words
+		public static string FormatForDisplay(string name)
+		{
+			if (string.IsNullOrEmpty(name))
+				return name;
 
+			// Remove "Scene" suffix if present
+			if (name.EndsWith("Scene"))
+				name = name.Substring(0, name.Length - 5);
 
-            return definition;
-        }
+			var result = "";
+			for (var i = 0; i < name.Length; i++)
+			{
+				if (i > 0 && char.IsUpper(name[i]))
+					result += " ";
+				result += name[i];
+			}
 
-
-
-        // Format a string from camelCase to spaced words
-        public static string FormatForDisplay(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-                return name;
-
-            // Remove "Scene" suffix if present
-            if (name.EndsWith("Scene"))
-                name = name.Substring(0, name.Length - 5);
-
-            var result = "";
-            for (var i = 0; i < name.Length; i++)
-            {
-                if (i > 0 && char.IsUpper(name[i]))
-                    result += " ";
-                result += name[i];
-            }
-
-            return result;
-        }
+			return result;
+		}
 
 #if UNITY_EDITOR
-        // Validate the scene definition in the editor
-        private void OnValidate()
-        {
-            // Update scene name and path from scene asset
-            if (sceneAsset != null)
-            {
-                scenePath = UnityEditor.AssetDatabase.GetAssetPath(sceneAsset);
-                sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePath);
+		// Validate the scene definition in the editor
+		void OnValidate()
+		{
+			// Update scene name and path from scene asset
+			if (sceneAsset != null)
+			{
+				scenePath = UnityEditor.AssetDatabase.GetAssetPath(sceneAsset);
+				sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePath);
 
-                // Set default display name if empty
-                if (string.IsNullOrEmpty(displayName))
-                    displayName = FormatForDisplay(sceneName);
+				// Set default display name if empty
+				if (string.IsNullOrEmpty(displayName))
+					displayName = FormatForDisplay(sceneName);
+			}
+		}
 
-            }
-        }
+		// Helper method to find a SceneAsset by name
+		public static UnityEditor.SceneAsset FindSceneAsset(string sceneName)
+		{
+			var guids = UnityEditor.AssetDatabase.FindAssets("t:Scene " + sceneName);
+			if (guids.Length > 0)
+			{
+				var assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
+				return UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditor.SceneAsset>(assetPath);
+			}
 
-        // Helper method to find a SceneAsset by name
-        public static UnityEditor.SceneAsset FindSceneAsset(string sceneName)
-        {
-            var guids = UnityEditor.AssetDatabase.FindAssets("t:Scene " + sceneName);
-            if (guids.Length > 0)
-            {
-                var assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
-                return UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditor.SceneAsset>(assetPath);
-            }
-
-            return null;
-        }
+			return null;
+		}
 #endif
-
-    }
+	}
 }

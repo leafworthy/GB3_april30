@@ -27,10 +27,43 @@ namespace __SCRIPTS
 		public override void SetPlayer(Player newPlayer)
 		{
 			base.SetPlayer(newPlayer);
+			StartListeningToPlayer();
+		}
+
+		void StartListeningToPlayer()
+		{
+			if (player == null) return;
+			isPressingChainsawButton = false;
+			isPressingChainsawReloadButton = false;
+			player.spawnedPlayerDefence.OnDead += OnPlayerDeath;
 			player.Controller.Attack2LeftTrigger.OnPress += PlayerChainsawPress;
 			player.Controller.Attack2LeftTrigger.OnRelease += PlayerChainsawRelease;
-			player.Controller.Attack3Circle.OnPress += PlayerChainsawPress;
-			player.Controller.Attack3Circle.OnRelease += PlayerChainsawRelease;
+			player.Controller.Attack3Circle.OnPress += PlayerChainsawReloadPress;
+			player.Controller.Attack3Circle.OnRelease += PlayerChainsawReloadRelease;
+		}
+
+		void OnPlayerDeath(Attack obj)
+		{
+			StopListeningToPlayer();
+		}
+
+		void StopListeningToPlayer()
+		{
+			SetState(weaponState.not);
+			isPressingChainsawButton = false;
+			isPressingChainsawReloadButton = false;
+			player.spawnedPlayerDefence.OnDead -= OnPlayerDeath;
+			if (player == null) return;
+			if(player.Controller == null) return;
+			player.Controller.Attack2LeftTrigger.OnPress -= PlayerChainsawPress;
+			player.Controller.Attack2LeftTrigger.OnRelease -= PlayerChainsawRelease;
+			player.Controller.Attack3Circle.OnPress -= PlayerChainsawReloadPress;
+			player.Controller.Attack3Circle.OnRelease -= PlayerChainsawReloadRelease;
+		}
+
+		void OnDisable()
+		{
+			StopListeningToPlayer();
 		}
 
 		protected override void DoAbility()
@@ -107,19 +140,6 @@ namespace __SCRIPTS
 		}
 
 
-		void OnDestroy()
-		{
-			SetState(weaponState.not);
-			isPressingChainsawButton = false;
-			if (player == null) return;
-			player.Controller.Attack2LeftTrigger.OnPress -= PlayerChainsawPress;
-			player.Controller.Attack2LeftTrigger.OnRelease -= PlayerChainsawRelease;
-			player.Controller.Attack3Circle.OnPress -= PlayerChainsawReloadPress;
-			player.Controller.Attack3Circle.OnRelease -= PlayerChainsawReloadRelease;
-		}
-
-
-
 		void PlayerChainsawReloadPress(NewControlButton obj)
 		{
 			isPressingChainsawReloadButton = true;
@@ -146,7 +166,6 @@ namespace __SCRIPTS
 
 		void AttackContinuously()
 		{
-
 			cooldownCounter += Time.fixedDeltaTime;
 			if (!(cooldownCounter >= offence.stats.Stats.Rate(3))) return;
 			cooldownCounter = 0;
@@ -161,6 +180,5 @@ namespace __SCRIPTS
 			SetState(weaponState.not);
 			base.StopAbility();
 		}
-
 	}
 }

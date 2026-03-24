@@ -20,7 +20,7 @@ namespace Sirenix.OdinValidator.Editor
         private static bool IsHeadlessOrBatchMode { get { return SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null || UnityEditorInternal.InternalEditorUtility.inBatchMode; } }
 
         [InitializeOnLoadMethod]
-        private static void Init()
+        private static void SetPlayer()
         {
 #if SIRENIX_INTERNAL
             #pragma warning disable 0162 // Unreachable code detected

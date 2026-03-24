@@ -114,7 +114,7 @@ namespace __SCRIPTS
 
 		protected override void PullOutWeapon()
 		{
-			Debug.Log("pull out here, state: " + currentState, this);
+			Debug.Log("pull out here, hudSlotState: " + currentState, this);
 			SetState(weaponState.pullOut);
 			PlayAnimationClip(CurrentGun.pullOutAnimationClip, 1);
 		}
@@ -163,10 +163,6 @@ namespace __SCRIPTS
 			player.Controller.Attack1RightTrigger.OnRelease += PlayerControllerShootRelease;
 		}
 
-		void OnDestroy()
-		{
-			StopListeningToEvents();
-		}
 
 		void OnDisable()
 		{

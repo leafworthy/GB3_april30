@@ -14,17 +14,14 @@ namespace __SCRIPTS
 		bool hasInit;
 		public event Action OnStatsReset;
 		public event Action<Player, PlayerStat> OnPlayerStatChange;
-		LevelManager _levelManager;
-		LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
-		EnemyManager _enemyManager;
-		EnemyManager enemyManager => _enemyManager ?? ServiceLocator.Get<EnemyManager>();
+
 
 		public void Start()
 		{
 			var player = GetComponent<Player>();
 			owner = player;
-			enemyManager.OnPlayerKillsEnemy += EnemiesOnPlayerKillsEnemy;
-			levelManager.OnStartLevel += t => ResetStats();
+			Services.enemyManager.OnPlayerKillsEnemy += EnemiesOnPlayerKillsEnemy;
+			Services.levelManager.OnStartLevel += ResetStats;
 			InitStats();
 		}
 
@@ -83,6 +80,11 @@ namespace __SCRIPTS
 		{
 			InitStats();
 			var changingStat = GetStat(type);
+			if(changingStat == null)
+			{
+				Debug.LogWarning( "Player " + owner.name + " does not have stat of type " + type + " to change.");
+				return;
+			}
 			changingStat.IncreaseStat(change);
 			OnPlayerStatChange?.Invoke(owner, changingStat);
 		}
@@ -98,6 +100,11 @@ namespace __SCRIPTS
 		{
 			InitStats();
 			var changingStat = GetStat(statType);
+			if (changingStat == null)
+			{
+				Debug.LogWarning( "Player " + owner.playerIndex + " does not have stat of type " + statType + " to set.");
+				return;
+			}
 			changingStat.SetStat(value);
 			OnPlayerStatChange?.Invoke(owner, changingStat);
 		}

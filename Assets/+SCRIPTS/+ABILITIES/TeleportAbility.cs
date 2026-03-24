@@ -40,7 +40,7 @@ public class TeleportAbility : Ability
 		TryToActivate();
 	}
 
-	void OnDestroy()
+	void OnDisable()
 	{
 		if (player == null) return;
 		if (player.Controller == null) return;

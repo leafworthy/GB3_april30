@@ -7,13 +7,8 @@ namespace __SCRIPTS
 	public class HUDManager : MonoBehaviour, IService
 	{
 		List<HUDSlot> currentHUDSlots = new();
-
 		public GameObject Vignette;
 
-		LevelManager _levelManager;
-		LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
-		Players _playerManager;
-		Players playerManager => _playerManager ?? ServiceLocator.Get<Players>();
 		bool isInGame;
 
 		public LineBar bossHealthbar;
@@ -33,36 +28,43 @@ namespace __SCRIPTS
 		{
 			Debug.Log("HUDmanager start service");
 			Vignette.SetActive(false);
-			levelManager.OnStartLevel += LevelSceneOnStartLevel;
-			levelManager.OnLevelSpawnedPlayerFromLevel += LevelSceneOnLevelSpawnedPlayerFromLevel;
-			levelManager.OnLevelSpawnedPlayerFromPlayerSetupMenu += LevelSceneOnLevelSpawnedPlayerFromPlayerSetupMenu;
-			levelManager.OnGameOver += Level_OnGameOver;
-			levelManager.OnStopLevel += t => Level_OnGameOver();
-
-			playerManager.OnPlayerJoins += PlayerOnPlayerJoins;
+			ListenToEvents();
 			DisableAllHUDSlots();
+		}
+
+		void ListenToEvents()
+		{
+			Services.levelManager.OnStartLevel += LevelSceneOnStartLevel;
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel += LevelSceneOnLevelSpawnedPlayerFromLevel;
+			Services.levelManager.OnLevelSpawnedPlayerFromPlayerSetupMenu += LevelSceneOnLevelSpawnedPlayerFromPlayerSetupMenu;
+			Services.levelManager.OnStopLevel += Level_OnGameOver;
+			Services.playerManager.OnPlayerJoins += PlayerOnPlayerJoins;
+		}
+
+		void StopListeningToEvents()
+		{
+			Services.levelManager.OnStartLevel -= LevelSceneOnStartLevel;
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel -= LevelSceneOnLevelSpawnedPlayerFromLevel;
+			Services.levelManager.OnLevelSpawnedPlayerFromPlayerSetupMenu -= LevelSceneOnLevelSpawnedPlayerFromPlayerSetupMenu;
+			Services.levelManager.OnStopLevel -= Level_OnGameOver;
+			Services.playerManager.OnPlayerJoins -= PlayerOnPlayerJoins;
 		}
 
 		void LevelSceneOnLevelSpawnedPlayerFromPlayerSetupMenu(Player player)
 		{
 			ShowHUD();
-			var playerStats = player.GetComponent<PlayerStats>();
-			if (playerStats != null) playerStats.ResetStats();
 		}
 
 		void LevelSceneOnLevelSpawnedPlayerFromLevel(Player player)
 		{
 			Debug.Log("[HUD MANAGER] spawned player from level for player " + player.playerIndex);
-			//ShowHUD();
-			//var playerStats = player.GetComponent<PlayerStats>();
-			//if (playerStats != null) playerStats.ResetStats();
 			SetHUDSlotPlayer(player);
 		}
 
 		void Level_OnGameOver()
 		{
 			Vignette.SetActive(false);
-			playerManager.SetActionMaps(Players.UIActionMap);
+			Services.playerManager.SetActionMaps(Players.UIActionMap);
 			isInGame = false;
 			DisableAllHUDSlots();
 		}
@@ -72,18 +74,17 @@ namespace __SCRIPTS
 			Debug.LogWarning("HUD DISABLED");
 
 			Vignette?.SetActive(false);
+			StopListeningToEvents();
 		}
 
 		void PlayerOnPlayerJoins(Player player)
 		{
 			if (!isInGame) return;
-			var playerStats = player.GetComponent<PlayerStats>();
-			if (playerStats != null) playerStats.ResetStats();
 			Debug.Log("[HUD MANAGER] player joined while in game, set hud slot player for " + player.name);
 			SetHUDSlotPlayer(player, true);
 		}
 
-		void LevelSceneOnStartLevel(GameLevel gameLevel)
+		void LevelSceneOnStartLevel()
 		{
 			Debug.Log("hud on join level");
 			ShowHUD();
@@ -91,11 +92,11 @@ namespace __SCRIPTS
 			Vignette.SetActive(true);
 		}
 
-		void SetHUDSlotPlayer(Player player, bool withMenu = false)
+		void SetHUDSlotPlayer(Player newPlayer, bool withMenu = false)
 		{
-			Debug.Log("set hud slot player " + player.name);
-			if (player == null) return;
-			var slot = GetFirstOpenSlot();
+			Debug.Log("set hud slot newPlayer " + newPlayer.name);
+			if (newPlayer == null) return;
+			var slot = newPlayer.currentHUDSlot ??= GetFirstOpenSlot();
 			if (slot == null)
 			{
 				Debug.Log("slot null");
@@ -105,16 +106,16 @@ namespace __SCRIPTS
 			slot.gameObject.SetActive(true);
 
 			if (withMenu)
-				slot.OpenCharacterSelectMenu(player);
+				slot.OpenCharacterSetupMenu(newPlayer);
 			else
-				slot.SetPlayer(player);
+				slot.OpenCharacterHUD(newPlayer);
 		}
 
 		HUDSlot GetFirstOpenSlot()
 		{
 			if (currentHUDSlots.Count == 0) currentHUDSlots = GetComponentsInChildren<HUDSlot>(true).ToList();
 
-			foreach (var hudSlot in currentHUDSlots.Where(hudSlot => !hudSlot.IsActive))
+			foreach (var hudSlot in currentHUDSlots.Where(hudSlot => hudSlot.currentHUDSlotState == HUDSlot.HUDSlotState.not))
 			{
 				return hudSlot;
 			}
@@ -129,6 +130,7 @@ namespace __SCRIPTS
 			currentHUDSlots = GetComponentsInChildren<HUDSlot>(true).ToList();
 			foreach (var hudSlot in currentHUDSlots)
 			{
+				if (hudSlot == null) continue;
 				hudSlot.gameObject.SetActive(false);
 			}
 		}
@@ -137,6 +139,21 @@ namespace __SCRIPTS
 		{
 			if (bossHealthbar == null) return;
 			bossHealthbarGameObject.SetActive(value);
+		}
+
+		public void ResetHUD()
+		{
+			currentHUDSlots = GetComponentsInChildren<HUDSlot>(true).ToList();
+			foreach (var hudSlot in currentHUDSlots)
+			{
+				if (hudSlot == null) continue;
+				hudSlot.ResetHUDSlot();
+				hudSlot.gameObject.SetActive(false);
+			}
+
+			DisableAllHUDSlots();
+			Vignette.SetActive(false);
+			SetBossLifeHealthbarVisible(false);
 		}
 	}
 }

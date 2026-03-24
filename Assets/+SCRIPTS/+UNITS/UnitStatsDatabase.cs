@@ -201,7 +201,7 @@ public class UnitStatsDatabase : ScriptableObject
 	}
 
 	// Clean up when the application quits
-	private void OnDestroy()
+	private void OnDisable()
 	{
 		if (coroutineRunner == null) return;
 		if (Application.isPlaying) DestroyImmediate(coroutineRunner.gameObject);

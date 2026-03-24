@@ -53,7 +53,7 @@ namespace __SCRIPTS
 			ListenToPlayer();
 		}
 
-		void OnDestroy()
+		void OnDisable()
 		{
 			StopListeningToPlayer();
 		}

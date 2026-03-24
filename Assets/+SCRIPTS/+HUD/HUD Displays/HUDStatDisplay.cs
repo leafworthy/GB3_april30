@@ -4,61 +4,77 @@ using UnityEngine;
 
 namespace __SCRIPTS.HUD_Displays
 {
-
 	public class HUDStatDisplay : MonoBehaviour, INeedPlayer
 	{
 		public PlayerStat.StatType statType;
 		public TMP_Text displayText;
-		public GameObject statIcon;
-		private Player owner;
+		Player owner;
 		public bool hasMax;
+		PlayerStats playerStats;
 
-		private float CurrentAmount => Services.playerStatsManager.GetStatAmount(owner, statType);
+		float CurrentAmount => Services.playerStatsManager.GetStatAmount(owner, statType);
 
-		private void Start()
+		void OnDisable()
 		{
-			Services.levelManager.OnStartLevel += (t) => UpdateDisplay();
-			Services.levelManager.OnLevelSpawnedPlayerFromLevel += (t) => UpdateDisplay();
+			StopListeningToEvents();
 		}
-
 
 		public void SetPlayer(Player newPlayer)
 		{
 			owner = newPlayer;
-			var playerStats = owner.GetComponent<PlayerStats>();
-			if(playerStats == null)
-			{
+			playerStats = owner.GetComponent<PlayerStats>();
+			if (playerStats == null) return;
 
-				return;
-			}
-
-			playerStats.OnPlayerStatChange += Players_PlayerStatChange;
-			playerStats.OnStatsReset += UpdateDisplay;
+			ListenToEvents();
 			UpdateDisplay();
 		}
 
-		private void Players_PlayerStatChange(Player player, PlayerStat playerStat)
+		void ListenToEvents()
+		{
+			if (playerStats != null)
+			{
+				playerStats.OnPlayerStatChange += Players_PlayerStatChange;
+				playerStats.OnStatsReset += UpdateDisplay;
+			}
+
+			Services.levelManager.OnStartLevel += UpdateDisplay;
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel += UpdateDisplay;
+		}
+
+		void StopListeningToEvents()
+		{
+			if (playerStats != null)
+			{
+				playerStats.OnPlayerStatChange -= Players_PlayerStatChange;
+				playerStats.OnStatsReset -= UpdateDisplay;
+			}
+
+			Services.levelManager.OnStartLevel -= UpdateDisplay;
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel -= UpdateDisplay;
+		}
+
+		void UpdateDisplay(Player obj)
 		{
 			UpdateDisplay();
 		}
 
-		private void UpdateDisplay()
+		void Players_PlayerStatChange(Player player, PlayerStat playerStat)
+		{
+			UpdateDisplay();
+		}
+
+		void UpdateDisplay()
 		{
 			if (owner == null) return;
 
 			var currentAmount = CurrentAmount;
-			// Don't display negative values (which indicate uninitialized stats)
+
 			if (currentAmount < 0) currentAmount = 0;
 
-			if(hasMax)
-			{
-				displayText.text = currentAmount.ToString() +"/" + Services.playerStatsManager.MaxGas.ToString();
-			}
+			if (hasMax)
+				displayText.text = currentAmount + "/" + Services.playerStatsManager.MaxRescues;
 			else
-			{
 				displayText.text = currentAmount.ToString();
-			}
-
 		}
 	}
 }

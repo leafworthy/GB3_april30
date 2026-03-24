@@ -29,8 +29,8 @@ namespace SingularityGroup.HotReload.Editor {
         int selectedTab;
 
         internal static Vector2 scrollPos;
-        
-        static Timer timer; 
+
+        static Timer timer;
 
 
         HotReloadRunTab runTab;
@@ -66,7 +66,7 @@ namespace SingularityGroup.HotReload.Editor {
                 }
             }
         }
-        
+
         [MenuItem(Translations.MenuItems.RecompileHotReload)]
         internal static void Recompile() {
             HotReloadRunTab.Recompile();
@@ -91,7 +91,7 @@ namespace SingularityGroup.HotReload.Editor {
             }
             cancelTokenSource = new CancellationTokenSource();
             cancelToken = cancelTokenSource.Token;
-            
+
             this.titleContent = new GUIContent(" Hot Reload", GUIHelper.GetInvertibleIcon(InvertibleIcon.Logo));
             _showOnStartupOption = HotReloadPrefs.ShowOnStartup;
 
@@ -113,14 +113,14 @@ namespace SingularityGroup.HotReload.Editor {
             if (Current == this) {
                 Current = null;
             }
-            timer.Dispose();
+	            timer.Dispose();
             timer = null;
         }
 
         internal void SelectTab(Type tabType) {
             selectedTab = Tabs.FindIndex(x => x.GetType() == tabType);
         }
-        
+
         public HotReloadRunTabState RunTabState { get; private set; }
         void OnGUI() {
             // TabState ensures rendering is consistent between Layout and Repaint calls
@@ -189,7 +189,7 @@ namespace SingularityGroup.HotReload.Editor {
             } else {
                 GUI.DrawTexture(backgroundRect, EditorTextures.LightGray238, ScaleMode.StretchToFill);
             }
-            
+
             var foregroundRect = backgroundRect;
             foregroundRect.yMin += padding;
             foregroundRect.yMax -= padding;
@@ -243,7 +243,7 @@ namespace SingularityGroup.HotReload.Editor {
             if (updateAvailable) {
                 RenderUpdateButton(newVersion);
             }
-            
+
             using(new EditorGUILayout.HorizontalScope("ProjectBrowserBottomBarBg", GUILayout.ExpandWidth(true), GUILayout.Height(25f))) {
                 RenderBottomBarCore();
             }
@@ -253,10 +253,10 @@ namespace SingularityGroup.HotReload.Editor {
         static GUIStyle renderAppBoxStyle => _renderAppBoxStyle ?? (_renderAppBoxStyle = new GUIStyle(GUI.skin.box) {
             padding = new RectOffset(10, 10, 0, 0)
         });
-        
+
         static GUILayoutOption[] _nonExpandable;
         public static GUILayoutOption[] NonExpandableLayout => _nonExpandable ?? (_nonExpandable = new [] {GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(true)});
-        
+
         internal static void RenderRateApp() {
             if (!ShouldShowRateApp()) {
                 return;
@@ -309,7 +309,7 @@ namespace SingularityGroup.HotReload.Editor {
                 packageUpdateChecker.UpdatePackageAsync(newVersion).Forget(CancellationToken.None);
             }
         }
-        
+
         internal static void RenderShowOnStartup() {
             var prevLabelWidth = EditorGUIUtility.labelWidth;
             try {

@@ -1,6 +1,8 @@
 using __SCRIPTS.Cursor;
+using FunkyCode;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using Light2D = UnityEngine.Rendering.Universal.Light2D;
 
 namespace __SCRIPTS
 {

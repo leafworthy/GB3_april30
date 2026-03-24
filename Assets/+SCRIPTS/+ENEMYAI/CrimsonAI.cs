@@ -110,6 +110,7 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings, ICanAttack
 	void StartRunToPoint()
 	{
 		target = PickARandomTarget();
+		if (target == null) return;
 		animator.SetBool(IsRunning, true);
 		currentTargetPosition = target.transform.position;
 		isIdle = false;
@@ -118,7 +119,7 @@ public class CrimsonAI : MonoBehaviour, ICanMoveThings, ICanAttack
 	void RunToPointUpdate()
 	{
 		if (Services.pauseManager.IsPaused) return;
-
+		if (target == null) return;
 		currentDirection = ((Vector2) target.transform.position - (Vector2) transform.position).normalized;
 		OnMoveInDirection?.Invoke(currentDirection);
 	}

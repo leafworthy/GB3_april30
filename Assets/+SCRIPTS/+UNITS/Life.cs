@@ -115,7 +115,7 @@ namespace __SCRIPTS
 
 			if (!Stats.ShouldDestroyOnDeath()) return;
 
-			Services.objectMaker.Unmake(gameObject);
+			Destroy(gameObject);
 		}
 
 		void CompleteDeathDelayed()

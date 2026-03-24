@@ -21,7 +21,7 @@
         </member>
         <member name="P:Sirenix.Utilities.Editor.EditorIcon.Active">
             <summary>
-                Gets the icon's active texture.
+                Gets the icon's characterHUD texture.
             </summary>
         </member>
         <member name="P:Sirenix.Utilities.Editor.EditorIcon.Inactive">
@@ -31,7 +31,7 @@
         </member>
         <member name="P:Sirenix.Utilities.Editor.EditorIcon.ActiveGUIContent">
             <summary>
-                Gets a GUIContent object with the active texture.
+                Gets a GUIContent object with the characterHUD texture.
             </summary>
         </member>
         <member name="P:Sirenix.Utilities.Editor.EditorIcon.InactiveGUIContent">
@@ -694,7 +694,7 @@
         </member>
         <member name="P:Sirenix.Utilities.Editor.EditorIcons.ObjectFieldButton">
             <summary>
-                Gets the ObjectFieldButton texture based on the current active theme.
+                Gets the ObjectFieldButton texture based on the current characterHUD theme.
             </summary>
         </member>
         <member name="T:Sirenix.Utilities.Editor.LazyEditorIcon">
@@ -714,7 +714,7 @@
         </member>
         <member name="P:Sirenix.Utilities.Editor.LazyEditorIcon.Active">
             <summary>
-                Gets the icon's active texture.
+                Gets the icon's characterHUD texture.
             </summary>
         </member>
         <member name="P:Sirenix.Utilities.Editor.LazyEditorIcon.Inactive">
@@ -1825,7 +1825,7 @@
         </member>
         <member name="M:Sirenix.Utilities.Editor.GUIHelper.PushGUIEnabled(System.Boolean)">
             <summary>
-                Pushes a state to the GUI enabled stack. Remember to pop the state with<see cref="M:Sirenix.Utilities.Editor.GUIHelper.PopGUIEnabled"/>.
+                Pushes a hudSlotState to the GUI enabled stack. Remember to pop the hudSlotState with<see cref="M:Sirenix.Utilities.Editor.GUIHelper.PopGUIEnabled"/>.
             </summary>
             <param name="enabled">If set to <c>true</c> GUI will be enabled. Otherwise GUI will be disabled.
             </param>
@@ -1838,21 +1838,21 @@
         </member>
         <member name="M:Sirenix.Utilities.Editor.GUIHelper.PushIsDrawingDictionaryKey(System.Boolean)">
             <summary>
-                Pushes a state to the IsDrawingDictionaryKey stack. Remember to pop the state with<see
+                Pushes a hudSlotState to the IsDrawingDictionaryKey stack. Remember to pop the hudSlotState with<see
                     cref="M:Sirenix.Utilities.Editor.GUIHelper.PopIsDrawingDictionaryKey"/>.
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.Editor.GUIHelper.PopIsDrawingDictionaryKey">
             <summary>
-                Pops the state pushed by
+                Pops the hudSlotState pushed by
                 <see cref="M:Sirenix.Utilities.Editor.GUIHelper.PushIsDrawingDictionaryKey(System.Boolean)"/>
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.Editor.GUIHelper.PushHierarchyMode(System.Boolean,System.Boolean)">
             <summary>
-                Pushes the hierarchy mode to the stack. Remember to pop the state with<see cref="M:Sirenix.Utilities.Editor.GUIHelper.PopHierarchyMode"/>.
+                Pushes the hierarchy mode to the stack. Remember to pop the hudSlotState with<see cref="M:Sirenix.Utilities.Editor.GUIHelper.PopHierarchyMode"/>.
             </summary>
-            <param name="hierarchyMode">The hierachy mode state to push.</param>
+            <param name="hierarchyMode">The hierachy mode hudSlotState to push.</param>
             <param name="preserveCurrentLabelWidth">Changing hierachy mode also changes how label-widths are calcualted. By default, we try to keep the current
                 label width.
             </param>
@@ -1864,13 +1864,13 @@
         </member>
         <member name="M:Sirenix.Utilities.Editor.GUIHelper.PushIsBoldLabel(System.Boolean)">
             <summary>
-                Pushes bold label state to the stack. Remember to pop with<see cref="M:Sirenix.Utilities.Editor.GUIHelper.PopIsBoldLabel"/>.
+                Pushes bold label hudSlotState to the stack. Remember to pop with<see cref="M:Sirenix.Utilities.Editor.GUIHelper.PopIsBoldLabel"/>.
             </summary>
             <param name="isBold">Value indicating if labels should be bold or not.</param>
         </member>
         <member name="M:Sirenix.Utilities.Editor.GUIHelper.PopIsBoldLabel">
             <summary>
-                Pops the bold label state pushed by<see cref="M:Sirenix.Utilities.Editor.GUIHelper.PushIsBoldLabel(System.Boolean)"/>.
+                Pops the bold label hudSlotState pushed by<see cref="M:Sirenix.Utilities.Editor.GUIHelper.PushIsBoldLabel(System.Boolean)"/>.
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.Editor.GUIHelper.PushIndentLevel(System.Int32)">
@@ -2377,7 +2377,7 @@
         </member>
         <member name="M:Sirenix.Utilities.Editor.GUIPagingHelper.DrawToolbarPagingButtons(UnityEngine.Rect@,System.Boolean,System.Boolean,System.Int32)">
             <summary>
-                Draws right-aligned toolbar paging buttons.
+                Draws right-aligned toolbar paging characterSelectButtons.
             </summary>
         </member>
         <member name="T:Sirenix.Utilities.Editor.GUITabGroup">
@@ -2458,7 +2458,7 @@
         </member>
         <member name="P:Sirenix.Utilities.Editor.GUITabGroup.ToolbarHeight">
             <summary>
-                The height of the tab buttons.
+                The height of the tab characterSelectButtons.
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.Editor.GUITabGroup.RegisterTab(System.String)">
@@ -2507,7 +2507,7 @@
                 <code>
                     private GUITable table;
 
-                    private void Init()
+                    private void SetPlayer()
                     {
                     bool[,] boolArr = new bool[20,20];
 
@@ -2532,7 +2532,7 @@
                 <code>
                     private GUITable table;
 
-                    private void Init()
+                    private void SetPlayer()
                     {
                     Listt&lt;SomeClasst&gt; someList = new List&lt;SomeClass&gt;() { new SomeClass(), new SomeClass(), new SomeClass() };
 
@@ -7672,7 +7672,7 @@
         </member>
         <member name="P:Sirenix.Utilities.Editor.SirenixEditorGUI.ShowButtonResultsByDefault">
             <summary>
-                Show buttons results by default.
+                Show characterSelectButtons results by default.
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.ObjectField(UnityEngine.Rect,UnityEngine.GUIContent,UnityEngine.Object,System.Type,System.Boolean,System.Boolean)">
@@ -7871,7 +7871,7 @@
             </param>
             <param name="wide">If set to <c>true</c> the message box will be wide.
             </param>
-            <returns>State of isFolded.</returns>
+            <returns>HUDSlotState of isFolded.</returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DetailedMessageBox(System.String,System.String,UnityEditor.MessageType,System.Boolean,System.Int32)">
             <summary>
@@ -7883,7 +7883,7 @@
             <param name="hideDetailedMessage">If set to <c>true</c> the detailed message is hidden.
             </param>
             <param name="fontSize">The font size of the text. This also affects the size of the icon.</param>
-            <returns>State of isFolded.</returns>
+            <returns>HUDSlotState of isFolded.</returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.IconMessageBox(System.String,Sirenix.OdinInspector.SdfIconType,System.Nullable{UnityEngine.Color},UnityEngine.GUIStyle,System.Action{UnityEditor.GenericMenu})">
             <summary>
@@ -8043,7 +8043,7 @@
             <param name="icon">The icon for the button.</param>
             <returns>
                 <c>true</c>
-                while the button is active. Otherwise <c>false</c>.
+                while the button is characterHUD. Otherwise <c>false</c>.
             </returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.IconRepeatButton(Sirenix.Utilities.Editor.EditorIcon,System.Int32)">
@@ -8054,7 +8054,7 @@
             <param name="size">The size.</param>
             <returns>
                 <c>true</c>
-                while the button is active. Otherwise <c>false</c>.
+                while the button is characterHUD. Otherwise <c>false</c>.
             </returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.IconRepeatButton(Sirenix.Utilities.Editor.EditorIcon,System.Int32,System.Int32)">
@@ -8066,7 +8066,7 @@
             <param name="height">The height of the button.</param>
             <returns>
                 <c>true</c>
-                while the button is active. Otherwise <c>false</c>.
+                while the button is characterHUD. Otherwise <c>false</c>.
             </returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.SDFIconButton(System.String,System.Single,Sirenix.OdinInspector.SdfIconType,Sirenix.OdinInspector.IconAlignment,UnityEngine.GUIStyle)">
@@ -8237,7 +8237,7 @@
                 Draws a toolbar icon button.
             </summary>
             <param name="content">The GUI content for the button.</param>
-            <param name="selected">Whether the button state is selected or not</param>
+            <param name="selected">Whether the button hudSlotState is selected or not</param>
             <returns>
                 <c>true</c>
                 if the button was pressed. Otherwise <c>false</c>.
@@ -8248,7 +8248,7 @@
                 Draws a toolbar icon button.
             </summary>
             <param name="label">The label for the button.</param>
-            <param name="selected">Whether the button state is selected or not</param>
+            <param name="selected">Whether the button hudSlotState is selected or not</param>
             <returns>
                 <c>true</c>
                 if the button was pressed. Otherwise <c>false</c>.
@@ -8258,51 +8258,51 @@
             <summary>
                 Draws a toolbar toggle.
             </summary>
-            <param name="isActive">Current state of the toggle.</param>
+            <param name="isActive">Current hudSlotState of the toggle.</param>
             <param name="icon">The icon for the toggle.</param>
-            <returns>The state of the toggle.</returns>
+            <returns>The hudSlotState of the toggle.</returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.ToolbarToggle(System.Boolean,UnityEngine.Texture)">
             <summary>
                 Draws a toolbar toggle.
             </summary>
-            <param name="isActive">Current state of the toggle.</param>
+            <param name="isActive">Current hudSlotState of the toggle.</param>
             <param name="icon">The icon for the toggle.</param>
-            <returns>The state of the toggle.</returns>
+            <returns>The hudSlotState of the toggle.</returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.ToolbarToggle(System.Boolean,UnityEngine.GUIContent)">
             <summary>
                 Draws a toolbar toggle.
             </summary>
-            <param name="isActive">Current state of the toggle.</param>
+            <param name="isActive">Current hudSlotState of the toggle.</param>
             <param name="content">The GUI content for the button.</param>
-            <returns>The state of the toggle.</returns>
+            <returns>The hudSlotState of the toggle.</returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.ToolbarToggle(System.Boolean,System.String)">
             <summary>
                 Draws a toolbar toggle.
             </summary>
-            <param name="isActive">Current state of the toggle.</param>
+            <param name="isActive">Current hudSlotState of the toggle.</param>
             <param name="text">The text for the toggle.</param>
-            <returns>The state of the toggle.</returns>
+            <returns>The hudSlotState of the toggle.</returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.ToolbarTab(System.Boolean,System.String)">
             <summary>
                 Draws a toolbar tab.
             </summary>
-            <param name="isActive">If <c>true</c> the tab will be the active tab.
+            <param name="isActive">If <c>true</c> the tab will be the characterHUD tab.
             </param>
             <param name="label">Name for the tab.</param>
-            <returns>State of isActive.</returns>
+            <returns>HUDSlotState of isActive.</returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.ToolbarTab(System.Boolean,UnityEngine.GUIContent)">
             <summary>
                 Draws a toolbar tab.
             </summary>
-            <param name="isActive">If <c>true</c> the tab will be the active tab.
+            <param name="isActive">If <c>true</c> the tab will be the characterHUD tab.
             </param>
             <param name="label">Label for the tab.</param>
-            <returns>State of isActive.</returns>
+            <returns>HUDSlotState of isActive.</returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawSolidRect(UnityEngine.Rect,UnityEngine.Color,System.Boolean)">
             <summary>
@@ -8456,23 +8456,23 @@
             </summary>
             <param name="indent">The indent of the button.</param>
             <param name="text">The text of the button.</param>
-            <param name="isActive">The current state of the button.</param>
+            <param name="isActive">The current hudSlotState of the button.</param>
             <param name="icon">The texture icon for the button.</param>
-            <returns>The current state of the button.</returns>
+            <returns>The current hudSlotState of the button.</returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginFadeGroup(System.Object,System.Boolean)">
             <summary>
                 Begins a fade group. Remember to end with<see cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.EndFadeGroup"/>.
             </summary>
             <param name="key">The key for the fade group.</param>
-            <param name="isVisible">Current state of the fade group.</param>
+            <param name="isVisible">Current hudSlotState of the fade group.</param>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginFadeGroup(System.Object,System.Boolean,System.Single@)">
             <summary>
                 Begins a fade group. Remember to end with<see cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.EndFadeGroup"/>.
             </summary>
             <param name="key">The key for the fade group.</param>
-            <param name="isVisible">Current state of the fade group.</param>
+            <param name="isVisible">Current hudSlotState of the fade group.</param>
             <param name="t">A value between 0 and 1 indicating how expanded the fade group is.</param>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginFadeGroup(System.Object,System.Object,System.Boolean)">
@@ -8481,7 +8481,7 @@
             </summary>
             <param name="primaryKey">The primary key for the fade group.</param>
             <param name="secondaryKey">The secondly key for the fade group.</param>
-            <param name="isVisible">Current state of the fade group.</param>
+            <param name="isVisible">Current hudSlotState of the fade group.</param>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginFadeGroup(System.Object,System.String,System.Boolean)">
             <summary>
@@ -8489,14 +8489,14 @@
             </summary>
             <param name="key">The key for the fade group.</param>
             <param name="name">The name of the fade group.</param>
-            <param name="isVisible">Current state of the fade group.</param>
+            <param name="isVisible">Current hudSlotState of the fade group.</param>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginFadeGroup(System.Object,System.Boolean,System.Single)">
             <summary>
                 Begins a fade group. Remember to end with<see cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.EndFadeGroup"/>.
             </summary>
             <param name="key">The key for the fade group.</param>
-            <param name="isVisible">Current state of the fade group.</param>
+            <param name="isVisible">Current hudSlotState of the fade group.</param>
             <param name="duration">The duration of fade in and out.</param>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginFadeGroup(System.Object,System.Boolean,System.Single@,System.Single)">
@@ -8504,7 +8504,7 @@
                 Begins a fade group. Remember to end with<see cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.EndFadeGroup"/>.
             </summary>
             <param name="key">The key for the fade group.</param>
-            <param name="isVisible">Current state of the fade group.</param>
+            <param name="isVisible">Current hudSlotState of the fade group.</param>
             <param name="t">A value between 0 and 1 indicating how expanded the fade group is.</param>
             <param name="duration">The duration of fade in and out.</param>
         </member>
@@ -8514,7 +8514,7 @@
             </summary>
             <param name="primaryKey">The primary key for the fade group.</param>
             <param name="secondaryKey">The secondly key for the fade group.</param>
-            <param name="isVisible">Current state of the fade group.</param>
+            <param name="isVisible">Current hudSlotState of the fade group.</param>
             <param name="duration">The duration of fade in and out.</param>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginFadeGroup(System.Object,System.String,System.Boolean,System.Single)">
@@ -8523,7 +8523,7 @@
             </summary>
             <param name="key">The key for the fade group.</param>
             <param name="name">The name of the fade group.</param>
-            <param name="isVisible">Current state of the fade group.</param>
+            <param name="isVisible">Current hudSlotState of the fade group.</param>
             <param name="duration">The duration of fade in and out.</param>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginFadeGroup(System.Single)">
@@ -8541,18 +8541,18 @@
             <summary>
                 Draws a foldout field where clicking on the label toggles to the foldout too.
             </summary>
-            <param name="isVisible">The current state of the foldout.</param>
+            <param name="isVisible">The current hudSlotState of the foldout.</param>
             <param name="label">The label of the foldout.</param>
             <param name="style">The GUI style.</param>
             <returns>
-                The current state of the foldout.
+                The current hudSlotState of the foldout.
             </returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.Foldout(System.Boolean,UnityEngine.GUIContent,UnityEngine.GUIStyle)">
             <summary>
                 Draws a foldout field where clicking on the label toggles to the foldout too.
             </summary>
-            <param name="isVisible">The current state of the foldout.</param>
+            <param name="isVisible">The current hudSlotState of the foldout.</param>
             <param name="label">The label of the foldout.</param>
             <param name="style">The GUI style.</param>
         </member>
@@ -8560,7 +8560,7 @@
             <summary>
                 Draws a foldout field where clicking on the label toggles to the foldout too.
             </summary>
-            <param name="isVisible">The current state of the foldout.</param>
+            <param name="isVisible">The current hudSlotState of the foldout.</param>
             <param name="label">The label of the foldout.</param>
             <param name="valueRect">The value rect.</param>
             <param name="style">The GUI style.</param>
@@ -8570,7 +8570,7 @@
                 Draws a foldout field where clicking on the label toggles to the foldout too.
             </summary>
             <param name="rect">The rect to draw the foldout field in.</param>
-            <param name="isVisible">The current state of the foldout.</param>
+            <param name="isVisible">The current hudSlotState of the foldout.</param>
             <param name="label">The label of the foldout.</param>
             <param name="style">The style.</param>
         </member>
@@ -8579,7 +8579,7 @@
                 Draws a foldout field where clicking on the label toggles to the foldout too.
             </summary>
             <param name="rect">The rect to draw the foldout field in.</param>
-            <param name="isVisible">The current state of the foldout.</param>
+            <param name="isVisible">The current hudSlotState of the foldout.</param>
             <param name="label">The label of the foldout.</param>
             <param name="style">The style.</param>
         </member>
@@ -9466,7 +9466,7 @@
         </member>
         <member name="F:Sirenix.Utilities.Editor.SirenixGUIStyles.MenuButtonActiveBgColor">
             <summary>
-                Menu button active background color.
+                Menu button characterHUD background color.
             </summary>
         </member>
         <member name="F:Sirenix.Utilities.Editor.SirenixGUIStyles.MenuButtonBorderColor">
@@ -10526,7 +10526,7 @@
                 therefore centimeters have a multipler of 100.
             </param>
             <example>
-                <para>Example of adding centimeters as a custom unit.</para>
+                <para>ResetOnF1 of adding centimeters as a custom unit.</para>
                 <code>
                     UnitNumberUtility.AddCustomUnit("Centimeter", new string[]{ "cm" }, "Distance", 100m);
                 </code>
@@ -10547,7 +10547,7 @@
                 therefore centimeters have a multipler of 100.
             </param>
             <example>
-                <para>Example of adding centimeters as a custom unit.</para>
+                <para>ResetOnF1 of adding centimeters as a custom unit.</para>
                 <code>
                     UnitNumberUtility.AddCustomUnit("Centimeter", new string[]{ "cm" }, UnitCategory.Distance, 100m);
                 </code>
@@ -10572,7 +10572,7 @@
                 x * 100m;</c>.
             </param>
             <example>
-                <para>Example of adding centimeters as a custom unit.</para>
+                <para>ResetOnF1 of adding centimeters as a custom unit.</para>
                 <code>
                     UnitNumberUtility.AddCustomUnit("Centimeter", new string[]{ "cm" }, "Distance", x =&gt; x / 100m, x = &gt; x * 100m);
                 </code>
@@ -10598,7 +10598,7 @@
             </param>
             ///
             <example>
-                <para>Example of adding centimeters as a custom unit.</para>
+                <para>ResetOnF1 of adding centimeters as a custom unit.</para>
                 <code>
                     UnitNumberUtility.AddCustomUnit("Centimeter", new string[]{ "cm" }, UnitCategory.Distance, x =&gt; x / 100m, x = &gt; x * 100m);
                 </code>

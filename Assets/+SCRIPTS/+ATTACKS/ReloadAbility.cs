@@ -50,7 +50,7 @@ namespace __SCRIPTS
 			OnReload?.Invoke();
 		}
 
-		public void OnDestroy()
+		public void OnDisable()
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;

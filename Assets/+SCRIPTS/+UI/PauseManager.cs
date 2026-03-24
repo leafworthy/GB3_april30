@@ -7,8 +7,8 @@ namespace __SCRIPTS
 	public class PauseManager : MonoBehaviour, IService
 	{
 		//STATE
-		private MenuButton currentlySelectedCharacterButton;
-		private Player pausingPlayer;
+		MenuButton currentlySelectedCharacterButton;
+		Player pausingPlayer;
 		public event Action<Player> OnPause;
 		public event Action<Player> OnUnpause;
 		public event Action OnPlayerPressedSelect;
@@ -16,22 +16,20 @@ namespace __SCRIPTS
 		public event Action OnPlayerPressedDown;
 		public MenuButtons menuButtons;
 		public GameObject graphic;
-		private bool isListening;
 		public bool IsPaused;
-		private List<Player> playersBeingListenedTo = new();
-
+		List<Player> playersBeingListenedTo = new();
 
 		public void StartService()
 		{
+			Debug.Log("pause manager start");
 			Services.levelManager.OnLevelSpawnedPlayerFromLevel += ListenToJoinedLevelSpawnedPlayer;
 			Services.levelManager.OnLevelSpawnedPlayerFromPlayerSetupMenu += ListenToJoinedLevelSpawnedPlayer;
 
-			// Hide menu graphic initially
 			if (graphic != null)
 				graphic.SetActive(false);
 		}
 
-		private void ListenToJoinedLevelSpawnedPlayer(Player newPlayer)
+		void ListenToJoinedLevelSpawnedPlayer(Player newPlayer)
 		{
 			if (playersBeingListenedTo.Contains(newPlayer)) return;
 			playersBeingListenedTo.Add(newPlayer);
@@ -41,19 +39,26 @@ namespace __SCRIPTS
 			newPlayer.Controller.Cancel.OnPress += PlayerPressedCancel;
 			newPlayer.Controller.UIAxis.OnUp += PlayerPressedUp;
 			newPlayer.Controller.UIAxis.OnDown += PlayerPressedDown;
-			isListening = true;
 		}
 
-		private void OnDisable()
+		void OnDisable()
 		{
 			StopListeningToJoinedPlayers();
 			Services.levelManager.OnLevelSpawnedPlayerFromLevel -= ListenToJoinedLevelSpawnedPlayer;
+			Services.levelManager.OnLevelSpawnedPlayerFromPlayerSetupMenu -= ListenToJoinedLevelSpawnedPlayer;
+			 OnPause = null;
+			 OnUnpause = null;
+			 OnPlayerPressedSelect = null;
+			 OnPlayerPressedUp = null;
+			 OnPlayerPressedDown = null;
+			 menuButtons = null;
+			 pausingPlayer = null;
+			 currentlySelectedCharacterButton = null;
 		}
 
-		private void StopListeningToJoinedPlayers()
+		void StopListeningToJoinedPlayers()
 		{
-			if (!isListening) return;
-			isListening = false;
+
 			foreach (var joinedPlayer in playersBeingListenedTo)
 			{
 				joinedPlayer.Controller.Pause.OnPress -= PlayerPressedPause;
@@ -67,7 +72,7 @@ namespace __SCRIPTS
 			playersBeingListenedTo.Clear();
 		}
 
-		private void PlayerPressedDown(IControlAxis controlAxis)
+		void PlayerPressedDown(IControlAxis controlAxis)
 		{
 			if (controlAxis.owner != pausingPlayer) return;
 
@@ -75,7 +80,7 @@ namespace __SCRIPTS
 			OnPlayerPressedDown?.Invoke();
 		}
 
-		private void PlayerPressedSelect(NewControlButton newControlButton)
+		void PlayerPressedSelect(NewControlButton newControlButton)
 		{
 			if (newControlButton.owner != pausingPlayer) return;
 			currentlySelectedCharacterButton = menuButtons.GetCurrentButton();
@@ -97,12 +102,12 @@ namespace __SCRIPTS
 				case MenuButton.ButtonType.Quit:
 					Services.levelManager.QuitGame();
 					break;
-				 case MenuButton.ButtonType.Respawn:
+				case MenuButton.ButtonType.Respawn:
 					var keepPlayer = pausingPlayer;
-					 Unpause();
-					 Services.levelManager.UnspawnPlayer(keepPlayer);
-					 Services.levelManager.RespawnPlayer(keepPlayer);
-					 break;
+					Unpause();
+					Services.levelManager.UnspawnPlayer(keepPlayer);
+					Services.levelManager.RespawnPlayer(keepPlayer);
+					break;
 				case MenuButton.ButtonType.Unspawn:
 					var unspawnPlayer = pausingPlayer;
 					Unpause();
@@ -111,7 +116,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void PlayerPressedUp(IControlAxis controlAxis)
+		void PlayerPressedUp(IControlAxis controlAxis)
 		{
 			if (controlAxis.owner != pausingPlayer) return;
 
@@ -119,13 +124,13 @@ namespace __SCRIPTS
 			OnPlayerPressedUp?.Invoke();
 		}
 
-		private void PlayerPressedCancel(NewControlButton newControlButton)
+		void PlayerPressedCancel(NewControlButton newControlButton)
 		{
 			if (newControlButton.owner != pausingPlayer) return;
 			Unpause();
 		}
 
-		private void PlayerPressedPause(NewControlButton newControlButton)
+		void PlayerPressedPause(NewControlButton newControlButton)
 		{
 			if (IsPaused)
 			{
@@ -136,11 +141,7 @@ namespace __SCRIPTS
 				Pause(newControlButton.owner);
 		}
 
-
-		/// <summary>
-		/// Pause the game with the specified player
-		/// </summary>
-		public void Pause(Player player)
+		void Pause(Player player)
 		{
 			if (IsPaused) return;
 			graphic.SetActive(true);
@@ -153,10 +154,7 @@ namespace __SCRIPTS
 			menuButtons.InitButtons();
 		}
 
-		/// <summary>
-		/// Unpause the game
-		/// </summary>
-		public void Unpause()
+		void Unpause()
 		{
 			if (!IsPaused) return;
 			graphic.SetActive(false);

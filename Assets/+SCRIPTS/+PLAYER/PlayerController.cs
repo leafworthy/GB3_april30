@@ -69,6 +69,10 @@ namespace __SCRIPTS
 			MoveAxis = new NewInputAxis(controls.PlayerMovement.Movement, owner);
 		}
 
-
+		public void SetActionMap(string uiActionMap)
+		{
+			if (owner == null || owner.input == null) return;
+			owner.input.SwitchCurrentActionMap(uiActionMap);
+		}
 	}
 }

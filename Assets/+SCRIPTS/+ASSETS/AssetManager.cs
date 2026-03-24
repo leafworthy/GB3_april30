@@ -6,41 +6,35 @@ namespace __SCRIPTS
 	[ExecuteInEditMode]
 	public class AssetManager : MonoBehaviour, IService
 	{
-		// Level Assets
-		private LevelAssets _levels;
-		public LevelAssets LevelAssets => _levels ?? Resources.Load<LevelAssets>("Assets/Levels");
+		public LevelAssets LevelAssets => _levels ??= Resources.Load<LevelAssets>("Assets/Levels");
+		LevelAssets _levels;
 
-		private GlobalVars _vars;
-		public GlobalVars Vars => _vars ?? Resources.Load<GlobalVars>("Assets/GlobalVars");
+		public GlobalVars Vars => _vars ??= Resources.Load<GlobalVars>("Assets/GlobalVars");
+		GlobalVars _vars;
 
-		// Character/player Assets
-		private CharacterPrefabAssets _players;
-		public CharacterPrefabAssets Players => _players ?? Resources.Load<CharacterPrefabAssets>("Assets/Players");
+		public CharacterPrefabAssets Players => _players ??= Resources.Load<CharacterPrefabAssets>("Assets/Players");
+		CharacterPrefabAssets _players;
 
-		// UI Assets
-		private UIAssets _ui;
-		public UIAssets UI => _ui ?? Resources.Load<UIAssets>("Assets/UI");
+		public UIAssets UI => _ui ??= Resources.Load<UIAssets>("Assets/UI");
+		UIAssets _ui;
 
-		// FX Assets
-		private FXAssets _fx;
-		public FXAssets FX => _fx = Resources.Load<FXAssets>("Assets/FX");
+		public FXAssets FX => _fx ??= Resources.Load<FXAssets>("Assets/FX");
+		FXAssets _fx;
 
-		private HouseAssets _house;
-
-		private SceneDefinitionAssets _scenes;
-		public SceneDefinitionAssets Scenes => _scenes ?? Resources.Load<SceneDefinitionAssets>("Assets/SceneDefinitions");
+		public SceneDefinitionAssets Scenes => _scenes ??= Resources.Load<SceneDefinitionAssets>("Assets/SceneDefinitions");
+		SceneDefinitionAssets _scenes;
 
 		public void StartService()
 		{
 			if (Application.isEditor && !Application.isPlaying) LoadAssets();
 		}
 
-		private void LoadAssets()
+		void LoadAssets()
 		{
-			if (_levels == null || _players == null || _ui == null || _fx == null || _scenes == null) StartCoroutine(LoadAssetsAsync());
+			StartCoroutine(LoadAssetsAsync());
 		}
 
-		private IEnumerator LoadAssetsAsync()
+		IEnumerator LoadAssetsAsync()
 		{
 			if (_levels == null)
 				_levels = Resources.Load<LevelAssets>("Assets/Levels");

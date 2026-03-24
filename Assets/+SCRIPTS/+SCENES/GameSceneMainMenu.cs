@@ -7,18 +7,17 @@ namespace __SCRIPTS
 	/// </summary>
 	public class GameSceneMainMenu : GameScene
 	{
-		private Players players;
 		private void OnEnable()
 		{
-			players = ServiceLocator.Get<Players>();
-			players.ClearAllJoinedPlayers();
-			players.OnPlayerJoins += PlayerOnJoins;
-			players.SetActionMaps(Players.UIActionMap);
+			Services.playerManager.ClearAllJoinedPlayers();
+			Services.playerManager.OnPlayerJoins += PlayerOnJoins;
+			Services.playerManager.SetActionMaps(Players.UIActionMap);
+			Services.hudManager.ResetHUD();
 		}
 
 		private void OnDisable()
 		{
-			players.OnPlayerJoins -= PlayerOnJoins;
+			Services.playerManager.OnPlayerJoins -= PlayerOnJoins;
 		}
 
 		private void PlayerOnJoins(Player player)

@@ -84,12 +84,6 @@ public class ShieldDashAbility : DashAbility
 		player.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
 	}
 
-	void OnDestroy()
-	{
-		if (player == null) return;
-		player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
-	}
-
 	void OnDisable()
 	{
 		if (player == null) return;

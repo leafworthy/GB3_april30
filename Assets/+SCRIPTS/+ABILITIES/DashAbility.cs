@@ -66,7 +66,7 @@ namespace __SCRIPTS
 			player.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
 		}
 
-		private void OnDestroy()
+		private void OnDisable()
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;

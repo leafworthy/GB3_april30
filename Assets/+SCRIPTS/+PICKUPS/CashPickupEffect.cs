@@ -10,8 +10,7 @@ namespace __SCRIPTS
 		public override void StartEffect(Life life)
 		{
 			effectDuration = 0;
-			var stats = ServiceLocator.Get<PlayerStatsManager>();
-			stats.ChangeStat(life.player,PlayerStat.StatType.TotalCash,amount);
+			Services.playerStatsManager.ChangeStat(life.player,PlayerStat.StatType.TotalCash,amount);
 			base.StartEffect(life);
 		}
 

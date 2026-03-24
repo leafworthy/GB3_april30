@@ -28,30 +28,29 @@ namespace __SCRIPTS.Cursor
 		{
 			UnityEngine.Cursor.visible = false;
 			Services.levelManager.OnStartLevel += LevelStartsLevel;
-			Services.levelManager.OnLevelSpawnedPlayerFromLevel += InitCursor;
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel += LevelSpawnsPlayer;
 		}
 
-		void LevelStartsLevel(GameLevel level)
+		void LevelStartsLevel()
 		{
 			isActive = true;
 			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
-				InitCursor(player);
+				LevelSpawnsPlayer(player);
 			}
 		}
 
 		void OnDisable()
 		{
 			Services.levelManager.OnStartLevel -= LevelStartsLevel;
-			Services.levelManager.OnStartLevel -= Level_OnStartLevel;
 			Services.pauseManager.OnPause -= Pause_OnPause;
 			Services.pauseManager.OnUnpause -= Pause_OnUnPause;
 			Services.levelManager.OnStopLevel -= Level_OnStopLevel;
-			Services.levelManager.OnLevelSpawnedPlayerFromLevel -= InitCursor;
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel -= LevelSpawnsPlayer;
 			currentCursors.Clear();
 		}
 
-		void InitCursor(Player player)
+		void LevelSpawnsPlayer(Player player)
 		{
 			player.OnPlayerDies += Player_OnPlayerDies;
 
@@ -76,10 +75,8 @@ namespace __SCRIPTS.Cursor
 			currentCursor.transform.localScale = inGameCursorScale;
 			var image = currentCursor.GetComponentInChildren<Image>();
 			if (image != null) image.color = player.playerColor;
-			Services.levelManager.OnStartLevel += Level_OnStartLevel;
-			Services.pauseManager.OnPause += Pause_OnPause;
-			Services.pauseManager.OnUnpause += Pause_OnUnPause;
-			Services.levelManager.OnStopLevel += Level_OnStopLevel;
+
+			ListenToEvents();
 			currentCursor.gameObject.SetActive(true);
 			currentCursors.Add(currentCursor);
 			SetCursorsActive(true);
@@ -90,7 +87,15 @@ namespace __SCRIPTS.Cursor
 			if (Services.playerManager.AllJoinedPlayers.Count < 2) player2cursor.SetActive(false);
 		}
 
-		void Level_OnStopLevel(GameLevel obj)
+		void ListenToEvents()
+		{
+			Services.levelManager.OnStartLevel += Level_OnStartLevel;
+			Services.pauseManager.OnPause += Pause_OnPause;
+			Services.pauseManager.OnUnpause += Pause_OnUnPause;
+			Services.levelManager.OnStopLevel += Level_OnStopLevel;
+		}
+
+		void Level_OnStopLevel()
 		{
 			SetCursorsActive(false);
 		}
@@ -100,7 +105,7 @@ namespace __SCRIPTS.Cursor
 			SetCursorsActive(true);
 		}
 
-		void Level_OnStartLevel(GameLevel obj)
+		void Level_OnStartLevel()
 		{
 			SetCursorsActive(true);
 		}

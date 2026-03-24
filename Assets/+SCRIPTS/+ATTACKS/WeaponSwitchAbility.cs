@@ -32,7 +32,7 @@ namespace __SCRIPTS
 		}
 
 
-		private void OnDestroy()
+		private void OnDisable()
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;

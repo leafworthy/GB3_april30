@@ -1,75 +1,55 @@
 using System;
 using __SCRIPTS;
-using __SCRIPTS.Cursor;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Video;
-
-namespace __SCRIPTS
-{
-}
+using Object = System.Object;
 
 public class SceneLoader : MonoBehaviour, IService
 {
-	// UI References
-	[Header("UI References"), SerializeField]
-	Animator faderAnimator;
+	[SerializeField] Animator faderAnimator;
 	[SerializeField] GameObject loadingScreen;
 	[SerializeField] Image progressBarImage;
 	[SerializeField] TextMeshProUGUI percentLoadedText;
 	[SerializeField] TextMeshProUGUI locationTitleText;
-	public VideoPlayer videoPlayer;
-	// State tracking
-	AsyncOperation loadingOperation;
+
 	bool isLoading;
 	bool isFading;
-	static readonly int IsFadedIn = Animator.StringToHash("IsFadedIn");
-
-	// Scene transition weaponState tracking
+	AsyncOperation loadingOperation;
 	SceneDefinition currentlyLoadedScene;
 	SceneDefinition loadingScene;
+	static readonly int IsFadedIn = Animator.StringToHash("IsFadedIn");
 	public SceneAnimationActions sceneAnimationActions;
 
 	public event Action<SceneDefinition> OnSceneReadyToStartLevel;
-	public event Action OnVideoComplete;
-	public event Action OnFadeInComplete;
 
 	Action ActionOnFadeInComplete;
 	public event Action OnSceneAboutToChange;
 
 	#region Lifecycle Methods
 
-	public void StartFadeInAndPlayVideo()
-	{
-		if (isFading) return;
-		Debug.Log("start fading here");
-		videoPlayer.targetCamera = CursorManager.GetCamera();
-		isFading = true;
-		StartFadingIn(SceneAnimationActions_OnFadeInComplete);
-	}
-
-	void SceneAnimationActions_OnFadeInComplete()
-	{
-		OnFadeInComplete?.Invoke();
-		videoPlayer.Play();
-		videoPlayer.loopPointReached += VideoComplete;
-	}
-
-	void VideoComplete(VideoPlayer source)
-	{
-		OnVideoComplete?.Invoke();
-		faderAnimator.SetBool(IsFadedIn, true);
-	}
-
 	public void StartService()
+	{
+		Debug.Log("[SceneLoader] start service");
+		ListenToEvents();
+		StartFadingOut();
+	}
+
+	void ListenToEvents()
 	{
 		SceneManager.sceneLoaded += SceneManager_OnSceneLoaded;
 		sceneAnimationActions.OnFadeInComplete += FadeInComplete;
 		sceneAnimationActions.OnFadeOutComplete += FadeOutComplete;
-		StartFadingOut();
+	}
+
+	void StopListeningToEvents()
+	{
+		SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
+		if (sceneAnimationActions == null) return;
+		sceneAnimationActions.OnFadeInComplete -= FadeInComplete;
+		sceneAnimationActions.OnFadeOutComplete -= FadeOutComplete;
 	}
 
 	void StartFadingOut()
@@ -79,12 +59,7 @@ public class SceneLoader : MonoBehaviour, IService
 
 	void OnDestroy()
 	{
-		SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
-	}
-
-	void OnDisable()
-	{
-		SceneManager.sceneLoaded -= SceneManager_OnSceneLoaded;
+		StopListeningToEvents();
 	}
 
 	void Update()
@@ -108,6 +83,7 @@ public class SceneLoader : MonoBehaviour, IService
 
 	public void GoToScene(SceneDefinition newScene)
 	{
+		Debug.Log("going to scene " + newScene.SceneName, this);
 		loadingScene = newScene;
 		StartFadingIn(StartLoading);
 		OnSceneAboutToChange?.Invoke();
@@ -137,10 +113,11 @@ public class SceneLoader : MonoBehaviour, IService
 
 	void SceneManager_OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-		if (scene.name == Services.assetManager.Scenes.gameManager) return;
+		if (scene.name == Services.assetManager.Scenes.gameManager.SceneName) return;
 
 		isLoading = false;
-		SetCurrentSceneReady();
+		var GameLevel = FindFirstObjectByType<GameLevel>();
+		if(GameLevel != null) SetCurrentSceneReady();
 	}
 
 	public void StartFadingIn([CanBeNull] Action onComplete)
@@ -150,10 +127,8 @@ public class SceneLoader : MonoBehaviour, IService
 		ActionOnFadeInComplete = onComplete;
 	}
 
-
 	void ResetProgressIndicators()
 	{
-		// Reset progress indicators
 		if (progressBarImage != null)
 		{
 			progressBarImage.fillAmount = 0f;
@@ -185,9 +160,10 @@ public class SceneLoader : MonoBehaviour, IService
 		return progressValue;
 	}
 
-	public void FadeOut()
+	void FadeOut()
 	{
 		faderAnimator.SetBool(IsFadedIn, false);
 	}
 }
+
 #endregion

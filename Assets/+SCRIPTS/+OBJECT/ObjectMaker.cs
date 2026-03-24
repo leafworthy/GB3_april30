@@ -9,48 +9,36 @@ namespace __SCRIPTS
 	[ExecuteAlways]
 	public class ObjectMaker : MonoBehaviour, IService
 	{
-		//CREATOR DESTROYER
-		private  List<GameObject> allActiveUnits = new();
 
-		private  Dictionary<RecycleGameObject, ObjectPool> pools = new();
+		List<GameObject> allActiveUnits = new();
 
-		private GameObject containerContainer;
+		Dictionary<RecycleGameObject, ObjectPool> pools = new();
+
+		GameObject containerContainer;
 		public List<GameObject> ObjectsToPool = new();
-		private int defaultPoolSize = 20;
-
+		const int defaultPoolSize = 20;
 
 		public void StartService()
 		{
-			if (containerContainer == null)
-			{
-				containerContainer = new GameObject("Object Pools");
-				containerContainer.transform.SetParent(transform);
-			}
-
-			Services.levelManager.OnStartLevel += PoolObjects;
-			Services.levelManager.OnStopLevel += DestroyAllUnits;
+			if (containerContainer != null) return;
+			containerContainer = new GameObject("Object Pools");
+			containerContainer.transform.SetParent(transform);
 		}
+
 		public void OnDisable()
 		{
-			DestroyAllUnits(null);
-			//if (Services.levelManager == null) return;
-			//Services.levelManager.OnStartLevel -= PoolObjects;
-			//Services.levelManager.OnStopLevel -= DestroyAllUnits;
+			DestroyAllUnits();
 		}
 
-
-
-		private void PoolObjects(GameLevel gameLevel)
+		public void PoolObjects()
 		{
 			foreach (var obj in ObjectsToPool)
 			{
-
 				Pool(obj, defaultPoolSize);
-
 			}
 		}
 
-		public  void Pool(GameObject obj, int clones)
+		void Pool(GameObject obj, int clones)
 		{
 			var currentPool = new List<GameObject>();
 			for (var i = 0; i < clones; i++)
@@ -62,8 +50,9 @@ namespace __SCRIPTS
 			for (var b = 0; b < currentPool.Count; b++) Unmake(currentPool[b]);
 		}
 
-		public  void DestroyAllUnits(GameLevel gameLevel)
+		public void DestroyAllUnits()
 		{
+			if(allActiveUnits == null) return;
 			var tempList = allActiveUnits.ToList();
 			foreach (var t in tempList)
 			{
@@ -81,17 +70,13 @@ namespace __SCRIPTS
 				containerContainer = new GameObject("Object Pools");
 				containerContainer.transform.SetParent(transform);
 			}
-			GameObject instance;
+
 			var recycledScript = prefab.GetComponent<RecycleGameObject>();
-			if (recycledScript == null)
-			{
-				return Instantiate(prefab, pos, Quaternion.identity);
-			}
+			if (recycledScript == null) return Instantiate(prefab, pos, Quaternion.identity);
 
-				var pool = GetObjectPool(recycledScript);
-				instance = pool.NextObject(pos).gameObject;
-				instance.transform.SetParent(pool.transform);
-
+			var pool = GetObjectPool(recycledScript);
+			var instance = pool.NextObject(pos).gameObject;
+			instance.transform.SetParent(pool.transform);
 
 			allActiveUnits.Add(instance);
 			return instance;
@@ -109,7 +94,6 @@ namespace __SCRIPTS
 					recyleGameObject.DeactivateGameObject();
 				else
 				{
-
 					var comp = _gameObject.AddComponent<RecycleGameObject>();
 					comp.DeactivateGameObject();
 				}
@@ -118,13 +102,13 @@ namespace __SCRIPTS
 			}
 		}
 
-		private IEnumerator WaitAndDestroy(GameObject go, float waitTime)
+		IEnumerator WaitAndDestroy(GameObject go, float waitTime)
 		{
 			yield return new WaitForSeconds(waitTime);
 			Unmake(go);
 		}
 
-		private ObjectPool GetObjectPool(RecycleGameObject reference)
+		ObjectPool GetObjectPool(RecycleGameObject reference)
 		{
 			ObjectPool pool;
 
@@ -142,7 +126,6 @@ namespace __SCRIPTS
 			return pool;
 		}
 
-		public GameObject Make(GameObject prefab) =>   Make(prefab, Vector2.zero);
-
+		public GameObject Make(GameObject prefab) => Make(prefab, Vector2.zero);
 	}
 }

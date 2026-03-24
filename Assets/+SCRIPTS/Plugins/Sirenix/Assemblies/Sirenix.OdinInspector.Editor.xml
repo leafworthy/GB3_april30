@@ -264,7 +264,7 @@
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.EditorOnlyModeConfig.Update">
             <summary>
-                Gaither all necessary information about the editor only state.
+                Gaither all necessary information about the editor only hudSlotState.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.EditorOnlyModeConfig.DisableEditorOnlyMode">
@@ -329,7 +329,7 @@
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.GeneralDrawerConfig.ShowButtonResultsByDefault">
             <summary>
-                If set to true, buttons will show the result values from invoking them in the inspector by default.
+                If set to true, characterSelectButtons will show the result values from invoking them in the inspector by default.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.GeneralDrawerConfig.GUIFoldoutAnimationDuration">
@@ -380,12 +380,12 @@
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.GeneralDrawerConfig.HidePagingWhileCollapsed">
             <summary>
-                Specify whether or not lists should hide the paging buttons when the list is collapsed.
+                Specify whether or not lists should hide the paging characterSelectButtons when the list is collapsed.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.GeneralDrawerConfig.HidePagingWhileOnlyOnePage">
             <summary>
-                Specify whether or not lists should hide the paging buttons when there is only one page.
+                Specify whether or not lists should hide the paging characterSelectButtons when there is only one page.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.GeneralDrawerConfig.NumberOfItemsPrPage">
@@ -676,7 +676,7 @@
                     <see cref="T:Sirenix.OdinInspector.Editor.InspectorTypeDrawingConfig"/>
                     instance, and contains methods getting all types that should be drawn by Odin.
                 </para>
-                <para>Note that this class keeps a lot of static state, and is only intended to draw the instance of
+                <para>Note that this class keeps a lot of static hudSlotState, and is only intended to draw the instance of
                     <see cref="T:Sirenix.OdinInspector.Editor.InspectorTypeDrawingConfig"/>
                     that exists in the
                     <see cref="T:Sirenix.OdinInspector.Editor.InspectorConfig"/>
@@ -874,7 +874,7 @@
                 <para>Contains a context for an<see cref="T:Sirenix.OdinInspector.Editor.InspectorProperty"/>, which offers the ability to address persistent
                     values by key across several editor GUI frames.
                 </para>
-                <para>Use this in drawers to store contextual editor-only values such as the state of a foldout.</para>
+                <para>Use this in drawers to store contextual editor-only values such as the hudSlotState of a foldout.</para>
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyContextContainer.#ctor(Sirenix.OdinInspector.Editor.InspectorProperty)">
@@ -1322,7 +1322,7 @@
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.InspectorProperty.StateUpdaters">
             <summary>
-                Gets an array of the state updaters of the property. Don't change the contents of this array!
+                Gets an array of the hudSlotState updaters of the property. Don't change the contents of this array!
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.InspectorProperty.BaseValueEntry">
@@ -1401,7 +1401,7 @@
                 </para>
             </summary>
         </member>
-        <member name="P:Sirenix.OdinInspector.Editor.InspectorProperty.State">
+        <member name="P:Sirenix.OdinInspector.Editor.InspectorProperty.HUDSlotState">
             <summary>
                 The PropertyState of the property at the current draw count index.
             </summary>
@@ -1767,12 +1767,12 @@
                 <para>This is a class for creating, getting and modifying a property's various states. An instance of this class always comes attached to an
                     InspectorProperty.
                 </para>
-                <para>See Odin's tutorials for more information about usage of the state system.</para>
+                <para>See Odin's tutorials for more information about usage of the hudSlotState system.</para>
             </summary>
         </member>
         <member name="F:Sirenix.OdinInspector.Editor.PropertyState.LogChanges">
             <summary>
-                If set to true, all state changes for this property will be logged to the console.
+                If set to true, all hudSlotState changes for this property will be logged to the console.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.PropertyState.Visible">
@@ -1782,7 +1782,7 @@
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.PropertyState.VisibleLastLayout">
             <summary>
-                Whether the Visible state was true or not during the last layout event.
+                Whether the Visible hudSlotState was true or not during the last layout event.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.PropertyState.Enabled">
@@ -1792,7 +1792,7 @@
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.PropertyState.EnabledLastLayout">
             <summary>
-                Whether the Enabled state was true or not during the last layout event.
+                Whether the Enabled hudSlotState was true or not during the last layout event.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.PropertyState.Expanded">
@@ -1802,12 +1802,12 @@
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.PropertyState.ExpandedLastLayout">
             <summary>
-                Whether the Expanded state was true or not during the last layout event.
+                Whether the Expanded hudSlotState was true or not during the last layout event.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyState.Create``1(System.String,System.Boolean,``0)">
             <summary>
-                Creates a custom state with a given name.
+                Creates a custom hudSlotState with a given name.
             </summary>
             <typeparam name="T"></typeparam>
             <param name="key"></param>
@@ -1816,81 +1816,81 @@
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyState.Exists(System.String)">
             <summary>
-                Determines whether a state with the given key exists.
+                Determines whether a hudSlotState with the given key exists.
             </summary>
             <param name="key">The key to check.</param>
-            <returns>True if the state exists, otherwise, false.</returns>
+            <returns>True if the hudSlotState exists, otherwise, false.</returns>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyState.Exists(System.String,System.Boolean@)">
             <summary>
-                Determines whether a state with the given key exists.
+                Determines whether a hudSlotState with the given key exists.
             </summary>
             <param name="key">The key to check.</param>
-            <param name="isPersistent">If the state exists, this out parameter will be true if the state is persistent.</param>
-            <returns>True if the state exists, otherwise, false.</returns>
+            <param name="isPersistent">If the hudSlotState exists, this out parameter will be true if the hudSlotState is persistent.</param>
+            <returns>True if the hudSlotState exists, otherwise, false.</returns>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyState.Exists(System.String,System.Type@)">
             <summary>
-                Determines whether a state with the given key exists.
+                Determines whether a hudSlotState with the given key exists.
             </summary>
             <param name="key">The key to check.</param>
-            <param name="valueType">If the state exists, this out parameter will contain the type of value that the state contains.</param>
-            <returns>True if the state exists, otherwise, false.</returns>
+            <param name="valueType">If the hudSlotState exists, this out parameter will contain the type of value that the hudSlotState contains.</param>
+            <returns>True if the hudSlotState exists, otherwise, false.</returns>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyState.Exists(System.String,System.Boolean@,System.Type@)">
             <summary>
-                Determines whether a state with the given key exists.
+                Determines whether a hudSlotState with the given key exists.
             </summary>
             <param name="key">The key to check.</param>
-            <param name="isPersistent">If the state exists, this out parameter will be true if the state is persistent.</param>
-            <param name="valueType">If the state exists, this out parameter will contain the type of value that the state contains.</param>
-            <returns>True if the state exists, otherwise, false.</returns>
+            <param name="isPersistent">If the hudSlotState exists, this out parameter will be true if the hudSlotState is persistent.</param>
+            <param name="valueType">If the hudSlotState exists, this out parameter will contain the type of value that the hudSlotState contains.</param>
+            <returns>True if the hudSlotState exists, otherwise, false.</returns>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyState.Get``1(System.String)">
             <summary>
-                Gets the value of a given state as an instance of type T.
+                Gets the value of a given hudSlotState as an instance of type T.
             </summary>
-            <typeparam name="T">The type to get the state value as. An
+            <typeparam name="T">The type to get the hudSlotState value as. An
                 <see cref="T:System.InvalidOperationException"/>
-                will be thrown if the state's value type cannot be assigned to T.
+                will be thrown if the hudSlotState's value type cannot be assigned to T.
             </typeparam>
-            <param name="key">The key of the state to get. An
+            <param name="key">The key of the hudSlotState to get. An
                 <see cref="T:System.InvalidOperationException"/>
-                will be thrown if a state with the given key does not exist.
+                will be thrown if a hudSlotState with the given key does not exist.
             </param>
-            <returns>The value of the state.</returns>
+            <returns>The value of the hudSlotState.</returns>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyState.GetLastLayout``1(System.String)">
             <summary>
-                Gets the value that a given state contained last layout as an instance of type T.
+                Gets the value that a given hudSlotState contained last layout as an instance of type T.
             </summary>
-            <typeparam name="T">The type to get the state value as. An
+            <typeparam name="T">The type to get the hudSlotState value as. An
                 <see cref="T:System.InvalidOperationException"/>
-                will be thrown if the state's value type cannot be assigned to T.
+                will be thrown if the hudSlotState's value type cannot be assigned to T.
             </typeparam>
-            <param name="key">The key of the state to get. An
+            <param name="key">The key of the hudSlotState to get. An
                 <see cref="T:System.InvalidOperationException"/>
-                will be thrown if a state with the given key does not exist.
+                will be thrown if a hudSlotState with the given key does not exist.
             </param>
-            <returns>The value of the state during the last layout event.</returns>
+            <returns>The value of the hudSlotState during the last layout event.</returns>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyState.Set``1(System.String,``0)">
             <summary>
-                Sets the value of a given state to a given value.
+                Sets the value of a given hudSlotState to a given value.
             </summary>
-            <typeparam name="T">The type to set the state value as. An
+            <typeparam name="T">The type to set the hudSlotState value as. An
                 <see cref="T:System.InvalidOperationException"/>
-                will be thrown if T cannot be assigned to the state's value type.
+                will be thrown if T cannot be assigned to the hudSlotState's value type.
             </typeparam>
-            <param name="key">The key of the state to set the value of. An
+            <param name="key">The key of the hudSlotState to set the value of. An
                 <see cref="T:System.InvalidOperationException"/>
-                will be thrown if a state with the given key does not exist.
+                will be thrown if a hudSlotState with the given key does not exist.
             </param>
             <param name="value">The value to set.</param>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyState.CleanForCachedReuse">
             <summary>
-                Cleans the property state and prepares it for cached reuse of its containing PropertyTree. This will also reset the state.
+                Cleans the property hudSlotState and prepares it for cached reuse of its containing PropertyTree. This will also reset the hudSlotState.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyState.Reset">
@@ -2166,7 +2166,7 @@
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyTree.UpdateTree">
             <summary>
-                Updates all properties in the entire tree, and validates the prefab state of the tree, if applicable.
+                Updates all properties in the entire tree, and validates the prefab hudSlotState of the tree, if applicable.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyTree.ReplaceAllReferences(System.Object,System.Object)">
@@ -2469,7 +2469,7 @@
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyTree`1.UpdateTree">
             <summary>
-                Updates all properties in the entire tree, and validates the prefab state of the tree, if applicable.
+                Updates all properties in the entire tree, and validates the prefab hudSlotState of the tree, if applicable.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyTree`1.ObjectIsReferenced(System.Object,System.String@)">
@@ -2614,12 +2614,12 @@
             <summary>
                 Enumeration for designating whether a
                 <see cref="T:Sirenix.OdinInspector.Editor.PropertyValueEntry"/>
-                has a special state,.
+                has a special hudSlotState,.
             </summary>
         </member>
         <member name="F:Sirenix.OdinInspector.Editor.PropertyValueState.None">
             <summary>
-                The value entry has no special state.
+                The value entry has no special hudSlotState.
             </summary>
         </member>
         <member name="F:Sirenix.OdinInspector.Editor.PropertyValueState.Reference">
@@ -3240,7 +3240,7 @@
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.IPropertyValueEntry.ValueState">
             <summary>
-                The special state of the value entry.
+                The special hudSlotState of the value entry.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.IPropertyValueEntry.IsAlias">
@@ -3271,7 +3271,7 @@
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.IPropertyValueEntry.Update">
             <summary>
-                Updates the values contained in this value entry to the actual values in the target objects, and updates its state (override, type of value,
+                Updates the values contained in this value entry to the actual values in the target objects, and updates its hudSlotState (override, type of value,
                 etc.) accordingly.
             </summary>
         </member>
@@ -3943,7 +3943,7 @@
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.PropertyValueEntry.ValueState">
             <summary>
-                The special state of the value entry.
+                The special hudSlotState of the value entry.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.PropertyValueEntry.IsAlias">
@@ -3973,7 +3973,7 @@
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyValueEntry.Update">
             <summary>
-                Updates the values contained in this value entry to the actual values in the target objects, and updates its state (override, type of value,
+                Updates the values contained in this value entry to the actual values in the target objects, and updates its hudSlotState (override, type of value,
                 etc.) accordingly.
             </summary>
         </member>
@@ -3995,7 +3995,7 @@
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyValueEntry.GetValueState">
             <summary>
-                Determines the value state of this value entry.
+                Determines the value hudSlotState of this value entry.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyValueEntry.GetMostPreciseContainedType">
@@ -4216,7 +4216,7 @@
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyValueEntry`2.GetValueState">
             <summary>
-                Determines the value state of this value entry.
+                Determines the value hudSlotState of this value entry.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyValueEntry`2.ApplyChanges">
@@ -4326,7 +4326,7 @@
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.PropertyValueEntryAlias.ValueState">
             <summary>
-                The special state of the value entry.
+                The special hudSlotState of the value entry.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.PropertyValueEntryAlias.IsAlias">
@@ -4365,7 +4365,7 @@
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyValueEntryAlias.Update">
             <summary>
-                Updates the values contained in this value entry to the actual values in the target objects, and updates its state (override, type of value,
+                Updates the values contained in this value entry to the actual values in the target objects, and updates its hudSlotState (override, type of value,
                 etc.) accordingly.
             </summary>
         </member>
@@ -4510,7 +4510,7 @@
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.PropertyValueEntryAlias`2.ValueState">
             <summary>
-                The special state of the value entry.
+                The special hudSlotState of the value entry.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.PropertyValueEntryAlias`2.IsMarkedAtomic">
@@ -4540,7 +4540,7 @@
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.PropertyValueEntryAlias`2.Update">
             <summary>
-                Updates the values contained in this value entry to the actual values in the target objects, and updates its state (override, type of value,
+                Updates the values contained in this value entry to the actual values in the target objects, and updates its hudSlotState (override, type of value,
                 etc.) accordingly.
             </summary>
         </member>
@@ -6334,7 +6334,7 @@
         </member>
         <member name="T:Sirenix.OdinInspector.Editor.Drawers.DefaultMethodDrawer">
             <summary>
-                The default method drawer that draws most buttons.
+                The default method drawer that draws most characterSelectButtons.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.Drawers.DefaultMethodDrawer.Initialize">
@@ -7072,7 +7072,7 @@
             </remarks>
 
             <example>
-                <para>Example using the<see cref="T:Sirenix.OdinInspector.Editor.OdinAttributeDrawer`2"/>.
+                <para>ResetOnF1 using the<see cref="T:Sirenix.OdinInspector.Editor.OdinAttributeDrawer`2"/>.
                 </para>
                 <code>
                     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
@@ -7108,7 +7108,7 @@
             </example>
 
             <example>
-                <para>Example using the<see cref="T:Sirenix.OdinInspector.Editor.OdinAttributeDrawer`1"/>.
+                <para>ResetOnF1 using the<see cref="T:Sirenix.OdinInspector.Editor.OdinAttributeDrawer`1"/>.
                 </para>
                 <code>
                     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
@@ -7269,7 +7269,7 @@
             </remarks>
 
             <example>
-                <para>Example using the<see cref="T:Sirenix.OdinInspector.Editor.OdinAttributeDrawer`2"/>.
+                <para>ResetOnF1 using the<see cref="T:Sirenix.OdinInspector.Editor.OdinAttributeDrawer`2"/>.
                 </para>
                 <code>
                     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
@@ -7305,7 +7305,7 @@
             </example>
 
             <example>
-                <para>Example using the<see cref="T:Sirenix.OdinInspector.Editor.OdinAttributeDrawer`1"/>.
+                <para>ResetOnF1 using the<see cref="T:Sirenix.OdinInspector.Editor.OdinAttributeDrawer`1"/>.
                 </para>
                 <code>
                     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
@@ -9642,7 +9642,7 @@
         </member>
         <member name="F:Sirenix.OdinInspector.Editor.OdinMenuItem.DefaultToggledState">
             <summary>
-                The default toggled state
+                The default toggled hudSlotState
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.OdinMenuItem.#ctor(Sirenix.OdinInspector.Editor.OdinMenuTree,System.String,System.Object)">
@@ -10123,7 +10123,7 @@
         </member>
         <member name="F:Sirenix.OdinInspector.Editor.OdinMenuTree.ActiveMenuTree">
             <summary>
-                Gets the currently active menu tree.
+                Gets the currently characterHUD menu tree.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.OdinMenuTree.Selection">
@@ -10333,7 +10333,7 @@
         </member>
         <member name="F:Sirenix.OdinInspector.Editor.OdinMenuTreeDrawingConfig.UseCachedExpandedStates">
             <summary>
-                Whether to the menu items expanded state should be cached. True by default.
+                Whether to the menu items expanded hudSlotState should be cached. True by default.
             </summary>
         </member>
         <member name="F:Sirenix.OdinInspector.Editor.OdinMenuTreeDrawingConfig.AutoFocusSearchBar">
@@ -11233,7 +11233,7 @@
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.OdinVisualDesignerConfig.ToggleFavorite(System.Type)">
-            <returns>The favorite state *after* toggling.</returns>
+            <returns>The favorite hudSlotState *after* toggling.</returns>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorProperty">
             <summary>

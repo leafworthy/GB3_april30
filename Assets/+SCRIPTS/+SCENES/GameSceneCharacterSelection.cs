@@ -199,7 +199,7 @@ namespace __SCRIPTS
 			ClearAllPlayerButtons();
 			isActive = false;
 			Services.playerManager.OnPlayerJoins -= PlayerStartsSelecting;
-			Services.levelManager.StartGame(Services.levelManager.GetFirstLevelToLoad());
+			Services.levelManager.StartFirstLevel();
 		}
 
 		private void ClearAllPlayerButtons()

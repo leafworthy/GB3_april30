@@ -238,17 +238,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1561707946 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4204446051465546558, guid: 305ad2e125ef94338a059a6d43619e27, type: 3}
-  m_PrefabInstance: {fileID: 8444128689849655231}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3548085dcf264ad3a258e8bea75e0a02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &490584010678003131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,15 +250,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5bd7c3efeb71416480722f435da5f2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
 --- !u!4 &589667011760307694
 Transform:
   m_ObjectHideFlags: 0
@@ -623,18 +603,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfec3200145e4a1d91f96c00cc3ade33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assetManagerManager: {fileID: 7727572179257079737}
-  hudManager: {fileID: 4454061856903983702}
-  enemyManager: {fileID: 4988086921415921645}
-  levelManager: {fileID: 4459949015775728508}
-  playersManager: {fileID: 7721420618116905465}
-  playerStatsManager: {fileID: 7080540993824257340}
-  lootTable: {fileID: 5892299121419199322}
-  objectMaker: {fileID: 2097775054827556840}
-  sceneLoader: {fileID: 2598685119374461623}
-  sfxManager: {fileID: 8497809243768134904}
-  pauseManager: {fileID: 1561707946}
-  risingTextManager: {fileID: 2616225905856126391}
 --- !u!114 &2598685119374461623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -652,7 +620,6 @@ MonoBehaviour:
   progressBarImage: {fileID: 5694585896948573439}
   percentLoadedText: {fileID: 5694585896948573438}
   locationTitleText: {fileID: 0}
-  videoPlayer: {fileID: 5694585896948573444}
   sceneAnimationActions: {fileID: 5694585896948573443}
 --- !u!114 &2616225905856126391
 MonoBehaviour:
@@ -2941,17 +2908,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c81ed4c3ba97643c4a1f86d373c41ee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4454061856903983702 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7947832907138141917, guid: 13b442448c34a41b29f15dcbab37ac61, type: 3}
-  m_PrefabInstance: {fileID: 4454061856903983699}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30e2362f05a0463eb26f6bf6096e32da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4459949015775728508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2964,8 +2920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7f4388e4d684898934bb0e73e35e040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentLevel: {fileID: 0}
-  loadInGame: 0
+  hasWon: 0
 --- !u!1001 &4614182318121202158
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3248,11 +3203,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc1d67accb674e7d8514afd088073af7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.SceneAnimationActions
---- !u!328 &5694585896948573444 stripped
-VideoPlayer:
-  m_CorrespondingSourceObject: {fileID: 367230056969442803, guid: 7d13f34a35b244aa99cd40e4b67659bb, type: 3}
-  m_PrefabInstance: {fileID: 5694585896948573434}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5892299121419199321
 MonoBehaviour:
   m_ObjectHideFlags: 0

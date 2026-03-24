@@ -5,89 +5,104 @@ namespace __SCRIPTS
 {
 	public class HUDSlot : MonoBehaviour
 	{
-		public PlayerSetupMenu charSelectMenu;
-		private Player currentPlayer;
+		Player player;
 		public GameObject characterHUD;
-		private bool IsInMenu;
+		public CharacterSelectButtons characterSelectButtons;
 
-		public bool IsActive { get; private set; }
-
-		public void SetPlayer(Player player)
+		public enum HUDSlotState
 		{
-			Debug.Log("[HUD SLOT] set player called");
-			if (IsActive && !IsInMenu)
-			{
-				return;
-			}
+			not,
+			selectMenu,
+			characterHUD,
+			claimed
+		}
 
-			if (currentPlayer != null)
-			{
-				currentPlayer.OnPlayerDies -= SetCharacterHudInvisible;
-			}
+		void SetState(HUDSlotState hudSlotState)
+		{
+			currentHUDSlotState = hudSlotState;
+		}
 
-			IsActive = true;
-			currentPlayer = player;
+		public HUDSlotState currentHUDSlotState;
 
-			var playerStats = player.GetComponent<PlayerStats>();
-			if (playerStats != null)
-			{
-				playerStats.InitStats();
-			}
+		public void SetPlayer(Player newPlayer)
+		{
+			if (player != null) return;
+			player = newPlayer;
+			player.OnPlayerDies += OnPlayerDeath;
+			player.InitStats();
+			characterSelectButtons.SetPlayer(newPlayer);
+			characterSelectButtons.OnCharacterChosen += SetCharacterAndActivateHUD;
+		}
 
+		public void SupplyPlayerToINeedPlayerComponents()
+		{
 			foreach (var needPlayer in GetComponentsInChildren<INeedPlayer>(true))
 			{
-				// Skip the character select menu since it's already handled
-				if (needPlayer.GetType() == typeof(PlayerSetupMenu)) continue;
-				needPlayer.SetPlayer(currentPlayer);
+				needPlayer.SetPlayer(player);
 			}
-
-			charSelectMenu.gameObject.SetActive(false);
-			characterHUD.gameObject.SetActive(true);
-			currentPlayer.OnPlayerDies += SetCharacterHudInvisible;
-		}
-
-		private void OnEnable()
-		{
-			charSelectMenu.OnCharacterChosen += SetCharacterHudVisible;
-		}
-
-		private void OnDisable()
-		{
-			charSelectMenu.OnCharacterChosen -= SetCharacterHudVisible;
-			if(currentPlayer != null)currentPlayer.OnPlayerDies -= SetCharacterHudInvisible;
-			IsActive = false;
 		}
 
 
 
-		private void SetCharacterHudVisible(Character currentCharacter)
+		void SetCharacterAndActivateHUD(Character newCharacter)
 		{
-			if (currentPlayer == null) return;
-			SetPlayer(currentPlayer);
-			charSelectMenu.gameObject.SetActive(false);
-			characterHUD.gameObject.SetActive(true);
-
+			if (player == null) return;
+			player.CurrentCharacter = newCharacter;
+			Services.levelManager.SpawnPlayerFromPlayerSetupMenu(player);
+			OpenCharacterHUD(player);
 		}
 
-
-		private void SetCharacterHudInvisible(Player player, bool b)
+		void OnPlayerDeath(Player newPlayer, bool b)
 		{
-			IsActive = false;
-			currentPlayer.OnPlayerDies -= SetCharacterHudInvisible;
-			currentPlayer = null;
+			Debug.Log(" [HUD SLOT] disable character hud called");
+			HideCharacterHUD();
+			SetState(HUDSlotState.claimed);
+		}
+
+		void HideCharacterHUD()
+		{
 			characterHUD.gameObject.SetActive(false);
-
 		}
 
-		public void OpenCharacterSelectMenu(Player player)
+		void HideCharacterSetupMenu()
 		{
-			currentPlayer = player;
-			characterHUD.gameObject.SetActive(false);
-			charSelectMenu.StartSetupMenu(player);
-			IsActive = true;
-			IsInMenu = true;
+			characterSelectButtons.visible.SetActive(false);
 		}
 
+		public void OpenCharacterSetupMenu(Player newPlayer)
+		{
+			SetPlayer(newPlayer);
+			SetState(HUDSlotState.selectMenu);
+			player.Controller.SetActionMap(Players.UIActionMap);
+			characterSelectButtons.visible.SetActive(true);
+			characterSelectButtons.ResetCharacterSelection();
+			HideCharacterHUD();
+		}
 
+		public void OpenCharacterHUD(Player newPlayer)
+		{
+			SetPlayer(newPlayer);
+			SetState(HUDSlotState.characterHUD);
+			if (player == null)
+			{
+				Debug.Log("player null in open character hud", this);
+				return;
+			}
+			if(player.Controller == null)
+			{
+				Debug.Log(" controller null   ", this);
+				return;
+			}
+			SupplyPlayerToINeedPlayerComponents();
+			player.Controller.SetActionMap(Players.PlayerActionMap);
+			characterHUD.gameObject.SetActive(true);
+			HideCharacterSetupMenu();
+		}
+
+		public void ResetHUDSlot()
+		{
+			player = null;
+			currentHUDSlotState = HUDSlotState.not;
+		}
 	}
 }

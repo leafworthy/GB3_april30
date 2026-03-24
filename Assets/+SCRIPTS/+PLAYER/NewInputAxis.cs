@@ -56,7 +56,7 @@ namespace __SCRIPTS
 				return;
 			}
 
-			// Handle transition to active weaponState
+			// Handle transition to characterHUD weaponState
 			if (!IsActive)
 			{
 				IsActive = true;

@@ -74,7 +74,7 @@ namespace __SCRIPTS.HUD_Displays
 			UpdateDisplay();
 		}
 
-		void CleanUp(GameLevel gameLevel)
+		void CleanUp()
 		{
 			if (!init) return;
 			init = false;

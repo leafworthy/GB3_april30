@@ -44,6 +44,7 @@ namespace __SCRIPTS
 		[Button]
 		public void SetButtons()
 		{
+			Debug.Log("SetButtons called");
 			primaryAmmoDisplay.SetButton(WeaponButton.buttons.R2);
 			secondaryAmmoDisplay.SetButton(WeaponButton.buttons.L2);
 			tertiaryAmmoDisplay.SetButton(WeaponButton.buttons.Circle);
@@ -52,12 +53,14 @@ namespace __SCRIPTS
 		[Button]
 		public void SetButtonsTmato()
 		{
+			Debug.Log( "SetButtonsTmato called");
 			primaryAmmoDisplay.SetButton(WeaponButton.buttons.R2);
 			secondaryAmmoDisplay.SetButton(WeaponButton.buttons.Square);
 			tertiaryAmmoDisplay.SetButton(WeaponButton.buttons.L2);
 		}
 		public void SetPlayer(Player newPlayer)
 		{
+			Debug.Log( "[HUD] SetPlayer called with newPlayer " + newPlayer.playerIndex, newPlayer);
 			gameObject.SetActive(true);
 			if(newPlayer.CurrentCharacter == Character.Tmato)SetButtonsTmato();
 			else SetButtons();
@@ -66,6 +69,10 @@ namespace __SCRIPTS
 			if (primaryAmmoDisplay != null)
 			{
 				primaryAmmoDisplay.SetAmmo(_currentAmmoInventory.primaryAmmo);
+			}
+			else
+			{
+				Debug.LogWarning("primary ammo display null");
 			}
 			if (secondaryAmmoDisplay != null)
 			{
@@ -85,8 +92,9 @@ namespace __SCRIPTS
 			CharIcon.Set((int)newPlayer.CurrentCharacter); // Set to the first character icon by default
 		}
 
+		public void ResetHUD()
+		{
 
-
-
+		}
 	}
 }

@@ -21,7 +21,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		void OnDestroy()
+		void OnDisable()
 		{
 			foreach (var gun in guns)
 			{

@@ -10,9 +10,8 @@ namespace __SCRIPTS
 		public void DestroyMe()
 		{
 			if (disableDestroy) return;
-			var objectMaker = ServiceLocator.Get<ObjectMaker>();
 			if (transformToDestroy == null) return;
-			objectMaker.Unmake(transformToDestroy.gameObject);
+			Services.objectMaker.Unmake(transformToDestroy.gameObject);
 		}
 	}
 }

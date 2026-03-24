@@ -18,9 +18,16 @@ namespace __SCRIPTS
 
 		}
 
-		private void LevelManager_OnStopLevel(GameLevel level)
+		private void LevelManager_OnStopLevel()
 		{
+			Services.levelManager.OnStopLevel -= LevelManager_OnStopLevel;
 			clearCameraFollowTargetGroup();
+		}
+
+		void OnDisable()
+		{
+			    Services.levelManager.OnStopLevel -= LevelManager_OnStopLevel;
+			    Services.playerManager.OnPlayerDies -= Player_PlayerDies;
 		}
 
 		private void clearCameraFollowTargetGroup()
@@ -55,7 +62,6 @@ namespace __SCRIPTS
 
 		private void Player_PlayerDies(Player deadPlayer)
 		{
-
 			RemoveFromCameraFollow(deadPlayer);
 			if (Services.playerManager.mainPlayer.isDead()) return;
 			AddPlayerFromLevelToCameraFollowTargetGroup(Services.playerManager.mainPlayer);

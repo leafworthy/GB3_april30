@@ -1,32 +1,22 @@
-using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using UnityEngine;
 
 namespace __SCRIPTS
 {
 	public class PlayerStatsManager : SerializedMonoBehaviour, IService
 	{
-		static Dictionary<Player, PlayerStats> playerStats = new();
-
-		public event Action<Player, PlayerStat.StatType, float> OnPlayerStatChange;
-		bool hasStarted;
-		int maxGas = 20;
-		LevelManager _levelManager;
-		LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
-		Players _playerManager;
-		Players playerManager => _playerManager ?? ServiceLocator.Get<Players>();
-		public int MaxGas => maxGas;
-
-		[RuntimeInitializeOnLoadMethod]
-		static void ResetStatics()
-		{
-			playerStats = new Dictionary<Player, PlayerStats>();
-		}
+		Dictionary<Player, PlayerStats> playerStats = new();
+		public int MaxRescues { get; } = 20;
 
 		public void StartService()
 		{
-			levelManager.OnLevelSpawnedPlayerFromLevel += LevelSpawnedPlayersFromLevelOnLevelSpawnedPlayerFromLevelJoins;
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel += LevelSpawnedPlayersFromLevelOnLevelSpawnedPlayerFromLevelJoins;
+		}
+
+		void OnDisable()
+		{
+			Services.levelManager.OnLevelSpawnedPlayerFromLevel -= LevelSpawnedPlayersFromLevelOnLevelSpawnedPlayerFromLevelJoins;
+			playerStats.Clear();
 		}
 
 		public float GetStatAmount(Player player, PlayerStat.StatType statType)
@@ -43,15 +33,13 @@ namespace __SCRIPTS
 				return playerStatsComponent.GetStatValue(statType);
 			}
 
-			return 0; // Return 0 instead of -999 for better display
+			return 0;
 		}
 
 		void GatherPlayerStats()
 		{
-			if (hasStarted) return;
 			playerStats.Clear();
-			hasStarted = true;
-			foreach (var player in playerManager.AllJoinedPlayers)
+			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
 				playerStats.Add(player, player.GetComponent<PlayerStats>());
 			}
@@ -60,11 +48,7 @@ namespace __SCRIPTS
 		public void ChangeStat(Player player, PlayerStat.StatType statType, float change)
 		{
 			var match = playerStats.TryGetValue(player, out var stats);
-			if (match)
-			{
-				stats.ChangeStat(statType, change);
-				OnPlayerStatChange?.Invoke(player, statType, stats.GetStatValue(statType));
-			}
+			if (match) stats.ChangeStat(statType, change);
 		}
 
 		void LevelSpawnedPlayersFromLevelOnLevelSpawnedPlayerFromLevelJoins(Player player)
@@ -77,11 +61,8 @@ namespace __SCRIPTS
 
 		public void SetStatAmount(Player owner, PlayerStat.StatType statType, float value)
 		{
-			if (playerStats.TryGetValue(owner, out var stats))
-			{
-				stats.SetStatValue(statType, value);
-				OnPlayerStatChange?.Invoke(owner, statType, stats.GetStatValue(statType));
-			}
+			if (!playerStats.TryGetValue(owner, out var stats)) return;
+			stats.SetStatValue(statType, value);
 		}
 	}
 }

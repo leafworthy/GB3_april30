@@ -182,7 +182,7 @@
                 <para>
                     Specify which folders to search in. Specifying no folders will make it search in your entire project.
                     You can decalir multiple paths using '|' as the seperator.
-                    Example:
+                    ResetOnF1:
                     <code>[AssetList(Paths = "Assets/Textures|Assets/Other/Textures")]</code>
                 </para>
                 <para>
@@ -331,7 +331,7 @@
         </member>
         <member name="T:Sirenix.OdinInspector.ButtonAttribute">
             <summary>
-                <para>Buttons are used on functions, and allows for clickable buttons in the inspector.</para>
+                <para>Buttons are used on functions, and allows for clickable characterSelectButtons in the inspector.</para>
             </summary>
             <example>
                 <para>The following example shows a component that has an initialize method, that can be called from the inspector.</para>
@@ -339,7 +339,7 @@
                     public class MyComponent : MonoBehaviour
                     {
                     [Button]
-                    private void Init()
+                    private void SetPlayer()
                     {
                     // ...
                     }
@@ -537,11 +537,11 @@
         </member>
         <member name="T:Sirenix.OdinInspector.ButtonGroupAttribute">
             <summary>
-                <para>ButtonGroup is used on any instance function, and adds buttons to the inspector organized into horizontal groups.</para>
+                <para>ButtonGroup is used on any instance function, and adds characterSelectButtons to the inspector organized into horizontal groups.</para>
                 <para>Use this to organize multiple button in a tidy horizontal group.</para>
             </summary>
             <example>
-                <para>The following example shows how ButtonGroup is used to organize two buttons into one group.</para>
+                <para>The following example shows how ButtonGroup is used to organize two characterSelectButtons into one group.</para>
                 <code>
                     public class MyComponent : MonoBehaviour
                     {
@@ -560,7 +560,7 @@
                 </code>
             </example>
             <example>
-                <para>The following example shows how ButtonGroup can be used to create multiple groups of buttons.</para>
+                <para>The following example shows how ButtonGroup can be used to create multiple groups of characterSelectButtons.</para>
                 <code>
                     public class MyComponent : MonoBehaviour
                     {
@@ -938,7 +938,7 @@
                 <para>Use this to disable properties when they are irrelevant.</para>
             </summary>
             <example>
-                <para>The following example shows how a property can be disabled by the state of a field.</para>
+                <para>The following example shows how a property can be disabled by the hudSlotState of a field.</para>
                 <code>
                     public class MyComponent : MonoBehaviour
                     {
@@ -1331,7 +1331,7 @@
                 <para>Use this to enable properties when they are relevant.</para>
             </summary>
             <example>
-                <para>The following example shows how a property can be enabled by the state of a field.</para>
+                <para>The following example shows how a property can be enabled by the hudSlotState of a field.</para>
                 <code>
                     public class MyComponent : MonoBehaviour
                     {
@@ -1403,7 +1403,7 @@
         </member>
         <member name="T:Sirenix.OdinInspector.EnumPagingAttribute">
             <summary>
-                <para>Draws an enum selector in the inspector with next and previous buttons to let you cycle through the available values for the enum
+                <para>Draws an enum selector in the inspector with next and previous characterSelectButtons to let you cycle through the available values for the enum
                     property.
                 </para>
             </summary>
@@ -1761,10 +1761,10 @@
         <member name="T:Sirenix.OdinInspector.HideIfAttribute">
             <summary>
                 <para>HideIf is used on any property and can hide the property in the inspector.</para>
-                <para>Use this to hide irrelevant properties based on the current state of the object.</para>
+                <para>Use this to hide irrelevant properties based on the current hudSlotState of the object.</para>
             </summary>
             <example>
-                <para>This example shows a component with fields hidden by the state of another field.</para>
+                <para>This example shows a component with fields hidden by the hudSlotState of another field.</para>
                 <code>
                     public class MyComponent : MonoBehaviour
                     {
@@ -1819,7 +1819,7 @@
         </member>
         <member name="F:Sirenix.OdinInspector.HideIfAttribute.Animate">
             <summary>
-                Whether or not to slide the property in and out when the state changes.
+                Whether or not to slide the property in and out when the hudSlotState changes.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.HideIfAttribute.#ctor(System.String,System.Boolean)">
@@ -1827,7 +1827,7 @@
                 Hides a property in the inspector, based on the value of a resolved string.
             </summary>
             <param name="condition">A resolved string that defines the condition to check the value of, such as a member name or an expression.</param>
-            <param name="animate">Whether or not to slide the property in and out when the state changes.</param>
+            <param name="animate">Whether or not to slide the property in and out when the hudSlotState changes.</param>
         </member>
         <member name="M:Sirenix.OdinInspector.HideIfAttribute.#ctor(System.String,System.Object,System.Boolean)">
             <summary>
@@ -1835,7 +1835,7 @@
             </summary>
             <param name="condition">A resolved string that defines the condition to check the value of, such as a member name or an expression.</param>
             <param name="optionalValue">Value to check against.</param>
-            <param name="animate">Whether or not to slide the property in and out when the state changes.</param>
+            <param name="animate">Whether or not to slide the property in and out when the hudSlotState changes.</param>
         </member>
         <member name="T:Sirenix.OdinInspector.HideIfGroupAttribute">
             <summary>
@@ -2388,7 +2388,7 @@
                 <para>The inline button adds a button to the end of a property.</para>
             </summary>
             <remarks>
-                <note type="note">Due to a bug, multiple inline buttons are currently not supported.</note>
+                <note type="note">Due to a bug, multiple inline characterSelectButtons are currently not supported.</note>
             </remarks>
             <example>
                 <para>The following examples demonstrates how InlineButton can be used.</para>
@@ -2865,7 +2865,7 @@
             <summary>
                 <para>Whether to show a foldout for the collection or not. If this is set to false, the collection will *always* be expanded.</para>
                 <para>
-                    This documentation used to wrongly state that this value would override the default setting specified in the Advanced Odin Preferences
+                    This documentation used to wrongly hudSlotState that this value would override the default setting specified in the Advanced Odin Preferences
                     window and explicitly tell whether or not the list should be expanded or collapsed by default. This value *would* do that, but it would
                     also simultaneously act as ShowFoldout, leading to weird and unintuitive behaviour.
                 </para>
@@ -2875,7 +2875,7 @@
             <summary>
                 Override the default setting specified in the Odin Preferences window and explicitly tell whether or not the list should be expanded or
                 collapsed by default.
-                Note that this will override the persisted expand state, as this is set *every time* the collection drawer is initialized.
+                Note that this will override the persisted expand hudSlotState, as this is set *every time* the collection drawer is initialized.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.ListDrawerSettingsAttribute.ShowIndexLabels">
@@ -3405,17 +3405,17 @@
         <member name="T:Sirenix.OdinInspector.OnStateUpdateAttribute">
             <summary>
                 <para>
-                    OnStateUpdate provides an event callback when the property's state should be updated, when the StateUpdaters run on the property instance.
+                    OnStateUpdate provides an event callback when the property's hudSlotState should be updated, when the StateUpdaters run on the property instance.
                     This generally happens at least once per frame, and the callback will be invoked even when the property is not visible. This can be used to
                     approximate custom StateUpdaters like [ShowIf] without needing to make entire attributes and StateUpdaters for one-off cases.
                 </para>
             </summary>
             <example>
-                <para>The following example shows how OnStateUpdate can be used to control the visible state of a property.</para>
+                <para>The following example shows how OnStateUpdate can be used to control the visible hudSlotState of a property.</para>
                 <code>
                     public class MyComponent : MonoBehaviour
                     {
-                    [OnStateUpdate("@$property.State.Visible = ToggleMyInt")]
+                    [OnStateUpdate("@$property.HUDSlotState.Visible = ToggleMyInt")]
                     public int MyInt;
 
                     public bool ToggleMyInt;
@@ -3423,23 +3423,23 @@
                 </code>
             </example>
             <example>
-                <para>The following example shows how OnStateUpdate can be used to control the expanded state of a list.</para>
+                <para>The following example shows how OnStateUpdate can be used to control the expanded hudSlotState of a list.</para>
                 <code>
                     public class MyComponent : MonoBehaviour
                     {
-                    [OnStateUpdate("@$property.State.Expanded = ExpandList")]
+                    [OnStateUpdate("@$property.HUDSlotState.Expanded = ExpandList")]
                     public List&lt;string&gt; list;
 
                     public bool ExpandList;
                     }
                 </code>
-                <para>The following example shows how OnStateUpdate can be used to control the state of another property.</para>
+                <para>The following example shows how OnStateUpdate can be used to control the hudSlotState of another property.</para>
                 <code>
                     public class MyComponent : MonoBehaviour
                     {
                     public List&gt;string&lt; list;
 
-                    [OnStateUpdate("@#(list).State.Expanded = $value")]
+                    [OnStateUpdate("@#(list).HUDSlotState.Expanded = $value")]
                     public bool ExpandList;
                     }
                 </code>
@@ -4059,7 +4059,7 @@
                     method to invoke custom combine logic.
                 </para>
                 <para>All group attributes are combined to one attribute used by a single OdinGroupDrawer.</para>
-                <para>Example:
+                <para>ResetOnF1:
                     <code>protected override void CombineValuesWith(PropertyGroupAttribute other) { this.Title = this.Title ?? (other as
                         MyGroupAttribute).Title; }
                     </code>
@@ -4583,7 +4583,7 @@
         </member>
         <member name="T:Sirenix.OdinInspector.ResponsiveButtonGroupAttribute">
             <summary>
-                Groups buttons into a group that will position and resize the buttons based on the amount of available layout space.
+                Groups characterSelectButtons into a group that will position and resize the characterSelectButtons based on the amount of available layout space.
             </summary>
             <example>
                 <code>
@@ -4644,7 +4644,7 @@
         </member>
         <member name="F:Sirenix.OdinInspector.ResponsiveButtonGroupAttribute.UniformLayout">
             <summary>
-                If <c>true</c> then the widths of a line of buttons will be the same.
+                If <c>true</c> then the widths of a line of characterSelectButtons will be the same.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.ResponsiveButtonGroupAttribute.#ctor(System.String)">
@@ -4726,10 +4726,10 @@
         <member name="T:Sirenix.OdinInspector.ShowIfAttribute">
             <summary>
                 <para>ShowIf is used on any property and can hide the property in the inspector.</para>
-                <para>Use this to hide irrelevant properties based on the current state of the object.</para>
+                <para>Use this to hide irrelevant properties based on the current hudSlotState of the object.</para>
             </summary>
             <example>
-                <para>This example shows a component with fields hidden by the state of another field.</para>
+                <para>This example shows a component with fields hidden by the hudSlotState of another field.</para>
                 <code>
                     public class MyComponent : MonoBehaviour
                     {
@@ -4784,7 +4784,7 @@
         </member>
         <member name="F:Sirenix.OdinInspector.ShowIfAttribute.Animate">
             <summary>
-                Whether or not to slide the property in and out when the state changes.
+                Whether or not to slide the property in and out when the hudSlotState changes.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.ShowIfAttribute.#ctor(System.String,System.Boolean)">
@@ -4792,7 +4792,7 @@
                 Shows a property in the inspector, based on the value of a resolved string.
             </summary>
             <param name="condition">A resolved string that defines the condition to check the value of, such as a member name or an expression.</param>
-            <param name="animate">Whether or not to slide the property in and out when the state changes.</param>
+            <param name="animate">Whether or not to slide the property in and out when the hudSlotState changes.</param>
         </member>
         <member name="M:Sirenix.OdinInspector.ShowIfAttribute.#ctor(System.String,System.Object,System.Boolean)">
             <summary>
@@ -4800,7 +4800,7 @@
             </summary>
             <param name="condition">A resolved string that defines the condition to check the value of, such as a member name or an expression.</param>
             <param name="optionalValue">Value to check against.</param>
-            <param name="animate">Whether or not to slide the property in and out when the state changes.</param>
+            <param name="animate">Whether or not to slide the property in and out when the hudSlotState changes.</param>
         </member>
         <member name="T:Sirenix.OdinInspector.ShowIfGroupAttribute">
             <summary>
@@ -5283,7 +5283,7 @@
         </member>
         <member name="P:Sirenix.OdinInspector.TableListAttribute.ShowPaging">
             <summary>
-                Whether paging buttons should be added to the title bar. The default value of this, can be customized from the Odin Preferences window.
+                Whether paging characterSelectButtons should be added to the title bar. The default value of this, can be customized from the Odin Preferences window.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.TableListAttribute.ShowPagingHasValue">

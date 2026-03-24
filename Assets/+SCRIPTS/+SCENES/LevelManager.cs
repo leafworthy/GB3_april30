@@ -1,90 +1,92 @@
 using System;
-using __SCRIPTS.Cursor;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
 	public class LevelManager : MonoBehaviour, IService
 	{
-		static SceneDefinition restartedLevelScene;
+		SceneDefinition currentLevelSceneToRestartTo;
 		public bool hasWon;
-		public GameLevel currentLevel;
 
-		public event Action<GameLevel> OnStopLevel;
-		public event Action<GameLevel> OnStartLevel;
+		public event Action OnStopLevel;
+		public event Action OnStartLevel;
 		public event Action OnRestartLevel;
 		public event Action<Player> OnLevelSpawnedPlayerFromLevel;
 		public event Action<Player> OnLevelSpawnedPlayerFromPlayerSetupMenu;
 		public event Action OnGameOver;
 		float gameStartTime;
-		public bool loadInGame;
-
-		[RuntimeInitializeOnLoadMethod]
-		static void ResetStatics()
-		{
-			restartedLevelScene = null;
-		}
 
 		public void StartService()
 		{
+			Debug.Log("LevelManager start service");
 			gameObject.SetActive(true);
+			currentLevelSceneToRestartTo = null;
 			Services.sceneLoader.OnSceneReadyToStartLevel += SceneLoaderSceneReadyToStartLevel;
-			if (loadInGame) StartGame(GetFirstLevelToLoad());
-			else StartGame(Services.assetManager.Scenes.mainMenu);
 		}
 
-		public void StartGame(SceneDefinition startingScene)
+		public void StartGame()
 		{
-			Services.sceneLoader.GoToScene(startingScene);
+			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.mainMenu);
 		}
 
-		void StartLevel(GameLevel newLevel)
+		public void StartFirstLevel()
+		{
+			Services.sceneLoader.GoToScene(GetFirstLevelToLoad());
+		}
+
+		void StartLevel(SceneDefinition newLevel)
 		{
 			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
-			currentLevel = newLevel;
+			currentLevelSceneToRestartTo = newLevel;
 			SpawnPlayersIntoLevel();
-			OnStartLevel?.Invoke(currentLevel);
+			OnStartLevel?.Invoke();
+			Services.objectMaker.PoolObjects();
 			Debug.Log("start level");
-			newLevel.OnGameOver += Level_OnGameOver;
+			Services.playerManager.OnAllJoinedPlayersDead += Level_OnGameOver;
 			hasWon = false;
 			gameStartTime = Time.time;
 		}
 
-		void Level_OnGameOver(bool _hasWon)
+		void OnDisable()
+		{
+			Services.playerManager.OnAllJoinedPlayersDead -= Level_OnGameOver;
+			OnStopLevel = null;
+			OnStartLevel = null;
+			OnRestartLevel = null;
+			OnLevelSpawnedPlayerFromLevel = null;
+			OnLevelSpawnedPlayerFromPlayerSetupMenu = null;
+			OnGameOver = null;
+		}
+
+		void Level_OnGameOver()
 		{
 			EndGame(hasWon);
 			Debug.Log("game over");
-
 		}
 
 		void SpawnPlayersIntoLevel()
 		{
 			foreach (var player in Services.playerManager.AllJoinedPlayers)
 			{
+				if (player.state == Player.State.Dead) return;
 				SpawnPlayerFromLevel(player);
-				Debug.Log( "[LEVEL MANAGER]spawned player from level at start of level for player " + player.playerIndex);
+				Debug.Log("[LEVEL MANAGER]spawned player from level at start of level for player " + player.playerIndex);
 			}
 		}
 
-		public void SpawnPlayerFromLevel(Player player)
+		void SpawnPlayerFromLevel(Player player)
 		{
-			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
-			var playerSpawnPoint = currentLevel.DefaultPlayerSpawnPoint;
-			Debug.Log("player spawn point is " + playerSpawnPoint, playerSpawnPoint);
-			player.Spawn(playerSpawnPoint.transform.position);
+			var spawnPoint = FindFirstObjectByType<PlayerSpawnPoint>();
+			player.Spawn(spawnPoint.transform.position);
 			OnLevelSpawnedPlayerFromLevel?.Invoke(player);
 		}
 
 		public void SpawnPlayerFromPlayerSetupMenu(Player player)
 		{
-			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
-			player.Spawn(currentLevel.DefaultPlayerSpawnPoint.transform.position);
+			var spawnPoint = FindFirstObjectByType<PlayerSpawnPoint>();
+			player.Spawn(spawnPoint.transform.position);
 			OnLevelSpawnedPlayerFromPlayerSetupMenu?.Invoke(player);
 		}
-
-
-
-
 
 		void LoadLevel(SceneDefinition destinationScene)
 		{
@@ -94,19 +96,15 @@ namespace __SCRIPTS
 
 		void SceneLoaderSceneReadyToStartLevel(SceneDefinition newScene)
 		{
-			var gameLevel = FindFirstObjectByType<GameLevel>();
-			if (gameLevel == null) return;
-			StartLevel(gameLevel);
+			StartLevel(newScene);
 		}
 
 		void StopLevel()
 		{
-			if (currentLevel == null) return;
-			restartedLevelScene = currentLevel.scene;
-
-			currentLevel.StopLevel();
-			currentLevel = null;
-			OnStopLevel?.Invoke(currentLevel);
+			if (currentLevelSceneToRestartTo == null) return;
+			Services.enemyManager.ClearEnemies();
+			Services.objectMaker.DestroyAllUnits();
+			OnStopLevel?.Invoke();
 		}
 
 		void StopGame()
@@ -122,24 +120,15 @@ namespace __SCRIPTS
 			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.restartLevel);
 		}
 
-		void ClearOldSpawnedPlayer(Player pausingPlayer)
-		{
-			Services.objectMaker.Unmake(pausingPlayer.SpawnedPlayerGO);
-			if (pausingPlayer == null) return;
-			pausingPlayer.Unalive();
-		}
-
 		public void ExitToMainMenu()
 		{
 			StopGame();
 			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.mainMenu);
 		}
 
-
-
 		public void GoBackFromRestart()
 		{
-			LoadLevel(restartedLevelScene);
+			LoadLevel(currentLevelSceneToRestartTo);
 		}
 
 		public void QuitGame()
@@ -155,7 +144,6 @@ namespace __SCRIPTS
 		{
 			OnGameOver?.Invoke();
 			hasWon = _hasWon;
-			if (currentLevel != null) currentLevel.OnGameOver -= Level_OnGameOver;
 			StopLevel();
 			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.GameOverScene);
 		}
@@ -168,19 +156,11 @@ namespace __SCRIPTS
 			return Time.time - gameStartTime;
 		}
 
-		public SceneDefinition GetFirstLevelToLoad()
-		{
-			if (!loadInGame) return Services.assetManager.Scenes.startingScene;
-			return Services.assetManager.Scenes.testScene;
-		}
-
-
+		public SceneDefinition GetFirstLevelToLoad() => Services.assetManager.Scenes.startingScene;
 
 		public void RespawnPlayer(Player pausingPlayer)
 		{
-			if (currentLevel == null) return;
-			ClearOldSpawnedPlayer(pausingPlayer);
-			SpawnPlayerFromLevel(pausingPlayer);
+			pausingPlayer.StartCharacterSelectMenu();
 		}
 
 		public void UnspawnPlayer(Player unspawnPlayer)

@@ -60,9 +60,10 @@ namespace __SCRIPTS
 			StartSwitchingWeapons(Tertiary_Weapon);
 		}
 
-		void OnDestroy()
+		void OnDisable()
 		{
 			if (player == null) return;
+			if(player.Controller == null) return;
 			player.Controller.InteractRightShoulder.OnPress -= Player_SwapTertiary;
 
 			player.Controller.Attack2LeftTrigger.OnPress -= Player_SwapSecondary;

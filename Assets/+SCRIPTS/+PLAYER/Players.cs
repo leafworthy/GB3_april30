@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,21 +8,17 @@ namespace __SCRIPTS
 {
 	public class Players : MonoBehaviour, IService
 	{
-		[SerializeField] private PlayerData EnemyPlayerData;
-		[SerializeField] private PlayerData NPCPlayerData;
+		[SerializeField] PlayerData EnemyPlayerData;
+		[SerializeField] PlayerData NPCPlayerData;
 		[SerializeField] public List<PlayerData> playerPresets = new();
 
-		private PlayerInputManager _inputManager;
-		private Player _enemyPlayer;
+		PlayerInputManager _inputManager;
 		public Player enemyPlayer => _enemyPlayer ??= CreateEnemyPlayer();
+		Player _enemyPlayer;
 		public Player NPCPlayer => _NPCPlayer ??= CreateNPCPlayer();
-
-
-
-		private Player _NPCPlayer;
+		Player _NPCPlayer;
 		public List<Player> AllJoinedPlayers = new();
-		private PlayerInput testPlayerInput;
-		private Player testPlayer;
+
 
 		// Action maps
 		public const string UIActionMap = "UI";
@@ -34,10 +29,7 @@ namespace __SCRIPTS
 		public event Action<Player> OnPlayerJoins;
 		public event Action<Player> OnPlayerDies;
 
-		private List<Player> unjoinedPlayers = new();
-
 		public Player mainPlayer;
-
 
 		public void StartService()
 		{
@@ -45,13 +37,11 @@ namespace __SCRIPTS
 			_inputManager.onPlayerJoined += Input_OnPlayerJoins;
 
 			// Create enemy player
-			CreateEnemyPlayer();
+
 			SetActionMaps(UIActionMap);
 		}
 
-
-
-		private Player CreateEnemyPlayer()
+		Player CreateEnemyPlayer()
 		{
 			var enemy = new GameObject("EnemyPlayer");
 			_enemyPlayer = enemy.AddComponent<Player>();
@@ -59,15 +49,15 @@ namespace __SCRIPTS
 			return _enemyPlayer;
 		}
 
-		private Player CreateNPCPlayer()
+		Player CreateNPCPlayer()
 		{
 			var NPC = new GameObject("NPCPlayer");
 			_NPCPlayer = NPC.AddComponent<Player>();
 			_NPCPlayer.ConnectPlayerToController(null, NPCPlayerData, 6);
 			return _NPCPlayer;
-
 		}
-		private void OnDisable()
+
+		void OnDisable()
 		{
 			foreach (var player in AllJoinedPlayers)
 			{
@@ -75,6 +65,14 @@ namespace __SCRIPTS
 			}
 
 			if (_inputManager != null) _inputManager.onPlayerJoined -= Input_OnPlayerJoins;
+			 OnAllJoinedPlayersDead = null;
+			 OnPlayerJoins = null;
+			 OnPlayerDies = null;
+			 mainPlayer = null;
+			 _enemyPlayer = null;
+			 _NPCPlayer = null;
+			 AllJoinedPlayers.Clear();
+			 playerPresets.Clear();
 		}
 
 		public void ClearAllJoinedPlayers()
@@ -84,6 +82,7 @@ namespace __SCRIPTS
 			foreach (var player in playersToDestroy)
 			{
 				if (player == null) continue;
+				player.OnPlayerDies -= Player_PlayerDies;
 				if (player.SpawnedPlayerGO != null) Destroy(player.SpawnedPlayerGO);
 				Destroy(player.gameObject);
 			}
@@ -91,7 +90,7 @@ namespace __SCRIPTS
 			AllJoinedPlayers.Clear();
 		}
 
-		private void Input_OnPlayerJoins(PlayerInput newPlayerInput)
+		void Input_OnPlayerJoins(PlayerInput newPlayerInput)
 		{
 			if (Services.pauseManager.IsPaused) return;
 			var joiningPlayer = newPlayerInput.GetComponent<Player>();
@@ -99,7 +98,7 @@ namespace __SCRIPTS
 			AddPlayerToJoinedPlayers(newPlayerInput, joiningPlayer);
 		}
 
-		private void AddPlayerToJoinedPlayers(PlayerInput newPlayerInput, Player joiningPlayer)
+		void AddPlayerToJoinedPlayers(PlayerInput newPlayerInput, Player joiningPlayer)
 		{
 			if (AllJoinedPlayers.Contains(joiningPlayer))
 			{
@@ -107,7 +106,11 @@ namespace __SCRIPTS
 				return;
 			}
 
-			if (AllJoinedPlayers.Count >= 4) return;
+			if (AllJoinedPlayers.Count >= 4)
+			{
+				Debug.Log( "4 players already joined", this);
+				return;
+			}
 
 			joiningPlayer.ConnectPlayerToController(newPlayerInput, playerPresets[newPlayerInput.playerIndex], newPlayerInput.playerIndex);
 			if (mainPlayer == null) SetMainPlayer(joiningPlayer);
@@ -116,7 +119,7 @@ namespace __SCRIPTS
 			joiningPlayer.OnPlayerDies += Player_PlayerDies;
 		}
 
-		private void Player_PlayerDies(Player deadPlayer, bool forRespawn = false)
+		void Player_PlayerDies(Player deadPlayer, bool forRespawn = false)
 		{
 			PlayerDead(deadPlayer);
 			deadPlayer.OnPlayerDies -= Player_PlayerDies;
@@ -128,7 +131,7 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void PlayerDead(Player deadPlayer)
+		void PlayerDead(Player deadPlayer)
 		{
 			Debug.Log("player dead");
 			if (deadPlayer.IsMainPlayer())
@@ -153,7 +156,7 @@ namespace __SCRIPTS
 			OnPlayerDies?.Invoke(deadPlayer);
 		}
 
-		private void SetMainPlayer(Player nextPlayer)
+		void SetMainPlayer(Player nextPlayer)
 		{
 			mainPlayer = nextPlayer;
 			if (mainPlayer == null) return;
@@ -161,7 +164,7 @@ namespace __SCRIPTS
 			mainPlayer.SetIsMainPlayer(true);
 		}
 
-		private bool AllJoinedPlayersAreDead()
+		bool AllJoinedPlayersAreDead()
 		{
 			var playersAlive = AllJoinedPlayers.Where(t => t.state == Player.State.Alive).ToList();
 			return playersAlive.Count <= 0;
@@ -186,7 +189,5 @@ namespace __SCRIPTS
 
 			player.input.SwitchCurrentActionMap(actionMap);
 		}
-
-
 	}
 }

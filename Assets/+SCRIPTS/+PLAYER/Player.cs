@@ -40,6 +40,7 @@ namespace __SCRIPTS
 		public Color playerColor;
 
 		PlayerSayer sayer;
+		public HUDSlot currentHUDSlot;
 
 		public int playerIndex;
 		public bool hasKey;
@@ -49,7 +50,6 @@ namespace __SCRIPTS
 		public event Action<Player> OnPlayerLeavesUpgradeSetupMenu;
 
 		PlayerUpgrades playerUpgrades;
-		int buildingLayer;
 		bool isMainPlayer;
 
 		public void SetIsMainPlayer(bool value)
@@ -65,7 +65,7 @@ namespace __SCRIPTS
 		void Start()
 		{
 			playerUpgrades = GetComponent<PlayerUpgrades>();
-			gameObject.transform.SetParent(GameManager.I.gameObject.transform);
+			gameObject.transform.SetParent(Services.gameManager.gameObject.transform);
 		}
 
 		public void OnPlayerDied(Player player, bool isRespawning)
@@ -78,7 +78,7 @@ namespace __SCRIPTS
 
 		public GameObject Spawn(Vector2 position)
 		{
-
+			Services.playerManager.SetActionMaps(Players.PlayerActionMap);
 			Services.sceneLoader.OnSceneAboutToChange += SceneLoader_OnSceneAboutToChange;
 			Services.levelManager.OnRestartLevel += LevelManager_OnRestartLevel;
 			SetState(State.Alive);
@@ -243,6 +243,17 @@ namespace __SCRIPTS
 		{
 			if (spawnedPlayerDefence == null) return;
 			spawnedPlayerDefence.DieNow();
+		}
+
+		public void InitStats()
+		{
+			var playerStats = GetComponent<PlayerStats>();
+			if (playerStats != null) playerStats.InitStats();
+		}
+
+		public void StartCharacterSelectMenu()
+		{
+			 currentHUDSlot.OpenCharacterSetupMenu(this);
 		}
 	}
 }

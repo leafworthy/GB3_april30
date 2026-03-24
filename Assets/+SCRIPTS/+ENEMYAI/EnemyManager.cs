@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -8,32 +7,24 @@ namespace __SCRIPTS
 	public class EnemyManager : MonoBehaviour, IService
 	{
 		List<Life> _allEnemies = new();
-		public event Action<Player, float,Life> OnPlayerKillsEnemy;
-		public event Action<Life> OnEnemyDying;
-		LevelManager _levelManager;
-		LevelManager levelManager => _levelManager ?? ServiceLocator.Get<LevelManager>();
-		Players _players;
-		Players players => _players ?? ServiceLocator.Get<Players>();
+		public event Action<Player, float, Life> OnPlayerKillsEnemy;
 
-		ObjectMaker objectMaker => _objectMaker ??= ServiceLocator.Get<ObjectMaker>();
-
-		ObjectMaker _objectMaker;
 
 		public void StartService()
 		{
-			levelManager.OnStopLevel += ClearEnemies;
 		}
+
 
 		public GameObject SpawnNewEnemy(GameObject enemyPrefab, EnemySpawner.EnemyType enemyType, Vector3 position, int enemyTier)
 		{
-			var newEnemy = objectMaker.Make(enemyPrefab, position);
+			var newEnemy = Services.objectMaker.Make(enemyPrefab, position);
 			ConfigureNewEnemy(newEnemy, enemyType, enemyTier);
 			return newEnemy;
 		}
 
 		public void SpawnNewNPC(GameObject NPCPrefab, Vector3 position)
 		{
-			var newNPC = objectMaker.Make(NPCPrefab, position);
+			var newNPC = Services.objectMaker.Make(NPCPrefab, position);
 			ConfigureNewNPC(newNPC);
 		}
 
@@ -50,12 +41,10 @@ namespace __SCRIPTS
 
 		void EnemyDead(Attack attack)
 		{
-			var loot = ServiceLocator.Get<LootTable>();
-			loot.DropLoot(attack.DestinationLife.transform.position);
-			OnEnemyDying?.Invoke(attack.DestinationLife);
+			Services.lootTable.DropLoot(attack.DestinationLife.transform.position);
 		}
 
-		void ClearEnemies(GameLevel gameLevel)
+		public void ClearEnemies()
 		{
 			foreach (var enemy in _allEnemies)
 			{
@@ -85,7 +74,7 @@ namespace __SCRIPTS
 			var life = enemy.GetComponent<Life>();
 			if (life != null)
 			{
-				life.SetPlayer(players.enemyPlayer);
+				life.SetPlayer(Services.playerManager.enemyPlayer);
 				life.SetEnemyTypeAndTier(enemyType, enemyTier);
 			}
 
@@ -95,7 +84,7 @@ namespace __SCRIPTS
 		public void ConfigureNewNPC(GameObject npc)
 		{
 			var life = npc.GetComponent<Life>();
-			if (life != null) life.SetPlayer(players.NPCPlayer);
+			if (life != null) life.SetPlayer(Services.playerManager.NPCPlayer);
 			var npcScript = npc.GetComponent<NPC_AI>();
 			npcScript.OnRescued += NPC_OnRescued;
 
@@ -109,6 +98,7 @@ namespace __SCRIPTS
 			{
 				Services.playerStatsManager.ChangeStat(player, PlayerStat.StatType.Rescues, 1);
 			}
+
 			tinter?.StartFadeOut();
 		}
 	}

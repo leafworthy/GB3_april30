@@ -5,42 +5,72 @@ namespace __SCRIPTS
 {
 	public class CharacterSelectButtons : MonoBehaviour
 	{
-		public CharacterSelectButton DefaultButton;
 		public event Action<Character> OnCharacterChosen;
-
-		private CharacterSelectButton currentlySelectedButton;
-		private bool hasSelected;
-
-		[SerializeField] private CharacterSelectButton[] buttons;
-		private Player _player;
-
-		public void Init(Player player)
+		CharacterSelectButton currentlyHighlightedButton;
+		[SerializeField] CharacterSelectButton[] buttons;
+		public GameObject visible;
+		Player player;
+		State currentState;
+		enum State
 		{
-			hasSelected = false;
-			_player = player;
-			player.Controller.UIAxis.OnLeft += OnLeft;
-			player.Controller.UIAxis.OnRight += OnRight;
-			player.Controller.Select.OnPress += OnSelect;
-			player.Controller.Cancel.OnPress += OnCancel;
-			buttons[0] = DefaultButton;
+			not,
+			highlighting,
+			selected,
+			chosen
+		}
+
+		void SetState(State state)
+		{
+			currentState = state;
+		}
+
+		public void SetPlayer(Player newPlayer)
+		{
+			Debug.Log( "[CharacterSelectButtons] SetPlayer called with newPlayer " + newPlayer.name, newPlayer);
+			if (player == null) ListenToPlayer(newPlayer);
+			visible.SetActive(true);
+			StartHighlighting();
+
+
+		}
+
+		void CancelHighlighting()
+		{
+			SetState(State.not);
+			visible.SetActive(false);
 			DeselectAllButtons();
-			currentlySelectedButton = DefaultButton;
-			currentlySelectedButton.Highlight();
-
 		}
 
-		private void OnDisable()
+		void CancelSelection()
 		{
-			hasSelected = false;
-			if(_player == null) return;
-			_player.Controller.UIAxis.OnLeft -= OnLeft;
-			_player.Controller.UIAxis.OnRight -= OnRight;
-			_player.Controller.Select.OnPress -= OnSelect;
-			_player.Controller.Cancel.OnPress -= OnCancel;
-
+			SetState(State.highlighting);
+			currentlyHighlightedButton.Unhighlight();
 		}
 
-		private void DeselectAllButtons()
+		void HighlightFirstButton()
+		{
+			currentlyHighlightedButton = buttons[0];
+			currentlyHighlightedButton.Highlight();
+		}
+
+		void ListenToPlayer(Player player)
+		{
+			this.player = player;
+			if (this.player == null) return;
+			Debug.Log( "listening to player " + this.player.playerIndex, this.player);
+			this.player.Controller.UIAxis.OnLeft -= OnLeft;
+			this.player.Controller.UIAxis.OnRight -= OnRight;
+			this.player.Controller.Select.OnPress -= OnSelect;
+			this.player.Controller.Cancel.OnPress -= OnCancel;
+
+			this.player.Controller.UIAxis.OnLeft += OnLeft;
+			this.player.Controller.UIAxis.OnRight += OnRight;
+			this.player.Controller.Select.OnPress += OnSelect;
+			this.player.Controller.Cancel.OnPress += OnCancel;
+		}
+
+
+		void DeselectAllButtons()
 		{
 			foreach (var button in buttons)
 			{
@@ -49,69 +79,99 @@ namespace __SCRIPTS
 			}
 		}
 
-		private void OnCancel(NewControlButton obj)
+		void OnCancel(NewControlButton obj)
 		{
-			if (!hasSelected) return;
-			hasSelected = false;
-			Services.sfx.sounds.charSelect_deselect_sounds.PlayRandom();
-			currentlySelectedButton.Deselect();
-		}
-
-
-		private void OnSelect(NewControlButton obj)
-		{
-
-			if (hasSelected)
+			switch (currentState)
 			{
-				ChooseCharacter();
-				return;
+				case State.not:
+					break;
+				case State.highlighting:
+					Services.sfx.sounds.charSelect_deselect_sounds.PlayRandom();
+					CancelHighlighting();
+					break;
+				case State.selected:
+					CancelSelection();
+					StartHighlighting();
+					Services.sfx.sounds.charSelect_deselect_sounds.PlayRandom();
+					currentlyHighlightedButton.Deselect();
+					currentlyHighlightedButton.Highlight();
+					break;
+				case State.chosen:
+					break;
 			}
-
-			SelectCharacter();
 		}
 
-
-		private void SelectCharacter()
+		void OnSelect(NewControlButton obj)
 		{
-			hasSelected = true;
-			currentlySelectedButton.Select();
+			switch (currentState)
+			{
+				case State.not:
+					StartHighlighting();
+					break;
+				case State.highlighting:
+					SelectHighlighted();
+					break;
+				case State.selected:
+					ChooseSelected();
+					break;
+				case State.chosen:
+					break;
+			}
 		}
 
-		private void ChooseCharacter()
+		void StartHighlighting()
 		{
-			currentlySelectedButton.Unhighlight();
-			Services.sfx.sounds.charSelect_select_sounds.PlayRandom();
-			OnCharacterChosen?.Invoke(currentlySelectedButton.character);
-		}
-
-		private void OnRight(NewInputAxis obj)
-		{
-			if (hasSelected) return;
-			Services.sfx.sounds.charSelect_move_sounds.PlayRandom();
-			currentlySelectedButton.Unhighlight();
-			currentlySelectedButton = currentlySelectedButton.buttonToRight;
-			currentlySelectedButton.Highlight();
-		}
-
-		private void OnLeft(NewInputAxis obj)
-		{
-			if (hasSelected) return;
-			Services.sfx.sounds.charSelect_move_sounds.PlayRandom();
-			currentlySelectedButton.Unhighlight();
-			currentlySelectedButton = currentlySelectedButton.buttonToLeft;
-			currentlySelectedButton.Highlight();
-		}
-
-		public void CleanUp()
-		{
-			hasSelected = false;
 			DeselectAllButtons();
-			currentlySelectedButton = DefaultButton;
-			if (_player == null) return;
-			_player.Controller.UIAxis.OnLeft -= OnLeft;
-			_player.Controller.UIAxis.OnRight -= OnRight;
-			_player.Controller.Select.OnPress -= OnSelect;
-			_player.Controller.Cancel.OnPress -= OnCancel;
+			SetState(State.highlighting);
+			visible.SetActive(true);
+			Services.sfx.sounds.pickup_speed_sounds.PlayRandom();HighlightFirstButton();
+		}
+
+		void SelectHighlighted()
+		{
+			SetState(State.selected);
+			currentlyHighlightedButton.Select();
+			Services.sfx.sounds.charSelect_select_sounds.PlayRandom();
+		}
+
+		void ChooseSelected()
+		{
+			SetState(State.chosen);
+			currentlyHighlightedButton.Unhighlight();
+			Services.sfx.sounds.press_start_sounds.PlayRandom();
+			OnCharacterChosen?.Invoke(currentlyHighlightedButton.character);
+			visible.SetActive(false);
+		}
+
+		void SetCurrentlySeletedButton(CharacterSelectButton newButton)
+		{
+			Debug.Log( "setting currently selected button to " + newButton.name, newButton);
+			currentlyHighlightedButton.Unhighlight();
+			currentlyHighlightedButton = newButton;
+			currentlyHighlightedButton.Highlight();
+			Services.sfx.sounds.charSelect_move_sounds.PlayRandom();
+		}
+
+		void OnLeft(NewInputAxis obj)
+		{
+			Debug.Log("OnLeft called with input in hudSlotState " + currentState);
+			if (currentState != State.highlighting) return;
+			SetCurrentlySeletedButton(currentlyHighlightedButton.buttonToLeft);
+		}
+
+		void OnRight(NewInputAxis obj)
+		{
+			Debug.Log( "OnRight called with input in hudSlotState " + currentState);
+			if (currentState != State.highlighting) return;
+			SetCurrentlySeletedButton(currentlyHighlightedButton.buttonToRight);
+		}
+
+		public void ResetCharacterSelection()
+		{
+			visible.SetActive(true);
+			StartHighlighting();
+			DeselectAllButtons();
+			HighlightFirstButton();
 		}
 	}
 }

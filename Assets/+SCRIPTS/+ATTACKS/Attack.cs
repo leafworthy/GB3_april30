@@ -21,7 +21,11 @@ namespace __SCRIPTS
 			{
 				OriginLife = originLife
 			};
-			if (originLife != null) attack.OriginFloorPoint = originLife.transform.position;
+			if (originLife != null)
+			{
+				//WEIRD
+				if (attack.OriginFloorPoint != Vector2.zero) attack.OriginFloorPoint = originLife.transform.position;
+			}
 
 			if (destinationLife != null)
 			{
