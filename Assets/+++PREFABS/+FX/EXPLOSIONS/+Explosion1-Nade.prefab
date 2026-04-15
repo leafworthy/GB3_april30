@@ -121,7 +121,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5323313341257251251}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3376018837903728695
+--- !u!1 &4869606276023456748
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -129,8 +129,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2430937483469609170}
-  - component: {fileID: 864227953620800814}
+  - component: {fileID: 1215364531663237985}
+  - component: {fileID: 5735583987222803027}
   m_Layer: 0
   m_Name: Light Gunflash
   m_TagString: Untagged
@@ -138,28 +138,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!4 &2430937483469609170
+--- !u!4 &1215364531663237985
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3376018837903728695}
+  m_GameObject: {fileID: 4869606276023456748}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.06666667, y: 0.06666667, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.20799702, w: 0.97812945}
+  m_LocalPosition: {x: 3.1264286, y: 8.474766, z: 0}
+  m_LocalScale: {x: 0.061147988, y: 0.038851995, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5323313341257251251}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &864227953620800814
+--- !u!114 &5735583987222803027
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3376018837903728695}
+  m_GameObject: {fileID: 4869606276023456748}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 85a34663ca705a54eac3205e225a6d45, type: 3}
@@ -167,13 +167,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightType: 0
   lightPresetId: 0
-  eventPresetId: 0
+  eventPresetId: 1
   lightLayer: 0
-  occlusionLayer: 1
+  occlusionLayer: 3
   translucentLayer: 0
   translucentPresetId: 0
-  color: {r: 1.7176471, g: 0.972549, b: 0.25882354, a: 0.475}
-  size: 139
+  color: {r: 1.4980392, g: 0.80784315, b: 0.14901961, a: 1}
+  size: 49
   spotAngleInner: 360
   spotAngleOuter: 360
   coreSize: 0.1
@@ -186,10 +186,10 @@ MonoBehaviour:
   maskTranslucencyQuality: 1
   maskTranslucencyStrength: 0
   applyRotation: 1
-  textureSize: 3
+  textureSize: 2
   meshMode:
     enable: 1
-    alpha: 0.5
+    alpha: 0.426
     shader: 1
     materials:
     - {fileID: 0}
@@ -246,7 +246,7 @@ Transform:
   m_LocalScale: {x: 15, y: 15, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2430937483469609170}
+  - {fileID: 1215364531663237985}
   - {fileID: 4566087721757307733}
   - {fileID: 7528691118811844403}
   - {fileID: 946761703322355392}

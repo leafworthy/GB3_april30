@@ -84,7 +84,7 @@ namespace __SCRIPTS
 				hitMarkObject.transform.localScale = new Vector3(-Mathf.Abs(localScale.x), localScale.y, 0);
 			}
 
-			Services.objectMaker.Unmake(hitMarkObject, 5);
+			Services.objectMaker.Unmake(hitMarkObject, MyAttackUtilities.deathTime);
 		}
 
 		void SprayDebris(Attack attack)
@@ -125,7 +125,7 @@ namespace __SCRIPTS
 			forwardDebree.GetComponent<MoveJumpAndRotateAbility>().Fire(angle, height, verticalSpeed);
 			_tint?.TintDebree(forwardDebree);
 
-			Services.objectMaker.Unmake(forwardDebree, 5);
+			Services.objectMaker.Unmake(forwardDebree, MyAttackUtilities.deathTime);
 		}
 
 		void CreateDamageRisingText(Attack attack)

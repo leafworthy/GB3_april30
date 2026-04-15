@@ -20,11 +20,13 @@ public class ExplodeOnDeath : MonoBehaviour
 	public GameObject transformToDestroy;
 	private void OnEnable()
 	{
+		if (life == null) return;
 		life.OnDead += LifeOnDead;
 	}
 
 	private void OnDisable()
 	{
+		if(life == null) return;
 		life.OnDead -= LifeOnDead;
 	}
 

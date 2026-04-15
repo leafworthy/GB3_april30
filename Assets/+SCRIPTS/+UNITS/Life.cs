@@ -47,7 +47,6 @@ namespace __SCRIPTS
 		public event Action<Attack> OnFlying;
 		Collider2D[] colliders;
 		bool hasInitialized;
-		public float deathTime = 5;
 		DamageOverTimeData damageOverTimeData;
 		public event Action OnInitialize;
 
@@ -135,7 +134,7 @@ namespace __SCRIPTS
 			if (attack.OriginLife == null || attack.DestinationLife == null) return;
 			if (attack.OriginLife.player != null) OnKilled?.Invoke(attack.OriginLife.player, attack.DestinationLife);
 			gameObject.layer = LayerMask.NameToLayer("Dead");
-			Invoke(nameof(CompleteDeathDelayed), deathTime);
+			Invoke(nameof(CompleteDeathDelayed), MyAttackUtilities.deathTime);
 			animations?.SetTrigger(UnitAnimations.DeathTrigger);
 			animations?.SetBool(UnitAnimations.IsDead, true);
 		}

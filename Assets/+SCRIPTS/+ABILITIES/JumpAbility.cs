@@ -133,7 +133,10 @@ namespace __SCRIPTS
 		{
 			if (isDisabled) return;
 			if (defence.cantFly) return;
-			if (attack.DestinationLife.player.IsHuman() || attack.CausesFlying) StartFlying(defence.Stats.JumpSpeed);
+			if (attack.DestinationLife.player.IsHuman() || attack.CausesFlying)
+			{
+				StartFlying(attack.CausesFlying ? attack.FlyingHeight : defence.Stats.JumpSpeed);
+			}
 			else
 			{
 				StartDying();

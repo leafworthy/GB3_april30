@@ -11,6 +11,7 @@ using UnityEditor;
 
 public static class MyAttackUtilities
 {
+	public const float deathTime = 30;
 	static readonly int Tint = Shader.PropertyToID("_Tint");
 	const float PushFactor = .00000005f;
 	const float TintFadeSpeed = 6;
@@ -68,7 +69,11 @@ public static class MyAttackUtilities
 			return false;
 		}
 
-		if (!targetLife.CanTakeDamage()) Debug.LogWarning("target cant take damage");
+		if (!targetLife.CanTakeDamage())
+		{
+			Debug.LogWarning("target cant take damage");
+			return false;
+		}
 
 		if (!originLife.IsEnemyOf(targetLife)) Debug.LogWarning("target is not enemy");
 		return originLife.IsEnemyOf(targetLife) && targetLife.CanTakeDamage();
@@ -200,7 +205,7 @@ public static class MyAttackUtilities
 		var forwardDebree = Services.objectMaker.Make(Services.assetManager.FX.GetDebree(debrisType), position);
 		forwardDebree.GetComponent<MoveJumpAndRotateAbility>().Fire(angle, height, verticalSpeed);
 		TintDebreeColor(forwardDebree, debrisColor);
-		Services.objectMaker.Unmake(forwardDebree, 3);
+		Services.objectMaker.Unmake(forwardDebree, deathTime);
 	}
 
 	public static void ExplodeDebreeEverywhere(float explosionSize, Vector2 position, DebrisType debrisType, Color debrisColor, int min = 5, int max = 10)

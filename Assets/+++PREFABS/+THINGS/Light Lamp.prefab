@@ -48,6 +48,7 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!114 &8397508378889603541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,7 +392,7 @@ MonoBehaviour:
   bumpMap:
     intensity: 1
     depth: 1
-  whenInsideCollider: 2
+  whenInsideCollider: 0
   lightSprite: 1
   sprite: {fileID: 21300000, guid: 4b8f7314cdf26b148af1b178e90065d5, type: 3}
   spriteFlipX: 0
@@ -559,6 +560,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: -0.35, y: 0, z: 0}
 --- !u!212 &2625901152099601916
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -604,6 +606,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 696
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 40e708ec47bbf4241bed6a7181dc87a1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -613,7 +616,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &2599583722871805767
 Animator:
@@ -884,10 +886,10 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  cantFly: 0
   OverrideName: Lamp
   DoesntShowDamageNumbers: 0
   IsShielded: 0
-  deathTime: 5
 --- !u!114 &7065454133731433709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1028,6 +1030,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: -0.35, y: 0, z: 0}
 --- !u!212 &2606781172201921825
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1073,6 +1076,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 696
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 24972f257ba89470ba05ec27589ec02c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1082,7 +1086,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7225641881878718660
 GameObject:

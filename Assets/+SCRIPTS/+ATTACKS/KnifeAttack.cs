@@ -114,9 +114,11 @@ public class KnifeAttack : Ability
 			return;
 		}
 
-		var targetLife = targetHit.transform.gameObject.GetComponentInParent<Life>();
-		if (targetLife == null) return;
+		var targetLife = targetHit.transform.gameObject.GetComponent<Life>();
+		if (!MyAttackUtilities.IsValidTarget(offence, targetLife)) return;
 
+		var knifeAttack = Attack.Create(offence, targetLife).WithDamage(defence.Stats.Damage(3)).WithOriginPoint(body.AimCenter.transform.position).WithFlying(true,2).WithFire(false);
+		targetLife.TakeDamage(knifeAttack);
 		MyAttackUtilities.HitTarget(offence, targetLife, defence.Stats.Damage(3), 1, true); //stats.TertiaryAttackDamageWithExtra
 		OnHit?.Invoke(targetHit.transform.position);
 	}

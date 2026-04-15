@@ -14,6 +14,8 @@ namespace __SCRIPTS
 		IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
 		IHaveUnitStats _stats;
 		bool IsFadingOutColor;
+		public bool overrideTint;
+		public Color overrideTintColor;
 
 		static readonly int ColorReplaceColorA = Shader.PropertyToID("_NewColorA");
 		static readonly int ColorReplaceColorB = Shader.PropertyToID("_NewColorB");
@@ -86,7 +88,7 @@ namespace __SCRIPTS
 		public void TintDebree(GameObject forwardDebree)
 		{
 			var spriteToTint = forwardDebree.GetComponentInChildren<SpriteRenderer>();
-			if (spriteToTint != null) spriteToTint.color = stats.Stats.DebrisTint;
+			if (spriteToTint != null) spriteToTint.color = overrideTint ? overrideTintColor : stats.Stats.DebrisTint;
 		}
 	}
 }

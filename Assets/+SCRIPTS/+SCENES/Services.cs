@@ -13,7 +13,7 @@ public interface IService
 
 public static class Services
 {
-	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+
 	public static void ResetStatics()
 	{
 		Debug.Log("[Services] resetting services statics");
@@ -143,7 +143,9 @@ public static class Services
 			ResetAction.performed += PressedReset;
 			ResetAction.Enable();
 			Debug.Log("checking if game manager is in scene");
-			RegisterServices();
+
+			LoadNewGameManager();
+			//RegisterServices();
 		}
 
 		static void ResetGameManager()
@@ -154,8 +156,15 @@ public static class Services
 			UnityEngine.Object.Destroy(_gameManager?.gameObject);
 
 			_gameManager = null;
-			SceneManager.sceneLoaded += OnSceneLoaded;
 
+
+			LoadNewGameManager();
+		}
+
+		static void LoadNewGameManager()
+		{
+
+			SceneManager.sceneLoaded += OnSceneLoaded;
 			Debug.Log("loading new game manager");
 			SceneManager.LoadScene(SceneName, LoadSceneMode.Single);
 		}

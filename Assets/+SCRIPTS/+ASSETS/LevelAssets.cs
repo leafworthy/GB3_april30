@@ -9,6 +9,7 @@ namespace __SCRIPTS
 		public LayerMask EnemyLayer;
 		public LayerMask LandedLayer;
 		public LayerMask BuildingLayer;
+		public LayerMask SurfaceLayer;
 		public LayerMask JumpingLayer;
 		public LayerMask GroundedLayer;
 		public LayerMask DoorLayer;

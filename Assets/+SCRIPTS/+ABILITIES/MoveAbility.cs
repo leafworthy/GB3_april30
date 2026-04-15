@@ -116,23 +116,24 @@ namespace __SCRIPTS
 			DecayVelocity();
 		}
 
+		/*void ApplyVelocity()
+		{
+			var totalVelocity = GetTotalVelocity();
+			//detect if hit a wall
+			var destination = (Vector2) transform.position + totalVelocity * Time.fixedDeltaTime;
+			var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.BuildingLayer);
+			if (health != null && hitWall) return;
+
+			MoveObjectTo((Vector2) transform.position + totalVelocity * Time.fixedDeltaTime);
+		}*/
 		void ApplyVelocity()
 		{
 			var totalVelocity = moveVelocity + pushVelocity;
 			//detect if hit a wall
 			var destination = (Vector2) transform.position + totalVelocity * Time.deltaTime;
 			var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.BuildingLayer);
-			if(health != null && health.IsDead() && hitWall) return;
-			if (health == null && hitWall) return;
-			if (splats && hitWall)
-			{
+			if(health != null && hitWall) return;
 
-				var effectSurface = hitWall.collider.GetComponent<EffectSurface>();
-				if (effectSurface == null) return;
-				OnHitWall?.Invoke(hitWall, effectSurface.surfaceAngle);
-
-				return;
-			}
 
 			MoveObjectTo((Vector2) transform.position + totalVelocity * Time.deltaTime);
 		}
@@ -285,6 +286,7 @@ namespace __SCRIPTS
 
 		void Life_AttackHit(Attack attack)
 		{
+			MyDebugUtilities.DrawAttack(attack, Color.red);
 			Push(attack.Direction, (attack.DamageAmount + attack.ExtraPush)*SturdyFactor);
 		}
 

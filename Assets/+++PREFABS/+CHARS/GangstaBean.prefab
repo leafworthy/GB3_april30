@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8326176969410656236}
-  - {fileID: 6542126727891517600}
+  - {fileID: 998018176807474381}
   - {fileID: 2450672036912407423}
   m_Father: {fileID: 2134200470507205701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 24.01}
@@ -150,99 +150,6 @@ Transform:
   - {fileID: 4951918003775185730}
   m_Father: {fileID: 3833892833308743023}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2749423532026790881
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6542126727891517600}
-  - component: {fileID: 8250472517273748783}
-  m_Layer: 0
-  m_Name: Light Gunflash
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &6542126727891517600
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2749423532026790881}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.411, y: -0.029, z: 0}
-  m_LocalScale: {x: 0.077623636, y: 0.077623636, z: 0.07762363}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1465946897104292451}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8250472517273748783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2749423532026790881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85a34663ca705a54eac3205e225a6d45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lightType: 0
-  lightPresetId: 0
-  eventPresetId: 1
-  lightLayer: 0
-  occlusionLayer: 3
-  translucentLayer: 0
-  translucentPresetId: 0
-  color: {r: 2.9960785, g: 1.6156863, b: 0.29803923, a: 1}
-  size: 57
-  spotAngleInner: 360
-  spotAngleOuter: 360
-  coreSize: 0.1
-  falloff: 5.85
-  lightStrength: 0
-  outerAngle: 18.9
-  lightRadius: 1
-  shadowDistanceClose: 0
-  shadowDistanceFar: 5
-  maskTranslucencyQuality: 1
-  maskTranslucencyStrength: 0
-  applyRotation: 1
-  textureSize: 2
-  meshMode:
-    enable: 1
-    alpha: 0.426
-    shader: 1
-    materials:
-    - {fileID: 0}
-    sortingLayer:
-      name: Default
-      Order: 0
-  bumpMap:
-    intensity: 1.042
-    depth: 1
-  whenInsideCollider: 0
-  lightSprite: 1
-  sprite: {fileID: 21300000, guid: 4b8f7314cdf26b148af1b178e90065d5, type: 3}
-  spriteFlipX: 0
-  spriteFlipY: 0
-  freeFormFalloff: 1
-  freeFormPoint: 1
-  freeFormFalloffStrength: 1
-  freeFormPoints:
-    points:
-    - {x: 1, y: 0}
-    - {x: -0.50000006, y: 0.8660254}
-    - {x: -0.4999999, y: -0.86602545}
-  drawingEnabled: 1
-  drawingTranslucencyEnabled: 0
 --- !u!1 &2872526777515909649
 GameObject:
   m_ObjectHideFlags: 0
@@ -822,7 +729,6 @@ MonoBehaviour:
   OverrideName: 
   DoesntShowDamageNumbers: 0
   IsShielded: 0
-  deathTime: 5
 --- !u!114 &2381929228146834292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1265,6 +1171,8 @@ MonoBehaviour:
   renderersToTint:
   - {fileID: 6613743014821493785}
   - {fileID: 3833892834760878399}
+  overrideTint: 0
+  overrideTintColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &6895411205454311457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1474,6 +1382,99 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!1 &3980288685169447807
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 998018176807474381}
+  - component: {fileID: 3028864096312545804}
+  m_Layer: 0
+  m_Name: Light Gunflash
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &998018176807474381
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3980288685169447807}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.4418616, y: -0.028273016, z: 0}
+  m_LocalScale: {x: 0.08333352, y: 0.08333302, z: 0.083333336}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1465946897104292451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3028864096312545804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3980288685169447807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85a34663ca705a54eac3205e225a6d45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightType: 0
+  lightPresetId: 0
+  eventPresetId: 1
+  lightLayer: 0
+  occlusionLayer: 3
+  translucentLayer: 0
+  translucentPresetId: 0
+  color: {r: 1.4980392, g: 0.80784315, b: 0.14901961, a: 1}
+  size: 49
+  spotAngleInner: 360
+  spotAngleOuter: 360
+  coreSize: 0.1
+  falloff: 5.85
+  lightStrength: 0
+  outerAngle: 18.9
+  lightRadius: 1
+  shadowDistanceClose: 0
+  shadowDistanceFar: 5
+  maskTranslucencyQuality: 1
+  maskTranslucencyStrength: 0
+  applyRotation: 1
+  textureSize: 2
+  meshMode:
+    enable: 1
+    alpha: 0.426
+    shader: 1
+    materials:
+    - {fileID: 0}
+    sortingLayer:
+      name: Default
+      Order: 0
+  bumpMap:
+    intensity: 1.042
+    depth: 1
+  whenInsideCollider: 0
+  lightSprite: 1
+  sprite: {fileID: 21300000, guid: 4b8f7314cdf26b148af1b178e90065d5, type: 3}
+  spriteFlipX: 0
+  spriteFlipY: 0
+  freeFormFalloff: 1
+  freeFormPoint: 1
+  freeFormFalloffStrength: 1
+  freeFormPoints:
+    points:
+    - {x: 1, y: 0}
+    - {x: -0.50000006, y: 0.8660254}
+    - {x: -0.4999999, y: -0.86602545}
+  drawingEnabled: 1
+  drawingTranslucencyEnabled: 0
 --- !u!1 &4273369171182288358
 GameObject:
   m_ObjectHideFlags: 0
@@ -1997,7 +1998,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8326176969410656236
 Transform:
   m_ObjectHideFlags: 0

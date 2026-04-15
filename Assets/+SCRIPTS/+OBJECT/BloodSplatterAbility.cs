@@ -12,18 +12,34 @@ namespace __SCRIPTS
 		public List<GameObject> HitFloorAnimation = new();
 		public List<GameObject> HitFloorMovingAnimation = new();
 		public GameObject rotationObject;
+		public GameObject pool;
 
 		Vector2 heightCorrectionForDepthInFrontOfWall = new(0, -1.5f);
 		float fastEnoughSpeed = 5;
 		bool isMovingQuickly;
 		Vector2 moveDir;
 
-		void Start()
+
+
+
+		protected override void FixedUpdate()
 		{
-			moveAbility.OnHitWall += SplatOnHitWall;
+			base.FixedUpdate();
+			if (Services.pauseManager.IsPaused) return;
+			if (isResting) return;
+			if (!IsJumping) return;
+			var totalVelocity = moveAbility.GetTotalVelocity();
+			 var destination = (Vector2)transform.position + totalVelocity * Time.fixedDeltaTime;
+			 var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.SurfaceLayer);
+
+			 if (hitWall)
+			 {
+				 var effectSurface = hitWall.collider.GetComponent<EffectSurface>();
+				 if (effectSurface == null) return;
+				 SplatOnHitWall(hitWall, effectSurface.surfaceAngle);
+				 Debug.Log("HITWALL", this);
+			 }
 		}
-
-
 
 		void HideAllAnimations()
 		{
@@ -91,6 +107,8 @@ namespace __SCRIPTS
 			StopMoving();
 		}
 
+
+
 		protected override void Land()
 		{
 			base.Land();
@@ -104,11 +122,13 @@ namespace __SCRIPTS
 				RotateToDirection(moveDir, rotationObject);
 				//Rotate2DUtility.RotateTowardDirection2D(HeightObject.transform, moveAbility.GetTotalVelocity(), -35);
 				anim.SetActive(true);
+				pool.SetActive(true);
 			}
 			else
 			{
 				var anim = HitFloorAnimation.GetRandom();
 				anim.SetActive(true);
+				pool.SetActive(true);
 			}
 
 			StopMoving();
@@ -123,7 +143,6 @@ namespace __SCRIPTS
 
 		void StopMoving()
 		{
-			moveAbility.OnHitWall -= SplatOnHitWall;
 			moveAbility.StopMoving();
 			moveAbility.StopPush();
 		}

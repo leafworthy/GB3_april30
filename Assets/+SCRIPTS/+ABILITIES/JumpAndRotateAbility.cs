@@ -76,7 +76,7 @@ namespace __SCRIPTS
 			body?.ChangeLayer(Body.BodyLayer.jumping);
 		}
 
-		protected void FixedUpdate()
+		protected virtual void FixedUpdate()
 		{
 			if (Services.pauseManager.IsPaused) return;
 			if (isResting) return;

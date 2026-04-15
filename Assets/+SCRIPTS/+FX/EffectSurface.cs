@@ -12,6 +12,7 @@ namespace __SCRIPTS
 			DiagonalFacingRight
 		}
 
+
 		public SurfaceAngle surfaceAngle;
 	}
 }
