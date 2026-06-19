@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using GangstaBean.Core;
 using UnityEngine;
 
@@ -7,7 +6,13 @@ namespace __SCRIPTS._ENEMYAI
 {
 	public class Targetter : MonoBehaviour
 	{
-		private ICanAttack targetterLife => GetComponent<ICanAttack>();
+		ICanAttack targetterLife => _targetterLife ??= GetComponent<ICanAttack>();
+		ICanAttack _targetterLife;
+
+		// Reused across queries to avoid per-call allocations in the targeting hot path
+		// (this runs per-enemy every FixedUpdate via SimpleEnemyAI / CrimsonAI / NPC_AI).
+		readonly List<Collider2D> _overlapResults = new();
+		ContactFilter2D _overlapFilter;
 
 		#region private functions
 
@@ -18,16 +23,21 @@ namespace __SCRIPTS._ENEMYAI
 			return closest;
 		}
 
-		private List<Life> GetActualEnemyTargetsInRange(LayerMask levelAssetsEnemyLayer, float range)
+		List<Life> GetActualEnemyTargetsInRange(LayerMask levelAssetsEnemyLayer, float range)
 		{
 			var enemiesInRange = GetValidTargetsInRange(levelAssetsEnemyLayer, range);
-			var actualEnemiesInRange = enemiesInRange
-			                           .Where(x => x != null && !x.IsDead() && x.transform.gameObject != gameObject && x.category == UnitCategory.Enemy)
-			                           .ToList();
+			var actualEnemiesInRange = new List<Life>();
+			for (var i = 0; i < enemiesInRange.Count; i++)
+			{
+				var x = enemiesInRange[i];
+				if (x != null && !x.IsDead() && x.transform.gameObject != gameObject && x.category == UnitCategory.Enemy)
+					actualEnemiesInRange.Add(x);
+			}
+
 			return actualEnemiesInRange;
 		}
 
-		private Life GetClosest(List<Life> targets)
+		Life GetClosest(List<Life> targets)
 		{
 			Life closest = null;
 			var minDistance = float.MaxValue;
@@ -46,21 +56,42 @@ namespace __SCRIPTS._ENEMYAI
 		public Life GetClosestPlayerWithinRange(float range) => GetClosest(GetTargetsInRange(Services.assetManager.LevelAssets.PlayerLayer, range));
 		public Life GetClosestPlayer() => GetClosest(GetPlayers());
 
-		private List<Life> GetPlayers()
+		List<Life> GetPlayers()
 		{
-			var playersWithGOs = Services.playerManager.AllJoinedPlayers.Where(x => x.spawnedPlayerDefence != null).ToList();
-			var playerLives = playersWithGOs.Select(x => x.spawnedPlayerDefence).Where(x => !x.IsDead()).ToList();
+			var playerLives = new List<Life>();
+			var allPlayers = Services.playerManager.AllJoinedPlayers;
+			for (var i = 0; i < allPlayers.Count; i++)
+			{
+				var defence = allPlayers[i].spawnedPlayerDefence;
+				if (defence != null && !defence.IsDead())
+					playerLives.Add(defence);
+			}
 
 			return playerLives;
 		}
 
-		private List<Life> GetValidTargetsInRange(LayerMask layer, float range) =>
-			Physics2D.OverlapCircleAll(transform.position, range, layer).Select(x => x.GetComponentInChildren<Life>())
-			         .Where(life => life != null && TargetIsNotNullOrDead(life)).ToList();
+		List<Life> GetValidTargetsInRange(LayerMask layer, float range)
+		{
+			// Match OverlapCircleAll's default behaviour (respect the global trigger query setting).
+			_overlapFilter.useTriggers = Physics2D.queriesHitTriggers;
+			_overlapFilter.useLayerMask = true;
+			_overlapFilter.layerMask = layer;
+			Physics2D.OverlapCircle(transform.position, range, _overlapFilter, _overlapResults);
 
-		private List<Life> GetTargetsInRange(LayerMask layer, float range) => GetValidTargetsInRange(layer, range);
+			var validTargets = new List<Life>();
+			for (var i = 0; i < _overlapResults.Count; i++)
+			{
+				var life = _overlapResults[i].GetComponentInChildren<Life>();
+				if (life != null && TargetIsNotNullOrDead(life))
+					validTargets.Add(life);
+			}
 
-		private bool buildingIsInTheWay(Vector2 position)
+			return validTargets;
+		}
+
+		List<Life> GetTargetsInRange(LayerMask layer, float range) => GetValidTargetsInRange(layer, range);
+
+		bool buildingIsInTheWay(Vector2 position)
 		{
 			var hit = Physics2D.Linecast(transform.position, position, Services.assetManager.LevelAssets.EnemyUnwalkableLayers);
 			if (!hit) return false;
@@ -83,6 +114,6 @@ namespace __SCRIPTS._ENEMYAI
 
 		public bool HasLineOfSightWith(Vector3 transformPosition) => !buildingIsInTheWay(transformPosition);
 
-		private bool TargetIsNotNullOrDead(Life target) => target != null && !target.IsDead();
+		bool TargetIsNotNullOrDead(Life target) => target != null && !target.IsDead();
 	}
 }
