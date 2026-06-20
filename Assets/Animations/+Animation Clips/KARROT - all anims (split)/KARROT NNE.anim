@@ -22,11 +22,11 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: 5664088228106718709, guid: 0ec14109e973f4506a3a3d0af34c5979, type: 3}
-    - time: 0.01666671
+    - time: 0.08333355
       value: {fileID: 610372060314895773, guid: 0ec14109e973f4506a3a3d0af34c5979, type: 3}
-    - time: 0.03333336
+    - time: 0.1666668
       value: {fileID: -358838263448796963, guid: 0ec14109e973f4506a3a3d0af34c5979, type: 3}
-    - time: 0.050000012
+    - time: 0.25000006
       value: {fileID: -3492221281438754687, guid: 0ec14109e973f4506a3a3d0af34c5979, type: 3}
     attribute: m_Sprite
     path: JumpObject/Animation/BottomSprite/Bottom
@@ -37,11 +37,11 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: -6646007599308224096, guid: f252f53752aa34b98ad69cd02a783360, type: 3}
-    - time: 0.01666671
+    - time: 0.08333355
       value: {fileID: -9031687973514498196, guid: f252f53752aa34b98ad69cd02a783360, type: 3}
-    - time: 0.03333336
+    - time: 0.1666668
       value: {fileID: 5131006777475397411, guid: f252f53752aa34b98ad69cd02a783360, type: 3}
-    - time: 0.050000012
+    - time: 0.25000006
       value: {fileID: -5218341079706943721, guid: f252f53752aa34b98ad69cd02a783360, type: 3}
     attribute: m_Sprite
     path: JumpObject/Animation/CapeSprite/Cape
@@ -52,18 +52,18 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: 3595915835831668591, guid: 5cc0b906b6377436d971747dc3716784, type: 3}
-    - time: 0.01666671
+    - time: 0.08333355
       value: {fileID: -6164470281889156639, guid: 5cc0b906b6377436d971747dc3716784, type: 3}
-    - time: 0.03333336
+    - time: 0.1666668
       value: {fileID: -3994435663924652211, guid: 5cc0b906b6377436d971747dc3716784, type: 3}
-    - time: 0.050000012
+    - time: 0.25000006
       value: {fileID: 1069749258872568965, guid: 5cc0b906b6377436d971747dc3716784, type: 3}
     attribute: m_Sprite
     path: JumpObject/Animation/TopSprite/Top
     classID: 212
     script: {fileID: 0}
     flags: 2
-  m_SampleRate: 60
+  m_SampleRate: 12
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -115,7 +115,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.06666668
+    m_StopTime: 0.3333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
