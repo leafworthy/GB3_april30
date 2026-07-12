@@ -4,17 +4,16 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class DashAbility : Ability
+	public class RunDashAbility : Ability
 	{
+		public event Action OnDash;
 		public AnimationClip dashAnimationClip_Bottom;
 		public AnimationClip dashAnimationClip_Top;
-		MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
-		MoveAbility _moveAbility;
+		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
+		private MoveAbility _moveAbility;
 
-		JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
-		JumpAbility _jumps;
-
-		public event Action OnDash;
+		private JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
+		private JumpAbility _jumps;
 
 		public override string AbilityName => "Dash";
 		protected override bool requiresArms() => true;
@@ -54,7 +53,7 @@ namespace __SCRIPTS
 			Dash();
 		}
 
-		void UnsubscribeFromEvents()
+		private void UnsubscribeFromEvents()
 		{
 			if (player?.Controller != null)
 				player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
@@ -69,7 +68,7 @@ namespace __SCRIPTS
 			player.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
 		}
 
-		void OnDisable()
+		private void OnDisable()
 		{
 			if (player == null) return;
 			if (player.Controller == null) return;
@@ -77,18 +76,19 @@ namespace __SCRIPTS
 			player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
 		}
 
-		void ControllerDashRightShoulderPress(NewControlButton newControlButton)
+		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
 		{
 			TryToActivate();
 		}
+
+
 
 		protected void Dash()
 		{
 			if (dashAnimationClip_Bottom != null) PlayAnimationClip(dashAnimationClip_Bottom);
 			if (dashAnimationClip_Top != null) PlayAnimationClip(dashAnimationClip_Top, 1);
-			OnDash?.Invoke();
 			defence.SetTemporarilyInvincible(true);
-
+			OnDash?.Invoke();
 			moveAbility.Push(moveAbility.GetMoveDir(), offence.stats.Stats.DashSpeed);
 		}
 	}

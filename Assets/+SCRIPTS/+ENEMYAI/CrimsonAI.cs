@@ -6,7 +6,7 @@ using GangstaBean.Core;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CrimsonAI : MonoBehaviour, ICanMoveThings, ICanAttack
+public class CrimsonAI : MonoBehaviour, MovementController, ICanAttack
 {
 	static readonly int IsRunning = Animator.StringToHash("IsRunning");
 

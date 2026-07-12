@@ -122,27 +122,25 @@ GameObject:
   - component: {fileID: 7180302646562525445}
   - component: {fileID: 6941785045609039485}
   - component: {fileID: 425890416975624573}
-  - component: {fileID: 8675161199927038349}
   - component: {fileID: 4095820994941158476}
   - component: {fileID: 7895999935522049922}
   - component: {fileID: 8201654479573628637}
   - component: {fileID: 3952349814418493022}
   - component: {fileID: 8885707532850852582}
-  - component: {fileID: 4845799822202863552}
   - component: {fileID: 8932575119027580578}
   - component: {fileID: 8546300430613841500}
   - component: {fileID: 2609447533286570184}
-  - component: {fileID: 4717463248885601469}
   - component: {fileID: 4373474583085920758}
   - component: {fileID: 7542871471453855134}
   - component: {fileID: 5027827199548788944}
   - component: {fileID: 7270518776441820197}
-  - component: {fileID: 2156083562631303988}
-  - component: {fileID: 4159714342900945356}
-  - component: {fileID: 8733494531752375043}
-  - component: {fileID: -412274678507543112}
   - component: {fileID: 604019886126809547}
   - component: {fileID: -6951585885733710162}
+  - component: {fileID: 1663451987158399248}
+  - component: {fileID: 9064259621308557951}
+  - component: {fileID: 3520523093722549066}
+  - component: {fileID: 4829827672566847360}
+  - component: {fileID: 5070787931963470670}
   m_Layer: 6
   m_Name: KrazyKarrot
   m_TagString: Player
@@ -310,16 +308,16 @@ MonoBehaviour:
       Data: false
     - Name: healthMax
       Entry: 4
-      Data: 450
+      Data: 500
     - Name: moveSpeed
       Entry: 4
       Data: 45
     - Name: dashSpeed
       Entry: 4
-      Data: 100
+      Data: 80
     - Name: jumpSpeed
       Entry: 4
-      Data: 1.5
+      Data: 1.75
     - Name: aggroRange
       Entry: 4
       Data: 0
@@ -346,10 +344,10 @@ MonoBehaviour:
       Data: 15
     - Name: attack3Rate
       Entry: 4
-      Data: 0.1
+      Data: 0.15
     - Name: attack3Range
       Entry: 4
-      Data: 15
+      Data: 10
     - Name: attack4Damage
       Entry: 4
       Data: 0
@@ -384,7 +382,7 @@ MonoBehaviour:
       Entry: 8
       Data: 
   cantFly: 0
-  OverrideName: 
+  OverrideName: Tmato
   DoesntShowDamageNumbers: 0
   IsShielded: 0
 --- !u!114 &8674550254211582662
@@ -531,20 +529,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de38ca81127d4363bd50622ec988fd27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8675161199927038349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eca0f4924c4046a8b7c98d89d40a3780, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  idleSound: {fileID: 8932575119027580578}
-  chainsawAttackIdleSound: {fileID: 8546300430613841500}
 --- !u!114 &4095820994941158476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,7 +584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 6993900716997869252}
-  DefaultBottomAnimation: {fileID: 7400000, guid: 05d771269b5c840f5aff9d196cbac710, type: 2}
+  DefaultBottomAnimation: {fileID: 7400000, guid: 4e18a15c2d8ed4dd8afbfc4472800bff, type: 2}
 --- !u!114 &3952349814418493022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,30 +619,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  mineDropAnimation: {fileID: 7400000, guid: dd31d40d3b4ce49f1930c5a433a6312c, type: 2}
---- !u!114 &4845799822202863552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dce6f46fbb046e893331e3f8538b37f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  pullOutAnimationClip: {fileID: 7400000, guid: d62be2764810a43fc8ebb4378c925085, type: 2}
-  shieldObject: {fileID: 0}
+  mineDropAnimation: {fileID: 7400000, guid: 6fdbfab6363ec45b9b76ba7254797384, type: 2}
 --- !u!82 &8932575119027580578
 AudioSource:
   m_ObjectHideFlags: 0
@@ -874,21 +835,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  pullOutAnimationClip: {fileID: 0}
---- !u!114 &4717463248885601469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 069786707dce42f38a4005e00e0e6da3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pullOutAnimationClip: {fileID: 7400000, guid: 9c6b72059cf87434cbd154f8687d24f6, type: 2}
-  simpleShootAnimationClip: {fileID: 7400000, guid: 4218fc9303352468bac9c1ad25b38e0e, type: 2}
+  pullOutAnimationClip: {fileID: 7400000, guid: d8dc061b3c5104a30ad29699a9c411d6, type: 2}
 --- !u!114 &4373474583085920758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -910,8 +857,8 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  ReloadPrimaryGunAnimationClip: {fileID: 7400000, guid: a93f9dd5c06ce4f52b3ad4a01aa7e6ad, type: 2}
-  ReloadUnlimitedGunAnimationClip: {fileID: 7400000, guid: a93f9dd5c06ce4f52b3ad4a01aa7e6ad, type: 2}
+  ReloadPrimaryGunAnimationClip: {fileID: 7400000, guid: 8d1fbac50ee5741bd8fcbc40d4d7bba8, type: 2}
+  ReloadUnlimitedGunAnimationClip: {fileID: 7400000, guid: b29ae87bbdb83491d995f1a290b64870, type: 2}
 --- !u!114 &7542871471453855134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -948,80 +895,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f512f76248e741cfa3e1074e10baf703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2156083562631303988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2aacb7acdd84b1cac6564a60d5c6a86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4159714342900945356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d6d671d851d42caaec8afd43fac3fd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  dashAnimationClip_Bottom: {fileID: 7400000, guid: 746c1ced39b2848bf8d0f07abac95286, type: 2}
-  dashAnimationClip_Top: {fileID: 7400000, guid: d62be2764810a43fc8ebb4378c925085, type: 2}
---- !u!114 &8733494531752375043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ece40c0739ff41a6aeb159b318bc9c4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  pullOutAnimationClip: {fileID: 7400000, guid: cad08c2ac4ae0488f812313ad1c6861c, type: 2}
-  ChainsawAttackStartPoint: {fileID: 4114560366310640261}
---- !u!114 &-412274678507543112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ddb173490854cd88f934deee4248b64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Primary_Weapon: {fileID: 2609447533286570184}
-  Secondary_Weapon: {fileID: 8733494531752375043}
-  Tertiary_Weapon: {fileID: 4845799822202863552}
-  currentWeapon: {fileID: 0}
 --- !u!114 &604019886126809547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1052,6 +925,92 @@ SortingGroup:
   m_SortingOrder: 0
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!114 &1663451987158399248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081200535837487843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00522a223fbe430aa9b68e3205413f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.AWP_FX
+--- !u!114 &9064259621308557951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081200535837487843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 300462c8a7a8439388a4f7813d28622e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.AWP
+  pullOutAnimationClip: {fileID: 7400000, guid: d8dc061b3c5104a30ad29699a9c411d6, type: 2}
+  simpleShootAnimationClip: {fileID: 0}
+--- !u!114 &3520523093722549066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081200535837487843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4b7dc10fa4f410d89ddc6a367665bbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.RunDashAbility
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  dashAnimationClip_Bottom: {fileID: 7400000, guid: c9a815835bb84449fbdb684a5fc2ecfe, type: 2}
+  dashAnimationClip_Top: {fileID: 0}
+--- !u!114 &4829827672566847360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081200535837487843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 488d9e34c2914096aadf362cab200f26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.KrazyKarrot_SFX
+  idleSound: {fileID: 8932575119027580578}
+  chainsawAttackIdleSound: {fileID: 8546300430613841500}
+--- !u!114 &5070787931963470670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081200535837487843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 841150f944f94ca0b02303e727255994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.SprayAttack
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  pullOutAnimationClip: {fileID: 7400000, guid: deb53b88b429543b0801fed9a4b63bf7, type: 2}
+  ChainsawAttackStartPoint: {fileID: 2451584106744255648}
 --- !u!1 &1090588778770103321
 GameObject:
   m_ObjectHideFlags: 0

@@ -36,7 +36,7 @@ namespace __SCRIPTS
 			 {
 				 var effectSurface = hitWall.collider.GetComponent<EffectSurface>();
 				 if (effectSurface == null) return;
-				 SplatOnHitWall(hitWall, effectSurface.surfaceAngle);
+				 SplatOnHitWall(effectSurface.surfaceAngle);
 				 Debug.Log("HITWALL", this);
 			 }
 		}
@@ -80,7 +80,7 @@ namespace __SCRIPTS
 			BloodFlying.GetRandom().SetActive(true);
 		}
 
-		void SplatOnHitWall(RaycastHit2D raycastHit2D, EffectSurface.SurfaceAngle surfaceAngle)
+		void SplatOnHitWall(EffectSurface.SurfaceAngle surfaceAngle)
 		{
 			Debug.Log("trying to splat on wall");
 			HideAllAnimations();
@@ -112,7 +112,6 @@ namespace __SCRIPTS
 		protected override void Land()
 		{
 			base.Land();
-			moveAbility.OnHitWall -= SplatOnHitWall;
 			HideAllAnimations();
 			FreezeRotationAtIdentity();
 

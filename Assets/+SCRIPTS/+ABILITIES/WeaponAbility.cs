@@ -19,6 +19,7 @@ namespace __SCRIPTS
 		}
 		protected void SetState(weaponState state)
 		{
+			Debug.Log("weapon state changing from "  + currentState + " to " + state);
 			currentState = state;
 		}
 		protected bool isActive => currentState is weaponState.idle or weaponState.attacking;
@@ -34,6 +35,7 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
+			Debug.Log("do ability");
 			if(currentState != weaponState.resuming && currentState != weaponState.pullOut)
 			{
 				Debug.Log("doing pull out");

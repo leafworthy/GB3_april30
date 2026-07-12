@@ -1,11 +1,10 @@
-
 using System;
 using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class ChainsawAttack : WeaponAbility
+	public class SprayAttack : WeaponAbility
 	{
 		public override string AbilityName => "Chainsaw-Attack";
 

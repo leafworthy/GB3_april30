@@ -97,6 +97,7 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	protected void PlayAnimationClip(AnimationClip clip, int layer = 0)
 	{
+		Debug.Log("playing clip "  + clip.name + " with layer " + layer);
 		PlayAnimationClip(clip.name, clip.length, layer);
 	}
 

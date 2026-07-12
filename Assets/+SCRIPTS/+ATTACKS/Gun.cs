@@ -117,6 +117,7 @@ namespace __SCRIPTS
 			var degrees = GetDegreesFromAimDir();
 			var whichPortion = GetDirectionPortion(degrees);
 			if (whichPortion > PrimaryAnimationClips.Length) whichPortion = 0;
+			Debug.Log("[CLIP]"+PrimaryAnimationClips[whichPortion] + AnimationClipSuffix);
 			return PrimaryAnimationClips[whichPortion] + AnimationClipSuffix;
 		}
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS._ENEMYAI
 {
-	public class SimpleEnemyAI : MonoBehaviour, ICanMoveThings, ICanAttack, INeedPlayer
+	public class SimpleEnemyAI : MonoBehaviour, MovementController, ICanAttack, INeedPlayer
 	{
 		public event Action<Vector2> OnMoveInDirection;
 		public event Action OnStopMoving;

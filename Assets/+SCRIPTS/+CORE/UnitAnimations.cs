@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-using UnityEngine;
 using GangstaBean.Core;
+using UnityEngine;
 
 namespace __SCRIPTS
 {
 	public class UnitAnimations : MonoBehaviour, IPoolable, ISetBool
 	{
 		public AnimationEvents animEvents => _animEvents ??= GetComponentInChildren<AnimationEvents>();
-		private AnimationEvents _animEvents;
+		AnimationEvents _animEvents;
 		[SerializeField] public Animator animator;
 
 		#region animation hashes
@@ -50,24 +50,24 @@ namespace __SCRIPTS
 
 		public static readonly int GlockTrigger = Animator.StringToHash("GlockTrigger");
 
-		private HashSet<int> parameterHashes;
+		HashSet<int> parameterHashes;
 		public AnimationClip DefaultBottomAnimation;
 
 		#endregion
 
-		private void Awake()
+		void Awake()
 		{
 			InitializeAnimations();
 		}
 
-		private void InitializeAnimations()
+		void InitializeAnimations()
 		{
 			animator = GetComponentInChildren<Animator>();
 			CacheParameterHashes();
 			ResetAnimatorState();
 		}
 
-		private void CacheParameterHashes()
+		void CacheParameterHashes()
 		{
 			parameterHashes = new HashSet<int>();
 			foreach (var param in animator.parameters)
@@ -81,8 +81,13 @@ namespace __SCRIPTS
 			if (animator == null) animator = GetComponentInChildren<Animator>();
 			if (animator == null) return;
 
+			if (AnimationDoesntExist(animationClipName)) return;
 
-			// Check if the animation exists
+			animator.Play(animationClipName, layer, startingPlace);
+		}
+
+		bool AnimationDoesntExist(string animationClipName)
+		{
 			var animationExists = false;
 			foreach (var t in animator.runtimeAnimatorController.animationClips)
 			{
@@ -93,16 +98,8 @@ namespace __SCRIPTS
 				}
 			}
 
-			if (!animationExists)
-			{
-				foreach (var clip in animator.runtimeAnimatorController.animationClips)
-				{
-				}
-
-				return;
-			}
-
-			animator.Play(animationClipName, layer, startingPlace);
+			if (!animationExists) return true;
+			return false;
 		}
 
 		public void SetFloat(int trigger, float amount)
@@ -126,25 +123,13 @@ namespace __SCRIPTS
 		public void SetBool(int parameterHash, bool value)
 		{
 			if (HasParameter(parameterHash))
-			{
 				if (animator.GetBool(parameterHash) != value)
-				{
 					animator.SetBool(parameterHash, value);
-				}
-			}
 		}
 
-		private bool HasParameter(int parameterHash) => animator != null && parameterHashes.Contains(parameterHash);
+		bool HasParameter(int parameterHash) => animator != null && parameterHashes.Contains(parameterHash);
 
-		public void SetInt(int parameterHash, int getAimDirNumberFromDegrees)
-		{
-			if (animator == null) animator = GetComponentInChildren<Animator>();
-			if (animator == null) return;
-
-			if (HasParameter(parameterHash)) animator.SetInteger(parameterHash, getAimDirNumberFromDegrees);
-		}
-
-		private void ResetAnimatorState()
+		void ResetAnimatorState()
 		{
 			if (animator == null) return;
 
@@ -187,7 +172,7 @@ namespace __SCRIPTS
 			if (animator == null) return;
 			animator.StopPlayback();
 			if (DefaultBottomAnimation == null) return;
-			animator.Play(DefaultBottomAnimation.name, 0 );
+			animator.Play(DefaultBottomAnimation.name, 0);
 		}
 	}
 }

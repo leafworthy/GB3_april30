@@ -6,7 +6,7 @@ using __SCRIPTS.Cursor;
 using GangstaBean.Core;
 using UnityEngine;
 
-public class NPC_AI : MonoBehaviour, ICanMoveThings, INeedPlayer, ICanAttack
+public class NPC_AI : MonoBehaviour, MovementController, INeedPlayer, ICanAttack
 {
 	enum state
 	{

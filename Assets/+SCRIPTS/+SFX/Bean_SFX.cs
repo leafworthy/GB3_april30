@@ -5,39 +5,35 @@ namespace __SCRIPTS
 {
 	public class Bean_SFX : MonoBehaviour
 	{
-		UnitAnimations anim;
+		UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
+		UnitAnimations _anim;
 		AnimationEvents animEvents;
-		Life life;
-		JumpAbility jumpAbility;
+		Life life => _life ??= GetComponent<Life>();
+		Life _life;
+		JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
+		JumpAbility _jumpAbility;
+		DashAbility dashAbility => _dashAbility ??= GetComponent<DashAbility>();
+		DashAbility _dashAbility;
 		Glock glock => _glock ??= GetComponent<Glock>();
 		Glock _glock;
 		AK47 ak47 => _ak47 ??= GetComponent<AK47>();
 		AK47 _ak47;
-		ReloadAbility reloadAbility;
-		KnifeAttack knifeAttack;
-		NadeAttack nadeAttack;
+		ReloadAbility reloadAbility => _reloadAbility ??= GetComponent<ReloadAbility>();
+		ReloadAbility _reloadAbility;
+		KnifeAttack knifeAttack => _knifeAttack ??= GetComponent<KnifeAttack>();
+		KnifeAttack _knifeAttack;
+		NadeAttack nadeAttack => _nadeAttack ??= GetComponent<NadeAttack>();
+		NadeAttack _nadeAttack;
 
 		void OnEnable()
 		{
-			anim = GetComponent<UnitAnimations>();
-			life = GetComponent<Life>();
-
-			jumpAbility = GetComponent<JumpAbility>();
-
-			if (jumpAbility != null)
-			{
-				jumpAbility.OnJump += JumpAbilityOnJumpAbility;
-				jumpAbility.OnLand += JumpAbilityOnLand;
-			}
-
-			reloadAbility = GetComponent<ReloadAbility>();
-			knifeAttack = GetComponent<KnifeAttack>();
-			nadeAttack = GetComponent<NadeAttack>();
+			jumpAbility.OnJump += JumpAbilityOnJumpAbility;
+			jumpAbility.OnLand += JumpAbilityOnLand;
 
 			animEvents = anim.animEvents;
 			animEvents.OnStep += Anim_OnStep;
 			animEvents.OnHitStart += Anim_OnHit;
-			animEvents.OnDash += Anim_Dash;
+			dashAbility.OnDash += Anim_Dash;
 			animEvents.OnTeleport += Anim_Teleport;
 
 			life.OnAttackHit += Life_AttackHit;
@@ -65,11 +61,9 @@ namespace __SCRIPTS
 			animEvents.OnTeleport -= Anim_Teleport;
 
 			life.OnAttackHit -= Life_AttackHit;
-			if (jumpAbility != null)
-			{
-				jumpAbility.OnJump -= JumpAbilityOnJumpAbility;
-				jumpAbility.OnLand -= JumpAbilityOnLand;
-			}
+
+			jumpAbility.OnJump -= JumpAbilityOnJumpAbility;
+			jumpAbility.OnLand -= JumpAbilityOnLand;
 
 			life.OnDead -= LifeOnDead;
 
