@@ -54,24 +54,6 @@ AnimationClip:
     classID: 212
     script: {fileID: 0}
     flags: 2
-  - serializedVersion: 2
-    curve:
-    - time: 0
-      value: {fileID: 7434728559240413715, guid: 0ec14109e973f4506a3a3d0af34c5979, type: 3}
-    attribute: m_Sprite
-    path: JumpObject/Animation/BottomSprite/Bottom
-    classID: 212
-    script: {fileID: 0}
-    flags: 2
-  - serializedVersion: 2
-    curve:
-    - time: 0
-      value: {fileID: 1350223193547652182, guid: f252f53752aa34b98ad69cd02a783360, type: 3}
-    attribute: m_Sprite
-    path: JumpObject/Animation/CapeSprite/Cape
-    classID: 212
-    script: {fileID: 0}
-    flags: 2
   m_SampleRate: 12
   m_WrapMode: 0
   m_Bounds:
@@ -81,24 +63,6 @@ AnimationClip:
     genericBindings:
     - serializedVersion: 2
       path: 4204463091
-      attribute: 0
-      script: {fileID: 0}
-      typeID: 212
-      customType: 23
-      isPPtrCurve: 1
-      isIntCurve: 0
-      isSerializeReferenceCurve: 0
-    - serializedVersion: 2
-      path: 1396614956
-      attribute: 0
-      script: {fileID: 0}
-      typeID: 212
-      customType: 23
-      isPPtrCurve: 1
-      isIntCurve: 0
-      isSerializeReferenceCurve: 0
-    - serializedVersion: 2
-      path: 3733112418
       attribute: 0
       script: {fileID: 0}
       typeID: 212
@@ -120,8 +84,6 @@ AnimationClip:
     - {fileID: 5421094175087149444, guid: 5cc0b906b6377436d971747dc3716784, type: 3}
     - {fileID: 289409386179002670, guid: 5cc0b906b6377436d971747dc3716784, type: 3}
     - {fileID: 4165791226334337350, guid: 5cc0b906b6377436d971747dc3716784, type: 3}
-    - {fileID: 7434728559240413715, guid: 0ec14109e973f4506a3a3d0af34c5979, type: 3}
-    - {fileID: 1350223193547652182, guid: f252f53752aa34b98ad69cd02a783360, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
