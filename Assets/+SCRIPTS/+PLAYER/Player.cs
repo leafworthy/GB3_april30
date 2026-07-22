@@ -88,7 +88,11 @@ namespace __SCRIPTS
 			SetSpawnedPlayerGO(spawnedPlayerGO);
 
 			var animations = spawnedPlayerGO.GetComponentInChildren<UnitAnimations>();
-			if (animations != null) animations.SetBool(UnitAnimations.IsFallingFromSky, true);
+			if (animations != null)
+			{
+				Debug.Log("bool set falling from sky");
+				animations.SetBool(UnitAnimations.IsFallingFromSky, true);
+			}
 			OnPlayerSpawned?.Invoke();
 			statsBetweenScenes?.ApplyToPlayer(spawnedPlayerGO);
 			if (playerUpgrades != null) playerUpgrades.ApplyUpgrades(this);

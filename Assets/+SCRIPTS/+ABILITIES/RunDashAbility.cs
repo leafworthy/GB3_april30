@@ -8,7 +8,6 @@ namespace __SCRIPTS
 	{
 		public event Action OnDash;
 		public AnimationClip dashAnimationClip_Bottom;
-		public AnimationClip dashAnimationClip_Top;
 		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
 
@@ -86,7 +85,6 @@ namespace __SCRIPTS
 		protected void Dash()
 		{
 			if (dashAnimationClip_Bottom != null) PlayAnimationClip(dashAnimationClip_Bottom);
-			if (dashAnimationClip_Top != null) PlayAnimationClip(dashAnimationClip_Top, 1);
 			defence.SetTemporarilyInvincible(true);
 			OnDash?.Invoke();
 			moveAbility.Push(moveAbility.GetMoveDir(), offence.stats.Stats.DashSpeed);

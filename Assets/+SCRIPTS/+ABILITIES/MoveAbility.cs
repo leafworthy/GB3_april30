@@ -28,7 +28,7 @@ namespace __SCRIPTS
 
 		Vector2 moveVelocity;
 		Vector2 pushVelocity;
-		float moveSpeed;
+		float currentMoveSpeed;
 		bool isTryingToMove;
 		bool isMoving;
 		bool isDragging = true;
@@ -45,6 +45,7 @@ namespace __SCRIPTS
 		public Vector2 decelerationFactor = new(.97f, .97f);
 		public bool splats;
 		public float SturdyFactor = 1;
+		float speedMultiplier = 1;
 
 		public Vector2 GetLastMoveAimDirOffset() => lastMoveAimDirOffset;
 		public Vector2 GetMoveDir() => moveDir;
@@ -64,7 +65,7 @@ namespace __SCRIPTS
 				StopMoving();
 			else
 			{
-				if (isTryingToMove) MoveInDirection(GetMoveAimDir(), stats.Stats.MoveSpeed);
+				if (isTryingToMove) MoveInDirection(GetMoveAimDir(), GetMoveSpeed());
 			}
 		}
 
@@ -108,7 +109,7 @@ namespace __SCRIPTS
 		{
 			if (Services.pauseManager.IsPaused) return;
 
-			if (isTryingToMove) MoveInDirection(GetMoveAimDir(), stats.Stats.MoveSpeed);
+			if (isTryingToMove) MoveInDirection(GetMoveAimDir(), GetMoveSpeed());
 
 			if (isMoving && IsActive) AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
 
@@ -149,11 +150,11 @@ namespace __SCRIPTS
 			if (pushVelocity.magnitude < .1f) pushVelocity = Vector2.zero;
 		}
 
-		Vector2 GetMoveVelocityWithDeltaTime() => GetSpeed() * Time.fixedDeltaTime;
+		Vector2 GetMoveVelocityWithDeltaTime() => GetCurrentSpeed() * Time.fixedDeltaTime;
 
-		Vector2 GetSpeed()
+		Vector2 GetCurrentSpeed()
 		{
-			moveVelocity = GetMoveDir() * moveSpeed;
+			moveVelocity = GetMoveDir() * currentMoveSpeed;
 			return moveVelocity;
 		}
 
@@ -183,10 +184,10 @@ namespace __SCRIPTS
 			{
 				acceleration += acceleratatonRate;
 				if (acceleration > acceleratatonMax) acceleration = acceleratatonMax;
-				moveSpeed = newSpeed + acceleration;
+				currentMoveSpeed = newSpeed + acceleration;
 			}
 			else
-				moveSpeed = newSpeed;
+				currentMoveSpeed = newSpeed;
 
 			isMoving = true;
 		}
@@ -227,8 +228,10 @@ namespace __SCRIPTS
 
 		void StartMoving(Vector2 direction)
 		{
-			MoveInDirection(direction, stats.Stats.MoveSpeed);
+			MoveInDirection(direction, GetMoveSpeed());
 		}
+
+		float GetMoveSpeed() => stats.Stats.MoveSpeed* speedMultiplier;
 
 		public void StopMoving()
 		{

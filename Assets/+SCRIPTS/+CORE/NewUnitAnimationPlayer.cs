@@ -1,11 +1,56 @@
 using System;
 using System.Linq;
+using __SCRIPTS;
 using GangstaBean.Core;
 using UnityEngine;
 
+public class KrazyKarrotAnimations : MonoBehaviour
+{
+	public NewUnitAnimationPlayer animation => _animation ??= GetComponent<NewUnitAnimationPlayer>();
+	NewUnitAnimationPlayer _animation;
+	public NewMoveAbility moveAbility => _moveAbility ??= GetComponent<NewMoveAbility>();
+	NewMoveAbility _moveAbility;
+
+	public Body body => _body ??= GetComponent<Body>();
+	Body _body;
+
+	public JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
+	JumpAbility _jumps;
+
+	public AnimationClip StandingAnimationClip;
+	void Start()
+	{
+		if (animation == null) return;
+		animation.OnAnimationComplete += Animation_OnAnimationComplete;
+		moveAbility.OnMove += MoveAbility_OnMove;
+		 moveAbility.OnStopMoving += MoveAbility_OnStopMoving;
+	}
+
+	void MoveAbility_OnStopMoving()
+	{
+		if (jumps.IsResting)
+		{
+			animation.PlayAnimationClip(moveAbility.standAnimationClip);
+		}
+	}
+
+	void MoveAbility_OnMove()
+	{
+		if (jumps.IsResting)
+		{
+			animation.PlayAnimationClip(moveAbility.moveAnimationClip);
+		}
+	}
+
+	void Animation_OnAnimationComplete()
+	{
+
+	}
+}
+
 namespace __SCRIPTS
 {
-	public class NewUnitAnimations : MonoBehaviour
+	public class NewUnitAnimationPlayer : MonoBehaviour
 	{
 		Animator animator => _animator ??= GetComponentInChildren<Animator>();
 		Animator _animator;
@@ -45,8 +90,5 @@ namespace __SCRIPTS
 			return false;
 		}
 
-		public void SetMoving(bool b)
-		{
-		}
 	}
 }

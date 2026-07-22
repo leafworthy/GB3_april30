@@ -30,29 +30,11 @@ namespace __SCRIPTS
 		public event Action<bool> OnSwitchGun;
 		public event Action OnNeedsReload;
 
-#pragma warning disable UDR0001
-		static string[] PrimaryAnimationClips =
+		void Start()
 		{
-			"E",
-			"EES",
-			"ES",
-			"SE",
-			"SSE",
-			"SSE",
-			"SE",
-			"ES",
-			"EES",
-			"E",
-			"EEN",
-			"EN",
-			"NE",
-			"NNE",
-			"NNE",
-			"NE",
-			"EN",
-			"EEN"
-		};
-#pragma warning restore UDR0001
+			Debug.Log("WHATTHEFUCK");
+			TryToActivate();
+		}
 
 		void StartAttacking()
 		{
@@ -77,8 +59,10 @@ namespace __SCRIPTS
 
 		protected override void DoAbility()
 		{
+			Debug.Log("current state: " + currentState, this);
 			switch (currentState)
 			{
+
 				case weaponState.resuming:
 				case weaponState.pullOut:
 					StartIdle();
@@ -185,13 +169,22 @@ namespace __SCRIPTS
 
 		void FixedUpdate()
 		{
-			if (!isActive) return;
-			if (isPressingShoot && currentState != weaponState.attacking) StartAttacking();
+			if (!isActive)
+			{
+				Debug.Log("not active", this);
+				return;
+			}
+			if (isPressingShoot && currentState != weaponState.attacking)
+			{
+				Debug.Log("starting attacking", this);
+				StartAttacking();
+			}
 			else if (currentState == weaponState.idle) Aim();
 		}
 
 		void Aim()
 		{
+			Debug.Log("try to aim", this);
 			TopFaceCorrectDirection();
 			anim.SetFloat(UnitAnimations.ShootSpeed, 0);
 			PlayAnimationClipWithoutEvent(CurrentGun.GetClipNameFromDegrees(), 1);

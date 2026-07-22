@@ -43,7 +43,6 @@ namespace __SCRIPTS
 			sprayAttack.OnStopChainsawing += SprayStop;
 			sprayAttack.OnStartAttacking += SprayAttackStart;
 			sprayAttack.OnStopAttacking += SprayAttackStop;
-			mineAttack.OnThrow += MineAttackOnThrow;
 		}
 
 		void OnDisable()
@@ -64,7 +63,6 @@ namespace __SCRIPTS
 			sprayAttack.OnStopChainsawing -= SprayStop;
 			sprayAttack.OnStartAttacking -= SprayAttackStart;
 			sprayAttack.OnStopAttacking -= SprayAttackStop;
-			mineAttack.OnThrow -= MineAttackOnThrow;
 		}
 
 		void Anim_OnReload()

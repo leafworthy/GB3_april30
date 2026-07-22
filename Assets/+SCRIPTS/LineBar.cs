@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable, ExecuteInEditMode]
+[Serializable]
 public class LineBar : MonoBehaviour
 {
 	public Color slowBarColor = Color.white;

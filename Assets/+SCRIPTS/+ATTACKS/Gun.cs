@@ -6,6 +6,7 @@ namespace __SCRIPTS
 {
 	public abstract class Gun : Weapon
 	{
+		public string AnimationClipPrefix = "";
 		static readonly string[] PrimaryAnimationClips =
 		{
 			"E",
@@ -46,7 +47,7 @@ namespace __SCRIPTS
 
 		float currentCooldownTime;
 		Vector2 aimDir;
-		string AnimationClipSuffix => this is PrimaryGun ? "" : "_Glock";
+		public string AnimationClipSuffix =  "_Glock";
 		public virtual float reloadTime => .5f;
 		public abstract float AttackRate { get; }
 		protected abstract float Damage { get; }
@@ -117,8 +118,8 @@ namespace __SCRIPTS
 			var degrees = GetDegreesFromAimDir();
 			var whichPortion = GetDirectionPortion(degrees);
 			if (whichPortion > PrimaryAnimationClips.Length) whichPortion = 0;
-			Debug.Log("[CLIP]"+PrimaryAnimationClips[whichPortion] + AnimationClipSuffix);
-			return PrimaryAnimationClips[whichPortion] + AnimationClipSuffix;
+			Debug.Log("[CLIP]"+ AnimationClipPrefix + PrimaryAnimationClips[whichPortion] + AnimationClipSuffix);
+			return AnimationClipPrefix + PrimaryAnimationClips[whichPortion] + AnimationClipSuffix;
 		}
 
 		static int GetDirectionPortion(float degrees)

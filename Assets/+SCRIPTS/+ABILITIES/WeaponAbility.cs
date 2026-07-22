@@ -17,6 +17,8 @@ namespace __SCRIPTS
 			resuming,
 			reloading
 		}
+
+
 		protected void SetState(weaponState state)
 		{
 			Debug.Log("weapon state changing from "  + currentState + " to " + state);

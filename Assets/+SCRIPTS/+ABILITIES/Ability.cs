@@ -25,8 +25,11 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 	public virtual bool canDo() => BodyCanDo(this);
 	public virtual bool canStop(IDoableAbility abilityToStopFor) => false;
 
+
+
 	public void TryToActivate()
 	{
+		Debug.Log("trying to do ability",this);
 		if (!canDo())
 		{
 			Debug.Log("cant do " + AbilityName + " because body cant do it", this);
