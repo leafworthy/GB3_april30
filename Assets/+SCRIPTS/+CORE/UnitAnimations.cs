@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class UnitAnimations : MonoBehaviour, IPoolable, ISetBool
+	public class UnitAnimations : MonoBehaviour, IPoolable
 	{
 		public AnimationEvents animEvents => _animEvents ??= GetComponentInChildren<AnimationEvents>();
 		AnimationEvents _animEvents;

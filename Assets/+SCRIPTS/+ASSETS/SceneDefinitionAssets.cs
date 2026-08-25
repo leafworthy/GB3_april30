@@ -32,6 +32,7 @@ namespace __SCRIPTS
 		public SceneDefinition GameOverScene;
 		public SceneDefinition WinScene;
 		public SceneDefinition testScene;
+		public SceneDefinition modeSelectScene;
 
 		/// <summary>
 		/// Initialize lookup dictionaries with all scene references

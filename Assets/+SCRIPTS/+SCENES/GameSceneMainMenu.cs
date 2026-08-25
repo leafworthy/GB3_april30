@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace __SCRIPTS
 {
 	/// <summary>
@@ -24,7 +22,7 @@ namespace __SCRIPTS
 		{
 			Services.playerManager.OnPlayerJoins -= PlayerOnJoins;
 			Services.sfx.sounds.press_start_sounds.PlayRandom();
-			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.characterSelect);
+			Services.sceneLoader.GoToScene(Services.assetManager.Scenes.modeSelectScene);
 		}
 	}
 }

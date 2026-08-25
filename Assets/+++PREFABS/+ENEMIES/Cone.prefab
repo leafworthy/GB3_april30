@@ -1018,6 +1018,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.Tinter
   renderersToTint: []
+  overrideTint: 0
+  overrideTintColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &2495510546464501658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,11 +1042,11 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   jumpingAnimationClip: {fileID: 7400000, guid: af3f8d6f4f9954da69365a1251032f75, type: 2}
-  fallingAnimationClip: {fileID: 7400000, guid: af3f8d6f4f9954da69365a1251032f75, type: 2}
-  landingAnimationClip: {fileID: 7400000, guid: 91e66bc8d37e34443ab91e57efad5402, type: 2}
-  flyingAnimationClip: {fileID: 7400000, guid: af3f8d6f4f9954da69365a1251032f75, type: 2}
+  fallingAnimationClip: {fileID: 7400000, guid: 1b87586d037ad4e5f9a10245e5b49d51, type: 2}
+  landingAnimationClip: {fileID: 7400000, guid: 0f38228296166423db3413c362acb07d, type: 2}
+  flyingAnimationClip: {fileID: 7400000, guid: 1b87586d037ad4e5f9a10245e5b49d51, type: 2}
   deathAnimationClip: {fileID: 7400000, guid: 8805962f8872c487eb51c38f495bac62, type: 2}
-  onGroundAnimationClip: {fileID: 7400000, guid: 91e66bc8d37e34443ab91e57efad5402, type: 2}
+  onGroundAnimationClip: {fileID: 7400000, guid: 0f38228296166423db3413c362acb07d, type: 2}
   getUpAnimationClip: {fileID: 7400000, guid: e4246c2eb1a5b4ea188330fc1b72ad81, type: 2}
   standingAnimationClip: {fileID: 7400000, guid: e742c604663cb457caaa1667b9cfe20e, type: 2}
   isDisabled: 0
@@ -1164,7 +1166,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1267
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -8211092813343881559, guid: fbf22108cb0fd475abdcea7dc50e572b, type: 3}
+  m_Sprite: {fileID: -8992904465135046054, guid: fbf22108cb0fd475abdcea7dc50e572b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

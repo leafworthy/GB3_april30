@@ -1,4 +1,4 @@
- using __SCRIPTS.Cursor;
+using __SCRIPTS.Cursor;
 using UnityEngine;
 
 namespace __SCRIPTS

@@ -47,7 +47,7 @@ namespace __SCRIPTS
 
 		float currentCooldownTime;
 		Vector2 aimDir;
-		public string AnimationClipSuffix =  "_Glock";
+		public string AnimationClipSuffix => this is PrimaryGun ? "" :"_Glock";
 		public virtual float reloadTime => .5f;
 		public abstract float AttackRate { get; }
 		protected abstract float Damage { get; }
