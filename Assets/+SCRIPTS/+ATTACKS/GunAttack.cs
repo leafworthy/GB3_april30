@@ -30,6 +30,11 @@ namespace __SCRIPTS
 		public event Action<bool> OnSwitchGun;
 		public event Action OnNeedsReload;
 
+		public override void Resume()
+		{
+			SetState(weaponState.idle);
+		}
+
 		void Start()
 		{
 			Debug.Log("WHATTHEFUCK");
@@ -169,6 +174,7 @@ namespace __SCRIPTS
 
 		void FixedUpdate()
 		{
+			Debug.Log(currentState.ToString());
 			if (!isActive)
 			{
 				Debug.Log("not active", this);

@@ -11,6 +11,8 @@ namespace __SCRIPTS
 		private MoveAbility moveAbility => _moveAbility ??= GetComponent<MoveAbility>();
 		private MoveAbility _moveAbility;
 
+		private Life life => _life ??= GetComponent<Life>();
+		private Life _life;
 		private JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
 		private JumpAbility _jumps;
 
@@ -27,15 +29,16 @@ namespace __SCRIPTS
 		{
 			StopBody();
 			StopDashing();
+			life.Stats.ExtraSpeedFactor = 1;
 			defence.SetTemporarilyInvincible(false);
 			if (lastArmAbility is GunAttack)
 			{
-				StopBody();
+				Debug.Log("Resuming last arm ability", this);
 				lastArmAbility?.Resume();
 			}
 			else
 			{
-				StopBody();
+				Debug.Log("Trying to activate last arm ability", this);
 				lastArmAbility?.TryToActivate();
 			}
 		}
@@ -45,6 +48,7 @@ namespace __SCRIPTS
 			body.ChangeLayer(Body.BodyLayer.grounded);
 			moveAbility.StopPush();
 			anim.RevertBottomToDefault();
+			anim.SetBool(UnitAnimations.IsDashing, false);
 		}
 
 		protected override void DoAbility()
@@ -56,6 +60,12 @@ namespace __SCRIPTS
 		{
 			if (player?.Controller != null)
 				player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
+			player.Controller.DashRightShoulder.OnRelease -= ControllerDashRightShoulderRelease;
+		}
+
+		void ControllerDashRightShoulderRelease(NewControlButton obj)
+		{
+			StopAbility();
 		}
 
 		public override void SetPlayer(Player newPlayer)
@@ -65,6 +75,7 @@ namespace __SCRIPTS
 			UnsubscribeFromEvents();
 
 			player.Controller.DashRightShoulder.OnPress += ControllerDashRightShoulderPress;
+			player.Controller.DashRightShoulder.OnRelease += ControllerDashRightShoulderRelease;
 		}
 
 		private void OnDisable()
@@ -72,7 +83,7 @@ namespace __SCRIPTS
 			if (player == null) return;
 			if (player.Controller == null) return;
 			if (player.Controller.DashRightShoulder == null) return;
-			player.Controller.DashRightShoulder.OnPress -= ControllerDashRightShoulderPress;
+			UnsubscribeFromEvents();
 		}
 
 		private void ControllerDashRightShoulderPress(NewControlButton newControlButton)
@@ -80,13 +91,18 @@ namespace __SCRIPTS
 			TryToActivate();
 		}
 
+		protected override void AnimationComplete()
+		{
 
+		}
 
 		protected void Dash()
 		{
 			if (dashAnimationClip_Bottom != null) PlayAnimationClip(dashAnimationClip_Bottom);
+			anim.SetBool(UnitAnimations.IsDashing, true);
 			defence.SetTemporarilyInvincible(true);
 			OnDash?.Invoke();
+			life.Stats.ExtraSpeedFactor = 2;
 			moveAbility.Push(moveAbility.GetMoveDir(), offence.stats.Stats.DashSpeed);
 		}
 	}

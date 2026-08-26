@@ -115,6 +115,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 2.19
       objectReference: {fileID: 0}
+    - target: {fileID: 3930363191740164746, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 4255907831
+      objectReference: {fileID: 0}
     - target: {fileID: 3930363192480714351, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
       propertyPath: m_FillAmount
       value: 0.83
@@ -288,7 +292,10 @@ PolygonCollider2D:
     - - {x: 3.8244383, y: -11.446106}
       - {x: 3.7117898, y: -10.964914}
       - {x: 2.8632827, y: -10.299213}
-      - {x: 0.18364215, y: -10.445223}
+      - {x: 2.98561, y: -8.786106}
+      - {x: 1.4265788, y: -8.079737}
+      - {x: -0.23466957, y: -8.755123}
+      - {x: -0.23759687, y: -10.318848}
       - {x: -1.0885327, y: -11.1062355}
       - {x: -0.99988866, y: -11.392601}
       - {x: 1.0998912, y: -11.565084}

@@ -510,12 +510,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8e19e5c2974953b6d306f3bb0303ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 0
   accelerates: 0
   acceleratatonRate: 3
   acceleratatonMax: 20
   decelerationFactor: {x: 0.97, y: 0.97}
-  splats: 0
   SturdyFactor: 1
 --- !u!114 &425890416975624573
 MonoBehaviour:
@@ -583,7 +581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa06a83324c4ef5b39e8910fbcb88ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 6993900716997869252}
   DefaultBottomAnimation: {fileID: 0}
 --- !u!114 &3952349814418493022
 MonoBehaviour:
@@ -814,7 +811,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   pullOutAnimationClip: {fileID: 0}
-  AnimationClipPrefix: 
 --- !u!114 &4373474583085920758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -931,7 +927,6 @@ MonoBehaviour:
   pullOutAnimationClip: {fileID: 7400000, guid: c7c51a9e70c2348c1b9bc3a9c8dbf763, type: 2}
   AnimationClipPrefix: 'KARROT '
   simpleShootAnimationClip: {fileID: 0}
-  AnimationClipSuffix: 
 --- !u!114 &3520523093722549066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -953,7 +948,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  dashAnimationClip_Bottom: {fileID: 7400000, guid: 8091ef4b96ba142f6988796efb31078f, type: 2}
+  dashAnimationClip_Bottom: {fileID: 7400000, guid: e776931edbee741ecacefc7ce690dbc9, type: 2}
 --- !u!114 &4829827672566847360
 MonoBehaviour:
   m_ObjectHideFlags: 0

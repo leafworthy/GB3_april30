@@ -12,9 +12,7 @@ public class CrimsonAI : MonoBehaviour, MovementController, ICanAttack
 
 	public GameObject target;
 
-	public float closeEnoughDistance = 5;
 	public Vector2 currentDirection;
-
 	RamAttack ramAttack => _ramAttack ??= GetComponent<RamAttack>();
 	RamAttack _ramAttack;
 	Targetter targets => _targets ??= GetComponent<Targetter>();
@@ -31,7 +29,6 @@ public class CrimsonAI : MonoBehaviour, MovementController, ICanAttack
 	UnitAnimations _unitAnimations;
 	bool isIdle;
 	float idleTimer;
-	Vector2 currentTargetPosition;
 
 	public event Action<Vector2> OnMoveInDirection;
 	public event Action OnStopMoving;
@@ -70,7 +67,6 @@ public class CrimsonAI : MonoBehaviour, MovementController, ICanAttack
 		unitAnimations.Play(deathAnimation.name,0,0);
 		deathSound.PlayRandomAt(transform.position);
 		moveAbility.StopAllMovement();
-		spawner?.StartSpawning();
 	}
 
 	public void WinGame()
@@ -112,7 +108,6 @@ public class CrimsonAI : MonoBehaviour, MovementController, ICanAttack
 		target = PickARandomTarget();
 		if (target == null) return;
 		animator.SetBool(IsRunning, true);
-		currentTargetPosition = target.transform.position;
 		isIdle = false;
 	}
 
