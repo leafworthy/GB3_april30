@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics.CodeAnalysis;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 #if DEV_MODE && DEBUG && !SISUS_DISABLE_PROFILING
 using Unity.Profiling;
@@ -43,14 +44,6 @@ namespace Sisus.Shared.EditorOnly
 			#if DEV_MODE
 			using var x = getValueMarker.Auto();
 			#endif
-			
-			#if UNITY_6000_0_OR_NEWER
-			// boxedValue does not support arrays or lists. source: https://docs.unity3d.com/ScriptReference/SerializedProperty-boxedValue.html
-			if(!serializedProperty.isArray || serializedProperty.propertyType is not SerializedPropertyType.Generic) // SerializedPropertyType.Generic is needed to filter out string fields (isArray is true for them).
-			{
-				return serializedProperty.boxedValue;
-			}
-			#endif
 
 			switch(serializedProperty.propertyType)
 			{
@@ -66,7 +59,7 @@ namespace Sisus.Shared.EditorOnly
 				case SerializedPropertyType.Vector4: return serializedProperty.vector4Value;
 				case SerializedPropertyType.Rect: return serializedProperty.rectValue;
 				case SerializedPropertyType.ArraySize: return serializedProperty.arraySize;
-				case SerializedPropertyType.Character: return serializedProperty.intValue;
+				case SerializedPropertyType.Character: return (char)serializedProperty.intValue;
 				case SerializedPropertyType.AnimationCurve: return serializedProperty.animationCurveValue;
 				case SerializedPropertyType.Bounds: return serializedProperty.boundsValue;
 				case SerializedPropertyType.Quaternion: return serializedProperty.quaternionValue;
@@ -98,6 +91,17 @@ namespace Sisus.Shared.EditorOnly
 				#endif
 			}
 
+			#if UNITY_6000_0_OR_NEWER
+			// boxedValue does not support arrays or lists. source: https://docs.unity3d.com/ScriptReference/SerializedProperty-boxedValue.html
+			if((!serializedProperty.isArray
+				// SerializedPropertyType.Generic is needed to filter out string fields (isArray is true for them).
+				|| serializedProperty.propertyType is not SerializedPropertyType.Generic)
+				&& serializedProperty.propertyType is not SerializedPropertyType.ManagedReference) 
+			{
+				return serializedProperty.boxedValue;
+			}
+			#endif
+
 			var propertyPath = serializedProperty.propertyPath;
 			object value = serializedProperty.serializedObject.targetObject;
 
@@ -124,7 +128,7 @@ namespace Sisus.Shared.EditorOnly
 					SerializedPropertyType.Vector4 => sp.vector4Value,
 					SerializedPropertyType.Rect => sp.rectValue,
 					SerializedPropertyType.ArraySize => sp.arraySize,
-					SerializedPropertyType.Character => sp.intValue,
+					SerializedPropertyType.Character => (char)sp.intValue,
 					SerializedPropertyType.AnimationCurve => sp.animationCurveValue,
 					SerializedPropertyType.Bounds => sp.boundsValue,
 					SerializedPropertyType.Quaternion => sp.quaternionValue,
@@ -265,7 +269,7 @@ namespace Sisus.Shared.EditorOnly
 						owner = sp.arraySize;
 						break;
 					case SerializedPropertyType.Character:
-						owner = sp.intValue;
+						owner = (char)sp.intValue;
 						break;
 					case SerializedPropertyType.AnimationCurve:
 						owner = sp.animationCurveValue;
@@ -373,7 +377,102 @@ namespace Sisus.Shared.EditorOnly
 		public static void SetValue(this SerializedProperty serializedProperty, object value)
 		{
 			#if UNITY_6000_0_OR_NEWER
-			serializedProperty.boxedValue = value;
+			switch(serializedProperty.propertyType)
+			{
+				case SerializedPropertyType.ManagedReference:
+					serializedProperty.managedReferenceValue = value;
+					return;
+				case SerializedPropertyType.String:
+					serializedProperty.stringValue = (string)value;
+					return;
+				case SerializedPropertyType.Boolean:
+					serializedProperty.boolValue = (bool)value;
+					return;
+				case SerializedPropertyType.Float:
+					serializedProperty.floatValue = (float)value;
+					return;
+				case SerializedPropertyType.ObjectReference:
+					serializedProperty.objectReferenceValue = (Object)value;
+					return;
+				case SerializedPropertyType.Integer:
+					serializedProperty.intValue = (int)value;
+					return;
+				case SerializedPropertyType.Color:
+					serializedProperty.colorValue = (Color)value;
+					return;
+				case SerializedPropertyType.LayerMask:
+					serializedProperty.intValue = (LayerMask)value;
+					return;
+				case SerializedPropertyType.Enum:
+					#if UNITY_2022_1_OR_NEWER
+					if(serializedProperty.numericType is SerializedPropertyNumericType.UInt64)
+					{
+						serializedProperty.ulongValue = Convert.ToUInt64(value);
+						return;
+					}
+					#endif
+					serializedProperty.longValue = Convert.ToInt64(value);
+					return;
+				case SerializedPropertyType.Vector2:
+					serializedProperty.vector2Value = (Vector2)value;
+					return;
+				case SerializedPropertyType.Vector3:
+					serializedProperty.vector3Value = (Vector3)value;
+					return;
+				case SerializedPropertyType.Vector4:
+					serializedProperty.vector4Value = (Vector4)value;
+					return;
+				case SerializedPropertyType.Rect:
+					serializedProperty.rectValue = (Rect)value;
+					return;
+				case SerializedPropertyType.ArraySize:
+					serializedProperty.arraySize = (int)value;
+					return;
+				case SerializedPropertyType.Character:
+					serializedProperty.intValue = (char)value;
+					return;
+				case SerializedPropertyType.AnimationCurve:
+					serializedProperty.animationCurveValue = (AnimationCurve)value;
+					return;
+				case SerializedPropertyType.Bounds:
+					serializedProperty.boundsValue = (Bounds)value;
+					return;
+				case SerializedPropertyType.Gradient:
+					serializedProperty.gradientValue = (Gradient)value;
+					return;
+				case SerializedPropertyType.Quaternion:
+					serializedProperty.quaternionValue = (Quaternion)value;
+					return;
+				case SerializedPropertyType.ExposedReference:
+					serializedProperty.exposedReferenceValue = (Object)value;
+					return;
+				case SerializedPropertyType.Vector2Int:
+					serializedProperty.vector2IntValue = (Vector2Int)value;
+					return;
+				case SerializedPropertyType.Vector3Int:
+					serializedProperty.vector3IntValue = (Vector3Int)value;
+					return;
+				case SerializedPropertyType.RectInt:
+					serializedProperty.rectIntValue = (RectInt)value;
+					return;
+				case SerializedPropertyType.BoundsInt:
+					serializedProperty.boundsIntValue = (BoundsInt)value;
+					return;
+				case SerializedPropertyType.Hash128:
+					serializedProperty.hash128Value = (Hash128)value;
+					return;
+				case SerializedPropertyType.RenderingLayerMask:
+					serializedProperty.uintValue = (RenderingLayerMask)value;
+					return;
+				#if UNITY_6000_3_OR_NEWER
+				case SerializedPropertyType.EntityId:
+					serializedProperty.entityIdValue = (EntityId)value;
+					return;
+				#endif
+				default:
+					serializedProperty.boxedValue = value;
+					return;
+			}
 			#else
 			switch(serializedProperty.propertyType)
 			{
@@ -390,6 +489,9 @@ namespace Sisus.Shared.EditorOnly
 					return;
 				case SerializedPropertyType.Float:
 					serializedProperty.floatValue = (float)value;
+					return;
+				case SerializedPropertyType.ObjectReference:
+					serializedProperty.objectReferenceValue = (Object)value;
 					return;
 			}
 

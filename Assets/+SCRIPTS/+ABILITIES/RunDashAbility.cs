@@ -29,7 +29,7 @@ namespace __SCRIPTS
 		{
 			StopBody();
 			StopDashing();
-			life.Stats.ExtraSpeedFactor = 1;
+			life.Stats.ExtraSpeedFactor = 0;
 			defence.SetTemporarilyInvincible(false);
 			if (lastArmAbility is GunAttack)
 			{
@@ -102,8 +102,8 @@ namespace __SCRIPTS
 			anim.SetBool(UnitAnimations.IsDashing, true);
 			defence.SetTemporarilyInvincible(true);
 			OnDash?.Invoke();
-			life.Stats.ExtraSpeedFactor = 2;
-			moveAbility.Push(moveAbility.GetMoveDir(), offence.stats.Stats.DashSpeed);
+			life.Stats.ExtraSpeedFactor = 1.5f;
+			//moveAbility.Push(moveAbility.GetMoveDir(), offence.stats.Stats.DashSpeed);
 		}
 	}
 }

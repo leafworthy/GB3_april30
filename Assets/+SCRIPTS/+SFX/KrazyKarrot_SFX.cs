@@ -118,7 +118,7 @@ namespace __SCRIPTS
 		}
 
 		void LifeOnDead(Attack attack)  {
-			idleSound.Stop();
+			//idleSound.Stop();
 			Services.sfx.sounds.player_die_sounds.PlayRandomAt(transform.position);
 		}
 		void MineAttackOnThrow(Vector2 vector2, Player player) => Services.sfx.sounds.tmato_mine_throw_sounds.PlayRandomAt(transform.position);

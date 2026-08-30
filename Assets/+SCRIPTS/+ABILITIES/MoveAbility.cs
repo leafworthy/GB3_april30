@@ -102,10 +102,13 @@ namespace __SCRIPTS
 		void ApplyVelocity()
 		{
 			var totalVelocity = moveVelocity + pushVelocity;
+			if (health != null && health.IsDead())
+			{
+				var destination = (Vector2) transform.position + totalVelocity * Time.deltaTime;
 
-			var destination = (Vector2) transform.position + totalVelocity * Time.deltaTime;
-			var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.BuildingLayer);
-			if (health != null && hitWall) return;
+				var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.BuildingLayer);
+				if (health != null && hitWall) return;
+			}
 
 			MoveObjectTo((Vector2) transform.position + totalVelocity * Time.deltaTime);
 		}

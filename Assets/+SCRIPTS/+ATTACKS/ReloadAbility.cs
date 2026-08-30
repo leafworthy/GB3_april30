@@ -12,14 +12,16 @@ namespace __SCRIPTS
 		GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
 		GunAttack _gunAttack;
 
+		bool isReloading;
+
 		public override string AbilityName => "Reloading";
 		protected override bool requiresArms() => true;
 
 		protected override bool requiresLegs() => false;
 
-		public override bool canDo() => base.canDo() && gunAttack.CurrentGun.CanReload();
+		public override bool canDo() => base.canDo() && gunAttack.CurrentGun.CanReload() && !isReloading;
 
-		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is DashAbility or JumpAbility or ChainsawAttack or ShieldDashAbility or ThrowMineAttack;
+		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is DashAbility or RunDashAbility or JumpAbility or ChainsawAttack or ShieldDashAbility or ThrowMineAttack;
 
 		protected override void DoAbility()
 		{
@@ -28,6 +30,7 @@ namespace __SCRIPTS
 
 		void StartReloading()
 		{
+			isReloading = true;
 			Invoke(nameof(Reload), gunAttack.CurrentGun.reloadTime);
 			anim.SetBool(UnitAnimations.IsBobbing, false);
 
@@ -39,8 +42,9 @@ namespace __SCRIPTS
 
 		public override void StopAbility()
 		{
-			base.StopAbility();
 			CancelInvoke(nameof(Reload));
+			base.StopAbility();
+			isReloading = false;
 			gunAttack.Resume();
 		}
 

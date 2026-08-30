@@ -16,6 +16,8 @@ namespace Sisus.Shared.EditorOnly
 	/// </summary>
 	public abstract class EditorDecorator : IMGUIContainer
 	{
+		private static readonly GUILayoutOption[] zeroHeightLayoutOptions = { GUILayout.Height(0f) };
+
 		public readonly Object[] targets;
 		public readonly Object target;
 
@@ -61,18 +63,18 @@ namespace Sisus.Shared.EditorOnly
 
 		public static bool ShouldCreateBeforeInspectorGUI([DisallowNull] Type wrapperType) => HasMethodOverride(wrapperType, nameof(OnBeforeInspectorGUI));
 
-		public static EditorDecorator CreateBeforeInspectorGUI([DisallowNull] Type wrapperType, Editor wrappedEditor)
+		public static EditorDecorator CreateBeforeInspectorGUI([DisallowNull] Type decoratorType, Editor decoratedEditor)
 		{
-			var beforeInspectorGUI = Create(wrapperType, wrappedEditor);
+			var beforeInspectorGUI = Create(decoratorType, decoratedEditor);
 			beforeInspectorGUI.onGUIHandler = beforeInspectorGUI.DrawBeforeInspectorGUI;
 			return beforeInspectorGUI;
 		}
 
-		public static bool ShouldCreateAfterInspectorGUI([DisallowNull] Type wrapperType) => HasMethodOverride(wrapperType, nameof(OnAfterInspectorGUI));
+		public static bool ShouldCreateAfterInspectorGUI([DisallowNull] Type decoratorType) => HasMethodOverride(decoratorType, nameof(OnAfterInspectorGUI));
 
-		public static EditorDecorator CreateAfterInspectorGUI([DisallowNull] Type wrapperType, Editor wrappedEditor)
+		public static EditorDecorator CreateAfterInspectorGUI([DisallowNull] Type wrapperType, Editor decoratedEditor)
 		{
-			var afterInspectorGUI = Create(wrapperType, wrappedEditor);
+			var afterInspectorGUI = Create(wrapperType, decoratedEditor);
 			afterInspectorGUI.onGUIHandler = afterInspectorGUI.DrawAfterInspectorGUI;
 			return afterInspectorGUI;
 		}
@@ -88,6 +90,12 @@ namespace Sisus.Shared.EditorOnly
 				try
 				{
 					OnBeforeInspectorGUI();
+
+					var rect = EditorGUILayout.GetControlRect(zeroHeightLayoutOptions);
+					if(Event.current.type is EventType.Repaint)
+					{
+						style.height = rect.yMax;
+					}
 				}
 				catch (Exception e)
 				{
@@ -96,7 +104,17 @@ namespace Sisus.Shared.EditorOnly
 						throw;
 					}
 
-					Debug.LogException(e);
+					// Getting control 1's position in a group with only 1 controls when doing repaint
+					if(e is ArgumentException && e.Message.Contains("when doing repaint"))
+					{
+						#if DEV_MODE
+						Debug.LogWarning(e);
+						#endif
+					}
+					else
+					{
+						Debug.LogWarning(e);
+					}
 				}
 			}
 			EditorGUILayout.EndVertical();
@@ -113,6 +131,10 @@ namespace Sisus.Shared.EditorOnly
 				try
 				{
 					OnAfterInspectorGUI();
+
+					var rect = EditorGUILayout.GetControlRect(zeroHeightLayoutOptions);
+					var afterInspectorGUIHeight = rect.yMax;
+					style.height = afterInspectorGUIHeight;
 				}
 				catch (Exception e)
 				{

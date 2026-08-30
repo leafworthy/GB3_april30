@@ -21,6 +21,7 @@ namespace __SCRIPTS
 		protected override bool requiresArms() => true;
 		protected override bool requiresLegs() => false;
 		public override bool canStop(IDoableAbility abilityToStopFor) => currentState == weaponState.idle || currentState == weaponState.resuming;
+
 		public bool IsUsingPrimaryGun => CurrentGun is PrimaryGun;
 		bool isPressingShoot;
 		JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
@@ -44,6 +45,11 @@ namespace __SCRIPTS
 		void StartAttacking()
 		{
 			if (!isIdle || !jumpAbility.IsResting) return;
+			if (body.doableArms.CurrentAbility != null)
+			{
+				if (!body.doableArms.CurrentAbility.canStop(this)) return;
+				body.doableArms.CurrentAbility.StopAbility();
+			}
 
 			if (!CurrentGun.Shoot()) return;
 			SetState(weaponState.attacking);
@@ -190,6 +196,7 @@ namespace __SCRIPTS
 
 		void Aim()
 		{
+			if (!body.doableArms.CanDoActivity(this) && !body.doableArms.isDoingAbility(this)) return;
 			Debug.Log("try to aim", this);
 			TopFaceCorrectDirection();
 			anim.SetFloat(UnitAnimations.ShootSpeed, 0);

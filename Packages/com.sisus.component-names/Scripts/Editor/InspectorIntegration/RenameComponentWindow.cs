@@ -18,6 +18,7 @@ namespace Sisus.ComponentNames.Editor
 		private string oldName;
 		[NonSerialized]
 		private string newName;
+		private Rect setPosition;
 
 		public static void Open(Rect position, Component component)
 		{
@@ -43,10 +44,13 @@ namespace Sisus.ComponentNames.Editor
 			window.maxSize = position.size;
 
 			window.ShowAsDropDown(buttonRect, windowSize);
+			window.setPosition = position;
 		}
 
 		private void OnGUI()
 		{
+			position = setPosition;
+
 			if(!component)
 			{
 				Close();
@@ -74,7 +78,7 @@ namespace Sisus.ComponentNames.Editor
 
 			// Fix for the TextField clipping over the very top line
 			// of the component header component below it.
-			var lineRect = new Rect(0f, 0f, Screen.width, 1f);
+			var lineRect = new Rect(0f, 0f, EditorGUIUtility.currentViewWidth, 1f);
 			EditorGUI.DrawRect(lineRect, LineColor);
 		}
 

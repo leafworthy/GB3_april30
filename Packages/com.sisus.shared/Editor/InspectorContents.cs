@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -75,6 +76,37 @@ namespace Sisus.Shared.EditorOnly
 			return inspectorElementsList;
 		}
 
+		public static bool IsBeingInspected(Component component)
+		{
+			var gameObject = component.gameObject;
+			foreach(var propertyEditor in allPropertyEditors)
+			{
+				foreach(var editor in propertyEditor.tracker.activeEditors)
+				{
+					if(ReferenceEquals(editor.target, component) || ReferenceEquals(editor.target, gameObject))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		
+		public static bool IsBeingInspected(GameObject gameObject)
+		{
+			foreach(var propertyEditor in allPropertyEditors)
+			{
+				foreach(var editor in propertyEditor.tracker.activeEditors)
+				{
+					if(ReferenceEquals(editor.target, gameObject))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
 		public static void RepaintEditorsWithTarget(Component target)
 		{
 			foreach(var propertyEditor in allPropertyEditors)
@@ -97,7 +129,7 @@ namespace Sisus.Shared.EditorOnly
 				}
 			}
 		}
-		
+
 		internal static bool TryGetGameObjectHeaderElement([DisallowNull] Editor editor, [MaybeNullWhen(false), NotNullWhen(true)] out IMGUIContainer headerGUIContainer)
 		{
 			if(editor.target is not GameObject)
@@ -199,6 +231,11 @@ namespace Sisus.Shared.EditorOnly
 					if(editorElementChild is IMGUIContainer imguiContainer && imguiContainer.name.EndsWith("Header", StringComparison.Ordinal))
 					{
 						results.Add((editor, imguiContainer));
+					}
+					// Unity 6.5+ (maybe 6.4 too) fix:
+					else if(editorElementChild.GetType() == typeof(VisualElement) && editorElementChild.Children().FirstOrDefault() is IMGUIContainer childImguiContainer && childImguiContainer.name.EndsWith("Header", StringComparison.Ordinal))
+					{
+						results.Add((editor, childImguiContainer));
 					}
 				}
 			}

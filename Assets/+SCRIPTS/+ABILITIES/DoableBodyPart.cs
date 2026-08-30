@@ -16,6 +16,12 @@ namespace __SCRIPTS
 			CurrentAbility = null;
 		}
 
+		public bool isDoingAbility(IDoableAbility abilityToDo)
+		{
+			if (CurrentAbility == null) return false;
+			return CurrentAbility.AbilityName == abilityToDo.AbilityName;
+		}
+
 		public void DoAbility(IDoableAbility newAbility)
 		{
 			if (CurrentAbility != null && CurrentAbility.canStop(newAbility)) CurrentAbility.StopAbility();

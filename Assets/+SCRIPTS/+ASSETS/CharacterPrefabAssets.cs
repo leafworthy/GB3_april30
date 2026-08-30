@@ -11,6 +11,7 @@ namespace __SCRIPTS
 		public GameObject GangstaBeanPlayerPrefab;
 		public GameObject BrockLeePlayerPrefab;
 		public GameObject TMatoPlayerPrefab;
+		public GameObject KrazyKarrotPlayerPrefab;
 		public GameObject ToastEnemyPrefab;
 		[SerializeField]public List<Material> ToastEnemyMaterials = new List<Material>();
 		public GameObject ConeEnemyPrefab;

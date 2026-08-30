@@ -125,7 +125,7 @@ namespace Sisus.ComponentNames.Editor
                 headerLabelRect.y -= 22f - 15f;
             }
 
-            headerLabelRect.width = Screen.width - 123f;
+            headerLabelRect.width = EditorGUIUtility.currentViewWidth - 123f;
             headerLabelRect.height = 20f;
 
             return headerLabelRect;

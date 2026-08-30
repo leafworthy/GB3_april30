@@ -53,7 +53,7 @@ MonoBehaviour:
     healthMax: 350
     moveSpeed: 50
     dashSpeed: 150
-    jumpSpeed: 2
+    jumpSpeed: 1.85
     aggroRange: 0
     attack1Damage: 40
     attack1Rate: 0.15
@@ -80,6 +80,32 @@ MonoBehaviour:
     moveSpeed: 45
     dashSpeed: 80
     jumpSpeed: 1.75
+    aggroRange: 0
+    attack1Damage: 40
+    attack1Rate: 0.5
+    attack1Range: 100
+    attack2Damage: 100
+    attack2Rate: 1
+    attack2Range: 30
+    attack3Damage: 15
+    attack3Rate: 0.15
+    attack3Range: 10
+    attack4Damage: 0
+    attack4Rate: 0
+    attack4Range: 0
+    experienceGiven: 100
+    hasData: 1
+    isDefault: 0
+  - unitName: KrazyKarrot
+    category: 0
+    debrisType: 0
+    debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
+    isPlayerSwingHittable: 0
+    isInvincible: 0
+    healthMax: 400
+    moveSpeed: 35
+    dashSpeed: 80
+    jumpSpeed: 2
     aggroRange: 0
     attack1Damage: 40
     attack1Rate: 0.5
@@ -127,9 +153,9 @@ MonoBehaviour:
     debrisType: 0
     debrisTint: {r: 0.16862746, g: 1, b: 0.10980392, a: 1}
     isPlayerSwingHittable: 1
-    isInvincible: 0
-    healthMax: 3000
-    moveSpeed: 50
+    isInvincible: 1
+    healthMax: 2000
+    moveSpeed: 40
     dashSpeed: 0
     jumpSpeed: 1
     aggroRange: 100
@@ -206,8 +232,8 @@ MonoBehaviour:
     debrisTint: {r: 1, g: 0, b: 0.13333334, a: 1}
     isPlayerSwingHittable: 1
     isInvincible: 0
-    healthMax: 35
-    moveSpeed: 45
+    healthMax: 25
+    moveSpeed: 35
     dashSpeed: 0
     jumpSpeed: 1
     aggroRange: 100
@@ -851,5 +877,5 @@ MonoBehaviour:
     hasData: 1
     isDefault: 0
   isLoading: 0
-  lastLoadTime: 2026-04-14 18:42:17
+  lastLoadTime: 2026-08-29 15:22:42
   lastError: 
