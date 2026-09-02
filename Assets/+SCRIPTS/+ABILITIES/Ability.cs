@@ -47,15 +47,16 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public virtual void StopAbility()
 	{
+		anim.SetBool(UnitAnimations.IsUsingPrimary, false);
 		StopBody();
 	}
 
 	protected void StopBody()
 	{
+		CancelInvoke();
 		if (requiresArms()) body.doableArms.Stop(this);
 		if (requiresLegs()) body.doableLegs.Stop(this);
 
-		CancelInvoke();
 	}
 
 	public virtual void Resume()

@@ -29,10 +29,14 @@ namespace __SCRIPTS
 
 		void JumpsOnLand(Vector2 position)
 		{
-			var clip = (gunAttack != null && !gunAttack.IsUsingPrimaryGun)
+			var clip = (gunAttack != null && !gunAttack.isActive)
 				? LandUnlimitedGunAnimationClip
 				: LandPrimaryGunAnimationClip;
-			if (clip != null && anim != null) anim.Play(clip.name, 1, 0);
+			if (clip != null && anim != null)
+			{
+				anim.Play(clip.name, 0, 0);
+				anim.Play(clip.name, 1, 0);
+			}
 		}
 	}
 }

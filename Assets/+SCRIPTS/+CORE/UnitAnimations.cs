@@ -14,6 +14,7 @@ namespace __SCRIPTS
 		public AnimationClip DefaultBottomAnimation;
 		HashSet<int> parameterHashes;
 
+
 		#region animation hashes
 
 		public static readonly int ShootSpeed = Animator.StringToHash("ShootSpeed");
@@ -24,6 +25,7 @@ namespace __SCRIPTS
 		public static readonly int ChargeAttackTrigger = Animator.StringToHash("ChargeAttackTrigger");
 		public static readonly int FlyingTrigger = Animator.StringToHash("FlyingTrigger");
 
+		public static readonly int IsUsingPrimary = Animator.StringToHash("IsUsingPrimary");
 		public static readonly int IsDashing = Animator.StringToHash("IsDashing");
 		public static readonly int IsFallingFromSky = Animator.StringToHash("FallFromSky");
 		public static readonly int IsBobbing = Animator.StringToHash("IsBobbing");

@@ -82,7 +82,7 @@ namespace __SCRIPTS
 			base.StopAbility();
 		}
 
-		void Jump(float jumpSpeed)
+		protected void Jump(float jumpSpeed)
 		{
 			if (isDisabled) return;
 			if (currentState is state.flying)

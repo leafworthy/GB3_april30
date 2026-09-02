@@ -5,6 +5,7 @@ namespace __SCRIPTS
 {
 	public class AnimationEvents : MonoBehaviour
 	{
+		public static int IsUsingPrimary;
 		public event Action OnRecovered;
 
 		public event Action<int> OnAttackHit;

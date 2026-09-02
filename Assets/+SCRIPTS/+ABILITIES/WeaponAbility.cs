@@ -24,7 +24,8 @@ namespace __SCRIPTS
 			Debug.Log("weapon state changing from "  + currentState + " to " + state);
 			currentState = state;
 		}
-		protected bool isActive => currentState is weaponState.idle or weaponState.attacking;
+
+		public bool isActive => currentState is weaponState.idle or weaponState.attacking;
 		protected bool isIdle => currentState is weaponState.idle;
 
 		protected weaponState currentState {get; private set;}

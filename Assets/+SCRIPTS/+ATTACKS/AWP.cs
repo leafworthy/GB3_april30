@@ -7,5 +7,6 @@ namespace __SCRIPTS
 		public override float reloadTime => 1;
 
 		protected override bool simpleShoot => false;
+
 	}
 }

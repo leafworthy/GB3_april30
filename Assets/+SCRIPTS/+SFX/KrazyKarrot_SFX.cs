@@ -14,12 +14,10 @@ namespace __SCRIPTS
 		JumpAbility _jump;
 		AWP awpAttack => _awpAttack ??= GetComponent<AWP>();
 		AWP _awpAttack;
-		SprayAttack sprayAttack => _sprayAttack ??= GetComponent<SprayAttack>();
-		SprayAttack _sprayAttack;
+		ChainsawAttack sprayAttack => _sprayAttack ??= GetComponent<ChainsawAttack>();
+		ChainsawAttack _sprayAttack;
 		ThrowMineAttack mineAttack => _mineAttack ??= GetComponent<ThrowMineAttack>();
 		ThrowMineAttack _mineAttack;
-		public AudioSource idleSound;
-		public AudioSource chainsawAttackIdleSound;
 
 		RunDashAbility runDash => _runDash ??= GetComponent<RunDashAbility>();
 		RunDashAbility _runDash;
@@ -72,7 +70,7 @@ namespace __SCRIPTS
 
 		void SprayStart(Vector2 obj)
 		{
-			idleSound.Play();
+			//idleSound?.Play();
 			Services.sfx.sounds.tmato_chainsaw_start_sounds.PlayRandomAt(transform.position);
 		}
 
@@ -83,18 +81,18 @@ namespace __SCRIPTS
 
 		void SprayStop(Vector2 obj)
 		{
-			idleSound.Stop();
+			//idleSound?.Stop();
 		}
 
 		void SprayAttackStart(Vector2 obj)
 		{
-			chainsawAttackIdleSound.Play();
+			//chainsawAttackIdleSound?.Play();
 			Services.sfx.sounds.tmato_chainsaw_attack_start_sounds.PlayRandomAt(obj);
 		}
 
 		void SprayAttackStop(Vector2 obj)
 		{
-			chainsawAttackIdleSound.Stop();
+			//chainsawAttackIdleSound?.Stop();
 			Services.sfx.sounds.tmato_chainsaw_attack_stop_sounds.PlayRandomAt(obj);
 		}
 

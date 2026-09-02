@@ -76,6 +76,7 @@ namespace __SCRIPTS
 		{
 			base.PullOutWeapon();
 			anim.SetBool(UnitAnimations.IsChainsawing, true);
+			anim.SetBool(UnitAnimations.IsUsingPrimary, false);
 			OnStartChainsawing?.Invoke(transform.position);
 		}
 
@@ -87,6 +88,7 @@ namespace __SCRIPTS
 
 		void PlayerChainsawPress(NewControlButton newControlButton)
 		{
+			Debug.Log("chainsaw press", this);
 			isPressingChainsawButton = true;
 			if (!isActive) return;
 			StartAttacking();
@@ -124,7 +126,7 @@ namespace __SCRIPTS
 		{
 			if (currentState != weaponState.attacking && currentState != weaponState.reloading) return;
 			anim.SetBool(UnitAnimations.IsAttacking, false);
-			OnStopAttacking(transform.position);
+			OnStopAttacking?.Invoke(transform.position);
 			StartIdle();
 		}
 
@@ -177,6 +179,7 @@ namespace __SCRIPTS
 		public override void StopAbility()
 		{
 			anim.SetBool(UnitAnimations.IsChainsawing, false);
+			anim.SetBool(UnitAnimations.IsUsingPrimary, true);
 			OnStopChainsawing?.Invoke(transform.position);
 			SetState(weaponState.not);
 			base.StopAbility();
