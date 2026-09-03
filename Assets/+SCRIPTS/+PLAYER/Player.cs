@@ -82,7 +82,7 @@ namespace __SCRIPTS
 			Services.sceneLoader.OnSceneAboutToChange += SceneLoader_OnSceneAboutToChange;
 			Services.levelManager.OnRestartLevel += LevelManager_OnRestartLevel;
 			SetState(State.Alive);
-
+			Debug.Log("[SPAWN] Spawning " + CurrentCharacter + " at " + position);
 			var spawnedPlayerGO = Instantiate(GetPrefabFromCharacter(this));
 			spawnedPlayerGO.transform.position = position;
 			SetSpawnedPlayerGO(spawnedPlayerGO);
@@ -102,14 +102,12 @@ namespace __SCRIPTS
 		void LevelManager_OnRestartLevel()
 		{
 			Services.levelManager.OnRestartLevel -= LevelManager_OnRestartLevel;
-			SaveStatsBetweenScenes();
+			statsBetweenScenes = null;
 		}
 
 		void SaveStatsBetweenScenes()
 		{
-			if (SpawnedPlayerGO == null) return;
-			if (spawnedPlayerDefence == null) return;
-			if (spawnedPlayerDefence.IsDead())
+			if (spawnedPlayerDefence == null || spawnedPlayerDefence.IsDead() )
 			{
 				statsBetweenScenes = null;
 				return;

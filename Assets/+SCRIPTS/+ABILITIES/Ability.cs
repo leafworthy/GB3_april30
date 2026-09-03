@@ -47,7 +47,6 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	public virtual void StopAbility()
 	{
-		anim.SetBool(UnitAnimations.IsUsingPrimary, false);
 		StopBody();
 	}
 

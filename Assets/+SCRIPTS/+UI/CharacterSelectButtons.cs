@@ -11,6 +11,7 @@ namespace __SCRIPTS
 		public GameObject visible;
 		Player player;
 		State currentState;
+
 		enum State
 		{
 			not,
@@ -26,12 +27,10 @@ namespace __SCRIPTS
 
 		public void SetPlayer(Player newPlayer)
 		{
-			Debug.Log( "[CharacterSelectButtons] SetPlayer called with newPlayer " + newPlayer.name, newPlayer);
+			Debug.Log("[CharacterSelectButtons] SetPlayer called with newPlayer " + newPlayer.name, newPlayer);
 			if (player == null) ListenToPlayer(newPlayer);
 			visible.SetActive(true);
 			StartHighlighting();
-
-
 		}
 
 		void CancelHighlighting()
@@ -53,22 +52,21 @@ namespace __SCRIPTS
 			currentlyHighlightedButton.Highlight();
 		}
 
-		void ListenToPlayer(Player player)
+		void ListenToPlayer(Player _player)
 		{
-			this.player = player;
-			if (this.player == null) return;
-			Debug.Log( "listening to player " + this.player.playerIndex, this.player);
-			this.player.Controller.UIAxis.OnLeft -= OnLeft;
-			this.player.Controller.UIAxis.OnRight -= OnRight;
-			this.player.Controller.Select.OnPress -= OnSelect;
-			this.player.Controller.Cancel.OnPress -= OnCancel;
+			player = _player;
+			if (player == null) return;
+			Debug.Log("listening to player " + player.playerIndex, player);
+			player.Controller.UIAxis.OnLeft -= OnLeft;
+			player.Controller.UIAxis.OnRight -= OnRight;
+			player.Controller.Select.OnPress -= OnSelect;
+			player.Controller.Cancel.OnPress -= OnCancel;
 
-			this.player.Controller.UIAxis.OnLeft += OnLeft;
-			this.player.Controller.UIAxis.OnRight += OnRight;
-			this.player.Controller.Select.OnPress += OnSelect;
-			this.player.Controller.Cancel.OnPress += OnCancel;
+			player.Controller.UIAxis.OnLeft += OnLeft;
+			player.Controller.UIAxis.OnRight += OnRight;
+			player.Controller.Select.OnPress += OnSelect;
+			player.Controller.Cancel.OnPress += OnCancel;
 		}
-
 
 		void DeselectAllButtons()
 		{
@@ -121,10 +119,12 @@ namespace __SCRIPTS
 
 		void StartHighlighting()
 		{
+			Debug.Log("[SELECT] start highlighting");
 			DeselectAllButtons();
 			SetState(State.highlighting);
 			visible.SetActive(true);
-			Services.sfx.sounds.pickup_speed_sounds.PlayRandom();HighlightFirstButton();
+			Services.sfx.sounds.pickup_speed_sounds.PlayRandom();
+			HighlightFirstButton();
 		}
 
 		void SelectHighlighted()
@@ -136,6 +136,7 @@ namespace __SCRIPTS
 
 		void ChooseSelected()
 		{
+			Debug.Log("[SELECT] choose character select");
 			SetState(State.chosen);
 			currentlyHighlightedButton.Unhighlight();
 			Services.sfx.sounds.press_start_sounds.PlayRandom();
@@ -145,7 +146,7 @@ namespace __SCRIPTS
 
 		void SetCurrentlySeletedButton(CharacterSelectButton newButton)
 		{
-			Debug.Log( "setting currently selected button to " + newButton.name, newButton);
+			Debug.Log("setting currently selected button to " + newButton.name, newButton);
 			currentlyHighlightedButton.Unhighlight();
 			currentlyHighlightedButton = newButton;
 			currentlyHighlightedButton.Highlight();
@@ -161,7 +162,7 @@ namespace __SCRIPTS
 
 		void OnRight(NewInputAxis obj)
 		{
-			Debug.Log( "OnRight called with input in hudSlotState " + currentState);
+			Debug.Log("OnRight called with input in hudSlotState " + currentState);
 			if (currentState != State.highlighting) return;
 			SetCurrentlySeletedButton(currentlyHighlightedButton.buttonToRight);
 		}

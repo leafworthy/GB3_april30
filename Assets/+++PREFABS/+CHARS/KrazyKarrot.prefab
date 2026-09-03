@@ -141,6 +141,7 @@ GameObject:
   - component: {fileID: 4836012360633926955}
   - component: {fileID: 3044874864766795196}
   - component: {fileID: 5669409921923218222}
+  - component: {fileID: 6211112668622003420}
   m_Layer: 6
   m_Name: KrazyKarrot
   m_TagString: Player
@@ -456,10 +457,10 @@ MonoBehaviour:
     hasSlash: 1
     whiteWhenFull: 0
   secondaryAmmo:
-    weaponType: 8
-    reserveAmmo: 0
+    weaponType: 1
+    reserveAmmo: 3
     clipSize: 5
-    AmmoInClip: 0
+    AmmoInClip: 1
     maxReserveAmmo: 5
     reloads: 0
     unlimited: 0
@@ -840,6 +841,29 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   pullOutAnimationClip: {fileID: 7400000, guid: c7c51a9e70c2348c1b9bc3a9c8dbf763, type: 2}
+--- !u!114 &6211112668622003420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081200535837487843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0a230645f941649f055aac14c4d51d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.SimpleNadeAttack
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  IsAiming: 0
+  animationClip: {fileID: 7400000, guid: 15af5fe8f968a438fa736094f550b2a8, type: 2}
 --- !u!1 &1090588778770103321
 GameObject:
   m_ObjectHideFlags: 0
