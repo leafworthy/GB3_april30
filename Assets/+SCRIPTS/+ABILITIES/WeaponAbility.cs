@@ -6,7 +6,7 @@ namespace __SCRIPTS
 {
 	public abstract class WeaponAbility : Ability
 	{
-		public AnimationClip pullOutAnimationClip;
+
 
 		protected enum weaponState
 		{
@@ -26,6 +26,7 @@ namespace __SCRIPTS
 		}
 
 		public bool isActive => currentState is weaponState.idle or weaponState.attacking;
+
 		protected bool isIdle => currentState is weaponState.idle;
 
 		protected weaponState currentState {get; private set;}
@@ -53,7 +54,6 @@ namespace __SCRIPTS
 		protected virtual void PullOutWeapon()
 		{
 			SetState(weaponState.pullOut);
-			PlayAnimationClip(pullOutAnimationClip, 1);
 
 		}
 
@@ -74,7 +74,7 @@ namespace __SCRIPTS
 
 		public override void StopAbility()
 		{
-			currentState = weaponState.not;
+			SetState(weaponState.not);
 			base.StopAbility();
 		}
 

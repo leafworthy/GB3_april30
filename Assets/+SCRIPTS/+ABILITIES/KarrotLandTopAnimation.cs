@@ -1,3 +1,4 @@
+using GangstaBean.Core;
 using UnityEngine;
 
 namespace __SCRIPTS
@@ -12,8 +13,8 @@ namespace __SCRIPTS
 
 		UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
 		UnitAnimations _anim;
-		GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
-		GunAttack _gunAttack;
+		IGunAttack gunAttack => _gunAttack ??= GetComponent<IGunAttack>();
+		IGunAttack _gunAttack;
 		JumpAbility jumps => _jumps ??= GetComponent<JumpAbility>();
 		JumpAbility _jumps;
 
@@ -38,5 +39,20 @@ namespace __SCRIPTS
 				anim.Play(clip.name, 1, 0);
 			}
 		}
+	}
+
+	public interface IGunAttack
+	{
+		bool isActive { get; }
+		Gun CurrentGun { get; }
+		bool IsUsingPrimaryGun { get; }
+		string AbilityName { get; }
+		void TryToActivate();
+		bool CanSwapGuns();
+		void Resume();
+		bool canDo();
+		bool canStop(IDoableAbility abilityToStopFor);
+		void StopAbility();
+		void SwapGuns();
 	}
 }

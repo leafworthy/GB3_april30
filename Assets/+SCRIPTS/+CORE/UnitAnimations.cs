@@ -17,6 +17,9 @@ namespace __SCRIPTS
 
 		#region animation hashes
 
+		public static readonly int SelectedWeapon = Animator.StringToHash("SelectedWeapon");
+		public static readonly int CurrentWeapon = Animator.StringToHash("CurrentWeapon");
+
 		public static readonly int ShootSpeed = Animator.StringToHash("ShootSpeed");
 		public static readonly int HitTrigger = Animator.StringToHash("HitTrigger");
 		public static readonly int DeathTrigger = Animator.StringToHash("DeathTrigger");
@@ -99,6 +102,13 @@ namespace __SCRIPTS
 			animator.StopPlayback();
 			if (DefaultBottomAnimation == null) return;
 			animator.Play(DefaultBottomAnimation.name, 0);
+		}
+
+		public void SetInt (int parameterHash, int value)
+		{
+			if (!HasParameter(parameterHash)) return;
+			if (animator.GetInteger(parameterHash) != value)
+				animator.SetInteger(parameterHash, value);
 		}
 	}
 }

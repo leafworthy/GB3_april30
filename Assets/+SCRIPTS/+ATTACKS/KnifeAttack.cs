@@ -16,8 +16,8 @@ public class KnifeAttack : Ability
 	JumpAbility _jumpAbility;
 
 	[SerializeField] AnimationClip animationClip;
-	GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
-	GunAttack _gunAttack;
+	IGunAttack gunAttack => _gunAttack ??= GetComponent<IGunAttack>();
+	IGunAttack _gunAttack;
 
 
 	protected override bool requiresArms() => true;
@@ -86,7 +86,7 @@ public class KnifeAttack : Ability
 
 		if (lastArmAbility != null)
 		{
-			if (lastArmAbility is GunAttack) lastArmAbility?.Resume();
+			if (lastArmAbility is IGunAttack) lastArmAbility?.Resume();
 			base.StopAbility();
 			lastArmAbility?.TryToActivate();
 		}

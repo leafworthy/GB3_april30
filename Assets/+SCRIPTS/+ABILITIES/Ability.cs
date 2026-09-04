@@ -63,7 +63,7 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 		TryToActivate();
 	}
 
-	bool BodyCanDo(IDoableAbility abilityToDo)
+	protected bool BodyCanDo(IDoableAbility abilityToDo)
 	{
 		if (Services.pauseManager.IsPaused) return false;
 		if (defence.IsDead()) return false;

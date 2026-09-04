@@ -31,7 +31,7 @@ namespace __SCRIPTS
 			StopDashing();
 			life.Stats.ExtraSpeedFactor = 0;
 			defence.SetTemporarilyInvincible(false);
-			if (lastArmAbility is GunAttack)
+			if (lastArmAbility is IGunAttack)
 			{
 				Debug.Log("Resuming last arm ability", this);
 				lastArmAbility?.Resume();

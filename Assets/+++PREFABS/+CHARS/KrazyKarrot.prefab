@@ -126,22 +126,22 @@ GameObject:
   - component: {fileID: 7895999935522049922}
   - component: {fileID: 8201654479573628637}
   - component: {fileID: 3952349814418493022}
-  - component: {fileID: 4373474583085920758}
   - component: {fileID: 7542871471453855134}
   - component: {fileID: 5027827199548788944}
   - component: {fileID: 7270518776441820197}
   - component: {fileID: 604019886126809547}
   - component: {fileID: -6951585885733710162}
   - component: {fileID: 1663451987158399248}
-  - component: {fileID: 9064259621308557951}
   - component: {fileID: 3520523093722549066}
   - component: {fileID: 4829827672566847360}
   - component: {fileID: 6736175275518564988}
-  - component: {fileID: 1027085681810675555}
   - component: {fileID: 4836012360633926955}
   - component: {fileID: 3044874864766795196}
-  - component: {fileID: 5669409921923218222}
   - component: {fileID: 6211112668622003420}
+  - component: {fileID: 824481045358578087}
+  - component: {fileID: 424694896503704816}
+  - component: {fileID: 380941847289495073}
+  - component: {fileID: 9064259621308557951}
   m_Layer: 6
   m_Name: KrazyKarrot
   m_TagString: Player
@@ -596,29 +596,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashlightLight: {fileID: 4093934596087921222}
---- !u!114 &4373474583085920758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1f0033eed5945098a05ae2ee8c2253d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  ReloadPrimaryGunAnimationClip: {fileID: 7400000, guid: 77d883c48b3e7465bb9395026da3e693, type: 2}
-  ReloadUnlimitedGunAnimationClip: {fileID: 7400000, guid: 1ae2c97a68b8c44ecb55686ae9285952, type: 2}
 --- !u!114 &7542871471453855134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -697,22 +674,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00522a223fbe430aa9b68e3205413f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.AWP_FX
---- !u!114 &9064259621308557951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 300462c8a7a8439388a4f7813d28622e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.AWP
-  pullOutAnimationClip: {fileID: 7400000, guid: c7c51a9e70c2348c1b9bc3a9c8dbf763, type: 2}
-  AnimationClipPrefix: 'KARROT '
-  simpleShootAnimationClip: {fileID: 0}
-  isPiercing: 1
 --- !u!114 &3520523093722549066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -761,29 +722,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.KarrotLandTopAnimation
   LandPrimaryGunAnimationClip: {fileID: 7400000, guid: 48f8a539f309240eaa97a3205d3a78e9, type: 2}
   LandUnlimitedGunAnimationClip: {fileID: 7400000, guid: 91bdc34b576114a648c28c73fb1afd9c, type: 2}
---- !u!114 &1027085681810675555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ece40c0739ff41a6aeb159b318bc9c4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  pullOutAnimationClip: {fileID: 7400000, guid: cd6160549891f42aaa24888d4edc95aa, type: 2}
-  ChainsawAttackStartPoint: {fileID: 6739651021704613638}
 --- !u!114 &4836012360633926955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -796,9 +734,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43254af6b00f42558407b9fb82daed38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.TwoWeaponSwitchAbility
-  Primary_Weapon: {fileID: 5669409921923218222}
-  Secondary_Weapon: {fileID: 1027085681810675555}
-  currentWeapon: {fileID: 0}
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 824481045358578087}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Primary_Weapon
+      Entry: 6
+      Data: 
+    - Name: Secondary_Weapon
+      Entry: 10
+      Data: 0
+    - Name: currentWeapon
+      Entry: 6
+      Data: 
 --- !u!114 &3044874864766795196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -819,28 +773,6 @@ MonoBehaviour:
   fallingAnimationClip_2: {fileID: 7400000, guid: 9a2e4b3f7fdfe43ef87e2320484f4d40, type: 2}
   landingAnimationClip_2: {fileID: 7400000, guid: 91bdc34b576114a648c28c73fb1afd9c, type: 2}
   flyingAnimationClip_2: {fileID: 7400000, guid: fc271cd98cf764138a09331a547d22ed, type: 2}
---- !u!114 &5669409921923218222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081200535837487843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fc6e660f6924fdabdcc6f765fd44d93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.SimpleGunAttack
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  pullOutAnimationClip: {fileID: 7400000, guid: c7c51a9e70c2348c1b9bc3a9c8dbf763, type: 2}
 --- !u!114 &6211112668622003420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -862,8 +794,93 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  IsAiming: 0
   animationClip: {fileID: 7400000, guid: 15af5fe8f968a438fa736094f550b2a8, type: 2}
+--- !u!114 &824481045358578087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081200535837487843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc923320b31421686fdc4da4d80fa12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.SimpleWeaponAttack
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  AttackStartPoint: {fileID: 2451584106744255648}
+  WeaponAttackIndex: 2
+  _gun: {fileID: 424694896503704816}
+--- !u!114 &424694896503704816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081200535837487843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84bba30cac2124f2e9691aa21a1c02f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  pullOutAnimationClip: {fileID: 7400000, guid: cd6160549891f42aaa24888d4edc95aa, type: 2}
+  AnimationClipPrefix: 
+  simpleShootAnimationClip: {fileID: 0}
+  reloadAnimationClip: {fileID: 7400000, guid: 49f42274620e9429b84341fbc350e9dd, type: 2}
+  isContinuous: 1
+  isPiercing: 0
+  hasSimpleAiming: 1
+--- !u!114 &380941847289495073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081200535837487843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc923320b31421686fdc4da4d80fa12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.SimpleWeaponAttack
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  AttackStartPoint: {fileID: 2451584106744255648}
+  WeaponAttackIndex: 0
+  _gun: {fileID: 9064259621308557951}
+--- !u!114 &9064259621308557951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081200535837487843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 300462c8a7a8439388a4f7813d28622e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::__SCRIPTS.AWP
+  pullOutAnimationClip: {fileID: 7400000, guid: c7c51a9e70c2348c1b9bc3a9c8dbf763, type: 2}
+  AnimationClipPrefix: 'KARROT '
+  simpleShootAnimationClip: {fileID: 0}
+  reloadAnimationClip: {fileID: 7400000, guid: 77d883c48b3e7465bb9395026da3e693, type: 2}
+  isContinuous: 0
+  isPiercing: 1
+  hasSimpleAiming: 0
 --- !u!1 &1090588778770103321
 GameObject:
   m_ObjectHideFlags: 0

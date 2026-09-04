@@ -34,7 +34,7 @@ public class ShieldDashAbility : DashAbility
 	{
 		StopDashing();
 
-		if (lastArmAbility is ShieldAbility or GunAttack)
+		if (lastArmAbility is ShieldAbility or IGunAttack)
 		{
 			shieldAbility.SetShielding(lastArmAbility is ShieldAbility);
 

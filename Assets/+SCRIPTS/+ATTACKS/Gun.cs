@@ -35,6 +35,7 @@ namespace __SCRIPTS
 		public event Action<Vector2> OnShoot;
 
 		public AnimationClip simpleShootAnimationClip;
+		public AnimationClip reloadAnimationClip;
 		protected AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
 		AmmoInventory _ammoInventory;
 		IAimAbility gunAimAbility => _gunAimAbility ??= GetComponent<IAimAbility>();
@@ -47,7 +48,9 @@ namespace __SCRIPTS
 
 		float currentCooldownTime;
 		Vector2 aimDir;
+		public bool isContinuous;
 		public bool isPiercing;
+		public bool hasSimpleAiming;
 		public string AnimationClipSuffix => this is PrimaryGun ? "" :"_Glock";
 		public virtual float reloadTime => .5f;
 		public abstract float AttackRate { get; }
@@ -77,6 +80,25 @@ namespace __SCRIPTS
 		public bool Shoot()
 		{
 			Debug.Log("shooting", this);
+			if (!CanShoot()) return false;
+			currentCooldownTime = Time.time + AttackRate;
+			OnShoot?.Invoke(gunAimAbility.AimDir);
+			Ammo.UseAmmo(1);
+
+			for (var i = 0; i < numberOfBulletsPerShot; i++)
+			{
+				Debug.Log("shooting actual bullet");
+				var randomSpread = new Vector2(UnityEngine.Random.Range(-Spread, Spread), UnityEngine.Random.Range(-Spread, Spread));
+				ShootBullet(gunAimAbility.AimDir + randomSpread);
+			}
+
+			Debug.Log("done shooting");
+
+			return true;
+		}
+
+		public bool CanShoot()
+		{
 			if (!Ammo.hasAmmoInClip())
 			{
 				Debug.Log("no ammo in clip", this);
@@ -99,18 +121,6 @@ namespace __SCRIPTS
 				Debug.Log("cooling down", this);
 				return false;
 			}
-			currentCooldownTime = Time.time + AttackRate;
-			OnShoot?.Invoke(gunAimAbility.AimDir);
-			Ammo.UseAmmo(1);
-
-			for (var i = 0; i < numberOfBulletsPerShot; i++)
-			{
-				Debug.Log("shooting actual bullet");
-				var randomSpread = new Vector2(UnityEngine.Random.Range(-Spread, Spread), UnityEngine.Random.Range(-Spread, Spread));
-				ShootBullet(gunAimAbility.AimDir + randomSpread);
-			}
-
-			Debug.Log("done shooting");
 
 			return true;
 		}
@@ -210,6 +220,18 @@ namespace __SCRIPTS
 		protected override int numberOfBulletsPerShot => 1;
 	}
 
+	public class SecondaryGun : Gun
+	{
+		public override float AttackRate => GetAttackRate();
+
+		float GetAttackRate() => attacker.stats.Stats.Rate(2);
+
+		protected override float Damage => attacker.stats.Stats.Damage(2);
+		protected override Ammo Ammo => ammoInventory.secondaryAmmo;
+		protected override float AttackRange => attacker.stats.Stats.Range(2);
+		protected override float Spread => 0;
+		protected override int numberOfBulletsPerShot => 1;
+	}
 	public class UnlimitedGun : Gun
 	{
 		public override float AttackRate => GetAttackRate();

@@ -13,10 +13,10 @@ namespace __SCRIPTS
 
 		public override bool canDo() => base.canDo() && gunAttack.CanSwapGuns();
 
-		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is GunAttack;
+		public override bool canStop(IDoableAbility abilityToStopFor) => abilityToStopFor is IGunAttack;
 
-		private GunAttack gunAttack => _gunAttack ??= GetComponent<GunAttack>();
-		private GunAttack _gunAttack;
+		private IGunAttack gunAttack => _gunAttack ??= GetComponent<IGunAttack>();
+		private IGunAttack _gunAttack;
 
 		protected override void DoAbility()
 		{

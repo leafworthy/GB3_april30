@@ -21,6 +21,7 @@ namespace __SCRIPTS
 		public event Action<Vector2> OnReload;
 		float cooldownCounter;
 		public GameObject ChainsawAttackStartPoint;
+		public AnimationClip pullOutAnimationClip;
 		public override bool canStop(IDoableAbility abilityToStopFor) => currentState is weaponState.idle or weaponState.not;
 		protected override bool requiresArms() => true;
 		protected override bool requiresLegs() => false;
@@ -74,7 +75,7 @@ namespace __SCRIPTS
 
 		protected override void PullOutWeapon()
 		{
-			base.PullOutWeapon();
+			PlayAnimationClip(pullOutAnimationClip, 1);
 			anim.SetBool(UnitAnimations.IsChainsawing, true);
 			anim.SetBool(UnitAnimations.IsUsingPrimary, false);
 			OnStartChainsawing?.Invoke(transform.position);

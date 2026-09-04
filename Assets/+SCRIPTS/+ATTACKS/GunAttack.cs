@@ -5,7 +5,7 @@ using UnityEngine;
 namespace __SCRIPTS
 {
 	[Serializable]
-	public class GunAttack : WeaponAbility
+	public class GunAttack : WeaponAbility, IGunAttack
 	{
 		public Gun CurrentGun { get; private set; }
 		AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
@@ -14,31 +14,36 @@ namespace __SCRIPTS
 		Gun _primaryGun;
 		public Gun unlimitedGun => _unlimitedGun ??= GetComponent<UnlimitedGun>();
 		Gun _unlimitedGun;
-		IAimAbility aimAbility => _aimAbility ??= GetComponent<IAimAbility>();
+		protected IAimAbility aimAbility => _aimAbility ??= GetComponent<IAimAbility>();
 		IAimAbility _aimAbility;
 		public Vector2 AimDir => aimAbility.AimDir;
 		public override string AbilityName => "Gun Attack " + currentState;
 		protected override bool requiresArms() => true;
 		protected override bool requiresLegs() => false;
-		public override bool canStop(IDoableAbility abilityToStopFor) => currentState == weaponState.idle || currentState == weaponState.resuming;
+		public override bool canStop(IDoableAbility abilityToStopFor) => currentState is weaponState.idle or weaponState.resuming;
 
 		public bool IsUsingPrimaryGun => CurrentGun is PrimaryGun;
-		bool isPressingShoot;
+		protected bool isPressingShoot;
 		JumpAbility jumpAbility => _jumpAbility ??= GetComponent<JumpAbility>();
 		JumpAbility _jumpAbility;
+		bool isActive1;
 		public event Action OnEmpty;
 
 		public event Action<bool> OnSwitchGun;
 		public event Action OnNeedsReload;
 
+		public void OnNeedsReloadEvent()
+		{
+			OnNeedsReload?.Invoke();
+		}
 		public override void Resume()
 		{
 			SetState(weaponState.idle);
 		}
 
-		void Start()
+
+		public virtual void Start()
 		{
-			Debug.Log("WHATTHEFUCK");
 			TryToActivate();
 		}
 
@@ -187,7 +192,7 @@ namespace __SCRIPTS
 				Debug.Log("not active", this);
 				return;
 			}
-			if (isPressingShoot && currentState != weaponState.attacking)
+			if (isPressingShoot)
 			{
 				Debug.Log("starting attacking", this);
 				StartAttacking();
@@ -219,6 +224,14 @@ namespace __SCRIPTS
 		protected void PlayerControllerShootRelease(NewControlButton newControlButton)
 		{
 			isPressingShoot = false;
+			StopAttacking();
+		}
+
+		protected virtual void StopAttacking()
+		{
+			if (currentState != weaponState.attacking) return;
+			StartIdle();
+			Aim();
 		}
 
 		public bool SwitchGuns(bool toPrimary)
@@ -243,7 +256,8 @@ namespace __SCRIPTS
 			return false;
 		}
 
-		public bool SwapGuns() => SwitchGuns(CurrentGun is not PrimaryGun);
+		public void SwapGuns() => SwitchGuns(CurrentGun is not PrimaryGun);
+
 	}
 }
 namespace __SCRIPTS

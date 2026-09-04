@@ -99,5 +99,6 @@ namespace __SCRIPTS
 			Debug.Log("[SWITCHER] doing weapon: " + currentWeapon.name);
 			PullOutWeapon();
 		}
+
 	}
 }

@@ -284,8 +284,8 @@ public class PlayerStatsSavedBetweenScenes
 		ammo2clip = ammo.secondaryAmmo.AmmoInClip;
 		ammo3reserve = ammo.tertiaryAmmo.reserveAmmo;
 		ammo3clip = ammo.tertiaryAmmo.AmmoInClip;
-		var gunAttack = spawnedPlayerGO.GetComponentInChildren<GunAttack>();
-		if (gunAttack != null) isPrimary = gunAttack.IsUsingPrimaryGun;
+		var gunAttack = spawnedPlayerGO.GetComponentInChildren<IGunAttack>();
+		//if (gunAttack != null) isPrimary = gunAttack.IsUsingPrimaryGun;
 	}
 
 	public void ApplyToPlayer(GameObject spawnedPlayerGO)
@@ -301,7 +301,7 @@ public class PlayerStatsSavedBetweenScenes
 		ammoInventory.secondaryAmmo.SetAmmoReserve(ammo2reserve);
 		ammoInventory.tertiaryAmmo.SetAmmoInClip(ammo3clip);
 		ammoInventory.tertiaryAmmo.SetAmmoReserve(ammo3reserve);
-		var gunAttack = spawnedPlayerGO.GetComponentInChildren<GunAttack>();
-		if (gunAttack != null) gunAttack.SwitchGuns(isPrimary);
+		var gunAttack = spawnedPlayerGO.GetComponentInChildren<IGunAttack>();
+		//if (gunAttack != null) gunAttack.SwitchGuns(isPrimary);
 	}
 }

@@ -30,7 +30,7 @@ namespace __SCRIPTS
 			StopBody();
 			StopDashing();
 			defence.SetTemporarilyInvincible(false);
-			if (lastArmAbility is GunAttack)
+			if (lastArmAbility is IGunAttack)
 			{
 				StopBody();
 				lastArmAbility?.Resume();
