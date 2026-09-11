@@ -1,14 +1,16 @@
 using System;
 using GangstaBean.Core;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEngine;
 
 namespace __SCRIPTS
 {
-	public class TwoWeaponSwitchAbility : MonoBehaviour, INeedPlayer
+	public class TwoWeaponSwitchAbility : SerializedMonoBehaviour, INeedPlayer
 	{
 		public GunAttack Primary_Weapon;
-		public WeaponAbility Secondary_Weapon;
-		public WeaponAbility currentWeapon;
+		 public GunAttack Secondary_Weapon;
+		 public GunAttack currentWeapon;
 		AmmoInventory ammoInventory => _ammoInventory ??= GetComponent<AmmoInventory>();
 		AmmoInventory _ammoInventory;
 
@@ -66,59 +68,41 @@ namespace __SCRIPTS
 			player.Controller.Attack1RightTrigger.OnPress -= Player_SwapPrimary;
 		}
 
-		void StartSwitchingWeapons(WeaponAbility _weaponToSwitchTo)
+		void StartSwitchingWeapons(GunAttack _weaponToSwitchTo)
 		{
 			if (_weaponToSwitchTo == null) return;
-			if (currentWeapon == null)
+			if (currentWeapon != null)
 			{
-				Debug.Log("[SWITCHER]initial weapon equip: " + _weaponToSwitchTo.AbilityName);
-				SwitchCurrentWeapon(Secondary_Weapon);
-				return;
-			}
+				if (_weaponToSwitchTo == currentWeapon)
+				{
+					Debug.Log("[SWITCHER] Already using that weapon: " + _weaponToSwitchTo.AbilityName);
+					return;
+				}
 
-			if (_weaponToSwitchTo == currentWeapon) return;
-			if (!currentWeapon.canStop(null) && currentWeapon.isActive)
-			{
-				Debug.Log("[SWITCHER] can't switch weapons right now, busy with: " + currentWeapon.AbilityName);
-				return;
+				if (!currentWeapon.canStop(null) && currentWeapon.isActive)
+				{
+					Debug.Log("[SWITCHER] can't switch weapons right now, busy with: " + currentWeapon.AbilityName);
+					return;
+				}
 			}
-
-			Debug.Log("[SWITCHER] Start switching to: " + _weaponToSwitchTo.AbilityName);
 			SwitchCurrentWeapon(_weaponToSwitchTo);
 		}
 
-		void SwitchCurrentWeapon(WeaponAbility _weaponToSwitchTo)
+		void SwitchCurrentWeapon(GunAttack _weaponToSwitchTo)
 		{
-			Debug.Log("trying to switch weapon");
+			Debug.Log("[SWITCHER]SwitchCurrentWeapon to: " + _weaponToSwitchTo.AbilityName);
 
-			if (_weaponToSwitchTo == null)
+			if (!_weaponToSwitchTo.canDo())
 			{
-				Debug.LogError(" [SWITCHER] weapon to switch to is null!");
+				Debug.Log("[SWITCHER] can't switch to that weapon right now: " + _weaponToSwitchTo.AbilityName);
 				return;
 			}
-
-			if (currentWeapon == null)
-			{
-				currentWeapon = Primary_Weapon;
-				Debug.Log(" [SWITCHER] current weapon was null, defaulting to primary: " + Primary_Weapon.AbilityName);
-			}
-
-			Debug.Log("[SWITCHER]SwitchCurrentWeapon to: " + _weaponToSwitchTo.AbilityName);
-			if (_weaponToSwitchTo.canDo())
-			{
-				Debug.Log("[SWITCHER] can do, switching to: " + _weaponToSwitchTo.AbilityName);
-				currentWeapon.StopAbility();
-				currentWeapon = _weaponToSwitchTo;
-				currentWeapon.TryToActivate();
-				OnSwitchWeapon?.Invoke(currentWeapon == Primary_Weapon ? 1 : 2);
-			}
-			else
-			{
-				currentWeapon = Primary_Weapon;
-				currentWeapon.TryToActivate();
-				OnSwitchWeapon?.Invoke(1);
-				Debug.Log("[SWITCHER] switching to Primary_Weapon: " + currentWeapon.AbilityName);
-			}
+			Debug.Log("[SWITCHER] can do, switching to: " + _weaponToSwitchTo.AbilityName);
+			currentWeapon?.StopAbility();
+			currentWeapon = _weaponToSwitchTo;
+			currentWeapon.TryToActivate();
+			Debug.Log( "[SWITCHER] activating: " + currentWeapon.AbilityName);
+			OnSwitchWeapon?.Invoke(currentWeapon == Primary_Weapon ? 1 : 2);
 		}
 	}
 }

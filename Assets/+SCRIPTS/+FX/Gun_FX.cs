@@ -8,7 +8,7 @@ namespace __SCRIPTS
 	{
 		List<Gun> guns => _guns ??= GetComponents<Gun>().ToList();
 		List<Gun> _guns;
-		GameObject bulletPrefab => Services.assetManager.FX.BulletPrefab;
+		public GameObject bulletPrefab;
 		float effectTime = 5f;
 		Vector2 heightCorrectionForDepthInFrontOfWall = new(0, -1.25f);
 

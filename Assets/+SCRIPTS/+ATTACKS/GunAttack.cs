@@ -181,15 +181,12 @@ namespace __SCRIPTS
 
 		protected virtual void FixedUpdate()
 		{
-			Debug.Log(currentState.ToString());
 			if (!isActive)
 			{
-				Debug.Log("not active", this);
 				return;
 			}
 			if (isPressingShoot && currentState != weaponState.attacking)
 			{
-				Debug.Log("starting attacking", this);
 				StartAttacking();
 			}
 			else if (currentState == weaponState.idle) Aim();
