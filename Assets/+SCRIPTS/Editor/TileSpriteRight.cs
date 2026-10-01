@@ -30,11 +30,11 @@ public class SpriteTiler : EditorWindow
         int undoGroup = Undo.GetCurrentGroup();
         Undo.SetCurrentGroupName("Tile Sprite Right");
 
-        // Find the rightmost sprite in the same parent
+        // Find the rightmost bodySprite in the same parent
         Transform parent = selected.transform.parent;
         GameObject rightmostSprite = FindRightmostObject(parent, selected);
 
-        // Calculate the position for the new sprite
+        // Calculate the position for the new bodySprite
         Vector3 newPosition = CalculateNextPositionForObject(rightmostSprite, true);
 
         // Create prefab instance or duplicate based on whether the original is a prefab
@@ -76,11 +76,11 @@ public class SpriteTiler : EditorWindow
         int undoGroup = Undo.GetCurrentGroup();
         Undo.SetCurrentGroupName("Tile Sprite Left");
 
-        // Find the leftmost sprite in the same parent
+        // Find the leftmost bodySprite in the same parent
         Transform parent = selected.transform.parent;
         GameObject leftmostSprite = FindLeftmostObject(parent, selected);
 
-        // Calculate the position for the new sprite
+        // Calculate the position for the new bodySprite
         Vector3 newPosition = CalculateNextPositionForObject(leftmostSprite, false);
 
         // Create prefab instance or duplicate based on whether the original is a prefab
@@ -140,7 +140,7 @@ public class SpriteTiler : EditorWindow
 
         foreach (Transform child in children)
         {
-            // Skip the parent itself and objects without sprite renderers
+            // Skip the parent itself and objects without bodySprite renderers
             if (child == parent || !HasSpriteRenderers(child.gameObject)) continue;
 
             // Compare objects by their rightmost bounds
@@ -171,7 +171,7 @@ public class SpriteTiler : EditorWindow
 
         foreach (Transform child in children)
         {
-            // Skip the parent itself and objects without sprite renderers
+            // Skip the parent itself and objects without bodySprite renderers
             if (child == parent || !HasSpriteRenderers(child.gameObject)) continue;
 
             // Compare objects by their leftmost bounds
@@ -246,7 +246,7 @@ public class SpriteTiler : EditorWindow
 
 
 
-    // Validate menu item - only enable when a sprite is selected
+    // Validate menu item - only enable when a bodySprite is selected
     [MenuItem("Tools/Tile Sprite Right", true)]
     static bool ValidateTileSpriteRight()
     {
@@ -254,7 +254,7 @@ public class SpriteTiler : EditorWindow
         return selected != null && HasSpriteRenderers(selected);
     }
 
-    // Validate menu item - only enable when a sprite is selected
+    // Validate menu item - only enable when a bodySprite is selected
     [MenuItem("Tools/Tile Sprite Left", true)]
     static bool ValidateTileSpriteLeft()
     {

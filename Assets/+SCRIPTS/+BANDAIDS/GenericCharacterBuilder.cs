@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEditor;
 namespace __SCRIPTS
 {
-	[ExecuteAlways]
+
 	public class GenericCharacterBuilder : MonoBehaviour, INeedPlayer
 	{
 		public string NPCName;
@@ -18,26 +18,17 @@ namespace __SCRIPTS
 		public List<SpriteRenderer> toTint;
 		public GenericCharacter currentCharacter;
 		public bool autoRefresh = true;
-		public SpriteRenderer sr;
+		public SpriteRenderer bodySpriteRenderer;
 		public GameObject leftArm;
 		public GameObject rightArm;
 		public GameObject leftLeg;
 		public GameObject rightLeg;
-		public GameObject body;
 		public GameObject face;
 
 		public HideRevealObjects hideRevealObjects;
 
 		// Start is called once before the first execution of Update after the MonoBehaviour is created
-		void OnEnable()
-		{
-			Refresh();
-		}
 
-		void Start()
-		{
-
-		}
 #if UNITY_EDITOR
 		[Button]
 		public void SaveOverCurrentCharacter()
@@ -60,7 +51,7 @@ namespace __SCRIPTS
 			currentCharacter.faceIndex = hideRevealObjects.GetCurrentIndex();
 			currentCharacter.tintColor = Tint;
 			currentCharacter.bodyTintColor = BodyTint;
-			currentCharacter.sprite = sr.sprite;
+			currentCharacter.sprite = bodySpriteRenderer.sprite;
 
 
 			// Mark dirty & save
@@ -81,10 +72,10 @@ namespace __SCRIPTS
 			leftLeg.transform.localPosition = currentCharacter.leftLegOffset;
 			rightLeg.transform.localPosition = currentCharacter.rightLegOffset;
 			face.transform.localPosition = currentCharacter.faceOffset;
-			sr.sprite = currentCharacter.sprite;
+			bodySpriteRenderer.sprite = currentCharacter.sprite;
 			hideRevealObjects.Set(currentCharacter.faceIndex);
 			BodyTint = currentCharacter.bodyTintColor;
-			sr.color = BodyTint;
+			bodySpriteRenderer.color = BodyTint;
 			NPCName = currentCharacter.displayName;
 			Refresh();
 		}
@@ -119,7 +110,7 @@ namespace __SCRIPTS
 
 			}
 
-			sr.color = BodyTint;
+			bodySpriteRenderer.color = BodyTint;
 		}
 
 		[Button]
@@ -159,8 +150,8 @@ namespace __SCRIPTS
 			asset.rightLegOffset = rightLeg.transform.localPosition;
 			asset.faceOffset = face.transform.localPosition;
 			asset.faceIndex = hideRevealObjects.GetCurrentIndex();
-			asset.tintColor = leftArm.GetComponentInChildren<SpriteRenderer>().color;
-			asset.sprite = sr.sprite;
+			asset.tintColor = Tint;
+			asset.sprite = bodySpriteRenderer.sprite;
 
 			AssetDatabase.CreateAsset(asset, path);
 			AssetDatabase.SaveAssets();

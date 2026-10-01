@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace __SCRIPTS
 {
-	// On landing, plays the weapon-appropriate top-sprite land animation on the Top layer (layer 1),
+	// On landing, plays the weapon-appropriate top-bodySprite land animation on the Top layer (layer 1),
 	// mirroring ReloadAbility's primary/unlimited-gun split. The Bottom layer plays the shared
-	// leg/cape land clip; this only drives the Top sprite (arms) so it differs per weapon.
+	// leg/cape land clip; this only drives the Top bodySprite (arms) so it differs per weapon.
 	public class KarrotLandTopAnimation : MonoBehaviour
 	{
 		public AnimationClip LandPrimaryGunAnimationClip;    // awp
