@@ -25,8 +25,11 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 	public virtual bool canDo() => BodyCanDo(this);
 	public virtual bool canStop(IDoableAbility abilityToStopFor) => false;
 
+
+
 	public void TryToActivate()
 	{
+		Debug.Log("trying to do ability",this);
 		if (!canDo())
 		{
 			Debug.Log("cant do " + AbilityName + " because body cant do it", this);
@@ -49,10 +52,10 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	protected void StopBody()
 	{
+		CancelInvoke();
 		if (requiresArms()) body.doableArms.Stop(this);
 		if (requiresLegs()) body.doableLegs.Stop(this);
 
-		CancelInvoke();
 	}
 
 	public virtual void Resume()
@@ -97,6 +100,7 @@ public abstract class Ability : SerializedMonoBehaviour, IDoableAbility, INeedPl
 
 	protected void PlayAnimationClip(AnimationClip clip, int layer = 0)
 	{
+		Debug.Log("playing clip "  + clip.name + " with layer " + layer);
 		PlayAnimationClip(clip.name, clip.length, layer);
 	}
 

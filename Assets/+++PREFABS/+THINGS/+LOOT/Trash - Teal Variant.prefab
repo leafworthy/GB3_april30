@@ -88,6 +88,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3930363191740164746, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 4255907831
+      objectReference: {fileID: 0}
     - target: {fileID: 3930363192480714351, guid: e1b979a8fdcfe46adb3f294e81f7596f, type: 3}
       propertyPath: m_FillAmount
       value: 0.83
@@ -306,8 +310,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 2.638745, y: -10.334159}
-      - {x: 0.55835974, y: -10.005853}
+    - - {x: 2.6387453, y: -10.334159}
+      - {x: 2.4219618, y: -8.966267}
+      - {x: 0.5836951, y: -8.365231}
+      - {x: -1.0510249, y: -8.81631}
       - {x: -1.2973728, y: -10.448292}
       - {x: -0.06429112, y: -11.000201}
       - {x: 2.0532887, y: -10.922867}

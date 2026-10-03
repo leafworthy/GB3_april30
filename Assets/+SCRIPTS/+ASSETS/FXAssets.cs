@@ -68,6 +68,7 @@ namespace __SCRIPTS
 		public GameObject risingTextPrefab;
 
 		public GameObject shotgunBlastPrefab;
+		public GameObject AWPBlastPrefab;
 
 		public GameObject fireParticlesPrefab;
 

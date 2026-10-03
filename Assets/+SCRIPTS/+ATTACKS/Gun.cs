@@ -6,6 +6,7 @@ namespace __SCRIPTS
 {
 	public abstract class Gun : Weapon
 	{
+		public string AnimationClipPrefix = "";
 		static readonly string[] PrimaryAnimationClips =
 		{
 			"E",
@@ -46,7 +47,8 @@ namespace __SCRIPTS
 
 		float currentCooldownTime;
 		Vector2 aimDir;
-		string AnimationClipSuffix => this is PrimaryGun ? "" : "_Glock";
+		public bool isPiercing;
+		public string AnimationClipSuffix => this is PrimaryGun ? "" :"_Glock";
 		public virtual float reloadTime => .5f;
 		public abstract float AttackRate { get; }
 		protected abstract float Damage { get; }
@@ -74,8 +76,10 @@ namespace __SCRIPTS
 
 		public bool Shoot()
 		{
+			Debug.Log("shooting", this);
 			if (!Ammo.hasAmmoInClip())
 			{
+				Debug.Log("no ammo in clip", this);
 				if (Ammo.CanReload()) OnNeedsReload?.Invoke();
 				else
 				{
@@ -88,17 +92,25 @@ namespace __SCRIPTS
 				return false;
 			}
 
-			if (IsCoolingDown) return false;
+			Debug.Log("has ammo in clip");
+
+			if (IsCoolingDown)
+			{
+				Debug.Log("cooling down", this);
+				return false;
+			}
 			currentCooldownTime = Time.time + AttackRate;
 			OnShoot?.Invoke(gunAimAbility.AimDir);
 			Ammo.UseAmmo(1);
 
 			for (var i = 0; i < numberOfBulletsPerShot; i++)
 			{
+				Debug.Log("shooting actual bullet");
 				var randomSpread = new Vector2(UnityEngine.Random.Range(-Spread, Spread), UnityEngine.Random.Range(-Spread, Spread));
 				ShootBullet(gunAimAbility.AimDir + randomSpread);
 			}
 
+			Debug.Log("done shooting");
 
 			return true;
 		}
@@ -117,7 +129,8 @@ namespace __SCRIPTS
 			var degrees = GetDegreesFromAimDir();
 			var whichPortion = GetDirectionPortion(degrees);
 			if (whichPortion > PrimaryAnimationClips.Length) whichPortion = 0;
-			return PrimaryAnimationClips[whichPortion] + AnimationClipSuffix;
+			Debug.Log("[CLIP]"+ AnimationClipPrefix + PrimaryAnimationClips[whichPortion] + AnimationClipSuffix);
+			return AnimationClipPrefix + PrimaryAnimationClips[whichPortion] + AnimationClipSuffix;
 		}
 
 		static int GetDirectionPortion(float degrees)
@@ -133,6 +146,7 @@ namespace __SCRIPTS
 
 		void ShootBullet(Vector3 shootDirection)
 		{
+			Debug.Log("shooting actual bullet");
 			var hitObject = Physics2D.LinecastAll(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange,
 				attacker.EnemyLayer);
 			Debug.DrawLine(body.FootPoint.transform.position, body.FootPoint.transform.position + shootDirection * AttackRange, Color.green, 3);
@@ -146,7 +160,7 @@ namespace __SCRIPTS
 					if (target == null) continue;
 					if (!target.CanTakeDamage()) continue;
 					ShotHitTarget(target, hit.point);
-					return;
+					if(!isPiercing)return;
 				}
 			}
 

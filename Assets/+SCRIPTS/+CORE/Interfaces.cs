@@ -41,7 +41,7 @@ namespace GangstaBean.Core
 		void SetBool(int hash, bool value);
 	}
 
-	public interface ICanMoveThings
+	public interface MovementController
 	{
 		event Action<Vector2> OnMoveInDirection;
 		event Action OnStopMoving;

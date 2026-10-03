@@ -29,3 +29,7 @@ namespace __SCRIPTS
 		}
 	}
 }
+
+namespace __SCRIPTS
+{
+}

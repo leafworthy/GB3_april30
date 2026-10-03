@@ -74,6 +74,11 @@ namespace __SCRIPTS
 
 		void StartSwitchingWeapons(WeaponAbility _weaponToSwitchTo)
 		{
+			if(_weaponToSwitchTo == null)
+			{
+				Debug.LogError("[SWITCHER] weapon to switch to is null!");
+				return;
+			}
 			if (currentWeapon == null)
 			{
 				Debug.Log("[SWITCHER]initial weapon equip: " + _weaponToSwitchTo.AbilityName);

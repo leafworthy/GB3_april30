@@ -5,7 +5,7 @@ using UnityEngine;
 namespace __SCRIPTS
 {
 	[DisallowMultipleComponent]
-	public class PlayerUnitController : MonoBehaviour, INeedPlayer, ICanMoveThings, ICanAttack
+	public class PlayerUnitController : MonoBehaviour, INeedPlayer, MovementController, ICanAttack
 	{
 		public Player player => _player;
 		Player _player;

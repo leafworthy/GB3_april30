@@ -1,4 +1,3 @@
-using System;
 using GangstaBean.Core;
 using UnityEngine;
 
@@ -17,10 +16,10 @@ namespace __SCRIPTS
 		Rigidbody2D _rb;
 		Body body => _body ??= GetComponent<Body>();
 		Body _body;
-		ISetBool anim => _anim ??= GetComponent<ISetBool>();
-		ISetBool _anim;
-		ICanMoveThings mover => _mover ??= GetComponent<ICanMoveThings>();
-		ICanMoveThings _mover;
+		UnitAnimations anim => _anim ??= GetComponent<UnitAnimations>();
+		UnitAnimations _anim;
+		MovementController mover => _mover ??= GetComponent<MovementController>();
+		MovementController _mover;
 		IHaveUnitStats stats => _stats ??= GetComponent<IHaveUnitStats>();
 		IHaveUnitStats _stats;
 		Life health => _health ??= GetComponent<Life>();
@@ -28,7 +27,7 @@ namespace __SCRIPTS
 
 		Vector2 moveVelocity;
 		Vector2 pushVelocity;
-		float moveSpeed;
+		float currentMoveSpeed;
 		bool isTryingToMove;
 		bool isMoving;
 		bool isDragging = true;
@@ -38,24 +37,19 @@ namespace __SCRIPTS
 		Vector2 moveDir;
 		Vector2 lastMoveAimDirOffset;
 
-		[SerializeField] float acceleration;
+		float acceleration;
 		public bool accelerates;
 		public float acceleratatonRate = 3;
 		public float acceleratatonMax = 20;
 		public Vector2 decelerationFactor = new(.97f, .97f);
-		public bool splats;
 		public float SturdyFactor = 1;
-
+		float speedMultiplier = 1;
+		public Vector2 GetTotalVelocity() => moveVelocity + pushVelocity;
 		public Vector2 GetLastMoveAimDirOffset() => lastMoveAimDirOffset;
 		public Vector2 GetMoveDir() => moveDir;
 		public Vector2 GetMoveAimDir() => mover.GetMoveAimDir();
 		public Vector2 GetMoveAimPoint() => (Vector2) body.AimCenter.transform.position + GetMoveAimDir().normalized * maxAimDistance;
 		public bool IsMoving() => isMoving;
-
-
-		public bool IsIdle() => mover.IsMoving();
-
-		public event Action<RaycastHit2D, EffectSurface.SurfaceAngle> OnHitWall;
 
 		public void SetCanMove(bool _canMove)
 		{
@@ -64,7 +58,7 @@ namespace __SCRIPTS
 				StopMoving();
 			else
 			{
-				if (isTryingToMove) MoveInDirection(GetMoveAimDir(), stats.Stats.MoveSpeed);
+				if (isTryingToMove) MoveInDirection(GetMoveAimDir(), GetMoveSpeed());
 			}
 		}
 
@@ -87,28 +81,17 @@ namespace __SCRIPTS
 			StartMoving(direction);
 		}
 
-		void Player_MoveInDirection(IControlAxis controlAxis, Vector2 direction) => MoveInDirection(direction);
-
 		void Life_DeathComplete(Player obj, bool b)
 		{
 			pushVelocity = Vector2.zero;
 			moveVelocity = Vector2.zero;
 		}
 
-		void StopListeningToPlayer()
-		{
-			if (health == null) return;
-			if (health != null) health.OnDead -= LifeOnDead;
-			if (mover == null) return;
-			mover.OnMoveInDirection -= MoveInDirection;
-			mover.OnStopMoving -= MoverStopTryingToMove;
-		}
-
 		void FixedUpdate()
 		{
 			if (Services.pauseManager.IsPaused) return;
 
-			if (isTryingToMove) MoveInDirection(GetMoveAimDir(), stats.Stats.MoveSpeed);
+			if (isTryingToMove) MoveInDirection(GetMoveAimDir(), GetMoveSpeed());
 
 			if (isMoving && IsActive) AddMoveVelocity(GetMoveVelocityWithDeltaTime() * overallVelocityMultiplier);
 
@@ -116,24 +99,16 @@ namespace __SCRIPTS
 			DecayVelocity();
 		}
 
-		/*void ApplyVelocity()
-		{
-			var totalVelocity = GetTotalVelocity();
-			//detect if hit a wall
-			var destination = (Vector2) transform.position + totalVelocity * Time.fixedDeltaTime;
-			var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.BuildingLayer);
-			if (health != null && hitWall) return;
-
-			MoveObjectTo((Vector2) transform.position + totalVelocity * Time.fixedDeltaTime);
-		}*/
 		void ApplyVelocity()
 		{
 			var totalVelocity = moveVelocity + pushVelocity;
-			//detect if hit a wall
-			var destination = (Vector2) transform.position + totalVelocity * Time.deltaTime;
-			var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.BuildingLayer);
-			if(health != null && hitWall) return;
+			if (health != null && health.IsDead())
+			{
+				var destination = (Vector2) transform.position + totalVelocity * Time.deltaTime;
 
+				var hitWall = Physics2D.Linecast(transform.position, destination, Services.assetManager.LevelAssets.BuildingLayer);
+				if (health != null && hitWall) return;
+			}
 
 			MoveObjectTo((Vector2) transform.position + totalVelocity * Time.deltaTime);
 		}
@@ -149,11 +124,11 @@ namespace __SCRIPTS
 			if (pushVelocity.magnitude < .1f) pushVelocity = Vector2.zero;
 		}
 
-		Vector2 GetMoveVelocityWithDeltaTime() => GetSpeed() * Time.fixedDeltaTime;
+		Vector2 GetMoveVelocityWithDeltaTime() => GetCurrentSpeed() * Time.fixedDeltaTime;
 
-		Vector2 GetSpeed()
+		Vector2 GetCurrentSpeed()
 		{
-			moveVelocity = GetMoveDir() * moveSpeed;
+			moveVelocity = GetMoveDir() * currentMoveSpeed;
 			return moveVelocity;
 		}
 
@@ -161,32 +136,25 @@ namespace __SCRIPTS
 		{
 			if (!IsActive) return;
 
-			if (direction.magnitude != 0)
-			{
-				moveDir = direction.normalized;
-				body?.BottomFaceDirection(direction.x > 0);
-			}
-			else
+			if (direction.magnitude == 0 || !canMove)
 			{
 				StopMoving();
 				return;
 			}
 
-			if (!canMove)
-			{
-				StopMoving();
-				return;
-			}
+			moveDir = direction.normalized;
+			body?.BottomFaceDirection(direction.x > 0);
+
 
 			anim?.SetBool(UnitAnimations.IsMoving, true);
 			if (accelerates)
 			{
 				acceleration += acceleratatonRate;
 				if (acceleration > acceleratatonMax) acceleration = acceleratatonMax;
-				moveSpeed = newSpeed + acceleration;
+				currentMoveSpeed = newSpeed + acceleration;
 			}
 			else
-				moveSpeed = newSpeed;
+				currentMoveSpeed = newSpeed;
 
 			isMoving = true;
 		}
@@ -221,14 +189,16 @@ namespace __SCRIPTS
 		{
 			direction = direction.normalized * pushMultiplier;
 			var tempVel = new Vector2(direction.x * speed, direction.y * speed);
-			if(!isDragging) tempVel = Vector2.ClampMagnitude(tempVel, maxPushVelocity);
+			if (!isDragging) tempVel = Vector2.ClampMagnitude(tempVel, maxPushVelocity);
 			AddPushVelocity(tempVel);
 		}
 
 		void StartMoving(Vector2 direction)
 		{
-			MoveInDirection(direction, stats.Stats.MoveSpeed);
+			MoveInDirection(direction, GetMoveSpeed());
 		}
+
+		float GetMoveSpeed() => stats.Stats.MoveSpeed * speedMultiplier;
 
 		public void StopMoving()
 		{
@@ -253,9 +223,33 @@ namespace __SCRIPTS
 			pushVelocity = Vector2.zero;
 		}
 
+		void Start()
+		{
+			if (health == null) return;
+			health.OnAttackHit += Life_AttackHit;
+			health.OnDead += LifeOnDead;
+			health.OnDeathComplete += Life_DeathComplete;
+
+			if (mover == null) return;
+			mover.OnMoveInDirection += MoveInDirection;
+			mover.OnStopMoving += MoverStopTryingToMove;
+		}
+
 		void OnDisable()
 		{
 			StopListeningToPlayer();
+		}
+
+		void StopListeningToPlayer()
+		{
+			if (health == null) return;
+			if (health != null) health.OnDead -= LifeOnDead;
+			health.OnAttackHit -= Life_AttackHit;
+			health.OnDeathComplete -= Life_DeathComplete;
+
+			if (mover == null) return;
+			mover.OnMoveInDirection -= MoveInDirection;
+			mover.OnStopMoving -= MoverStopTryingToMove;
 		}
 
 		void MoverStopTryingToMove()
@@ -264,32 +258,18 @@ namespace __SCRIPTS
 			StopMoving();
 		}
 
-		void Start()
-		{
-			if (health == null) return;
-			health.OnAttackHit += Life_AttackHit;
-			health.OnDead += LifeOnDead;
-			health.OnFlying += LifeOnFlying;
-			health.OnDeathComplete += Life_DeathComplete;
-
-			if (mover == null) return;
-			mover.OnMoveInDirection += MoveInDirection;
-			mover.OnStopMoving += MoverStopTryingToMove;
-		}
-
-		void LifeOnFlying(Attack attack)
-		{
-			StopMoving();
-			SetDragging(false);
-			Push(attack.Direction, attack.DamageAmount + attack.ExtraPush);
-		}
-
 		void Life_AttackHit(Attack attack)
 		{
-			MyDebugUtilities.DrawAttack(attack, Color.red);
-			Push(attack.Direction, (attack.DamageAmount + attack.ExtraPush)*SturdyFactor);
-		}
 
-		public Vector2 GetTotalVelocity() => moveVelocity + pushVelocity;
+			if (attack.CausesFlying && !attack.DestinationLife.cantFly)
+			{
+				StopMoving();
+				SetDragging(false);
+				Push(attack.Direction, attack.DamageAmount / 2);
+				return;
+			}
+
+			Push(attack.Direction, (attack.DamageAmount + attack.ExtraPush) * SturdyFactor);
+		}
 	}
 }

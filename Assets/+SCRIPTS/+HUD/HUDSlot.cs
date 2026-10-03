@@ -30,8 +30,7 @@ namespace __SCRIPTS
 			player = newPlayer;
 			player.OnPlayerDies += OnPlayerDeath;
 			player.InitStats();
-			characterSelectButtons.SetPlayer(newPlayer);
-			characterSelectButtons.OnCharacterChosen += SetCharacterAndActivateHUD;
+
 		}
 
 		public void SupplyPlayerToINeedPlayerComponents()
@@ -67,13 +66,17 @@ namespace __SCRIPTS
 		void HideCharacterSetupMenu()
 		{
 			characterSelectButtons.visible.SetActive(false);
+			characterSelectButtons.OnCharacterChosen -= SetCharacterAndActivateHUD;
 		}
 
 		public void OpenCharacterSetupMenu(Player newPlayer)
 		{
+
 			SetPlayer(newPlayer);
 			SetState(HUDSlotState.selectMenu);
 			player.Controller.SetActionMap(Players.UIActionMap);
+			characterSelectButtons.SetPlayer(newPlayer);
+			characterSelectButtons.OnCharacterChosen += SetCharacterAndActivateHUD;
 			characterSelectButtons.visible.SetActive(true);
 			characterSelectButtons.ResetCharacterSelection();
 			HideCharacterHUD();

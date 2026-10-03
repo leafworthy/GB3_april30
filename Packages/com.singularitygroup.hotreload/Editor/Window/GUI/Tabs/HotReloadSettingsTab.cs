@@ -46,8 +46,8 @@ namespace SingularityGroup.HotReload.Editor {
 
         // Resources.Load uses cache, so it's safe to call it every frame.
         //  Retrying Load every time fixes an issue where you import the package and constructor runs, but resources aren't loadable yet.
-        private Texture iconCheck => Resources.Load<Texture>("icon_check_circle");
-        private Texture iconWarning => Resources.Load<Texture>("icon_warning_circle");
+        private Texture iconCheck => Resources.Load<Texture>("Hot_Reload_icon_check_circle");
+        private Texture iconWarning => Resources.Load<Texture>("Hot_Reload_icon_warning_circle");
 
         [SuppressMessage("ReSharper", "Unity.UnknownResource")] // Rider doesn't check packages
         public HotReloadSettingsTab(HotReloadWindow window) : base(window,
@@ -84,9 +84,6 @@ namespace SingularityGroup.HotReload.Editor {
                     GUILayout.Space(10);
                     if (!EditorCodePatcher.LoginNotRequired
                         && !currentState.registrationRequired
-                        // Delay showing login in settings to not confuse users that they need to login to use Free trial
-                        && (HotReloadPrefs.RateAppShown
-                            || PackageConst.IsAssetStoreBuild)
                        ) {
                         using (new EditorGUILayout.HorizontalScope(HotReloadWindowStyles.SectionOuterBoxCompact)) {
                             using (new EditorGUILayout.HorizontalScope(HotReloadWindowStyles.SectionInnerBoxWide)) {
@@ -158,6 +155,16 @@ namespace SingularityGroup.HotReload.Editor {
 
                                         EditorGUILayout.Space();
                                     }
+                                    
+                                    // Telemetry
+                                    RenderTelemetryHeader();
+                                    using (new EditorGUILayout.VerticalScope(paddedStyle ?? (paddedStyle = new GUIStyle { padding = new RectOffset(20, 0, 0, 0) }))) {
+                                        using (new EditorGUI.DisabledScope(HotReloadPrefs.DisableTelemetry)) {
+                                            DisableDetailedErrorReporting();
+                                        }
+                                        DisableTelemetry();
+                                        EditorGUILayout.Space();
+                                    }
 
                                     EditorGUILayout.Space();
                                     using (new EditorGUILayout.HorizontalScope()) {
@@ -195,10 +202,9 @@ namespace SingularityGroup.HotReload.Editor {
                                     EditorGUILayout.Space();
 
                                     DeactivateHotReload();
-                                    DisableDetailedErrorReporting();
                                     PauseHotReloadInEditMode();
 #if UNITY_EDITOR_WIN
-                                    if (PackageConst.DefaultLocale == RuntimeLocalization.Locale.English) {
+                                    if (PackageConst.DefaultLocaleField == Locale.English) {
                                         UseWatchman();
                                     }
 #endif
@@ -324,11 +330,27 @@ namespace SingularityGroup.HotReload.Editor {
             EditorGUILayout.Space(6f);
         }
         
+        void DisableTelemetry() {
+            var newSettings = EditorGUILayout.BeginToggleGroup(new GUIContent(Translations.Settings.ToggleDisableTelemetry), HotReloadPrefs.DisableTelemetry);
+            DisableTelemetryInner(newSettings);
+            string toggleDescription;
+            if (HotReloadPrefs.DisableTelemetry) {
+                toggleDescription = Translations.Settings.SettingsDisableTelemetryOn;
+            } else {
+                toggleDescription = Translations.Settings.SettingsDisableTelemetryOff;
+            }
+            EditorGUILayout.LabelField(toggleDescription, HotReloadWindowStyles.WrapStyle);
+            EditorGUILayout.EndToggleGroup();
+            EditorGUILayout.Space(6f);
+        }
+        
         void DisableDetailedErrorReporting() {
             var newSettings = EditorGUILayout.BeginToggleGroup(new GUIContent(Translations.Settings.ToggleDisableErrorReporting), HotReloadPrefs.DisableDetailedErrorReporting);
             DisableDetailedErrorReportingInner(newSettings);
             string toggleDescription;
-            if (HotReloadPrefs.DisableDetailedErrorReporting) {
+            if (HotReloadPrefs.DisableTelemetry) {
+                toggleDescription = Translations.Settings.SettingsDisableErrorReportingTelemetryDisabled;
+            } else if (HotReloadPrefs.DisableDetailedErrorReporting) {
                 toggleDescription = Translations.Settings.SettingsDisableErrorReportingOn;
             } else {
                 toggleDescription = Translations.Settings.SettingsDisableErrorReportingOff;
@@ -381,6 +403,23 @@ namespace SingularityGroup.HotReload.Editor {
                 }
             }
         }
+        
+        public static void DisableTelemetryInner(bool newSetting) {
+            if (newSetting == HotReloadPrefs.DisableTelemetry) {
+                return;
+            }
+            HotReloadPrefs.DisableTelemetry = newSetting;
+            CodePatcher.I.disableTelemetry = newSetting;
+            // restart when setting changes
+            if (ServerHealthCheck.I.IsServerHealthy) {
+                var restartServer = EditorUtility.DisplayDialog(Translations.Dialogs.DialogTitleRestartServer,
+                    Translations.Dialogs.DialogMessageRestartTelemetry,
+                    Translations.Dialogs.DialogButtonRestartServer, Translations.Dialogs.DialogButtonDontRestart);
+                if (restartServer) {
+                    EditorCodePatcher.RestartCodePatcher().Forget();
+                }
+            }
+        }
 
         static void DeactivateHotReloadInner(bool deactivate) {
             var confirmed = !deactivate || EditorUtility.DisplayDialog(Translations.Dialogs.DialogTitleDeactivate,
@@ -395,7 +434,7 @@ namespace SingularityGroup.HotReload.Editor {
                 }
             }
         }
-
+        
         void RenderAutostart() {
             var newSettings = EditorGUILayout.BeginToggleGroup(new GUIContent(Translations.Settings.ToggleAutostart), HotReloadPrefs.LaunchOnEditorStart);
             if (newSettings != HotReloadPrefs.LaunchOnEditorStart) {
@@ -431,6 +470,12 @@ namespace SingularityGroup.HotReload.Editor {
         void RenderMiscHeader() {
             EditorGUILayout.Space(10f);
             GUILayout.Label(Translations.Settings.SettingsMisc, HotReloadWindowStyles.NotificationsTitleStyle);
+            EditorGUILayout.Space(10f);
+        }
+        
+        void RenderTelemetryHeader() {
+            EditorGUILayout.Space(10f);
+            GUILayout.Label(Translations.Settings.SettingsTelemetry, HotReloadWindowStyles.NotificationsTitleStyle);
             EditorGUILayout.Space(10f);
         }
 
@@ -688,7 +733,7 @@ namespace SingularityGroup.HotReload.Editor {
                 GUILayout.Label(Translations.Settings.SettingsBuildSettingsChecklist, HotReloadWindowStyles.H3TitleStyle);
                 EditorGUI.BeginDisabledGroup(isSupported);
                 // One-click to change each setting to the supported value
-                if (GUILayout.Button(Translations.Common.ButtonFixAll, GUILayout.MaxWidth(90f))) {
+                if (GUILayout.Button(Translations.Common.ButtonEnableOnDevice, GUILayout.MaxWidth(120f))) {
                     FixAllUnsupportedSettings(so);
                 }
                 EditorGUI.EndDisabledGroup();
@@ -902,11 +947,11 @@ namespace SingularityGroup.HotReload.Editor {
         }
 
         void DrawDisabledCircle(Rect rect) => DrawCircleIcon(rect,
-            Resources.Load<Texture>("icon_circle_gray"),
+            Resources.Load<Texture>("Hot_Reload_icon_circle_gray"),
             Color.clear); // smaller circle draws less attention
 
         void DrawBlackCircle(Rect rect) => DrawCircleIcon(rect,
-            Resources.Load<Texture>("icon_circle_black"),
+            Resources.Load<Texture>("Hot_Reload_icon_circle_black"),
             new Color(0.14f, 0.14f, 0.14f)); // black is too dark in unity light theme
 
         void DrawCircleIcon(Rect rect, Texture circleIcon, Color borderColor) {

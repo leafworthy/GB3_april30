@@ -35,15 +35,15 @@ namespace __SCRIPTS
 					hideRevealObjects.Set(0);
 					break;
 				case Character.Bean:
-					hideRevealObjects.Set(0);
+					hideRevealObjects.Set(1);
 					break;
 				case Character.Brock:
 
-					hideRevealObjects.Set(1);
+					hideRevealObjects.Set(2);
 					break;
 				case Character.Tmato:
 
-					hideRevealObjects.Set(2);
+					hideRevealObjects.Set(3);
 					break;
 			}
 		}

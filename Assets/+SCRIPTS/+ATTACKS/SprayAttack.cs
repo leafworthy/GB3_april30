@@ -1,0 +1,184 @@
+using System;
+using GangstaBean.Core;
+using UnityEngine;
+
+namespace __SCRIPTS
+{
+	public class SprayAttack : WeaponAbility
+	{
+		public override string AbilityName => "Chainsaw-Attack";
+
+		bool isPressingChainsawButton;
+		bool isPressingChainsawReloadButton;
+		AimAbility aimAbility => _aimAbility ??= GetComponent<AimAbility>();
+		AimAbility _aimAbility;
+
+		public event Action<Vector2> OnStartChainsawing;
+		public event Action<Vector2> OnStartAttacking;
+		public event Action<Vector2> OnStopAttacking;
+		public event Action<Vector2> OnStopChainsawing;
+		public event Action<Vector2> OnReload;
+		float cooldownCounter;
+		public GameObject ChainsawAttackStartPoint;
+		public override bool canStop(IDoableAbility abilityToStopFor) => currentState is weaponState.idle or weaponState.not;
+		protected override bool requiresArms() => true;
+		protected override bool requiresLegs() => false;
+
+		public override void SetPlayer(Player newPlayer)
+		{
+			base.SetPlayer(newPlayer);
+			StartListeningToPlayer();
+		}
+
+		void StartListeningToPlayer()
+		{
+			if (player == null) return;
+			isPressingChainsawButton = false;
+			isPressingChainsawReloadButton = false;
+			player.spawnedPlayerDefence.OnDead += OnPlayerDeath;
+			player.Controller.Attack2LeftTrigger.OnPress += PlayerChainsawPress;
+			player.Controller.Attack2LeftTrigger.OnRelease += PlayerChainsawRelease;
+			player.Controller.Attack3Circle.OnPress += PlayerChainsawReloadPress;
+			player.Controller.Attack3Circle.OnRelease += PlayerChainsawReloadRelease;
+		}
+
+		void OnPlayerDeath(Attack obj)
+		{
+			StopListeningToPlayer();
+		}
+
+		void StopListeningToPlayer()
+		{
+			SetState(weaponState.not);
+			isPressingChainsawButton = false;
+			isPressingChainsawReloadButton = false;
+			player.spawnedPlayerDefence.OnDead -= OnPlayerDeath;
+			if (player == null) return;
+			if(player.Controller == null) return;
+			player.Controller.Attack2LeftTrigger.OnPress -= PlayerChainsawPress;
+			player.Controller.Attack2LeftTrigger.OnRelease -= PlayerChainsawRelease;
+			player.Controller.Attack3Circle.OnPress -= PlayerChainsawReloadPress;
+			player.Controller.Attack3Circle.OnRelease -= PlayerChainsawReloadRelease;
+		}
+
+		void OnDisable()
+		{
+			StopListeningToPlayer();
+		}
+
+		protected override void DoAbility()
+		{
+			if (currentState != weaponState.resuming) PullOutWeapon();
+		}
+
+		protected override void PullOutWeapon()
+		{
+			base.PullOutWeapon();
+			anim.SetBool(UnitAnimations.IsChainsawing, true);
+			OnStartChainsawing?.Invoke(transform.position);
+		}
+
+		protected override void StartIdle()
+		{
+			base.StartIdle();
+			StartAttacking();
+		}
+
+		void PlayerChainsawPress(NewControlButton newControlButton)
+		{
+			isPressingChainsawButton = true;
+			if (!isActive) return;
+			StartAttacking();
+		}
+
+		void StartAttacking()
+		{
+			if (!isPressingChainsawButton || currentState != weaponState.idle) return;
+			SetState(weaponState.attacking);
+			anim.SetBool(UnitAnimations.IsAttacking, true);
+			OnStartAttacking?.Invoke(transform.position);
+		}
+
+		void StartReloading()
+		{
+			if (!isPressingChainsawReloadButton || currentState != weaponState.idle) return;
+			SetState(weaponState.reloading);
+			OnReload?.Invoke(transform.position);
+			anim.SetTrigger(UnitAnimations.ReloadTrigger);
+		}
+
+		void PlayerChainsawRelease(NewControlButton newControlButton)
+		{
+			isPressingChainsawButton = false;
+			if (!isActive)
+			{
+				SetState(weaponState.not);
+				return;
+			}
+
+			StopAttacking();
+		}
+
+		void StopAttacking()
+		{
+			if (currentState != weaponState.attacking && currentState != weaponState.reloading) return;
+			anim.SetBool(UnitAnimations.IsAttacking, false);
+			OnStopAttacking(transform.position);
+			StartIdle();
+		}
+
+		void PlayerChainsawReloadRelease(NewControlButton obj)
+		{
+			isPressingChainsawReloadButton = false;
+			if (!isActive)
+			{
+				SetState(weaponState.not);
+				return;
+			}
+
+			StopAttacking();
+		}
+
+
+		void PlayerChainsawReloadPress(NewControlButton obj)
+		{
+			isPressingChainsawReloadButton = true;
+			if (!isActive) return;
+			StartReloading();
+		}
+
+		void FixedUpdate()
+		{
+			if (!isActive) return;
+			body.TopFaceDirection(aimAbility.AimDir.x > 0);
+			switch (currentState)
+			{
+				case weaponState.idle when isPressingChainsawButton:
+					StartAttacking();
+					break;
+				case weaponState.attacking:
+					AttackContinuously();
+					break;
+				case weaponState.reloading:
+					break;
+			}
+		}
+
+		void AttackContinuously()
+		{
+			cooldownCounter += Time.fixedDeltaTime;
+			if (!(cooldownCounter >= offence.stats.Stats.Rate(3))) return;
+			cooldownCounter = 0;
+			MyAttackUtilities.HitTargetsWithinRange(offence, ChainsawAttackStartPoint.transform.position, offence.stats.Stats.Range(3),
+				offence.stats.Stats.Damage(3));
+		}
+
+		public override void StopAbility()
+		{
+			anim.SetBool(UnitAnimations.IsChainsawing, false);
+			OnStopChainsawing?.Invoke(transform.position);
+			SetState(weaponState.not);
+			base.StopAbility();
+		}
+	}
+}

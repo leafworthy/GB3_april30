@@ -133,7 +133,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 568261026621526004, guid: 894b55bcfaf6b4768941b3b5fd13f825, type: 3}
       propertyPath: m_fontSize
-      value: 4.25
+      value: 49.55
       objectReference: {fileID: 0}
     - target: {fileID: 568261026621526004, guid: 894b55bcfaf6b4768941b3b5fd13f825, type: 3}
       propertyPath: m_fontColor.a
@@ -217,11 +217,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3076788093811118742, guid: 894b55bcfaf6b4768941b3b5fd13f825, type: 3}
       propertyPath: m_fontSize
-      value: 2.05
+      value: 47.25
       objectReference: {fileID: 0}
     - target: {fileID: 3106413362301269248, guid: 894b55bcfaf6b4768941b3b5fd13f825, type: 3}
       propertyPath: m_fontSize
-      value: 1.8
+      value: 47.1
       objectReference: {fileID: 0}
     - target: {fileID: 3106413362301269248, guid: 894b55bcfaf6b4768941b3b5fd13f825, type: 3}
       propertyPath: m_fontColor.a
@@ -950,6 +950,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3261353562067570768, guid: 036247271a03863438a369432080d43f, type: 3}
+      propertyPath: m_fontSize
+      value: 35.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622910248695798391, guid: 036247271a03863438a369432080d43f, type: 3}
+      propertyPath: m_fontSize
+      value: 27.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8419010925655960746, guid: 036247271a03863438a369432080d43f, type: 3}
       propertyPath: m_Name
       value: WeaponAmmo - Primary
@@ -1213,6 +1221,22 @@ PrefabInstance:
     - target: {fileID: 5167450852509085842, guid: 1469386055c104dc789686631054a579, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8079081954887181509, guid: 1469386055c104dc789686631054a579, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164629874604310435, guid: 1469386055c104dc789686631054a579, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9024590078475749931, guid: 1469386055c104dc789686631054a579, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9147291332443137048, guid: 1469386055c104dc789686631054a579, type: 3}
+      propertyPath: revealedObjectIndex
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
