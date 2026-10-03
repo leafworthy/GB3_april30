@@ -26,22 +26,10 @@ namespace __SCRIPTS
 		public GameObject face;
 		public SpriteRenderer faceSpriteRenderer;
 		const string DefaultFolder = "Assets/Resources/Generic Bodies";
-		List<Sprite> fruitFaces => _fruitFaces ??= Resources.LoadAll<Sprite>("Generic Faces").ToList();
-		[OdinSerialize] List<Sprite> _fruitFaces;
-		List<GenericBody> fruitBodies => _fruitBodies ??= Resources.LoadAll<GenericBody>("Generic Bodies").ToList();
-		[OdinSerialize]List<GenericBody> _fruitBodies;
+		List<Sprite> fruitFaces =>  Resources.LoadAll<Sprite>("Generic Faces").ToList();
+		List<GenericBody> fruitBodies => Resources.LoadAll<GenericBody>("Generic Bodies").ToList();
 
-		[Button]
-		public void GetBodies()
-		{
-			_fruitBodies = Resources.LoadAll<GenericBody>("Generic Bodies").ToList();
-		}
 
-		[Button]
-		public void GetFaces()
-		{
-			_fruitFaces = Resources.LoadAll<Sprite>("Generic Faces").ToList();
-		}
 
 #if UNITY_EDITOR
 		[Button]
@@ -104,11 +92,15 @@ namespace __SCRIPTS
 		[Button]
 		public void ApplyRandomCharacter()
 		{
-
 			currentBody = fruitBodies.GetRandom();
-			Debug.Log("apply random character " + currentBody.name);
+			//Debug.Log("apply random character " + currentBody.name);
 			ApplyCharacter();
-			Refresh();
+		}
+
+		void Start()
+		{
+			Invoke(nameof(ApplyCharacter), 1);
+			Invoke(nameof(ApplyCharacter), 2);
 		}
 
 		void Update()
@@ -183,10 +175,10 @@ namespace __SCRIPTS
 		}
 #endif
 
+
 		public void SetPlayer(Player newPlayer)
 		{
-			GetFaces();
-			GetBodies();
+
 			ApplyRandomCharacter();
 		}
 	}

@@ -25,7 +25,8 @@ namespace __SCRIPTS
 		public void SpawnNewNPC(GameObject NPCPrefab, Vector3 position)
 		{
 			var newNPC = Services.objectMaker.Make(NPCPrefab, position);
-			ConfigureNewNPC(newNPC);
+			if(newNPC != null) ConfigureNewNPC(newNPC);
+			 else Debug.LogError("Failed to spawn NPC: " + NPCPrefab.name);
 		}
 
 		void CollectEnemy(GameObject enemy)

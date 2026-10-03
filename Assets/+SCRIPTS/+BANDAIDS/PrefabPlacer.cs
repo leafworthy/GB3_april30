@@ -30,13 +30,34 @@ public class PrefabPlacer : MonoBehaviour
 	private void Spawn()
 	{
 		var Prefab = EnemySpawner.GetPrefabFromType(EnemyType);
-		if (SpawnsNPCs) Services.enemyManager.SpawnNewNPC(Prefab, transform.position);
+		if(Prefab == null)
+		{
+			Debug.LogError("Prefab is null");
+			return;
+		}
+
+		if (Services.enemyManager == null)
+		{
+			Debug.Log("Enemy manager is null");
+			return;
+		}
+		if (SpawnsNPCs)
+		{
+			Services.enemyManager.
+			         SpawnNewNPC(Prefab,
+				         transform.position);
+		}
 		else Services.enemyManager.SpawnNewEnemy(Prefab, EnemyType,transform.position, EnemyTier);
 		Destroy(gameObject);
 	}
 
 	private void Update()
 	{
+		if(Services.enemyManager == null)
+		{
+			Debug.Log("Enemy manager is null");
+			return;
+		}
 		if (ShouldSpawn()) Spawn();
 	}
 
